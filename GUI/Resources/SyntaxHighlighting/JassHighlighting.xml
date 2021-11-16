@@ -61,6 +61,11 @@
             <Word>endglobals</Word>
             <Word>library</Word>
             <Word>endlibrary</Word>
+            <Word>initializer</Word>
+            <Word>struct</Word>
+            <Word>endstruct</Word>
+            <Word>method</Word>
+            <Word>endmethod</Word>
         </Keywords>
 
         <!-- TYPES -->
@@ -74,6 +79,9 @@
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
         <Rule foreground="#DCDCAA">
             (?&lt;=\bfunction\s)(\w+)
+        </Rule>
+        <Rule foreground="#DCDCAA">
+            (?&lt;=\binitializer\s)(\w+)
         </Rule>
 
 

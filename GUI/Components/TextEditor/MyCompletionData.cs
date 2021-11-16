@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
 
-namespace GUI.TextEditor
+namespace GUI.Components.TextEditor
 {
     public class MyCompletionData : ICompletionData
     {

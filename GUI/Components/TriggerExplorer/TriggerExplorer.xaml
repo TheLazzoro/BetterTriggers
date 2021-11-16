@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="GUI.Components.TriggerExplorer.TriggerExplorer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI.Components.TriggerExplorer"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" Width="400">
+    <Grid>
+        <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" DragOver="treeViewTriggerExplorer_DragOver" Drop="treeViewTriggerExplorer_Drop" MouseMove="treeViewTriggerExplorer_MouseMove" MouseDown="treeViewTriggerExplorer_MouseDown">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <EventSetter Event="TreeViewItem.DragOver"  Handler="treeViewTriggerExplorer_DragOver"/>
+                    <EventSetter Event="TreeViewItem.Drop" Handler="treeViewTriggerExplorer_Drop"/>
+                    <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewTriggerExplorer_MouseMove"/>
+                    <EventSetter Event="TreeViewItem.MouseDown" Handler="treeViewTriggerExplorer_MouseDown"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+    </Grid>
+</UserControl>

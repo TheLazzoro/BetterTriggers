@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
-        xmlns:local="clr-namespace:GUI"
+        xmlns:local="clr-namespace:GUI" xmlns:triggerexplorer="clr-namespace:GUI.Components.TriggerExplorer"
         mc:Ignorable="d"
         Title="Better Triggers" Height="450" Width="800" Background="#FF404040">
     <Window.Resources>
@@ -93,21 +93,14 @@
             </Button.Background>
         </Button>
 
+        <Button x:Name="btnCreateScript" Content="Create Script" Grid.Row="1" Grid.Column="0" Width="75" HorizontalAlignment="Left" Margin="70,0,0,0" Click="btnCreateScript_Click" />
+
         <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Click="btnSaveScript_Click"/>
 
-        <TreeView x:Name="treeViewTriggerExplorer" Grid.Row="2" Grid.RowSpan="2" Background="#FF282828" Margin="5,5,5,5" Foreground="White" AllowDrop="True">
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <EventSetter Event="TreeViewItem.DragOver"  Handler="treeViewTriggerExplorer_DragOver"/>
-                    <EventSetter Event="TreeViewItem.Drop" Handler="treeViewTriggerExplorer_Drop"/>
-                    <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewTriggerExplorer_MouseMove"/>
-                    <EventSetter Event="TreeViewItem.MouseDown" Handler="treeViewTriggerExplorer_MouseDown"/>
-                </Style>
-            </TreeView.ItemContainerStyle>
-        </TreeView>
+        <triggerexplorer:TriggerExplorer x:Name="treeViewTriggerExplorer" Grid.Row="2" Grid.RowSpan="2" Background="#FF282828" Margin="5,5,5,5" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
         <GridSplitter Grid.Row="1" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#FF404040"/>
 
-        <avalonedit:TextEditor x:Name="textBoxTriggerComment" Grid.Row="2" Grid.Column="1" Background="#1E1E1E" Foreground="#9CDCFE" Margin="0,5,5,5" FontFamily="Consolas" KeyDown="textBoxTriggerComment_KeyDown"/>
+        <avalonedit:TextEditor x:Name="textBoxTriggerComment" Grid.Row="2" Grid.Column="1" Background="#1E1E1E" Foreground="#9CDCFE" Margin="0,5,5,5" FontFamily="Consolas" KeyDown="textBoxTriggerComment_KeyDown" ShowLineNumbers="True"/>
         <TreeView x:Name="treeViewTriggerFunctions" Grid.Row="3" Grid.Column="1" Background="#FF282828" Margin="0,5,5,5" Foreground="#FFFFFF"/>
         <GridSplitter Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Height="5" Background="#FF404040" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
 
