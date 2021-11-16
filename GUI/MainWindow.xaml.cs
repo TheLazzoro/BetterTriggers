@@ -17,6 +17,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using BetterTriggers;
+using GUI.TextEditor;
+using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
@@ -30,18 +33,25 @@ namespace GUI
         Point _lastMouseDown;
         TreeViewItem draggedItem, _target;
 
+        XmlFoldingStrategy foldingStrategy = new XmlFoldingStrategy();
+        FoldingManager foldingManager;
+        CompletionWindow completionWindow;
+
         public MainWindow()
         {
             InitializeComponent();
 
             // Sets syntax highlighting in the comment field
-            using (Stream s = Application.GetResourceStream( new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
+            using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
             {
                 using (XmlTextReader reader = new XmlTextReader(s))
                 {
                     textBoxTriggerComment.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
+
+            foldingManager = FoldingManager.Install(textBoxTriggerComment.TextArea);
+            foldingStrategy.UpdateFoldings(foldingManager, textBoxTriggerComment.Document);
 
             TreeViewItem map = new TreeViewItem();
             map.Header = "Untitled";
@@ -159,8 +169,8 @@ namespace GUI
                    (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
                 {
                     //textBoxTriggerComment.Text = currentPosition.Y.ToString();
-                    
-                    
+
+
 
                     // Verify that this is a valid drop and then store the drop target
                     TreeViewItem item = GetNearestContainer
@@ -245,7 +255,7 @@ namespace GUI
 
         }
 
-        
+
 
         private void treeViewTriggerExplorer_Drop(object sender, DragEventArgs e)
         {
@@ -305,6 +315,26 @@ namespace GUI
             return container;
         }
 
+        private void textBoxTriggerComment_KeyDown(object sender, KeyEventArgs e)
+        {
+            foldingStrategy.UpdateFoldings(foldingManager, textBoxTriggerComment.Document);
+
+            if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                // Open code completion after the user has pressed dot:
+                completionWindow = new CompletionWindow(textBoxTriggerComment.TextArea);
+                IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+                data.Add(new MyCompletionData("Item1"));
+                data.Add(new MyCompletionData("Item2"));
+                data.Add(new MyCompletionData("Item3"));
+                completionWindow.Show();
+                completionWindow.Closed += delegate
+                {
+                    completionWindow = null;
+                };
+            }
+        }
+
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
             string fileJassHelper = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/jasshelper.exe";
@@ -319,5 +349,5 @@ namespace GUI
             JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
         }
     }
-    
+
 }

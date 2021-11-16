@@ -1,7 +1,7 @@
 <SyntaxDefinition name="vJass"
         xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
     <Color name="Comment" foreground="#6A9955" />
-    <Color name="String" foreground="Blue" />
+    <Color name="String" foreground="#CE9178" />
 
     <!-- This is the main ruleset. -->
     <RuleSet>
@@ -26,12 +26,15 @@
             <Word>+</Word>
             <Word>-</Word>
             <Word>/</Word>
+            <Word>(</Word>
+            <Word>)</Word>
             <!-- ... -->
         </Keywords>
 
         <!-- BLOCKS -->
         <Keywords fontWeight="bold" foreground="#C586C0">
             <Word>if</Word>
+            <Word>then</Word>
             <Word>else</Word>
             <Word>endif</Word>
             <Word>loop</Word>
@@ -49,6 +52,7 @@
             <Word>and</Word>
             <Word>or</Word>
             <Word>local</Word>
+            <Word>array</Word>
             <Word>takes</Word>
             <Word>returns</Word>
             <Word>function</Word>
@@ -66,6 +70,11 @@
             <Word>integer</Word>
             <Word>real</Word>
         </Keywords>
+
+        <!-- FUNCTION NAMES (uses regex lookbehind) -->
+        <Rule foreground="#DCDCAA">
+            (?&lt;=\bfunction\s)(\w+)
+        </Rule>
 
 
         <!-- Digits -->
