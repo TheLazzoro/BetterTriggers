@@ -1,0 +1,81 @@
+<SyntaxDefinition name="vJass"
+        xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="#6A9955" />
+    <Color name="String" foreground="Blue" />
+
+    <!-- This is the main ruleset. -->
+    <RuleSet>
+        <Span color="Comment" begin="//" />
+        <Span color="Comment" multiline="true" begin="/\*" end="\*/" />
+
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+            <RuleSet>
+                <!-- nested span for escape sequences -->
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>
+
+        <!-- OPERATORS -->
+        <Keywords fontWeight="bold" foreground="#D4D4D4">
+            <Word>&lt;</Word>
+            <Word>></Word>
+            <Word>=</Word>
+            <Word>!</Word>
+            <Word>+</Word>
+            <Word>-</Word>
+            <Word>/</Word>
+            <!-- ... -->
+        </Keywords>
+
+        <!-- BLOCKS -->
+        <Keywords fontWeight="bold" foreground="#C586C0">
+            <Word>if</Word>
+            <Word>else</Word>
+            <Word>endif</Word>
+            <Word>loop</Word>
+            <Word>exitwhen</Word>
+            <Word>endloop</Word>
+            <!-- ... -->
+        </Keywords>
+
+        <!-- KEYWORDS -->
+        <Keywords foreground="#569CD6">
+            <Word>call</Word>
+            <Word>set</Word>
+            <Word>true</Word>
+            <Word>false</Word>
+            <Word>and</Word>
+            <Word>or</Word>
+            <Word>local</Word>
+            <Word>takes</Word>
+            <Word>returns</Word>
+            <Word>function</Word>
+            <Word>endfunction</Word>
+            <Word>globals</Word>
+            <Word>endglobals</Word>
+            <Word>library</Word>
+            <Word>endlibrary</Word>
+        </Keywords>
+
+        <!-- TYPES -->
+        <Keywords foreground="#4EC9B0">
+            <Word>nothing</Word>
+            <Word>boolean</Word>
+            <Word>integer</Word>
+            <Word>real</Word>
+        </Keywords>
+
+
+        <!-- Digits -->
+        <Rule foreground="#B5CEA8">
+            \b0[xX][0-9a-fA-F]+  # hex number
+        |    \b
+            (    \d+(\.[0-9]+)?   #number with optional floating point
+            |    \.[0-9]+         #or just starting with floating point
+            )
+            ([eE][+-]?[0-9]+)? # optional exponent
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>
