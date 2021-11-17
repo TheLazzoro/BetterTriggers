@@ -17,8 +17,10 @@ namespace GUI.Components.TriggerExplorer
     /// <summary>
     /// Interaction logic for TriggerExplorer.xaml
     /// </summary>
+    /// 
     public partial class TriggerExplorer : UserControl
     {
+        TreeViewItem map;
         Point _lastMouseDown;
         TreeViewItem draggedItem, _target;
 
@@ -27,36 +29,16 @@ namespace GUI.Components.TriggerExplorer
             InitializeComponent();
 
 
+            this.map = CreateTreeViewItem("MapName.w3x", "resources/document.png");
+            treeViewTriggerExplorer.Items.Add(this.map);
 
-            TreeViewItem map = new TreeViewItem();
-            map = GetTreeView("MapName.w3x", "resources/document.png");
-
-            treeViewTriggerExplorer.Items.Add(map);
-
-            TreeViewItem subItem = new TreeViewItem();
-            subItem.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
-            subItem.Header = "Trigger";
-            map.Items.Add(subItem);
-
-            TreeViewItem subItem2 = new TreeViewItem();
-            subItem2.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
-            subItem2.Header = "Trigger2";
-            map.Items.Add(subItem2);
-
-            TreeViewItem subItem3 = new TreeViewItem();
-            subItem3.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
-            subItem3.Header = "Trigger3";
-            map.Items.Add(subItem3);
-
-            TreeViewItem subItem4 = new TreeViewItem();
-            subItem4.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
-            subItem4.Header = "Trigger3";
-            subItem3.Items.Add(subItem4);
+            TreeViewItem subItem = CreateTreeViewItem("Untitled Trigger", "resources/document.png");
         }
 
-        public void AddScript(string name)
+        public void CreateScript(string name, ICSharpCode.AvalonEdit.TextEditor textEditor)
         {
-            treeViewTriggerExplorer.Items.Add(name);
+            var item = CreateTreeViewItem(name, "resources/document.png");
+            Script script = new Script(name, item, textEditor);
         }
 
         private void treeViewTriggerExplorer_MouseDown(object sender, MouseButtonEventArgs e)
@@ -261,9 +243,15 @@ namespace GUI.Components.TriggerExplorer
             return container;
         }
 
-        private TreeViewItem GetTreeView(string text, string imagePath)
+        private TreeViewItem CreateTreeViewItem(string text, string imagePath)
         {
             TreeViewItem item = new TreeViewItem();
+
+            TreeViewItem selectedItem = (TreeViewItem) treeViewTriggerExplorer.SelectedItem;
+            if (selectedItem != null)
+                selectedItem.Items.Add(item);
+            else if(this.map != null)
+                this.map.Items.Add(item);
 
             item.IsExpanded = true;
 
@@ -292,5 +280,7 @@ namespace GUI.Components.TriggerExplorer
             item.Header = stack;
             return item;
         }
+
+        
     }
 }

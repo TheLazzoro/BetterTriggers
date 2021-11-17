@@ -62,7 +62,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="25"/>
@@ -100,7 +100,6 @@
         <triggerexplorer:TriggerExplorer x:Name="treeViewTriggerExplorer" Grid.Row="2" Grid.RowSpan="2" Background="#FF282828" Margin="5,5,5,5" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
         <GridSplitter Grid.Row="1" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#FF404040"/>
 
-        <avalonedit:TextEditor x:Name="textBoxTriggerComment" Grid.Row="2" Grid.Column="1" Background="#1E1E1E" Foreground="#9CDCFE" Margin="0,5,5,5" FontFamily="Consolas" KeyDown="textBoxTriggerComment_KeyDown" ShowLineNumbers="True"/>
         <TreeView x:Name="treeViewTriggerFunctions" Grid.Row="3" Grid.Column="1" Background="#FF282828" Margin="0,5,5,5" Foreground="#FFFFFF"/>
         <GridSplitter Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Height="5" Background="#FF404040" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
 

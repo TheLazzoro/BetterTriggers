@@ -66,6 +66,8 @@
             <Word>endstruct</Word>
             <Word>method</Word>
             <Word>endmethod</Word>
+            <Word>private</Word>
+            <Word>public</Word>
         </Keywords>
 
         <!-- TYPES -->

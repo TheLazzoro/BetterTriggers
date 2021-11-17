@@ -18,6 +18,8 @@ using System.Windows.Shapes;
 using System.Xml;
 using BetterTriggers;
 using GUI.Components.TextEditor;
+using GUI.Containers;
+using GUI.Controllers;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -30,54 +32,17 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        
-
-        XmlFoldingStrategy foldingStrategy = new XmlFoldingStrategy();
-        FoldingManager foldingManager;
-        CompletionWindow completionWindow;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            // Sets syntax highlighting in the comment field
-            using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
-            {
-                using (XmlTextReader reader = new XmlTextReader(s))
-                {
-                    textBoxTriggerComment.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                }
-            }
-
-            foldingManager = FoldingManager.Install(textBoxTriggerComment.TextArea);
-            foldingStrategy.UpdateFoldings(foldingManager, textBoxTriggerComment.Document);
-        }
-
-        
-
-        private void textBoxTriggerComment_KeyDown(object sender, KeyEventArgs e)
-        {
-            foldingStrategy.UpdateFoldings(foldingManager, textBoxTriggerComment.Document);
-
-            if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftAlt)))
-            {
-                // Open code completion after the user has pressed dot:
-                completionWindow = new CompletionWindow(textBoxTriggerComment.TextArea);
-                IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
-                data.Add(new MyCompletionData("Item1"));
-                data.Add(new MyCompletionData("Item2"));
-                data.Add(new MyCompletionData("Item3"));
-                completionWindow.Show();
-                completionWindow.Closed += delegate
-                {
-                    completionWindow = null;
-                };
-            }
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
-            treeViewTriggerExplorer.AddScript("Untitled Script");
+            var controller = new ControllerTriggerExplorer();
+            var textEditor = controller.CreateTextEditorInGrid(mainGrid);
+
+            treeViewTriggerExplorer.CreateScript("Untitled Script", textEditor);
         }
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
@@ -88,7 +53,7 @@ namespace GUI
             string fileInput = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/vJass.j";
             string fileOutput = "\"C:/Users/Lasse Dam/Desktop/JassHelper Experiement/output.j\"";
 
-            string script = textBoxTriggerComment.Text;
+            string script = ContainerITriggerElements.GenerateScript();
 
             JassHelper.SaveVJassScript(fileInput, script);
             JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
