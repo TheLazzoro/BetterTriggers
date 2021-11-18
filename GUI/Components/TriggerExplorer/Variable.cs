@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI.Containers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -8,32 +9,61 @@ namespace GUI.Components.TriggerExplorer
 {
     public class Variable : TriggerElement, ITriggerElement
     {
+        string identifier;
         public bool IsEnabled;
+        VariableControl variableControl;
 
-        public Variable(string name, TreeViewItem treeViewItem) : base(treeViewItem)
+        public Variable(string name, TreeViewItem treeViewItem, VariableControl variableControl) : base(treeViewItem)
         {
-            this.Name = name;
             this.IsEnabled = true;
+            this.variableControl = variableControl;
+
+            this.Name = name;
+            SetName(name);
+
+            // Events in the variableControl
+            variableControl.OnRename += delegate
+            {
+                SetName(variableControl.textBoxVariableName.Text);
+            };
+
+            ContainerITriggerElements.AddTriggerElement(this);
         }
 
         public void Hide()
         {
-            throw new NotImplementedException();
+            variableControl.Visibility = Visibility.Hidden;
         }
 
         public void OnElementClick()
         {
-            throw new NotImplementedException();
+            if (currentTriggerElement != null)
+                currentTriggerElement.Hide();
+
+            this.Show();
+
+            currentTriggerElement = this;
         }
 
         public void Show()
         {
-            throw new NotImplementedException();
+            variableControl.Visibility = Visibility.Visible;
         }
 
         public string GetScript()
         {
-            throw new NotImplementedException();
+            return $"globals\ninteger {this.identifier}\nendglobals";
+        }
+
+        private void SetName(string name)
+        {
+            this.Name = name;
+            this.treeViewItem.Header = name;
+            this.variableControl.textBoxVariableName.Text = name;
+
+            var newIdentifier = "udg_" + name;
+            this.identifier = newIdentifier;
+            this.variableControl.textBlockVariableNameUDG.Text = newIdentifier;
         }
     }
 }

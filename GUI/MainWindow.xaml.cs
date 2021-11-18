@@ -37,12 +37,26 @@ namespace GUI
             InitializeComponent();
         }
 
+        private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
+        {
+            treeViewTriggerExplorer.CreateFolder("Untitled Folder");
+        }
+
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerTriggerExplorer();
             var textEditor = controller.CreateTextEditorInGrid(mainGrid);
 
             treeViewTriggerExplorer.CreateScript("Untitled Script", textEditor);
+        }
+
+        private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
+        {
+            var controller = new ControllerTriggerExplorer();
+            var boxVariable = controller.CreateVariableInGrid(mainGrid);
+
+            treeViewTriggerExplorer.CreateVariable("Untitled Script", boxVariable);
+
         }
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)

@@ -7,20 +7,48 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\actions-setvariables.png" />
     <None Remove="Resources\Document.png" />
     <None Remove="Resources\DocumentFunction.png" />
+    <None Remove="Resources\editor-toolbar-triggeraddvariable.png" />
+    <None Remove="Resources\editor-triggerscript.png" />
     <None Remove="Resources\Folder.png" />
+    <None Remove="Resources\map.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
+    <None Remove="Resources\ui-editoricon-triggercategories_element.png" />
+    <None Remove="Resources\ui-editoricon-triggercategories_folder.png" />
+    <None Remove="Resources\ui-editoricon-triggercategories_folderopen.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\actions-setvariables.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Document.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\DocumentFunction.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\editor-toolbar-triggeraddvariable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\editor-triggerscript.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ui-editoricon-triggercategories_element.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ui-editoricon-triggercategories_folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\ui-editoricon-triggercategories_folderopen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

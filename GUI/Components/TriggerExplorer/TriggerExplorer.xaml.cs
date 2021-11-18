@@ -29,16 +29,28 @@ namespace GUI.Components.TriggerExplorer
             InitializeComponent();
 
 
-            this.map = CreateTreeViewItem("MapName.w3x", "resources/document.png");
+            this.map = CreateTreeViewItem("MapName.w3x", "resources/map.png");
             treeViewTriggerExplorer.Items.Add(this.map);
 
             TreeViewItem subItem = CreateTreeViewItem("Untitled Trigger", "resources/document.png");
         }
 
+        public void CreateFolder(string name)
+        {
+            var item = CreateTreeViewItem(name, "resources/ui-editoricon-triggercategories_folder.png");
+            TriggerFolder script = new TriggerFolder(name, item);
+        }
+
         public void CreateScript(string name, ICSharpCode.AvalonEdit.TextEditor textEditor)
         {
-            var item = CreateTreeViewItem(name, "resources/document.png");
+            var item = CreateTreeViewItem(name, "resources/editor-triggerscript.png");
             Script script = new Script(name, item, textEditor);
+        }
+
+        public void CreateVariable(string name, VariableControl variableControl)
+        {
+            var item = CreateTreeViewItem(name, "resources/actions-setvariables.png");
+            Variable script = new Variable(name, item, variableControl);
         }
 
         private void treeViewTriggerExplorer_MouseDown(object sender, MouseButtonEventArgs e)

@@ -25,7 +25,7 @@ namespace GUI.Controllers
             // Position editor
             mainGrid.Children.Add(textEditor);
             Grid.SetColumn(textEditor, 1);
-            Grid.SetRow(textEditor, 2);
+            Grid.SetRow(textEditor, 3);
 
             // Sets syntax highlighting in the comment field
             using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
@@ -41,6 +41,18 @@ namespace GUI.Controllers
             //foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
 
             return textEditor;
+        }
+
+        public VariableControl CreateVariableInGrid(Grid mainGrid)
+        {
+            var userControl = new VariableControl();
+
+            // Position editor
+            mainGrid.Children.Add(userControl);
+            Grid.SetColumn(userControl, 1);
+            Grid.SetRow(userControl, 3);
+
+            return userControl;
         }
     }
 }

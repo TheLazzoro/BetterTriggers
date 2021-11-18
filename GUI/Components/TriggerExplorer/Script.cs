@@ -17,7 +17,7 @@ namespace GUI.Components.TriggerExplorer
         ICSharpCode.AvalonEdit.TextEditor textEditor;
         
 
-        public Script(string name, TreeViewItem treeViewItem, ICSharpCode.AvalonEdit.TextEditor textEditor) : base(treeViewItem )
+        public Script(string name, TreeViewItem treeViewItem, ICSharpCode.AvalonEdit.TextEditor textEditor) : base(treeViewItem)
         {
             this.Name = name;
             this.textEditor = textEditor;
