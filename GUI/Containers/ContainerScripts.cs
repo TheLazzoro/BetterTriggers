@@ -7,11 +7,21 @@ namespace GUI.Containers
 {
     public static class ContainerScripts
     {
-        private static List<Script> triggerElementContainer = new List<Script>();
+        private static List<Script> scriptContainer = new List<Script>();
 
         public static void AddTriggerElement(Script triggerElement)
         {
-            triggerElementContainer.Add(triggerElement);
+            scriptContainer.Add(triggerElement);
+        }
+
+        public static int Count()
+        {
+            return scriptContainer.Count;
+        }
+
+        public static Script Get(int index)
+        {
+            return scriptContainer[index];
         }
     }
 }

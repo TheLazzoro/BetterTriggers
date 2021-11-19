@@ -13,7 +13,12 @@ namespace GUI.Containers
         {
             ITriggerElements.Add(triggerElement);
         }
-        
+
+        public static int Count()
+        {
+            return ITriggerElements.Count;
+        }
+
         public static string GenerateScript()
         {
             string finalScript = string.Empty;

@@ -21,13 +21,14 @@ namespace GUI.Components.TriggerExplorer
             this.Name = name;
             SetName(name);
 
+            ContainerVariables.AddTriggerElement(this);
+            ContainerITriggerElements.AddTriggerElement(this);
+
             // Events in the variableControl
             variableControl.OnRename += delegate
             {
                 SetName(variableControl.textBoxVariableName.Text);
             };
-
-            ContainerITriggerElements.AddTriggerElement(this);
         }
 
         public void Hide()

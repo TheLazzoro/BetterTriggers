@@ -7,11 +7,21 @@ namespace GUI.Containers
 {
     public static class ContainerConditionDefinitions
     {
-        private static List<ConditionDefinition> triggerElementContainer = new List<ConditionDefinition>();
+        private static List<ConditionDefinition> conditionDefinitionContainer = new List<ConditionDefinition>();
 
         public static void AddTriggerElement(ConditionDefinition triggerElement)
         {
-            triggerElementContainer.Add(triggerElement);
+            conditionDefinitionContainer.Add(triggerElement);
+        }
+
+        public static int Count()
+        {
+            return conditionDefinitionContainer.Count;
+        }
+
+        public static ConditionDefinition Get(int index)
+        {
+            return conditionDefinitionContainer[index];
         }
     }
 }

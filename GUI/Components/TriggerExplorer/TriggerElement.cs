@@ -15,6 +15,7 @@ namespace GUI.Components.TriggerExplorer
         public TriggerElement(TreeViewItem treeViewItem)
         {
             this.treeViewItem = treeViewItem;
+            this.treeViewItem.Tag = this;
 
             // click event
             treeViewItem.Selected += new RoutedEventHandler(delegate (object sender, RoutedEventArgs e)

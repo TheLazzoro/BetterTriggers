@@ -7,14 +7,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" Width="400">
     <Grid>
-        <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" DragOver="treeViewTriggerExplorer_DragOver" Drop="treeViewTriggerExplorer_Drop" MouseMove="treeViewTriggerExplorer_MouseMove" MouseDown="treeViewTriggerExplorer_MouseDown" BorderBrush="{x:Null}">
+        <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop"  >
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
-                    <EventSetter Event="TreeViewItem.DragOver"  Handler="treeViewTriggerExplorer_DragOver"/>
-                    <EventSetter Event="TreeViewItem.Drop" Handler="treeViewTriggerExplorer_Drop"/>
-                    <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewTriggerExplorer_MouseMove"/>
-                    <EventSetter Event="TreeViewItem.MouseDown" Handler="treeViewTriggerExplorer_MouseDown"/>
+                    <!-- We have to select the item which is right-clicked on -->
+                    <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
+                    <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_PreviewDragEnter"/>
+                    <EventSetter Event="TreeViewItem.Drop" Handler="treeViewItem_PreviewDrop"/>
+                    <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
+
+
+
+
                 </Style>
+
             </TreeView.ItemContainerStyle>
         </TreeView>
     </Grid>

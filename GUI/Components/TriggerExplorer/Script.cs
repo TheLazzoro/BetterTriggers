@@ -24,6 +24,7 @@ namespace GUI.Components.TriggerExplorer
             this.textEditor.Margin = new Thickness(0, 5, 5, 5);
             new AutoComplete(this.textEditor);
 
+            ContainerScripts.AddTriggerElement(this);
             ContainerITriggerElements.AddTriggerElement(this);
         }
 

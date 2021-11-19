@@ -103,7 +103,7 @@
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="70,0,0,0" Click="btnCreateScript_Click" >
+        <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateScript_Click" >
             <Button.Background >
                 <ImageBrush ImageSource="Resources/editor-triggerscript.png" Stretch="None" />
             </Button.Background>

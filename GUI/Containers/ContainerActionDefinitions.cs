@@ -13,5 +13,15 @@ namespace GUI.Containers
         {
             actionDefinitionContainer.Add(triggerElement);
         }
+
+        public static int Count()
+        {
+            return actionDefinitionContainer.Count;
+        }
+
+        public static ActionDefinition Get(int index)
+        {
+            return actionDefinitionContainer[index];
+        }
     }
 }

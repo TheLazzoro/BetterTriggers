@@ -13,5 +13,15 @@ namespace GUI.Containers
         {
             triggerElementContainer.Add(triggerElement);
         }
+
+        public static int Count()
+        {
+            return triggerElementContainer.Count;
+        }
+
+        public static Variable Get(int index)
+        {
+            return triggerElementContainer[index];
+        }
     }
 }

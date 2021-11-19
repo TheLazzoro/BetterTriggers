@@ -14,8 +14,12 @@ namespace GUI.Controllers
 {
     public class ControllerTriggerExplorer
     {
-        public ICSharpCode.AvalonEdit.TextEditor CreateTextEditorInGrid(Grid mainGrid)
+        public void CreateFolder(TriggerExplorer triggerExplorer) {
+            triggerExplorer.CreateFolder();
+        }
+        public void CreateScript(Grid mainGrid, TriggerExplorer triggerExplorer)
         {
+
             var textEditor = new ICSharpCode.AvalonEdit.TextEditor();
             textEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
@@ -36,14 +40,14 @@ namespace GUI.Controllers
                 }
             }
 
+            triggerExplorer.CreateScript(textEditor);
+
             // folding text blocks?
             //foldingManager = FoldingManager.Install(textEditor.TextArea);
             //foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
-
-            return textEditor;
         }
 
-        public VariableControl CreateVariableInGrid(Grid mainGrid)
+        public void CreateVariable(Grid mainGrid, TriggerExplorer triggerExplorer)
         {
             var userControl = new VariableControl();
 
@@ -52,7 +56,8 @@ namespace GUI.Controllers
             Grid.SetColumn(userControl, 1);
             Grid.SetRow(userControl, 3);
 
-            return userControl;
+            triggerExplorer.CreateVariable(userControl);
         }
+
     }
 }

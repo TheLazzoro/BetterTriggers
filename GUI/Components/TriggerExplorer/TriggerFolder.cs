@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI.Containers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
@@ -10,6 +11,8 @@ namespace GUI.Components.TriggerExplorer
         public TriggerFolder(string name, TreeViewItem treeViewItem) : base(treeViewItem)
         {
             this.Name = name;
+
+            ContainerFolders.AddTriggerElement(this);
         }
         
         public string GetScript()

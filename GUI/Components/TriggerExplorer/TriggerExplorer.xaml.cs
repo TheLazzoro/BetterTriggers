@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GUI.Components.Utility;
+using GUI.Containers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -21,8 +23,9 @@ namespace GUI.Components.TriggerExplorer
     public partial class TriggerExplorer : UserControl
     {
         TreeViewItem map;
-        Point _lastMouseDown;
-        TreeViewItem draggedItem, _target;
+        Point _startPoint;
+        TreeViewItem dragItem;
+        bool _IsDragging = false;
 
         public TriggerExplorer()
         {
@@ -35,224 +38,83 @@ namespace GUI.Components.TriggerExplorer
             TreeViewItem subItem = CreateTreeViewItem("Untitled Trigger", "resources/document.png");
         }
 
-        public void CreateFolder(string name)
+        public void CreateFolder()
         {
+            string name = NameGenerator.GenerateCategoryName();
+
             var item = CreateTreeViewItem(name, "resources/ui-editoricon-triggercategories_folder.png");
             TriggerFolder script = new TriggerFolder(name, item);
         }
 
-        public void CreateScript(string name, ICSharpCode.AvalonEdit.TextEditor textEditor)
+        public void CreateScript(ICSharpCode.AvalonEdit.TextEditor textEditor)
         {
+            string name = NameGenerator.GenerateScriptName();
+
             var item = CreateTreeViewItem(name, "resources/editor-triggerscript.png");
             Script script = new Script(name, item, textEditor);
         }
 
-        public void CreateVariable(string name, VariableControl variableControl)
+        public void CreateVariable(VariableControl variableControl)
         {
+            string name = NameGenerator.GenerateVariableName();
+
             var item = CreateTreeViewItem(name, "resources/actions-setvariables.png");
             Variable script = new Variable(name, item, variableControl);
         }
 
-        private void treeViewTriggerExplorer_MouseDown(object sender, MouseButtonEventArgs e)
+        private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_IsDragging)
             {
-                _lastMouseDown = e.GetPosition(treeViewTriggerExplorer);
-            }
-        }
-
-        private void treeViewTriggerExplorer_MouseMove(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (e.LeftButton == MouseButtonState.Pressed)
+                Point position = e.GetPosition(null);
+                if (Math.Abs(position.X - _startPoint.X) >
+                        SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) >
+                        SystemParameters.MinimumVerticalDragDistance)
                 {
-                    Point currentPosition = e.GetPosition(treeViewTriggerExplorer);
-
-
-                    if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
-                        (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
-                    {
-                        draggedItem = (TreeViewItem)treeViewTriggerExplorer.SelectedItem;
-                        if (draggedItem != null)
-                        {
-                            DragDropEffects finalDropEffect = DragDrop.DoDragDrop(treeViewTriggerExplorer, treeViewTriggerExplorer.SelectedValue,
-                                DragDropEffects.Move);
-                            //Checking target is not null and item is dragging(moving)
-                            if ((finalDropEffect == DragDropEffects.Move) && (_target != null))
-                            {
-                                // A Move drop was accepted
-                                if (!draggedItem.Header.ToString().Equals(_target.Header.ToString()))
-                                {
-                                    CopyItem(draggedItem, _target);
-                                    _target = null;
-                                    draggedItem = null;
-                                }
-
-                            }
-                        }
-                    }
+                    StartDrag(e);
                 }
             }
-            catch (Exception)
-            {
-            }
         }
 
-        private void treeViewTriggerExplorer_DragOver(object sender, DragEventArgs e)
+        private void treeViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            try
-            {
-                Point currentPosition = e.GetPosition(treeViewTriggerExplorer);
+            _startPoint = e.GetPosition(null);
+        }
 
-                if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
-                   (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
+        private void StartDrag(MouseEventArgs e)
+        {
+            _IsDragging = true;
+            dragItem = this.treeViewTriggerExplorer.SelectedItem as TreeViewItem;
+            DataObject data = null;
+
+            data = new DataObject("inadt", dragItem);
+
+            if (data != null)
+            {
+                DragDropEffects dde = DragDropEffects.Move;
+                if (e.RightButton == MouseButtonState.Pressed)
                 {
-                    //textBoxTriggerComment.Text = currentPosition.Y.ToString();
-
-
-
-                    // Verify that this is a valid drop and then store the drop target
-                    TreeViewItem item = GetNearestContainer
-                    (e.OriginalSource as UIElement);
-                    if (CheckDropTarget(draggedItem, item))
-                    {
-                        e.Effects = DragDropEffects.Move;
-                    }
-                    else
-                    {
-                        e.Effects = DragDropEffects.None;
-                    }
+                    dde = DragDropEffects.All;
                 }
-                e.Handled = true;
+                DragDropEffects de = DragDrop.DoDragDrop(this.treeViewTriggerExplorer, data, dde);
             }
-            catch (Exception)
-            {
-            }
+            _IsDragging = false;
         }
 
-        private bool IsInFirstHalf(FrameworkElement container, Point mousePosition, Orientation orientation)
+        private void treeViewItem_PreviewDrop(object sender, DragEventArgs e)
         {
-            if (orientation == Orientation.Vertical)
+            /*
+            if (_IsDragging && dragItem != null)
             {
-                return mousePosition.Y < container.ActualHeight / 2;
+                var parent = (TreeViewItem) dragItem.Parent;
+
+                parent.Items.Remove(dragItem);
+
+                var dropTarget = (TreeViewItem) e.OriginalSource;
+                dropTarget.Items.Insert(0, dragItem);
             }
-            return mousePosition.X < container.ActualWidth / 2;
-        }
-
-        private void CopyItem(TreeViewItem _sourceItem, TreeViewItem _targetItem)
-        {
-
-            //Asking user wether he want to drop the dragged TreeViewItem here or not
-            if (MessageBox.Show("Would you like to drop " + _sourceItem.Header.ToString() + " into " + _targetItem.Header.ToString() + "", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    //adding dragged TreeViewItem in target TreeViewItem
-                    addChild(_sourceItem, _targetItem);
-
-                    //finding Parent TreeViewItem of dragged TreeViewItem 
-                    TreeViewItem ParentItem = FindVisualParent<TreeViewItem>(_sourceItem);
-                    // if parent is null then remove from TreeView else remove from Parent TreeViewItem
-                    if (ParentItem == null)
-                    {
-                        treeViewTriggerExplorer.Items.Remove(_sourceItem);
-                    }
-                    else
-                    {
-                        ParentItem.Items.Remove(_sourceItem);
-                    }
-                }
-                catch
-                {
-
-                }
-            }
-
-        }
-
-        public void addChild(TreeViewItem _sourceItem, TreeViewItem _targetItem)
-        {
-            // add item in target TreeViewItem 
-            TreeViewItem item1 = new TreeViewItem();
-            item1.Header = _sourceItem.Header;
-            _targetItem.Items.Add(item1);
-            foreach (TreeViewItem item in _sourceItem.Items)
-            {
-                addChild(item, item1);
-            }
-        }
-
-        private bool CheckDropTarget(TreeViewItem _sourceItem, TreeViewItem _targetItem)
-        {
-            //Check whether the target item is meeting your condition
-            bool _isEqual = false;
-            if (!_sourceItem.Header.ToString().Equals(_targetItem.Header.ToString()))
-            {
-                _isEqual = true;
-            }
-            return _isEqual;
-
-        }
-
-
-
-        private void treeViewTriggerExplorer_Drop(object sender, DragEventArgs e)
-        {
-            try
-            {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-
-                // Verify that this is a valid drop and then store the drop target
-                TreeViewItem TargetItem = GetNearestContainer
-                    (e.OriginalSource as UIElement);
-                if (TargetItem != null && draggedItem != null)
-                {
-                    _target = TargetItem;
-                    e.Effects = DragDropEffects.Move;
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        static TObject FindVisualParent<TObject>(UIElement child) where TObject : UIElement
-        {
-            if (child == null)
-            {
-                return null;
-            }
-
-            UIElement parent = VisualTreeHelper.GetParent(child) as UIElement;
-
-            while (parent != null)
-            {
-                TObject found = parent as TObject;
-                if (found != null)
-                {
-                    return found;
-                }
-                else
-                {
-                    parent = VisualTreeHelper.GetParent(parent) as UIElement;
-                }
-            }
-
-            return null;
-        }
-
-        private TreeViewItem GetNearestContainer(UIElement element)
-        {
-            // Walk up the element tree to the nearest tree view item.
-            TreeViewItem container = element as TreeViewItem;
-            while ((container == null) && (element != null))
-            {
-                element = VisualTreeHelper.GetParent(element) as UIElement;
-                container = element as TreeViewItem;
-            }
-            return container;
+            */
         }
 
         private TreeViewItem CreateTreeViewItem(string text, string imagePath)
@@ -260,39 +122,89 @@ namespace GUI.Components.TriggerExplorer
             TreeViewItem item = new TreeViewItem();
 
             TreeViewItem selectedItem = (TreeViewItem) treeViewTriggerExplorer.SelectedItem;
-            if (selectedItem != null)
+            if (selectedItem != null && selectedItem.Tag is TriggerFolder)
                 selectedItem.Items.Add(item);
+            else if(selectedItem != null && selectedItem.Parent != null && !(selectedItem.Parent is TreeView))
+            {
+                TreeViewItem parent = (TreeViewItem)selectedItem.Parent;
+                //parent.Items.Add(item);
+                parent.Items.Insert(parent.Items.IndexOf(selectedItem) + 1, item);
+            }
             else if(this.map != null)
                 this.map.Items.Add(item);
 
             item.IsExpanded = true;
+            item.IsSelected = true;
+            //item.AllowDrop = true; // maybe needed?
 
             // create stack panel
             StackPanel stack = new StackPanel();
             stack.Orientation = Orientation.Horizontal;
+            stack.Height = 18;
+            stack.Margin = new Thickness(0, 0, 0, 0);
 
             // create Image
-            Image image = new Image();
-            image.Source = new BitmapImage
-                (new Uri(Directory.GetCurrentDirectory() + "/" + imagePath));
-            image.Width = 16;
-            image.Height = 16;
+            Rectangle rect = new Rectangle();
+            var img = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/" + imagePath));
+            ImageBrush brush = new ImageBrush(img);
+            rect.Fill = brush;
+            rect.Width = 16;
+            rect.Height = 16;
+            rect.Margin = new Thickness(0, 0, 0, 0);
 
             // Label
-            Label lbl = new Label();
-            lbl.Content = text;
-            lbl.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+            TextBlock txtBlock = new TextBlock();
+            txtBlock.Text = text;
+            txtBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
 
             // Add into stack
-            stack.Children.Add(image);
-            stack.Children.Add(lbl);
-
+            stack.Children.Add(rect);
+            stack.Children.Add(txtBlock);
 
             // assign stack to header
             item.Header = stack;
+
             return item;
         }
 
-        
+
+        private void treeViewItem_PreviewDragEnter(object sender, DragEventArgs e)
+        {
+            // Use this event to display feedback to the user when dragging?
+            
+            
+            // var header = (TreeViewItem)treeViewTriggerExplorer.Items[0];
+            //header.Header = ;
+
+        }
+
+        private void treeViewTriggerExplorer_Drop(object sender, DragEventArgs e)
+        {
+            if (_IsDragging && dragItem != null)
+            {
+                var parent = (TreeViewItem)dragItem.Parent;
+
+
+                // It is necessary to traverse the item's parents since drag & drop picks up
+                // things like 'Label' and 'Border' on the drop target when dropping the 
+                // dragged element.
+                FrameworkElement dropTarget = e.Source as FrameworkElement;
+                TreeViewItem traversedTarget = null;
+                while(traversedTarget == null)
+                {
+                    dropTarget = dropTarget.Parent as FrameworkElement;
+                    if(dropTarget is TreeViewItem)
+                    {
+                        traversedTarget = (TreeViewItem) dropTarget;
+                    }
+                }
+
+                if(traversedTarget != dragItem)
+                {
+                    parent.Items.Remove(dragItem);
+                    traversedTarget.Items.Insert(0, dragItem);
+                }
+            }
+        }
     }
 }
