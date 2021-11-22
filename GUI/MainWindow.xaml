@@ -97,7 +97,7 @@
             </Button.Background>
         </Button>
         
-        <Button Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="35,0,5,0" HorizontalAlignment="Left">
+        <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="35,0,5,0" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/ui-editoricon-triggercategories_element.png" Stretch="None" />
             </Button.Background>
@@ -109,13 +109,37 @@
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnCreateVariable_Click">
+        <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="85,0,0,0" Click="btnCreateVariable_Click">
             <Button.Background>
-                <ImageBrush ImageSource="Resources/editor-toolbar-triggeraddvariable.png" Stretch="None"/>
+                <ImageBrush ImageSource="Resources/actions-setvariables.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Click="btnSaveScript_Click"/>
+        <Button x:Name="btnCreateComment" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="110,0,0,0">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/editor-toolbar-triggercomment.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnCreateEvent_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/editor-triggerevent.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="35,0,0,0">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/editor-triggercondition.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="60,0,0,0">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/editor-triggeraction.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
 
         <triggerexplorer:TriggerExplorer x:Name="treeViewTriggerExplorer" Grid.Row="2" Grid.RowSpan="3" Background="#FF282828" BorderThickness="0" Margin="0,2,5,0" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#FF404040" Margin="0,5,0,0"/>

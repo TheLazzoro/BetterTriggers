@@ -11,6 +11,10 @@
     <None Remove="Resources\Document.png" />
     <None Remove="Resources\DocumentFunction.png" />
     <None Remove="Resources\editor-toolbar-triggeraddvariable.png" />
+    <None Remove="Resources\editor-toolbar-triggercomment.png" />
+    <None Remove="Resources\editor-triggeraction.png" />
+    <None Remove="Resources\editor-triggercondition.png" />
+    <None Remove="Resources\editor-triggerevent.png" />
     <None Remove="Resources\editor-triggerscript.png" />
     <None Remove="Resources\Folder.png" />
     <None Remove="Resources\map.png" />
@@ -31,6 +35,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\editor-toolbar-triggeraddvariable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\editor-triggeraction.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\editor-triggercondition.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\editor-triggerevent.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\editor-triggerscript.png">
@@ -54,11 +67,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+    <Content Include="Resources\editor-toolbar-triggercomment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
+    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

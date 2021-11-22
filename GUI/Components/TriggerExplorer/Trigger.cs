@@ -9,26 +9,33 @@ namespace GUI.Components.TriggerExplorer
     public class Trigger : TriggerElement, ITriggerElement
     {
         public bool IsEnabled;
+        public TriggerControl triggerControl;
 
-        public Trigger(string name, TreeViewItem treeViewItem) : base(treeViewItem)
+        public Trigger(string name, TreeViewItem treeViewItem, TriggerControl triggerControl) : base(treeViewItem)
         {
             this.Name = name;
             this.IsEnabled = true;
+            this.triggerControl = triggerControl;
         }
 
         public void Hide()
         {
-            throw new NotImplementedException();
+            triggerControl.Visibility = Visibility.Hidden;
         }
 
         public void OnElementClick()
         {
-            throw new NotImplementedException();
+            if (currentTriggerElement != null)
+                currentTriggerElement.Hide();
+
+            this.Show();
+
+            currentTriggerElement = this;
         }
 
         public void Show()
         {
-            throw new NotImplementedException();
+            triggerControl.Visibility = Visibility.Visible;
         }
 
         public string GetScript()

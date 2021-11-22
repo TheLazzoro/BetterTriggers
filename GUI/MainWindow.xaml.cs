@@ -16,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
-using BetterTriggers;
 using GUI.Components.TextEditor;
 using GUI.Containers;
 using GUI.Controllers;
@@ -32,18 +31,45 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private UserControl currentTriggerWindow;
+        
         public MainWindow()
         {
             InitializeComponent();
 
-            var w = new Window1();
-            w.Show();
+            treeViewTriggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
+        }
+
+        // Bubbled up event
+        private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
+        {
+            var item = (TreeViewItem) treeViewTriggerExplorer.treeViewTriggerExplorer.SelectedItem;
+            var trigger = item.Tag as GUI.Components.TriggerExplorer.Trigger;
+
+            if(trigger != null)
+            {
+                currentTriggerWindow = trigger.triggerControl;
+                btnCreateEvent.IsEnabled = true;
+                btnCreateCondition.IsEnabled = true;
+                btnCreateAction.IsEnabled = true;
+            } else
+            {
+                btnCreateEvent.IsEnabled = false;
+                btnCreateCondition.IsEnabled = false;
+                btnCreateAction.IsEnabled = false;
+            }
         }
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerTriggerExplorer();
             controller.CreateFolder(treeViewTriggerExplorer);
+        }
+
+        private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
+        {
+            var controller = new ControllerTriggerExplorer();
+            controller.CreateTrigger(mainGrid, treeViewTriggerExplorer);
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
@@ -58,6 +84,12 @@ namespace GUI
             controller.CreateVariable(mainGrid, treeViewTriggerExplorer);
         }
 
+        private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
+        {
+            var eventMenu = new EventMenuWindow();
+            eventMenu.Show();
+        }
+        
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
             string fileJassHelper = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/jasshelper.exe";
@@ -68,8 +100,9 @@ namespace GUI
 
             string script = ContainerITriggerElements.GenerateScript();
 
-            JassHelper.SaveVJassScript(fileInput, script);
-            JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
+            //JassHelper.SaveVJassScript(fileInput, script);
+            //JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
         }
+
     }
 }

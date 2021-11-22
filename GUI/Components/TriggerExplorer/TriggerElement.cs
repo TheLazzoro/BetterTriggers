@@ -27,6 +27,5 @@ namespace GUI.Components.TriggerExplorer
                 e.Handled = true;
             });
         }
-
     }
 }
