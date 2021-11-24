@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using BetterTriggers;
 using GUI.Components.TextEditor;
 using GUI.Containers;
 using GUI.Controllers;
@@ -31,7 +32,7 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private UserControl currentTriggerWindow;
+        private TriggerControl currentTriggerWindow;
         
         public MainWindow()
         {
@@ -86,8 +87,7 @@ namespace GUI
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            var eventMenu = new EventMenuWindow();
-            eventMenu.Show();
+            currentTriggerWindow.CreateEvent();
         }
         
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
@@ -100,8 +100,8 @@ namespace GUI
 
             string script = ContainerITriggerElements.GenerateScript();
 
-            //JassHelper.SaveVJassScript(fileInput, script);
-            //JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
+            JassHelper.SaveVJassScript(fileInput, script);
+            JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
         }
 
     }

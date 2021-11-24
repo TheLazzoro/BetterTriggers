@@ -144,8 +144,5 @@
         <triggerexplorer:TriggerExplorer x:Name="treeViewTriggerExplorer" Grid.Row="2" Grid.RowSpan="3" Background="#FF282828" BorderThickness="0" Margin="0,2,5,0" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#FF404040" Margin="0,5,0,0"/>
 
-        <TreeView x:Name="treeViewTriggerFunctions" Grid.Row="4" Grid.Column="1" Background="#FF282828" Margin="0,5,5,5" Foreground="#FFFFFF" BorderBrush="#00828790"/>
-        <GridSplitter Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Height="5" Background="#FF404040" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
-
     </Grid>
 </Window>

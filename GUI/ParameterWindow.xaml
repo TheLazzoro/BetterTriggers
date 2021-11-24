@@ -1,0 +1,28 @@
+﻿<Window x:Class="GUI.ParameterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="ParameterWindow" Height="450" Width="800" Background="#FF404040">
+    <Grid x:Name="grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="65*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Source:" Foreground="White" Grid.Row="0" />
+        <RadioButton x:Name="radioBtnFunction" Content="Function" Foreground="White" VerticalAlignment="Center" Margin="70,0,0,0"/>
+        <RadioButton x:Name="radioBtnPreset" Content="Preset" Foreground="White" VerticalAlignment="Center" Margin="150,0,0,0" Grid.ColumnSpan="2"/>
+        <RadioButton x:Name="radioBtnVariable" Content="Variable" Foreground="White" VerticalAlignment="Center" Margin="220,0,0,0" Grid.ColumnSpan="2"/>
+        <RadioButton x:Name="radioBtnValue" Content="Value" Foreground="White" VerticalAlignment="Center" Margin="300,0,0,0" Grid.ColumnSpan="2"/>
+
+        <Button x:Name="btnOK" Content="OK" Grid.Row="5" Grid.Column="1" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" IsEnabled="False" />
+        <Button x:Name="btnCancel" Content="Cancel" Grid.Row="5" Grid.Column="1" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" IsCancel="True" />
+    </Grid>
+</Window>

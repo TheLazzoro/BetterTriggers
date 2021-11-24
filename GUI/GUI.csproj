@@ -78,6 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 

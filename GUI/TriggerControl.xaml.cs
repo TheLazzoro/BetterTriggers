@@ -20,13 +20,58 @@ namespace GUI
     /// </summary>
     public partial class TriggerControl : UserControl
     {
+        CategoryEvent categoryEvent;
+        CategoryCondition categoryCondition;
+        CategoryAction categoryAction;
+
+        TextBlock currentParameterBlock;
+
         public TriggerControl()
         {
             InitializeComponent();
 
-            treeViewTriggers.Items.Add(new CategoryEvent());
-            treeViewTriggers.Items.Add(new CategoryCondition());
-            treeViewTriggers.Items.Add(new CategoryAction());
+            categoryEvent = new CategoryEvent();
+            categoryCondition = new CategoryCondition();
+            categoryAction = new CategoryAction();
+
+            treeViewTriggers.Items.Add(categoryEvent);
+            treeViewTriggers.Items.Add(categoryCondition);
+            treeViewTriggers.Items.Add(categoryAction);
+        }
+
+        public void CreateEvent()
+        {
+            var eventMenu = new EventMenuWindow();
+            eventMenu.ShowDialog();
+            DataAccess.Natives.Event _event = eventMenu.selectedEvent;
+
+            if(_event != null)
+            {
+                TriggerEvent item = new TriggerEvent(_event);
+                categoryEvent.Items.Add(item);
+
+                Components.Utility.TreeViewManipulator.SetTreeViewItemAppearance(item, _event.eventText, "Resources/editor-triggeraction.png");
+
+                categoryEvent.IsExpanded = true;
+            }
+
+        }
+
+        private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var item = treeViewTriggers.SelectedItem as TriggerEvent;
+            if (item != null) {
+                var textBlockParameters = item.eventTextBlock;
+                
+                if (currentParameterBlock != null && currentParameterBlock.Parent != null)
+                    grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
+
+                grid.Children.Add(textBlockParameters);
+                Grid.SetRow(textBlockParameters, 4);
+                textBlockParameters.Margin = new Thickness(0, 0, 5, 0);
+
+                currentParameterBlock = textBlockParameters;
+            }
         }
     }
 }

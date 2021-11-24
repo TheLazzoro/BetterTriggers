@@ -10,12 +10,12 @@ namespace DataAccess.Natives
     public class Event
     {
         public string identifier;
-        public List<Type> parameters = new List<Type>();
+        public List<Parameter> parameters = new List<Parameter>();
         public string name;
         public string eventText;
         public string description;
 
-        public Event(string identifier, List<Type> parameters, string name, string eventText, string description)
+        public Event(string identifier, List<Parameter> parameters, string name, string eventText, string description)
         {
             this.identifier = identifier;
             this.parameters = parameters;

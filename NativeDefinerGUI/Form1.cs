@@ -24,6 +24,12 @@ namespace NativeDefinerGUI
 
             var eventControl = new EventControl();
             tabControl.TabPages[1].Controls.Add(eventControl);
+
+            var parameterControl = new FunctionControl();
+            tabControl.TabPages[2].Controls.Add(parameterControl);
+
+            var constantControl = new ConstantControl();
+            tabControl.TabPages[3].Controls.Add(constantControl);
         }
     }
 }

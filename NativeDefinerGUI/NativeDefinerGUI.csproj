@@ -49,6 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FunctionCreateWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FunctionCreateWindow.Designer.cs">
+      <DependentUpon>FunctionCreateWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FunctionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FunctionControl.Designer.cs">
+      <DependentUpon>FunctionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -69,12 +81,24 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConstantControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConstantControl.Designer.cs">
+      <DependentUpon>ConstantControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="TypeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TypeControl.Designer.cs">
       <DependentUpon>TypeControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FunctionCreateWindow.resx">
+      <DependentUpon>FunctionCreateWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FunctionControl.resx">
+      <DependentUpon>FunctionControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EventControl.resx">
       <DependentUpon>EventControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -93,6 +117,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ConstantControl.resx">
+      <DependentUpon>ConstantControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TypeControl.resx">
       <DependentUpon>TypeControl.cs</DependentUpon>
     </EmbeddedResource>

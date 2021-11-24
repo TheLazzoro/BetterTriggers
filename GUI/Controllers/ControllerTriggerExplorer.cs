@@ -26,6 +26,7 @@ namespace GUI.Controllers
             triggerControl.VerticalContentAlignment = VerticalAlignment.Stretch;
             Grid.SetColumn(triggerControl, 1);
             Grid.SetRow(triggerControl, 3);
+            Grid.SetRowSpan(triggerControl, 2);
             mainGrid.Children.Add(triggerControl);
 
             triggerExplorer.CreateTrigger(triggerControl);
@@ -43,6 +44,7 @@ namespace GUI.Controllers
             mainGrid.Children.Add(textEditor);
             Grid.SetColumn(textEditor, 1);
             Grid.SetRow(textEditor, 3);
+            Grid.SetRowSpan(textEditor, 2);
 
             // Sets syntax highlighting in the comment field
             using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
@@ -68,6 +70,7 @@ namespace GUI.Controllers
             mainGrid.Children.Add(variableControl);
             Grid.SetColumn(variableControl, 1);
             Grid.SetRow(variableControl, 3);
+            Grid.SetRowSpan(variableControl, 2);
 
             triggerExplorer.CreateVariable(variableControl);
         }

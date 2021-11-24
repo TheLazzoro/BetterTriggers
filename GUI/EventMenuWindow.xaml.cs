@@ -19,6 +19,8 @@ namespace GUI
     /// </summary>
     public partial class EventMenuWindow : Window
     {
+        public DataAccess.Natives.Event selectedEvent;
+
         public EventMenuWindow()
         {
             InitializeComponent();
@@ -41,7 +43,7 @@ namespace GUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             var item = (ListViewItem) listViewEvents.SelectedItem;
-            DataAccess.Natives.Event selectedEvent = (DataAccess.Natives.Event) item.Tag;
+            selectedEvent = (DataAccess.Natives.Event) item.Tag;
             this.Close();
         }
 

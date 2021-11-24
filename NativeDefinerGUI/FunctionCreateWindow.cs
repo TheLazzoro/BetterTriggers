@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace NativeDefinerGUI
 {
-    public partial class EventCreateWindow : Form
+    public partial class FunctionCreateWindow : Form
     {
         public ListViewItem returns;
         
-        public EventCreateWindow()
+        public FunctionCreateWindow()
         {
             InitializeComponent();
 
@@ -51,16 +51,25 @@ namespace NativeDefinerGUI
             }
         }
 
-        private void btnCreateEvent_Click(object sender, EventArgs e)
+        private void btnAddReturnType_Click(object sender, EventArgs e)
+        {
+            var selectedItem = listViewTypes.SelectedItems[0];
+            lblReturnType.Text = selectedItem.Text;
+            lblReturnType.Tag = selectedItem.Tag;
+
+            btnCreateParam.Enabled = true;
+        }
+
+        private void btnCreateParam_Click(object sender, EventArgs e)
         {
             List<DataAccess.Natives.Parameter> parameters = new List<DataAccess.Natives.Parameter>();
-            for(int i = 0; i < listViewParameters.Items.Count; i++)
+            for (int i = 0; i < listViewParameters.Items.Count; i++)
             {
-                DataAccess.Natives.Parameter parameter = (DataAccess.Natives.Parameter) listViewParameters.Items[i].Tag;
+                DataAccess.Natives.Parameter parameter = (DataAccess.Natives.Parameter)listViewParameters.Items[i].Tag;
                 parameters.Add(parameter);
             }
 
-            DataAccess.Natives.Event _event = new DataAccess.Natives.Event(textBoxIdentifier.Text, parameters, textBoxName.Text, richTextEventText.Text, richTextDescription.Text);
+            DataAccess.Natives.Function _function = new DataAccess.Natives.Function(textBoxIdentifier.Text, parameters, (DataAccess.Natives.Type) lblReturnType.Tag, textBoxName.Text, richTextParamText.Text, richTextDescription.Text);
 
             Dispose();
         }
