@@ -1,4 +1,5 @@
 ﻿using DataAccess.Containers;
+using DataAccess.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,16 @@ namespace NativeDefinerGUI
                 item.Tag = types[i];
 
                 listViewTypes.Items.Add(item);
+            }
+
+            // Populate list of categories
+            var enumCategoryValues = Enum.GetValues(typeof(EnumCategory));
+            for (int i = 0; i < enumCategoryValues.Length; i++)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = Enum.GetName(typeof(EnumCategory), enumCategoryValues.GetValue(i));
+                item.Tag = enumCategoryValues.GetValue(i);
+                listViewCategory.Items.Add(item);
             }
         }
 
@@ -57,7 +68,7 @@ namespace NativeDefinerGUI
             lblReturnType.Text = selectedItem.Text;
             lblReturnType.Tag = selectedItem.Tag;
 
-            btnCreateParam.Enabled = true;
+            btnCreateFunction.Enabled = true;
         }
 
         private void btnCreateParam_Click(object sender, EventArgs e)
@@ -69,7 +80,10 @@ namespace NativeDefinerGUI
                 parameters.Add(parameter);
             }
 
-            DataAccess.Natives.Function _function = new DataAccess.Natives.Function(textBoxIdentifier.Text, parameters, (DataAccess.Natives.Type) lblReturnType.Tag, textBoxName.Text, richTextParamText.Text, richTextDescription.Text);
+            var selectedCategory = listViewCategory.SelectedItems[0];
+            var category = (EnumCategory)selectedCategory.Tag;
+
+            DataAccess.Natives.Function _function = new DataAccess.Natives.Function(textBoxIdentifier.Text, parameters, (DataAccess.Natives.Type) lblReturnType.Tag, textBoxName.Text, richTextParamText.Text, richTextDescription.Text, category);
 
             Dispose();
         }

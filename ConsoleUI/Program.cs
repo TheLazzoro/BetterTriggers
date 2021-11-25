@@ -13,6 +13,32 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
 
+            // want to find difference between a map where rifleman is and isn't selected in the trigger editor
+
+            var noRifleman = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\mapa3.w3x - Kopi\war3map.wtg");
+            var withRifleman = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\mapa3.w3x\war3map.wtg");
+            var withRiflemanAndHero = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\mapa4.w3x\war3map.wtg");
+
+            bool foundDiff = false;
+            int i = 0;
+            while (!foundDiff && i < noRifleman.Length)
+            {
+                char noRif = noRifleman[i];
+                char withRif = withRifleman[i];
+
+                if (noRif != withRif)
+                    foundDiff = true;
+
+                    i++;
+            }
+
+            Console.WriteLine("Found diff at: " + i);
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine(withRifleman.Substring(i, withRifleman.Length - i - 1));
+            Console.ReadLine();
+
+
+            /*
 
             //Reader.ReadCommonJ();
             //Console.ReadLine();
@@ -30,6 +56,7 @@ namespace ConsoleUI
             Console.WriteLine("finished");
             Console.WriteLine(exists);
             Console.ReadLine();
+            */
         }
     }
 }

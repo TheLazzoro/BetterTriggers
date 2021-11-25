@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class Trigger : TriggerElement, ITriggerElement
+    public class Trigger : TriggerExplorerElement, ITriggerExplorerElement
     {
         public bool IsEnabled;
         public TriggerControl triggerControl;

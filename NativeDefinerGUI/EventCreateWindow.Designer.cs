@@ -44,6 +44,8 @@ namespace NativeDefinerGUI
             this.richTextEventText = new System.Windows.Forms.RichTextBox();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.listViewCategory = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // label2
@@ -72,7 +74,7 @@ namespace NativeDefinerGUI
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(23, 362);
+            this.label1.Location = new System.Drawing.Point(23, 363);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 16);
             this.label1.TabIndex = 19;
@@ -86,7 +88,7 @@ namespace NativeDefinerGUI
             this.btnCreateEvent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCreateEvent.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.btnCreateEvent.ForeColor = System.Drawing.Color.White;
-            this.btnCreateEvent.Location = new System.Drawing.Point(852, 472);
+            this.btnCreateEvent.Location = new System.Drawing.Point(852, 521);
             this.btnCreateEvent.Name = "btnCreateEvent";
             this.btnCreateEvent.Size = new System.Drawing.Size(117, 23);
             this.btnCreateEvent.TabIndex = 18;
@@ -105,7 +107,7 @@ namespace NativeDefinerGUI
             this.listViewTypes.HideSelection = false;
             this.listViewTypes.Location = new System.Drawing.Point(560, 54);
             this.listViewTypes.Name = "listViewTypes";
-            this.listViewTypes.Size = new System.Drawing.Size(409, 294);
+            this.listViewTypes.Size = new System.Drawing.Size(409, 295);
             this.listViewTypes.TabIndex = 21;
             this.listViewTypes.UseCompatibleStateImageBehavior = false;
             this.listViewTypes.View = System.Windows.Forms.View.Details;
@@ -125,7 +127,7 @@ namespace NativeDefinerGUI
             this.listViewParameters.HideSelection = false;
             this.listViewParameters.Location = new System.Drawing.Point(15, 54);
             this.listViewParameters.Name = "listViewParameters";
-            this.listViewParameters.Size = new System.Drawing.Size(400, 294);
+            this.listViewParameters.Size = new System.Drawing.Size(400, 295);
             this.listViewParameters.TabIndex = 22;
             this.listViewParameters.UseCompatibleStateImageBehavior = false;
             this.listViewParameters.View = System.Windows.Forms.View.Details;
@@ -155,9 +157,9 @@ namespace NativeDefinerGUI
             this.richTextDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.richTextDescription.ForeColor = System.Drawing.Color.White;
-            this.richTextDescription.Location = new System.Drawing.Point(655, 381);
+            this.richTextDescription.Location = new System.Drawing.Point(580, 382);
             this.richTextDescription.Name = "richTextDescription";
-            this.richTextDescription.Size = new System.Drawing.Size(314, 84);
+            this.richTextDescription.Size = new System.Drawing.Size(255, 162);
             this.richTextDescription.TabIndex = 24;
             this.richTextDescription.Text = "";
             // 
@@ -167,7 +169,7 @@ namespace NativeDefinerGUI
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(661, 362);
+            this.label3.Location = new System.Drawing.Point(586, 363);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 16);
             this.label3.TabIndex = 25;
@@ -194,9 +196,9 @@ namespace NativeDefinerGUI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextEventText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.richTextEventText.ForeColor = System.Drawing.Color.White;
-            this.richTextEventText.Location = new System.Drawing.Point(264, 381);
+            this.richTextEventText.Location = new System.Drawing.Point(264, 382);
             this.richTextEventText.Name = "richTextEventText";
-            this.richTextEventText.Size = new System.Drawing.Size(385, 84);
+            this.richTextEventText.Size = new System.Drawing.Size(310, 162);
             this.richTextEventText.TabIndex = 27;
             this.richTextEventText.Text = "";
             // 
@@ -205,7 +207,7 @@ namespace NativeDefinerGUI
             this.textBoxName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.textBoxName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.textBoxName.ForeColor = System.Drawing.Color.White;
-            this.textBoxName.Location = new System.Drawing.Point(15, 381);
+            this.textBoxName.Location = new System.Drawing.Point(15, 382);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(243, 20);
             this.textBoxName.TabIndex = 29;
@@ -216,18 +218,39 @@ namespace NativeDefinerGUI
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(270, 362);
+            this.label4.Location = new System.Drawing.Point(270, 363);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 16);
             this.label4.TabIndex = 30;
             this.label4.Text = "Event Text:";
+            // 
+            // listViewCategory
+            // 
+            this.listViewCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listViewCategory.BackColor = System.Drawing.Color.Gray;
+            this.listViewCategory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3});
+            this.listViewCategory.HideSelection = false;
+            this.listViewCategory.Location = new System.Drawing.Point(12, 417);
+            this.listViewCategory.Name = "listViewCategory";
+            this.listViewCategory.Size = new System.Drawing.Size(243, 127);
+            this.listViewCategory.TabIndex = 31;
+            this.listViewCategory.UseCompatibleStateImageBehavior = false;
+            this.listViewCategory.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Category";
+            this.columnHeader3.Width = 200;
             // 
             // EventCreateWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(981, 507);
+            this.ClientSize = new System.Drawing.Size(981, 556);
+            this.Controls.Add(this.listViewCategory);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.richTextEventText);
@@ -265,5 +288,7 @@ namespace NativeDefinerGUI
         private System.Windows.Forms.RichTextBox richTextEventText;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ListView listViewCategory;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

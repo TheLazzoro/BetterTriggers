@@ -29,64 +29,64 @@ namespace NativeDefinerGUI
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnCreateEvent = new System.Windows.Forms.Button();
-            this.listViewEvents = new System.Windows.Forms.ListView();
+            this.btnCreateFunction = new System.Windows.Forms.Button();
+            this.listViewFunctions = new System.Windows.Forms.ListView();
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
-            // btnCreateEvent
+            // btnCreateFunction
             // 
-            this.btnCreateEvent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCreateEvent.BackColor = System.Drawing.Color.Teal;
-            this.btnCreateEvent.FlatAppearance.BorderSize = 0;
-            this.btnCreateEvent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateEvent.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
-            this.btnCreateEvent.ForeColor = System.Drawing.Color.White;
-            this.btnCreateEvent.Location = new System.Drawing.Point(336, 442);
-            this.btnCreateEvent.Name = "btnCreateEvent";
-            this.btnCreateEvent.Size = new System.Drawing.Size(137, 23);
-            this.btnCreateEvent.TabIndex = 15;
-            this.btnCreateEvent.Text = "Create Parameter";
-            this.btnCreateEvent.UseVisualStyleBackColor = false;
-            this.btnCreateEvent.Click += new System.EventHandler(this.btnCreateEvent_Click);
+            this.btnCreateFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCreateFunction.BackColor = System.Drawing.Color.Teal;
+            this.btnCreateFunction.FlatAppearance.BorderSize = 0;
+            this.btnCreateFunction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCreateFunction.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
+            this.btnCreateFunction.ForeColor = System.Drawing.Color.White;
+            this.btnCreateFunction.Location = new System.Drawing.Point(336, 442);
+            this.btnCreateFunction.Name = "btnCreateFunction";
+            this.btnCreateFunction.Size = new System.Drawing.Size(137, 23);
+            this.btnCreateFunction.TabIndex = 15;
+            this.btnCreateFunction.Text = "Create Function";
+            this.btnCreateFunction.UseVisualStyleBackColor = false;
+            this.btnCreateFunction.Click += new System.EventHandler(this.btnCreateEvent_Click);
             // 
-            // listViewEvents
+            // listViewFunctions
             // 
-            this.listViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewFunctions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewEvents.BackColor = System.Drawing.Color.Gray;
-            this.listViewEvents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewFunctions.BackColor = System.Drawing.Color.Gray;
+            this.listViewFunctions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader2});
-            this.listViewEvents.HideSelection = false;
-            this.listViewEvents.Location = new System.Drawing.Point(3, 3);
-            this.listViewEvents.Name = "listViewEvents";
-            this.listViewEvents.Size = new System.Drawing.Size(470, 433);
-            this.listViewEvents.TabIndex = 18;
-            this.listViewEvents.UseCompatibleStateImageBehavior = false;
-            this.listViewEvents.View = System.Windows.Forms.View.Details;
+            this.listViewFunctions.HideSelection = false;
+            this.listViewFunctions.Location = new System.Drawing.Point(3, 3);
+            this.listViewFunctions.Name = "listViewFunctions";
+            this.listViewFunctions.Size = new System.Drawing.Size(470, 433);
+            this.listViewFunctions.TabIndex = 18;
+            this.listViewFunctions.UseCompatibleStateImageBehavior = false;
+            this.listViewFunctions.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "Parameter";
+            this.columnHeader2.Text = "Functions";
             this.columnHeader2.Width = 300;
             // 
-            // ParameterControl
+            // FunctionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.Controls.Add(this.listViewEvents);
-            this.Controls.Add(this.btnCreateEvent);
-            this.Name = "ParameterControl";
+            this.Controls.Add(this.listViewFunctions);
+            this.Controls.Add(this.btnCreateFunction);
+            this.Name = "FunctionControl";
             this.Size = new System.Drawing.Size(476, 468);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Button btnCreateEvent;
-        private System.Windows.Forms.ListView listViewEvents;
+        private System.Windows.Forms.Button btnCreateFunction;
+        private System.Windows.Forms.ListView listViewFunctions;
         private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }

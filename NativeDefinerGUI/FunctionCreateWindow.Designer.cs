@@ -32,7 +32,7 @@ namespace NativeDefinerGUI
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxIdentifier = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnCreateParam = new System.Windows.Forms.Button();
+            this.btnCreateFunction = new System.Windows.Forms.Button();
             this.listViewTypes = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listViewParameters = new System.Windows.Forms.ListView();
@@ -47,6 +47,8 @@ namespace NativeDefinerGUI
             this.label5 = new System.Windows.Forms.Label();
             this.lblReturnType = new System.Windows.Forms.Label();
             this.btnAddReturnType = new System.Windows.Forms.Button();
+            this.listViewCategory = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // label2
@@ -75,28 +77,28 @@ namespace NativeDefinerGUI
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(23, 362);
+            this.label1.Location = new System.Drawing.Point(28, 311);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(45, 16);
             this.label1.TabIndex = 19;
             this.label1.Text = "Name:";
             // 
-            // btnCreateParam
+            // btnCreateFunction
             // 
-            this.btnCreateParam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCreateParam.BackColor = System.Drawing.Color.Teal;
-            this.btnCreateParam.Enabled = false;
-            this.btnCreateParam.FlatAppearance.BorderSize = 0;
-            this.btnCreateParam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateParam.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
-            this.btnCreateParam.ForeColor = System.Drawing.Color.White;
-            this.btnCreateParam.Location = new System.Drawing.Point(826, 472);
-            this.btnCreateParam.Name = "btnCreateParam";
-            this.btnCreateParam.Size = new System.Drawing.Size(143, 23);
-            this.btnCreateParam.TabIndex = 18;
-            this.btnCreateParam.Text = "Create Parameter";
-            this.btnCreateParam.UseVisualStyleBackColor = false;
-            this.btnCreateParam.Click += new System.EventHandler(this.btnCreateParam_Click);
+            this.btnCreateFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCreateFunction.BackColor = System.Drawing.Color.Teal;
+            this.btnCreateFunction.Enabled = false;
+            this.btnCreateFunction.FlatAppearance.BorderSize = 0;
+            this.btnCreateFunction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCreateFunction.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
+            this.btnCreateFunction.ForeColor = System.Drawing.Color.White;
+            this.btnCreateFunction.Location = new System.Drawing.Point(826, 472);
+            this.btnCreateFunction.Name = "btnCreateFunction";
+            this.btnCreateFunction.Size = new System.Drawing.Size(143, 23);
+            this.btnCreateFunction.TabIndex = 18;
+            this.btnCreateFunction.Text = "Create Function";
+            this.btnCreateFunction.UseVisualStyleBackColor = false;
+            this.btnCreateFunction.Click += new System.EventHandler(this.btnCreateParam_Click);
             // 
             // listViewTypes
             // 
@@ -109,7 +111,7 @@ namespace NativeDefinerGUI
             this.listViewTypes.HideSelection = false;
             this.listViewTypes.Location = new System.Drawing.Point(560, 54);
             this.listViewTypes.Name = "listViewTypes";
-            this.listViewTypes.Size = new System.Drawing.Size(409, 294);
+            this.listViewTypes.Size = new System.Drawing.Size(409, 251);
             this.listViewTypes.TabIndex = 21;
             this.listViewTypes.UseCompatibleStateImageBehavior = false;
             this.listViewTypes.View = System.Windows.Forms.View.Details;
@@ -129,7 +131,7 @@ namespace NativeDefinerGUI
             this.listViewParameters.HideSelection = false;
             this.listViewParameters.Location = new System.Drawing.Point(15, 54);
             this.listViewParameters.Name = "listViewParameters";
-            this.listViewParameters.Size = new System.Drawing.Size(400, 294);
+            this.listViewParameters.Size = new System.Drawing.Size(400, 251);
             this.listViewParameters.TabIndex = 22;
             this.listViewParameters.UseCompatibleStateImageBehavior = false;
             this.listViewParameters.View = System.Windows.Forms.View.Details;
@@ -159,9 +161,9 @@ namespace NativeDefinerGUI
             this.richTextDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.richTextDescription.ForeColor = System.Drawing.Color.White;
-            this.richTextDescription.Location = new System.Drawing.Point(551, 381);
+            this.richTextDescription.Location = new System.Drawing.Point(556, 330);
             this.richTextDescription.Name = "richTextDescription";
-            this.richTextDescription.Size = new System.Drawing.Size(224, 84);
+            this.richTextDescription.Size = new System.Drawing.Size(224, 165);
             this.richTextDescription.TabIndex = 24;
             this.richTextDescription.Text = "";
             // 
@@ -171,7 +173,7 @@ namespace NativeDefinerGUI
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(557, 362);
+            this.label3.Location = new System.Drawing.Point(562, 311);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 16);
             this.label3.TabIndex = 25;
@@ -198,9 +200,9 @@ namespace NativeDefinerGUI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextParamText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.richTextParamText.ForeColor = System.Drawing.Color.White;
-            this.richTextParamText.Location = new System.Drawing.Point(240, 381);
+            this.richTextParamText.Location = new System.Drawing.Point(269, 330);
             this.richTextParamText.Name = "richTextParamText";
-            this.richTextParamText.Size = new System.Drawing.Size(292, 84);
+            this.richTextParamText.Size = new System.Drawing.Size(268, 165);
             this.richTextParamText.TabIndex = 27;
             this.richTextParamText.Text = "";
             // 
@@ -209,9 +211,9 @@ namespace NativeDefinerGUI
             this.textBoxName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.textBoxName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.textBoxName.ForeColor = System.Drawing.Color.White;
-            this.textBoxName.Location = new System.Drawing.Point(15, 381);
+            this.textBoxName.Location = new System.Drawing.Point(20, 330);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(217, 20);
+            this.textBoxName.Size = new System.Drawing.Size(228, 20);
             this.textBoxName.TabIndex = 29;
             // 
             // label4
@@ -220,7 +222,7 @@ namespace NativeDefinerGUI
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(246, 362);
+            this.label4.Location = new System.Drawing.Point(266, 311);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 16);
             this.label4.TabIndex = 30;
@@ -232,7 +234,7 @@ namespace NativeDefinerGUI
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(823, 385);
+            this.label5.Location = new System.Drawing.Point(828, 345);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(57, 16);
             this.label5.TabIndex = 31;
@@ -244,7 +246,7 @@ namespace NativeDefinerGUI
             this.lblReturnType.AutoSize = true;
             this.lblReturnType.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.lblReturnType.ForeColor = System.Drawing.Color.White;
-            this.lblReturnType.Location = new System.Drawing.Point(823, 413);
+            this.lblReturnType.Location = new System.Drawing.Point(828, 373);
             this.lblReturnType.Name = "lblReturnType";
             this.lblReturnType.Size = new System.Drawing.Size(0, 16);
             this.lblReturnType.TabIndex = 32;
@@ -256,7 +258,7 @@ namespace NativeDefinerGUI
             this.btnAddReturnType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddReturnType.Font = new System.Drawing.Font("Bahnschrift", 9.75F);
             this.btnAddReturnType.ForeColor = System.Drawing.Color.White;
-            this.btnAddReturnType.Location = new System.Drawing.Point(826, 359);
+            this.btnAddReturnType.Location = new System.Drawing.Point(831, 319);
             this.btnAddReturnType.Name = "btnAddReturnType";
             this.btnAddReturnType.Size = new System.Drawing.Size(133, 23);
             this.btnAddReturnType.TabIndex = 33;
@@ -264,12 +266,33 @@ namespace NativeDefinerGUI
             this.btnAddReturnType.UseVisualStyleBackColor = false;
             this.btnAddReturnType.Click += new System.EventHandler(this.btnAddReturnType_Click);
             // 
-            // ParameterCreateWindow
+            // listViewCategory
+            // 
+            this.listViewCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listViewCategory.BackColor = System.Drawing.Color.Gray;
+            this.listViewCategory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3});
+            this.listViewCategory.HideSelection = false;
+            this.listViewCategory.Location = new System.Drawing.Point(20, 356);
+            this.listViewCategory.Name = "listViewCategory";
+            this.listViewCategory.Size = new System.Drawing.Size(228, 139);
+            this.listViewCategory.TabIndex = 34;
+            this.listViewCategory.UseCompatibleStateImageBehavior = false;
+            this.listViewCategory.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Category";
+            this.columnHeader3.Width = 200;
+            // 
+            // FunctionCreateWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(981, 507);
+            this.Controls.Add(this.listViewCategory);
             this.Controls.Add(this.btnAddReturnType);
             this.Controls.Add(this.lblReturnType);
             this.Controls.Add(this.label5);
@@ -285,8 +308,8 @@ namespace NativeDefinerGUI
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxIdentifier);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnCreateParam);
-            this.Name = "ParameterCreateWindow";
+            this.Controls.Add(this.btnCreateFunction);
+            this.Name = "FunctionCreateWindow";
             this.Text = "ParameterCreateWindow";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -298,7 +321,7 @@ namespace NativeDefinerGUI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxIdentifier;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnCreateParam;
+        private System.Windows.Forms.Button btnCreateFunction;
         private System.Windows.Forms.ListView listViewTypes;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ListView listViewParameters;
@@ -313,5 +336,7 @@ namespace NativeDefinerGUI
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblReturnType;
         private System.Windows.Forms.Button btnAddReturnType;
+        private System.Windows.Forms.ListView listViewCategory;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

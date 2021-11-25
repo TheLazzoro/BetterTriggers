@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class Script : TriggerElement, ITriggerElement
+    public class Script : TriggerExplorerElement, ITriggerExplorerElement
     {
         public bool IsEnabled;
         ICSharpCode.AvalonEdit.TextEditor textEditor;

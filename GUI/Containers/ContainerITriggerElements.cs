@@ -7,9 +7,9 @@ namespace GUI.Containers
 {
     public static class ContainerITriggerElements
     {
-        private static List<ITriggerElement> ITriggerElements = new List<ITriggerElement>();
+        private static List<ITriggerExplorerElement> ITriggerElements = new List<ITriggerExplorerElement>();
 
-        public static void AddTriggerElement(ITriggerElement triggerElement)
+        public static void AddTriggerElement(ITriggerExplorerElement triggerElement)
         {
             ITriggerElements.Add(triggerElement);
         }

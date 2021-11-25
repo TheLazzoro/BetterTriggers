@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public interface ITriggerElement
+    public interface ITriggerExplorerElement
     {
         string GetScript();
         void OnElementClick();

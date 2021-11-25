@@ -44,13 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Containers\ContainerParameter.cs" />
+    <Compile Include="Containers\ContainerFunctions.cs" />
     <Compile Include="Containers\ContainerEvents.cs" />
     <Compile Include="Containers\ContainerConstants.cs" />
     <Compile Include="Containers\ContainerTypes.cs" />
+    <Compile Include="Data\EnumCategory.cs" />
     <Compile Include="JsonBaseConverter\BaseConverter.cs" />
     <Compile Include="JsonBaseConverter\ParameterConverter.cs" />
-    <Compile Include="LoadData.cs" />
+    <Compile Include="Data\LoadData.cs" />
     <Compile Include="Natives\Function.cs" />
     <Compile Include="Natives\Parameter.cs" />
     <Compile Include="Natives\Event.cs" />

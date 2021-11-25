@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class TriggerFolder : TriggerElement, ITriggerElement
+    public class TriggerFolder : TriggerExplorerElement, ITriggerExplorerElement
     {
         public TriggerFolder(string name, TreeViewItem treeViewItem) : base(treeViewItem)
         {

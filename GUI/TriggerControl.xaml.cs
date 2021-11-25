@@ -50,7 +50,7 @@ namespace GUI
                 TriggerEvent item = new TriggerEvent(_event);
                 categoryEvent.Items.Add(item);
 
-                Components.Utility.TreeViewManipulator.SetTreeViewItemAppearance(item, _event.eventText, "Resources/editor-triggeraction.png");
+                TreeViewManipulator.SetTreeViewItemAppearance(item, _event.eventText, _event.category);
 
                 categoryEvent.IsExpanded = true;
             }
@@ -61,7 +61,7 @@ namespace GUI
         {
             var item = treeViewTriggers.SelectedItem as TriggerEvent;
             if (item != null) {
-                var textBlockParameters = item.eventTextBlock;
+                var textBlockParameters = item.paramTextBlock;
                 
                 if (currentParameterBlock != null && currentParameterBlock.Parent != null)
                     grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.

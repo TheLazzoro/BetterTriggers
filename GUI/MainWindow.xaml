@@ -93,49 +93,49 @@
 
         <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="10,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
             <Button.Background>
-                <ImageBrush ImageSource="Resources/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
             </Button.Background>
         </Button>
         
         <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="35,0,5,0" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
             <Button.Background>
-                <ImageBrush ImageSource="Resources/ui-editoricon-triggercategories_element.png" Stretch="None" />
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_element.png" Stretch="None" />
             </Button.Background>
         </Button>
 
         <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateScript_Click" >
             <Button.Background >
-                <ImageBrush ImageSource="Resources/editor-triggerscript.png" Stretch="None" />
+                <ImageBrush ImageSource="Resources/Icons/editor-triggerscript.png" Stretch="None" />
             </Button.Background>
         </Button>
 
         <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="85,0,0,0" Click="btnCreateVariable_Click">
             <Button.Background>
-                <ImageBrush ImageSource="Resources/actions-setvariables.png" Stretch="None"/>
+                <ImageBrush ImageSource="Resources/Icons/actions-setvariables.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
         <Button x:Name="btnCreateComment" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="110,0,0,0">
             <Button.Background>
-                <ImageBrush ImageSource="Resources/editor-toolbar-triggercomment.png" Stretch="None"/>
+                <ImageBrush ImageSource="Resources/Icons/editor-toolbar-triggercomment.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
         <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnCreateEvent_Click">
             <Button.Background>
-                <ImageBrush ImageSource="Resources/editor-triggerevent.png" Stretch="None"/>
+                <ImageBrush ImageSource="Resources/Icons/editor-triggerevent.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
         <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="35,0,0,0">
             <Button.Background>
-                <ImageBrush ImageSource="Resources/editor-triggercondition.png" Stretch="None"/>
+                <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
         <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="60,0,0,0">
             <Button.Background>
-                <ImageBrush ImageSource="Resources/editor-triggeraction.png" Stretch="None"/>
+                <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
             </Button.Background>
         </Button>
 

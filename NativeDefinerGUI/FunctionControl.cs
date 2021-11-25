@@ -21,9 +21,9 @@ namespace NativeDefinerGUI
 
             this.Dock = DockStyle.Fill;
 
-            string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\params.json");
-            List<DataAccess.Natives.Parameter> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Parameter>>(filePlainText);
-            ContainerParameter.SetList(list);
+            string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\functions.json");
+            List<DataAccess.Natives.Function> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Function>>(filePlainText);
+            ContainerFunctions.SetList(list);
 
             RefreshEventList();
         }
@@ -34,16 +34,16 @@ namespace NativeDefinerGUI
             window.ShowDialog();
 
             // save json
-            string jsonOutput = JsonConvert.SerializeObject(ContainerParameter.GetAllTypes());
-            File.WriteAllText(@"C:\Users\Lasse Dam\Desktop\JSON\params.json", jsonOutput);
+            string jsonOutput = JsonConvert.SerializeObject(ContainerFunctions.GetAllTypes());
+            File.WriteAllText(@"C:\Users\Lasse Dam\Desktop\JSON\functions.json", jsonOutput);
 
             RefreshEventList();
         }
 
         private void RefreshEventList()
         {
-            listViewEvents.Items.Clear();
-            var list = ContainerParameter.GetAllTypes();
+            listViewFunctions.Items.Clear();
+            var list = ContainerFunctions.GetAllTypes();
             if (list != null)
             {
                 for( int i = 0; i < list.Count; i++)
@@ -51,7 +51,7 @@ namespace NativeDefinerGUI
                     ListViewItem item = new ListViewItem();
                     item.Text = list[i].identifier;
                     item.Tag = list[i];
-                    listViewEvents.Items.Add(item);
+                    listViewFunctions.Items.Add(item);
                 }
             }
         }

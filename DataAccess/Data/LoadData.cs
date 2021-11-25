@@ -23,5 +23,21 @@ namespace DataAccess
 
             return list;
         }
+
+        public static List<Function> LoadAllFunctions(string filepath)
+        {
+            string filePlainText = File.ReadAllText(filepath);
+            List<Function> list = JsonConvert.DeserializeObject<List<Function>>(filePlainText);
+
+            return list;
+        }
+
+        public static List<Constant> LoadAllConstants(string filepath)
+        {
+            string filePlainText = File.ReadAllText(filepath);
+            List<Constant> list = JsonConvert.DeserializeObject<List<Constant>>(filePlainText);
+
+            return list;
+        }
     }
 }

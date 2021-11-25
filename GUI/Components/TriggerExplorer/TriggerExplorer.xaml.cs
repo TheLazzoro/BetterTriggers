@@ -1,4 +1,5 @@
-﻿using GUI.Components.Utility;
+﻿using DataAccess.Data;
+using GUI.Components.Utility;
 using GUI.Containers;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace GUI.Components.TriggerExplorer
         {
             InitializeComponent();
 
-            this.map = CreateTreeViewItem("MapName.w3x", "resources/map.png");
+            this.map = CreateTreeViewItem("MapName.w3x", EnumCategory.Map);
             treeViewTriggerExplorer.Items.Add(this.map);
         }
 
@@ -39,7 +40,7 @@ namespace GUI.Components.TriggerExplorer
         {
             string name = NameGenerator.GenerateCategoryName();
 
-            var item = CreateTreeViewItem(name, "resources/ui-editoricon-triggercategories_folder.png");
+            var item = CreateTreeViewItem(name, EnumCategory.Folder);
             TriggerFolder script = new TriggerFolder(name, item);
         }
 
@@ -47,7 +48,7 @@ namespace GUI.Components.TriggerExplorer
         {
             string name = NameGenerator.GenerateTriggerName();
 
-            var item = CreateTreeViewItem(name, "resources/ui-editoricon-triggercategories_element.png");
+            var item = CreateTreeViewItem(name, EnumCategory.Trigger);
             Trigger trig = new Trigger(name, item, triggerControl);
         }
 
@@ -55,7 +56,7 @@ namespace GUI.Components.TriggerExplorer
         {
             string name = NameGenerator.GenerateScriptName();
 
-            var item = CreateTreeViewItem(name, "resources/editor-triggerscript.png");
+            var item = CreateTreeViewItem(name, EnumCategory.AI);
             Script script = new Script(name, item, textEditor);
         }
 
@@ -63,7 +64,7 @@ namespace GUI.Components.TriggerExplorer
         {
             string name = NameGenerator.GenerateVariableName();
 
-            var item = CreateTreeViewItem(name, "resources/actions-setvariables.png");
+            var item = CreateTreeViewItem(name, EnumCategory.SetVariable);
             Variable script = new Variable(name, item, variableControl);
         }
 
@@ -122,7 +123,7 @@ namespace GUI.Components.TriggerExplorer
             */
         }
 
-        private TreeViewItem CreateTreeViewItem(string text, string imagePath)
+        private TreeViewItem CreateTreeViewItem(string text, EnumCategory category)
         {
             TreeViewItem item = new TreeViewItem();
 
@@ -141,7 +142,7 @@ namespace GUI.Components.TriggerExplorer
             item.IsSelected = true;
             //item.AllowDrop = true; // maybe needed?
 
-            TreeViewManipulator.SetTreeViewItemAppearance(item, text, imagePath);
+            TreeViewManipulator.SetTreeViewItemAppearance(item, text, category);
 
             return item;
         }

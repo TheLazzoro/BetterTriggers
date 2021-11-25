@@ -1,4 +1,5 @@
-﻿using GUI.Components.Utility;
+﻿using DataAccess.Data;
+using GUI.Components.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,7 @@ namespace GUI.Components.TriggerEditor
     {
         public CategoryAction()
         {
-            TreeViewManipulator.SetTreeViewItemAppearance(this, "Action", "Resources/editor-triggeraction.png");
+            TreeViewManipulator.SetTreeViewItemAppearance(this, "Action", EnumCategory.Action);
         }
     }
 }

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace DataAccess.Containers
 {
-    public static class ContainerParameter
+    public static class ContainerFunctions
     {
-        private static List<Parameter> container = new List<Parameter>();
+        private static List<Function> container = new List<Function>();
 
-        public static void AddParameter(Parameter parameter)
+        public static void AddParameter(Function parameter)
         {
             bool alreadyExists = false;
             string whichType = string.Empty;
@@ -32,17 +32,17 @@ namespace DataAccess.Containers
                 Console.WriteLine($"At {index}: Type '{parameter.identifier}' already exists as '{whichType}' in the container.");
         }
 
-        public static List<Parameter> GetAllTypes()
+        public static List<Function> GetAllTypes()
         {
             return container;
         }
 
-        public static void SetList(List<Parameter> list)
+        public static void SetList(List<Function> list)
         {
             if (list != null)
                 container = list;
             else
-                container = new List<Parameter>();
+                container = new List<Function>();
         }
     }
 }

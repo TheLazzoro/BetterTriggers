@@ -17,13 +17,19 @@ namespace GUI
     /// </summary>
     public partial class ParameterWindow : Window
     {
-        public ParameterWindow()
+        public ParameterWindow(string returnType)
         {
             InitializeComponent();
 
-            var functionControl = new ParameterFunctionControl();
+            var functionControl = new ParameterFunctionControl(returnType);
             grid.Children.Add(functionControl);
             Grid.SetRow(functionControl, 1);
+            functionControl.Visibility = Visibility.Hidden;
+
+            var constantControl = new ParameterConstantControl(returnType);
+            grid.Children.Add(constantControl);
+            Grid.SetRow(constantControl, 1);
+            constantControl.Visibility = Visibility.Visible;
         }
     }
 }

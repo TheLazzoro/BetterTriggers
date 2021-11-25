@@ -7,16 +7,38 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\actions-setvariables.png" />
-    <None Remove="Resources\Document.png" />
-    <None Remove="Resources\DocumentFunction.png" />
     <None Remove="Resources\editor-toolbar-triggeraddvariable.png" />
     <None Remove="Resources\editor-toolbar-triggercomment.png" />
     <None Remove="Resources\editor-triggeraction.png" />
     <None Remove="Resources\editor-triggercondition.png" />
     <None Remove="Resources\editor-triggerevent.png" />
     <None Remove="Resources\editor-triggerscript.png" />
-    <None Remove="Resources\Folder.png" />
+    <None Remove="Resources\Icons\actions-ability.png" />
+    <None Remove="Resources\Icons\actions-ai.png" />
+    <None Remove="Resources\Icons\actions-animation.png" />
+    <None Remove="Resources\Icons\actions-camera.png" />
+    <None Remove="Resources\Icons\actions-comment.png" />
+    <None Remove="Resources\Icons\actions-destructibles.png" />
+    <None Remove="Resources\Icons\actions-dialog.png" />
+    <None Remove="Resources\Icons\actions-environment.png" />
+    <None Remove="Resources\Icons\actions-game.png" />
+    <None Remove="Resources\Icons\actions-goldmine.png" />
+    <None Remove="Resources\Icons\actions-hero.png" />
+    <None Remove="Resources\Icons\actions-item.png" />
+    <None Remove="Resources\Icons\actions-logical.png" />
+    <None Remove="Resources\Icons\actions-melee.png" />
+    <None Remove="Resources\Icons\actions-nothing.png" />
+    <None Remove="Resources\Icons\actions-player.png" />
+    <None Remove="Resources\Icons\actions-playergroup.png" />
+    <None Remove="Resources\Icons\actions-quest.png" />
+    <None Remove="Resources\Icons\actions-region.png" />
+    <None Remove="Resources\Icons\actions-setvariables.png" />
+    <None Remove="Resources\Icons\actions-sound.png" />
+    <None Remove="Resources\Icons\actions-unit.png" />
+    <None Remove="Resources\Icons\actions-unitgroup.png" />
+    <None Remove="Resources\Icons\actions-unitselection.png" />
+    <None Remove="Resources\Icons\actions-visibility.png" />
+    <None Remove="Resources\Icons\actions-wait.png" />
     <None Remove="Resources\map.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
     <None Remove="Resources\ui-editoricon-triggercategories_element.png" />
@@ -25,49 +47,115 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\actions-setvariables.png">
+    <Content Include="Resources\Icons\editor-toolbar-triggeraddvariable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Document.png">
+    <Content Include="Resources\Icons\editor-triggeraction.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\DocumentFunction.png">
+    <Content Include="Resources\Icons\editor-triggercondition.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\editor-toolbar-triggeraddvariable.png">
+    <Content Include="Resources\Icons\editor-triggerevent.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\editor-triggeraction.png">
+    <Content Include="Resources\Icons\editor-triggerscript.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\editor-triggercondition.png">
+    <Content Include="Resources\Icons\actions-ability.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\editor-triggerevent.png">
+    <Content Include="Resources\Icons\actions-ai.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\editor-triggerscript.png">
+    <Content Include="Resources\Icons\actions-animation.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Folder.png">
+    <Content Include="Resources\Icons\actions-camera.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\map.png">
+    <Content Include="Resources\Icons\actions-comment.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\ui-editoricon-triggercategories_element.png">
+    <Content Include="Resources\Icons\actions-destructibles.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\ui-editoricon-triggercategories_folder.png">
+    <Content Include="Resources\Icons\actions-dialog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\ui-editoricon-triggercategories_folderopen.png">
+    <Content Include="Resources\Icons\actions-environment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-game.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-goldmine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-hero.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-item.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-logical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-melee.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-nothing.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-playergroup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-quest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-region.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-setvariables.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-sound.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-unit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-unitgroup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-unitselection.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-visibility.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\actions-wait.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\ui-editoricon-triggercategories_element.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\ui-editoricon-triggercategories_folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\ui-editoricon-triggercategories_folderopen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\editor-toolbar-triggercomment.png">
+    <Content Include="Resources\Icons\editor-toolbar-triggercomment.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -84,6 +172,19 @@
 
   <ItemGroup>
     <Resource Include="Resources\SyntaxHighlighting\JassHighlighting.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ParameterConstantControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ParameterConstantControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

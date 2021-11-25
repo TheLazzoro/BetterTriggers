@@ -6,13 +6,13 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public abstract class TriggerElement
+    public abstract class TriggerExplorerElement
     {
         public string Name;
         public TreeViewItem treeViewItem;
-        internal static ITriggerElement currentTriggerElement;
+        internal static ITriggerExplorerElement currentTriggerElement;
 
-        public TriggerElement(TreeViewItem treeViewItem)
+        public TriggerExplorerElement(TreeViewItem treeViewItem)
         {
             this.treeViewItem = treeViewItem;
             this.treeViewItem.Tag = this;
@@ -20,7 +20,7 @@ namespace GUI.Components.TriggerExplorer
             // click event
             treeViewItem.Selected += new RoutedEventHandler(delegate (object sender, RoutedEventArgs e)
             {
-                var thisElement = (ITriggerElement) this;
+                var thisElement = (ITriggerExplorerElement) this;
                 thisElement.OnElementClick();
 
                 // prevents event from firing up the parent items

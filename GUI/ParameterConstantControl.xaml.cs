@@ -16,23 +16,23 @@ namespace GUI
     /// <summary>
     /// Interaction logic for ParameterFunctionControl.xaml
     /// </summary>
-    public partial class ParameterFunctionControl : UserControl
+    public partial class ParameterConstantControl : UserControl
     {
-        public ParameterFunctionControl(string returnType)
+        public ParameterConstantControl(string returnType)
         {
             InitializeComponent();
 
-            List<DataAccess.Natives.Function> functions = DataAccess.LoadData.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\functions.json");
+            List<DataAccess.Natives.Constant> constants = DataAccess.LoadData.LoadAllConstants(@"C:\Users\Lasse Dam\Desktop\JSON\constants.json");
 
-            for (int i = 0; i < functions.Count; i++)
+            for (int i = 0; i < constants.Count; i++)
             {
-                if(functions[i].returnType.type == returnType)
+                if(constants[i].returnType.type == returnType)
                 {
                     ListViewItem item = new ListViewItem();
-                    item.Content = functions[i].name;
-                    item.Tag = functions[i];
+                    item.Content = constants[i].name;
+                    item.Tag = constants[i];
 
-                    listViewFunction.Items.Add(item);
+                    listViewConstant.Items.Add(item);
                 }
             }
         }

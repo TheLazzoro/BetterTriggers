@@ -21,15 +21,21 @@ namespace DataAccess.JsonBaseConverter
         public override object ReadJson(JsonReader reader, System.Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject jo = JObject.Load(reader);
-            switch (jo["ParamType"].Value<int>())
+            if (jo.ContainsKey("ParamType"))
             {
-                case 1:
-                    return JsonConvert.DeserializeObject<Function>(jo.ToString(), SpecifiedSubclassConversion);
-                case 2:
-                    return JsonConvert.DeserializeObject<Constant>(jo.ToString(), SpecifiedSubclassConversion);
-                default:
-                    throw new Exception();
-            }
+
+                switch (jo["ParamType"].Value<int>())
+                {
+                    case 1:
+                        return JsonConvert.DeserializeObject<Function>(jo.ToString(), SpecifiedSubclassConversion);
+                    case 2:
+                        return JsonConvert.DeserializeObject<Constant>(jo.ToString(), SpecifiedSubclassConversion);
+                    default:
+                        throw new Exception();
+                }
+            } else
+                return JsonConvert.DeserializeObject<Parameter>(jo.ToString(), SpecifiedSubclassConversion);
+
             throw new NotImplementedException();
         }
 
