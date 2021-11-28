@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeDefinerGUI", "NativeD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winforms", "Winforms\Winforms.csproj", "{00035DAF-8D75-48A4-9E05-13510546DA8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriggerParser", "TriggerParser\TriggerParser.csproj", "{207A64CE-C5A7-4ABF-AAAF-F9D039775C27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{00035DAF-8D75-48A4-9E05-13510546DA8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00035DAF-8D75-48A4-9E05-13510546DA8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00035DAF-8D75-48A4-9E05-13510546DA8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207A64CE-C5A7-4ABF-AAAF-F9D039775C27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207A64CE-C5A7-4ABF-AAAF-F9D039775C27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207A64CE-C5A7-4ABF-AAAF-F9D039775C27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207A64CE-C5A7-4ABF-AAAF-F9D039775C27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

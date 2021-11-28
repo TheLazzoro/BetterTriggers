@@ -7,9 +7,9 @@ namespace DataAccess.Containers
 {
     public static class ContainerEvents
     {
-        private static List<Event> container = new List<Event>();
+        private static List<Function> container = new List<Function>();
 
-        public static void AddEvent(Event _event)
+        public static void AddEvent(Function _event)
         {
             bool alreadyExists = false;
             string whichType = string.Empty;
@@ -32,17 +32,17 @@ namespace DataAccess.Containers
                 Console.WriteLine($"At {index}: Type '{_event.identifier}' already exists as '{whichType}' in the container.");
         }
 
-        public static List<Event> GetAllTypes()
+        public static List<Function> GetAllTypes()
         {
             return container;
         }
 
-        public static void SetList(List<Event> list)
+        public static void SetList(List<Function> list)
         {
             if (list != null)
                 container = list;
             else
-                container = new List<Event>();
+                container = new List<Function>();
         }
     }
 }

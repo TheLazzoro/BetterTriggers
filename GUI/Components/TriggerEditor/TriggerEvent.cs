@@ -12,13 +12,14 @@ namespace GUI.Components.TriggerEditor
 {
     public class TriggerEvent : TriggerElement
     {
-        private DataAccess.Natives.Event _event;
+        private DataAccess.Natives.Function _event;
         
-        public TriggerEvent(DataAccess.Natives.Event _event)
+        public TriggerEvent(DataAccess.Natives.Function _event)
         {
             this._event = _event;
             this.parameters = _event.parameters;
-            this.paramText = _event.eventText;
+            this.paramText = _event.paramText;
+            this.descriptionTextBlock.Text = _event.description;
             this.category = _event.category;
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", _event.category);

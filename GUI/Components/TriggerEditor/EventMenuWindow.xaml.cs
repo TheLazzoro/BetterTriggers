@@ -19,7 +19,7 @@ namespace GUI
     /// </summary>
     public partial class EventMenuWindow : Window
     {
-        public DataAccess.Natives.Event selectedEvent;
+        public DataAccess.Natives.Function selectedEvent;
 
         public EventMenuWindow()
         {
@@ -29,7 +29,7 @@ namespace GUI
             listViewCategory.Items.Add("- General");
             listViewCategory.Items.Add("Ability");
 
-            List<DataAccess.Natives.Event> events = DataAccess.LoadData.LoadAllEvents(@"C:\Users\Lasse Dam\Desktop\JSON\events.json");
+            List<DataAccess.Natives.Function> events = DataAccess.LoadData.LoadAllEvents(@"C:\Users\Lasse Dam\Desktop\JSON\events.json");
 
             for(int i = 0; i < events.Count; i++)
             {
@@ -43,7 +43,7 @@ namespace GUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             var item = (ListViewItem) listViewEvents.SelectedItem;
-            selectedEvent = (DataAccess.Natives.Event) item.Tag;
+            selectedEvent = (DataAccess.Natives.Function) item.Tag;
             this.Close();
         }
 

@@ -22,7 +22,7 @@ namespace NativeDefinerGUI
             this.Dock = DockStyle.Fill;
 
             string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\events.json");
-            List<DataAccess.Natives.Event> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Event>>(filePlainText);
+            List<DataAccess.Natives.Function> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Function>>(filePlainText);
             ContainerEvents.SetList(list);
 
             RefreshEventList();
@@ -49,7 +49,7 @@ namespace NativeDefinerGUI
                 for( int i = 0; i < list.Count; i++)
                 {
                     ListViewItem item = new ListViewItem();
-                    item.Text = list[i].identifier;
+                    item.Text = list[i].name;
                     item.Tag = list[i];
                     listViewEvents.Items.Add(item);
                 }

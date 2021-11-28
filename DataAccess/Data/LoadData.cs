@@ -16,10 +16,10 @@ namespace DataAccess
         /// </summary>
         /// <param name="filepath">Expects a .json file</param>
         /// <returns></returns>
-        public static List<Event> LoadAllEvents(string filepath)
+        public static List<Function> LoadAllEvents(string filepath)
         {
             string filePlainText = File.ReadAllText(filepath);
-            List<Event> list = JsonConvert.DeserializeObject<List<Event>>(filePlainText);
+            List<Function> list = JsonConvert.DeserializeObject<List<Function>>(filePlainText);
 
             return list;
         }

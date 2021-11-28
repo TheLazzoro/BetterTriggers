@@ -11,6 +11,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50*"/>
             <RowDefinition Height="75"/>
+            <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
         <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" />
@@ -24,5 +25,6 @@
 
         <TreeView x:Name="treeViewTriggers" Background="#FF1E1E1E" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" MinHeight="100" SelectedItemChanged="treeViewTriggers_SelectedItemChanged"/>
         <GridSplitter Grid.Row="3" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#00F0F0F0" Margin="0,3,0,0" />
+
     </Grid>
 </UserControl>

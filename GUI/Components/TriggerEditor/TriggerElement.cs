@@ -14,6 +14,7 @@ namespace GUI.Components.TriggerEditor
     public abstract class TriggerElement : TreeViewItem
     {
         public TextBlock paramTextBlock;
+        public TextBlock descriptionTextBlock;
         protected List<Parameter> parameters;
         protected string paramText;
         protected EnumCategory category;
@@ -22,8 +23,16 @@ namespace GUI.Components.TriggerEditor
         {
             this.paramTextBlock = new TextBlock();
             this.paramTextBlock.FontSize = 18;
+            this.paramTextBlock.TextWrapping = TextWrapping.Wrap;
             this.paramTextBlock.Margin = new Thickness(0, 0, 5, 0);
             this.paramTextBlock.Foreground = Brushes.White;
+
+            this.descriptionTextBlock = new TextBlock();
+            this.descriptionTextBlock.FontSize = 12;
+            this.descriptionTextBlock.TextWrapping = TextWrapping.Wrap;
+            this.descriptionTextBlock.Margin = new Thickness(0, 0, 5, 5);
+            this.descriptionTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(200, 200, 200));
+            this.descriptionTextBlock.Background = new SolidColorBrush(Color.FromRgb(40, 40, 40));
         }
 
         protected void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
@@ -66,7 +75,7 @@ namespace GUI.Components.TriggerEditor
                         var function = (Function)parameters[paramIndex];
                         paramIndex++;
 
-                        RecurseParameters(textBlock, function.parameters, function.funcText); // recurse
+                        RecurseParameters(textBlock, function.parameters, function.paramText); // recurse
                         textBlock.Inlines.Add(")");
                     }
                     else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?

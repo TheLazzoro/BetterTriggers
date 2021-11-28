@@ -25,6 +25,7 @@ namespace GUI
         CategoryAction categoryAction;
 
         TextBlock currentParameterBlock;
+        TextBlock currentDescriptionBlock;
 
         public TriggerControl()
         {
@@ -43,7 +44,7 @@ namespace GUI
         {
             var eventMenu = new EventMenuWindow();
             eventMenu.ShowDialog();
-            DataAccess.Natives.Event _event = eventMenu.selectedEvent;
+            DataAccess.Natives.Function _event = eventMenu.selectedEvent;
 
             if(_event != null)
             {
@@ -60,15 +61,25 @@ namespace GUI
             var item = treeViewTriggers.SelectedItem as TriggerEvent;
             if (item != null) {
                 var textBlockParameters = item.paramTextBlock;
-                
-                if (currentParameterBlock != null && currentParameterBlock.Parent != null)
-                    grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
+                var textBlockDescription = item.descriptionTextBlock;
 
+                if (currentParameterBlock != null && currentParameterBlock.Parent != null) { }
+                    grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
+                if (currentDescriptionBlock != null && currentDescriptionBlock.Parent != null) { }
+                    grid.Children.Remove(currentDescriptionBlock);
+
+
+                // Display appropriate textblock
                 grid.Children.Add(textBlockParameters);
-                Grid.SetRow(textBlockParameters, 4);
+                Grid.SetRow(textBlockParameters, 3);
                 textBlockParameters.Margin = new Thickness(0, 0, 5, 0);
 
+                grid.Children.Add(textBlockDescription);
+                Grid.SetRow(textBlockDescription, 4);
+                textBlockDescription.Margin = new Thickness(0, 0, 5, 0);
+
                 currentParameterBlock = textBlockParameters;
+                currentDescriptionBlock = textBlockDescription;
             }
         }
     }

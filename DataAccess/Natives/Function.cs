@@ -14,15 +14,15 @@ namespace DataAccess.Natives
 
         public string identifier;
         public List<Parameter> parameters = new List<Parameter>();
-        public string funcText;
+        public string paramText;
         public string description;
         public EnumCategory category;
 
-        public Function(string identifier, List<Parameter> parameters, Type returnType, string name, string funcText, string description, EnumCategory category) : base(identifier, returnType, name)
+        public Function(string identifier, List<Parameter> parameters, Type returnType, string name, string paramText, string description, EnumCategory category) : base(identifier, returnType, name)
         {
             this.identifier = identifier;
             this.parameters = parameters;
-            this.funcText = funcText;
+            this.paramText = paramText;
             this.description = description;
             this.category = category;
 

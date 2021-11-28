@@ -72,12 +72,20 @@ namespace NativeDefinerGUI
                 parameters.Add(parameter);
             }
 
-            var selectedCategory = listViewCategory.SelectedItems[0];
-            var category = (EnumCategory)selectedCategory.Tag;
+            try
+            {
+                var selectedCategory = listViewCategory.SelectedItems[0];
+                var category = (EnumCategory)selectedCategory.Tag;
 
-            DataAccess.Natives.Event _event = new DataAccess.Natives.Event(textBoxIdentifier.Text, parameters, textBoxName.Text, richTextEventText.Text, richTextDescription.Text, category);
+                DataAccess.Natives.Function _event = new DataAccess.Natives.Function(textBoxIdentifier.Text, parameters, null, textBoxName.Text, richTextEventText.Text, richTextDescription.Text, category);
+                ContainerEvents.AddEvent(_event);
 
-            Dispose();
+                Dispose();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please select a category.");
+            }
         }
     }
 }
