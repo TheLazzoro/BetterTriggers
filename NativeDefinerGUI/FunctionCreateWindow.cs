@@ -76,7 +76,8 @@ namespace NativeDefinerGUI
             List<DataAccess.Natives.Parameter> parameters = new List<DataAccess.Natives.Parameter>();
             for (int i = 0; i < listViewParameters.Items.Count; i++)
             {
-                DataAccess.Natives.Parameter parameter = (DataAccess.Natives.Parameter)listViewParameters.Items[i].Tag;
+                var type = (DataAccess.Natives.Type) listViewParameters.Items[i].Tag;
+                DataAccess.Natives.Parameter parameter = new DataAccess.Natives.Parameter(string.Empty, type, type.name);
                 parameters.Add(parameter);
             }
 

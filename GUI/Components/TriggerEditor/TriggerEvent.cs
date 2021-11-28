@@ -19,9 +19,15 @@ namespace GUI.Components.TriggerEditor
             this._event = _event;
             this.parameters = _event.parameters;
             this.paramText = _event.eventText;
+            this.category = _event.category;
 
-            TreeViewManipulator.SetTreeViewItemAppearance(this, "Action", _event.category);
-            this.FormatParameterText(paramTextBlock);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", _event.category);
+            this.FormatParameterText(paramTextBlock, this.parameters);
+        }
+
+        public void SetCategory(EnumCategory category)
+        {
+            this.category = _event.category;
         }
     }
 }

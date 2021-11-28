@@ -134,6 +134,9 @@ namespace GUI.Components.Utility
                 case EnumCategory.Sound:
                     path += "actions-sound.png";
                     break;
+                case EnumCategory.Timer:
+                    path += "events-time.png";
+                    break;
                 case EnumCategory.Unit:
                     path += "actions-unit.png";
                     break;

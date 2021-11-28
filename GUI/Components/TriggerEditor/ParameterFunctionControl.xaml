@@ -24,7 +24,7 @@
 
         <Label Content="Search:" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Foreground="White"/>
         <TextBox x:Name="textBoxSearch" Height="20" Grid.Row="0" Grid.Column="1" Margin="60,5,5,5" BorderBrush="#FF0A0A0A" Background="#FF1E1E1E" Foreground="White" />
-        <ListView x:Name="listViewFunction" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" BorderBrush="#00ABADB3" Background="#FF282828" Margin="2,0,0,5" Foreground="White" >
+        <ListView x:Name="listViewFunctions" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" BorderBrush="#00ABADB3" Background="#FF282828" Margin="2,0,0,5" Foreground="White" SelectionChanged="listViewFunction_SelectionChanged" >
             <ListView.Resources>
                 <Style TargetType="{x:Type GridViewColumnHeader}">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>

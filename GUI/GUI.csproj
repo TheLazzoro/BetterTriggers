@@ -39,6 +39,7 @@
     <None Remove="Resources\Icons\actions-unitselection.png" />
     <None Remove="Resources\Icons\actions-visibility.png" />
     <None Remove="Resources\Icons\actions-wait.png" />
+    <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\map.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
     <None Remove="Resources\ui-editoricon-triggercategories_element.png" />
@@ -140,6 +141,9 @@
     <Content Include="Resources\Icons\actions-wait.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Icons\events-time.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\map.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -175,13 +179,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="ParameterConstantControl.xaml.cs">
+    <Compile Update="Components\TriggerEditor\ParameterConstantControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="ParameterConstantControl.xaml">
+    <Page Update="Components\TriggerEditor\ParameterConstantControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

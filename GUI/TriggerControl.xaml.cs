@@ -50,8 +50,6 @@ namespace GUI
                 TriggerEvent item = new TriggerEvent(_event);
                 categoryEvent.Items.Add(item);
 
-                TreeViewManipulator.SetTreeViewItemAppearance(item, _event.eventText, _event.category);
-
                 categoryEvent.IsExpanded = true;
             }
 

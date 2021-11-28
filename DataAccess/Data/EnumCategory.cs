@@ -35,6 +35,7 @@ namespace DataAccess.Data
         Region,
         SetVariable,
         Sound,
+        Timer,
         Unit,
         UnitGroup,
         UnitSelection,

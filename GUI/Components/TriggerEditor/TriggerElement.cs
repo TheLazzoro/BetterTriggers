@@ -1,4 +1,5 @@
 ﻿using DataAccess.Data;
+using DataAccess.Natives;
 using GUI.Components.Utility;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,9 @@ namespace GUI.Components.TriggerEditor
     public abstract class TriggerElement : TreeViewItem
     {
         public TextBlock paramTextBlock;
-        protected List <DataAccess.Natives.Parameter> parameters;
+        protected List<Parameter> parameters;
         protected string paramText;
+        protected EnumCategory category;
 
         public TriggerElement()
         {
@@ -22,43 +24,110 @@ namespace GUI.Components.TriggerEditor
             this.paramTextBlock.FontSize = 18;
             this.paramTextBlock.Margin = new Thickness(0, 0, 5, 0);
             this.paramTextBlock.Foreground = Brushes.White;
-            
         }
 
-        protected void FormatParameterText(TextBlock textBlock)
+        protected void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
         {
-            bool isParam = false;
-            string textNormal = string.Empty;
-            string textParam = string.Empty;
+            textBlock.Inlines.Clear();
+
+            RecurseParameters(textBlock, parameters, paramText);
+
+            TreeViewManipulator.SetTreeViewItemAppearance(this, textBlock.Text, category);
+        }
+
+        private void RecurseParameters(TextBlock textBlock, List<Parameter> parameters, string paramText)
+        {
+            int paramIndex = 0;
+
             for (int i = 0; i < paramText.Length; i++)
             {
-                if (paramText[i] == '%' && !isParam)
+                if (paramText[i] != '%')
                 {
-                    isParam = true;
-                }
-                else if (paramText[i] == '%' && isParam)
-                {
-                    isParam = false;
-                    Run run = new Run(textParam); // idk why it's called run
-                    Hyperlink hyperlink = new Hyperlink(run);
-                    hyperlink.Click += Hyperlink_Click;
-                    textBlock.Inlines.Add(hyperlink);
-                    textParam = string.Empty; // reset param text
-                }
+                    Run run = new Run(paramText[i].ToString());
+                    run.FontFamily = new FontFamily("Verdana");
 
-                if (!isParam && paramText[i] != '%')
-                    textBlock.Inlines.Add(paramText[i].ToString());
-                else if (isParam && paramText[i] != '%')
+                    textBlock.Inlines.Add(run);
+                }
+                else
                 {
-                    textParam += paramText[i];
+                    if (parameters[paramIndex] is Constant)
+                    {
+                        var index = paramIndex; // copy current iterated index to prevent referenced values in hyperlink.click delegate
+                        var hyperlink = CreateHyperlink(textBlock, parameters[paramIndex].name, parameters, index);
+                        hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
+                        paramIndex++;
+                    }
+                    else if (parameters[paramIndex] is Function) // recurse if parameter is a function
+                    {
+                        var index = paramIndex;
+                        var hyperlink = CreateHyperlink(textBlock, "(", parameters, index);
+                        hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
+
+                        var function = (Function)parameters[paramIndex];
+                        paramIndex++;
+
+                        RecurseParameters(textBlock, function.parameters, function.funcText); // recurse
+                        textBlock.Inlines.Add(")");
+                    }
+                    else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?
+                    {
+                        var index = paramIndex;
+                        var hyperlink = CreateHyperlink(textBlock, parameters[paramIndex].name, parameters, index);
+                        hyperlink.Foreground = Brushes.Red;
+                        paramIndex++;
+                    }
                 }
             }
         }
 
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        private Hyperlink CreateHyperlink(TextBlock textBlock, string hyperlinkText, List<Parameter> parameters, int paramIndex)
         {
-            var window = new ParameterWindow(parameters[0].returnType.type); // Temporary. Only index 0 parameter return type is being passed in atm.
+            Run run = new Run(hyperlinkText); // idk why it's called run
+            Hyperlink hyperlink = new Hyperlink(run);
+            hyperlink.Tag = parameters;
+
+
+            // Create an underline text decoration. Default is 'underline'.
+            TextDecoration underline = new TextDecoration();
+            underline.PenOffset = 1; // Underline offset
+            underline.PenThicknessUnit = TextDecorationUnit.FontRecommended;
+
+            TextDecorationCollection decorations = new TextDecorationCollection();
+            decorations.Add(underline);
+            hyperlink.TextDecorations = decorations;
+
+            // Hyperlink font
+            hyperlink.FontFamily = new FontFamily("Verdana");
+
+
+            hyperlink.Click += delegate { Hyperlink_Click(hyperlink, paramIndex); };
+            hyperlink.GotFocus += delegate { hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0)); };
+            hyperlink.LostFocus += delegate
+            {
+                if(parameters[paramIndex] is Constant || parameters[paramIndex] is Function)
+                    hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
+                else
+                    hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            };
+
+            textBlock.Inlines.Add(hyperlink); // adds the clickable parameter text
+
+            return hyperlink;
+        }
+
+        // We need to pass in the list of parameters to we can change the selected parameter on the list.
+        private void Hyperlink_Click(Hyperlink clickedHyperlink, int paramIndex)
+        {
+            var parameters = (List<Parameter>)clickedHyperlink.Tag;
+            var window = new ParameterWindow(parameters[paramIndex].returnType.type);
+            window.Title = parameters[paramIndex].name;
             window.ShowDialog();
+
+            if (window.isOK)
+            {
+                parameters[paramIndex] = window.selectedParameter; // set parameter on window close.
+                FormatParameterText(this.paramTextBlock, this.parameters);
+            }
         }
     }
 }
