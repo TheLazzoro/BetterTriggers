@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,11 +46,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Categories\TriggerCategory.cs" />
+    <Compile Include="Categories\TriggerCategoryContainer.cs" />
+    <Compile Include="Categories\TriggerCategoryParser.cs" />
+    <Compile Include="Converter\ActionConverter.cs" />
+    <Compile Include="Converter\CategoryConverter.cs" />
+    <Compile Include="Converter\ConditionConverter.cs" />
+    <Compile Include="Converter\EventConverter.cs" />
+    <Compile Include="TriggerElements\ActionContainer.cs" />
+    <Compile Include="TriggerElements\EventContainer.cs" />
+    <Compile Include="TriggerElements\TriggerElement.cs" />
+    <Compile Include="TriggerElements\ConditionContainer.cs" />
+    <Compile Include="TriggerElements\TriggerElementContainer.cs" />
+    <Compile Include="TriggerElements\TriggerElementParser.cs" />
+    <Compile Include="Params\TriggerParamParser.cs" />
+    <Compile Include="Params\TriggerParamContainer.cs" />
+    <Compile Include="Params\TriggerParam.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\TriggerTypeParser.cs" />
+    <Compile Include="Types\TriggerTypeContainer.cs" />
+    <Compile Include="Types\TriggerType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{69B14306-90D1-4B93-807A-C81E7E01A820}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

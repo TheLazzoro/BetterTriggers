@@ -50,7 +50,7 @@ namespace GUI.Components.TriggerEditor
 
             for (int i = 0; i < paramText.Length; i++)
             {
-                if (paramText[i] != '%')
+                if (paramText[i] != '~')
                 {
                     Run run = new Run(paramText[i].ToString());
                     run.FontFamily = new FontFamily("Verdana");
@@ -80,8 +80,30 @@ namespace GUI.Components.TriggerEditor
                     }
                     else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?
                     {
+                        textBlock.Inlines.Remove(textBlock.Inlines.LastInline); // removes the comma before the '~' indicator
+                        i++; // avoids the '~' in the name
+
+                        string paramName = string.Empty;
+                        int startIndex = i; // store current letter index
+                        int length = 0;
+                        bool isParamNameSet = false;
+
+
+                        while(!isParamNameSet && i < paramText.Length) // scan parameter display name
+                        {
+                            if (paramText[i] == ',')
+                                isParamNameSet = true;
+                            else
+                            {
+                                length++;
+                                i++;
+                            }
+                        }
+
+                        paramName = paramText.Substring(startIndex, length);
+
                         var index = paramIndex;
-                        var hyperlink = CreateHyperlink(textBlock, parameters[paramIndex].name, parameters, index);
+                        var hyperlink = CreateHyperlink(textBlock, paramName, parameters, index);
                         hyperlink.Foreground = Brushes.Red;
                         paramIndex++;
                     }

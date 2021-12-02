@@ -12,13 +12,12 @@ namespace DataAccess.Natives
     [JsonConverter(typeof(BaseConverter))]
     public class Parameter
     {
+        public string identifier;
         public string name;
         public Type returnType;
 
-        public Parameter(string identifier, Type returnType, string name)
+        public Parameter()
         {
-            this.returnType = returnType;
-            this.name = name;
         }
     }
 }

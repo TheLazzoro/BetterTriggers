@@ -77,14 +77,27 @@ namespace NativeDefinerGUI
             for (int i = 0; i < listViewParameters.Items.Count; i++)
             {
                 var type = (DataAccess.Natives.Type) listViewParameters.Items[i].Tag;
-                DataAccess.Natives.Parameter parameter = new DataAccess.Natives.Parameter(string.Empty, type, type.name);
+                DataAccess.Natives.Parameter parameter = new DataAccess.Natives.Parameter()
+                {
+                    returnType = type,
+                    name = type.name
+                };
                 parameters.Add(parameter);
             }
 
             var selectedCategory = listViewCategory.SelectedItems[0];
             var category = (EnumCategory)selectedCategory.Tag;
 
-            DataAccess.Natives.Function _function = new DataAccess.Natives.Function(textBoxIdentifier.Text, parameters, (DataAccess.Natives.Type) lblReturnType.Tag, textBoxName.Text, richTextParamText.Text, richTextDescription.Text, category);
+            DataAccess.Natives.Function _function = new DataAccess.Natives.Function()
+            {
+                identifier = textBoxIdentifier.Text,
+                parameters = parameters,
+                returnType = (DataAccess.Natives.Type)lblReturnType.Tag,
+                name = textBoxName.Text,
+                paramText = richTextParamText.Text,
+                description = richTextDescription.Text,
+                category = category
+            };
 
             Dispose();
         }

@@ -7,11 +7,8 @@ namespace DataAccess.Natives
     {
         public int ParamType = 2; // DO NOT CHANGE
 
-        public string identifier;
-
-        public Constant(string identifier, Type returnType, string name) : base(identifier, returnType, name)
+        public Constant()
         {
-            this.identifier = identifier;
         }
     }
 }

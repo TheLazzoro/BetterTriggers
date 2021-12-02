@@ -24,9 +24,16 @@ namespace NativeDefinerGUI
             var types = ContainerTypes.GetAllTypes();
             for(int i = 0; i < ContainerTypes.Size(); i++)
             {
+                var parameter = new Parameter()
+                {
+                    identifier = types[i].type,
+                    returnType = types[i],
+                    name = types[i].name
+                };
+
                 ListViewItem item = new ListViewItem();
                 item.Text = types[i].name;
-                item.Tag = new Parameter(types[i].type, types[i], types[i].name);
+                item.Tag = parameter;
 
                 listViewTypes.Items.Add(item);
             }
@@ -77,7 +84,16 @@ namespace NativeDefinerGUI
                 var selectedCategory = listViewCategory.SelectedItems[0];
                 var category = (EnumCategory)selectedCategory.Tag;
 
-                DataAccess.Natives.Function _event = new DataAccess.Natives.Function(textBoxIdentifier.Text, parameters, null, textBoxName.Text, richTextEventText.Text, richTextDescription.Text, category);
+                DataAccess.Natives.Function _event = new DataAccess.Natives.Function()
+                {
+                    identifier = textBoxIdentifier.Text,
+                    parameters = parameters,
+                    paramText = richTextEventText.Text,
+                    name = textBoxName.Text,
+                    description = richTextDescription.Text,
+                    category = category
+                };
+
                 ContainerEvents.AddEvent(_event);
 
                 Dispose();

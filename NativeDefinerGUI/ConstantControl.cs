@@ -64,7 +64,13 @@ namespace NativeDefinerGUI
         {
             if (textBoxIdentifier.Text != "" && textBoxName.Text != "")
             {
-                DataAccess.Natives.Constant constant = new DataAccess.Natives.Constant(textBoxIdentifier.Text, (DataAccess.Natives.Type)lblReturnType.Tag, textBoxName.Text);
+                DataAccess.Natives.Constant constant = new DataAccess.Natives.Constant()
+                {
+                    identifier = textBoxIdentifier.Text,
+                    returnType = (DataAccess.Natives.Type)lblReturnType.Tag,
+                    name = textBoxName.Text,
+                };
+
                 ContainerConstants.AddConstant(constant);
                 UpdateListView();
 
