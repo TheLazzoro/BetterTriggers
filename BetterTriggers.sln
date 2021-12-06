@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\Cons
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterTriggers", "BetterTriggers\BetterTriggers.csproj", "{2FEA5A31-85A6-4A68-A87B-79CBF6101DE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{69B14306-90D1-4B93-807A-C81E7E01A820}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "DataAccess\Model.csproj", "{69B14306-90D1-4B93-807A-C81E7E01A820}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{0D323684-516F-491F-B729-8411A35DFC36}"
 EndProject

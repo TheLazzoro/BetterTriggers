@@ -1,4 +1,4 @@
-﻿using DataAccess.Data;
+﻿using Model.Data;
 using GUI.Components.Utility;
 using System;
 using System.Collections.Generic;
@@ -7,11 +7,11 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class CategoryAction : TreeViewItem
+    public class NodeEvent : TreeViewItem
     {
-        public CategoryAction()
+        public NodeEvent()
         {
-            TreeViewManipulator.SetTreeViewItemAppearance(this, "Action", EnumCategory.Action);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, "Events", EnumCategory.Event);
         }
     }
 }

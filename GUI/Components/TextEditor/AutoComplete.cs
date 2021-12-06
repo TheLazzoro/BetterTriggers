@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GUI.Components.TextEditor
 {
@@ -25,6 +26,13 @@ namespace GUI.Components.TextEditor
                 {
                     // Open code completion after the user has pressed dot:
                     completionWindow = new CompletionWindow(textEditor.TextArea);
+                    completionWindow.ResizeMode = System.Windows.ResizeMode.NoResize;
+                    completionWindow.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#DDDDDD");
+                    completionWindow.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#333333");
+                    completionWindow.FontFamily = new FontFamily("Consolas");
+                    completionWindow.BorderThickness = new System.Windows.Thickness(0);
+
+                    // Autocomplete data
                     IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
                     data.Add(new MyCompletionData("Item1"));
                     data.Add(new MyCompletionData("Item2"));

@@ -1,4 +1,4 @@
-﻿using DataAccess.Natives;
+﻿using Model.Natives;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,11 +25,11 @@ namespace GUI
         {
             InitializeComponent();
 
-            List<Constant> constants = DataAccess.LoadData.LoadAllConstants(@"C:\Users\Lasse Dam\Desktop\JSON\constants.json");
+            List<Constant> constants = Model.LoadData.LoadAllConstants(@"C:\Users\Lasse Dam\Desktop\JSON\constants.json");
 
             for (int i = 0; i < constants.Count; i++)
             {
-                if(constants[i].returnType.type == returnType)
+                if(constants[i].returnType == returnType)
                 {
                     ListViewItem item = new ListViewItem();
                     item.Content = constants[i].name;

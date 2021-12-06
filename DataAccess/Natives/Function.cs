@@ -1,12 +1,12 @@
-﻿using DataAccess.Containers;
-using DataAccess.Data;
+﻿using Model.Containers;
+using Model.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Natives
+namespace Model.Natives
 {
     public class Function : Parameter
     {

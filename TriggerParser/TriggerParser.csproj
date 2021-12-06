@@ -49,6 +49,10 @@
     <Compile Include="Categories\TriggerCategory.cs" />
     <Compile Include="Categories\TriggerCategoryContainer.cs" />
     <Compile Include="Categories\TriggerCategoryParser.cs" />
+    <Compile Include="Conditions\TriggerCondition.cs" />
+    <Compile Include="Conditions\TriggerConditionContainer.cs" />
+    <Compile Include="Conditions\TriggerConditionParser.cs" />
+    <Compile Include="Converter\ConstantConverter.cs" />
     <Compile Include="Converter\ActionConverter.cs" />
     <Compile Include="Converter\CategoryConverter.cs" />
     <Compile Include="Converter\ConditionConverter.cs" />
@@ -56,7 +60,6 @@
     <Compile Include="TriggerElements\ActionContainer.cs" />
     <Compile Include="TriggerElements\EventContainer.cs" />
     <Compile Include="TriggerElements\TriggerElement.cs" />
-    <Compile Include="TriggerElements\ConditionContainer.cs" />
     <Compile Include="TriggerElements\TriggerElementContainer.cs" />
     <Compile Include="TriggerElements\TriggerElementParser.cs" />
     <Compile Include="Params\TriggerParamParser.cs" />
@@ -73,9 +76,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{69B14306-90D1-4B93-807A-C81E7E01A820}</Project>
-      <Name>DataAccess</Name>
+    <Folder Include="WorldEditStrings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\Model.csproj">
+      <Project>{69b14306-90d1-4b93-807a-c81e7e01a820}</Project>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

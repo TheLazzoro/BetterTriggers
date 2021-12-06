@@ -15,72 +15,105 @@ namespace TriggerParser.Params
 
             foreach (string line in lines)
             {
-                string key = string.Empty;
-                string version = string.Empty;
-                string variableType = string.Empty;
-                string codeText = string.Empty;
-                string displayText = string.Empty;
-
-                int memberIndex = 0;
-
-                // read line
-                if (line.Length > 0 && line.Substring(0, 2) != "//")
+                if (line.Length > 2 && line.Substring(0, 2) != "//")
                 {
-
-                    for (int i = 0; i < line.Length; i++)
-                    {
-                        char c = line[i];
-                        bool isSeperator = false;
-
-                        if (c == '=' || c == ',')
-                            isSeperator = true;
-
-                        if (!isSeperator && c != '"')
-                        {
-                            switch (memberIndex)
-                            {
-                                case 0:
-                                    key += c;
-                                    break;
-                                case 1:
-                                    version += c;
-                                    break;
-                                case 2:
-                                    variableType += c;
-                                    break;
-                                case 3:
-                                    codeText += c;
-                                    break;
-                                case 4:
-                                    displayText += c;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            memberIndex++;
-                        }
-                    }
-
-                    int intVersion = 0;
-                    if (version != "")
-                        intVersion = int.Parse(version);
-
-                    var category = new TriggerParam()
-                    {
-                        key = key,
-                        version = intVersion,
-                        variableType = variableType,
-                        codeText = codeText,
-                        displayText = displayText,
-                    };
-
-                    TriggerParamContainer.container.Add(category);
-
+                    var constant = ParseBasicChunk(line);
+                    TriggerParamContainer.container.Add(constant);
                 }
             }
+        }
+
+
+        private static TriggerParam ParseBasicChunk(string line)
+        {
+            string key = string.Empty;
+            string version = string.Empty;
+            string variableType = string.Empty;
+            string codeText = string.Empty;
+            string displayName = string.Empty;
+
+            // read line
+            int i = 0;
+
+            // key / identifier
+            bool foundKey = false;
+            while (!foundKey)
+            {
+                if (line[i] != '=')
+                    key += line[i];
+                else
+                    foundKey = true;
+
+                i++;
+            }
+
+            // version
+            bool foundVersion = false;
+            while (!foundVersion && i < line.Length)
+            {
+                if (line[i] != ',')
+                    version += line[i];
+                else
+                    foundVersion = true;
+
+                i++;
+            }
+
+            // Variable type
+            bool foundVariableType = false;
+            while (!foundVariableType && i < line.Length)
+            {
+                if (line[i] != ',')
+                    variableType += line[i];
+                else
+                    foundVariableType = true;
+
+                i++;
+            }
+
+            // code text (used by the script)
+            bool foundCodeText = false;
+            while (!foundCodeText && i < line.Length)
+            {
+                if (line[i] != ',')
+                    codeText += line[i];
+                else
+                    foundCodeText = true;
+
+                i++;
+            }
+
+            // display name (used by the dropdown and hyperlink)
+            bool foundDisplayName = false;
+            while (!foundDisplayName && i < line.Length)
+            {
+                if (line[i] != ',')
+                {
+                    displayName += line[i];
+                    i++;
+                }
+                else
+                    foundDisplayName = true;
+
+            }
+
+
+            int intVersion = 0;
+            if (version != "")
+                intVersion = int.Parse(version);
+
+            var constantElement = new TriggerParam()
+            {
+                key = key,
+                version = intVersion,
+                displayText = displayName,
+                variableType = variableType,
+                codeText = codeText
+            };
+
+            TriggerParamContainer.container.Add(constantElement);
+
+            return constantElement;
         }
     }
 }

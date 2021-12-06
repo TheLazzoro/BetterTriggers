@@ -1,4 +1,4 @@
-﻿using DataAccess.Data;
+﻿using Model.Data;
 using GUI.Components.Utility;
 using GUI.Containers;
 using System;

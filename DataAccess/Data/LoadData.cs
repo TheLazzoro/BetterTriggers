@@ -1,4 +1,4 @@
-﻿using DataAccess.Natives;
+﻿using Model.Natives;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess
+namespace Model
 {
     public static class LoadData
     {
@@ -36,6 +36,14 @@ namespace DataAccess
         {
             string filePlainText = File.ReadAllText(filepath);
             List<Constant> list = JsonConvert.DeserializeObject<List<Constant>>(filePlainText);
+
+            return list;
+        }
+
+        public static List<Condition> LoadAllConditions(string filepath)
+        {
+            string filePlainText = File.ReadAllText(filepath);
+            List<Condition> list = JsonConvert.DeserializeObject<List<Condition>>(filePlainText);
 
             return list;
         }

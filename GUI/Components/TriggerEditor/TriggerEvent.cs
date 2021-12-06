@@ -1,4 +1,4 @@
-﻿using DataAccess.Data;
+﻿using Model.Data;
 using GUI.Components.Utility;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ namespace GUI.Components.TriggerEditor
 {
     public class TriggerEvent : TriggerElement
     {
-        private DataAccess.Natives.Function _event;
+        private Model.Natives.Function _event;
         
-        public TriggerEvent(DataAccess.Natives.Function _event)
+        public TriggerEvent(Model.Natives.Function _event)
         {
             this._event = _event;
             this.parameters = _event.parameters;

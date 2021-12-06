@@ -1,4 +1,4 @@
-﻿using DataAccess.Natives;
+﻿using Model.Natives;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.JsonBaseConverter
+namespace Model.JsonBaseConverter
 {
     public class ParameterConverter : DefaultContractResolver
     {

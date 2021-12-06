@@ -1,5 +1,5 @@
-﻿using DataAccess.Data;
-using DataAccess.Natives;
+﻿using Model.Data;
+using Model.Natives;
 using GUI.Components.Utility;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.ComponentModel;
+using System.Threading;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -61,10 +63,17 @@ namespace GUI.Components.TriggerEditor
                 {
                     if (parameters[paramIndex] is Constant)
                     {
+                        textBlock.Inlines.Remove(textBlock.Inlines.LastInline); // removes the comma before the '~' indicator
+
                         var index = paramIndex; // copy current iterated index to prevent referenced values in hyperlink.click delegate
                         var hyperlink = CreateHyperlink(textBlock, parameters[paramIndex].name, parameters, index);
                         hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
                         paramIndex++;
+
+                        while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
+                        {
+                            i++;
+                        }
                     }
                     else if (parameters[paramIndex] is Function) // recurse if parameter is a function
                     {
@@ -104,7 +113,7 @@ namespace GUI.Components.TriggerEditor
 
                         var index = paramIndex;
                         var hyperlink = CreateHyperlink(textBlock, paramName, parameters, index);
-                        hyperlink.Foreground = Brushes.Red;
+                        hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));
                         paramIndex++;
                     }
                 }
@@ -118,9 +127,9 @@ namespace GUI.Components.TriggerEditor
             hyperlink.Tag = parameters;
 
 
-            // Create an underline text decoration. Default is 'underline'.
+            // Create an underline text decoration.
             TextDecoration underline = new TextDecoration();
-            underline.PenOffset = 1; // Underline offset
+            underline.PenOffset = 2; // Underline offset
             underline.PenThicknessUnit = TextDecorationUnit.FontRecommended;
 
             TextDecorationCollection decorations = new TextDecorationCollection();
@@ -138,7 +147,7 @@ namespace GUI.Components.TriggerEditor
                 if(parameters[paramIndex] is Constant || parameters[paramIndex] is Function)
                     hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
                 else
-                    hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                    hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));
             };
 
             textBlock.Inlines.Add(hyperlink); // adds the clickable parameter text
@@ -150,8 +159,8 @@ namespace GUI.Components.TriggerEditor
         private void Hyperlink_Click(Hyperlink clickedHyperlink, int paramIndex)
         {
             var parameters = (List<Parameter>)clickedHyperlink.Tag;
-            var window = new ParameterWindow(parameters[paramIndex].returnType.type);
-            window.Title = parameters[paramIndex].name;
+            var window = new ParameterWindow(parameters[paramIndex].returnType);
+            window.Title = parameters[paramIndex].returnType;
             window.ShowDialog();
 
             if (window.isOK)

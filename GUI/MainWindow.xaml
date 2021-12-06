@@ -127,13 +127,13 @@
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="35,0,0,0">
+        <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="35,0,0,0" Click="btnCreateCondition_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="60,0,0,0">
+        <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateAction_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
             </Button.Background>

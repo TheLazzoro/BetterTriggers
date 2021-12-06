@@ -1,5 +1,6 @@
-﻿using DataAccess.Containers;
-using DataAccess.Data;
+﻿using Model.Containers;
+using Model.Data;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,7 @@ namespace NativeDefinerGUI
         {
             InitializeComponent();
 
+            /*
             var types = ContainerTypes.GetAllTypes();
             for(int i = 0; i < ContainerTypes.Size(); i++)
             {
@@ -29,6 +31,7 @@ namespace NativeDefinerGUI
 
                 listViewTypes.Items.Add(item);
             }
+            */
 
             // Populate list of categories
             var enumCategoryValues = Enum.GetValues(typeof(EnumCategory));
@@ -73,14 +76,13 @@ namespace NativeDefinerGUI
 
         private void btnCreateParam_Click(object sender, EventArgs e)
         {
-            List<DataAccess.Natives.Parameter> parameters = new List<DataAccess.Natives.Parameter>();
+            List<Model.Natives.Parameter> parameters = new List<Model.Natives.Parameter>();
             for (int i = 0; i < listViewParameters.Items.Count; i++)
             {
-                var type = (DataAccess.Natives.Type) listViewParameters.Items[i].Tag;
-                DataAccess.Natives.Parameter parameter = new DataAccess.Natives.Parameter()
+                var type = (string) listViewParameters.Items[i].Tag;
+                Model.Natives.Parameter parameter = new Model.Natives.Parameter()
                 {
-                    returnType = type,
-                    name = type.name
+                    returnType = type
                 };
                 parameters.Add(parameter);
             }
@@ -88,11 +90,11 @@ namespace NativeDefinerGUI
             var selectedCategory = listViewCategory.SelectedItems[0];
             var category = (EnumCategory)selectedCategory.Tag;
 
-            DataAccess.Natives.Function _function = new DataAccess.Natives.Function()
+            Model.Natives.Function _function = new Model.Natives.Function()
             {
                 identifier = textBoxIdentifier.Text,
                 parameters = parameters,
-                returnType = (DataAccess.Natives.Type)lblReturnType.Tag,
+                returnType = (string) lblReturnType.Tag,
                 name = textBoxName.Text,
                 paramText = richTextParamText.Text,
                 description = richTextDescription.Text,

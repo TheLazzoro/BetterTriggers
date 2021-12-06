@@ -1,4 +1,4 @@
-﻿using DataAccess.Natives;
+﻿using Model.Natives;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Model;
 
 namespace GUI
 {
@@ -25,11 +26,11 @@ namespace GUI
         {
             InitializeComponent();
 
-            List<Function> functions = DataAccess.LoadData.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\functions.json");
+            List<Function> functions = LoadData.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\functions.json");
 
             for (int i = 0; i < functions.Count; i++)
             {
-                if(functions[i].returnType.type == returnType)
+                if(functions[i].returnType == returnType)
                 {
                     ListViewItem item = new ListViewItem();
                     item.Content = functions[i].name;

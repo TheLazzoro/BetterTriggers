@@ -1,5 +1,5 @@
 ﻿
-namespace DataAccess.Data
+namespace Model.Data
 {
     // DO NOT CHANGE THE ORDER OF THESE
     public enum EnumCategory

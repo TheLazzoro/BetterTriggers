@@ -45,6 +45,7 @@
 
         <!-- KEYWORDS -->
         <Keywords foreground="#569CD6">
+            <Word>null</Word>
             <Word>call</Word>
             <Word>set</Word>
             <Word>true</Word>
@@ -76,6 +77,140 @@
             <Word>boolean</Word>
             <Word>integer</Word>
             <Word>real</Word>
+            <Word>agent</Word>
+            <Word>event</Word>
+            <Word>player</Word>
+            <Word>widget</Word>
+            <Word>unit</Word>
+            <Word>destructable</Word>
+            <Word>item</Word>
+            <Word>ability</Word>
+            <Word>buff</Word>
+            <Word>force</Word>
+            <Word>group</Word>
+            <Word>trigger</Word>
+            <Word>triggercondition</Word>
+            <Word>triggeraction</Word>
+            <Word>timer</Word>
+            <Word>location</Word>
+            <Word>region</Word>
+            <Word>rect</Word>
+            <Word>boolexpr</Word>
+            <Word>sound</Word>
+            <Word>conditionfunc</Word>
+            <Word>filterfunc</Word>
+            <Word>unitpool</Word>
+            <Word>itempool</Word>
+            <Word>race</Word>
+            <Word>alliancetype</Word>
+            <Word>racepreference</Word>
+            <Word>gamestate</Word>
+            <Word>igamestate</Word>
+            <Word>fgamestate</Word>
+            <Word>playerstate</Word>
+            <Word>playerscore</Word>
+            <Word>playergameresult</Word>
+            <Word>unitstate</Word>
+            <Word>aidifficulty</Word>
+            <Word>eventid</Word>
+            <Word>gameevent</Word>
+            <Word>playerevent</Word>
+            <Word>playerunitevent</Word>
+            <Word>unitevent</Word>
+            <Word>limitop</Word>
+            <Word>widgetevent</Word>
+            <Word>dialogevent</Word>
+            <Word>unittype</Word>
+            <Word>gamespeed</Word>
+            <Word>gamedifficulty</Word>
+            <Word>gametype</Word>
+            <Word>mapflag</Word>
+            <Word>mapvisibility</Word>
+            <Word>mapsetting</Word>
+            <Word>mapdensity</Word>
+            <Word>mapcontrol</Word>
+            <Word>minimapicon</Word>
+            <Word>playerslotstate</Word>
+            <Word>volumegroup</Word>
+            <Word>camerafield</Word>
+            <Word>camerasetup</Word>
+            <Word>playercolor</Word>
+            <Word>placement</Word>
+            <Word>startlocprio</Word>
+            <Word>raritycontrol</Word>
+            <Word>blendmode</Word>
+            <Word>texmapflags</Word>
+            <Word>effect</Word>
+            <Word>effecttype</Word>
+            <Word>weathereffect</Word>
+            <Word>terraindeformation</Word>
+            <Word>fogstate</Word>
+            <Word>fogmodifier</Word>
+            <Word>dialog</Word>
+            <Word>button</Word>
+            <Word>quest</Word>
+            <Word>questitem</Word>
+            <Word>defeatcondition</Word>
+            <Word>timerdialog</Word>
+            <Word>leaderboard</Word>
+            <Word>multiboard</Word>
+            <Word>multiboarditem</Word>
+            <Word>trackable</Word>
+            <Word>gamecache</Word>
+            <Word>version</Word>
+            <Word>itemtype</Word>
+            <Word>texttag</Word>
+            <Word>attacktype</Word>
+            <Word>damagetype</Word>
+            <Word>weapontype</Word>
+            <Word>soundtype</Word>
+            <Word>lightning</Word>
+            <Word>pathingtype</Word>
+            <Word>mousebuttontype</Word>
+            <Word>animtype</Word>
+            <Word>subanimtype</Word>
+            <Word>image</Word>
+            <Word>ubersplat</Word>
+            <Word>hashtable</Word>
+            <Word>framehandle</Word>
+            <Word>originframetype</Word>
+            <Word>framepointtype</Word>
+            <Word>textaligntype</Word>
+            <Word>frameeventtype</Word>
+            <Word>oskeytype</Word>
+            <Word>abilityintegerfield</Word>
+            <Word>abilityrealfield</Word>
+            <Word>abilitybooleanfield</Word>
+            <Word>abilitystringfield</Word>
+            <Word>abilityintegerlevelfield</Word>
+            <Word>abilityreallevelfield</Word>
+            <Word>abilitybooleanlevelfield</Word>
+            <Word>abilitystringlevelfield</Word>
+            <Word>abilityintegerlevelarrayfield</Word>
+            <Word>abilityreallevelarrayfield</Word>
+            <Word>abilitybooleanlevelarrayfield</Word>
+            <Word>abilitystringlevelarrayfield</Word>
+            <Word>unitintegerfield</Word>
+            <Word>unitrealfield</Word>
+            <Word>unitbooleanfield</Word>
+            <Word>unitstringfield</Word>
+            <Word>unitweaponintegerfield</Word>
+            <Word>unitweaponrealfield</Word>
+            <Word>unitweaponbooleanfield</Word>
+            <Word>unitweaponstringfield</Word>
+            <Word>itemintegerfield</Word>
+            <Word>itemrealfield</Word>
+            <Word>itembooleanfield</Word>
+            <Word>itemstringfield</Word>
+            <Word>movetype</Word>
+            <Word>targetflag</Word>
+            <Word>armortype</Word>
+            <Word>heroattribute</Word>
+            <Word>defensetype</Word>
+            <Word>regentype</Word>
+            <Word>unitcategory</Word>
+            <Word>pathingflag</Word>
+            <Word>commandbuttoneffect</Word>
         </Keywords>
 
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
@@ -86,6 +221,10 @@
             (?&lt;=\binitializer\s)(\w+)
         </Rule>
 
+        <!-- FUNCTION NAMES (uses regex lookahead) -->
+        <Rule foreground="#DCDCAA">
+          (\w+)(?=\()
+        </Rule>
 
         <!-- Digits -->
         <Rule foreground="#B5CEA8">

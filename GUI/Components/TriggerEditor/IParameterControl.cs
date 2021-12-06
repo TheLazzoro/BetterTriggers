@@ -1,4 +1,4 @@
-﻿using DataAccess.Natives;
+﻿using Model.Natives;
 using System;
 using System.Collections.Generic;
 using System.Text;

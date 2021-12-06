@@ -171,7 +171,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\DataAccess\Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -179,12 +179,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Components\TriggerEditor\ActionMenuWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\TriggerEditor\ConditionMenuWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterConstantControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Components\TriggerEditor\ActionMenuWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ConditionMenuWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Components\TriggerEditor\ParameterConstantControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

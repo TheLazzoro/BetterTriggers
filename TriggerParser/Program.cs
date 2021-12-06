@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TriggerParser.Categories;
+using TriggerParser.Conditions;
 using TriggerParser.Converter;
 using TriggerParser.Params;
 using TriggerParser.TriggerElements;
@@ -23,12 +24,13 @@ namespace TriggerParser
             TriggerParamParser.ParseParams(@"C:\Users\Lasse Dam\Desktop\TriggerData\Constants.txt");
 
             TriggerElementParser.ParseTriggerElements(@"C:\Users\Lasse Dam\Desktop\TriggerData\Events.txt", EventContainer.Id);
-            TriggerElementParser.ParseTriggerElements(@"C:\Users\Lasse Dam\Desktop\TriggerData\Conditions.txt", ConditionContainer.Id);
+            TriggerConditionParser.ParseConditions(@"C:\Users\Lasse Dam\Desktop\TriggerData\Conditions.txt");
             TriggerElementParser.ParseTriggerElements(@"C:\Users\Lasse Dam\Desktop\TriggerData\Actions.txt", ActionContainer.Id);
 
             // Converts all parsed elements and writes a json file
+            ConstantConverter.ConvertConstants(TriggerParamContainer.container);
             EventConverter.ConvertEvents(EventContainer.container);
-            // ConditionConverter.ConvertConditions(ConditionContainer.container); // not yet functional
+            ConditionConverter.ConvertConditions(TriggerConditionContainer.container);
             ActionConverter.ConvertActions(ActionContainer.container);
         }
     }

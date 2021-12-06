@@ -1,6 +1,6 @@
-﻿using DataAccess.Containers;
-using DataAccess.Data;
-using DataAccess.Natives;
+﻿using Model.Containers;
+using Model.Data;
+using Model.Natives;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +21,7 @@ namespace NativeDefinerGUI
         {
             InitializeComponent();
 
+            /*
             var types = ContainerTypes.GetAllTypes();
             for(int i = 0; i < ContainerTypes.Size(); i++)
             {
@@ -37,6 +38,7 @@ namespace NativeDefinerGUI
 
                 listViewTypes.Items.Add(item);
             }
+            */
 
             // Populate list of categories
             var enumCategoryValues = Enum.GetValues(typeof(EnumCategory));
@@ -72,10 +74,10 @@ namespace NativeDefinerGUI
 
         private void btnCreateEvent_Click(object sender, EventArgs e)
         {
-            List<DataAccess.Natives.Parameter> parameters = new List<DataAccess.Natives.Parameter>();
+            List<Parameter> parameters = new List<Parameter>();
             for(int i = 0; i < listViewParameters.Items.Count; i++)
             {
-                DataAccess.Natives.Parameter parameter = (DataAccess.Natives.Parameter) listViewParameters.Items[i].Tag;
+                Parameter parameter = (Parameter) listViewParameters.Items[i].Tag;
                 parameters.Add(parameter);
             }
 
@@ -84,7 +86,7 @@ namespace NativeDefinerGUI
                 var selectedCategory = listViewCategory.SelectedItems[0];
                 var category = (EnumCategory)selectedCategory.Tag;
 
-                DataAccess.Natives.Function _event = new DataAccess.Natives.Function()
+                Function _event = new Function()
                 {
                     identifier = textBoxIdentifier.Text,
                     parameters = parameters,

@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TriggerParser.Types;
 
-namespace TriggerParser.TriggerElements
+namespace TriggerParser.Conditions
 {
-    public static class TriggerElementParser
+    public static class TriggerConditionParser
     {
-        public static void ParseTriggerElements(string file, int containerId)
+        public static void ParseConditions(string file)
         {
             IEnumerable<string> lines = File.ReadLines(file);
 
@@ -20,13 +20,8 @@ namespace TriggerParser.TriggerElements
                 {
                     if (line.Length > 1 && line.Substring(0, 1) != "_")
                     {
-                        var triggerElement = ParseBasicChunk(line);
-
-                        // hack
-                        if(containerId == 0)
-                            EventContainer.container.Add(triggerElement);
-                        if (containerId == 2)
-                            ActionContainer.container.Add(triggerElement);
+                        var condition = ParseBasicChunk(line);
+                        TriggerConditionContainer.container.Add(condition);
                     }
                     else
                         ParseExtendedChunks(line);
@@ -34,27 +29,19 @@ namespace TriggerParser.TriggerElements
             }
         }
 
-        /*
-         * A typical basic chunk looks like this:
-            TriggerRegisterGameStateEventTimeOfDay=0,limitop,real
-         *
-         * Returns trigger element
-         */
-        private static TriggerElement ParseBasicChunk(string line)
+
+        private static TriggerCondition ParseBasicChunk(string line)
         {
             string key = string.Empty;
             string version = string.Empty;
-            string displayName = string.Empty;
-            string category = string.Empty;
             List<TriggerType> arguments = new List<TriggerType>();
-            //List<TriggerType> defaultParams = new List<TriggerType>();
 
             // read line
             int i = 0;
 
             // key / identifier
             bool foundKey = false;
-            while(!foundKey)
+            while (!foundKey)
             {
                 if (line[i] != '=')
                     key += line[i];
@@ -66,7 +53,7 @@ namespace TriggerParser.TriggerElements
 
             // version
             bool foundVersion = false;
-            while(!foundVersion && i < line.Length)
+            while (!foundVersion && i < line.Length)
             {
                 if (line[i] != ',')
                 {
@@ -79,12 +66,13 @@ namespace TriggerParser.TriggerElements
             }
 
             // arguments
-            while(i < line.Length)
+            while (i < line.Length)
             {
-                if(line[i] == ',')
+                if (line[i] == ',')
                 {
                     arguments.Add(new TriggerType());
-                } else
+                }
+                else
                 {
                     int argIndex = arguments.Count - 1;
                     arguments[argIndex].key += line[i];
@@ -93,68 +81,20 @@ namespace TriggerParser.TriggerElements
                 i++;
             }
 
-            // check valid arguments
-            foreach (var item in arguments)
-            {
-                bool found = false;
-                for (int it = 0; it < TriggerTypeContainer.variableTypes.Count; it++)
-                {
-                    var type = TriggerTypeContainer.variableTypes[it];
-                    if (type.key == item.key)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                // if not found check other container
-                if (item == null)
-                {
-                    for (int it = 0; it < TriggerTypeContainer.otherTypes.Count; it++)
-                    {
-                        var type = TriggerTypeContainer.otherTypes[it];
-                        if (type.key == item.key)
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!found)
-                    Console.WriteLine($"WARNING: could not find type '{item.key}' on key '{key}'");
-            }
-
-                        
             int intVersion = 0;
             if (version != "")
                 intVersion = int.Parse(version);
 
-            var triggerElement = new TriggerElement()
+            var condition = new TriggerCondition()
             {
                 key = key,
                 version = intVersion,
-                displayName = displayName,
-                arguments = arguments,
-                category = category
+                arguments = arguments
             };
 
-            TriggerElementContainer.container.Add(triggerElement);
-
-            return triggerElement;
+            return condition;
         }
 
-
-        /*
-         * Typical extended chunks look like this:
-         * // Game events
-            _TriggerRegisterGameStateEventTimeOfDay_DisplayName="Time Of Day"
-            _TriggerRegisterGameStateEventTimeOfDay_Parameters="The in-game time of day becomes ",~Operation," ",~Time
-            _TriggerRegisterGameStateEventTimeOfDay_Defaults=LimitOpEqual,12
-            _TriggerRegisterGameStateEventTimeOfDay_Limits=_,_,0,24
-            _TriggerRegisterGameStateEventTimeOfDay_Category=TC_GAME
-         * 
-         */
         private static void ParseExtendedChunks(string line)
         {
             for (int i = 0; i < line.Length; i++)
@@ -180,7 +120,7 @@ namespace TriggerParser.TriggerElements
                     }
 
                     // The element has already been parsed and created so we need to find it in the container
-                    TriggerElement triggerEvent = TriggerElementContainer.FindByKey(key);
+                    TriggerCondition triggerCondition = TriggerConditionContainer.FindByKey(key);
 
                     i++;
                     string member = string.Empty;
@@ -209,7 +149,7 @@ namespace TriggerParser.TriggerElements
 
                             i++;
                         }
-                        triggerEvent.displayName = displayName;
+                        triggerCondition.displayName = displayName;
                     }
 
                     if (member == "Parameters") // text with parameter clickables
@@ -222,9 +162,12 @@ namespace TriggerParser.TriggerElements
                             if (c != '"')
                                 paramText += c;
 
+                            if(c == ',') { 
+                            }
+
                             i++;
                         }
-                        triggerEvent.paramText = paramText;
+                        triggerCondition.paramText = paramText;
                     }
 
                     if (member == "Defaults") // default parameters when selecting a new function from the list
@@ -239,16 +182,7 @@ namespace TriggerParser.TriggerElements
 
                             i++;
                         }
-                        triggerEvent.defaultParams = defaultParams;
-                    }
-
-                    if (member == "Limits")
-                    {
-                        i++;
-                        while (i < line.Length)
-                        {
-                            i++;
-                        }
+                        triggerCondition.defaultParams = defaultParams;
                     }
 
                     if (member == "Category")
@@ -262,7 +196,7 @@ namespace TriggerParser.TriggerElements
 
                             i++;
                         }
-                        triggerEvent.category = category;
+                        triggerCondition.category = category;
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿using DataAccess.Containers;
+﻿using Model.Containers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace NativeDefinerGUI
             this.Dock = DockStyle.Fill;
 
             string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\events.json");
-            List<DataAccess.Natives.Function> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Function>>(filePlainText);
+            List<Model.Natives.Function> list = JsonConvert.DeserializeObject<List<Model.Natives.Function>>(filePlainText);
             ContainerEvents.SetList(list);
 
             RefreshEventList();

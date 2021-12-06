@@ -1,4 +1,5 @@
-﻿using DataAccess.Containers;
+﻿using Model.Containers;
+using Model.Natives;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace NativeDefinerGUI
             this.Dock = DockStyle.Fill;
 
             string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\constants.json");
-            List<DataAccess.Natives.Constant> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Constant>>(filePlainText);
+            List<Model.Natives.Constant> list = JsonConvert.DeserializeObject<List<Model.Natives.Constant>>(filePlainText);
             ContainerConstants.SetList(list);
 
             UpdateListView();
@@ -64,10 +65,10 @@ namespace NativeDefinerGUI
         {
             if (textBoxIdentifier.Text != "" && textBoxName.Text != "")
             {
-                DataAccess.Natives.Constant constant = new DataAccess.Natives.Constant()
+                Constant constant = new Constant()
                 {
                     identifier = textBoxIdentifier.Text,
-                    returnType = (DataAccess.Natives.Type)lblReturnType.Tag,
+                    //returnType = (DataAccess.Natives.Type)lblReturnType.Tag,
                     name = textBoxName.Text,
                 };
 
@@ -94,7 +95,7 @@ namespace NativeDefinerGUI
                     listViewConstants.Items.Add(item);
                 }
             }
-
+            /*
             listViewTypes.Items.Clear();
             var listTypes = ContainerTypes.GetAllTypes();
             if (listTypes != null)
@@ -107,6 +108,7 @@ namespace NativeDefinerGUI
                     listViewTypes.Items.Add(item);
                 }
             }
+            */
 
             textBoxIdentifier.Text = "";
             textBoxName.Text = "";

@@ -1,4 +1,4 @@
-﻿using DataAccess.Data;
+﻿using Model.Data;
 
 /*
  * Converts Blizzard's category to my category heh.

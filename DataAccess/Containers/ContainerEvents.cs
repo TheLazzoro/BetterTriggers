@@ -1,9 +1,9 @@
 ﻿
-using DataAccess.Natives;
+using Model.Natives;
 using System;
 using System.Collections.Generic;
 
-namespace DataAccess.Containers
+namespace Model.Containers
 {
     public static class ContainerEvents
     {

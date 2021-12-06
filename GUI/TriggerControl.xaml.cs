@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace GUI
 {
     /// <summary>
@@ -20,9 +21,9 @@ namespace GUI
     /// </summary>
     public partial class TriggerControl : UserControl
     {
-        CategoryEvent categoryEvent;
-        CategoryCondition categoryCondition;
-        CategoryAction categoryAction;
+        NodeEvent categoryEvent;
+        NodeCondition categoryCondition;
+        NodeAction categoryAction;
 
         TextBlock currentParameterBlock;
         TextBlock currentDescriptionBlock;
@@ -31,9 +32,9 @@ namespace GUI
         {
             InitializeComponent();
 
-            categoryEvent = new CategoryEvent();
-            categoryCondition = new CategoryCondition();
-            categoryAction = new CategoryAction();
+            categoryEvent = new NodeEvent();
+            categoryCondition = new NodeCondition();
+            categoryAction = new NodeAction();
 
             treeViewTriggers.Items.Add(categoryEvent);
             treeViewTriggers.Items.Add(categoryCondition);
@@ -44,7 +45,7 @@ namespace GUI
         {
             var eventMenu = new EventMenuWindow();
             eventMenu.ShowDialog();
-            DataAccess.Natives.Function _event = eventMenu.selectedEvent;
+            Model.Natives.Function _event = eventMenu.selectedEvent;
 
             if(_event != null)
             {
@@ -56,9 +57,39 @@ namespace GUI
 
         }
 
+        public void CreateCondition()
+        {
+            var conditionMenu = new ConditionMenuWindow();
+            conditionMenu.ShowDialog();
+            Model.Natives.Condition condition = conditionMenu.selectedContition;
+
+            if (condition != null)
+            {
+                TriggerCondition item = new TriggerCondition(condition);
+                categoryCondition.Items.Add(item);
+
+                categoryCondition.IsExpanded = true;
+            }
+        }
+
+        public void CreateAction()
+        {
+            var actionMenu = new ActionMenuWindow();
+            actionMenu.ShowDialog();
+            Model.Natives.Function action = actionMenu.selectedAction;
+
+            if (action != null)
+            {
+                Components.TriggerEditor.TriggerAction item = new Components.TriggerEditor.TriggerAction(action);
+                categoryAction.Items.Add(item);
+
+                categoryAction.IsExpanded = true;
+            }
+        }
+
         private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var item = treeViewTriggers.SelectedItem as TriggerEvent;
+            var item = treeViewTriggers.SelectedItem as TriggerElement;
             if (item != null) {
                 var textBlockParameters = item.paramTextBlock;
                 var textBlockDescription = item.descriptionTextBlock;

@@ -1,5 +1,5 @@
-﻿using DataAccess.Containers;
-using DataAccess.Natives;
+﻿using Model.Containers;
+using Model.Natives;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,19 +23,19 @@ namespace TriggerParser.Converter
                     var param = new Parameter()
                     {
                         name = item.arguments[i].key,
-                        returnType = new DataAccess.Natives.Type(item.arguments[i].key, ""),
+                        returnType = item.arguments[i].key,
                         //name = item.arguments[i].displayName // makes no sense?
                     };
                     parameters.Add(param);
                 }
 
-                DataAccess.Natives.Function action = new DataAccess.Natives.Function()
+                Function action = new Function()
                 {
                     identifier = item.key,
                     name = item.displayName,
                     parameters = parameters,
                     paramText = item.paramText,
-                    returnType = new DataAccess.Natives.Type("nothing", "Nothing"), // temporary
+                    returnType = "nothing", // temporary
                     description = "",
                     category = CategoryConverter.ConvertBlizzardCategory(item.category)
                 };

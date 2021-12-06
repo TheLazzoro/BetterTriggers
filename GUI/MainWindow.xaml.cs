@@ -89,7 +89,17 @@ namespace GUI
         {
             currentTriggerWindow.CreateEvent();
         }
-        
+
+        private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
+        {
+            currentTriggerWindow.CreateCondition();
+        }
+
+        private void btnCreateAction_Click(object sender, RoutedEventArgs e)
+        {
+            currentTriggerWindow.CreateAction();
+        }
+
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
             string fileJassHelper = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/jasshelper.exe";

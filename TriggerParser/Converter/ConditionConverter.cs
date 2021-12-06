@@ -1,4 +1,5 @@
-﻿using DataAccess.Containers;
+﻿using Model.Containers;
+using Model.Natives;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,31 +7,43 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TriggerParser.Conditions;
 using TriggerParser.TriggerElements;
 
 namespace TriggerParser.Converter
 {
     public static class ConditionConverter
     {
-        public static void ConvertConditions(List<TriggerElement> triggerElements)
+        public static void ConvertConditions(List<TriggerCondition> triggerElements)
         {
             foreach (var item in triggerElements)
             {
-                DataAccess.Natives.Function condition = new DataAccess.Natives.Function()
+                var arguments = item.arguments;
+                List<Parameter> parameters = new List<Parameter>();
+
+                foreach (var arg in arguments)
+                {
+                    var parameter = new Parameter()
+                    {
+                        returnType = arg.key
+                    };
+
+                    parameters.Add(parameter);
+                }
+
+                Condition condition = new Condition()
                 {
                     identifier = item.key,
-                    name = item.displayName,
-                    parameters = new List<DataAccess.Natives.Parameter>(), // temporary
+                    displayName = item.displayName,
+                    parameters = parameters,
                     paramText = item.paramText,
-                    returnType = new DataAccess.Natives.Type("nothing", "Nothing"), // temporary
-                    description = "",
                     category = CategoryConverter.ConvertBlizzardCategory(item.category)
                 };
 
-                ContainerEvents.AddEvent(condition); // nocheckin
+                ContainerConditions.AddCondition(condition);
             }
 
-            string json = JsonConvert.SerializeObject(ContainerEvents.GetAllTypes()); // nocheckin
+            string json = JsonConvert.SerializeObject(ContainerConditions.GetAllTypes());
             File.WriteAllText(@"C:\Users\Lasse Dam\Desktop\ParseTest\conditions.json", json);
         }
     }

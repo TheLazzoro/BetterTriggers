@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TriggerParser.TriggerElements
+namespace TriggerParser.Conditions
 {
-    public static class ConditionContainer
+    public static class TriggerConditionContainer
     {
-        public static readonly int Id = 1;
-        public static List<TriggerElement> container = new List<TriggerElement>();
+        public static List<TriggerCondition> container = new List<TriggerCondition>();
 
-        public static TriggerElement FindByKey(string key)
+        public static TriggerCondition FindByKey(string key)
         {
-            TriggerElement triggerCondition = null;
+            TriggerCondition constant = null;
             int i = 0;
             bool found = false;
 
@@ -22,13 +21,13 @@ namespace TriggerParser.TriggerElements
                 if (container.Count > i && container[i].key == key)
                 {
                     found = true;
-                    triggerCondition = container[i];
+                    constant = container[i];
                 }
-                
+
                 i++;
             }
 
-            return triggerCondition;
+            return constant;
         }
     }
 }

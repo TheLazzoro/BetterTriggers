@@ -1,4 +1,4 @@
-﻿using DataAccess.Containers;
+﻿using Model.Containers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,9 +20,9 @@ namespace NativeDefinerGUI
             InitializeComponent();
             this.Dock = DockStyle.Fill;
 
-            string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\types.json");
-            List<DataAccess.Natives.Type> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Type>>(filePlainText);
-            ContainerTypes.SetList(list);
+            string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\types.txt");
+            //List<DataAccess.Natives.Type> list = JsonConvert.DeserializeObject<List<DataAccess.Natives.Type>>(filePlainText);
+            //ContainerTypes.SetList(list);
 
             UpdateListView();
         }
@@ -52,6 +52,7 @@ namespace NativeDefinerGUI
 
         private void CreateType()
         {
+            /*
             if (textBoxIdentifier.Text != "" && textBoxName.Text != "")
             {
                 DataAccess.Natives.Type type = new DataAccess.Natives.Type(textBoxIdentifier.Text, textBoxName.Text);
@@ -62,11 +63,12 @@ namespace NativeDefinerGUI
                 string jsonOutput = JsonConvert.SerializeObject(ContainerTypes.GetAllTypes());
                 File.WriteAllText(@"C:\Users\Lasse Dam\Desktop\JSON\types.json", jsonOutput);
             }
+            */
         }
 
         private void UpdateListView()
         {
-            listViewTypes.Items.Clear();
+            /*listViewTypes.Items.Clear();
             var list = ContainerTypes.GetAllTypes();
             if (list != null)
             {
@@ -80,7 +82,7 @@ namespace NativeDefinerGUI
             }
 
             textBoxIdentifier.Text = "";
-            textBoxName.Text = "";
+            textBoxName.Text = "";*/
         }
     }
 }
