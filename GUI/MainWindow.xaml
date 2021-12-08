@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:GUI" xmlns:triggerexplorer="clr-namespace:GUI.Components.TriggerExplorer"
         UseLayoutRounding="True"
         mc:Ignorable="d"
-        Title="Better Triggers" Height="450" Width="800" Background="#FF404040">
+        Title="Better Triggers" Height="450" Width="800" Background="#FF404040" KeyDown="Window_KeyDown">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -84,7 +84,10 @@
 
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" >
             <MenuItem Header="File" Height="25"/>
-            <MenuItem Header="Edit" Height="25"/>
+            <MenuItem Header="Edit" Height="25" SubmenuOpened="MenuItem_SubmenuOpened">
+                <MenuItem Name="menuItemUndo" Header="Undo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemUndo_Click"/>
+                <MenuItem Name="menuItemRedo" Header="Redo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemRedo_Click"/>
+            </MenuItem>
             <MenuItem Header="New" Height="25"/>
             <MenuItem Header="JassHelper" Height="25"/>
         </Menu>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TriggerParser.Calls;
 using TriggerParser.Categories;
 using TriggerParser.Conditions;
 using TriggerParser.Converter;
@@ -26,12 +27,14 @@ namespace TriggerParser
             TriggerElementParser.ParseTriggerElements(@"C:\Users\Lasse Dam\Desktop\TriggerData\Events.txt", EventContainer.Id);
             TriggerConditionParser.ParseConditions(@"C:\Users\Lasse Dam\Desktop\TriggerData\Conditions.txt");
             TriggerElementParser.ParseTriggerElements(@"C:\Users\Lasse Dam\Desktop\TriggerData\Actions.txt", ActionContainer.Id);
+            TriggerCallParser.ParseCalls(@"C:\Users\Lasse Dam\Desktop\TriggerData\Calls.txt");
 
             // Converts all parsed elements and writes a json file
             ConstantConverter.ConvertConstants(TriggerParamContainer.container);
             EventConverter.ConvertEvents(EventContainer.container);
             ConditionConverter.ConvertConditions(TriggerConditionContainer.container);
             ActionConverter.ConvertActions(ActionContainer.container);
+            CallConverter.ConvertCalls(TriggerCallContainer.container);
         }
     }
 }

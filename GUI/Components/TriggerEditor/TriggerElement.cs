@@ -20,6 +20,8 @@ namespace GUI.Components.TriggerEditor
         protected List<Parameter> parameters;
         protected string paramText;
         protected EnumCategory category;
+        private string formattedParamText = string.Empty;
+
 
         public TriggerElement()
         {
@@ -40,10 +42,11 @@ namespace GUI.Components.TriggerEditor
         protected void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
         {
             textBlock.Inlines.Clear();
+            this.formattedParamText = string.Empty;
 
             RecurseParameters(textBlock, parameters, paramText);
 
-            TreeViewManipulator.SetTreeViewItemAppearance(this, textBlock.Text, category);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category);
         }
 
         private void RecurseParameters(TextBlock textBlock, List<Parameter> parameters, string paramText)
@@ -58,16 +61,16 @@ namespace GUI.Components.TriggerEditor
                     run.FontFamily = new FontFamily("Verdana");
 
                     textBlock.Inlines.Add(run);
+                    formattedParamText += paramText[i];
                 }
                 else
                 {
                     if (parameters[paramIndex] is Constant)
                     {
-                        textBlock.Inlines.Remove(textBlock.Inlines.LastInline); // removes the comma before the '~' indicator
+                        RemoveCommaBeforeParamIndicator(textBlock);
 
                         var index = paramIndex; // copy current iterated index to prevent referenced values in hyperlink.click delegate
-                        var hyperlink = CreateHyperlink(textBlock, parameters[paramIndex].name, parameters, index);
-                        hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
+                        CreateHyperlink(textBlock, parameters[paramIndex].name, parameters, index);
                         paramIndex++;
 
                         while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
@@ -77,28 +80,48 @@ namespace GUI.Components.TriggerEditor
                     }
                     else if (parameters[paramIndex] is Function) // recurse if parameter is a function
                     {
-                        var index = paramIndex;
-                        var hyperlink = CreateHyperlink(textBlock, "(", parameters, index);
-                        hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
+                        RemoveCommaBeforeParamIndicator(textBlock);
 
                         var function = (Function)parameters[paramIndex];
+
+                        var index = paramIndex;
+                        if (function.parameters.Count > 0) // first bracket gets hyperlinked
+                        {
+                            CreateHyperlink(textBlock, "(", parameters, index);
+                            RecurseParameters(textBlock, function.parameters, function.paramText); // recurse
+                        }
+                        else // whole displayname gets hyperlinked
+                        {
+                            Run runFirstBracket = new Run("(");
+                            runFirstBracket.FontFamily = new FontFamily("Verdana");
+                            textBlock.Inlines.Add(runFirstBracket);
+
+                            CreateHyperlink(textBlock, function.name, parameters, index);
+                        }
                         paramIndex++;
 
-                        RecurseParameters(textBlock, function.parameters, function.paramText); // recurse
-                        textBlock.Inlines.Add(")");
+                        Run run = new Run(")");
+                        run.FontFamily = new FontFamily("Verdana");
+                        textBlock.Inlines.Add(run);
+
+                        formattedParamText += ")";
+
+                        while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
+                        {
+                            i++;
+                        }
                     }
                     else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?
                     {
-                        textBlock.Inlines.Remove(textBlock.Inlines.LastInline); // removes the comma before the '~' indicator
+                        RemoveCommaBeforeParamIndicator(textBlock);
+
                         i++; // avoids the '~' in the name
 
-                        string paramName = string.Empty;
                         int startIndex = i; // store current letter index
                         int length = 0;
                         bool isParamNameSet = false;
 
-
-                        while(!isParamNameSet && i < paramText.Length) // scan parameter display name
+                        while (!isParamNameSet && i < paramText.Length) // scan parameter display name
                         {
                             if (paramText[i] == ',')
                                 isParamNameSet = true;
@@ -109,19 +132,35 @@ namespace GUI.Components.TriggerEditor
                             }
                         }
 
-                        paramName = paramText.Substring(startIndex, length);
+                        string paramName = paramText.Substring(startIndex, length);
 
                         var index = paramIndex;
-                        var hyperlink = CreateHyperlink(textBlock, paramName, parameters, index);
-                        hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));
+                        CreateHyperlink(textBlock, paramName, parameters, index);
+
                         paramIndex++;
                     }
                 }
             }
         }
 
+        private void RemoveCommaBeforeParamIndicator(TextBlock textBlock)
+        {
+            textBlock.Inlines.Remove(textBlock.Inlines.LastInline); // removes the comma before the '~' indicator
+            if (formattedParamText.Length != 0)
+                this.formattedParamText = this.formattedParamText.Remove(formattedParamText.Length - 1, 1);
+        }
+
+        private void RecolorHyperlink(Parameter parameter, Hyperlink hyperlink)
+        {
+            if (parameter is Constant || parameter is Function)
+                hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
+            else
+                hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));
+        }
+
         private Hyperlink CreateHyperlink(TextBlock textBlock, string hyperlinkText, List<Parameter> parameters, int paramIndex)
         {
+            this.formattedParamText += hyperlinkText;
             Run run = new Run(hyperlinkText); // idk why it's called run
             Hyperlink hyperlink = new Hyperlink(run);
             hyperlink.Tag = parameters;
@@ -139,16 +178,12 @@ namespace GUI.Components.TriggerEditor
             // Hyperlink font
             hyperlink.FontFamily = new FontFamily("Verdana");
 
+            // Hyperlink color
+            RecolorHyperlink(parameters[paramIndex], hyperlink);
 
             hyperlink.Click += delegate { Hyperlink_Click(hyperlink, paramIndex); };
             hyperlink.GotFocus += delegate { hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0)); };
-            hyperlink.LostFocus += delegate
-            {
-                if(parameters[paramIndex] is Constant || parameters[paramIndex] is Function)
-                    hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
-                else
-                    hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));
-            };
+            hyperlink.LostFocus += delegate { RecolorHyperlink(parameters[paramIndex], hyperlink); };
 
             textBlock.Inlines.Add(hyperlink); // adds the clickable parameter text
 

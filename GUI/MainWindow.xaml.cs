@@ -114,5 +114,46 @@ namespace GUI
             JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
         }
 
+        private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
+        {
+            bool canUndo = Commands.CommandManager.CanUndo();
+            bool canRedo = Commands.CommandManager.CanRedo();
+            string nameCommandToUndo = Commands.CommandManager.GetNameCommandToUndo();
+            string nameCommandToRedo = Commands.CommandManager.GetNameCommandToRedo();
+
+            menuItemUndo.IsEnabled = canUndo;
+            menuItemRedo.IsEnabled = canRedo;
+            if (canUndo)
+                menuItemUndo.Header = $"Undo '{nameCommandToUndo}'";
+            else
+                menuItemUndo.Header = "Undo";
+
+            if (canRedo)
+                menuItemRedo.Header = $"Redo '{nameCommandToRedo}'";
+            else
+                menuItemRedo.Header = "Redo";
+        }
+
+        private void menuItemUndo_Click(object sender, RoutedEventArgs e)
+        {
+            Commands.CommandManager.Undo();
+        }
+
+        private void menuItemRedo_Click(object sender, RoutedEventArgs e)
+        {
+            Commands.CommandManager.Redo();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Z && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                Commands.CommandManager.Undo();
+            }
+            else if (e.Key == Key.Y && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                Commands.CommandManager.Redo();
+            }
+        }
     }
 }

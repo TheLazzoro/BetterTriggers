@@ -26,7 +26,7 @@ namespace GUI
         {
             InitializeComponent();
 
-            List<Function> functions = LoadData.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\functions.json");
+            List<Function> functions = LoadData.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\calls.json");
 
             for (int i = 0; i < functions.Count; i++)
             {

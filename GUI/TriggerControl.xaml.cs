@@ -1,4 +1,5 @@
-﻿using GUI.Components.TriggerEditor;
+﻿using GUI.Commands;
+using GUI.Components.TriggerEditor;
 using GUI.Components.Utility;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,10 @@ namespace GUI
 
         TextBlock currentParameterBlock;
         TextBlock currentDescriptionBlock;
+
+        Point _startPoint;
+        TreeViewItem dragItem;
+        bool _IsDragging = false;
 
         public TriggerControl()
         {
@@ -112,6 +117,89 @@ namespace GUI
                 currentParameterBlock = textBlockParameters;
                 currentDescriptionBlock = textBlockDescription;
             }
+        }
+
+        private void treeViewTriggers_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _startPoint = e.GetPosition(null);
+        }
+
+        private void treeViewTriggers_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_IsDragging)
+            {
+                Point position = e.GetPosition(null);
+                if (Math.Abs(position.X - _startPoint.X) >
+                        SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) >
+                        SystemParameters.MinimumVerticalDragDistance)
+                {
+                    StartDrag(e);
+                }
+            }
+        }
+
+        private void StartDrag(MouseEventArgs e)
+        {
+            _IsDragging = true;
+            dragItem = this.treeViewTriggers.SelectedItem as TreeViewItem;
+
+            if (dragItem is NodeEvent || dragItem is NodeCondition || dragItem is NodeAction)
+                return;
+
+            DataObject data = null;
+
+            data = new DataObject("inadt", dragItem);
+
+            if (data != null)
+            {
+                DragDropEffects dde = DragDropEffects.Move;
+                if (e.RightButton == MouseButtonState.Pressed)
+                {
+                    dde = DragDropEffects.All;
+                }
+                DragDropEffects de = DragDrop.DoDragDrop(this.treeViewTriggers, data, dde);
+            }
+            _IsDragging = false;
+        }
+
+        private void treeViewTriggers_Drop(object sender, DragEventArgs e)
+        {
+            if (_IsDragging && dragItem != null)
+            {
+                var parent = (TreeViewItem)dragItem.Parent;
+
+
+                // It is necessary to traverse the item's parents since drag & drop picks up
+                // things like 'TextBlock' and 'Border' on the drop target when dropping the 
+                // dragged element.
+                FrameworkElement dropTarget = e.Source as FrameworkElement;
+                TreeViewItem traversedTarget = null;
+                while (traversedTarget == null)
+                {
+                    dropTarget = dropTarget.Parent as FrameworkElement;
+                    if (dropTarget is TreeViewItem)
+                    {
+                        traversedTarget = (TreeViewItem)dropTarget;
+                    }
+                }
+
+                if (traversedTarget != dragItem)
+                {
+                    TriggerElementMoveCommand command = new TriggerElementMoveCommand(dragItem, parent, traversedTarget, 0); // TODO !!!!!!!!!! change 0 to the dropped index
+                    command.Execute();
+                }
+            }
+        }
+
+        private void treeViewTriggers_PreviewDragEnter(object sender, DragEventArgs e)
+        {
+            
+        }
+
+        private void treeViewTriggers_PreviewDrop(object sender, DragEventArgs e)
+        {
+            // Use this event to display feedback to the user when dragging?
         }
     }
 }

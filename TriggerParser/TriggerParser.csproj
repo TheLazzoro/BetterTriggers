@@ -49,9 +49,13 @@
     <Compile Include="Categories\TriggerCategory.cs" />
     <Compile Include="Categories\TriggerCategoryContainer.cs" />
     <Compile Include="Categories\TriggerCategoryParser.cs" />
+    <Compile Include="Calls\TriggerCall.cs" />
+    <Compile Include="Calls\TriggerCallContainer.cs" />
+    <Compile Include="Calls\TriggerCallParser.cs" />
     <Compile Include="Conditions\TriggerCondition.cs" />
     <Compile Include="Conditions\TriggerConditionContainer.cs" />
     <Compile Include="Conditions\TriggerConditionParser.cs" />
+    <Compile Include="Converter\CallConverter.cs" />
     <Compile Include="Converter\ConstantConverter.cs" />
     <Compile Include="Converter\ActionConverter.cs" />
     <Compile Include="Converter\CategoryConverter.cs" />
