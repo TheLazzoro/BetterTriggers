@@ -169,27 +169,57 @@ namespace GUI
             {
                 var parent = (TreeViewItem)dragItem.Parent;
 
-
                 // It is necessary to traverse the item's parents since drag & drop picks up
                 // things like 'TextBlock' and 'Border' on the drop target when dropping the 
                 // dragged element.
-                FrameworkElement dropTarget = e.Source as FrameworkElement;
-                TreeViewItem traversedTarget = null;
-                while (traversedTarget == null)
+                TreeViewItem actionNode = DragItemIsAction(e);
+
+                TreeViewItem whereItemWasDropped = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+
+                int indexInTree = 0;
+                TreeViewItem parentToDropLocation;
+                if (whereItemWasDropped is NodeAction)
+                    indexInTree = 0;
+                else
                 {
-                    dropTarget = dropTarget.Parent as FrameworkElement;
-                    if (dropTarget is TreeViewItem)
-                    {
-                        traversedTarget = (TreeViewItem)dropTarget;
-                    }
+                    parentToDropLocation = whereItemWasDropped.Parent as TreeViewItem;
+                    indexInTree = parentToDropLocation.Items.IndexOf(whereItemWasDropped);
                 }
 
-                if (traversedTarget != dragItem)
+                if (actionNode != dragItem)
                 {
-                    TriggerElementMoveCommand command = new TriggerElementMoveCommand(dragItem, parent, traversedTarget, 0); // TODO !!!!!!!!!! change 0 to the dropped index
+                    TriggerElementMoveCommand command = new TriggerElementMoveCommand(dragItem, parent, actionNode, indexInTree); // TODO !!!!!!!!!! change 0 to the dropped index
                     command.Execute();
                 }
             }
+        }
+
+        private TreeViewItem GetTraversedTargetDropItem(FrameworkElement dropTarget)
+        {
+            TreeViewItem traversedTarget = null;
+            while (traversedTarget == null)
+            {
+                dropTarget = dropTarget.Parent as FrameworkElement;
+                if (dropTarget is TreeViewItem)
+                {
+                    traversedTarget = (TreeViewItem)dropTarget;
+                }
+            }
+
+            return traversedTarget;
+        }
+
+        private TreeViewItem DragItemIsAction(DragEventArgs e)
+        {
+            FrameworkElement dropTarget = e.Source as FrameworkElement;
+            TreeViewItem traversedTarget = GetTraversedTargetDropItem(dropTarget);
+
+            if (traversedTarget is NodeAction)
+                return traversedTarget;
+            else
+                traversedTarget = GetTraversedTargetDropItem(traversedTarget); // traverse one more time to get the action node
+
+            return traversedTarget;
         }
 
         private void treeViewTriggers_PreviewDragEnter(object sender, DragEventArgs e)
