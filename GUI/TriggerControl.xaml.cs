@@ -1,6 +1,7 @@
 ﻿using GUI.Commands;
 using GUI.Components.TriggerEditor;
 using GUI.Components.Utility;
+using Model.Natives;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,8 @@ namespace GUI
         TreeViewItem dragItem;
         bool _IsDragging = false;
 
+        TriggerElement copiedTriggerElement;
+
         public TriggerControl()
         {
             InitializeComponent();
@@ -52,7 +55,7 @@ namespace GUI
             eventMenu.ShowDialog();
             Model.Natives.Function _event = eventMenu.selectedEvent;
 
-            if(_event != null)
+            if (_event != null)
             {
                 TriggerEvent item = new TriggerEvent(_event);
                 categoryEvent.Items.Add(item);
@@ -95,14 +98,15 @@ namespace GUI
         private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             var item = treeViewTriggers.SelectedItem as TriggerElement;
-            if (item != null) {
+            if (item != null)
+            {
                 var textBlockParameters = item.paramTextBlock;
                 var textBlockDescription = item.descriptionTextBlock;
 
                 if (currentParameterBlock != null && currentParameterBlock.Parent != null) { }
-                    grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
+                grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
                 if (currentDescriptionBlock != null && currentDescriptionBlock.Parent != null) { }
-                    grid.Children.Remove(currentDescriptionBlock);
+                grid.Children.Remove(currentDescriptionBlock);
 
 
                 // Display appropriate textblock
@@ -172,7 +176,7 @@ namespace GUI
                 // It is necessary to traverse the item's parents since drag & drop picks up
                 // things like 'TextBlock' and 'Border' on the drop target when dropping the 
                 // dragged element.
-                TreeViewItem actionNode = DragItemIsAction(e);
+                TreeViewItem actionNode = GetDropTarget(e.Source as FrameworkElement);
 
                 TreeViewItem whereItemWasDropped = GetTraversedTargetDropItem(e.Source as FrameworkElement);
 
@@ -188,7 +192,7 @@ namespace GUI
 
                 if (actionNode != dragItem)
                 {
-                    TriggerElementMoveCommand command = new TriggerElementMoveCommand(dragItem, parent, actionNode, indexInTree); // TODO !!!!!!!!!! change 0 to the dropped index
+                    CommandTriggerElementMove command = new CommandTriggerElementMove(this.dragItem, parent, actionNode, indexInTree);
                     command.Execute();
                 }
             }
@@ -209,12 +213,13 @@ namespace GUI
             return traversedTarget;
         }
 
-        private TreeViewItem DragItemIsAction(DragEventArgs e)
+        private TreeViewItem GetDropTarget(FrameworkElement dropTarget)
         {
-            FrameworkElement dropTarget = e.Source as FrameworkElement;
+            if (dropTarget is NodeEvent || dropTarget is NodeCondition || dropTarget is NodeAction)
+                return (TreeViewItem) dropTarget;
+                
             TreeViewItem traversedTarget = GetTraversedTargetDropItem(dropTarget);
-
-            if (traversedTarget is NodeAction)
+            if (traversedTarget is NodeEvent || traversedTarget is NodeCondition || traversedTarget is NodeAction)
                 return traversedTarget;
             else
                 traversedTarget = GetTraversedTargetDropItem(traversedTarget); // traverse one more time to get the action node
@@ -224,12 +229,89 @@ namespace GUI
 
         private void treeViewTriggers_PreviewDragEnter(object sender, DragEventArgs e)
         {
-            
+
         }
 
         private void treeViewTriggers_PreviewDrop(object sender, DragEventArgs e)
         {
             // Use this event to display feedback to the user when dragging?
+        }
+
+        private void treeViewTriggers_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+                DeleteTriggerElement();
+            else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                CopyTriggerElement();
+            else if (e.Key == Key.V && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                PasteTriggerElement();
+        }
+
+        private void DeleteTriggerElement()
+        {
+            var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
+            if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
+                return;
+
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(selectedItem, (TreeViewItem)selectedItem.Parent);
+            command.Execute();
+        }
+
+        private void CopyTriggerElement()
+        {
+            var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
+            if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
+                return;
+
+            var selectedItemCast = (TriggerElement)selectedItem;
+            this.copiedTriggerElement = selectedItemCast;
+        }
+
+        private void PasteTriggerElement()
+        {
+            var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
+            if (selectedItem == null || this.copiedTriggerElement == null)
+                return;
+
+            // Copy the actual values from the model-layer
+            Function function = null;
+            if (copiedTriggerElement is Components.TriggerEditor.TriggerEvent)
+            {
+                var element = (Components.TriggerEditor.TriggerEvent) this.copiedTriggerElement;
+                function = (Function) element._event.Clone();
+            }
+            else if (copiedTriggerElement is Components.TriggerEditor.TriggerCondition)
+            {
+                var element = (Components.TriggerEditor.TriggerCondition)this.copiedTriggerElement;
+                throw new NotImplementedException();
+            }
+            else if(copiedTriggerElement is Components.TriggerEditor.TriggerAction)
+            {
+                var element = (Components.TriggerEditor.TriggerAction)this.copiedTriggerElement;
+                function = (Function)element.action.Clone();
+            }
+
+            // Determine where to place the pasted element
+            TreeViewItem targetParentNode;
+            int insertIndex = 0;
+            if (selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
+                targetParentNode = selectedItem;
+            else
+            {
+                targetParentNode = selectedItem.Parent as TreeViewItem;
+                insertIndex = targetParentNode.Items.IndexOf(selectedItem);
+            }
+
+            // Determine if the copied item is appropriate for the target node
+            if (this.copiedTriggerElement is Components.TriggerEditor.TriggerEvent && !(targetParentNode is NodeEvent))
+                return;
+            if (this.copiedTriggerElement is Components.TriggerEditor.TriggerCondition && !(targetParentNode is NodeCondition))
+                return;
+            if (this.copiedTriggerElement is Components.TriggerEditor.TriggerAction && !(targetParentNode is NodeAction))
+                return;
+
+            CommandTriggerElementPaste command = new CommandTriggerElementPaste(function, targetParentNode, insertIndex);
+            command.Execute();
         }
     }
 }

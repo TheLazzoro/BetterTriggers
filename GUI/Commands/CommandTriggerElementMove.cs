@@ -7,7 +7,7 @@ using GUI.Components.TriggerEditor;
 
 namespace GUI.Commands
 {
-    public class TriggerElementMoveCommand : ICommand
+    public class CommandTriggerElementMove : ICommand
     {
         string commandName = "Move Trigger Element";
         TreeViewItem triggerElement;
@@ -16,7 +16,7 @@ namespace GUI.Commands
         int oldIndex;
         int newIndex;
 
-        public TriggerElementMoveCommand(TreeViewItem triggerElement, TreeViewItem oldParent, TreeViewItem newParent, int newIndex)
+        public CommandTriggerElementMove(TreeViewItem triggerElement, TreeViewItem oldParent, TreeViewItem newParent, int newIndex)
         {
             this.triggerElement = triggerElement;
             this.oldParent = oldParent;

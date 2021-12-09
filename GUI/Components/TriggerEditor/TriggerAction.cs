@@ -12,7 +12,7 @@ namespace GUI.Components.TriggerEditor
 {
     public class TriggerAction : TriggerElement
     {
-        private Model.Natives.Function action;
+        public readonly Model.Natives.Function action;
         
         public TriggerAction(Model.Natives.Function action)
         {

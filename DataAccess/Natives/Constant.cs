@@ -1,15 +1,16 @@
 ﻿
-using Model.Containers;
+using System;
 
 namespace Model.Natives
 {
-    public class Constant : Parameter
+    public class Constant : Parameter, ICloneable
     {
         public int ParamType = 2; // DO NOT CHANGE
         public string codeText;
 
-        public Constant()
+        public object Clone()
         {
+            return MemberwiseClone();
         }
     }
 }

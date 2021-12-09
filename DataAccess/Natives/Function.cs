@@ -1,14 +1,10 @@
-﻿using Model.Containers;
-using Model.Data;
+﻿using Model.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.Natives
 {
-    public class Function : Parameter
+    public class Function : Parameter, ICloneable
     {
         public int ParamType = 1; // DO NOT CHANGE
 
@@ -17,8 +13,9 @@ namespace Model.Natives
         public string description;
         public EnumCategory category;
 
-        public Function()
+        public object Clone()
         {
+            return MemberwiseClone();
         }
     }
 }
