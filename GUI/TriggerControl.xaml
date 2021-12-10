@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
-             mc:Ignorable="d" Background="#001E1E1E">
+             mc:Ignorable="d" Background="#FF404040">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -14,8 +14,8 @@
             <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
-        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" />
-        <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="White" Margin="100,0,0,0"/>
+        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" Margin="5,5,0,0" />
+        <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="White" Margin="100,5,0,0"/>
         <Label Content="Trigger Comment:" VerticalAlignment="Top" Foreground="White" Margin="0,24,0,0"/>
 
         <RichTextBox x:Name="richTextBoxComment" Background="#FF282828" BorderBrush="#00828790" Grid.Row="1"/>

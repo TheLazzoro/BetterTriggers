@@ -7,14 +7,14 @@ namespace Model.Containers
 {
     public static class ContainerConditions
     {
-        private static List<Natives.Condition> container = new List<Natives.Condition>();
+        private static List<Natives.Function> container = new List<Natives.Function>();
 
         public static int Size()
         {
             return container.Count;
         }
         
-        public static void AddCondition(Natives.Condition constant)
+        public static void AddCondition(Natives.Function constant)
         {
             bool alreadyExists = false;
             string whichType = string.Empty;
@@ -37,17 +37,17 @@ namespace Model.Containers
                 Console.WriteLine($"At {index}: Type '{constant.identifier}' already exists as '{whichType}' in the container.");
         }
 
-        public static List<Natives.Condition> GetAllTypes()
+        public static List<Natives.Function> GetAllTypes()
         {
             return container;
         }
 
-        public static void SetList(List<Natives.Condition> list)
+        public static void SetList(List<Natives.Function> list)
         {
             if (list != null)
                 container = list;
             else
-                container = new List<Natives.Condition>();
+                container = new List<Natives.Function>();
         }
     }
 }

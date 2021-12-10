@@ -10,11 +10,11 @@ namespace GUI.Commands
     public class CommandTriggerElementDelete : ICommand
     {
         string commandName = "Delete Trigger Element";
-        TreeViewItem triggerElement;
+        TriggerElement triggerElement;
         TreeViewItem parent;
         int treeIndex;
 
-        public CommandTriggerElementDelete(TreeViewItem triggerElement, TreeViewItem parent)
+        public CommandTriggerElementDelete(TriggerElement triggerElement, TreeViewItem parent)
         {
             this.triggerElement = triggerElement;
             this.parent = parent;

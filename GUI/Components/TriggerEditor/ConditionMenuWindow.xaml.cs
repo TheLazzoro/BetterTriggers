@@ -19,7 +19,7 @@ namespace GUI
     /// </summary>
     public partial class ConditionMenuWindow : Window
     {
-        public Model.Natives.Condition selectedContition;
+        public Model.Natives.Function selectedContition;
 
         public ConditionMenuWindow()
         {
@@ -29,12 +29,12 @@ namespace GUI
             listViewCategory.Items.Add("- General");
             listViewCategory.Items.Add("Ability");
 
-            List<Model.Natives.Condition> conditions = Model.LoadData.LoadAllConditions(@"C:\Users\Lasse Dam\Desktop\JSON\conditions.json");
+            List<Model.Natives.Function> conditions = Model.LoadData.LoadAllConditions(@"C:\Users\Lasse Dam\Desktop\JSON\conditions.json");
 
             for(int i = 0; i < conditions.Count; i++)
             {
                 ListViewItem item = new ListViewItem();
-                item.Content = conditions[i].displayName;
+                item.Content = conditions[i].name;
                 item.Tag = conditions[i];
                 listViewEvents.Items.Add(item);
             }
@@ -43,7 +43,7 @@ namespace GUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             var item = (ListViewItem) listViewEvents.SelectedItem;
-            selectedContition = (Model.Natives.Condition) item.Tag;
+            selectedContition = (Model.Natives.Function) item.Tag;
             this.Close();
         }
 

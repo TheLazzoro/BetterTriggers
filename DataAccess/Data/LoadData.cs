@@ -40,10 +40,10 @@ namespace Model
             return list;
         }
 
-        public static List<Condition> LoadAllConditions(string filepath)
+        public static List<Function> LoadAllConditions(string filepath)
         {
             string filePlainText = File.ReadAllText(filepath);
-            List<Condition> list = JsonConvert.DeserializeObject<List<Condition>>(filePlainText);
+            List<Function> list = JsonConvert.DeserializeObject<List<Function>>(filePlainText);
 
             return list;
         }

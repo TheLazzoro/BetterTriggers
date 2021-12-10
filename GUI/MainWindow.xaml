@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:GUI" xmlns:triggerexplorer="clr-namespace:GUI.Components.TriggerExplorer"
         UseLayoutRounding="True"
         mc:Ignorable="d"
-        Title="Better Triggers" Height="450" Width="800" Background="#FF404040" KeyDown="Window_KeyDown">
+        Title="Better Triggers" Height="450" Width="800" Background="#FF131313" KeyDown="Window_KeyDown">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -72,8 +72,8 @@
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="3"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="4"/>
             <RowDefinition Height="125"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -93,6 +93,7 @@
         </Menu>
 
         <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="2" />
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Fill="#FF404040" />
 
         <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="10,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
             <Button.Background>
@@ -144,8 +145,8 @@
 
         <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
 
-        <triggerexplorer:TriggerExplorer x:Name="treeViewTriggerExplorer" Grid.Row="2" Grid.RowSpan="3" Background="#FF282828" BorderThickness="0" Margin="0,2,5,0" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
-        <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#FF404040" Margin="0,5,0,0"/>
+        <triggerexplorer:TriggerExplorer x:Name="treeViewTriggerExplorer" Grid.Row="3" Grid.RowSpan="2" Background="#FF282828" BorderThickness="0" Margin="0,0,4,0" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
+        <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
     </Grid>
 </Window>

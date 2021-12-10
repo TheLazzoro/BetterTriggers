@@ -8,36 +8,36 @@ using Model.Natives;
 
 namespace GUI.Commands
 {
-    public class CommandTriggerElementPaste : ICommand
+    public class CommandTriggerElementCreate : ICommand
     {
-        string commandName = "Paste Trigger Element";
+        string commandName = "Create Trigger Element";
         Components.TriggerEditor.TriggerElement triggerElement;
         TreeViewItem parent;
-        int pastedIndex = 0;
+        int insertIndex = 0;
 
-        public CommandTriggerElementPaste(Function function, TreeViewItem parent, int pastedIndex)
+        public CommandTriggerElementCreate(Function function, TreeViewItem parent, int insertIndex)
         {
             if (parent is NodeEvent)
-                this.triggerElement = new Components.TriggerEditor.TriggerEvent(function);
+                this.triggerElement = new TriggerEvent(function);
             else if (parent is NodeCondition)
-                this.triggerElement = new Components.TriggerEditor.TriggerCondition(function);
+                this.triggerElement = new TriggerCondition(function);
             else if (parent is NodeAction)
                 this.triggerElement = new Components.TriggerEditor.TriggerAction(function);
 
             this.parent = parent;
-            this.pastedIndex = pastedIndex;
+            this.insertIndex = insertIndex;
         }
 
         public void Execute()
         {
-            parent.Items.Insert(this.pastedIndex, triggerElement);
-            
+            this.parent.Items.Insert(this.insertIndex, this.triggerElement);
+
             CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
-            parent.Items.Insert(this.pastedIndex, triggerElement);
+            parent.Items.Insert(this.insertIndex, triggerElement);
         }
 
         public void Undo()

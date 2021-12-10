@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.ComponentModel;
 using System.Threading;
+using GUI.Commands;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -17,7 +18,7 @@ namespace GUI.Components.TriggerEditor
     {
         public TextBlock paramTextBlock;
         public TextBlock descriptionTextBlock;
-        protected List<Parameter> parameters;
+        internal List<Parameter> parameters;
         protected string paramText;
         protected EnumCategory category;
         private string formattedParamText = string.Empty;
@@ -26,26 +27,27 @@ namespace GUI.Components.TriggerEditor
         public TriggerElement()
         {
             this.paramTextBlock = new TextBlock();
+            this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
             this.paramTextBlock.FontSize = 18;
             this.paramTextBlock.TextWrapping = TextWrapping.Wrap;
-            this.paramTextBlock.Margin = new Thickness(0, 0, 5, 0);
             this.paramTextBlock.Foreground = Brushes.White;
+            Grid.SetRow(this.paramTextBlock, 3);
 
             this.descriptionTextBlock = new TextBlock();
             this.descriptionTextBlock.FontSize = 12;
             this.descriptionTextBlock.TextWrapping = TextWrapping.Wrap;
-            this.descriptionTextBlock.Margin = new Thickness(0, 0, 5, 5);
+            this.descriptionTextBlock.Margin = new Thickness(5, 0, 5, 5);
             this.descriptionTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(200, 200, 200));
             this.descriptionTextBlock.Background = new SolidColorBrush(Color.FromRgb(40, 40, 40));
+            Grid.SetRow(this.descriptionTextBlock, 4);
         }
 
-        protected void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
+        internal void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
         {
             textBlock.Inlines.Clear();
             this.formattedParamText = string.Empty;
 
             RecurseParameters(textBlock, parameters, paramText);
-
             TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category);
         }
 
@@ -92,6 +94,7 @@ namespace GUI.Components.TriggerEditor
                         }
                         else // whole displayname gets hyperlinked
                         {
+                            formattedParamText += "(";
                             Run runFirstBracket = new Run("(");
                             runFirstBracket.FontFamily = new FontFamily("Verdana");
                             textBlock.Inlines.Add(runFirstBracket);
@@ -198,10 +201,11 @@ namespace GUI.Components.TriggerEditor
             window.Title = parameters[paramIndex].returnType;
             window.ShowDialog();
 
-            if (window.isOK)
+            if (window.isOK) // set parameter on window close.
             {
-                parameters[paramIndex] = window.selectedParameter; // set parameter on window close.
-                FormatParameterText(this.paramTextBlock, this.parameters);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(this, parameters, paramIndex, window.selectedParameter);
+                command.Execute();
+
             }
         }
     }

@@ -52,7 +52,6 @@
     <Compile Include="JsonBaseConverter\BaseConverter.cs" />
     <Compile Include="JsonBaseConverter\ParameterConverter.cs" />
     <Compile Include="Data\LoadData.cs" />
-    <Compile Include="Natives\Condition.cs" />
     <Compile Include="Natives\Function.cs" />
     <Compile Include="Natives\Parameter.cs" />
     <Compile Include="Natives\Constant.cs" />

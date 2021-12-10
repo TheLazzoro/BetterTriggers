@@ -13,9 +13,9 @@ namespace GUI.Components.TriggerEditor
 {
     public class TriggerCondition : TriggerElement
     {
-        private Model.Natives.Condition condition;
+        private Model.Natives.Function condition;
         
-        public TriggerCondition(Model.Natives.Condition condition)
+        public TriggerCondition(Model.Natives.Function condition)
         {
             this.condition = condition;
             this.parameters = condition.parameters;

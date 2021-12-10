@@ -43,8 +43,8 @@ namespace GUI.Controllers
             // Position editor
             mainGrid.Children.Add(textEditor);
             Grid.SetColumn(textEditor, 1);
-            Grid.SetRow(textEditor, 3);
-            Grid.SetRowSpan(textEditor, 2);
+            Grid.SetRow(textEditor, 2);
+            Grid.SetRowSpan(textEditor, 3);
 
             // Sets syntax highlighting in the comment field
             using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)

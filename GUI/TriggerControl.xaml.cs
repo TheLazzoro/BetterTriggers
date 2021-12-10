@@ -57,8 +57,8 @@ namespace GUI
 
             if (_event != null)
             {
-                TriggerEvent item = new TriggerEvent(_event);
-                categoryEvent.Items.Add(item);
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(_event, categoryEvent, 0); // change 0 to other index
+                command.Execute();
 
                 categoryEvent.IsExpanded = true;
             }
@@ -69,12 +69,12 @@ namespace GUI
         {
             var conditionMenu = new ConditionMenuWindow();
             conditionMenu.ShowDialog();
-            Model.Natives.Condition condition = conditionMenu.selectedContition;
+            Model.Natives.Function condition = conditionMenu.selectedContition;
 
             if (condition != null)
             {
-                TriggerCondition item = new TriggerCondition(condition);
-                categoryCondition.Items.Add(item);
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(condition, categoryCondition, 0); // change 0 to other index
+                command.Execute();
 
                 categoryCondition.IsExpanded = true;
             }
@@ -88,8 +88,8 @@ namespace GUI
 
             if (action != null)
             {
-                Components.TriggerEditor.TriggerAction item = new Components.TriggerEditor.TriggerAction(action);
-                categoryAction.Items.Add(item);
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(action, categoryAction, 0); // change 0 to other index
+                command.Execute();
 
                 categoryAction.IsExpanded = true;
             }
@@ -111,12 +111,7 @@ namespace GUI
 
                 // Display appropriate textblock
                 grid.Children.Add(textBlockParameters);
-                Grid.SetRow(textBlockParameters, 3);
-                textBlockParameters.Margin = new Thickness(0, 0, 5, 0);
-
                 grid.Children.Add(textBlockDescription);
-                Grid.SetRow(textBlockDescription, 4);
-                textBlockDescription.Margin = new Thickness(0, 0, 5, 0);
 
                 currentParameterBlock = textBlockParameters;
                 currentDescriptionBlock = textBlockDescription;
@@ -253,7 +248,7 @@ namespace GUI
             if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
                 return;
 
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(selectedItem, (TreeViewItem)selectedItem.Parent);
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(selectedItem as TriggerElement, (TreeViewItem)selectedItem.Parent);
             command.Execute();
         }
 

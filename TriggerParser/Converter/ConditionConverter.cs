@@ -31,10 +31,10 @@ namespace TriggerParser.Converter
                     parameters.Add(parameter);
                 }
 
-                Condition condition = new Condition()
+                Function condition = new Function()
                 {
                     identifier = item.key,
-                    displayName = item.displayName,
+                    name = item.displayName,
                     parameters = parameters,
                     paramText = item.paramText,
                     category = CategoryConverter.ConvertBlizzardCategory(item.category)
