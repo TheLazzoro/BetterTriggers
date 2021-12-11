@@ -30,7 +30,7 @@ namespace GUI.Commands
         public void Execute()
         {
             paramCollection[paramIndex] = paramToAdd;
-            this.triggerElement.FormatParameterText(triggerElement.paramTextBlock, triggerElement.parameters);
+            this.triggerElement.FormatParameterText(triggerElement.paramTextBlock, triggerElement.function.parameters);
 
             CommandManager.AddCommand(this);
         }
@@ -38,13 +38,13 @@ namespace GUI.Commands
         public void Redo()
         {
             paramCollection[paramIndex] = paramToAdd;
-            this.triggerElement.FormatParameterText(triggerElement.paramTextBlock, triggerElement.parameters);
+            this.triggerElement.FormatParameterText(triggerElement.paramTextBlock, triggerElement.function.parameters);
         }
 
         public void Undo()
         {
             paramCollection[paramIndex] = oldParameter;
-            this.triggerElement.FormatParameterText(triggerElement.paramTextBlock, triggerElement.parameters);
+            this.triggerElement.FormatParameterText(triggerElement.paramTextBlock, triggerElement.function.parameters);
         }
 
         public string GetCommandName()

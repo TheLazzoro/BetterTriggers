@@ -33,5 +33,7 @@ namespace GUI.Components.TriggerExplorer
 
         public void Show() { }
         public void Hide() { }
+        public string GetSaveString() { throw new NotImplementedException(); }
+        public UserControl GetControl() { throw new NotImplementedException(); }
     }
 }

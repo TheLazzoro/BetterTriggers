@@ -17,13 +17,7 @@ namespace GUI.Commands
 
         public CommandTriggerElementPaste(Function function, TreeViewItem parent, int pastedIndex)
         {
-            if (parent is NodeEvent)
-                this.triggerElement = new Components.TriggerEditor.TriggerEvent(function);
-            else if (parent is NodeCondition)
-                this.triggerElement = new Components.TriggerEditor.TriggerCondition(function);
-            else if (parent is NodeAction)
-                this.triggerElement = new Components.TriggerEditor.TriggerAction(function);
-
+            this.triggerElement = new Components.TriggerEditor.TriggerElement(function);
             this.parent = parent;
             this.pastedIndex = pastedIndex;
         }
@@ -31,7 +25,7 @@ namespace GUI.Commands
         public void Execute()
         {
             parent.Items.Insert(this.pastedIndex, triggerElement);
-            
+
             CommandManager.AddCommand(this);
         }
 

@@ -17,13 +17,7 @@ namespace GUI.Commands
 
         public CommandTriggerElementCreate(Function function, TreeViewItem parent, int insertIndex)
         {
-            if (parent is NodeEvent)
-                this.triggerElement = new TriggerEvent(function);
-            else if (parent is NodeCondition)
-                this.triggerElement = new TriggerCondition(function);
-            else if (parent is NodeAction)
-                this.triggerElement = new Components.TriggerEditor.TriggerAction(function);
-
+            this.triggerElement = new TriggerElement(function);
             this.parent = parent;
             this.insertIndex = insertIndex;
         }

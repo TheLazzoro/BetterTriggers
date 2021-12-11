@@ -23,9 +23,9 @@ namespace GUI
     /// </summary>
     public partial class TriggerControl : UserControl
     {
-        NodeEvent categoryEvent;
-        NodeCondition categoryCondition;
-        NodeAction categoryAction;
+        public NodeEvent categoryEvent;
+        public NodeCondition categoryCondition;
+        public NodeAction categoryAction;
 
         TextBlock currentParameterBlock;
         TextBlock currentDescriptionBlock;
@@ -264,6 +264,9 @@ namespace GUI
 
         private void PasteTriggerElement()
         {
+            throw new NotImplementedException();
+
+            /*
             var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
             if (selectedItem == null || this.copiedTriggerElement == null)
                 return;
@@ -307,6 +310,7 @@ namespace GUI
 
             CommandTriggerElementPaste command = new CommandTriggerElementPaste(function, targetParentNode, insertIndex);
             command.Execute();
+            */
         }
     }
 }

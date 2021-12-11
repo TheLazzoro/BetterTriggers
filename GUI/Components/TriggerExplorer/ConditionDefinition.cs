@@ -16,6 +16,16 @@ namespace GUI.Components.TriggerExplorer
             this.IsEnabled = true;
         }
 
+        public UserControl GetControl()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetSaveString()
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetScript()
         {
             throw new NotImplementedException();

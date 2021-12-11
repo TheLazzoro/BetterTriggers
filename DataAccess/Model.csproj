@@ -49,6 +49,7 @@
     <Compile Include="Containers\ContainerEvents.cs" />
     <Compile Include="Containers\ContainerConstants.cs" />
     <Compile Include="Data\EnumCategory.cs" />
+    <Compile Include="Data\Trigger.cs" />
     <Compile Include="JsonBaseConverter\BaseConverter.cs" />
     <Compile Include="JsonBaseConverter\ParameterConverter.cs" />
     <Compile Include="Data\LoadData.cs" />

@@ -7,9 +7,9 @@ namespace GUI.Containers
 {
     public static class ContainerScripts
     {
-        private static List<Script> scriptContainer = new List<Script>();
+        private static List<ExplorerScript> scriptContainer = new List<ExplorerScript>();
 
-        public static void AddTriggerElement(Script triggerElement)
+        public static void AddTriggerElement(ExplorerScript triggerElement)
         {
             scriptContainer.Add(triggerElement);
         }
@@ -19,7 +19,7 @@ namespace GUI.Containers
             return scriptContainer.Count;
         }
 
-        public static Script Get(int index)
+        public static ExplorerScript Get(int index)
         {
             return scriptContainer[index];
         }

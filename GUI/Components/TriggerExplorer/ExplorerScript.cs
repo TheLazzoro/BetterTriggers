@@ -11,13 +11,13 @@ using System.Windows.Input;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class Script : TriggerExplorerElement, ITriggerExplorerElement
+    public class ExplorerScript : TriggerExplorerElement, ITriggerExplorerElement
     {
         public bool IsEnabled;
         ICSharpCode.AvalonEdit.TextEditor textEditor;
         
 
-        public Script(string name, TreeViewItem treeViewItem, ICSharpCode.AvalonEdit.TextEditor textEditor) : base(treeViewItem)
+        public ExplorerScript(string name, TreeViewItem treeViewItem, ICSharpCode.AvalonEdit.TextEditor textEditor) : base(treeViewItem)
         {
             this.Name = name;
             this.textEditor = textEditor;
@@ -51,6 +51,16 @@ namespace GUI.Components.TriggerExplorer
         public string GetScript()
         {
             return this.textEditor.Text;
+        }
+
+        public string GetSaveString()
+        {
+            return this.textEditor.Text;
+        }
+
+        public UserControl GetControl()
+        {
+            throw new NotImplementedException();
         }
     }
 }

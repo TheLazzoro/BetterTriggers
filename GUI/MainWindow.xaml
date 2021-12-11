@@ -83,7 +83,12 @@
         </Grid.ColumnDefinitions>
 
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" >
-            <MenuItem Header="File" Height="25"/>
+            <MenuItem Header="File" Height="25">
+                <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black"/>
+                <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black"/>
+                <MenuItem Name="menuSave" Header="Save" FontFamily="Bahnschrift" Foreground="Black" Click="menuSave_Click"/>
+                <MenuItem Name="menuSaveAs" Header="Save As..." FontFamily="Bahnschrift" Foreground="Black"/>
+            </MenuItem>
             <MenuItem Header="Edit" Height="25" SubmenuOpened="MenuItem_SubmenuOpened">
                 <MenuItem Name="menuItemUndo" Header="Undo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemUndo_Click"/>
                 <MenuItem Name="menuItemRedo" Header="Redo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemRedo_Click"/>

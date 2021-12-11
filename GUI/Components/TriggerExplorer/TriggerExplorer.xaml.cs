@@ -23,7 +23,7 @@ namespace GUI.Components.TriggerExplorer
     /// 
     public partial class TriggerExplorer : UserControl
     {
-        TreeViewItem map;
+        public TreeViewItem map;
         Point _startPoint;
         TreeViewItem dragItem;
         bool _IsDragging = false;
@@ -49,7 +49,7 @@ namespace GUI.Components.TriggerExplorer
             string name = NameGenerator.GenerateTriggerName();
 
             var item = CreateTreeViewItem(name, EnumCategory.Trigger);
-            Trigger trig = new Trigger(name, item, triggerControl);
+            ExplorerTrigger trig = new ExplorerTrigger(name, item, triggerControl);
         }
 
         public void CreateScript(ICSharpCode.AvalonEdit.TextEditor textEditor)
@@ -57,7 +57,7 @@ namespace GUI.Components.TriggerExplorer
             string name = NameGenerator.GenerateScriptName();
 
             var item = CreateTreeViewItem(name, EnumCategory.AI);
-            Script script = new Script(name, item, textEditor);
+            ExplorerScript script = new ExplorerScript(name, item, textEditor);
         }
 
         public void CreateVariable(VariableControl variableControl)

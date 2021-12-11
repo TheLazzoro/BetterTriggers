@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using BetterTriggers;
 using GUI.Components.TextEditor;
+using GUI.Components.TriggerExplorer;
 using GUI.Containers;
 using GUI.Controllers;
 using ICSharpCode.AvalonEdit.CodeCompletion;
@@ -32,7 +33,7 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TriggerControl currentTriggerWindow;
+        private ExplorerTrigger currentTriggerExplorerElement;
         
         public MainWindow()
         {
@@ -45,11 +46,11 @@ namespace GUI
         private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
         {
             var item = (TreeViewItem) treeViewTriggerExplorer.treeViewTriggerExplorer.SelectedItem;
-            var trigger = item.Tag as GUI.Components.TriggerExplorer.Trigger;
+            var triggerExplorerElement = item.Tag as GUI.Components.TriggerExplorer.ExplorerTrigger;
 
-            if(trigger != null)
+            if(triggerExplorerElement != null)
             {
-                currentTriggerWindow = trigger.triggerControl;
+                currentTriggerExplorerElement = triggerExplorerElement;
                 btnCreateEvent.IsEnabled = true;
                 btnCreateCondition.IsEnabled = true;
                 btnCreateAction.IsEnabled = true;
@@ -87,17 +88,17 @@ namespace GUI
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            currentTriggerWindow.CreateEvent();
+            currentTriggerExplorerElement.triggerControl.CreateEvent();
         }
 
         private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
         {
-            currentTriggerWindow.CreateCondition();
+            currentTriggerExplorerElement.triggerControl.CreateCondition();
         }
 
         private void btnCreateAction_Click(object sender, RoutedEventArgs e)
         {
-            currentTriggerWindow.CreateAction();
+            currentTriggerExplorerElement.triggerControl.CreateAction();
         }
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
@@ -154,6 +155,14 @@ namespace GUI
             {
                 Commands.CommandManager.Redo();
             }
+        }
+
+        private void menuSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentTriggerExplorerElement == null)
+                return;
+
+            SaveLoad.SaveLoad.SaveStringAs(currentTriggerExplorerElement.GetSaveString());
         }
     }
 }

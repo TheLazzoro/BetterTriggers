@@ -7,10 +7,10 @@ namespace GUI.Containers
 {
     public static class ContainerTriggers
     {
-        private static List<Trigger> triggerElementContainer = new List<Trigger>();
+        private static List<ExplorerTrigger> triggerElementContainer = new List<ExplorerTrigger>();
 
 
-        public static void AddTriggerElement(Trigger triggerElement)
+        public static void AddTriggerElement(ExplorerTrigger triggerElement)
         {
             triggerElementContainer.Add(triggerElement);
         }
@@ -20,7 +20,7 @@ namespace GUI.Containers
             return triggerElementContainer.Count;
         }
 
-        public static Trigger Get(int index)
+        public static ExplorerTrigger Get(int index)
         {
             return triggerElementContainer[index];
         }

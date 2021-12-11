@@ -14,17 +14,17 @@ using GUI.Commands;
 
 namespace GUI.Components.TriggerEditor
 {
-    public abstract class TriggerElement : TreeViewItem
+    public class TriggerElement : TreeViewItem
     {
+        internal Function function;
         public TextBlock paramTextBlock;
         public TextBlock descriptionTextBlock;
-        internal List<Parameter> parameters;
         protected string paramText;
         protected EnumCategory category;
         private string formattedParamText = string.Empty;
 
 
-        public TriggerElement()
+        public TriggerElement(Function function)
         {
             this.paramTextBlock = new TextBlock();
             this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
@@ -40,7 +40,16 @@ namespace GUI.Components.TriggerEditor
             this.descriptionTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(200, 200, 200));
             this.descriptionTextBlock.Background = new SolidColorBrush(Color.FromRgb(40, 40, 40));
             Grid.SetRow(this.descriptionTextBlock, 4);
+
+            this.function = function;
+            this.paramText = function.paramText;
+            this.descriptionTextBlock.Text = function.description;
+            this.category = function.category;
+
+            TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", function.category);
+            this.FormatParameterText(paramTextBlock, this.function.parameters);
         }
+
 
         internal void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
         {

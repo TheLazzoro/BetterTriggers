@@ -66,5 +66,15 @@ namespace GUI.Components.TriggerExplorer
             this.identifier = newIdentifier;
             this.variableControl.textBlockVariableNameUDG.Text = newIdentifier;
         }
+
+        public string GetSaveString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserControl GetControl()
+        {
+            return this.variableControl;
+        }
     }
 }
