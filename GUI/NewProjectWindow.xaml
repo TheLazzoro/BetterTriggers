@@ -34,12 +34,12 @@
         <Label Content="Select project destination folder:" Grid.Row="5" Foreground="White" VerticalAlignment="Center"/>
         <Label Content="Select Warcraft III map folder:" Grid.Row="6" Foreground="White" VerticalAlignment="Center"/>
         <Button x:Name="btnProjectDestination" Content="Select..." Grid.Row="5" Width="75" Margin="5,5,5,5" HorizontalAlignment="Right" Click="btnProjectDestination_Click"/>
-        <Button x:Name="btnWar3Folder" Content="Select..." Grid.Row="6" Width="75" Margin="5,5,5,5" HorizontalAlignment="Right"/>
+        <Button x:Name="btnWar3Folder" Content="Select..." Grid.Row="6" Width="75" Margin="5,5,5,5" HorizontalAlignment="Right" Click="btnWar3Folder_Click"/>
 
         <Label x:Name="lblProjectDestination" Content="--- Empty ---" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Foreground="White" />
         <Label x:Name="lblWar3MapFolder" Content="--- Empty ---" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" Foreground="White" />
 
-        <Button x:Name="btnCreate" Content="Create Project" Grid.Row="7" Grid.Column="1" Width="100" Margin="5,5,5,5" HorizontalAlignment="Right"/>
+        <Button x:Name="btnCreate" Content="Create Project" Grid.Row="7" Grid.Column="1" Width="100" Margin="5,5,5,5" HorizontalAlignment="Right" Click="btnCreate_Click"/>
 
     </Grid>
 </Window>

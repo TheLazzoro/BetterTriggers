@@ -57,6 +57,7 @@
     <Compile Include="Natives\Parameter.cs" />
     <Compile Include="Natives\Constant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="War3Project\War3Project.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

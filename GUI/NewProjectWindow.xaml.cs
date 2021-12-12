@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -55,8 +56,30 @@ namespace GUI
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                dialog.SelectedPath
+                lblProjectDestination.Content = dialog.SelectedPath;
             }
+        }
+
+        private void btnWar3Folder_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                lblWar3MapFolder.Content = dialog.SelectedPath;
+            }
+        }
+
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            string language = string.Empty;
+
+            if ((bool)radBtnJass.IsChecked)
+                language = "jass";
+            else if ((bool)radBtnLua.IsChecked)
+                language = "lua";
+
+            ControllerProject controller = new ControllerProject();
+            controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
         }
     }
 }
