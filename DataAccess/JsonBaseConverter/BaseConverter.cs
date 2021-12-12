@@ -22,7 +22,6 @@ namespace Model.JsonBaseConverter
         {
             if (jObject.ContainsKey("ParamType"))
             {
-
                 var type = (int)jObject.Property("ParamType");
                 switch (type)
                 {

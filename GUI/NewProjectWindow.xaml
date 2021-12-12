@@ -1,0 +1,45 @@
+﻿<Window x:Class="GUI.NewProjectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="NewProjectWindow" Height="471" Width="544" Background="#FF404040" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="175"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Create a new project" Grid.Row="0" Foreground="White" FontSize="24" />
+        <Label Content="Project Name:" Grid.Row="1" Foreground="White"/>
+        <TextBox x:Name="textBoxProjectName" Grid.Row="2" Margin="5,0,0,0" Width="250" HorizontalAlignment="Left" Foreground="White" Background="#FF202020" BorderBrush="#FF0A0A0A"/>
+
+        <Label Content="Select scripting language:" Grid.Row="3" Foreground="White" VerticalAlignment="Bottom" FontSize="16"/>
+        <RadioButton x:Name="radBtnJass" Content="vJass" Grid.Row="4" Foreground="White" Margin="5,5,5,5" Checked="radBtnJass_Checked"/>
+        <RadioButton x:Name="radBtnLua" Content="Lua" Grid.Row="4" Foreground="White" Margin="75,5,5,5" Checked="radBtnLua_Checked"/>
+        <TextBlock x:Name="lblLanguageHint" Text="placeholder" Grid.Row="4" Margin="5,25,5,5" Foreground="White" TextWrapping="Wrap" />
+
+        <Label Content="Select project destination folder:" Grid.Row="5" Foreground="White" VerticalAlignment="Center"/>
+        <Label Content="Select Warcraft III map folder:" Grid.Row="6" Foreground="White" VerticalAlignment="Center"/>
+        <Button x:Name="btnProjectDestination" Content="Select..." Grid.Row="5" Width="75" Margin="5,5,5,5" HorizontalAlignment="Right" Click="btnProjectDestination_Click"/>
+        <Button x:Name="btnWar3Folder" Content="Select..." Grid.Row="6" Width="75" Margin="5,5,5,5" HorizontalAlignment="Right"/>
+
+        <Label x:Name="lblProjectDestination" Content="--- Empty ---" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Foreground="White" />
+        <Label x:Name="lblWar3MapFolder" Content="--- Empty ---" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" Foreground="White" />
+
+        <Button x:Name="btnCreate" Content="Create Project" Grid.Row="7" Grid.Column="1" Width="100" Margin="5,5,5,5" HorizontalAlignment="Right"/>
+
+    </Grid>
+</Window>

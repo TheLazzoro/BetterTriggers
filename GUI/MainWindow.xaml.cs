@@ -170,6 +170,12 @@ namespace GUI
             }
         }
 
+        private void menuNewProject_Click(object sender, RoutedEventArgs e)
+        {
+            NewProjectWindow window = new NewProjectWindow();
+            window.ShowDialog();
+        }
+
         private void menuSave_Click(object sender, RoutedEventArgs e)
         {
             if (currentTriggerExplorerElement == null)

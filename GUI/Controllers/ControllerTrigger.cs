@@ -62,6 +62,10 @@ namespace GUI.Controllers
                 TriggerElement triggerElement = new TriggerElement(action);
                 triggerControl.categoryAction.Items.Add(triggerElement);
             }
+
+            triggerControl.categoryEvent.ExpandSubtree();
+            triggerControl.categoryCondition.ExpandSubtree();
+            triggerControl.categoryAction.ExpandSubtree();
         }
     }
 }

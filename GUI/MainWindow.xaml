@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
-        xmlns:local="clr-namespace:GUI" xmlns:triggerexplorer="clr-namespace:GUI.Components.TriggerExplorer"
+        xmlns:local="clr-namespace:GUI" xmlns:triggerexplorer="clr-namespace:GUI"
         UseLayoutRounding="True"
         mc:Ignorable="d"
         Title="Better Triggers" Height="450" Width="800" Background="#FF131313" KeyDown="Window_KeyDown">
@@ -84,7 +84,7 @@
 
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" >
             <MenuItem Header="File" Height="25">
-                <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black"/>
+                <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black" Click="menuNewProject_Click"/>
                 <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black"/>
                 <MenuItem Name="menuSave" Header="Save" FontFamily="Bahnschrift" Foreground="Black" Click="menuSave_Click"/>
                 <MenuItem Name="menuSaveAs" Header="Save As..." FontFamily="Bahnschrift" Foreground="Black"/>
