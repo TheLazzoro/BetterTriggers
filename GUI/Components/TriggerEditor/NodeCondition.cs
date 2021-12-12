@@ -1,5 +1,5 @@
 ﻿using Model.Data;
-using GUI.Components.Utility;
+using GUI.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;

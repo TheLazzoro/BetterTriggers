@@ -1,6 +1,8 @@
 ﻿using GUI.Components.TriggerExplorer;
+using GUI.Utility;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using Model.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,26 +14,8 @@ using System.Xml;
 
 namespace GUI.Controllers
 {
-    public class ControllerTriggerExplorer
+    public class ControllerScript
     {
-        public void CreateFolder(TriggerExplorer triggerExplorer)
-        {
-            triggerExplorer.CreateFolder();
-        }
-
-        public void CreateTrigger(Grid mainGrid,  TriggerExplorer triggerExplorer)
-        {
-            var triggerControl = new TriggerControl();
-            triggerControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            triggerControl.VerticalContentAlignment = VerticalAlignment.Stretch;
-            Grid.SetColumn(triggerControl, 1);
-            Grid.SetRow(triggerControl, 3);
-            Grid.SetRowSpan(triggerControl, 2);
-            mainGrid.Children.Add(triggerControl);
-
-            triggerExplorer.CreateTrigger(triggerControl);
-        }
-
         public void CreateScript(Grid mainGrid, TriggerExplorer triggerExplorer)
         {
             var textEditor = new ICSharpCode.AvalonEdit.TextEditor();
@@ -55,25 +39,16 @@ namespace GUI.Controllers
                 }
             }
 
-            triggerExplorer.CreateScript(textEditor);
+            string name = NameGenerator.GenerateScriptName();
+
+            TreeViewItem item = new TreeViewItem();
+            ExplorerScript script = new ExplorerScript(name, item, textEditor);
+
+            triggerExplorer.CreateTreeViewItem(item, name, EnumCategory.AI);
 
             // folding text blocks?
             //foldingManager = FoldingManager.Install(textEditor.TextArea);
             //foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
         }
-
-        public void CreateVariable(Grid mainGrid, TriggerExplorer triggerExplorer)
-        {
-            var variableControl = new VariableControl();
-
-            // Position editor
-            mainGrid.Children.Add(variableControl);
-            Grid.SetColumn(variableControl, 1);
-            Grid.SetRow(variableControl, 3);
-            Grid.SetRowSpan(variableControl, 2);
-
-            triggerExplorer.CreateVariable(variableControl);
-        }
-
     }
 }

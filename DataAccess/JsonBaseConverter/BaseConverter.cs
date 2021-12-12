@@ -18,26 +18,43 @@ namespace Model.JsonBaseConverter
             return (objectType == typeof(Parameter));
         }
 
-        public override object ReadJson(JsonReader reader, System.Type objectType, object existingValue, JsonSerializer serializer)
+        public object Create(Type objectType, JObject jObject)
         {
-            JObject jo = JObject.Load(reader);
-            if (jo.ContainsKey("ParamType"))
+            if (jObject.ContainsKey("ParamType"))
             {
 
-                switch (jo["ParamType"].Value<int>())
+                var type = (int)jObject.Property("ParamType");
+                switch (type)
                 {
                     case 1:
-                        return JsonConvert.DeserializeObject<Function>(jo.ToString(), SpecifiedSubclassConversion);
+                        return new Function();
                     case 2:
-                        return JsonConvert.DeserializeObject<Constant>(jo.ToString(), SpecifiedSubclassConversion);
+                        return new Constant();
                     default:
-                        throw new Exception();
+                        return new Parameter();
                 }
-            } else
-                return JsonConvert.DeserializeObject<Parameter>(jo.ToString(), SpecifiedSubclassConversion);
 
-            throw new NotImplementedException();
+                throw new ApplicationException(String.Format("The given parameter type {0} is not supported!", type));
+            }
+            else
+                return new Parameter();
+
         }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            // Load JObject from stream
+            JObject jObject = JObject.Load(reader);
+
+            // Create target object based on JObject
+            var target = Create(objectType, jObject);
+
+            // Populate the object properties
+            serializer.Populate(jObject.CreateReader(), target);
+
+            return target;
+        }
+
 
         public override bool CanWrite
         {

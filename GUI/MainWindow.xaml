@@ -150,7 +150,7 @@
 
         <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
 
-        <triggerexplorer:TriggerExplorer x:Name="treeViewTriggerExplorer" Grid.Row="3" Grid.RowSpan="2" Background="#FF282828" BorderThickness="0" Margin="0,0,4,0" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
+        <triggerexplorer:TriggerExplorer x:Name="triggerExplorer" Grid.Row="3" Grid.RowSpan="2" Background="#FF282828" BorderThickness="0" Margin="0,0,4,0" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
     </Grid>

@@ -1,5 +1,5 @@
 ﻿using Model.Data;
-using GUI.Components.Utility;
+using GUI.Utility;
 using GUI.Containers;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GUI.Utility;
 
 namespace GUI.Components.TriggerExplorer
 {
@@ -32,40 +33,8 @@ namespace GUI.Components.TriggerExplorer
         {
             InitializeComponent();
 
-            this.map = CreateTreeViewItem("MapName.w3x", EnumCategory.Map);
+            this.map = CreateTreeViewItem(new TreeViewItem(), "MapName.w3x", EnumCategory.Map);
             treeViewTriggerExplorer.Items.Add(this.map);
-        }
-
-        public void CreateFolder()
-        {
-            string name = NameGenerator.GenerateCategoryName();
-
-            var item = CreateTreeViewItem(name, EnumCategory.Folder);
-            TriggerFolder script = new TriggerFolder(name, item);
-        }
-
-        public void CreateTrigger(TriggerControl triggerControl)
-        {
-            string name = NameGenerator.GenerateTriggerName();
-
-            var item = CreateTreeViewItem(name, EnumCategory.Trigger);
-            ExplorerTrigger trig = new ExplorerTrigger(name, item, triggerControl);
-        }
-
-        public void CreateScript(ICSharpCode.AvalonEdit.TextEditor textEditor)
-        {
-            string name = NameGenerator.GenerateScriptName();
-
-            var item = CreateTreeViewItem(name, EnumCategory.AI);
-            ExplorerScript script = new ExplorerScript(name, item, textEditor);
-        }
-
-        public void CreateVariable(VariableControl variableControl)
-        {
-            string name = NameGenerator.GenerateVariableName();
-
-            var item = CreateTreeViewItem(name, EnumCategory.SetVariable);
-            Variable script = new Variable(name, item, variableControl);
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -123,10 +92,8 @@ namespace GUI.Components.TriggerExplorer
             */
         }
 
-        private TreeViewItem CreateTreeViewItem(string text, EnumCategory category)
+        public TreeViewItem CreateTreeViewItem(TreeViewItem item, string text, EnumCategory category)
         {
-            TreeViewItem item = new TreeViewItem();
-
             TreeViewItem selectedItem = (TreeViewItem)treeViewTriggerExplorer.SelectedItem;
             if (selectedItem != null && selectedItem.Tag is TriggerFolder)
                 selectedItem.Items.Add(item);

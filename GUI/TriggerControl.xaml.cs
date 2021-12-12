@@ -1,6 +1,6 @@
 ﻿using GUI.Commands;
 using GUI.Components.TriggerEditor;
-using GUI.Components.Utility;
+using GUI.Utility;
 using Model.Natives;
 using System;
 using System.Collections.Generic;

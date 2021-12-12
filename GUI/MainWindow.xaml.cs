@@ -25,6 +25,7 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using Newtonsoft.Json;
 
 namespace GUI
 {
@@ -39,13 +40,25 @@ namespace GUI
         {
             InitializeComponent();
 
-            treeViewTriggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
+
+            triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
+
+
+            // TEST LOAD
+            string[] files = Directory.GetFiles(@"C:\Users\Lasse Dam\Desktop\BetterTriggersTestMap");
+            for (int i = 0; i < files.Length; i++)
+            {
+                var file = File.ReadAllText(files[i]);
+                Model.Trigger trigger = JsonConvert.DeserializeObject<Model.Trigger>(file);
+
+                var controller = new ControllerTrigger();
+                controller.CreateTriggerWithElements(triggerExplorer, mainGrid, "test", trigger);
+            }
         }
 
-        // Bubbled up event
         private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
         {
-            var item = (TreeViewItem) treeViewTriggerExplorer.treeViewTriggerExplorer.SelectedItem;
+            var item = (TreeViewItem)triggerExplorer.treeViewTriggerExplorer.SelectedItem;
             var triggerExplorerElement = item.Tag as GUI.Components.TriggerExplorer.ExplorerTrigger;
 
             if(triggerExplorerElement != null)
@@ -64,26 +77,26 @@ namespace GUI
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerTriggerExplorer();
-            controller.CreateFolder(treeViewTriggerExplorer);
+            var controller = new ControllerFolder();
+            controller.CreateFolder(triggerExplorer);
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerTriggerExplorer();
-            controller.CreateTrigger(mainGrid, treeViewTriggerExplorer);
+            var controller = new ControllerTrigger();
+            controller.CreateTrigger(triggerExplorer, mainGrid);
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerTriggerExplorer();
-            controller.CreateScript(mainGrid, treeViewTriggerExplorer);
+            var controller = new ControllerScript();
+            controller.CreateScript(mainGrid, triggerExplorer);
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerTriggerExplorer();
-            controller.CreateVariable(mainGrid, treeViewTriggerExplorer);
+            var controller = new ControllerVariable();
+            controller.CreateVariable(mainGrid, triggerExplorer);
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)

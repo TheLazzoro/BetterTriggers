@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GUI.Components.Utility
+namespace GUI.Utility
 {
     public static class NameGenerator
     {

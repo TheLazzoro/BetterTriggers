@@ -1,6 +1,6 @@
 ﻿using Model.Data;
 using Model.Natives;
-using GUI.Components.Utility;
+using GUI.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;

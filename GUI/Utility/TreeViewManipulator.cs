@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GUI.Components.Utility
+namespace GUI.Utility
 {
     public static class TreeViewManipulator
     {
