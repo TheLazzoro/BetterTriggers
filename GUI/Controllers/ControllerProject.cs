@@ -16,15 +16,15 @@ namespace GUI.Controllers
             {
                 Language = language,
                 Header = "",
-                Root = destinationFolder + "//" + name,
+                Root = destinationFolder + @"\" + name,
                 Files = new List<string>(),
             };
 
             string json = JsonConvert.SerializeObject(project);
 
-            string filepath = destinationFolder + "//" + name + ".json";
+            string filepath = destinationFolder + @"\" + name + ".json";
             File.WriteAllText(filepath, json);
-            Directory.CreateDirectory(destinationFolder + "//" + name);
+            Directory.CreateDirectory(destinationFolder + @"\" + name);
         }
 
         public void LoadProject(TriggerExplorer triggerExplorer, Grid mainGrid, string filepath)

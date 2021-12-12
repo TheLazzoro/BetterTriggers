@@ -85,7 +85,7 @@
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" >
             <MenuItem Header="File" Height="25">
                 <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black" Click="menuNewProject_Click"/>
-                <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black"/>
+                <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black" Click="menuOpen_Click"/>
                 <MenuItem Name="menuSave" Header="Save" FontFamily="Bahnschrift" Foreground="Black" Click="menuSave_Click"/>
                 <MenuItem Name="menuSaveAs" Header="Save As..." FontFamily="Bahnschrift" Foreground="Black"/>
             </MenuItem>
@@ -150,7 +150,6 @@
 
         <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
 
-        <triggerexplorer:TriggerExplorer x:Name="triggerExplorer" Grid.Row="3" Grid.RowSpan="2" Background="#FF282828" BorderThickness="0" Margin="0,0,4,0" Foreground="White" HorizontalAlignment="Stretch" Width="auto" />
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
     </Grid>

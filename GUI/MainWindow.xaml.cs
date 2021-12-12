@@ -25,6 +25,7 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 
 namespace GUI
@@ -34,6 +35,7 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private TriggerExplorer currentTriggerExplorer;
         private ExplorerTrigger currentTriggerExplorerElement;
         
         public MainWindow()
@@ -41,9 +43,7 @@ namespace GUI
             InitializeComponent();
 
 
-            triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
-
-
+            /*
             // TEST LOAD
             string[] files = Directory.GetFiles(@"C:\Users\Lasse Dam\Desktop\BetterTriggersTestMap");
             for (int i = 0; i < files.Length; i++)
@@ -54,11 +54,12 @@ namespace GUI
                 var controller = new ControllerTrigger();
                 controller.CreateTriggerWithElements(triggerExplorer, mainGrid, "test", trigger);
             }
+            */
         }
 
         private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
         {
-            var item = (TreeViewItem)triggerExplorer.treeViewTriggerExplorer.SelectedItem;
+            var item = (TreeViewItem)currentTriggerExplorer.treeViewTriggerExplorer.SelectedItem;
             var triggerExplorerElement = item.Tag as GUI.Components.TriggerExplorer.ExplorerTrigger;
 
             if(triggerExplorerElement != null)
@@ -78,25 +79,25 @@ namespace GUI
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerFolder();
-            controller.CreateFolder(triggerExplorer);
+            controller.CreateFolder(currentTriggerExplorer);
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerTrigger();
-            controller.CreateTrigger(triggerExplorer, mainGrid);
+            controller.CreateTrigger(currentTriggerExplorer, mainGrid);
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerScript();
-            controller.CreateScript(mainGrid, triggerExplorer);
+            controller.CreateScript(mainGrid, currentTriggerExplorer);
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerVariable();
-            controller.CreateVariable(mainGrid, triggerExplorer);
+            controller.CreateVariable(mainGrid, currentTriggerExplorer);
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
@@ -182,6 +183,35 @@ namespace GUI
                 return;
 
             SaveLoad.SaveLoad.SaveStringAs(currentTriggerExplorerElement.GetSaveString());
+        }
+
+        private void menuOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.DefaultExt = ".json";
+            dialog.Filter = "JSON Files (*.json)|*.json";
+            if (dialog.ShowDialog() == true)
+            {
+                if(currentTriggerExplorer != null)
+                {
+                    var parent = (Grid) currentTriggerExplorer.Parent;
+                    parent.Children.Remove(currentTriggerExplorer);
+                }
+                currentTriggerExplorer = new TriggerExplorer();
+                currentTriggerExplorer.Margin = new Thickness(0, 0, 4, 0);
+                currentTriggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
+                currentTriggerExplorer.Width = Double.NaN;
+                currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
+                mainGrid.Children.Add(currentTriggerExplorer);
+                Grid.SetRow(currentTriggerExplorer, 3);
+                Grid.SetRowSpan(currentTriggerExplorer, 4);
+                Grid.SetColumn(currentTriggerExplorer, 0);
+                currentTriggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
+
+                var file = dialog.FileName;
+                ControllerProject controller = new ControllerProject();
+                controller.LoadProject(currentTriggerExplorer, mainGrid, file);
+            }
         }
     }
 }
