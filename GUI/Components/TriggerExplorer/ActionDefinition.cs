@@ -6,13 +6,12 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class ActionDefinition : TriggerExplorerElement, ITriggerExplorerElement
+    public class ActionDefinition : IExplorerElement
     {
         public bool IsEnabled;
 
-        public ActionDefinition(string name, TreeViewItem treeViewItem) : base(treeViewItem)
+        public ActionDefinition(string name, TreeViewItem treeViewItem)
         {
-            this.Name = name;
             this.IsEnabled = true;
         }
 

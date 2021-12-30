@@ -7,11 +7,11 @@ namespace GUI.Containers
 {
     public static class ContainerFolders
     {
-        private static List<TriggerFolder> folderContainer = new List<TriggerFolder>();
+        private static List<ExplorerElement> folderContainer = new List<ExplorerElement>();
 
-        public static void AddTriggerElement(TriggerFolder triggerElement)
+        public static void AddTriggerElement(ExplorerElement trigger)
         {
-            folderContainer.Add(triggerElement);
+            folderContainer.Add(trigger);
         }
 
         public static int Count()
@@ -19,7 +19,7 @@ namespace GUI.Containers
             return folderContainer.Count;
         }
 
-        public static TriggerFolder Get(int index)
+        public static ExplorerElement Get(int index)
         {
             return folderContainer[index];
         }

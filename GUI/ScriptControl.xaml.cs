@@ -1,51 +1,54 @@
 ﻿using GUI.Components.TextEditor;
-using GUI.Containers;
-using ICSharpCode.AvalonEdit.CodeCompletion;
-using ICSharpCode.AvalonEdit.Folding;
+using GUI.Components.TriggerExplorer;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
-namespace GUI.Components.TriggerExplorer
+namespace GUI
 {
-    public class ExplorerScript : TriggerExplorerElement, ITriggerExplorerElement
+    /// <summary>
+    /// Interaction logic for ScriptControl.xaml
+    /// </summary>
+    public partial class ScriptControl : UserControl, IExplorerElement
     {
-        public bool IsEnabled;
         ICSharpCode.AvalonEdit.TextEditor textEditor;
-        
 
-        public ExplorerScript(string name, TreeViewItem treeViewItem, ICSharpCode.AvalonEdit.TextEditor textEditor) : base(treeViewItem)
+        public ScriptControl()
         {
-            this.Name = name;
-            this.textEditor = textEditor;
+            InitializeComponent();
+
+            this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();
             this.textEditor.Margin = new Thickness(0, 5, 5, 5);
             new AutoComplete(this.textEditor);
-
-            ContainerScripts.AddTriggerElement(this);
-            ContainerITriggerElements.AddTriggerElement(this);
         }
 
         public void OnElementClick()
         {
-            if (currentTriggerElement != null)
-                currentTriggerElement.Hide();
+            if (ExplorerElement.currentExplorerElement != null)
+                ExplorerElement.currentExplorerElement.Hide();
 
             this.Show();
 
-            currentTriggerElement = this;
+            ExplorerElement.currentExplorerElement = this;
         }
 
         public void Show()
         {
-            textEditor.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Visible;
         }
 
         public void Hide()
         {
-            textEditor.Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Hidden;
         }
 
         public string GetScript()

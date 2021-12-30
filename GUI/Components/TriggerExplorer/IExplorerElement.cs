@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public interface ITriggerExplorerElement
+    public interface IExplorerElement
     {
         string GetSaveString();
         string GetScript();

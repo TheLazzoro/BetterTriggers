@@ -1,4 +1,5 @@
 ﻿using GUI.Controllers;
+using Model.War3Project;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,8 @@ namespace GUI
     /// </summary>
     public partial class NewProjectWindow : Window
     {
+        public War3Project createdProject;
+        
         public NewProjectWindow()
         {
             InitializeComponent();
@@ -79,7 +82,9 @@ namespace GUI
                 language = "lua";
 
             ControllerProject controller = new ControllerProject();
-            controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
+            this.createdProject = controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
+
+            this.Close();
         }
     }
 }

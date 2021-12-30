@@ -24,7 +24,9 @@ namespace GUI.Controllers
 
             TreeViewItem item = new TreeViewItem();
             TreeViewManipulator.SetTreeViewItemAppearance(item, name, EnumCategory.SetVariable);
-            Variable script = new Variable(name, item, variableControl);
+            Variable script = new Variable(variableControl);
+
+            triggerExplorer.CreateTreeViewItem(item, name, Model.Data.EnumCategory.SetVariable);
         }
     }
 }

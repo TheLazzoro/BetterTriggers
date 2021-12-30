@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GUI.Components.TriggerExplorer;
+using GUI.Controllers;
 
 namespace GUI
 {
@@ -32,10 +33,17 @@ namespace GUI
         public TriggerExplorer()
         {
             InitializeComponent();
-
-            this.map = CreateTreeViewItem(new TreeViewItem(), "MapName.w3x", EnumCategory.Map);
-            treeViewTriggerExplorer.Items.Add(this.map);
         }
+
+        /*
+        private void treeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.OnClick_ExplorerElement(treeViewTriggerExplorer.SelectedItem as TreeViewItem, new Grid());
+
+            e.Handled = true; // prevents event from firing up the parent items
+        }
+        */
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
@@ -102,8 +110,17 @@ namespace GUI
                 TreeViewItem parent = (TreeViewItem)selectedItem.Parent;
                 parent.Items.Insert(parent.Items.IndexOf(selectedItem) + 1, item);
             }
+            else if (this.map != null && (selectedItem == map || selectedItem == null))
+            {
+                map.Items.Insert(0, item);
+            }
             else if (this.map != null)
                 this.map.Items.Add(item);
+            else if(category == EnumCategory.Map) // first entry. This is the map header
+            {
+                this.map = item;
+                treeViewTriggerExplorer.Items.Add(item);
+            }
 
             item.IsExpanded = true;
             item.IsSelected = true;
@@ -152,5 +169,6 @@ namespace GUI
                 }
             }
         }
+
     }
 }

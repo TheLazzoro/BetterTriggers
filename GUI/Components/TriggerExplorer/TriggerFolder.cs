@@ -6,13 +6,10 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class TriggerFolder : TriggerExplorerElement, ITriggerExplorerElement
+    public class TriggerFolder : IExplorerElement
     {
-        public TriggerFolder(string name, TreeViewItem treeViewItem) : base(treeViewItem)
+        public TriggerFolder()
         {
-            this.Name = name;
-
-            ContainerFolders.AddTriggerElement(this);
         }
         
         public string GetScript()
@@ -23,12 +20,12 @@ namespace GUI.Components.TriggerExplorer
 
         public void OnElementClick()
         {
-            if (currentTriggerElement != null)
-                currentTriggerElement.Hide();
+            if (ExplorerElement.currentExplorerElement != null)
+                ExplorerElement.currentExplorerElement.Hide();
 
             this.Show();
 
-            currentTriggerElement = this;
+            ExplorerElement.currentExplorerElement = this;
         }
 
         public void Show() { }

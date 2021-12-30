@@ -42,7 +42,7 @@ namespace GUI.Controllers
             string name = NameGenerator.GenerateScriptName();
 
             TreeViewItem item = new TreeViewItem();
-            ExplorerScript script = new ExplorerScript(name, item, textEditor);
+            ScriptControl script = new ScriptControl();
 
             triggerExplorer.CreateTreeViewItem(item, name, EnumCategory.AI);
 

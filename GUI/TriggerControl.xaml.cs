@@ -1,7 +1,9 @@
 ﻿using GUI.Commands;
 using GUI.Components.TriggerEditor;
+using GUI.Components.TriggerExplorer;
 using GUI.Utility;
 using Model.Natives;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +23,7 @@ namespace GUI
     /// <summary>
     /// Interaction logic for TriggerControl.xaml
     /// </summary>
-    public partial class TriggerControl : UserControl
+    public partial class TriggerControl : UserControl, IExplorerElement
     {
         public NodeEvent categoryEvent;
         public NodeCondition categoryCondition;
@@ -47,6 +49,64 @@ namespace GUI
             treeViewTriggers.Items.Add(categoryEvent);
             treeViewTriggers.Items.Add(categoryCondition);
             treeViewTriggers.Items.Add(categoryAction);
+        }
+
+        public void Hide()
+        {
+            this.Visibility = Visibility.Hidden;
+        }
+
+        public void OnElementClick()
+        {
+            if (ExplorerElement.currentExplorerElement != null)
+                ExplorerElement.currentExplorerElement.Hide();
+
+            this.Show();
+
+            ExplorerElement.currentExplorerElement = this;
+        }
+
+        public void Show()
+        {
+            this.Visibility = Visibility.Visible;
+        }
+
+        public string GetScript()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetSaveString()
+        {
+            Model.Trigger trigger = new Model.Trigger();
+
+            var nodeEvents = this.categoryEvent;
+            for (int i = 0; i < nodeEvents.Items.Count; i++)
+            {
+                var _event = (TriggerElement)nodeEvents.Items[i];
+                trigger.Events.Add(_event.function);
+            }
+
+            var nodeConditions = this.categoryCondition;
+            for (int i = 0; i < nodeConditions.Items.Count; i++)
+            {
+                var condition = (TriggerElement)nodeConditions.Items[i];
+                trigger.Conditions.Add(condition.function);
+            }
+
+            var nodeActions = this.categoryAction;
+            for (int i = 0; i < nodeActions.Items.Count; i++)
+            {
+                var action = (TriggerElement)nodeActions.Items[i];
+                trigger.Actions.Add(action.function);
+            }
+
+            return JsonConvert.SerializeObject(trigger);
+        }
+
+        public UserControl GetControl()
+        {
+            return this;
         }
 
         public void CreateEvent()

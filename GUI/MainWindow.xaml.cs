@@ -36,39 +36,28 @@ namespace GUI
     public partial class MainWindow : Window
     {
         private TriggerExplorer currentTriggerExplorer;
-        private ExplorerTrigger currentTriggerExplorerElement;
-        
+
         public MainWindow()
         {
             InitializeComponent();
-
-
-            /*
-            // TEST LOAD
-            string[] files = Directory.GetFiles(@"C:\Users\Lasse Dam\Desktop\BetterTriggersTestMap");
-            for (int i = 0; i < files.Length; i++)
-            {
-                var file = File.ReadAllText(files[i]);
-                Model.Trigger trigger = JsonConvert.DeserializeObject<Model.Trigger>(file);
-
-                var controller = new ControllerTrigger();
-                controller.CreateTriggerWithElements(triggerExplorer, mainGrid, "test", trigger);
-            }
-            */
         }
 
         private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
         {
-            var item = (TreeViewItem)currentTriggerExplorer.treeViewTriggerExplorer.SelectedItem;
-            var triggerExplorerElement = item.Tag as GUI.Components.TriggerExplorer.ExplorerTrigger;
+            var explorerItem = currentTriggerExplorer.treeViewTriggerExplorer.SelectedItem as ExplorerElement;
 
-            if(triggerExplorerElement != null)
+            ControllerProject controller = new ControllerProject();
+            controller.OnClick_ExplorerElement(explorerItem, tabControl);
+
+            var triggerExplorerElement = ControllerProject.currentTriggerExplorerElement;
+
+            if (triggerExplorerElement != null)
             {
-                currentTriggerExplorerElement = triggerExplorerElement;
                 btnCreateEvent.IsEnabled = true;
                 btnCreateCondition.IsEnabled = true;
                 btnCreateAction.IsEnabled = true;
-            } else
+            }
+            else
             {
                 btnCreateEvent.IsEnabled = false;
                 btnCreateCondition.IsEnabled = false;
@@ -85,7 +74,7 @@ namespace GUI
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerTrigger();
-            controller.CreateTrigger(currentTriggerExplorer, mainGrid);
+            controller.CreateTrigger(currentTriggerExplorer, tabControl);
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
@@ -102,17 +91,20 @@ namespace GUI
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            currentTriggerExplorerElement.triggerControl.CreateEvent();
+            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
+            triggerControl.CreateEvent();
         }
 
         private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
         {
-            currentTriggerExplorerElement.triggerControl.CreateCondition();
+            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
+            triggerControl.CreateCondition();
         }
 
         private void btnCreateAction_Click(object sender, RoutedEventArgs e)
         {
-            currentTriggerExplorerElement.triggerControl.CreateAction();
+            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
+            triggerControl.CreateAction();
         }
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
@@ -171,18 +163,51 @@ namespace GUI
             }
         }
 
+        private void CreateNewTriggerExplorer()
+        {
+            if (currentTriggerExplorer != null)
+            {
+                var parent = (Grid)currentTriggerExplorer.Parent;
+                parent.Children.Remove(currentTriggerExplorer);
+            }
+            currentTriggerExplorer = new TriggerExplorer();
+            currentTriggerExplorer.Margin = new Thickness(0, 0, 4, 0);
+            currentTriggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
+            currentTriggerExplorer.Width = Double.NaN;
+            //currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
+            currentTriggerExplorer.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 32, 32, 32));
+            mainGrid.Children.Add(currentTriggerExplorer);
+            Grid.SetRow(currentTriggerExplorer, 3);
+            Grid.SetRowSpan(currentTriggerExplorer, 4);
+            Grid.SetColumn(currentTriggerExplorer, 0);
+            currentTriggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
+        }
+
         private void menuNewProject_Click(object sender, RoutedEventArgs e)
         {
             NewProjectWindow window = new NewProjectWindow();
+            window.WindowStartupLocation = WindowStartupLocation.Manual;
+            window.Top = this.Top + this.Height / 2 - window.Height / 2;
+            window.Left = this.Left + this.Width / 2 - window.Width / 2;
             window.ShowDialog();
+            var createdProject = window.createdProject;
+
+            if (createdProject != null)
+            {
+                CreateNewTriggerExplorer();
+
+                ControllerProject controller = new ControllerProject();
+                controller.LoadProject(currentTriggerExplorer, mainGrid, createdProject);
+            }
         }
 
         private void menuSave_Click(object sender, RoutedEventArgs e)
         {
-            if (currentTriggerExplorerElement == null)
+            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
+            if (triggerControl == null)
                 return;
 
-            SaveLoad.SaveLoad.SaveStringAs(currentTriggerExplorerElement.GetSaveString());
+            SaveLoad.SaveLoad.SaveStringAs(triggerControl.GetSaveString());
         }
 
         private void menuOpen_Click(object sender, RoutedEventArgs e)
@@ -192,23 +217,10 @@ namespace GUI
             dialog.Filter = "JSON Files (*.json)|*.json";
             if (dialog.ShowDialog() == true)
             {
-                if(currentTriggerExplorer != null)
-                {
-                    var parent = (Grid) currentTriggerExplorer.Parent;
-                    parent.Children.Remove(currentTriggerExplorer);
-                }
-                currentTriggerExplorer = new TriggerExplorer();
-                currentTriggerExplorer.Margin = new Thickness(0, 0, 4, 0);
-                currentTriggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
-                currentTriggerExplorer.Width = Double.NaN;
-                currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
-                mainGrid.Children.Add(currentTriggerExplorer);
-                Grid.SetRow(currentTriggerExplorer, 3);
-                Grid.SetRowSpan(currentTriggerExplorer, 4);
-                Grid.SetColumn(currentTriggerExplorer, 0);
-                currentTriggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
-
                 var file = dialog.FileName;
+
+                CreateNewTriggerExplorer();
+
                 ControllerProject controller = new ControllerProject();
                 controller.LoadProject(currentTriggerExplorer, mainGrid, file);
             }

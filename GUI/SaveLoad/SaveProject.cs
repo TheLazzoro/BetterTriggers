@@ -21,13 +21,15 @@ namespace GUI.SaveLoad
             
             for (int i = 0; i < node.Items.Count; i++)
             {
+                /*
                 if(node is TriggerFolder)
                 {
                     
-                } else if(node is ExplorerTrigger)
+                } else if(node is Trigger)
                 {
 
                 }
+                */
             }
 
             return json;

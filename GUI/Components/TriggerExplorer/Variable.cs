@@ -7,21 +7,17 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class Variable : TriggerExplorerElement, ITriggerExplorerElement
+    public class Variable : IExplorerElement
     {
-        string identifier;
         public bool IsEnabled;
+        string identifier;
         VariableControl variableControl;
 
-        public Variable(string name, TreeViewItem treeViewItem, VariableControl variableControl) : base(treeViewItem)
+        public Variable(VariableControl variableControl)
         {
             this.IsEnabled = true;
             this.variableControl = variableControl;
 
-            this.Name = name;
-            SetName(name);
-
-            ContainerVariables.AddTriggerElement(this);
             ContainerITriggerElements.AddTriggerElement(this);
 
             // Events in the variableControl
@@ -38,12 +34,12 @@ namespace GUI.Components.TriggerExplorer
 
         public void OnElementClick()
         {
-            if (currentTriggerElement != null)
-                currentTriggerElement.Hide();
+            if (ExplorerElement.currentExplorerElement != null)
+                ExplorerElement.currentExplorerElement.Hide();
 
             this.Show();
 
-            currentTriggerElement = this;
+            ExplorerElement.currentExplorerElement = this;
         }
 
         public void Show()
@@ -58,8 +54,6 @@ namespace GUI.Components.TriggerExplorer
 
         private void SetName(string name)
         {
-            this.Name = name;
-            this.treeViewItem.Header = name;
             this.variableControl.textBoxVariableName.Text = name;
 
             var newIdentifier = "udg_" + name;

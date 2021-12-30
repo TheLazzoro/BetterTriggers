@@ -151,6 +151,8 @@
         <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
+        
+        <TabControl x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" />
 
     </Grid>
 </Window>

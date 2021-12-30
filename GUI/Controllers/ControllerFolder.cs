@@ -15,7 +15,7 @@ namespace GUI.Controllers
             string name = NameGenerator.GenerateCategoryName();
 
             TreeViewItem item = new TreeViewItem();
-            TriggerFolder script = new TriggerFolder(name, item);
+            TriggerFolder script = new TriggerFolder();
 
             triggerExplorer.CreateTreeViewItem(item, name, EnumCategory.Folder);
         }
