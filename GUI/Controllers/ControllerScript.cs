@@ -16,28 +16,9 @@ namespace GUI.Controllers
 {
     public class ControllerScript
     {
-        public void CreateScript(Grid mainGrid, TriggerExplorer triggerExplorer)
+        public void CreateScript(TabControl tabControl, TriggerExplorer triggerExplorer)
         {
-            var textEditor = new ICSharpCode.AvalonEdit.TextEditor();
-            textEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
-            textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
-            textEditor.FontFamily = new FontFamily("Consolas");
-            textEditor.ShowLineNumbers = true;
-
-            // Position editor
-            mainGrid.Children.Add(textEditor);
-            Grid.SetColumn(textEditor, 1);
-            Grid.SetRow(textEditor, 2);
-            Grid.SetRowSpan(textEditor, 3);
-
-            // Sets syntax highlighting in the comment field
-            using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
-            {
-                using (XmlTextReader reader = new XmlTextReader(s))
-                {
-                    textEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                }
-            }
+            var scriptControl = CreateScriptControl(tabControl);
 
             string name = NameGenerator.GenerateScriptName();
 
@@ -49,6 +30,35 @@ namespace GUI.Controllers
             // folding text blocks?
             //foldingManager = FoldingManager.Install(textEditor.TextArea);
             //foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
+        }
+
+        public ScriptControl CreateScriptControlWithScript(TabControl tabControl, string filePath)
+        {
+            var scriptControl = CreateScriptControl(tabControl);
+            scriptControl.textEditor.Text = LoadScriptFromFile(filePath);
+
+            return scriptControl;
+        }
+
+        public string LoadScriptFromFile(string filePath)
+        {
+            string script = string.Empty;
+            if(File.Exists(filePath))
+                script = File.ReadAllText(filePath);
+
+            return script;
+        }
+
+        private ScriptControl CreateScriptControl(TabControl tabControl)
+        {
+            var scriptControl = new ScriptControl();
+            
+            // Position editor
+            Grid.SetColumn(scriptControl, 1);
+            Grid.SetRow(scriptControl, 2);
+            Grid.SetRowSpan(scriptControl, 3);
+
+            return scriptControl;
         }
     }
 }

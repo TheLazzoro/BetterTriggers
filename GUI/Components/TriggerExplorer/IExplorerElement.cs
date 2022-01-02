@@ -11,7 +11,5 @@ namespace GUI.Components.TriggerExplorer
         string GetScript();
         void OnElementClick();
         UserControl GetControl();
-        void Show();
-        void Hide();
     }
 }

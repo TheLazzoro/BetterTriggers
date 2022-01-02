@@ -18,11 +18,55 @@ namespace GUI
     /// <summary>
     /// Interaction logic for VariableControl.xaml
     /// </summary>
-    public partial class VariableControl : UserControl
+    public partial class VariableControl : UserControl, IExplorerElement
     {
         public VariableControl()
         {
             InitializeComponent();
+
+            // Events in the variableControl
+            this.OnRename += delegate
+            {
+                SetName(textBoxVariableName.Text);
+            };
+        }
+
+        public void Hide()
+        {
+            this.Visibility = Visibility.Hidden;
+        }
+
+        public void OnElementClick()
+        {
+            ExplorerElement.currentExplorerElement = this;
+        }
+
+        public void Show()
+        {
+            this.Visibility = Visibility.Visible;
+        }
+
+        public string GetScript()
+        {
+            return $"globals\ninteger {this.textBlockVariableNameUDG.Text}\nendglobals";
+        }
+
+        private void SetName(string name)
+        {
+            this.textBoxVariableName.Text = name;
+
+            var newIdentifier = "udg_" + name;
+            this.textBlockVariableNameUDG.Text = newIdentifier;
+        }
+
+        public string GetSaveString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserControl GetControl()
+        {
+            return this;
         }
 
         [Browsable(true)]

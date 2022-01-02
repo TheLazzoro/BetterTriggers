@@ -35,8 +35,6 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TriggerExplorer currentTriggerExplorer;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -44,7 +42,7 @@ namespace GUI
 
         private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
         {
-            var explorerItem = currentTriggerExplorer.treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+            var explorerItem = ContainerTriggerExplorer.triggerExplorer.treeViewTriggerExplorer.SelectedItem as ExplorerElement;
 
             ControllerProject controller = new ControllerProject();
             controller.OnClick_ExplorerElement(explorerItem, tabControl);
@@ -68,25 +66,25 @@ namespace GUI
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerFolder();
-            controller.CreateFolder(currentTriggerExplorer);
+            controller.CreateFolder(ContainerTriggerExplorer.triggerExplorer);
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerTrigger();
-            controller.CreateTrigger(currentTriggerExplorer, tabControl);
+            controller.CreateTrigger(ContainerTriggerExplorer.triggerExplorer);
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerScript();
-            controller.CreateScript(mainGrid, currentTriggerExplorer);
+            controller.CreateScript(tabControl, ContainerTriggerExplorer.triggerExplorer);
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerVariable();
-            controller.CreateVariable(mainGrid, currentTriggerExplorer);
+            controller.CreateVariable(mainGrid, ContainerTriggerExplorer.triggerExplorer);
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
@@ -162,26 +160,7 @@ namespace GUI
                 Commands.CommandManager.Redo();
             }
         }
-
-        private void CreateNewTriggerExplorer()
-        {
-            if (currentTriggerExplorer != null)
-            {
-                var parent = (Grid)currentTriggerExplorer.Parent;
-                parent.Children.Remove(currentTriggerExplorer);
-            }
-            currentTriggerExplorer = new TriggerExplorer();
-            currentTriggerExplorer.Margin = new Thickness(0, 0, 4, 0);
-            currentTriggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
-            currentTriggerExplorer.Width = Double.NaN;
-            //currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
-            currentTriggerExplorer.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 32, 32, 32));
-            mainGrid.Children.Add(currentTriggerExplorer);
-            Grid.SetRow(currentTriggerExplorer, 3);
-            Grid.SetRowSpan(currentTriggerExplorer, 4);
-            Grid.SetColumn(currentTriggerExplorer, 0);
-            currentTriggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged;
-        }
+        
 
         private void menuNewProject_Click(object sender, RoutedEventArgs e)
         {
@@ -194,10 +173,8 @@ namespace GUI
 
             if (createdProject != null)
             {
-                CreateNewTriggerExplorer();
-
                 ControllerProject controller = new ControllerProject();
-                controller.LoadProject(currentTriggerExplorer, mainGrid, createdProject);
+                controller.LoadProject(mainGrid, createdProject);
             }
         }
 
@@ -219,10 +196,10 @@ namespace GUI
             {
                 var file = dialog.FileName;
 
-                CreateNewTriggerExplorer();
-
                 ControllerProject controller = new ControllerProject();
-                controller.LoadProject(currentTriggerExplorer, mainGrid, file);
+                var project = controller.LoadProject(mainGrid, file);
+
+                ContainerTriggerExplorer.ItemSelectionChanged += TriggerExplorer_ItemSelectionChanged; // subscribe to item selection changed event
             }
         }
     }

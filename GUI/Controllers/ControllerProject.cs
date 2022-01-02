@@ -36,23 +36,29 @@ namespace GUI.Controllers
             return project;
         }
 
-        public void LoadProject(TriggerExplorer triggerExplorer, Grid mainGrid, string filepath)
+        public War3Project LoadProject(Grid mainGrid, string filepath)
         {
+
             string json = File.ReadAllText(filepath);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
+            
+            ContainerTriggerExplorer.CreateNewTriggerExplorer(mainGrid, project);
+            
+            LoadProjectShared(mainGrid, project);
 
-            LoadProjectShared(triggerExplorer, mainGrid, project);
+            return project;
         }
 
-        public void LoadProject(TriggerExplorer triggerExplorer, Grid mainGrid, War3Project project)
+        public void LoadProject(Grid mainGrid, War3Project project)
         {
-            LoadProjectShared(triggerExplorer, mainGrid, project);
+            LoadProjectShared(mainGrid, project);
         }
 
-        private void LoadProjectShared(TriggerExplorer triggerExplorer, Grid mainGrid, War3Project project)
+        private void LoadProjectShared(Grid mainGrid, War3Project project)
         {
-            triggerExplorer.CreateTreeViewItem(new TreeViewItem(), project.Name, EnumCategory.Map);
-            LoadFiles(project.Root, triggerExplorer.map);
+            ContainerTriggerExplorer.CreateNewTriggerExplorer(mainGrid, project);
+            LoadFiles(project.Root, ContainerTriggerExplorer.triggerExplorer.map);
+            
         }
 
         private void LoadFiles(string folder, TreeViewItem parentNode)
@@ -106,24 +112,49 @@ namespace GUI.Controllers
                 switch (Reader.GetFileExtension(selectedElement.FilePath))
                 {
                     case ".json":
-                        ControllerTrigger controller = new ControllerTrigger();
-                        Model.Trigger trigger = controller.LoadTriggerFromFile(selectedElement.FilePath);
-                        var triggerControl = controller.CreateTriggerWithElements(tabControl, trigger);
-                        tabControl.Items.Add(TabItemManipulator.SetTabItemApperance(triggerControl, "testname"));
+                        ControllerTrigger triggerController = new ControllerTrigger();
+                        Model.Trigger trigger = triggerController.LoadTriggerFromFile(selectedElement.FilePath);
+                        var triggerControl = triggerController.CreateTriggerWithElements(tabControl, trigger);
+                        TabItemBT tabItemTrigger = new TabItemBT(triggerControl, Reader.GetFileName(selectedElement.FilePath));
+                        tabControl.Items.Add(tabItemTrigger);
+                        selectedElement.tabItem = tabItemTrigger;
                         selectedElement.Ielement = triggerControl;
                         break;
                     case ".j":
+                        ControllerScript scriptController = new ControllerScript();
+                        var scripControl = scriptController.CreateScriptControlWithScript(tabControl, selectedElement.FilePath);
+                        TabItemBT tabItemScript = new TabItemBT(scripControl, Reader.GetFileName(selectedElement.FilePath));
+                        tabControl.Items.Add(tabItemScript);
+                        selectedElement.tabItem = tabItemScript;
+                        selectedElement.Ielement = scripControl;
                         break;
                     default:
                         break;
                 }
-
-                if(selectedElement.Ielement != null)
-                {
-                    currentTriggerExplorerElement = selectedElement.Ielement;
-                    selectedElement.Ielement.OnElementClick();
-                }
+            }
+            if (selectedElement != null && selectedElement.Ielement != null)
+            {
+                currentTriggerExplorerElement = selectedElement.Ielement;
+                selectedElement.Ielement.OnElementClick();
+                tabControl.SelectedItem = selectedElement.tabItem;
             }
         }
+
+        public string GetDirectoryFromSelection(TreeView treeViewTriggerExplorer)
+        {
+            ExplorerElement selectedItem = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+
+            if (selectedItem == null)
+                return null;
+
+            if ( Directory.Exists(selectedItem.FilePath))
+                return selectedItem.FilePath;
+
+            else if (File.Exists(selectedItem.FilePath))
+                return Path.GetDirectoryName(selectedItem.FilePath);
+
+            return null;
+        }
+
     }
 }

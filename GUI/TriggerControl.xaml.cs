@@ -51,24 +51,9 @@ namespace GUI
             treeViewTriggers.Items.Add(categoryAction);
         }
 
-        public void Hide()
-        {
-            this.Visibility = Visibility.Hidden;
-        }
-
         public void OnElementClick()
         {
-            if (ExplorerElement.currentExplorerElement != null)
-                ExplorerElement.currentExplorerElement.Hide();
-
-            this.Show();
-
             ExplorerElement.currentExplorerElement = this;
-        }
-
-        public void Show()
-        {
-            this.Visibility = Visibility.Visible;
         }
 
         public string GetScript()

@@ -25,15 +25,43 @@ namespace GUI
     /// 
     public partial class TriggerExplorer : UserControl
     {
-        public TreeViewItem map;
+        public ExplorerElement map;
         Point _startPoint;
         TreeViewItem dragItem;
         bool _IsDragging = false;
+        FileSystemWatcher fileSystemWatcher;
 
-        public TriggerExplorer()
+        public TriggerExplorer(string rootFolderPath)
         {
             InitializeComponent();
+
+            fileSystemWatcher = new FileSystemWatcher();
+            fileSystemWatcher.Path = rootFolderPath;
+            fileSystemWatcher.EnableRaisingEvents = true;
+            fileSystemWatcher.Created += FileSystemWatcher_Created;
+            fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
         }
+
+        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(delegate {
+                string path = e.FullPath;
+                ControllerFileSystem controller = new ControllerFileSystem();
+                controller.CreateElement(this, path);
+            });
+            
+        }
+
+        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(delegate {
+                string path = e.FullPath;
+                ControllerFileSystem controller = new ControllerFileSystem();
+                controller.DeleteElement(this, path);
+            });
+
+        }
+
 
         /*
         private void treeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -118,7 +146,7 @@ namespace GUI
                 this.map.Items.Add(item);
             else if(category == EnumCategory.Map) // first entry. This is the map header
             {
-                this.map = item;
+                this.map = (ExplorerElement) item;
                 treeViewTriggerExplorer.Items.Add(item);
             }
 

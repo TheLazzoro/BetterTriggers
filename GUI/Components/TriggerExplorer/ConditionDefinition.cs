@@ -30,17 +30,7 @@ namespace GUI.Components.TriggerExplorer
             throw new NotImplementedException();
         }
 
-        public void Hide()
-        {
-            throw new NotImplementedException();
-        }
-
         public void OnElementClick()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Show()
         {
             throw new NotImplementedException();
         }

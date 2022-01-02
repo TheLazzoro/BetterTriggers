@@ -13,8 +13,19 @@ namespace GUI.Controllers
 {
     public class ControllerTrigger
     {
-        public void CreateTrigger(TriggerExplorer triggerExplorer, TabControl tabControl)
+        public void CreateTrigger(TriggerExplorer explorer)
         {
+            string name = NameGenerator.GenerateTriggerName();
+
+            ControllerProject controllerProject = new ControllerProject();
+            string directory = controllerProject.GetDirectoryFromSelection(explorer.treeViewTriggerExplorer);
+
+            Trigger trigger = new Trigger();
+            string json = JsonConvert.SerializeObject(trigger);
+
+            File.WriteAllText(directory + "/" + name + ".json", json);
+
+            /*
             var triggerControl = new TriggerControl();
             triggerControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             triggerControl.VerticalContentAlignment = VerticalAlignment.Stretch;
@@ -25,18 +36,19 @@ namespace GUI.Controllers
 
             string name = NameGenerator.GenerateTriggerName();
 
+
             TreeViewItem item = new TreeViewItem();
 
             triggerExplorer.CreateTreeViewItem(item, name, Model.Data.EnumCategory.Trigger);
+            */
         }
 
         public TriggerControl CreateTriggerWithElements(TabControl tabControl, Model.Trigger trigger)
         {
             var triggerControl = CreateTriggerControl(tabControl);
-            TriggerControl trig = new TriggerControl();
             GenerateTriggerElements(triggerControl, trigger);
 
-            return trig;
+            return triggerControl;
         }
 
         public Model.Trigger LoadTriggerFromFile(string filename)
@@ -52,10 +64,6 @@ namespace GUI.Controllers
             var triggerControl = new TriggerControl();
             triggerControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             triggerControl.VerticalContentAlignment = VerticalAlignment.Stretch;
-            Grid.SetColumn(triggerControl, 1);
-            Grid.SetRow(triggerControl, 3);
-            Grid.SetRowSpan(triggerControl, 2);
-            tabControl.Items.Add(triggerControl);
 
             return triggerControl;
         }
