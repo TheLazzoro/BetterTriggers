@@ -18,14 +18,14 @@ namespace GUI.Controllers
     {
         public void CreateScript(TabControl tabControl, TriggerExplorer triggerExplorer)
         {
-            var scriptControl = CreateScriptControl(tabControl);
+            //var scriptControl = CreateScriptControl(tabControl);
 
-            string name = NameGenerator.GenerateScriptName();
+            //string name = NameGenerator.GenerateScriptName();
 
-            TreeViewItem item = new TreeViewItem();
-            ScriptControl script = new ScriptControl();
+            //TreeViewItem item = new TreeViewItem();
+            //ScriptControl script = new ScriptControl();
 
-            triggerExplorer.CreateTreeViewItem(item, name, EnumCategory.AI);
+            //triggerExplorer.CreateTreeViewItem(item, name, EnumCategory.AI);
 
             // folding text blocks?
             //foldingManager = FoldingManager.Install(textEditor.TextArea);

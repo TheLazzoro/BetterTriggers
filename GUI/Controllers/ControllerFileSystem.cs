@@ -1,4 +1,5 @@
 ﻿using GUI.Components.TriggerExplorer;
+using GUI.Containers;
 using GUI.Utility;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,9 @@ namespace GUI.Controllers
 {
     public class ControllerFileSystem
     {
+
+        // TODO:
+        // This is currently only implemented for .json "trigger" files
         public void CreateElement(TriggerExplorer triggerExplorer, string fullPath)
         {
             string directory = Path.GetDirectoryName(fullPath);
@@ -21,9 +25,24 @@ namespace GUI.Controllers
                 parent = rootNode;
 
             // Create ExplorerElement in the parent node
-            string name = Path.GetFileNameWithoutExtension(fullPath);
             ExplorerElement explorerElement = new ExplorerElement(fullPath);
             parent.Items.Insert(parent.Items.Count, explorerElement);
+
+            // Add item to appropriate container
+            switch (Path.GetExtension(explorerElement.FilePath))
+            {
+                case "":
+                    ContainerFolders.AddTriggerElement(explorerElement);
+                    break;
+                case ".json":
+                    ContainerTriggers.AddTriggerElement(explorerElement);
+                    break;
+                case ".j":
+                    ContainerScripts.AddTriggerElement(explorerElement);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void DeleteElement(TriggerExplorer triggerExplorer, string fullPath)
@@ -31,15 +50,15 @@ namespace GUI.Controllers
             var rootNode = triggerExplorer.map;
             ExplorerElement elementToDelete = FindTreeNodeElement(rootNode, fullPath);
 
-            if(elementToDelete != null)
+            if (elementToDelete != null)
             {
-                var parent = (ExplorerElement) elementToDelete.Parent;
+                var parent = (ExplorerElement)elementToDelete.Parent;
                 parent.Items.Remove(elementToDelete);
 
                 // Remove tab item
-                if(elementToDelete.tabItem != null)
+                if (elementToDelete.tabItem != null)
                 {
-                    var tabParent = (TabControl) elementToDelete.tabItem.Parent;
+                    var tabParent = (TabControl)elementToDelete.tabItem.Parent;
                     tabParent.Items.Remove(elementToDelete.tabItem);
                 }
             }
@@ -48,18 +67,18 @@ namespace GUI.Controllers
         private ExplorerElement FindTreeNodeElement(ExplorerElement parent, string path)
         {
             ExplorerElement node = null;
-            
+
             for (int i = 0; i < parent.Items.Count; i++)
             {
                 ExplorerElement element = parent.Items[i] as ExplorerElement;
-                if(element.FilePath == path)
+                if (element.FilePath == path)
                 {
                     node = element;
                     break;
                 }
                 if (Directory.Exists(element.FilePath))
                 {
-                    node = FindTreeNodeElement(element, Path.GetDirectoryName(element.FilePath));
+                    node = FindTreeNodeElement(element, path);
                 }
             }
 
@@ -69,19 +88,20 @@ namespace GUI.Controllers
         private ExplorerElement FindTreeNodeDirectory(ExplorerElement parent, string directory)
         {
             ExplorerElement node = null;
-            
+
             for (int i = 0; i < parent.Items.Count; i++)
             {
                 ExplorerElement element = parent.Items[i] as ExplorerElement;
                 if (Directory.Exists(element.FilePath))
                 {
-                    if(element.FilePath == directory)
+                    if (element.FilePath == directory)
                     {
                         node = element;
                         break;
-                    } else
+                    }
+                    else
                     {
-                        node = FindTreeNodeDirectory(element, Path.GetDirectoryName(element.FilePath));
+                        node = FindTreeNodeDirectory(element, directory);
                     }
                 }
             }

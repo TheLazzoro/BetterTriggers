@@ -1,5 +1,6 @@
 ﻿using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
+using GUI.Containers;
 using GUI.Utility;
 using Newtonsoft.Json;
 using System;
@@ -15,32 +16,14 @@ namespace GUI.Controllers
     {
         public void CreateTrigger(TriggerExplorer explorer)
         {
-            string name = NameGenerator.GenerateTriggerName();
-
             ControllerProject controllerProject = new ControllerProject();
             string directory = controllerProject.GetDirectoryFromSelection(explorer.treeViewTriggerExplorer);
+            string name = NameGenerator.GenerateTriggerName();
 
             Trigger trigger = new Trigger();
             string json = JsonConvert.SerializeObject(trigger);
 
             File.WriteAllText(directory + "/" + name + ".json", json);
-
-            /*
-            var triggerControl = new TriggerControl();
-            triggerControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            triggerControl.VerticalContentAlignment = VerticalAlignment.Stretch;
-            Grid.SetColumn(triggerControl, 1);
-            Grid.SetRow(triggerControl, 3);
-            Grid.SetRowSpan(triggerControl, 2);
-
-
-            string name = NameGenerator.GenerateTriggerName();
-
-
-            TreeViewItem item = new TreeViewItem();
-
-            triggerExplorer.CreateTreeViewItem(item, name, Model.Data.EnumCategory.Trigger);
-            */
         }
 
         public TriggerControl CreateTriggerWithElements(TabControl tabControl, Model.Trigger trigger)

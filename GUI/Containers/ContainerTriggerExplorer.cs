@@ -34,8 +34,7 @@ namespace GUI.Containers
             Grid.SetColumn(triggerExplorer, 0);
             triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += OnItemSelectionChanged;
 
-            ExplorerElement mapHeader = new ExplorerElement(war3Project.Root);
-            triggerExplorer.CreateTreeViewItem(mapHeader, war3Project.Name, EnumCategory.Map);
+            triggerExplorer.CreateRootItem(war3Project.Root, EnumCategory.Map);
         }
 
         protected static void OnItemSelectionChanged(object sender, EventArgs e)

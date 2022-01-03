@@ -1,8 +1,10 @@
 ﻿using GUI.Components.TriggerExplorer;
 using GUI.Utility;
 using Model.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Controls;
 
@@ -12,20 +14,14 @@ namespace GUI.Controllers
     {
         public void CreateVariable(Grid mainGrid, TriggerExplorer triggerExplorer)
         {
-            var variableControl = new VariableControl();
-
-            // Position editor
-            mainGrid.Children.Add(variableControl);
-            Grid.SetColumn(variableControl, 1);
-            Grid.SetRow(variableControl, 3);
-            Grid.SetRowSpan(variableControl, 2);
-
+            ControllerProject controllerProject = new ControllerProject();
+            string directory = controllerProject.GetDirectoryFromSelection(triggerExplorer.treeViewTriggerExplorer);
             string name = NameGenerator.GenerateVariableName();
 
-            TreeViewItem item = new TreeViewItem();
-            TreeViewManipulator.SetTreeViewItemAppearance(item, name, EnumCategory.SetVariable);
+            Variable trigger = new Variable();
+            string json = JsonConvert.SerializeObject(trigger);
 
-            triggerExplorer.CreateTreeViewItem(item, name, Model.Data.EnumCategory.SetVariable);
+            File.WriteAllText(directory + "/" + name + ".json", json);
         }
     }
 }

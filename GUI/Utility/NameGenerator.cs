@@ -29,15 +29,19 @@ namespace GUI.Utility
         {
             string nameTemplate = "Untitled Trigger";
             string name = nameTemplate;
-            int suffix = 0;
-            for (int i = 0; i < ContainerTriggers.Count(); i++)
+            int i = 0;
+            bool isValid = false;
+            while (!isValid)
             {
-                var element = ContainerTriggers.Get(i);
-                if (element.Name == name)
+                if (ContainerTriggers.Contains(name))
                 {
-                    suffix++;
-                    name = nameTemplate + " " + suffix;
+                    name = nameTemplate + " " + i;
+                } else
+                {
+                    isValid = true;
                 }
+
+                i++;
             }
 
             return name;

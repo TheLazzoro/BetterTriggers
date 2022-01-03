@@ -12,6 +12,7 @@ namespace GUI.Components.TriggerExplorer
     public class ExplorerElement : TreeViewItem
     {
         public string FilePath;
+        public string ElementName;
         public TabItem tabItem;
         public IExplorerElement Ielement;
         public static IExplorerElement currentExplorerElement;
@@ -19,11 +20,14 @@ namespace GUI.Components.TriggerExplorer
         public ExplorerElement(string filePath)
         {
             this.FilePath = filePath;
+            this.ElementName = Path.GetFileNameWithoutExtension(filePath);
 
             EnumCategory category;
             switch (Path.GetExtension(filePath))
             {
-
+                case "":
+                    category = EnumCategory.Folder;
+                    break;
                 case ".json":
                     category = EnumCategory.Trigger;
                     break;
@@ -35,7 +39,14 @@ namespace GUI.Components.TriggerExplorer
                     break;
             }
 
-            TreeViewManipulator.SetTreeViewItemAppearance(this, Path.GetFileNameWithoutExtension(filePath), category);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, ElementName, category);
+        }
+
+        public ExplorerElement(string rootPath, bool isRoot)
+        {
+            this.FilePath = rootPath;
+            this.ElementName = Path.GetFileNameWithoutExtension(rootPath);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, ElementName, EnumCategory.Map);
         }
 
     }

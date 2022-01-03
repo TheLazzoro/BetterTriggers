@@ -3,6 +3,7 @@ using GUI.Utility;
 using Model.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Controls;
 
@@ -12,12 +13,11 @@ namespace GUI.Controllers
     {
         public void CreateFolder(TriggerExplorer triggerExplorer)
         {
+            ControllerProject controllerProject = new ControllerProject();
+            string directory = controllerProject.GetDirectoryFromSelection(triggerExplorer.treeViewTriggerExplorer);
             string name = NameGenerator.GenerateCategoryName();
 
-            TreeViewItem item = new TreeViewItem();
-            TriggerFolder script = new TriggerFolder();
-
-            triggerExplorer.CreateTreeViewItem(item, name, EnumCategory.Folder);
+            Directory.CreateDirectory(directory + "/" + name);
         }
     }
 }

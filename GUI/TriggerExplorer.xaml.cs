@@ -38,6 +38,7 @@ namespace GUI
             fileSystemWatcher = new FileSystemWatcher();
             fileSystemWatcher.Path = rootFolderPath;
             fileSystemWatcher.EnableRaisingEvents = true;
+            fileSystemWatcher.IncludeSubdirectories = true;
             fileSystemWatcher.Created += FileSystemWatcher_Created;
             fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
         }
@@ -128,35 +129,13 @@ namespace GUI
             */
         }
 
-        public TreeViewItem CreateTreeViewItem(TreeViewItem item, string text, EnumCategory category)
+        public void CreateRootItem(string path, EnumCategory category)
         {
-            TreeViewItem selectedItem = (TreeViewItem)treeViewTriggerExplorer.SelectedItem;
-            if (selectedItem != null && selectedItem.Tag is TriggerFolder)
-                selectedItem.Items.Add(item);
-            else if (selectedItem != null && selectedItem.Parent != null && !(selectedItem.Parent is TreeView))
-            {
-                TreeViewItem parent = (TreeViewItem)selectedItem.Parent;
-                parent.Items.Insert(parent.Items.IndexOf(selectedItem) + 1, item);
-            }
-            else if (this.map != null && (selectedItem == map || selectedItem == null))
-            {
-                map.Items.Insert(0, item);
-            }
-            else if (this.map != null)
-                this.map.Items.Add(item);
-            else if(category == EnumCategory.Map) // first entry. This is the map header
-            {
-                this.map = (ExplorerElement) item;
-                treeViewTriggerExplorer.Items.Add(item);
-            }
-
-            item.IsExpanded = true;
-            item.IsSelected = true;
+            this.map = new ExplorerElement(path, true);
+            treeViewTriggerExplorer.Items.Add(this.map);
+            this.map.IsExpanded = true;
+            this.map.IsSelected = true;
             //item.AllowDrop = true; // maybe needed?
-
-            TreeViewManipulator.SetTreeViewItemAppearance(item, text, category);
-
-            return item;
         }
 
         private void treeViewItem_PreviewDragEnter(object sender, DragEventArgs e)
