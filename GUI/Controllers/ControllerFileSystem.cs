@@ -50,8 +50,30 @@ namespace GUI.Controllers
             var rootNode = triggerExplorer.map;
             ExplorerElement elementToDelete = FindTreeNodeElement(rootNode, fullPath);
 
+            RecurseDeleteElement(elementToDelete);
+        }
+
+        private void RecurseDeleteElement(ExplorerElement elementToDelete)
+        {
             if (elementToDelete != null)
             {
+                if (elementToDelete.Items.Count > 0)
+                {
+                    // Delete all child elements (items in folders and all their subfoldes with item etc.)
+                    for(int i = 0; i < elementToDelete.Items.Count; i++)
+                    {
+                        RecurseDeleteElement(elementToDelete.Items[i] as ExplorerElement);
+                    }
+                }
+
+                // Remove item from container
+                // Hack.
+                ContainerFolders.RemoveByFilePath(elementToDelete.FilePath);
+                ContainerTriggers.RemoveByFilePath(elementToDelete.FilePath);
+                ContainerScripts.RemoveByFilePath(elementToDelete.FilePath);
+                ContainerVariables.RemoveByFilePath(elementToDelete.FilePath);
+
+                // Remove item from TriggerExplorer
                 var parent = (ExplorerElement)elementToDelete.Parent;
                 parent.Items.Remove(elementToDelete);
 

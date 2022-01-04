@@ -11,15 +11,20 @@ namespace GUI.Utility
         {
             string nameTemplate = "Untitled Category";
             string name = nameTemplate;
-            int suffix = 0;
-            for (int i = 0; i < ContainerFolders.Count(); i++)
+            int i = 0;
+            bool isValid = false;
+            while (!isValid)
             {
-                var element = ContainerFolders.Get(i);
-                if (element.Name == name)
+                if (ContainerFolders.Contains(name))
                 {
-                    suffix++;
-                    name = nameTemplate + " " + suffix;
+                    name = nameTemplate + " " + i;
                 }
+                else
+                {
+                    isValid = true;
+                }
+
+                i++;
             }
 
             return name;
@@ -36,7 +41,8 @@ namespace GUI.Utility
                 if (ContainerTriggers.Contains(name))
                 {
                     name = nameTemplate + " " + i;
-                } else
+                }
+                else
                 {
                     isValid = true;
                 }
@@ -51,15 +57,20 @@ namespace GUI.Utility
         {
             string nameTemplate = "Untitled Script";
             string name = nameTemplate;
-            int suffix = 0;
-            for (int i = 0; i < ContainerScripts.Count(); i++)
+            int i = 0;
+            bool isValid = false;
+            while (!isValid)
             {
-                var element = ContainerScripts.Get(i);
-                if (element.Name == name)
+                if (ContainerScripts.Contains(name))
                 {
-                    suffix++;
-                    name = nameTemplate + " " + suffix;
+                    name = nameTemplate + " " + i;
                 }
+                else
+                {
+                    isValid = true;
+                }
+
+                i++;
             }
 
             return name;
@@ -69,15 +80,20 @@ namespace GUI.Utility
         {
             string nameTemplate = "UntitledVariable";
             string name = nameTemplate;
-            int suffix = 0;
-            for (int i = 0; i < ContainerVariables.Count(); i++)
+            int i = 0;
+            bool isValid = false;
+            while (!isValid)
             {
-                var element = ContainerVariables.Get(i);
-                if (element.Name == name)
+                if (ContainerVariables.Contains(name))
                 {
-                    suffix++;
-                    name = nameTemplate + suffix;
+                    name = nameTemplate + i;
                 }
+                else
+                {
+                    isValid = true;
+                }
+
+                i++;
             }
 
             return name;

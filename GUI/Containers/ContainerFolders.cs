@@ -19,9 +19,46 @@ namespace GUI.Containers
             return folderContainer.Count;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Returns true if an element with the given file name exists in the container.</returns>
+        public static bool Contains(string name)
+        {
+            bool found = false;
+
+            foreach (var item in folderContainer)
+            {
+                if (item.ElementName == name)
+                {
+                    found = true;
+                }
+            }
+
+            return found;
+        }
+
         public static ExplorerElement Get(int index)
         {
             return folderContainer[index];
+        }
+
+        public static void Remove(ExplorerElement explorerElement)
+        {
+            folderContainer.Remove(explorerElement);
+        }
+
+        public static void RemoveByFilePath(string filePath)
+        {
+            for (int i = 0; i < folderContainer.Count; i++)
+            {
+                var item = folderContainer[i];
+                if (item.FilePath == filePath)
+                {
+                    folderContainer.Remove(item);
+                }
+            }
         }
     }
 }

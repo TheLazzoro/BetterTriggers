@@ -19,6 +19,11 @@ namespace GUI.Containers
             return triggerElementContainer.Count;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Returns true if an element with the given file name exists in the container.</returns>
         public static bool Contains(string name)
         {
             bool found = false;
@@ -42,6 +47,18 @@ namespace GUI.Containers
         public static void Remove(ExplorerElement explorerElement)
         {
             triggerElementContainer.Remove(explorerElement);
+        }
+
+        public static void RemoveByFilePath(string filePath)
+        {
+            for( int i = 0; i < triggerElementContainer.Count; i++)
+            {
+                var item = triggerElementContainer[i];
+                if (item.FilePath == filePath)
+                {
+                    triggerElementContainer.Remove(item);
+                }
+            }
         }
     }
 }
