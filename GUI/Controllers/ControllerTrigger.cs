@@ -16,14 +16,20 @@ namespace GUI.Controllers
     {
         public void CreateTrigger(TriggerExplorer explorer)
         {
-            ControllerProject controllerProject = new ControllerProject();
-            string directory = controllerProject.GetDirectoryFromSelection(explorer.treeViewTriggerExplorer);
-            string name = NameGenerator.GenerateTriggerName();
+            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(EnumExplorerElement.Trigger);
+            createExplorerElementWindow.ShowDialog();
+            if(createExplorerElementWindow.ElementName != null)
+            {
+                string name = createExplorerElementWindow.ElementName;
 
-            Trigger trigger = new Trigger();
-            string json = JsonConvert.SerializeObject(trigger);
+                ControllerProject controllerProject = new ControllerProject();
+                string directory = controllerProject.GetDirectoryFromSelection(explorer.treeViewTriggerExplorer);
 
-            File.WriteAllText(directory + "/" + name + ".json", json);
+                Trigger trigger = new Trigger();
+                string json = JsonConvert.SerializeObject(trigger);
+
+                File.WriteAllText(directory + "/" + name + ".json", json);
+            }
         }
 
         public TriggerControl CreateTriggerWithElements(TabControl tabControl, Model.Trigger trigger)

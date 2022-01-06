@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GUI.Components.TriggerExplorer
 {
@@ -13,7 +14,7 @@ namespace GUI.Components.TriggerExplorer
     {
         public string FilePath;
         public string ElementName;
-        public TabItem tabItem;
+        public TabItemBT tabItem;
         public IExplorerElement Ielement;
         public static IExplorerElement currentExplorerElement;
 
@@ -22,8 +23,20 @@ namespace GUI.Components.TriggerExplorer
             this.FilePath = filePath;
             this.ElementName = Path.GetFileNameWithoutExtension(filePath);
 
+            RefreshElement();
+        }
+
+        public ExplorerElement(string rootPath, bool isRoot)
+        {
+            this.FilePath = rootPath;
+            this.ElementName = Path.GetFileNameWithoutExtension(rootPath);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, ElementName, EnumCategory.Map);
+        }
+
+        public void RefreshElement()
+        {
             EnumCategory category;
-            switch (Path.GetExtension(filePath))
+            switch (Path.GetExtension(this.FilePath))
             {
                 case "":
                     category = EnumCategory.Folder;
@@ -40,14 +53,9 @@ namespace GUI.Components.TriggerExplorer
             }
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, ElementName, category);
+            
+            if(this.tabItem != null)
+                tabItem.RefreshHeader(ElementName);
         }
-
-        public ExplorerElement(string rootPath, bool isRoot)
-        {
-            this.FilePath = rootPath;
-            this.ElementName = Path.GetFileNameWithoutExtension(rootPath);
-            TreeViewManipulator.SetTreeViewItemAppearance(this, ElementName, EnumCategory.Map);
-        }
-
     }
 }

@@ -11,10 +11,22 @@ namespace GUI.Controllers
 {
     public class ControllerFileSystem
     {
+        public void MoveFile(ExplorerElement elementToMove, ExplorerElement target)
+        {
+            string directory = target.FilePath;
+            if (!Directory.Exists(directory))
+                directory = Path.GetDirectoryName(target.FilePath);
+
+            if (File.Exists(elementToMove.FilePath))
+                File.Move(elementToMove.FilePath, directory + "/" + Path.GetFileName(elementToMove.FilePath));
+            else if (Directory.Exists(elementToMove.FilePath))
+                Directory.Move(elementToMove.FilePath, directory + "/" + Path.GetFileName(elementToMove.FilePath));
+        }
 
         // TODO:
         // This is currently only implemented for .json "trigger" files
-        public void CreateElement(TriggerExplorer triggerExplorer, string fullPath)
+        // When .json "variable" files are in place this needs a rework
+        public void OnCreateElement(TriggerExplorer triggerExplorer, string fullPath)
         {
             string directory = Path.GetDirectoryName(fullPath);
 
@@ -24,6 +36,11 @@ namespace GUI.Controllers
             if (parent == null)
                 parent = rootNode;
 
+            RecurseCreateElement(parent, fullPath);
+        }
+
+        private void RecurseCreateElement(ExplorerElement parent, string fullPath)
+        {
             // Create ExplorerElement in the parent node
             ExplorerElement explorerElement = new ExplorerElement(fullPath);
             parent.Items.Insert(parent.Items.Count, explorerElement);
@@ -43,9 +60,63 @@ namespace GUI.Controllers
                 default:
                     break;
             }
+
+            // Recurse into the element if it's a folder
+            if (Directory.Exists(fullPath))
+            {
+                string[] entries = Directory.GetFileSystemEntries(fullPath);
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    RecurseCreateElement(explorerElement, entries[i]);
+                }
+            }
         }
 
-        public void DeleteElement(TriggerExplorer triggerExplorer, string fullPath)
+        public void OnRenameElement(TriggerExplorer triggerExplorer, string oldFullPath, string newFullPath)
+        {
+            var rootNode = triggerExplorer.map;
+            ExplorerElement elementToRename = FindTreeNodeElement(rootNode, oldFullPath);
+
+            RecurseRenameElement(elementToRename, oldFullPath, newFullPath);
+
+        }
+
+        /// <summary>
+        /// Needed when a folder containing files is renamed.
+        /// </summary>
+        /// <param name="elementToRename"></param>
+        /// <param name="oldFullPath"></param>
+        /// <param name="newFullPath"></param>
+        private void RecurseRenameElement(ExplorerElement elementToRename, string oldFullPath, string newFullPath)
+        {
+            if (elementToRename != null)
+            {
+                if (Directory.Exists(newFullPath))
+                {
+                    string[] entries = Directory.GetFileSystemEntries(newFullPath);
+                    for (int i = 0; i < entries.Length; i++)
+                    {
+                        var child = elementToRename.Items[i] as ExplorerElement;
+                        RecurseRenameElement(child, elementToRename.FilePath, entries[i]);
+                    }
+                }
+
+                elementToRename.FilePath = newFullPath;
+                elementToRename.ElementName = Path.GetFileNameWithoutExtension(newFullPath);
+                elementToRename.RefreshElement();
+            }
+        }
+
+        public void OnMoveElement(TriggerExplorer triggerExplorer, string oldFullPath, string newFullPath)
+        {
+            var rootNode = triggerExplorer.map;
+            ExplorerElement elementToMove = FindTreeNodeElement(rootNode, oldFullPath);
+
+            string fileContent = elementToMove.Ielement.GetSaveString();
+
+        }
+
+        public void OnDeleteElement(TriggerExplorer triggerExplorer, string fullPath)
         {
             var rootNode = triggerExplorer.map;
             ExplorerElement elementToDelete = FindTreeNodeElement(rootNode, fullPath);
@@ -60,7 +131,7 @@ namespace GUI.Controllers
                 if (elementToDelete.Items.Count > 0)
                 {
                     // Delete all child elements (items in folders and all their subfoldes with item etc.)
-                    for(int i = 0; i < elementToDelete.Items.Count; i++)
+                    for (int i = 0; i < elementToDelete.Items.Count; i++)
                     {
                         RecurseDeleteElement(elementToDelete.Items[i] as ExplorerElement);
                     }
@@ -98,7 +169,7 @@ namespace GUI.Controllers
                     node = element;
                     break;
                 }
-                if (Directory.Exists(element.FilePath))
+                if (Directory.Exists(element.FilePath) && node == null)
                 {
                     node = FindTreeNodeElement(element, path);
                 }
@@ -114,7 +185,7 @@ namespace GUI.Controllers
             for (int i = 0; i < parent.Items.Count; i++)
             {
                 ExplorerElement element = parent.Items[i] as ExplorerElement;
-                if (Directory.Exists(element.FilePath))
+                if (Directory.Exists(element.FilePath) && node == null)
                 {
                     if (element.FilePath == directory)
                     {

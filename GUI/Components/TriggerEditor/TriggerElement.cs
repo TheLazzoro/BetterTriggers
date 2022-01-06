@@ -26,6 +26,8 @@ namespace GUI.Components.TriggerEditor
 
         public TriggerElement(Function function)
         {
+            this.function = function;
+
             this.paramTextBlock = new TextBlock();
             this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
             this.paramTextBlock.FontSize = 18;
@@ -41,7 +43,6 @@ namespace GUI.Components.TriggerEditor
             this.descriptionTextBlock.Background = new SolidColorBrush(Color.FromRgb(40, 40, 40));
             Grid.SetRow(this.descriptionTextBlock, 4);
 
-            this.function = function;
             this.paramText = function.paramText;
             this.descriptionTextBlock.Text = function.description;
             this.category = function.category;

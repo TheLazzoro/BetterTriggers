@@ -23,7 +23,7 @@ namespace GUI.Containers
                 parent.Children.Remove(triggerExplorer);
             }
             triggerExplorer = new TriggerExplorer(war3Project.Root);
-            triggerExplorer.Margin = new Thickness(0, 0, 4, 0);
+            triggerExplorer.Margin = new Thickness(-1, 1, 4, -1);
             triggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
             triggerExplorer.Width = Double.NaN;
             //currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);

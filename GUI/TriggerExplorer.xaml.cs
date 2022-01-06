@@ -27,7 +27,7 @@ namespace GUI
     {
         public ExplorerElement map;
         Point _startPoint;
-        TreeViewItem dragItem;
+        ExplorerElement dragItem;
         bool _IsDragging = false;
         FileSystemWatcher fileSystemWatcher;
 
@@ -41,28 +41,58 @@ namespace GUI
             fileSystemWatcher.IncludeSubdirectories = true;
             fileSystemWatcher.Created += FileSystemWatcher_Created;
             fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
+            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
+            fileSystemWatcher.Changed += FileSystemWatcher_Changed;
+            fileSystemWatcher.Error += FileSystemWatcher_Error;
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(delegate {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
                 string path = e.FullPath;
                 ControllerFileSystem controller = new ControllerFileSystem();
-                controller.CreateElement(this, path);
+                controller.OnCreateElement(this, path);
             });
-            
+        }
+
+        private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                ControllerFileSystem controller = new ControllerFileSystem();
+                controller.OnRenameElement(this, e.OldFullPath, e.FullPath);
+            });
+        }
+
+        private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                if (e.ChangeType == WatcherChangeTypes.Changed)
+                {
+                    ControllerFileSystem controller = new ControllerFileSystem();
+                    //controller.MoveElement(this, e.OldFullPath, e.FullPath);
+                    string s = e.FullPath;
+                }
+            });
         }
 
         private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(delegate {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
                 string path = e.FullPath;
                 ControllerFileSystem controller = new ControllerFileSystem();
-                controller.DeleteElement(this, path);
+                controller.OnDeleteElement(this, path);
             });
-
         }
 
+        private void FileSystemWatcher_Error(object sender, ErrorEventArgs e)
+        {
+            MessageBox.Show(e.GetException().Message, "Critical File System Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Application.Current.Shutdown();
+        }
 
         /*
         private void treeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -97,7 +127,7 @@ namespace GUI
         private void StartDrag(MouseEventArgs e)
         {
             _IsDragging = true;
-            dragItem = this.treeViewTriggerExplorer.SelectedItem as TreeViewItem;
+            dragItem = this.treeViewTriggerExplorer.SelectedItem as ExplorerElement;
             DataObject data = null;
 
             data = new DataObject("inadt", dragItem);
@@ -159,21 +189,29 @@ namespace GUI
                 // things like 'TextBlock' and 'Border' on the drop target when dropping the 
                 // dragged element.
                 FrameworkElement dropTarget = e.Source as FrameworkElement;
-                TreeViewItem traversedTarget = null;
+                ExplorerElement traversedTarget = null;
                 while (traversedTarget == null)
                 {
                     dropTarget = dropTarget.Parent as FrameworkElement;
-                    if (dropTarget is TreeViewItem)
+                    if (dropTarget is ExplorerElement)
                     {
-                        traversedTarget = (TreeViewItem)dropTarget;
+                        traversedTarget = (ExplorerElement)dropTarget;
                     }
                 }
 
+                if (dragItem != traversedTarget)
+                {
+                    ControllerFileSystem controller = new ControllerFileSystem();
+                    controller.MoveFile(dragItem, traversedTarget);
+                }
+
+                /*
                 if (traversedTarget != dragItem)
                 {
                     parent.Items.Remove(dragItem);
                     traversedTarget.Items.Insert(0, dragItem);
                 }
+                */
             }
         }
 

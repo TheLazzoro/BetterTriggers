@@ -117,6 +117,7 @@ namespace GUI.Controllers
                         var triggerControl = triggerController.CreateTriggerWithElements(tabControl, trigger);
                         TabItemBT tabItemTrigger = new TabItemBT(triggerControl, Reader.GetFileName(selectedElement.FilePath));
                         tabControl.Items.Add(tabItemTrigger);
+                        //tabControl.ItemsSource.
                         selectedElement.tabItem = tabItemTrigger;
                         selectedElement.Ielement = triggerControl;
                         break;
