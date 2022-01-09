@@ -215,5 +215,105 @@ namespace GUI
             }
         }
 
+        private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
+        {
+            ExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+            if (selectedElement == null || selectedElement == map)
+                return;
+
+            ControllerFileSystem controller = new ControllerFileSystem();
+            controller.DeleteElement(selectedElement);
+        }
+
+        private void treeViewTriggerExplorer_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // DUPLICATE CODE
+            // It is necessary to traverse the item's parents since drag & drop picks up
+            // things like 'TextBlock' and 'Border' on the drop target when dropping the 
+            // dragged element.
+            FrameworkElement rightClickedElement = e.Source as FrameworkElement;
+            ExplorerElement traversedTarget = null;
+            if (rightClickedElement != null && !(rightClickedElement is TreeView))
+            {
+                while (traversedTarget == null)
+                {
+                    rightClickedElement = rightClickedElement.Parent as FrameworkElement;
+                    if (rightClickedElement is ExplorerElement)
+                    {
+                        traversedTarget = (ExplorerElement)rightClickedElement;
+                    }
+                }
+            }
+
+            if (traversedTarget == null)
+                return;
+
+            // Set selected item
+            traversedTarget.IsSelected = true;
+
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem menuItemReplace = new MenuItem
+            {
+                Header = "Cut",
+            };
+            MenuItem menuItemReset = new MenuItem
+            {
+                Header = "Copy",
+            };
+            MenuItem menuItemPaste = new MenuItem
+            {
+                Header = "Paste",
+            };
+            MenuItem menuItemDelete = new MenuItem
+            {
+                Header = "Delete",
+            };
+            MenuItem menuItemCategory = new MenuItem
+            {
+                Header = "New Category",
+            };
+            MenuItem menuItemTrigger = new MenuItem
+            {
+                Header = "New Trigger",
+            };
+            MenuItem menuItemTriggerComment = new MenuItem
+            {
+                Header = "New Trigger Comment",
+            };
+            MenuItem menuItemScript = new MenuItem
+            {
+                Header = "New Script",
+            };
+            MenuItem menuItemGlobalVariable = new MenuItem
+            {
+                Header = "New Global Variable",
+            };
+            MenuItem menuItemEnableTrigger = new MenuItem
+            {
+                Header = "Enable Trigger",
+            };
+            MenuItem menuItemInitiallyOn = new MenuItem
+            {
+                Header = "Initially On",
+            };
+            contextMenu.Items.Add(menuItemReplace);
+            contextMenu.Items.Add(menuItemReset);
+            contextMenu.Items.Add(menuItemPaste);
+            contextMenu.Items.Add(menuItemDelete);
+            contextMenu.Items.Add(new Separator());
+            contextMenu.Items.Add(menuItemCategory);
+            contextMenu.Items.Add(menuItemTrigger);
+            contextMenu.Items.Add(menuItemTriggerComment);
+            contextMenu.Items.Add(menuItemScript);
+            contextMenu.Items.Add(menuItemGlobalVariable);
+            contextMenu.Items.Add(new Separator());
+            contextMenu.Items.Add(menuItemEnableTrigger);
+            contextMenu.Items.Add(menuItemInitiallyOn);
+            //menuItemReplace.Click += ReplaceTexture;
+            //menuItemReset.Click += ResetTexture;
+
+            traversedTarget.ContextMenu = contextMenu;
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using GUI.Utility;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Model.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,20 +17,21 @@ namespace GUI.Controllers
 {
     public class ControllerScript
     {
-        public void CreateScript(TabControl tabControl, TriggerExplorer triggerExplorer)
+        public void CreateScript(TriggerExplorer triggerExplorer)
         {
-            //var scriptControl = CreateScriptControl(tabControl);
+            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(EnumExplorerElement.Script);
+            createExplorerElementWindow.ShowDialog();
+            if (createExplorerElementWindow.ElementName != null)
+            {
+                string name = createExplorerElementWindow.ElementName;
 
-            //string name = NameGenerator.GenerateScriptName();
+                ControllerProject controllerProject = new ControllerProject();
+                string directory = controllerProject.GetDirectoryFromSelection(triggerExplorer.treeViewTriggerExplorer);
 
-            //TreeViewItem item = new TreeViewItem();
-            //ScriptControl script = new ScriptControl();
+                string script = "";
 
-            //triggerExplorer.CreateTreeViewItem(item, name, EnumCategory.AI);
-
-            // folding text blocks?
-            //foldingManager = FoldingManager.Install(textEditor.TextArea);
-            //foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
+                File.WriteAllText(directory + "/" + name + ".j", script);
+            }
         }
 
         public ScriptControl CreateScriptControlWithScript(TabControl tabControl, string filePath)

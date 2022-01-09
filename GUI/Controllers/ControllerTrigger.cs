@@ -2,6 +2,7 @@
 using GUI.Components.TriggerExplorer;
 using GUI.Containers;
 using GUI.Utility;
+using Model.Data;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace GUI.Controllers
 {
     public class ControllerTrigger
     {
-        public void CreateTrigger(TriggerExplorer explorer)
+        public void CreateTrigger(TriggerExplorer triggerExplorer)
         {
             NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(EnumExplorerElement.Trigger);
             createExplorerElementWindow.ShowDialog();
@@ -23,12 +24,12 @@ namespace GUI.Controllers
                 string name = createExplorerElementWindow.ElementName;
 
                 ControllerProject controllerProject = new ControllerProject();
-                string directory = controllerProject.GetDirectoryFromSelection(explorer.treeViewTriggerExplorer);
+                string directory = controllerProject.GetDirectoryFromSelection(triggerExplorer.treeViewTriggerExplorer);
 
-                Trigger trigger = new Trigger();
+                Model.Trigger trigger = new Model.Trigger();
                 string json = JsonConvert.SerializeObject(trigger);
 
-                File.WriteAllText(directory + "/" + name + ".json", json);
+                File.WriteAllText(directory + "/" + name + ".trg", json);
             }
         }
 

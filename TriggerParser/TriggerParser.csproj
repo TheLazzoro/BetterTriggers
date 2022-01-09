@@ -60,6 +60,7 @@
     <Compile Include="Converter\ActionConverter.cs" />
     <Compile Include="Converter\CategoryConverter.cs" />
     <Compile Include="Converter\ConditionConverter.cs" />
+    <Compile Include="Converter\TypeConverter.cs" />
     <Compile Include="Converter\EventConverter.cs" />
     <Compile Include="TriggerElements\ActionContainer.cs" />
     <Compile Include="TriggerElements\EventContainer.cs" />

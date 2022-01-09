@@ -8,7 +8,7 @@
              d:DesignHeight="450" Width="400">
     <Grid>
 
-        <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" >
+        <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" MouseRightButtonDown="treeViewTriggerExplorer_MouseRightButtonDown" KeyDown="treeViewTriggerExplorer_KeyDown" >
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <!-- We have to select the item which is right-clicked on -->

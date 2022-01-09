@@ -47,7 +47,7 @@ namespace GUI
             ControllerProject controller = new ControllerProject();
             controller.OnClick_ExplorerElement(explorerItem, tabControl);
 
-            var triggerExplorerElement = ControllerProject.currentTriggerExplorerElement;
+            var triggerExplorerElement = ControllerProject.currentExplorerElement;
 
             if (triggerExplorerElement != null)
             {
@@ -78,30 +78,30 @@ namespace GUI
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerScript();
-            controller.CreateScript(tabControl, ContainerTriggerExplorer.triggerExplorer);
+            controller.CreateScript(ContainerTriggerExplorer.triggerExplorer);
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerVariable();
-            controller.CreateVariable(mainGrid, ContainerTriggerExplorer.triggerExplorer);
+            controller.CreateVariable(ContainerTriggerExplorer.triggerExplorer);
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
+            var triggerControl = ControllerProject.currentExplorerElement.Ielement as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
+            var triggerControl = ControllerProject.currentExplorerElement.Ielement as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void btnCreateAction_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
+            var triggerControl = ControllerProject.currentExplorerElement.Ielement as TriggerControl;
             triggerControl.CreateAction();
         }
 
@@ -180,11 +180,11 @@ namespace GUI
 
         private void menuSave_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = ControllerProject.currentTriggerExplorerElement as TriggerControl;
-            if (triggerControl == null)
-                return;
+            var elementInView = ControllerProject.currentExplorerElement;
+            ControllerFileSystem controller = new ControllerFileSystem();
+            controller.SaveFile(elementInView);
 
-            SaveLoad.SaveLoad.SaveStringAs(triggerControl.GetSaveString());
+            //SaveLoad.SaveLoad.SaveStringAs(triggerControl.GetSaveString());
         }
 
         private void menuOpen_Click(object sender, RoutedEventArgs e)

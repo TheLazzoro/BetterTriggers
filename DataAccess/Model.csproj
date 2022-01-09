@@ -51,6 +51,7 @@
     <Compile Include="Data\EnumCategory.cs" />
     <Compile Include="Data\EnumExplorerElement.cs" />
     <Compile Include="Data\Trigger.cs" />
+    <Compile Include="Data\TriggerType.cs" />
     <Compile Include="Data\Variable.cs" />
     <Compile Include="JsonBaseConverter\BaseConverter.cs" />
     <Compile Include="JsonBaseConverter\ParameterConverter.cs" />

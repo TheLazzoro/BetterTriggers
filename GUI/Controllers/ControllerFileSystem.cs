@@ -11,6 +11,15 @@ namespace GUI.Controllers
 {
     public class ControllerFileSystem
     {
+        public void SaveFile(ExplorerElement elementToSave)
+        {
+            if (File.Exists(elementToSave.FilePath))
+            {
+                string content = elementToSave.Ielement.GetSaveString();
+                File.WriteAllText(elementToSave.FilePath, content);
+            }
+        }
+
         public void MoveFile(ExplorerElement elementToMove, ExplorerElement target)
         {
             string directory = target.FilePath;
@@ -21,6 +30,14 @@ namespace GUI.Controllers
                 File.Move(elementToMove.FilePath, directory + "/" + Path.GetFileName(elementToMove.FilePath));
             else if (Directory.Exists(elementToMove.FilePath))
                 Directory.Move(elementToMove.FilePath, directory + "/" + Path.GetFileName(elementToMove.FilePath));
+        }
+
+        public void DeleteElement(ExplorerElement elementToDelete)
+        {
+            if (File.Exists(elementToDelete.FilePath))
+                File.Delete(elementToDelete.FilePath);
+            else if (Directory.Exists(elementToDelete.FilePath))
+                Directory.Delete(elementToDelete.FilePath, true);
         }
 
         // TODO:
@@ -51,11 +68,14 @@ namespace GUI.Controllers
                 case "":
                     ContainerFolders.AddTriggerElement(explorerElement);
                     break;
-                case ".json":
+                case ".trg":
                     ContainerTriggers.AddTriggerElement(explorerElement);
                     break;
                 case ".j":
                     ContainerScripts.AddTriggerElement(explorerElement);
+                    break;
+                case ".var":
+                    ContainerVariables.AddTriggerElement(explorerElement);
                     break;
                 default:
                     break;

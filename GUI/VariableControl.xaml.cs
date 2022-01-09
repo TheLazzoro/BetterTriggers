@@ -1,4 +1,5 @@
 ﻿using GUI.Components.TriggerExplorer;
+using GUI.Controllers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,7 +52,7 @@ namespace GUI
             return $"globals\ninteger {this.textBlockVariableNameUDG.Text}\nendglobals";
         }
 
-        private void SetName(string name)
+        public void SetName(string name)
         {
             this.textBoxVariableName.Text = name;
 

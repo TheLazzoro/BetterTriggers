@@ -28,6 +28,7 @@ namespace TriggerParser
             TriggerConditionParser.ParseConditions(@"C:\Users\Lasse Dam\Desktop\TriggerData\Conditions.txt");
             TriggerElementParser.ParseTriggerElements(@"C:\Users\Lasse Dam\Desktop\TriggerData\Actions.txt", ActionContainer.Id);
             TriggerCallParser.ParseCalls(@"C:\Users\Lasse Dam\Desktop\TriggerData\Calls.txt");
+            TriggerTypeParser.ParseVariableTypes(@"C:\Users\Lasse Dam\Desktop\TriggerData\VariableTypes.txt");
 
             // Converts all parsed elements and writes a json file
             ConstantConverter.ConvertConstants(TriggerParamContainer.container);
@@ -35,6 +36,7 @@ namespace TriggerParser
             ConditionConverter.ConvertConditions(TriggerConditionContainer.container);
             ActionConverter.ConvertActions(ActionContainer.container);
             CallConverter.ConvertCalls(TriggerCallContainer.container);
+            TypeConverter.ConvertTypes(TriggerTypeContainer.variableTypes);
         }
     }
 }

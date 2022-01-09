@@ -1,6 +1,7 @@
 ﻿using GUI.Components.TriggerExplorer;
 using GUI.Containers;
 using GUI.Utility;
+using Model.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;

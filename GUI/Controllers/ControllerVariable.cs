@@ -6,22 +6,87 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GUI.Controllers
 {
     public class ControllerVariable
     {
-        public void CreateVariable(Grid mainGrid, TriggerExplorer triggerExplorer)
+        public void CreateVariable(TriggerExplorer triggerExplorer)
         {
-            ControllerProject controllerProject = new ControllerProject();
-            string directory = controllerProject.GetDirectoryFromSelection(triggerExplorer.treeViewTriggerExplorer);
-            string name = NameGenerator.GenerateVariableName();
+            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(EnumExplorerElement.Variable);
+            createExplorerElementWindow.ShowDialog();
+            if (createExplorerElementWindow.ElementName != null)
+            {
+                string name = createExplorerElementWindow.ElementName;
 
-            Variable trigger = new Variable();
-            string json = JsonConvert.SerializeObject(trigger);
+                ControllerProject controllerProject = new ControllerProject();
+                string directory = controllerProject.GetDirectoryFromSelection(triggerExplorer.treeViewTriggerExplorer);
 
-            File.WriteAllText(directory + "/" + name + ".json", json);
+                Variable variable = new Variable()
+                {
+                    Name = name,
+                    Type = "integer",
+                };
+                string json = JsonConvert.SerializeObject(variable);
+
+                File.WriteAllText(directory + "/" + name + ".var", json);
+            }
+        }
+
+        public Variable LoadVariableFromFile(string filePath)
+        {
+            string json = File.ReadAllText(filePath);
+            Variable variable = JsonConvert.DeserializeObject<Variable>(json);
+
+            return variable;
+        }
+
+        public VariableControl CreateVariableWithElements(TabControl tabControl, Model.Data.Variable variable)
+        {
+            var variableControl = CreateTriggerControl(tabControl);
+            GenerateVariableElements(variableControl, variable);
+
+            return variableControl;
+        }
+
+        private VariableControl CreateTriggerControl(TabControl tabControl)
+        {
+            var variableControl = new VariableControl();
+            variableControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            variableControl.VerticalContentAlignment = VerticalAlignment.Stretch;
+
+            return variableControl;
+        }
+
+        private void GenerateVariableElements(VariableControl variableControl, Model.Data.Variable variable)
+        {
+            variableControl.SetName(variable.Name);
+
+            ControllerTriggerData controller = new ControllerTriggerData();
+            List<ComboBoxItem> list = controller.LoadVariableTypes();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                variableControl.comboBoxVariableType.Items.Add(list[i]);
+            }
+            for (int i = 0; i < list.Count; i++)
+            {
+                if ((string)list[i].Tag == variable.Type)
+                    variableControl.comboBoxVariableType.SelectedItem = list[i];
+            }
+
+
+            variableControl.checkBoxIsArray.IsChecked = variable.IsArray;
+
+            if (variable.IsTwoDimensions)
+                variableControl.comboBoxArrayDimensions.SelectedIndex = 1;
+            else
+                variableControl.comboBoxArrayDimensions.SelectedIndex = 0;
+
+            variableControl.textBoxArraySize0.Text = variable.ArraySize[0].ToString();
+            variableControl.textBoxArraySize1.Text = variable.ArraySize[1].ToString();
         }
     }
 }

@@ -4,6 +4,7 @@ using GUI.Utility;
 using Model.Data;
 using Model.War3Project;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +15,7 @@ namespace GUI.Controllers
 {
     public class ControllerProject
     {
-        public static IExplorerElement currentTriggerExplorerElement;
+        public static ExplorerElement currentExplorerElement;
 
         public War3Project CreateProject(string language, string name, string destinationFolder)
         {
@@ -41,9 +42,9 @@ namespace GUI.Controllers
 
             string json = File.ReadAllText(filepath);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
-            
+
             ContainerTriggerExplorer.CreateNewTriggerExplorer(mainGrid, project);
-            
+
             LoadProjectShared(mainGrid, project);
 
             return project;
@@ -58,7 +59,7 @@ namespace GUI.Controllers
         {
             ContainerTriggerExplorer.CreateNewTriggerExplorer(mainGrid, project);
             LoadFiles(project.Root, ContainerTriggerExplorer.triggerExplorer.map);
-            
+
         }
 
         private void LoadFiles(string folder, TreeViewItem parentNode)
@@ -84,13 +85,14 @@ namespace GUI.Controllers
 
                     switch (Reader.GetFileExtension(entry))
                     {
-                        case ".json":
-                            TreeViewManipulator.SetTreeViewItemAppearance(item, Reader.GetFileName(entry), EnumCategory.Trigger);
+                        case ".trg":
                             ContainerTriggers.AddTriggerElement(item);
                             break;
                         case ".j":
-                            TreeViewManipulator.SetTreeViewItemAppearance(item, Reader.GetFileName(entry), EnumCategory.AI);
                             ContainerScripts.AddTriggerElement(item);
+                            break;
+                        case ".var":
+                            ContainerVariables.AddTriggerElement(item);
                             break;
                         default:
                             break;
@@ -111,7 +113,7 @@ namespace GUI.Controllers
             {
                 switch (Reader.GetFileExtension(selectedElement.FilePath))
                 {
-                    case ".json":
+                    case ".trg":
                         ControllerTrigger triggerController = new ControllerTrigger();
                         Model.Trigger trigger = triggerController.LoadTriggerFromFile(selectedElement.FilePath);
                         var triggerControl = triggerController.CreateTriggerWithElements(tabControl, trigger);
@@ -120,6 +122,16 @@ namespace GUI.Controllers
                         //tabControl.ItemsSource.
                         selectedElement.tabItem = tabItemTrigger;
                         selectedElement.Ielement = triggerControl;
+                        break;
+                    case ".var":
+                        ControllerVariable controllerVariable = new ControllerVariable();
+                        Model.Data.Variable variable = controllerVariable.LoadVariableFromFile(selectedElement.FilePath);
+                        var variableControl = controllerVariable.CreateVariableWithElements(tabControl, variable);
+                        TabItemBT tabItemVariable = new TabItemBT(variableControl, Reader.GetFileName(selectedElement.FilePath));
+                        tabControl.Items.Add(tabItemVariable);
+                        //tabControl.ItemsSource.
+                        selectedElement.tabItem = tabItemVariable;
+                        selectedElement.Ielement = variableControl;
                         break;
                     case ".j":
                         ControllerScript scriptController = new ControllerScript();
@@ -135,7 +147,7 @@ namespace GUI.Controllers
             }
             if (selectedElement != null && selectedElement.Ielement != null)
             {
-                currentTriggerExplorerElement = selectedElement.Ielement;
+                currentExplorerElement = selectedElement;
                 selectedElement.Ielement.OnElementClick();
                 tabControl.SelectedItem = selectedElement.tabItem;
             }
@@ -148,7 +160,7 @@ namespace GUI.Controllers
             if (selectedItem == null)
                 return null;
 
-            if ( Directory.Exists(selectedItem.FilePath))
+            if (Directory.Exists(selectedItem.FilePath))
                 return selectedItem.FilePath;
 
             else if (File.Exists(selectedItem.FilePath))

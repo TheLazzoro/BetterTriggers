@@ -41,11 +41,14 @@ namespace GUI.Components.TriggerExplorer
                 case "":
                     category = EnumCategory.Folder;
                     break;
-                case ".json":
+                case ".trg":
                     category = EnumCategory.Trigger;
                     break;
                 case ".j":
                     category = EnumCategory.AI;
+                    break;
+                case ".var":
+                    category = EnumCategory.SetVariable;
                     break;
                 default:
                     category = EnumCategory.Trigger;
@@ -56,6 +59,11 @@ namespace GUI.Components.TriggerExplorer
             
             if(this.tabItem != null)
                 tabItem.RefreshHeader(ElementName);
+
+            // Only applies on variable type files
+            var control = Ielement as VariableControl;
+            if (control != null)
+                control.SetName(ElementName);
         }
     }
 }
