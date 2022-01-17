@@ -28,7 +28,7 @@ namespace GUI
             // Events in the variableControl
             this.OnRename += delegate
             {
-                SetName(textBoxVariableName.Text);
+                //OnElementRename(textBoxVariableName.Text);
             };
         }
 
@@ -47,15 +47,8 @@ namespace GUI
             this.Visibility = Visibility.Visible;
         }
 
-        public string GetScript()
+        public void OnElementRename(string name)
         {
-            return $"globals\ninteger {this.textBlockVariableNameUDG.Text}\nendglobals";
-        }
-
-        public void SetName(string name)
-        {
-            this.textBoxVariableName.Text = name;
-
             var newIdentifier = "udg_" + name;
             this.textBlockVariableNameUDG.Text = newIdentifier;
         }

@@ -56,11 +56,6 @@ namespace GUI
             ExplorerElement.currentExplorerElement = this;
         }
 
-        public string GetScript()
-        {
-            throw new NotImplementedException();
-        }
-
         public string GetSaveString()
         {
             Model.Trigger trigger = new Model.Trigger();
@@ -356,6 +351,11 @@ namespace GUI
             CommandTriggerElementPaste command = new CommandTriggerElementPaste(function, targetParentNode, insertIndex);
             command.Execute();
             */
+        }
+
+        public void OnElementRename(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Model.Natives
 {
     public class Function : Parameter, ICloneable
     {
-        public int ParamType = 1; // DO NOT CHANGE
+        public readonly int ParamType = 1; // DO NOT CHANGE
 
         public List<Parameter> parameters = new List<Parameter>();
         public string paramText;

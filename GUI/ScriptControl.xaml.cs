@@ -54,17 +54,17 @@ namespace GUI
             ExplorerElement.currentExplorerElement = this;
         }
 
-        public string GetScript()
-        {
-            return this.textEditor.Text;
-        }
-
         public string GetSaveString()
         {
             return this.textEditor.Text;
         }
 
         public UserControl GetControl()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnElementRename(string name)
         {
             throw new NotImplementedException();
         }

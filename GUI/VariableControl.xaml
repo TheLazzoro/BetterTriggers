@@ -23,9 +23,6 @@
             <ColumnDefinition Width="307*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Variable Name:" Grid.Row="0" Grid.Column="0" Foreground="White"/>
-        <TextBox x:Name="textBoxVariableName" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" HorizontalAlignment="Left" Width="200" KeyDown="textBoxVariableName_KeyDown" Foreground="White" Background="#FF282828" BorderBrush="#FF1E1E1E"/>
-
         <Label Content="Identifier:" Grid.Row="1" Grid.Column="0" Foreground="White"/>
         <TextBox x:Name="textBlockVariableNameUDG" Text="udg_varLUL" Grid.Row="1" IsReadOnly="True" Grid.Column="1" Margin="5,5,5,5" HorizontalAlignment="Left" Width="200" KeyDown="textBoxVariableName_KeyDown" Background="#FF282828" Foreground="White" BorderBrush="#FF1E1E1E"/>
 

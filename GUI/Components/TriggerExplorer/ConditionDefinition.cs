@@ -34,5 +34,10 @@ namespace GUI.Components.TriggerExplorer
         {
             throw new NotImplementedException();
         }
+
+        public void OnElementRename(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

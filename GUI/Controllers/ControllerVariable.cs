@@ -62,7 +62,7 @@ namespace GUI.Controllers
 
         private void GenerateVariableElements(VariableControl variableControl, Model.Data.Variable variable)
         {
-            variableControl.SetName(variable.Name);
+            variableControl.OnElementRename(variable.Name);
 
             ControllerTriggerData controller = new ControllerTriggerData();
             List<ComboBoxItem> list = controller.LoadVariableTypes();

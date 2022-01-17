@@ -217,12 +217,15 @@ namespace GUI
 
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
-            ExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
-            if (selectedElement == null || selectedElement == map)
-                return;
+            if (e.Key == Key.Delete)
+            {
+                ExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+                if (selectedElement == null || selectedElement == map)
+                    return;
 
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.DeleteElement(selectedElement);
+                ControllerFileSystem controller = new ControllerFileSystem();
+                controller.DeleteElement(selectedElement);
+            }
         }
 
         private void treeViewTriggerExplorer_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

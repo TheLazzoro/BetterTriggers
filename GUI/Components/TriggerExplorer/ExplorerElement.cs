@@ -60,10 +60,8 @@ namespace GUI.Components.TriggerExplorer
             if(this.tabItem != null)
                 tabItem.RefreshHeader(ElementName);
 
-            // Only applies on variable type files
-            var control = Ielement as VariableControl;
-            if (control != null)
-                control.SetName(ElementName);
+            if(Ielement != null)
+                Ielement.OnElementRename(ElementName);
         }
     }
 }

@@ -17,7 +17,6 @@ namespace GUI.Components.TriggerExplorer
             throw new NotImplementedException();
         }
 
-
         public void OnElementClick()
         {
             ExplorerElement.currentExplorerElement = this;
@@ -25,5 +24,10 @@ namespace GUI.Components.TriggerExplorer
 
         public string GetSaveString() { throw new NotImplementedException(); }
         public UserControl GetControl() { throw new NotImplementedException(); }
+
+        public void OnElementRename(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

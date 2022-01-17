@@ -8,8 +8,8 @@ namespace GUI.Components.TriggerExplorer
     public interface IExplorerElement
     {
         string GetSaveString();
-        string GetScript();
         void OnElementClick();
+        void OnElementRename(string name);
         UserControl GetControl();
     }
 }

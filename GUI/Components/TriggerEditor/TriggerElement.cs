@@ -51,7 +51,6 @@ namespace GUI.Components.TriggerEditor
             this.FormatParameterText(paramTextBlock, this.function.parameters);
         }
 
-
         internal void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
         {
             textBlock.Inlines.Clear();

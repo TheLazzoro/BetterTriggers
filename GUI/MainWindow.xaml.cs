@@ -113,7 +113,8 @@ namespace GUI
             string fileInput = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/vJass.j";
             string fileOutput = "\"C:/Users/Lasse Dam/Desktop/JassHelper Experiement/output.j\"";
 
-            string script = ContainerITriggerElements.GenerateScript();
+            ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
+            string script = scriptGenerator.GenerateScript(ContainerTriggerExplorer.triggerExplorer);
 
             JassHelper.SaveVJassScript(fileInput, script);
             JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);

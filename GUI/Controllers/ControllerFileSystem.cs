@@ -1,6 +1,7 @@
 ﻿using GUI.Components.TriggerExplorer;
 using GUI.Containers;
 using GUI.Utility;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,9 +36,9 @@ namespace GUI.Controllers
         public void DeleteElement(ExplorerElement elementToDelete)
         {
             if (File.Exists(elementToDelete.FilePath))
-                File.Delete(elementToDelete.FilePath);
+                FileSystem.DeleteFile(elementToDelete.FilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
             else if (Directory.Exists(elementToDelete.FilePath))
-                Directory.Delete(elementToDelete.FilePath, true);
+                FileSystem.DeleteDirectory(elementToDelete.FilePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
         }
 
         // TODO:
@@ -175,6 +176,13 @@ namespace GUI.Controllers
                     tabParent.Items.Remove(elementToDelete.tabItem);
                 }
             }
+        }
+
+        // used when renaming an element in the editor
+        public void RenameElement(ExplorerElement renamed)
+        {
+            string newPath = Path.GetDirectoryName(renamed.FilePath) + @"/" + renamed.ElementName;
+            File.Move(renamed.FilePath, newPath);
         }
 
         private ExplorerElement FindTreeNodeElement(ExplorerElement parent, string path)
