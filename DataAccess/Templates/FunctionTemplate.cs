@@ -1,17 +1,18 @@
-﻿using Model.Data;
+﻿using Model.Enums;
+using Model.SavableTriggerData;
 using System;
 using System.Collections.Generic;
 
-namespace Model.Natives
+namespace Model.Templates
 {
-    public class Function : Parameter, ICloneable
+    public class FunctionTemplate : ParameterTemplate, ICloneable
     {
         public readonly int ParamType = 1; // DO NOT CHANGE
 
         public List<Parameter> parameters = new List<Parameter>();
         public string paramText;
         public string description;
-        public EnumCategory category;
+        public Category category;
 
         public object Clone()
         {

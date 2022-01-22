@@ -2,6 +2,7 @@
 using GUI.Containers;
 using GUI.Utility;
 using Model.Data;
+using Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,10 +22,10 @@ namespace GUI
     /// </summary>
     public partial class NewExplorerElementWindow : Window
     {
-        EnumExplorerElement enumExplorerElement;
+        ExplorerElementType enumExplorerElement;
         public string ElementName;
         
-        public NewExplorerElementWindow(EnumExplorerElement enumExplorerElement)
+        public NewExplorerElementWindow(ExplorerElementType enumExplorerElement)
         {
             InitializeComponent();
             
@@ -32,16 +33,16 @@ namespace GUI
 
             switch (enumExplorerElement)
             {
-                case EnumExplorerElement.Directory:
+                case ExplorerElementType.Directory:
                     textBoxName.Text = NameGenerator.GenerateCategoryName();
                     break;
-                case EnumExplorerElement.Trigger:
+                case ExplorerElementType.Trigger:
                     textBoxName.Text = NameGenerator.GenerateTriggerName();
                     break;
-                case EnumExplorerElement.Script:
+                case ExplorerElementType.Script:
                     textBoxName.Text = NameGenerator.GenerateScriptName();
                     break;
-                case EnumExplorerElement.Variable:
+                case ExplorerElementType.Variable:
                     textBoxName.Text = NameGenerator.GenerateVariableName();
                     break;
                 default:
@@ -58,16 +59,16 @@ namespace GUI
             bool isValid = false;
             switch (this.enumExplorerElement)
             {
-                case EnumExplorerElement.Directory:
+                case ExplorerElementType.Directory:
                     isValid = !ContainerFolders.Contains(textBoxName.Text) && textBoxName.Text != "";
                     break;
-                case EnumExplorerElement.Trigger:
+                case ExplorerElementType.Trigger:
                     isValid = !ContainerTriggers.Contains(textBoxName.Text) && textBoxName.Text != "";
                     break;
-                case EnumExplorerElement.Script:
+                case ExplorerElementType.Script:
                     isValid = !ContainerScripts.Contains(textBoxName.Text) && textBoxName.Text != "";
                     break;
-                case EnumExplorerElement.Variable:
+                case ExplorerElementType.Variable:
                     isValid = !ContainerVariables.Contains(textBoxName.Text) && textBoxName.Text != "";
                     break;
                 default:

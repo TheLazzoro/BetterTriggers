@@ -1,4 +1,4 @@
-﻿using Model.Natives;
+﻿using Model.SavableTriggerData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;

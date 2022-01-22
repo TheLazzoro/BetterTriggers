@@ -1,6 +1,7 @@
 ﻿using Model.Containers;
 using Model.Data;
-using Model.Natives;
+using Model.Enums;
+using Model.Templates;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,11 +42,11 @@ namespace NativeDefinerGUI
             */
 
             // Populate list of categories
-            var enumCategoryValues = Enum.GetValues(typeof(EnumCategory));
+            var enumCategoryValues = Enum.GetValues(typeof(Category));
             for(int i = 0; i < enumCategoryValues.Length; i++)
             {
                 ListViewItem item = new ListViewItem();
-                item.Text = Enum.GetName(typeof(EnumCategory), enumCategoryValues.GetValue(i));
+                item.Text = Enum.GetName(typeof(Category), enumCategoryValues.GetValue(i));
                 item.Tag = enumCategoryValues.GetValue(i);
                 listViewCategory.Items.Add(item);
             }
@@ -74,19 +75,19 @@ namespace NativeDefinerGUI
 
         private void btnCreateEvent_Click(object sender, EventArgs e)
         {
-            List<Parameter> parameters = new List<Parameter>();
+            List<ParameterTemplate> parameters = new List<ParameterTemplate>();
             for(int i = 0; i < listViewParameters.Items.Count; i++)
             {
-                Parameter parameter = (Parameter) listViewParameters.Items[i].Tag;
+                ParameterTemplate parameter = (ParameterTemplate) listViewParameters.Items[i].Tag;
                 parameters.Add(parameter);
             }
 
             try
             {
                 var selectedCategory = listViewCategory.SelectedItems[0];
-                var category = (EnumCategory)selectedCategory.Tag;
+                var category = (Category)selectedCategory.Tag;
 
-                Function _event = new Function()
+                FunctionTemplate _event = new FunctionTemplate()
                 {
                     identifier = textBoxIdentifier.Text,
                     parameters = parameters,

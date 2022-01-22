@@ -1,4 +1,7 @@
-﻿using Model.Natives;
+﻿using GUI.Containers;
+using GUI.Controllers;
+using Model.SavableTriggerData;
+using Model.Templates;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,20 +23,19 @@ namespace GUI
     public partial class ParameterConstantControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
-        
+
         public ParameterConstantControl(string returnType)
         {
             InitializeComponent();
 
-            List<Constant> constants = Model.LoadData.LoadAllConstants(@"C:\Users\Lasse Dam\Desktop\JSON\constants.json");
-
-            for (int i = 0; i < constants.Count; i++)
+            for (int i = 0; i < ContainerTriggerData.ConstantTemplates.Count; i++)
             {
-                if(constants[i].returnType == returnType)
+                var constant = ContainerTriggerData.ConstantTemplates[i];
+                if (constant.returnType == returnType)
                 {
                     ListViewItem item = new ListViewItem();
-                    item.Content = constants[i].name;
-                    item.Tag = constants[i];
+                    item.Content = constant.name;
+                    item.Tag = constant;
 
                     listViewConstant.Items.Add(item);
                     this.selectedItem = listViewConstant.Items.GetItemAt(0) as ListViewItem;
@@ -48,7 +50,12 @@ namespace GUI
 
         public Parameter GetSelectedItem()
         {
-            var parameter = (Constant) selectedItem.Tag;
+            var template = (ConstantTemplate)selectedItem.Tag;
+            var parameter = new Constant()
+            {
+                identifier = template.identifier,
+                returnType = template.returnType,
+            };
             return parameter;
         }
 

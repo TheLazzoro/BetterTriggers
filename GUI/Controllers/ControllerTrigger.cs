@@ -3,6 +3,7 @@ using GUI.Components.TriggerExplorer;
 using GUI.Containers;
 using GUI.Utility;
 using Model.Data;
+using Model.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace GUI.Controllers
     {
         public void CreateTrigger(TriggerExplorer triggerExplorer)
         {
-            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(EnumExplorerElement.Trigger);
+            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(ExplorerElementType.Trigger);
             createExplorerElementWindow.ShowDialog();
             if(createExplorerElementWindow.ElementName != null)
             {

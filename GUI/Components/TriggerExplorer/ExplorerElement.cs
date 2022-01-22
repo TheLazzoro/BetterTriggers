@@ -1,5 +1,6 @@
 ﻿using GUI.Utility;
 using Model.Data;
+using Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,28 +31,28 @@ namespace GUI.Components.TriggerExplorer
         {
             this.FilePath = rootPath;
             this.ElementName = Path.GetFileNameWithoutExtension(rootPath);
-            TreeViewManipulator.SetTreeViewItemAppearance(this, ElementName, EnumCategory.Map);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, ElementName, Category.Map);
         }
 
         public void RefreshElement()
         {
-            EnumCategory category;
+            Category category;
             switch (Path.GetExtension(this.FilePath))
             {
                 case "":
-                    category = EnumCategory.Folder;
+                    category = Category.Folder;
                     break;
                 case ".trg":
-                    category = EnumCategory.Trigger;
+                    category = Category.Trigger;
                     break;
                 case ".j":
-                    category = EnumCategory.AI;
+                    category = Category.AI;
                     break;
                 case ".var":
-                    category = EnumCategory.SetVariable;
+                    category = Category.SetVariable;
                     break;
                 default:
-                    category = EnumCategory.Trigger;
+                    category = Category.Trigger;
                     break;
             }
 

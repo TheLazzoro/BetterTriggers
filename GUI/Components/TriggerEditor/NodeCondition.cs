@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
+using Model.Enums;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -11,7 +12,7 @@ namespace GUI.Components.TriggerEditor
     {
         public NodeCondition()
         {
-            TreeViewManipulator.SetTreeViewItemAppearance(this, "Condition", EnumCategory.Condition);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, "Condition", Category.Condition);
         }
     }
 }

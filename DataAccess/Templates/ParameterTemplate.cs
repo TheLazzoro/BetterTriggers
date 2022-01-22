@@ -2,10 +2,10 @@
 using Newtonsoft.Json;
 using System;
 
-namespace Model.Natives
+namespace Model.Templates
 {
-    [JsonConverter(typeof(BaseConverter))]
-    public class Parameter
+    //[JsonConverter(typeof(BaseConverter))]
+    public class ParameterTemplate
     {
         public string identifier;
         public string name;

@@ -1,4 +1,4 @@
-﻿using Model.Natives;
+﻿using Model.SavableTriggerData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +22,7 @@ namespace GUI
         public Parameter selectedParameter;
         ParameterFunctionControl functionControl;
         ParameterConstantControl constantControl;
+        ParameterVariableControl variableControl;
 
         public ParameterWindow(string returnType)
         {
@@ -32,6 +33,11 @@ namespace GUI
             Grid.SetRow(functionControl, 1);
             functionControl.Visibility = Visibility.Hidden;
 
+            this.variableControl = new ParameterVariableControl(returnType);
+            grid.Children.Add(variableControl);
+            Grid.SetRow(variableControl, 1);
+            variableControl.Visibility = Visibility.Hidden;
+
             this.constantControl = new ParameterConstantControl(returnType);
             grid.Children.Add(constantControl);
             Grid.SetRow(constantControl, 1);
@@ -41,6 +47,7 @@ namespace GUI
 
             this.functionControl.listViewFunctions.SelectionChanged += SelectionChanged;
             this.constantControl.listViewConstant.SelectionChanged += SelectionChanged;
+            this.variableControl.listViewVariables.SelectionChanged += SelectionChanged;
         }
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -57,6 +64,7 @@ namespace GUI
         {
             functionControl.Visibility = Visibility.Hidden;
             constantControl.Visibility = Visibility.Hidden;
+            variableControl.Visibility = Visibility.Hidden;
 
             control.SetVisibility(Visibility.Visible);
             if (control.GetElementCount() > 0)
@@ -80,7 +88,7 @@ namespace GUI
 
         private void radioBtnVariable_Checked(object sender, RoutedEventArgs e)
         {
-            //ShowHideTabs(sender as UserControl);
+            ShowHideTabs(variableControl);
         }
 
         private void radioBtnValue_Checked(object sender, RoutedEventArgs e)

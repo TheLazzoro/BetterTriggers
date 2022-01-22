@@ -1,5 +1,8 @@
 ﻿using GUI.Components.TriggerExplorer;
+using GUI.Components.VariableEditor;
 using GUI.Controllers;
+using Model.Data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +24,9 @@ namespace GUI
     /// </summary>
     public partial class VariableControl : UserControl, IExplorerElement
     {
+        public List<string> FilesUsing = new List<string>();
+        private ComboBoxItemType previousSelected;
+        
         public VariableControl()
         {
             InitializeComponent();
@@ -55,7 +61,21 @@ namespace GUI
 
         public string GetSaveString()
         {
-            throw new NotImplementedException();
+            var selectedComboBoxItem = (ComboBoxItemType) comboBoxVariableType.SelectedItem;
+            int[] arraySize = new int[] { int.Parse(textBoxArraySize0.Text), int.Parse(textBoxArraySize1.Text) };
+
+            Variable variable = new Variable()
+            {
+                Type = selectedComboBoxItem.Type,
+                ArraySize = arraySize,
+                IsTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1,
+                IsArray = (bool)checkBoxIsArray.IsChecked,
+                FilesUsing = FilesUsing,
+            };
+
+            string json = JsonConvert.SerializeObject(variable);
+
+            return json;
         }
 
         public UserControl GetControl()
@@ -74,6 +94,34 @@ namespace GUI
                 //bubble the event up to the parent
                 if (this.OnRename != null)
                     this.OnRename(this, e);
+            }
+        }
+
+        private void checkBoxIsArray_Click(object sender, RoutedEventArgs e)
+        {
+            textBoxArraySize0.IsEnabled = (bool)checkBoxIsArray.IsChecked;
+            lblSize0.IsEnabled = (bool)checkBoxIsArray.IsChecked;
+        }
+
+        private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bool ok = true;
+            if(FilesUsing.Count > 0)
+            {
+                DialogBox dialog = new DialogBox("Confirmation", "This variable is in use. Changing it will reset all references to it. Are you sure?");
+                dialog.ShowDialog();
+                ok = dialog.OK;
+            }
+
+            if (ok)
+            {
+                previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
+                FilesUsing.Clear();
+            }
+            else
+            {
+                comboBoxVariableType.SelectedItem = previousSelected;
+                e.Handled = false;
             }
         }
     }

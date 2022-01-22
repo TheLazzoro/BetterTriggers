@@ -1,18 +1,16 @@
 ﻿using Model.WorldEditData;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleUI
+namespace WorldEditParser
 {
-    class Program
+    public class UnitParser
     {
-        static void Main(string[] args)
+        public List<Unit> Units = new List<Unit>();
+
+        public void ParseUnits()
         {
             Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3mapUnits.doo", FileMode.Open);
 
@@ -105,15 +103,17 @@ namespace ConsoleUI
                         //i.random = read_vector_byte(reader, 8);
                         break;
                     case 2:
-                        reader.BaseStream.Position += reader.ReadByte() * (reader.ReadInt32()* 8);
+                        reader.BaseStream.Position += reader.ReadByte() * (reader.ReadInt32() * 8);
                         //i.random = read_vector_byte(reader, (byte) (reader.ReadInt32() * 8));
                         break;
                 }
-                
+
 
                 i.CustomColor = reader.ReadInt32();
                 i.Waygate = reader.ReadInt32();
                 i.CreationNumber = reader.ReadInt32();
+
+                Units.Add(i);
 
                 // Either a unit or an item
                 /*
@@ -127,30 +127,8 @@ namespace ConsoleUI
                 }
                 */
             }
-           
-        }
-        
-        /*
-        private static List<byte> read_vector_byte(BinaryReader reader, byte size)
-        {
-            if(reader.BaseStream.Position + sizeof(byte) * size > reader.BaseStream.Length)
-            {
-                Console.WriteLine("Trying to read out of range of buffer");
-            }
 
-            List<byte> result = ReinterpretCast(BaseStream.Position)
-            reader.BaseStream.Position += sizeof(byte) * size;
-            return result;
+            s.Close();
         }
-
-        static unsafe TDest ReinterpretCast<TSource, TDest>(TSource source)
-        {
-            var sourceRef = __makeref(source);
-            var dest = default(TDest);
-            var destRef = __makeref(dest);
-            *(IntPtr*)&destRef = *(IntPtr*)&sourceRef;
-            return __refvalue(destRef, TDest);
-        }
-        */
     }
 }

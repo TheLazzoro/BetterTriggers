@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
+using Model.Enums;
 
 namespace GUI
 {
@@ -159,7 +160,7 @@ namespace GUI
             */
         }
 
-        public void CreateRootItem(string path, EnumCategory category)
+        public void CreateRootItem(string path, Category category)
         {
             this.map = new ExplorerElement(path, true);
             treeViewTriggerExplorer.Items.Add(this.map);

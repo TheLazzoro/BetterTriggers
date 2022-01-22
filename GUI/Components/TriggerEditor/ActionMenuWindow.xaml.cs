@@ -11,6 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Model;
+using Model.SavableTriggerData;
+using GUI.Containers;
+using Model.Templates;
 
 namespace GUI
 {
@@ -19,7 +22,7 @@ namespace GUI
     /// </summary>
     public partial class ActionMenuWindow : Window
     {
-        public Model.Natives.Function selectedAction;
+        public Function selectedAction;
 
         public ActionMenuWindow()
         {
@@ -29,21 +32,26 @@ namespace GUI
             listViewCategory.Items.Add("- General");
             listViewCategory.Items.Add("Ability");
 
-            List<Model.Natives.Function> actions = Model.LoadData.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\actions.json");
-
-            for(int i = 0; i < actions.Count; i++)
+            for (int i = 0; i < ContainerTriggerData.ActionTemplates.Count; i++)
             {
+                var action = ContainerTriggerData.ActionTemplates[i];
                 ListViewItem item = new ListViewItem();
-                item.Content = actions[i].name;
-                item.Tag = actions[i];
+                item.Content = action.name;
+                item.Tag = action;
                 listViewEvents.Items.Add(item);
             }
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            var item = (ListViewItem) listViewEvents.SelectedItem;
-            selectedAction = (Model.Natives.Function) item.Tag;
+            var item = (ListViewItem)listViewEvents.SelectedItem;
+            var template = (FunctionTemplate)item.Tag;
+            selectedAction = new Function()
+            {
+                identifier = template.identifier,
+                parameters = template.parameters,
+                returnType = template.returnType,
+            };
             this.Close();
         }
 

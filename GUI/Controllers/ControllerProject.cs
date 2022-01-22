@@ -2,6 +2,7 @@
 using GUI.Containers;
 using GUI.Utility;
 using Model.Data;
+using Model.Enums;
 using Model.War3Project;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -75,7 +76,7 @@ namespace GUI.Controllers
                     ExplorerElement item = new ExplorerElement(entry);
                     ContainerFolders.AddTriggerElement(item);
                     parentNode.Items.Add(item);
-                    TreeViewManipulator.SetTreeViewItemAppearance(item, Reader.GetFileNameAndExtension(entry), EnumCategory.Folder);
+                    TreeViewManipulator.SetTreeViewItemAppearance(item, Reader.GetFileNameAndExtension(entry), Category.Folder);
                     LoadFiles(entry, item);
                 }
                 else if (File.Exists(entry))

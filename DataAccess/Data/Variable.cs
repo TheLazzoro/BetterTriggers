@@ -1,4 +1,4 @@
-﻿using Model.Natives;
+﻿using Model.SavableTriggerData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +15,7 @@ namespace Model.Data
         public bool IsTwoDimensions;
         public int[] ArraySize = new int[2];
         public Function InitialValue = new Function();
+
+        public List<string> FilesUsing = new List<string>(); // trigger files using this variable
     }
 }

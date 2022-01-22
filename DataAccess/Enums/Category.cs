@@ -1,8 +1,8 @@
 ﻿
-namespace Model.Data
+namespace Model.Enums
 {
     // DO NOT CHANGE THE ORDER OF THESE
-    public enum EnumCategory
+    public enum Category
     {
         Map,
         Folder,

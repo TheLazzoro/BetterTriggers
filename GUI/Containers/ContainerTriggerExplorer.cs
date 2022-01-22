@@ -1,5 +1,6 @@
 ﻿using GUI.Components.TriggerExplorer;
 using Model.Data;
+using Model.Enums;
 using Model.War3Project;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace GUI.Containers
             Grid.SetColumn(triggerExplorer, 0);
             triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += OnItemSelectionChanged;
 
-            triggerExplorer.CreateRootItem(war3Project.Root, EnumCategory.Map);
+            triggerExplorer.CreateRootItem(war3Project.Root, Category.Map);
         }
 
         protected static void OnItemSelectionChanged(object sender, EventArgs e)

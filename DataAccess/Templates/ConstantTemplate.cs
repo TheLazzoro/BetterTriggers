@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 
-namespace Model.Natives
+namespace Model.Templates
 {
-    public class Constant : Parameter, ICloneable
+    public class ConstantTemplate : ParameterTemplate, ICloneable
     {
         public readonly int ParamType = 2; // DO NOT CHANGE
         public string codeText;

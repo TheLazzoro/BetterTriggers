@@ -172,6 +172,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
     <ProjectReference Include="..\DataAccess\Model.csproj" />
+    <ProjectReference Include="..\WorldEditParser\WorldEditParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -188,6 +189,9 @@
     <Compile Update="Components\TriggerEditor\ParameterConstantControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterVariableControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -200,6 +204,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterConstantControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterVariableControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

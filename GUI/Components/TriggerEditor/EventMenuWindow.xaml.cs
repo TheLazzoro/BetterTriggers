@@ -12,7 +12,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Model;
 using Model.Data;
-using Model.Natives;
+using GUI.Controllers;
+using Model.Templates;
+using Model.SavableTriggerData;
+using Model.Enums;
 
 namespace GUI
 {
@@ -21,13 +24,14 @@ namespace GUI
     /// </summary>
     public partial class EventMenuWindow : Window
     {
-        public Model.Natives.Function selectedEvent;
+        public Function selectedEvent;
 
         public EventMenuWindow()
         {
             InitializeComponent();
 
-            List<Model.Natives.Function> events = Model.LoadData.LoadAllEvents(@"C:\Users\Lasse Dam\Desktop\JSON\events.json");
+            ControllerTriggerData controller = new ControllerTriggerData();
+            List<FunctionTemplate> events = controller.LoadAllEvents(@"C:\Users\Lasse Dam\Desktop\JSON\events.json");
 
             for(int i = 0; i < events.Count; i++)
             {
@@ -39,14 +43,14 @@ namespace GUI
             }
         }
 
-        private void AddToCategory(EnumCategory categoryNumber)
+        private void AddToCategory(Category categoryNumber)
         {
             int i = 0;
             bool isCategoryFound = false;
             while (!isCategoryFound && i < listViewCategory.Items.Count)
             {
                 ListViewItem categoryItem = (ListViewItem) listViewCategory.Items[i];
-                EnumCategory categoryInList = (EnumCategory) categoryItem.Tag;
+                Category categoryInList = (Category) categoryItem.Tag;
 
                 if (categoryInList == categoryNumber)
                     isCategoryFound = true;
@@ -68,12 +72,12 @@ namespace GUI
         private void listViewCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedItem = listViewCategory.SelectedItem as ListViewItem;
-            var selectedCategory = (EnumCategory) selectedItem.Tag;
+            var selectedCategory = (Category) selectedItem.Tag;
 
             for (int i = 0; i < listViewEvents.Items.Count; i++)
             {
                 var eventItem = (ListViewItem) listViewEvents.Items[i];
-                var _event = (Function)eventItem.Tag;
+                var _event = (FunctionTemplate)eventItem.Tag;
 
                 if (_event.category == selectedCategory)
                     eventItem.Visibility = Visibility.Visible;
@@ -95,7 +99,13 @@ namespace GUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             var item = (ListViewItem)listViewEvents.SelectedItem;
-            selectedEvent = (Function)item.Tag;
+            var template = (FunctionTemplate)item.Tag;
+            selectedEvent = new Function()
+            {
+                identifier = template.identifier,
+                parameters = template.parameters,
+                returnType = template.returnType,
+            };
             this.Close();
         }
     }

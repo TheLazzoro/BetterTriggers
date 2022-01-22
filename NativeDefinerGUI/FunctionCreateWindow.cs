@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Model.Enums;
+using Model.Templates;
 
 namespace NativeDefinerGUI
 {
@@ -34,11 +36,11 @@ namespace NativeDefinerGUI
             */
 
             // Populate list of categories
-            var enumCategoryValues = Enum.GetValues(typeof(EnumCategory));
+            var enumCategoryValues = Enum.GetValues(typeof(Category));
             for (int i = 0; i < enumCategoryValues.Length; i++)
             {
                 ListViewItem item = new ListViewItem();
-                item.Text = Enum.GetName(typeof(EnumCategory), enumCategoryValues.GetValue(i));
+                item.Text = Enum.GetName(typeof(Category), enumCategoryValues.GetValue(i));
                 item.Tag = enumCategoryValues.GetValue(i);
                 listViewCategory.Items.Add(item);
             }
@@ -76,11 +78,11 @@ namespace NativeDefinerGUI
 
         private void btnCreateParam_Click(object sender, EventArgs e)
         {
-            List<Model.Natives.Parameter> parameters = new List<Model.Natives.Parameter>();
+            List<ParameterTemplate> parameters = new List<ParameterTemplate>();
             for (int i = 0; i < listViewParameters.Items.Count; i++)
             {
                 var type = (string) listViewParameters.Items[i].Tag;
-                Model.Natives.Parameter parameter = new Model.Natives.Parameter()
+                ParameterTemplate parameter = new ParameterTemplate()
                 {
                     returnType = type
                 };
@@ -88,9 +90,9 @@ namespace NativeDefinerGUI
             }
 
             var selectedCategory = listViewCategory.SelectedItems[0];
-            var category = (EnumCategory)selectedCategory.Tag;
+            var category = (Category)selectedCategory.Tag;
 
-            Model.Natives.Function _function = new Model.Natives.Function()
+           FunctionTemplate _function = new FunctionTemplate()
             {
                 identifier = textBoxIdentifier.Text,
                 parameters = parameters,

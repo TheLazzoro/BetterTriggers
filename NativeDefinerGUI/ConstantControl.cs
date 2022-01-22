@@ -1,5 +1,5 @@
 ﻿using Model.Containers;
-using Model.Natives;
+using Model.SavableTriggerData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace NativeDefinerGUI
             this.Dock = DockStyle.Fill;
 
             string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\constants.json");
-            List<Model.Natives.Constant> list = JsonConvert.DeserializeObject<List<Model.Natives.Constant>>(filePlainText);
+            List<Constant> list = JsonConvert.DeserializeObject<List<Constant>>(filePlainText);
             ContainerConstants.SetList(list);
 
             UpdateListView();

@@ -52,17 +52,20 @@
     <Compile Include="Containers\ContainerFunctions.cs" />
     <Compile Include="Containers\ContainerEvents.cs" />
     <Compile Include="Containers\ContainerConstants.cs" />
-    <Compile Include="Data\EnumCategory.cs" />
-    <Compile Include="Data\EnumExplorerElement.cs" />
+    <Compile Include="Enums\Category.cs" />
+    <Compile Include="Enums\ExplorerElementType.cs" />
     <Compile Include="Data\Trigger.cs" />
     <Compile Include="Data\TriggerType.cs" />
     <Compile Include="Data\Variable.cs" />
     <Compile Include="JsonBaseConverter\BaseConverter.cs" />
     <Compile Include="JsonBaseConverter\ParameterConverter.cs" />
-    <Compile Include="Data\LoadData.cs" />
-    <Compile Include="Natives\Function.cs" />
-    <Compile Include="Natives\Parameter.cs" />
-    <Compile Include="Natives\Constant.cs" />
+    <Compile Include="Templates\FunctionTemplate.cs" />
+    <Compile Include="Templates\ParameterTemplate.cs" />
+    <Compile Include="Templates\ConstantTemplate.cs" />
+    <Compile Include="SavableTriggerData\Constant.cs" />
+    <Compile Include="SavableTriggerData\Function.cs" />
+    <Compile Include="SavableTriggerData\Parameter.cs" />
+    <Compile Include="SavableTriggerData\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="War3Project\War3Project.cs" />
     <Compile Include="WorldEditData\ItemSet.cs" />
@@ -71,5 +74,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

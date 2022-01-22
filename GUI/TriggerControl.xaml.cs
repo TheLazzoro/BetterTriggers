@@ -2,7 +2,7 @@
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
 using GUI.Utility;
-using Model.Natives;
+using Model.SavableTriggerData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -93,7 +93,7 @@ namespace GUI
         {
             var eventMenu = new EventMenuWindow();
             eventMenu.ShowDialog();
-            Model.Natives.Function _event = eventMenu.selectedEvent;
+            Function _event = eventMenu.selectedEvent;
 
             if (_event != null)
             {
@@ -109,7 +109,7 @@ namespace GUI
         {
             var conditionMenu = new ConditionMenuWindow();
             conditionMenu.ShowDialog();
-            Model.Natives.Function condition = conditionMenu.selectedContition;
+            Function condition = conditionMenu.selectedCondition;
 
             if (condition != null)
             {
@@ -124,7 +124,7 @@ namespace GUI
         {
             var actionMenu = new ActionMenuWindow();
             actionMenu.ShowDialog();
-            Model.Natives.Function action = actionMenu.selectedAction;
+            Function action = actionMenu.selectedAction;
 
             if (action != null)
             {

@@ -1,18 +1,20 @@
 ﻿using GUI.Components.TriggerExplorer;
 using Model;
 using Model.Data;
-using Model.Natives;
+using Model.SavableTriggerData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
+using WorldEditParser;
 
 namespace GUI.Controllers
 {
     public class ControllerScriptGenerator
     {
-        List<Variable> variables = new List<Variable>();
+        List<Model.Data.Variable> variables = new List<Model.Data.Variable>();
         List<string> scripts = new List<string>();
         List<Trigger> triggers = new List<Trigger>();
 
@@ -52,7 +54,8 @@ namespace GUI.Controllers
                     else if (Path.GetExtension(element.FilePath) == ".var")
                     {
                         string json = File.ReadAllText(element.FilePath);
-                        var variable = JsonConvert.DeserializeObject<Variable>(json);
+                        var variable = JsonConvert.DeserializeObject<Model.Data.Variable>(json);
+                        variable.Name = Path.GetFileNameWithoutExtension(element.FilePath); // hack
                         variables.Add(variable);
                     }
                 }
@@ -65,12 +68,12 @@ namespace GUI.Controllers
 
             // ---- Generate script ---- //
 
-            List<Variable> InitGlobals = new List<Variable>();
+            List<Model.Data.Variable> InitGlobals = new List<Model.Data.Variable>();
 
             // Global variables
             for (int i = 0; i < variables.Count; i++)
             {
-                Variable variable = variables[i];
+                Model.Data.Variable variable = variables[i];
                 if (variable.InitialValue != null)
                     InitGlobals.Add(variable);
 
@@ -108,7 +111,7 @@ namespace GUI.Controllers
                 }
             }
 
-            script += GenerateUnits();
+            script += CreateUnits();
 
             // main
             script += "function main takes nothing returns nothing" + System.Environment.NewLine;
@@ -117,7 +120,7 @@ namespace GUI.Controllers
             return script;
         }
 
-        private string GenerateUnits()
+        private string CreateUnits()
         {
             string script = string.Empty;
 
@@ -131,7 +134,24 @@ namespace GUI.Controllers
             script += "\tlocal trigger t\n";
             script += "\tlocal real life\n";
 
+            UnitParser unitParser = new UnitParser();
+            unitParser.ParseUnits();
+            foreach (var u in unitParser.Units)
+            {
+                if (u.Id == "sloc")
+                    continue;
 
+                var owner = u.Owner;
+                var id = u.Id;
+                var x = u.Position.X.ToString(new CultureInfo("en-US"));
+                var y = u.Position.Y.ToString(new CultureInfo("en-US"));
+                var angle = u.Angle.ToString(new CultureInfo("en-US"));
+                var skinId = u.SkinId;
+
+                script += $"call BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}')\n";
+            }
+
+            script += "endfunction\n";
 
             return script;
         }
@@ -152,7 +172,7 @@ namespace GUI.Controllers
                 else if (parameters[i] is Constant)
                 {
                     var constant = (Constant)parameters[i];
-                    script += constant.codeText;
+                    //script += constant.codeText;
                 }
                 if (i < parameters.Count - 1)
                     script += ",";

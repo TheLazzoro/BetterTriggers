@@ -1,5 +1,5 @@
 ﻿
-using Model.Natives;
+using Model.Templates;
 using System;
 using System.Collections.Generic;
 
@@ -7,14 +7,14 @@ namespace Model.Containers
 {
     public static class ContainerConditions
     {
-        private static List<Natives.Function> container = new List<Natives.Function>();
+        private static List<FunctionTemplate> container = new List<FunctionTemplate>();
 
         public static int Size()
         {
             return container.Count;
         }
         
-        public static void AddCondition(Natives.Function constant)
+        public static void AddCondition(FunctionTemplate constant)
         {
             bool alreadyExists = false;
             string whichType = string.Empty;
@@ -37,17 +37,17 @@ namespace Model.Containers
                 Console.WriteLine($"At {index}: Type '{constant.identifier}' already exists as '{whichType}' in the container.");
         }
 
-        public static List<Natives.Function> GetAllTypes()
+        public static List<FunctionTemplate> GetAllTypes()
         {
             return container;
         }
 
-        public static void SetList(List<Natives.Function> list)
+        public static void SetList(List<FunctionTemplate> list)
         {
             if (list != null)
                 container = list;
             else
-                container = new List<Natives.Function>();
+                container = new List<FunctionTemplate>();
         }
     }
 }

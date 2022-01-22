@@ -1,5 +1,5 @@
 ﻿
-using Model.Natives;
+using Model.Templates;
 using System;
 using System.Collections.Generic;
 
@@ -7,9 +7,9 @@ namespace Model.Containers
 {
     public static class ContainerFunctions
     {
-        private static List<Function> container = new List<Function>();
+        private static List<FunctionTemplate> container = new List<FunctionTemplate>();
 
-        public static void AddParameter(Function parameter)
+        public static void AddParameter(FunctionTemplate parameter)
         {
             bool alreadyExists = false;
             string whichType = string.Empty;
@@ -32,17 +32,17 @@ namespace Model.Containers
                 Console.WriteLine($"At {index}: Type '{parameter.identifier}' already exists as '{whichType}' in the container.");
         }
 
-        public static List<Function> GetAllTypes()
+        public static List<FunctionTemplate> GetAllTypes()
         {
             return container;
         }
 
-        public static void SetList(List<Function> list)
+        public static void SetList(List<FunctionTemplate> list)
         {
             if (list != null)
                 container = list;
             else
-                container = new List<Function>();
+                container = new List<FunctionTemplate>();
         }
     }
 }

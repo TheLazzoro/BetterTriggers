@@ -3,6 +3,7 @@ using GUI.Utility;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Model.Data;
+using Model.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace GUI.Controllers
     {
         public void CreateScript(TriggerExplorer triggerExplorer)
         {
-            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(EnumExplorerElement.Script);
+            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(ExplorerElementType.Script);
             createExplorerElementWindow.ShowDialog();
             if (createExplorerElementWindow.ElementName != null)
             {

@@ -1,6 +1,6 @@
-﻿namespace Model.Data
+﻿namespace Model.Enums
 {
-    public enum EnumExplorerElement
+    public enum ExplorerElementType
     {
         Directory,
         Trigger,

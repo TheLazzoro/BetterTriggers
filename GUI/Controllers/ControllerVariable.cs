@@ -1,6 +1,8 @@
 ﻿using GUI.Components.TriggerExplorer;
+using GUI.Components.VariableEditor;
 using GUI.Utility;
 using Model.Data;
+using Model.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,7 +17,7 @@ namespace GUI.Controllers
     {
         public void CreateVariable(TriggerExplorer triggerExplorer)
         {
-            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(EnumExplorerElement.Variable);
+            NewExplorerElementWindow createExplorerElementWindow = new NewExplorerElementWindow(ExplorerElementType.Variable);
             createExplorerElementWindow.ShowDialog();
             if (createExplorerElementWindow.ElementName != null)
             {
@@ -65,7 +67,7 @@ namespace GUI.Controllers
             variableControl.OnElementRename(variable.Name);
 
             ControllerTriggerData controller = new ControllerTriggerData();
-            List<ComboBoxItem> list = controller.LoadVariableTypes();
+            List<ComboBoxItemType> list = controller.LoadVariableTypes();
 
             for (int i = 0; i < list.Count; i++)
             {

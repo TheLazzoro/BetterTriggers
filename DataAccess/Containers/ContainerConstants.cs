@@ -1,5 +1,5 @@
 ﻿
-using Model.Natives;
+using Model.Templates;
 using System;
 using System.Collections.Generic;
 
@@ -7,14 +7,14 @@ namespace Model.Containers
 {
     public static class ContainerConstants
     {
-        private static List<Natives.Constant> container = new List<Natives.Constant>();
+        private static List<ConstantTemplate> container = new List<ConstantTemplate>();
 
         public static int Size()
         {
             return container.Count;
         }
         
-        public static void AddConstant(Natives.Constant constant)
+        public static void AddConstant(ConstantTemplate constant)
         {
             bool alreadyExists = false;
             string whichType = string.Empty;
@@ -37,17 +37,17 @@ namespace Model.Containers
                 Console.WriteLine($"At {index}: Type '{constant.identifier}' already exists as '{whichType}' in the container.");
         }
 
-        public static List<Natives.Constant> GetAllTypes()
+        public static List<ConstantTemplate> GetAllTypes()
         {
             return container;
         }
 
-        public static void SetList(List<Natives.Constant> list)
+        public static void SetList(List<ConstantTemplate> list)
         {
             if (list != null)
                 container = list;
             else
-                container = new List<Natives.Constant>();
+                container = new List<ConstantTemplate>();
         }
     }
 }

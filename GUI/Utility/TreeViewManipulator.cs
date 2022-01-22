@@ -1,4 +1,5 @@
 ﻿using Model.Data;
+using Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ namespace GUI.Utility
 {
     public static class TreeViewManipulator
     {
-        public static void SetTreeViewItemAppearance(TreeViewItem treeViewitem, string text, EnumCategory iconCategory)
+        public static void SetTreeViewItemAppearance(TreeViewItem treeViewitem, string text, Category iconCategory)
         {
             // create stack panel
             StackPanel stack = new StackPanel();
@@ -43,113 +44,113 @@ namespace GUI.Utility
             treeViewitem.Header = stack;
         }
 
-        private static BitmapImage GetIconImage(EnumCategory iconCategory)
+        private static BitmapImage GetIconImage(Category iconCategory)
         {
             BitmapImage image = null;
             string path = string.Empty;
 
             switch (iconCategory)
             {
-                case EnumCategory.Map:
+                case Category.Map:
                     path += "map.png";
                     break;
-                case EnumCategory.Folder:
+                case Category.Folder:
                     path += "ui-editoricon-triggercategories_folder.png";
                     break;
-                case EnumCategory.Trigger:
+                case Category.Trigger:
                     path += "ui-editoricon-triggercategories_element.png";
                     break;
-                case EnumCategory.Event:
+                case Category.Event:
                     path += "editor-triggerevent.png";
                     break;
-                case EnumCategory.Condition:
+                case Category.Condition:
                     path += "editor-triggercondition.png";
                     break;
-                case EnumCategory.LocalVariable:
+                case Category.LocalVariable:
                     path += "actions-setvariables.png";
                     break;
-                case EnumCategory.Action:
+                case Category.Action:
                     path += "editor-triggeraction.png";
                     break;
-                case EnumCategory.Ability:
+                case Category.Ability:
                     path += "actions-ability.png";
                     break;
-                case EnumCategory.AI:
+                case Category.AI:
                     path += "actions-ai.png";
                     break;
-                case EnumCategory.Animation:
+                case Category.Animation:
                     path += "actions-animation.png";
                     break;
-                case EnumCategory.Camera:
+                case Category.Camera:
                     path += "actions-camera.png";
                     break;
-                case EnumCategory.Comment:
+                case Category.Comment:
                     path += "actions-comment.png";
                     break;
-                case EnumCategory.Destructible:
+                case Category.Destructible:
                     path += "actions-destructibles.png";
                     break;
-                case EnumCategory.Dialog:
+                case Category.Dialog:
                     path += "actions-dialog.png";
                     break;
-                case EnumCategory.Environment:
+                case Category.Environment:
                     path += "actions-environment.png";
                     break;
-                case EnumCategory.Game:
+                case Category.Game:
                     path += "actions-game.png";
                     break;
-                case EnumCategory.Goldmine:
+                case Category.Goldmine:
                     path += "actions-goldmine.png";
                     break;
-                case EnumCategory.Hero:
+                case Category.Hero:
                     path += "actions-hero.png";
                     break;
-                case EnumCategory.Item:
+                case Category.Item:
                     path += "actions-item.png";
                     break;
-                case EnumCategory.Logical:
+                case Category.Logical:
                     path += "actions-logical.png";
                     break;
-                case EnumCategory.Melee:
+                case Category.Melee:
                     path += "actions-melee.png";
                     break;
-                case EnumCategory.Nothing:
+                case Category.Nothing:
                     path += "actions-nothing.png";
                     break;
-                case EnumCategory.Player:
+                case Category.Player:
                     path += "actions-player.png";
                     break;
-                case EnumCategory.PlayerGroup:
+                case Category.PlayerGroup:
                     path += "actions-playergroup.png";
                     break;
-                case EnumCategory.Quest:
+                case Category.Quest:
                     path += "actions-quest.png";
                     break;
-                case EnumCategory.Region:
+                case Category.Region:
                     path += "actions-region.png";
                     break;
-                case EnumCategory.SetVariable:
+                case Category.SetVariable:
                     path += "actions-setvariables.png";
                     break;
-                case EnumCategory.Sound:
+                case Category.Sound:
                     path += "actions-sound.png";
                     break;
-                case EnumCategory.Timer:
+                case Category.Timer:
                     path += "events-time.png";
                     break;
-                case EnumCategory.Unit:
+                case Category.Unit:
                     path += "actions-unit.png";
                     break;
-                case EnumCategory.UnitGroup:
+                case Category.UnitGroup:
                     path += "actions-unitgroup.png";
                     break;
-                case EnumCategory.UnitSelection:
+                case Category.UnitSelection:
                     path += "actions-unitselection.png";
                     break;
-                case EnumCategory.Visibility:
+                case Category.Visibility:
                     path += "actions-visibility.png";
                     break;
-                case EnumCategory.Wait:
+                case Category.Wait:
                     path += "actions-wait.png";
                     break;
                 default:

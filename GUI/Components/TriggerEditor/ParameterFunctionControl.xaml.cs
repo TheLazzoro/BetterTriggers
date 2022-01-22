@@ -1,5 +1,4 @@
-﻿using Model.Natives;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -11,7 +10,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GUI.Controllers;
 using Model;
+using Model.SavableTriggerData;
+using Model.Templates;
 
 namespace GUI
 {
@@ -26,12 +28,19 @@ namespace GUI
         {
             InitializeComponent();
 
-            List<Function> functions = LoadData.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\calls.json");
+            ControllerTriggerData controller = new ControllerTriggerData();
+            List<FunctionTemplate> functions = controller.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\calls.json");
 
             for (int i = 0; i < functions.Count; i++)
             {
-                if(functions[i].returnType == returnType)
+                if (functions[i].returnType == returnType)
                 {
+                    Function function = new Function()
+                    {
+                        identifier = functions[i].identifier,
+                        parameters = new List<Model.SavableTriggerData.Parameter>(),
+                        returnType = functions[i].returnType,
+                    };
                     ListViewItem item = new ListViewItem();
                     item.Content = functions[i].name;
                     item.Tag = functions[i];
@@ -49,7 +58,13 @@ namespace GUI
 
         public Parameter GetSelectedItem()
         {
-            var parameter = (Function)selectedItem.Tag;
+            var template = (FunctionTemplate)selectedItem.Tag;
+            var parameter = new Function()
+            {
+                identifier = template.identifier,
+                parameters = template.parameters,
+                returnType = template.returnType,
+            };
             return parameter;
         }
 

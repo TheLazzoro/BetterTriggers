@@ -1,0 +1,36 @@
+﻿using System.Windows;
+using System.Windows.Input;
+
+
+namespace GUI
+{
+    public partial class DialogBox : Window
+    {
+        public bool OK = false;
+        
+        public DialogBox(string caption, string message)
+        {
+            InitializeComponent();
+
+            this.Title = caption;
+            textBlockMessage.Text = message;
+        }
+
+        private void OKButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            OK = true;
+            this.Close();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                this.Close();
+        }
+    }
+}

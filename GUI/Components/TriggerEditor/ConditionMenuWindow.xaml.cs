@@ -11,6 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Model;
+using Model.SavableTriggerData;
+using GUI.Containers;
+using Model.Templates;
 
 namespace GUI
 {
@@ -19,7 +22,7 @@ namespace GUI
     /// </summary>
     public partial class ConditionMenuWindow : Window
     {
-        public Model.Natives.Function selectedContition;
+        public Function selectedCondition;
 
         public ConditionMenuWindow()
         {
@@ -29,13 +32,14 @@ namespace GUI
             listViewCategory.Items.Add("- General");
             listViewCategory.Items.Add("Ability");
 
-            List<Model.Natives.Function> conditions = Model.LoadData.LoadAllConditions(@"C:\Users\Lasse Dam\Desktop\JSON\conditions.json");
-
-            for(int i = 0; i < conditions.Count; i++)
+            for(int i = 0; i < ContainerTriggerData.ConditionTemplates.Count; i++)
             {
+                var condition = ContainerTriggerData.ConditionTemplates[i];
+
+
                 ListViewItem item = new ListViewItem();
-                item.Content = conditions[i].name;
-                item.Tag = conditions[i];
+                item.Content = condition.name;
+                item.Tag = condition;
                 listViewEvents.Items.Add(item);
             }
         }
@@ -43,7 +47,14 @@ namespace GUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             var item = (ListViewItem) listViewEvents.SelectedItem;
-            selectedContition = (Model.Natives.Function) item.Tag;
+            var template = (FunctionTemplate) item.Tag;
+            selectedCondition = new Function()
+            {
+                identifier = template.identifier,
+                parameters = template.parameters,
+                returnType = template.returnType,
+            };
+
             this.Close();
         }
 
