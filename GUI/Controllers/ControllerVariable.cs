@@ -1,5 +1,6 @@
 ﻿using GUI.Components.TriggerExplorer;
 using GUI.Components.VariableEditor;
+using GUI.Containers;
 using GUI.Utility;
 using Model.Data;
 using Model.Enums;
@@ -26,10 +27,13 @@ namespace GUI.Controllers
                 ControllerProject controllerProject = new ControllerProject();
                 string directory = controllerProject.GetDirectoryFromSelection(triggerExplorer.treeViewTriggerExplorer);
 
+                // Default variable is always an integer on creation.
                 Variable variable = new Variable()
                 {
+                    Id = ContainerVariables.GenerateId(),
                     Name = name,
                     Type = "integer",
+                    InitialValue = "0",
                 };
                 string json = JsonConvert.SerializeObject(variable);
 
@@ -47,17 +51,10 @@ namespace GUI.Controllers
 
         public VariableControl CreateVariableWithElements(TabControl tabControl, Model.Data.Variable variable)
         {
-            var variableControl = CreateTriggerControl(tabControl);
-            GenerateVariableElements(variableControl, variable);
-
-            return variableControl;
-        }
-
-        private VariableControl CreateTriggerControl(TabControl tabControl)
-        {
-            var variableControl = new VariableControl();
+            var variableControl = new VariableControl(variable.Id);
             variableControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             variableControl.VerticalContentAlignment = VerticalAlignment.Stretch;
+            GenerateVariableElements(variableControl, variable);
 
             return variableControl;
         }
@@ -75,7 +72,7 @@ namespace GUI.Controllers
             }
             for (int i = 0; i < list.Count; i++)
             {
-                if ((string)list[i].Tag == variable.Type)
+                if (list[i].Type == variable.Type)
                     variableControl.comboBoxVariableType.SelectedItem = list[i];
             }
 

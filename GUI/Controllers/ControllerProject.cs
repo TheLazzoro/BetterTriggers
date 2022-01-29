@@ -127,6 +127,7 @@ namespace GUI.Controllers
                     case ".var":
                         ControllerVariable controllerVariable = new ControllerVariable();
                         Model.Data.Variable variable = controllerVariable.LoadVariableFromFile(selectedElement.FilePath);
+                        variable.Name = Path.GetFileNameWithoutExtension(selectedElement.FilePath); // hack
                         var variableControl = controllerVariable.CreateVariableWithElements(tabControl, variable);
                         TabItemBT tabItemVariable = new TabItemBT(variableControl, Reader.GetFileName(selectedElement.FilePath));
                         tabControl.Items.Add(tabItemVariable);

@@ -74,8 +74,7 @@ namespace GUI.Controllers
             for (int i = 0; i < variables.Count; i++)
             {
                 Model.Data.Variable variable = variables[i];
-                if (variable.InitialValue != null)
-                    InitGlobals.Add(variable);
+                InitGlobals.Add(variable);
 
                 script += "globals" + System.Environment.NewLine;
                 script += System.Environment.NewLine;

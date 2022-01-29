@@ -37,16 +37,22 @@ namespace GUI
                 var explorerElement = ContainerVariables.Get(i);
                 string json = File.ReadAllText(explorerElement.FilePath);
                 Model.Data.Variable variable = JsonConvert.DeserializeObject<Model.Data.Variable>(json);
+                variable.Name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.FilePath); // hack
 
                 if (variable.Type == returnType)
                     variables.Add(variable);
             }
 
+            // Create a list of saveable variables
             for (int i = 0; i < variables.Count; i++)
             {
                 ListViewItem item = new ListViewItem();
                 item.Content = variables[i].Name;
-                item.Tag = variables[i];
+                item.Tag = new Model.SavableTriggerData.Variable()
+                {
+                    returnType = variables[i].Type,
+                    VariableId = variables[i].Id,
+                };
 
                 listViewVariables.Items.Add(item);
                 this.selectedItem = listViewVariables.Items.GetItemAt(0) as ListViewItem;
@@ -60,7 +66,7 @@ namespace GUI
 
         public Parameter GetSelectedItem()
         {
-            var variables = (Function)selectedItem.Tag;
+            var variables = (Model.SavableTriggerData.Variable)selectedItem.Tag;
             return variables;
         }
 

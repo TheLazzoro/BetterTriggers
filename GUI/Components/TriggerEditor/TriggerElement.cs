@@ -127,6 +127,26 @@ namespace GUI.Components.TriggerEditor
                             i++;
                         }
                     }
+                    else if(parameters[paramIndex] is Model.SavableTriggerData.Variable)
+                    {
+                        RemoveCommaBeforeParamIndicator(textBlock);
+
+                        var index = paramIndex;
+
+                        i++;
+
+                        var variable = (Model.SavableTriggerData.Variable)parameters[paramIndex];
+                        var varName = ContainerVariables.GetVariableNameById(variable.VariableId);
+
+                        CreateHyperlink(textBlock, varName, parameters, index);
+
+                        paramIndex++;
+
+                        while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
+                        {
+                            i++;
+                        }
+                    }
                     else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?
                     {
                         RemoveCommaBeforeParamIndicator(textBlock);
@@ -168,7 +188,7 @@ namespace GUI.Components.TriggerEditor
 
         private void RecolorHyperlink(Parameter parameter, Hyperlink hyperlink)
         {
-            if (parameter is Constant || parameter is Function)
+            if (parameter is Constant || parameter is Function || parameter is Model.SavableTriggerData.Variable)
                 hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
             else
                 hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));

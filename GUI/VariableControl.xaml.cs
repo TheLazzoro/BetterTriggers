@@ -25,11 +25,14 @@ namespace GUI
     public partial class VariableControl : UserControl, IExplorerElement
     {
         public List<string> FilesUsing = new List<string>();
+        private int Id;
         private ComboBoxItemType previousSelected;
         
-        public VariableControl()
+        public VariableControl(int Id)
         {
             InitializeComponent();
+
+            this.Id = Id;
 
             // Events in the variableControl
             this.OnRename += delegate
@@ -66,6 +69,7 @@ namespace GUI
 
             Variable variable = new Variable()
             {
+                Id = this.Id,
                 Type = selectedComboBoxItem.Type,
                 ArraySize = arraySize,
                 IsTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1,
