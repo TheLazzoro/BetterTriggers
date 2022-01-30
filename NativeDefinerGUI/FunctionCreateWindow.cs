@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Model.Enums;
 using Model.Templates;
+using Model.SavableTriggerData;
 
 namespace NativeDefinerGUI
 {
@@ -78,11 +79,11 @@ namespace NativeDefinerGUI
 
         private void btnCreateParam_Click(object sender, EventArgs e)
         {
-            List<ParameterTemplate> parameters = new List<ParameterTemplate>();
+            List<Parameter> parameters = new List<Parameter>();
             for (int i = 0; i < listViewParameters.Items.Count; i++)
             {
                 var type = (string) listViewParameters.Items[i].Tag;
-                ParameterTemplate parameter = new ParameterTemplate()
+                Parameter parameter = new Parameter()
                 {
                     returnType = type
                 };

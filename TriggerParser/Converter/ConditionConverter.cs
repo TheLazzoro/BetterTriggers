@@ -1,5 +1,6 @@
 ﻿using Model.Containers;
-using Model.Natives;
+using Model.SavableTriggerData;
+using Model.Templates;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace TriggerParser.Converter
                     parameters.Add(parameter);
                 }
 
-                Function condition = new Function()
+                FunctionTemplate condition = new FunctionTemplate()
                 {
                     identifier = item.key,
                     name = item.displayName,

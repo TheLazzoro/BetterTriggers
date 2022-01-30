@@ -42,6 +42,12 @@
     <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\map.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
+    <None Remove="Resources\TriggerData\actions.json" />
+    <None Remove="Resources\TriggerData\calls.json" />
+    <None Remove="Resources\TriggerData\conditions.json" />
+    <None Remove="Resources\TriggerData\constants.json" />
+    <None Remove="Resources\TriggerData\events.json" />
+    <None Remove="Resources\TriggerData\types.json" />
     <None Remove="Resources\ui-editoricon-triggercategories_element.png" />
     <None Remove="Resources\ui-editoricon-triggercategories_folder.png" />
     <None Remove="Resources\ui-editoricon-triggercategories_folderopen.png" />
@@ -160,6 +166,27 @@
 
   <ItemGroup>
     <Content Include="Resources\Icons\editor-toolbar-triggercomment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\TriggerData\actions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\TriggerData\calls.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\TriggerData\conditions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\TriggerData\constants.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\TriggerData\events.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\TriggerData\types.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,5 +1,5 @@
 ﻿using Model.Containers;
-using Model.Natives;
+using Model.Templates;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace TriggerParser.Converter
         {
             foreach (var item in constants)
             {
-                Constant constant = new Constant()
+                ConstantTemplate constant = new ConstantTemplate()
                 {
                     identifier = item.key,
                     name = item.displayText,

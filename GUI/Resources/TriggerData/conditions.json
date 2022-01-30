@@ -1,0 +1,804 @@
+[
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "boolean"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "boolean"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareBoolean",
+        "name": "Boolean Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "abilcode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "abilcode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareAbilityId",
+        "name": "Ability Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "buffcode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "buffcode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareBuffId",
+        "name": "Buff Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "destructable"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "destructable"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareDestructible",
+        "name": "Destructible Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "destructablecode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "destructablecode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareDestructableCode",
+        "name": "Destructible-Type Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "button"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "button"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareButton",
+        "name": "Dialog Button Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "gamedifficulty"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "gamedifficulty"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareGameDifficulty",
+        "name": "Game Difficulty Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "gamespeed"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "gamespeed"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareGameSpeed",
+        "name": "Game Speed Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "heroskillcode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "heroskillcode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareHeroSkill",
+        "name": "Hero Skill Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "integer"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "ComparisonOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "integer"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareInteger",
+        "name": "Integer Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "item"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "item"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareItem",
+        "name": "Item Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "itemtype"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "itemtype"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareItemType",
+        "name": "Item-Class Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "itemcode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "itemcode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareItemCode",
+        "name": "Item-Type Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "mousebuttontype"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "mousebuttontype"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareMouseButton",
+        "name": "Mouse Button Type Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "aidifficulty"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "aidifficulty"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareMeleeDifficulty",
+        "name": "Melee AI Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "ordercode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "ordercode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareOrderCode",
+        "name": "Order Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "player"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "player"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorComparePlayer",
+        "name": "Player Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "playercolor"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "playercolor"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorComparePlayerColor",
+        "name": "Player Color Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "mapcontrol"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "mapcontrol"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorComparePlayerControl",
+        "name": "Player Controller Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "playerslotstate"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "playerslotstate"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorComparePlayerSlotStatus",
+        "name": "Player Slot Status Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "race"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "race"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareRace",
+        "name": "Race Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "real"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "ComparisonOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "real"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareReal",
+        "name": "Real Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "string"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "string"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareString",
+        "name": "String Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "techcode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "techcode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareTechCode",
+        "name": "Tech-Type Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "terraintype"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "terraintype"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareTerrainType",
+        "name": "Terrain Type Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "trigger"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "trigger"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareTrigger",
+        "name": "Trigger Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "unit"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "unit"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareUnit",
+        "name": "Unit Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "unitcode"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "EqualNotEqualOperator"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "unitcode"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": null,
+        "category": 20,
+        "identifier": "OperatorCompareUnitCode",
+        "name": "Unit-Type Comparison",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "boolcall"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "boolcall"
+            }
+        ],
+        "paramText": "~Condition 1, and ,~Condition 2",
+        "description": null,
+        "category": 20,
+        "identifier": "GetBooleanAnd",
+        "name": "And",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "boolcall"
+            },
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "boolcall"
+            }
+        ],
+        "paramText": "~Condition 1, or ,~Condition 2",
+        "description": null,
+        "category": 20,
+        "identifier": "GetBooleanOr",
+        "name": "Or",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "nothing"
+            }
+        ],
+        "paramText": "And - All (Conditions) are true",
+        "description": null,
+        "category": 20,
+        "identifier": "AndMultiple",
+        "name": "And, Multiple Conditions",
+        "returnType": null
+    },
+    {
+        "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": null,
+                "returnType": "nothing"
+            }
+        ],
+        "paramText": "Or - Any (Conditions) are true",
+        "description": null,
+        "category": 20,
+        "identifier": "OrMultiple",
+        "name": "Or, Multiple Conditions",
+        "returnType": null
+    }
+]

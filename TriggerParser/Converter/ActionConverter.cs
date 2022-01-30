@@ -1,5 +1,6 @@
 ﻿using Model.Containers;
-using Model.Natives;
+using Model.SavableTriggerData;
+using Model.Templates;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,14 +23,14 @@ namespace TriggerParser.Converter
                 {
                     var param = new Parameter()
                     {
-                        name = item.arguments[i].key,
+                        identifier = item.arguments[i].key,
                         returnType = item.arguments[i].key,
                         //name = item.arguments[i].displayName // makes no sense?
                     };
                     parameters.Add(param);
                 }
 
-                Function action = new Function()
+                FunctionTemplate action = new FunctionTemplate()
                 {
                     identifier = item.key,
                     name = item.displayName,

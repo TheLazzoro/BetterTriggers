@@ -22,7 +22,7 @@ namespace NativeDefinerGUI
             this.Dock = DockStyle.Fill;
 
             string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\functions.json");
-            List<Model.Natives.Function> list = JsonConvert.DeserializeObject<List<Model.Natives.Function>>(filePlainText);
+            List<Model.Templates.FunctionTemplate> list = JsonConvert.DeserializeObject<List<Model.Templates.FunctionTemplate>>(filePlainText);
             ContainerFunctions.SetList(list);
 
             RefreshEventList();

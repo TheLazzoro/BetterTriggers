@@ -40,7 +40,6 @@ namespace GUI.Controllers
 
         public War3Project LoadProject(Grid mainGrid, string filepath)
         {
-
             string json = File.ReadAllText(filepath);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
 
@@ -106,6 +105,11 @@ namespace GUI.Controllers
                     */
                 }
             }
+        }
+
+        public void CreateTriggerExplorer()
+        {
+
         }
 
         public void OnClick_ExplorerElement(ExplorerElement selectedElement, TabControl tabControl)

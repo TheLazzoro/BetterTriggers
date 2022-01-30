@@ -1,5 +1,6 @@
 ﻿using Model.Containers;
 using Model.SavableTriggerData;
+using Model.Templates;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace NativeDefinerGUI
             this.Dock = DockStyle.Fill;
 
             string filePlainText = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\constants.json");
-            List<Constant> list = JsonConvert.DeserializeObject<List<Constant>>(filePlainText);
+            List<ConstantTemplate> list = JsonConvert.DeserializeObject<List<ConstantTemplate>>(filePlainText);
             ContainerConstants.SetList(list);
 
             UpdateListView();
@@ -65,7 +66,7 @@ namespace NativeDefinerGUI
         {
             if (textBoxIdentifier.Text != "" && textBoxName.Text != "")
             {
-                Constant constant = new Constant()
+                ConstantTemplate constant = new ConstantTemplate()
                 {
                     identifier = textBoxIdentifier.Text,
                     //returnType = (DataAccess.Natives.Type)lblReturnType.Tag,

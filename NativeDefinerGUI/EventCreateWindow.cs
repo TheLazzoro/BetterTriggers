@@ -1,6 +1,6 @@
 ﻿using Model.Containers;
-using Model.Data;
 using Model.Enums;
+using Model.SavableTriggerData;
 using Model.Templates;
 using System;
 using System.Collections.Generic;
@@ -75,10 +75,10 @@ namespace NativeDefinerGUI
 
         private void btnCreateEvent_Click(object sender, EventArgs e)
         {
-            List<ParameterTemplate> parameters = new List<ParameterTemplate>();
+            List<Parameter> parameters = new List<Parameter>();
             for(int i = 0; i < listViewParameters.Items.Count; i++)
             {
-                ParameterTemplate parameter = (ParameterTemplate) listViewParameters.Items[i].Tag;
+                Parameter parameter = (Parameter) listViewParameters.Items[i].Tag;
                 parameters.Add(parameter);
             }
 
