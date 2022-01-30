@@ -107,11 +107,6 @@ namespace GUI.Controllers
             }
         }
 
-        public void CreateTriggerExplorer()
-        {
-
-        }
-
         public void OnClick_ExplorerElement(ExplorerElement selectedElement, TabControl tabControl)
         {
             if (selectedElement != null && selectedElement.Ielement == null) // Load file data if the element is null

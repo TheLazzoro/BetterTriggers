@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterTriggers", "BetterTriggers\BetterTriggers.csproj", "{2FEA5A31-85A6-4A68-A87B-79CBF6101DE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "DataAccess\Model.csproj", "{69B14306-90D1-4B93-807A-C81E7E01A820}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{0D323684-516F-491F-B729-8411A35DFC36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeDefinerGUI", "NativeDefinerGUI\NativeDefinerGUI.csproj", "{8C7999BA-6372-46F5-A9FD-110FC473AF66}"
@@ -17,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldEditParser", "WorldEdi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{7ECF0756-75C4-476C-B2DD-CA938E990890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B9CE590E-DEF4-4209-A34A-B09286D023F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{B9CE590E-DEF4-4209-A34A-B09286D023F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{69B14306-90D1-4B93-807A-C81E7E01A820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		{2FEA5A31-85A6-4A68-A87B-79CBF6101DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FEA5A31-85A6-4A68-A87B-79CBF6101DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FEA5A31-85A6-4A68-A87B-79CBF6101DE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69B14306-90D1-4B93-807A-C81E7E01A820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69B14306-90D1-4B93-807A-C81E7E01A820}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69B14306-90D1-4B93-807A-C81E7E01A820}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69B14306-90D1-4B93-807A-C81E7E01A820}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D323684-516F-491F-B729-8411A35DFC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0D323684-516F-491F-B729-8411A35DFC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D323684-516F-491F-B729-8411A35DFC36}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{B9CE590E-DEF4-4209-A34A-B09286D023F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9CE590E-DEF4-4209-A34A-B09286D023F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9CE590E-DEF4-4209-A34A-B09286D023F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69B14306-90D1-4B93-807A-C81E7E01A820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69B14306-90D1-4B93-807A-C81E7E01A820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69B14306-90D1-4B93-807A-C81E7E01A820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69B14306-90D1-4B93-807A-C81E7E01A820}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

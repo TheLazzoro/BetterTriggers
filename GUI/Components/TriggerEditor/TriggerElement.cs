@@ -61,7 +61,35 @@ namespace GUI.Components.TriggerEditor
             this.formattedParamText = string.Empty;
 
             RecurseParameters(textBlock, parameters, paramText);
-            TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category);
+            bool areParametersValid = IsParameterListValid(parameters);
+
+            if (areParametersValid)
+                TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category);
+            else
+                TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category, false);
+        }
+
+        private bool IsParameterListValid(List<Parameter> parameters)
+        {
+            bool isValid = true;
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                var param = parameters[i];
+                if (param is Function)
+                {
+                    var func = (Function)param;
+                    if (func.parameters.Count > 0)
+                    {
+                        isValid = IsParameterListValid(func.parameters);
+                    }
+                }
+
+                if (param.identifier == null)
+                    isValid = false;
+            }
+
+            return isValid;
         }
 
         private void RecurseParameters(TextBlock textBlock, List<Parameter> parameters, string paramText)
@@ -127,7 +155,7 @@ namespace GUI.Components.TriggerEditor
                             i++;
                         }
                     }
-                    else if(parameters[paramIndex] is Model.SavableTriggerData.Variable)
+                    else if (parameters[paramIndex] is Model.SavableTriggerData.Variable)
                     {
                         RemoveCommaBeforeParamIndicator(textBlock);
 
@@ -137,6 +165,16 @@ namespace GUI.Components.TriggerEditor
 
                         var variable = (Model.SavableTriggerData.Variable)parameters[paramIndex];
                         var varName = ContainerVariables.GetVariableNameById(variable.VariableId);
+
+                        // This exists in case a variable file has been deleted
+                        if (varName == null || varName == "")
+                        {
+                            parameters[paramIndex] = new Parameter()
+                            {
+                                returnType = variable.returnType,
+                            };
+                            varName = "null";
+                        }
 
                         CreateHyperlink(textBlock, varName, parameters, index);
 

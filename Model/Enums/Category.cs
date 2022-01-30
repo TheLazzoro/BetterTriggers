@@ -40,6 +40,7 @@ namespace Model.Enums
         UnitGroup,
         UnitSelection,
         Visibility,
-        Wait
+        Wait,
+        Error,
     }
 }
