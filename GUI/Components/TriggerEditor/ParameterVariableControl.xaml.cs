@@ -11,10 +11,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GUI.Containers;
+using Facades.Containers;
 using Model;
 using Model.Data;
-using Model.SavableTriggerData;
+using Model.SaveableData;
 using Newtonsoft.Json;
 
 namespace GUI
@@ -30,14 +30,14 @@ namespace GUI
         {
             InitializeComponent();
 
-            List<Model.Data.Variable> variables = new List<Model.Data.Variable>();
+            List<Variable> variables = new List<Variable>();
 
             for (int i = 0; i < ContainerVariables.Count(); i++)
             {
                 var explorerElement = ContainerVariables.Get(i);
-                string json = File.ReadAllText(explorerElement.FilePath);
-                Model.Data.Variable variable = JsonConvert.DeserializeObject<Model.Data.Variable>(json);
-                variable.Name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.FilePath); // hack
+                string json = File.ReadAllText(explorerElement.GetPath());
+                Variable variable = JsonConvert.DeserializeObject<Variable>(json);
+                variable.Name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.GetPath()); // hack
 
                 if (variable.Type == returnType)
                     variables.Add(variable);
@@ -48,7 +48,7 @@ namespace GUI
             {
                 ListViewItem item = new ListViewItem();
                 item.Content = variables[i].Name;
-                item.Tag = new Model.SavableTriggerData.Variable()
+                item.Tag = new VariableRef()
                 {
                     returnType = variables[i].Type,
                     VariableId = variables[i].Id,
@@ -66,7 +66,7 @@ namespace GUI
 
         public Parameter GetSelectedItem()
         {
-            var variables = (Model.SavableTriggerData.Variable)selectedItem.Tag;
+            var variables = (VariableRef)selectedItem.Tag;
             return variables;
         }
 

@@ -1,5 +1,5 @@
 ﻿using Model.Data;
-using Model.Enums;
+using Model.EditorData.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;

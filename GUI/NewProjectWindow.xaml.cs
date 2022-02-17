@@ -1,5 +1,5 @@
-﻿using GUI.Controllers;
-using Model.War3Project;
+﻿using Facades.Controllers;
+using GUI.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +19,7 @@ namespace GUI
     /// </summary>
     public partial class NewProjectWindow : Window
     {
-        public War3Project createdProject;
+        public bool Ok = false;
         
         public NewProjectWindow()
         {
@@ -75,15 +75,15 @@ namespace GUI
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             string language = string.Empty;
-
             if ((bool)radBtnJass.IsChecked)
                 language = "jass";
             else if ((bool)radBtnLua.IsChecked)
                 language = "lua";
 
             ControllerProject controller = new ControllerProject();
-            this.createdProject = controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
+            controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
 
+            this.Ok = true;
             this.Close();
         }
     }

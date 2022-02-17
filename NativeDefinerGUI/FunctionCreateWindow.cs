@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Model.Enums;
 using Model.Templates;
-using Model.SavableTriggerData;
+using Model.EditorData.Enums;
+using Model.SaveableData;
 
 namespace NativeDefinerGUI
 {

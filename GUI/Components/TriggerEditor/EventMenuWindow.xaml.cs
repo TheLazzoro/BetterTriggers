@@ -14,8 +14,9 @@ using Model;
 using Model.Data;
 using GUI.Controllers;
 using Model.Templates;
-using Model.SavableTriggerData;
-using Model.Enums;
+using Model.SaveableData;
+using Facades.Controllers;
+using Model.EditorData.Enums;
 
 namespace GUI
 {

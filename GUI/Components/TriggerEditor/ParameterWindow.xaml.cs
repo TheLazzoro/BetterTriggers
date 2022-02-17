@@ -1,4 +1,4 @@
-﻿using Model.SavableTriggerData;
+﻿using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Text;

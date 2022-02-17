@@ -10,9 +10,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Facades.Controllers;
 using GUI.Controllers;
 using Model;
-using Model.SavableTriggerData;
+using Model.SaveableData;
 using Model.Templates;
 
 namespace GUI
@@ -38,7 +39,7 @@ namespace GUI
                     Function function = new Function()
                     {
                         identifier = functions[i].identifier,
-                        parameters = new List<Model.SavableTriggerData.Parameter>(),
+                        parameters = new List<Parameter>(),
                         returnType = functions[i].returnType,
                     };
                     ListViewItem item = new ListViewItem();

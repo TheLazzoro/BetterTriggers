@@ -1,6 +1,5 @@
 ﻿using Model.Data;
 using GUI.Utility;
-using GUI.Containers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
-using Model.Enums;
+using Model.EditorData.Enums;
+using Facades.Controllers;
+using Facades.Containers;
+using GUI.Components;
 
 namespace GUI
 {
@@ -26,84 +28,40 @@ namespace GUI
     /// 
     public partial class TriggerExplorer : UserControl
     {
-        public ExplorerElement map;
+        public TreeItemExplorerElement map;
+        public TreeItemExplorerElement currentElement;
         Point _startPoint;
-        ExplorerElement dragItem;
+        TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
-        FileSystemWatcher fileSystemWatcher;
 
-        public TriggerExplorer(string rootFolderPath)
+        public TriggerExplorer()
         {
             InitializeComponent();
 
-            fileSystemWatcher = new FileSystemWatcher();
-            fileSystemWatcher.Path = rootFolderPath;
-            fileSystemWatcher.EnableRaisingEvents = true;
-            fileSystemWatcher.IncludeSubdirectories = true;
-            fileSystemWatcher.Created += FileSystemWatcher_Created;
-            fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
-            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
-            fileSystemWatcher.Changed += FileSystemWatcher_Changed;
-            fileSystemWatcher.Error += FileSystemWatcher_Error;
+            ContainerProject.OnCreated += ContainerProject_OnElementCreated;
         }
 
-        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        private void ContainerProject_OnElementCreated(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                string path = e.FullPath;
-                ControllerFileSystem controller = new ControllerFileSystem();
-                controller.OnCreateElement(this, path);
+                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+                controller.OnCreateElement(this, e.FullPath);
             });
-        }
-
-        private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                ControllerFileSystem controller = new ControllerFileSystem();
-                controller.OnRenameElement(this, e.OldFullPath, e.FullPath);
-            });
-        }
-
-        private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                if (e.ChangeType == WatcherChangeTypes.Changed)
-                {
-                    ControllerFileSystem controller = new ControllerFileSystem();
-                    //controller.MoveElement(this, e.OldFullPath, e.FullPath);
-                    string s = e.FullPath;
-                }
-            });
-        }
-
-        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                string path = e.FullPath;
-                ControllerFileSystem controller = new ControllerFileSystem();
-                controller.OnDeleteElement(this, path);
-            });
-        }
-
-        private void FileSystemWatcher_Error(object sender, ErrorEventArgs e)
-        {
-            MessageBox.Show(e.GetException().Message, "Critical File System Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            Application.Current.Shutdown();
         }
 
         /*
+         * I am not sure why this is here.
+         * We have the same function in MainWindow,
+         * but I'm thinking we need it here too at some point.
+         */
         private void treeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             ControllerProject controller = new ControllerProject();
-            controller.OnClick_ExplorerElement(treeViewTriggerExplorer.SelectedItem as TreeViewItem, new Grid());
+            //controller.OnClick_ExplorerElement(treeViewTriggerExplorer.SelectedItem as TreeViewItem, new Grid());
 
             e.Handled = true; // prevents event from firing up the parent items
         }
-        */
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
@@ -128,7 +86,7 @@ namespace GUI
         private void StartDrag(MouseEventArgs e)
         {
             _IsDragging = true;
-            dragItem = this.treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+            dragItem = this.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
             DataObject data = null;
 
             data = new DataObject("inadt", dragItem);
@@ -162,7 +120,7 @@ namespace GUI
 
         public void CreateRootItem(string path, Category category)
         {
-            this.map = new ExplorerElement(path, true);
+            this.map = new TreeItemExplorerElement(ContainerFolders.Get(0), true);
             treeViewTriggerExplorer.Items.Add(this.map);
             this.map.IsExpanded = true;
             this.map.IsSelected = true;
@@ -190,20 +148,24 @@ namespace GUI
                 // things like 'TextBlock' and 'Border' on the drop target when dropping the 
                 // dragged element.
                 FrameworkElement dropTarget = e.Source as FrameworkElement;
-                ExplorerElement traversedTarget = null;
+
+                if (dropTarget is TreeView)
+                    return;
+
+                TreeItemExplorerElement traversedTarget = null;
                 while (traversedTarget == null)
                 {
                     dropTarget = dropTarget.Parent as FrameworkElement;
-                    if (dropTarget is ExplorerElement)
+                    if (dropTarget is TreeItemExplorerElement)
                     {
-                        traversedTarget = (ExplorerElement)dropTarget;
+                        traversedTarget = (TreeItemExplorerElement)dropTarget;
                     }
                 }
 
                 if (dragItem != traversedTarget)
                 {
                     ControllerFileSystem controller = new ControllerFileSystem();
-                    controller.MoveFile(dragItem, traversedTarget);
+                    controller.MoveFile(dragItem.Ielement.GetPath(), traversedTarget.Ielement.GetPath());
                 }
 
                 /*
@@ -220,12 +182,12 @@ namespace GUI
         {
             if (e.Key == Key.Delete)
             {
-                ExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
                 if (selectedElement == null || selectedElement == map)
                     return;
 
                 ControllerFileSystem controller = new ControllerFileSystem();
-                controller.DeleteElement(selectedElement);
+                controller.DeleteElement(selectedElement.Ielement.GetPath());
             }
         }
 
@@ -236,15 +198,15 @@ namespace GUI
             // things like 'TextBlock' and 'Border' on the drop target when dropping the 
             // dragged element.
             FrameworkElement rightClickedElement = e.Source as FrameworkElement;
-            ExplorerElement traversedTarget = null;
+            TreeItemExplorerElement traversedTarget = null;
             if (rightClickedElement != null && !(rightClickedElement is TreeView))
             {
                 while (traversedTarget == null)
                 {
                     rightClickedElement = rightClickedElement.Parent as FrameworkElement;
-                    if (rightClickedElement is ExplorerElement)
+                    if (rightClickedElement is TreeItemExplorerElement)
                     {
-                        traversedTarget = (ExplorerElement)rightClickedElement;
+                        traversedTarget = (TreeItemExplorerElement)rightClickedElement;
                     }
                 }
             }
@@ -318,6 +280,5 @@ namespace GUI
 
             traversedTarget.ContextMenu = contextMenu;
         }
-
     }
 }

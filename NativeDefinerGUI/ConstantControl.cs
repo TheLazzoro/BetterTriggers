@@ -1,5 +1,4 @@
 ﻿using Model.Containers;
-using Model.SavableTriggerData;
 using Model.Templates;
 using Newtonsoft.Json;
 using System;

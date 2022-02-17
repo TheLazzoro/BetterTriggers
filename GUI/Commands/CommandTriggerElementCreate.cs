@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using GUI.Components.TriggerEditor;
-using Model.SavableTriggerData;
+using Model.SaveableData;
 
 namespace GUI.Commands
 {

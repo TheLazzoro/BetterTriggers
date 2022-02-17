@@ -19,14 +19,16 @@ using System.Xml;
 using BetterTriggers;
 using GUI.Components.TextEditor;
 using GUI.Components.TriggerExplorer;
-using GUI.Containers;
-using GUI.Controllers;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
-using Newtonsoft.Json;
+using Facades.Controllers;
+using Facades.Containers;
+using GUI.Controllers;
+using Model.EditorData.Enums;
+using GUI.Components;
 
 namespace GUI
 {
@@ -35,21 +37,40 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        TriggerExplorer triggerExplorer;
+        TreeItemExplorerElement selectedExplorerItem;
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        private void menuNewProject_Click(object sender, RoutedEventArgs e)
+        {
+            NewProjectWindow window = new NewProjectWindow();
+            window.WindowStartupLocation = WindowStartupLocation.Manual;
+            window.Top = this.Top + this.Height / 2 - window.Height / 2;
+            window.Left = this.Left + this.Width / 2 - window.Width / 2;
+            window.ShowDialog();
+
+            if (window.Ok)
+            {
+                var root = ContainerProject.project.Root;
+                TriggerExplorer te = new TriggerExplorer();
+                mainGrid.Children.Add(te);
+                Grid.SetColumn(te, 0);
+                Grid.SetRow(te, 2);
+
+                this.triggerExplorer = te;
+            }
+        }
+
+        /*
         private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
         {
-            var explorerItem = ContainerTriggerExplorer.triggerExplorer.treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+            selectedExplorerItem = triggerExplorer.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
 
-            ControllerProject controller = new ControllerProject();
-            controller.OnClick_ExplorerElement(explorerItem, tabControl);
-
-            var triggerExplorerElement = ControllerProject.currentExplorerElement;
-
-            if (triggerExplorerElement != null)
+            if (selectedExplorerItem.editor as TriggerControl != null)
             {
                 btnCreateEvent.IsEnabled = true;
                 btnCreateCondition.IsEnabled = true;
@@ -62,46 +83,72 @@ namespace GUI
                 btnCreateAction.IsEnabled = false;
             }
         }
+        */
+
+        private void TriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            selectedExplorerItem = triggerExplorer.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+            triggerExplorer.currentElement = selectedExplorerItem;
+            ContainerProject.currentSelectedElement = selectedExplorerItem.Ielement.GetPath();
+
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            controller.OnSelectItem(selectedExplorerItem, tabControl);
+
+            if (selectedExplorerItem.editor as TriggerControl != null)
+            {
+                btnCreateEvent.IsEnabled = true;
+                btnCreateCondition.IsEnabled = true;
+                btnCreateAction.IsEnabled = true;
+            }
+            else
+            {
+                btnCreateEvent.IsEnabled = false;
+                btnCreateCondition.IsEnabled = false;
+                btnCreateAction.IsEnabled = false;
+            }
+
+            e.Handled = true; // prevents event from firing up the parent items
+        }
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerFolder();
-            controller.CreateFolder(ContainerTriggerExplorer.triggerExplorer);
+            controller.CreateFolder();
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerTrigger();
-            controller.CreateTrigger(ContainerTriggerExplorer.triggerExplorer);
+            controller.CreateTrigger();
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerScript();
-            controller.CreateScript(ContainerTriggerExplorer.triggerExplorer);
+            controller.CreateScript();
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerVariable();
-            controller.CreateVariable(ContainerTriggerExplorer.triggerExplorer);
+            controller.CreateVariable();
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = ControllerProject.currentExplorerElement.Ielement as TriggerControl;
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = ControllerProject.currentExplorerElement.Ielement as TriggerControl;
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void btnCreateAction_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = ControllerProject.currentExplorerElement.Ielement as TriggerControl;
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
             triggerControl.CreateAction();
         }
 
@@ -113,11 +160,13 @@ namespace GUI
             string fileInput = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/vJass.j";
             string fileOutput = "\"C:/Users/Lasse Dam/Desktop/JassHelper Experiement/output.j\"";
 
+            /*
             ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
             string script = scriptGenerator.GenerateScript(ContainerTriggerExplorer.triggerExplorer);
 
             JassHelper.SaveVJassScript(fileInput, script);
             JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
+            */
         }
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
@@ -163,29 +212,11 @@ namespace GUI
         }
         
 
-        private void menuNewProject_Click(object sender, RoutedEventArgs e)
-        {
-            NewProjectWindow window = new NewProjectWindow();
-            window.WindowStartupLocation = WindowStartupLocation.Manual;
-            window.Top = this.Top + this.Height / 2 - window.Height / 2;
-            window.Left = this.Left + this.Width / 2 - window.Width / 2;
-            window.ShowDialog();
-            var createdProject = window.createdProject;
-
-            if (createdProject != null)
-            {
-                ControllerProject controller = new ControllerProject();
-                controller.LoadProject(mainGrid, createdProject);
-            }
-        }
+        
 
         private void menuSave_Click(object sender, RoutedEventArgs e)
         {
-            var elementInView = ControllerProject.currentExplorerElement;
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.SaveFile(elementInView);
-
-            //SaveLoad.SaveLoad.SaveStringAs(triggerControl.GetSaveString());
+            triggerExplorer.currentElement.Save();
         }
 
         private void menuOpen_Click(object sender, RoutedEventArgs e)
@@ -197,10 +228,32 @@ namespace GUI
             {
                 var file = dialog.FileName;
 
-                ControllerProject controller = new ControllerProject();
-                var project = controller.LoadProject(mainGrid, file);
+                ControllerProject controllerProject = new ControllerProject();
+                var project = controllerProject.LoadProject(file);
 
-                ContainerTriggerExplorer.ItemSelectionChanged += TriggerExplorer_ItemSelectionChanged; // subscribe to item selection changed event
+                if (triggerExplorer != null)
+                {
+                    var parent = (Grid)triggerExplorer.Parent;
+                    parent.Children.Remove(triggerExplorer);
+                }
+                triggerExplorer = new TriggerExplorer();
+                triggerExplorer.Margin = new Thickness(-1, 1, 4, -1);
+                triggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
+                triggerExplorer.Width = Double.NaN;
+                //currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
+                triggerExplorer.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 32, 32, 32));
+                mainGrid.Children.Add(triggerExplorer);
+                Grid.SetRow(triggerExplorer, 3);
+                Grid.SetRowSpan(triggerExplorer, 4);
+                Grid.SetColumn(triggerExplorer, 0);
+
+                triggerExplorer.CreateRootItem(project.Root, Category.Map);
+
+                //triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged; 
+                triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_SelectedItemChanged; // subscribe to item selection changed event
+
+                ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
+                controllerTriggerExplorer.Populate(triggerExplorer);
             }
         }
     }

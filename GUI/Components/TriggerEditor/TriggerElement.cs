@@ -10,10 +10,10 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System.Threading;
 using GUI.Commands;
-using Model.Enums;
 using Model.Templates;
-using Model.SavableTriggerData;
-using GUI.Containers;
+using Model.SaveableData;
+using Model.EditorData.Enums;
+using Facades.Containers;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -69,10 +69,8 @@ namespace GUI.Components.TriggerEditor
                 TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category, false);
         }
 
-        private bool IsParameterListValid(List<Parameter> parameters)
+        private bool IsParameterListValid(List<Parameter> parameters, bool isValid = true)
         {
-            bool isValid = true;
-
             for (int i = 0; i < parameters.Count; i++)
             {
                 var param = parameters[i];
@@ -81,7 +79,7 @@ namespace GUI.Components.TriggerEditor
                     var func = (Function)param;
                     if (func.parameters.Count > 0)
                     {
-                        isValid = IsParameterListValid(func.parameters);
+                        isValid = IsParameterListValid(func.parameters, isValid);
                     }
                 }
 
@@ -155,7 +153,7 @@ namespace GUI.Components.TriggerEditor
                             i++;
                         }
                     }
-                    else if (parameters[paramIndex] is Model.SavableTriggerData.Variable)
+                    else if (parameters[paramIndex] is VariableRef)
                     {
                         RemoveCommaBeforeParamIndicator(textBlock);
 
@@ -163,7 +161,7 @@ namespace GUI.Components.TriggerEditor
 
                         i++;
 
-                        var variable = (Model.SavableTriggerData.Variable)parameters[paramIndex];
+                        var variable = (VariableRef)parameters[paramIndex];
                         var varName = ContainerVariables.GetVariableNameById(variable.VariableId);
 
                         // This exists in case a variable file has been deleted
@@ -219,14 +217,22 @@ namespace GUI.Components.TriggerEditor
 
         private void RemoveCommaBeforeParamIndicator(TextBlock textBlock)
         {
-            textBlock.Inlines.Remove(textBlock.Inlines.LastInline); // removes the comma before the '~' indicator
-            if (formattedParamText.Length != 0)
-                this.formattedParamText = this.formattedParamText.Remove(formattedParamText.Length - 1, 1);
+            if (textBlock.Inlines.LastInline != null) // apparently this is dangerous and crashes if not checked.
+            {
+                // gets the last inserted text range. In this case we check if in fact it's a commma.
+                var textrange = new TextRange(textBlock.Inlines.LastInline.ContentStart, textBlock.Inlines.LastInline.ContentEnd);
+                if (textrange.Text == ",")
+                {
+                    textBlock.Inlines.Remove(textBlock.Inlines.LastInline); // removes the comma before the '~' indicator
+                    if (formattedParamText.Length != 0)
+                        this.formattedParamText = this.formattedParamText.Remove(formattedParamText.Length - 1, 1);
+                }
+            }
         }
 
         private void RecolorHyperlink(Parameter parameter, Hyperlink hyperlink)
         {
-            if (parameter is Constant || parameter is Function || parameter is Model.SavableTriggerData.Variable)
+            if (parameter is Constant || parameter is Function || parameter is VariableRef)
                 hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
             else
                 hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));

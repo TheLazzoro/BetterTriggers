@@ -1,7 +1,6 @@
-﻿using GUI.Components.TriggerExplorer;
-using Model;
+﻿using Model;
 using Model.Data;
-using Model.SavableTriggerData;
+using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,11 +13,12 @@ namespace GUI.Controllers
 {
     public class ControllerScriptGenerator
     {
-        List<Model.Data.Variable> variables = new List<Model.Data.Variable>();
+        List<Variable> variables = new List<Variable>();
         List<string> scripts = new List<string>();
         List<Trigger> triggers = new List<Trigger>();
 
-        public string GenerateScript(TriggerExplorer triggerExplorer)
+        /*
+        public string GenerateScript(TriggerExplorer triggerExplorer) // hack
         {
             var root = triggerExplorer.map;
             GatherTriggerElements(root);
@@ -54,7 +54,7 @@ namespace GUI.Controllers
                     else if (Path.GetExtension(element.FilePath) == ".var")
                     {
                         string json = File.ReadAllText(element.FilePath);
-                        var variable = JsonConvert.DeserializeObject<Model.Data.Variable>(json);
+                        var variable = JsonConvert.DeserializeObject<Variable>(json);
                         variable.Name = Path.GetFileNameWithoutExtension(element.FilePath); // hack
                         variables.Add(variable);
                     }
@@ -68,12 +68,12 @@ namespace GUI.Controllers
 
             // ---- Generate script ---- //
 
-            List<Model.Data.Variable> InitGlobals = new List<Model.Data.Variable>();
+            List<Variable> InitGlobals = new List<Variable>();
 
             // Global variables
             for (int i = 0; i < variables.Count; i++)
             {
-                Model.Data.Variable variable = variables[i];
+                Variable variable = variables[i];
                 InitGlobals.Add(variable);
 
                 script += "globals" + System.Environment.NewLine;
@@ -179,5 +179,7 @@ namespace GUI.Controllers
 
             return script;
         }
+
+        */
     }
 }

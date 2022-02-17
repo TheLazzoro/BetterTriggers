@@ -11,9 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Model;
-using Model.SavableTriggerData;
-using GUI.Containers;
 using Model.Templates;
+using Model.SaveableData;
+using Facades.Containers;
 
 namespace GUI
 {

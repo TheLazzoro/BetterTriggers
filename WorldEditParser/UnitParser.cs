@@ -1,4 +1,4 @@
-﻿using Model.WorldEditData;
+﻿using Model.War3Data;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -1,4 +1,4 @@
-﻿using Model.SavableTriggerData;
+﻿using Model.SaveableData;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,7 +30,7 @@ namespace Model.JsonBaseConverter
                     case 2:
                         return new Constant();
                     case 3:
-                        return new Variable();
+                        return new VariableRef();
                     default:
                         return new Parameter();
                 }

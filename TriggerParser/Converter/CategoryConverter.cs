@@ -1,8 +1,9 @@
-﻿using Model.Enums;
-
+﻿
 /*
  * Converts Blizzard's category to my category heh.
  */
+
+using Model.EditorData.Enums;
 
 namespace TriggerParser.Converter
 {

@@ -1,6 +1,6 @@
 ﻿using Model.Containers;
-using Model.Enums;
-using Model.SavableTriggerData;
+using Model.EditorData.Enums;
+using Model.SaveableData;
 using Model.Templates;
 using System;
 using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
-using Model.Enums;
+using Model.EditorData.Enums;
 
 namespace GUI.Components.TriggerEditor
 {

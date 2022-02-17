@@ -1,5 +1,5 @@
-﻿using Model.Enums;
-using Model.SavableTriggerData;
+﻿using Model.EditorData.Enums;
+using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 

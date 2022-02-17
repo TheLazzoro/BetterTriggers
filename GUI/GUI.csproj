@@ -202,8 +202,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
+    <ProjectReference Include="..\Facades\Facades.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
-    <ProjectReference Include="..\WorldEditParser\WorldEditParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
