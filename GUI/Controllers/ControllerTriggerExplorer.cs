@@ -3,6 +3,7 @@ using Facades.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using Model.EditorData;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
 
@@ -12,21 +13,29 @@ namespace GUI.Controllers
     {
         public void Populate(TriggerExplorer te)
         {
-            RecursePopulate(te.map, ContainerFolders.Get(0));
+            var root = ContainerProject.projectFiles[0] as ExplorerElementRoot;
+
+
+
+            for (int i = 0; i < root.explorerElements.Count; i++)
+            {
+                RecursePopulate(te, te.map, root.explorerElements[i]);
+            }
         }
 
-        private void RecursePopulate(TreeItemExplorerElement parent, ExplorerElementFolder folder)
+        private void RecursePopulate(TriggerExplorer te, TreeItemExplorerElement parent, IExplorerElement element)
         {
-            for (int i = 0; i < folder.explorerElements.Count; i++)
-            {
-                var element = folder.explorerElements[i];
-                var treeItem = new TreeItemExplorerElement(element);
-                parent.Items.Add(treeItem);
-                element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
+            var treeItem = new TreeItemExplorerElement(element);
+            element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
+            parent.Items.Add(treeItem);
 
-                if (element is ExplorerElementFolder)
+            if(element is ExplorerElementFolder)
+            {
+                var folder = element as ExplorerElementFolder;
+                for (int i = 0; i < folder.explorerElements.Count; i++)
                 {
-                    RecursePopulate(treeItem, element as ExplorerElementFolder);
+                    var child = folder.explorerElements[i];
+                    RecursePopulate(te, treeItem, child);
                 }
             }
         }
@@ -50,7 +59,7 @@ namespace GUI.Controllers
                         break;
                     case ".var":
                         ControllerVariable controllerVariable = new ControllerVariable();
-                        selectedItem.editor = new VariableControl(controllerVariable.GetVariableInMemory(selectedItem.Ielement.GetPath()));
+                        selectedItem.editor = new VariableControl(controllerVariable.GetVariableInMemory(selectedItem.Ielement.GetPath()), selectedItem.Ielement.GetName());
                         break;
                     default:
                         break;
@@ -70,13 +79,15 @@ namespace GUI.Controllers
         public void OnCreateElement(TriggerExplorer te, string fullPath)
         {
             ControllerProject controller = new ControllerProject();
-            ExplorerElementFolder folder = controller.FindExplorerElementFolder(ContainerFolders.Get(0), fullPath);
+            IExplorerElement folder = controller.FindExplorerElementFolder(ContainerProject.projectFiles[0], fullPath);
             TreeItemExplorerElement parent = FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
+            if (parent == null)
+                parent = te.map;
 
             RecurseCreateElement(folder, parent, fullPath);
         }
 
-        private void RecurseCreateElement(ExplorerElementFolder folder, TreeItemExplorerElement parent, string fullPath)
+        private void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath)
         {
             ControllerProject controller = new ControllerProject();
             IExplorerElement createdElement = controller.FindExplorerElement(folder, fullPath);
@@ -111,7 +122,7 @@ namespace GUI.Controllers
                 string[] entries = Directory.GetFileSystemEntries(fullPath);
                 for (int i = 0; i < entries.Length; i++)
                 {
-                    RecurseCreateElement(createdElement as ExplorerElementFolder, treeElement, entries[i]);
+                    RecurseCreateElement((ExplorerElementFolder)createdElement, treeElement, entries[i]);
                 }
             }
         }

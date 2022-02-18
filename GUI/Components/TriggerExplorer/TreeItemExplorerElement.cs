@@ -26,12 +26,6 @@ namespace GUI.Components.TriggerExplorer
             RefreshElement();
         }
 
-        public TreeItemExplorerElement(IExplorerElement explorerElement, bool isRoot)
-        {
-            this.Ielement = explorerElement;
-            TreeViewManipulator.SetTreeViewItemAppearance(this, Ielement.GetName(), Category.Map);
-        }
-
         public void Delete()
         {
             Application.Current.Dispatcher.Invoke(delegate
@@ -51,33 +45,34 @@ namespace GUI.Components.TriggerExplorer
 
         public void RefreshElement()
         {
+            //if (this.Ielement == null)
+            //    return;
+
             Category category;
-            switch (Path.GetExtension(this.Ielement.GetPath()))
-            {
-                case "":
-                    category = Category.Folder;
-                    break;
-                case ".trg":
-                    category = Category.Trigger;
-                    break;
-                case ".j":
-                    category = Category.AI;
-                    break;
-                case ".var":
-                    category = Category.SetVariable;
-                    break;
-                default:
-                    category = Category.Trigger;
-                    break;
-            }
+
+            if (Ielement is ExplorerElementRoot)
+                category = Category.Map;
+            else if (Ielement is ExplorerElementFolder)
+                category = Category.Folder;
+            else if (Ielement is ExplorerElementTrigger)
+                category = Category.Trigger;
+            else if (Ielement is ExplorerElementScript)
+                category = Category.AI;
+            else if (Ielement is ExplorerElementVariable)
+                category = Category.SetVariable;
+            else
+                category = Category.Wait;
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, this.Ielement.GetName(), category);
 
             if (this.tabItem != null)
                 tabItem.RefreshHeader(this.Ielement.GetName());
 
-            //if(Ielement != null)
-            //Ielement.OnElementRename();
+            if(this.editor is VariableControl)
+            {
+                var control = this.editor as VariableControl;
+                control.Rename(Ielement.GetName());
+            }
         }
 
         public void Save()

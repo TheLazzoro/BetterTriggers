@@ -247,7 +247,7 @@ namespace GUI
                 Grid.SetRowSpan(triggerExplorer, 4);
                 Grid.SetColumn(triggerExplorer, 0);
 
-                triggerExplorer.CreateRootItem(project.Root, Category.Map);
+                triggerExplorer.CreateRootItem();
 
                 //triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged; 
                 triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_SelectedItemChanged; // subscribe to item selection changed event

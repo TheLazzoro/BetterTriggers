@@ -152,7 +152,7 @@
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
-        <TabControl x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020">
+        <TabControl x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
@@ -179,7 +179,7 @@
                 </Style>
             </TabControl.Resources>
             <TabItem Header="General">
-                <Label Content="Content goes here..." />
+                <Label Content="Content goes here..." Background="#FF3C3C3C" />
             </TabItem>
             <TabItem Header="Security" />
             <TabItem Header="Details" />

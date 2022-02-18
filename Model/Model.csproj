@@ -54,12 +54,14 @@
     <Compile Include="Containers\ContainerConstants.cs" />
     <Compile Include="EditorData\Enums\Category.cs" />
     <Compile Include="EditorData\Enums\ExplorerElementType.cs" />
+    <Compile Include="EditorData\ExplorerElementRoot.cs" />
     <Compile Include="EditorData\ExplorerElementFolder.cs" />
     <Compile Include="EditorData\ExplorerElementScript.cs" />
     <Compile Include="EditorData\ExplorerElementTrigger.cs" />
     <Compile Include="EditorData\ExplorerElementVariable.cs" />
     <Compile Include="EditorData\IExplorerElement.cs" />
     <Compile Include="EditorData\IExplorerElementObserver.cs" />
+    <Compile Include="EditorData\VariableType.cs" />
     <Compile Include="SaveableData\Trigger.cs" />
     <Compile Include="Data\TriggerType.cs" />
     <Compile Include="SaveableData\Variable.cs" />

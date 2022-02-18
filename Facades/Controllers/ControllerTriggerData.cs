@@ -1,4 +1,6 @@
-﻿using Model.Data;
+﻿using Facades.Containers;
+using Model.Data;
+using Model.EditorData;
 using Model.Templates;
 using Newtonsoft.Json;
 using System;
@@ -13,29 +15,10 @@ namespace Facades.Controllers
     /// </summary>
     public class ControllerTriggerData
     {
-        /*
-        public List<ComboBoxItemType> LoadVariableTypes()
+        public List<VariableType> LoadVariableTypes()
         {
-            string file = File.ReadAllText(@"C:\Users\Lasse Dam\Desktop\JSON\types.json");
-            List<TriggerType> triggerTypes = JsonConvert.DeserializeObject<List<TriggerType>>(file);
-
-            List<ComboBoxItemType> list = new List<ComboBoxItemType>();
-            for (int i = 0; i < triggerTypes.Count; i++)
-            {
-                // TODO: We may want to make this combobox item a class that inherits ComboBoxItem,
-                // so we can specify custom fields like 'key' which is used by the script for type checking
-                ComboBoxItemType item = new ComboBoxItemType()
-                {
-                    Content = triggerTypes[i].displayname,
-                    Type = triggerTypes[i].key,
-                };
-
-                list.Add(item);
-            }
-
-            return list;
+            return ContainerTriggerData.VariableTypes;
         }
-        */
 
         /// <summary>
         ///     

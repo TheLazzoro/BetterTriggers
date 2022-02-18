@@ -12,6 +12,7 @@ namespace Facades.Containers
     public class ContainerProject
     {
         public static War3Project project;
+        public static List<IExplorerElement> projectFiles;
         public static string currentSelectedElement;
         static FileSystemWatcher fileSystemWatcher;
 
@@ -22,7 +23,9 @@ namespace Facades.Containers
         {
             //ContainerFolders.Clear();
             ContainerProject.project = project;
-            ContainerFolders.AddFolder(new ExplorerElementFolder(project.Root)); // add root folder for safety measures :))
+            projectFiles = new List<IExplorerElement>();
+            projectFiles.Add(new ExplorerElementRoot(project.Root)); // add root folder for safety measures :))
+            currentSelectedElement = project.Root; // defaults to here when nothing has been selected yet.
 
             if (fileSystemWatcher != null)
                 fileSystemWatcher.Dispose();

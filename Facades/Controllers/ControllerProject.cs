@@ -39,12 +39,16 @@ namespace Facades.Controllers
             string json = File.ReadAllText(filepath);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
 
-            // Loads all elements into the backend
-            ContainerFolders.AddFolder(new ExplorerElementFolder(project.Root));
-            OnCreateElement(project.Root);
-
             ContainerProject container = new ContainerProject();
             container.NewProject(project);
+            // Loads all elements into the backend
+            //ContainerFolders.AddFolder(new ExplorerElementFolder(project.Root));
+
+            string[] filesInRoot = Directory.GetFileSystemEntries(project.Root);
+            for (int i = 0; i < filesInRoot.Length; i++)
+            {
+                OnCreateElement(filesInRoot[i]);
+            }
 
             return project;
         }
@@ -53,14 +57,13 @@ namespace Facades.Controllers
         {
             string directory = Path.GetDirectoryName(fullPath);
 
-            // Find matching directory
-            ExplorerElementFolder startNode = ContainerFolders.Get(0); // root folder
-            ExplorerElementFolder parent = FindExplorerElementFolder(startNode, directory);
+            ExplorerElementRoot root = ContainerProject.projectFiles[0] as ExplorerElementRoot;
+            IExplorerElement parent = FindExplorerElementFolder(root, directory);
 
             RecurseCreateElement(parent, fullPath);
         }
 
-        private void RecurseCreateElement(ExplorerElementFolder parent, string fullPath)
+        private void RecurseCreateElement(IExplorerElement parent, string fullPath)
         {
             IExplorerElement explorerElement = null;
 
@@ -87,7 +90,15 @@ namespace Facades.Controllers
                     break;
             }
 
-            parent.explorerElements.Add(explorerElement);
+            if (parent is ExplorerElementRoot)
+            {
+                var root = (ExplorerElementRoot)parent;
+                root.explorerElements.Add(explorerElement);
+            } else if(parent is ExplorerElementFolder)
+            {
+                var folder = (ExplorerElementFolder)parent;
+                folder.explorerElements.Add(explorerElement);
+            }
 
             // Recurse into the element if it's a folder
             if (Directory.Exists(fullPath))
@@ -95,14 +106,14 @@ namespace Facades.Controllers
                 string[] entries = Directory.GetFileSystemEntries(fullPath);
                 for (int i = 0; i < entries.Length; i++)
                 {
-                    RecurseCreateElement(explorerElement as ExplorerElementFolder, entries[i]);
+                    RecurseCreateElement((ExplorerElementFolder)explorerElement, entries[i]);
                 }
             }
         }
 
         public void OnRenameElement(string oldFullPath, string newFullPath)
         {
-            var rootNode = ContainerFolders.Get(0);
+            var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
 
             RecurseRenameElement(elementToRename, oldFullPath, newFullPath);
@@ -151,7 +162,7 @@ namespace Facades.Controllers
 
         public void OnDeleteElement(string fullPath)
         {
-            var rootNode = ContainerFolders.Get(0);
+            var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
 
             RecurseDeleteElement(elementToDelete);
@@ -198,13 +209,24 @@ namespace Facades.Controllers
             }
         }
 
-        public IExplorerElement FindExplorerElement(ExplorerElementFolder parent, string path)
+        public IExplorerElement FindExplorerElement(IExplorerElement parent, string path)
         {
             IExplorerElement matching = null;
-
-            for (int i = 0; i < parent.explorerElements.Count; i++)
+            List<IExplorerElement> children = null;
+            if (parent is ExplorerElementRoot)
             {
-                IExplorerElement element = parent.explorerElements[i];
+                var root = parent as ExplorerElementRoot; // defaults to root
+                children = root.explorerElements;
+            }
+            else if (parent is ExplorerElementFolder)
+            {
+                var folder = parent as ExplorerElementFolder;
+                children = folder.explorerElements;
+            }
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                IExplorerElement element = children[i];
                 if (element.GetPath() == path)
                 {
                     matching = element;
@@ -212,30 +234,42 @@ namespace Facades.Controllers
                 }
                 if (Directory.Exists(element.GetPath()) && matching == null)
                 {
-                    matching = FindExplorerElement(element as ExplorerElementFolder, path);
+                    matching = FindExplorerElement((ExplorerElementFolder)element, path);
                 }
             }
 
             return matching;
         }
 
-        public ExplorerElementFolder FindExplorerElementFolder(ExplorerElementFolder parent, string directory)
+        public IExplorerElement FindExplorerElementFolder(IExplorerElement parent, string directory)
         {
-            ExplorerElementFolder matching = parent; // defaults to root
+            IExplorerElement matching = parent;
+            List<IExplorerElement> children = null;
 
-            for (int i = 0; i < parent.explorerElements.Count; i++)
+            if (parent is ExplorerElementRoot)
             {
-                IExplorerElement element = parent.explorerElements[i];
+                var root = parent as ExplorerElementRoot; // defaults to root
+                children = root.explorerElements;
+            }
+            else if (parent is ExplorerElementFolder)
+            {
+                var folder = parent as ExplorerElementFolder;
+                children = folder.explorerElements;
+            }
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                IExplorerElement element = children[i];
                 if (Directory.Exists(element.GetPath()) && matching == null)
                 {
                     if (element.GetPath() == directory)
                     {
-                        matching = element as ExplorerElementFolder;
+                        matching = (ExplorerElementFolder) element;
                         break;
                     }
                     else
                     {
-                        matching = FindExplorerElementFolder(element as ExplorerElementFolder, directory);
+                        matching = FindExplorerElementFolder((ExplorerElementFolder)element, directory);
                     }
                 }
             }

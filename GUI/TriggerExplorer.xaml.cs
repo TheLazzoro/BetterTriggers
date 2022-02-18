@@ -41,6 +41,7 @@ namespace GUI
             ContainerProject.OnCreated += ContainerProject_OnElementCreated;
         }
 
+        // This function is invoked by a method in the container when a new file is created.
         private void ContainerProject_OnElementCreated(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate
@@ -118,9 +119,9 @@ namespace GUI
             */
         }
 
-        public void CreateRootItem(string path, Category category)
+        public void CreateRootItem()
         {
-            this.map = new TreeItemExplorerElement(ContainerFolders.Get(0), true);
+            this.map = new TreeItemExplorerElement(ContainerProject.projectFiles[0]);
             treeViewTriggerExplorer.Items.Add(this.map);
             this.map.IsExpanded = true;
             this.map.IsSelected = true;

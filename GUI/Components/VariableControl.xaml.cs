@@ -1,8 +1,10 @@
-﻿using GUI.Components;
+﻿using Facades.Controllers;
+using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Components.VariableEditor;
 using GUI.Controllers;
 using Model.Data;
+using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
@@ -26,15 +28,41 @@ namespace GUI.Components
     /// </summary>
     public partial class VariableControl : UserControl, IEditor
     {
-        public List<string> FilesUsing = new List<string>();
         private Variable variable;
         private ComboBoxItemType previousSelected;
-        
-        public VariableControl(Variable variable)
+        private string confirmationText = "This variable is in use. Changing it will reset all references to it. Are you sure?";
+
+
+        public VariableControl(Variable variable, string varName)
         {
             InitializeComponent();
 
             this.variable = variable;
+
+            ControllerTriggerData controller = new ControllerTriggerData();
+            List<VariableType> types = controller.LoadVariableTypes();
+
+            for (int i = 0; i < types.Count; i++)
+            {
+                ComboBoxItemType item = new ComboBoxItemType();
+                item.Content = types[i].displayname;
+                item.Type = types[i].key;
+
+                comboBoxVariableType.Items.Add(item);
+
+                if (variable.Type == item.Type)
+                    comboBoxVariableType.SelectedItem = item;
+            }
+
+            Rename(varName);
+            checkBoxIsArray.IsChecked = variable.IsArray;
+            checkBoxIsArray.IsEnabled = variable.IsArray;
+            textBoxArraySize0.Text = variable.ArraySize[0].ToString();
+            textBoxArraySize1.Text = variable.ArraySize[1].ToString();
+            if (!variable.IsTwoDimensions)
+                comboBoxArrayDimensions.SelectedIndex = 0;
+            else 
+                comboBoxArrayDimensions.SelectedIndex = 1;
 
             // Events in the variableControl
             this.OnRename += delegate
@@ -53,7 +81,7 @@ namespace GUI.Components
             this.Visibility = Visibility.Visible;
         }
 
-        public void OnElementRename(string name)
+        public void Rename(string name)
         {
             var newIdentifier = "udg_" + name;
             this.textBlockVariableNameUDG.Text = newIdentifier;
@@ -62,21 +90,16 @@ namespace GUI.Components
         public string GetSaveString()
         {
             var selectedComboBoxItem = (ComboBoxItemType) comboBoxVariableType.SelectedItem;
+            var isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             int[] arraySize = new int[] { int.Parse(textBoxArraySize0.Text), int.Parse(textBoxArraySize1.Text) };
 
-            Variable variable = new Variable()
-            {
-                Id = this.variable.Id,
-                Type = selectedComboBoxItem.Type,
-                ArraySize = arraySize,
-                IsTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1,
-                IsArray = (bool)checkBoxIsArray.IsChecked,
-                FilesUsing = FilesUsing,
-            };
+            variable.Type = selectedComboBoxItem.Type;
+            variable.IsArray = (bool)checkBoxIsArray.IsChecked;
+            variable.IsTwoDimensions = isTwoDimensions;
+            variable.ArraySize = arraySize;
+            variable.InitialValue = "???????????";
 
-            string json = JsonConvert.SerializeObject(variable);
-
-            return json;
+            return JsonConvert.SerializeObject(variable);
         }
 
         public UserControl GetControl()
@@ -107,9 +130,9 @@ namespace GUI.Components
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bool ok = true;
-            if(FilesUsing.Count > 0)
+            if(variable.FilesUsing.Count > 0)
             {
-                DialogBox dialog = new DialogBox("Confirmation", "This variable is in use. Changing it will reset all references to it. Are you sure?");
+                DialogBox dialog = new DialogBox("Confirmation", confirmationText);
                 dialog.ShowDialog();
                 ok = dialog.OK;
             }
@@ -117,7 +140,7 @@ namespace GUI.Components
             if (ok)
             {
                 previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
-                FilesUsing.Clear();
+                variable.FilesUsing.Clear();
             }
             else
             {
@@ -130,5 +153,34 @@ namespace GUI.Components
         {
             throw new NotImplementedException();
         }
+
+        private void comboBoxArrayDimensions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bool ok = true;
+            if (variable.FilesUsing.Count > 0)
+            {
+                DialogBox dialog = new DialogBox("Confirmation", confirmationText);
+                dialog.ShowDialog();
+                ok = dialog.OK;
+            }
+
+            if (ok)
+            {
+                int array0 = int.Parse(textBoxArraySize0.Text);
+                int array1 = int.Parse(textBoxArraySize1.Text);
+
+                if (comboBoxArrayDimensions.SelectedIndex == 0)
+                {
+                    variable.IsTwoDimensions = false;
+                    textBoxArraySize1.IsEnabled = false;
+                }
+                else
+                {
+                    variable.IsTwoDimensions = true;
+                    textBoxArraySize1.IsEnabled = true;
+                }
+            }
+        }
+
     }
 }
