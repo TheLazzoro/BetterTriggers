@@ -51,7 +51,7 @@ namespace GUI.Controllers
                         break;
                     case ".trg":
                         ControllerTrigger controllerTrigger = new ControllerTrigger();
-                        selectedItem.editor = new TriggerControl(controllerTrigger.LoadTriggerFromFile(selectedItem.Ielement.GetPath()));
+                        selectedItem.editor = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
                         break;
                     case ".j":
                         ControllerScript controllerScript = new ControllerScript();
@@ -59,7 +59,7 @@ namespace GUI.Controllers
                         break;
                     case ".var":
                         ControllerVariable controllerVariable = new ControllerVariable();
-                        selectedItem.editor = new VariableControl(controllerVariable.GetVariableInMemory(selectedItem.Ielement.GetPath()), selectedItem.Ielement.GetName());
+                        selectedItem.editor = new VariableControl(controllerVariable.GetExplorerElementVariableInMemory(selectedItem.Ielement.GetPath()), selectedItem.Ielement.GetName());
                         break;
                     default:
                         break;

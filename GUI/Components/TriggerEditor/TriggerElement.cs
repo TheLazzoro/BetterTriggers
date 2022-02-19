@@ -14,11 +14,13 @@ using Model.Templates;
 using Model.SaveableData;
 using Model.EditorData.Enums;
 using Facades.Containers;
+using Model.EditorData;
 
 namespace GUI.Components.TriggerEditor
 {
     public class TriggerElement : TreeViewItem
     {
+        public ExplorerElementTrigger explorerElementTrigger;
         internal Function function;
         public TextBlock paramTextBlock;
         public TextBlock descriptionTextBlock;
@@ -26,10 +28,10 @@ namespace GUI.Components.TriggerEditor
         protected Category category;
         private string formattedParamText = string.Empty;
 
-
-        public TriggerElement(Function function)
+        public TriggerElement(Function function, ExplorerElementTrigger explorerElementTrigger)
         {
             this.function = function;
+            this.explorerElementTrigger = explorerElementTrigger;
 
             this.paramTextBlock = new TextBlock();
             this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
@@ -52,11 +54,14 @@ namespace GUI.Components.TriggerEditor
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", this.category);
 
-            this.FormatParameterText(paramTextBlock, this.function.parameters);
+            this.FormatParameterText();
         }
 
-        internal void FormatParameterText(TextBlock textBlock, List<Parameter> parameters)
+        public void FormatParameterText()
         {
+            var textBlock = paramTextBlock;
+            List<Parameter> parameters = this.function.parameters;
+
             textBlock.Inlines.Clear();
             this.formattedParamText = string.Empty;
 
@@ -161,15 +166,16 @@ namespace GUI.Components.TriggerEditor
 
                         i++;
 
-                        var variable = (VariableRef)parameters[paramIndex];
-                        var varName = ContainerVariables.GetVariableNameById(variable.VariableId);
+                        var variableRef = (VariableRef)parameters[paramIndex];
+                        var variable = ContainerVariables.GetVariableById(variableRef.VariableId);
+                        var varName = ContainerVariables.GetVariableNameById(variable.Id);
 
-                        // This exists in case a variable file has been deleted
-                        if (varName == null || varName == "")
+                        // This exists in case a variable has been changed
+                        if (varName == null || varName == "" || variable.Type != parameters[paramIndex].returnType)
                         {
                             parameters[paramIndex] = new Parameter()
                             {
-                                returnType = variable.returnType,
+                                returnType = variableRef.returnType,
                             };
                             varName = "null";
                         }
@@ -280,7 +286,7 @@ namespace GUI.Components.TriggerEditor
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(this, parameters, paramIndex, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(explorerElementTrigger.GetId(), this, parameters, paramIndex, window.selectedParameter);
                 command.Execute();
 
             }

@@ -1,4 +1,5 @@
 ﻿using Facades.Containers;
+using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
@@ -54,9 +55,9 @@ namespace Facades.Controllers
             return variable;
         }
 
-        public Variable GetVariableInMemory(string filepath)
+        public ExplorerElementVariable GetExplorerElementVariableInMemory(string filepath)
         {
-            Variable variable = null;
+            ExplorerElementVariable variable = null;
             int i = 0;
             bool found = false;
 
@@ -65,7 +66,7 @@ namespace Facades.Controllers
                 if (ContainerVariables.variableContainer[i].GetPath() == filepath)
                 {
                     found = true;
-                    variable = ContainerVariables.variableContainer[i].variable;
+                    variable = ContainerVariables.variableContainer[i];
                 }
 
                 i++;
@@ -74,6 +75,67 @@ namespace Facades.Controllers
 
             return variable;
         }
+
+        public void SetReferenceToVariable(int variableId, int triggerId)
+        {
+            Variable var = ContainerVariables.GetVariableById(variableId);
+            var.TriggersUsing.Add(triggerId);
+        }
+
+        public void RemoveReferenceToVariable(int variableId, int triggerId)
+        {
+            Variable var = ContainerVariables.GetVariableById(variableId);
+            var.TriggersUsing.Remove(triggerId);
+        }
+
+        /// <summary>
+        /// This is used when a parameter with nested chains of parameters get un-done.
+        /// </summary>
+        public void RecurseRemoveVariableRefs(Function function, int triggerId)
+        {
+            for (int i = 0; i < function.parameters.Count; i++)
+            {
+                var param = function.parameters[i];
+                if (param is Function)
+                    RecurseRemoveVariableRefs((Function)param, triggerId);
+                else if (param is VariableRef)
+                {
+                    var variableRef = (VariableRef)param;
+                    ControllerVariable controller = new ControllerVariable();
+                    controller.RemoveReferenceToVariable(variableRef.VariableId, triggerId);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used when a parameter with nested chains of parameters gets re-done.
+        /// </summary>
+        public void RecurseAddVariableRefs(Function function, int triggerId)
+        {
+            for (int i = 0; i < function.parameters.Count; i++)
+            {
+                var param = function.parameters[i];
+                if (param is Function)
+                    RecurseAddVariableRefs((Function)param, triggerId);
+                else if (param is VariableRef)
+                {
+                    var variableRef = (VariableRef)param;
+                    ControllerVariable controller = new ControllerVariable();
+                    controller.SetReferenceToVariable(variableRef.VariableId, triggerId);
+                }
+            }
+        }
+
+        public void RemoveVariableRefFromTriggers(ExplorerElementVariable explorerElementVariable)
+        {
+            for (int i = 0; i < explorerElementVariable.variable.TriggersUsing.Count; i++)
+            {
+                // TODO !!! Right now triggers elements are not saved in ExplorerElementTriggers (in memory)
+                // This is supposed to be called when a variable changes properties, i.e. type, isArray, arrayDimensions etc.
+            }
+            explorerElementVariable.variable.TriggersUsing.Clear();
+        }
+
 
         /*
         public VariableControl CreateVariableWithElements(TabControl tabControl, Model.Data.Variable variable)

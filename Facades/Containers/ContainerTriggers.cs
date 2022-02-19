@@ -14,6 +14,31 @@ namespace Facades.Containers
             triggerElementContainer.Add(trigger);
         }
 
+        public static int GenerateId()
+        {
+            int generatedId = 0;
+            bool isIdValid = false;
+            while (!isIdValid)
+            {
+                int i = 0;
+                bool doesIdExist = false;
+                while (!doesIdExist && i < triggerElementContainer.Count)
+                {
+                    if (triggerElementContainer[i].trigger.Id == generatedId)
+                        doesIdExist = true;
+                    else
+                        i++;
+                }
+
+                if (!doesIdExist)
+                    isIdValid = true;
+                else
+                    generatedId++;
+            }
+
+            return generatedId;
+        }
+
         public static int Count()
         {
             return triggerElementContainer.Count;

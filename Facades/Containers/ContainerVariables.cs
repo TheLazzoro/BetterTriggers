@@ -1,4 +1,5 @@
 ﻿using Model.EditorData;
+using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -68,6 +69,25 @@ namespace Facades.Containers
             }
 
             return generatedId;
+        }
+        public static Variable GetVariableById(int Id)
+        {
+            Variable var = null;
+
+            bool found = false;
+            int i = 0;
+            while (!found && i < variableContainer.Count)
+            {
+                if (variableContainer[i].variable.Id == Id)
+                {
+                    var = variableContainer[i].variable;
+                    found = true;
+                }
+
+                i++;
+            }
+
+            return var;
         }
 
         public static string GetVariableNameById(int Id)

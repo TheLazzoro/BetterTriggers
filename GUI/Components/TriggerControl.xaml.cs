@@ -3,6 +3,7 @@ using GUI.Components;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
 using GUI.Utility;
+using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
@@ -26,6 +27,8 @@ namespace GUI.Components
     /// </summary>
     public partial class TriggerControl : UserControl, IEditor
     {
+        ExplorerElementTrigger explorerElementTrigger; // needed to get file references to variables in TriggerElements
+
         public NodeEvent categoryEvent;
         public NodeCondition categoryCondition;
         public NodeAction categoryAction;
@@ -39,9 +42,11 @@ namespace GUI.Components
 
         TriggerElement copiedTriggerElement;
 
-        public TriggerControl(Model.SaveableData.Trigger trigger)
+        public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
         {
             InitializeComponent();
+
+            this.explorerElementTrigger = explorerElementTrigger;
 
             categoryEvent = new NodeEvent();
             categoryCondition = new NodeCondition();
@@ -51,10 +56,10 @@ namespace GUI.Components
             treeViewTriggers.Items.Add(categoryCondition);
             treeViewTriggers.Items.Add(categoryAction);
 
-            GenerateTriggerElements(trigger);
+            LoadTrigger(explorerElementTrigger.trigger);
         }
 
-        private void GenerateTriggerElements(Model.SaveableData.Trigger trigger)
+        private void LoadTrigger(Model.SaveableData.Trigger trigger)
         {
             this.categoryEvent.Items.Clear();
             this.categoryCondition.Items.Clear();
@@ -63,19 +68,19 @@ namespace GUI.Components
             for (int i = 0; i < trigger.Events.Count; i++)
             {
                 var _event = trigger.Events[i];
-                TriggerElement triggerElement = new TriggerElement(_event);
+                TriggerElement triggerElement = new TriggerElement(_event, explorerElementTrigger);
                 this.categoryEvent.Items.Add(triggerElement);
             }
             for (int i = 0; i < trigger.Conditions.Count; i++)
             {
                 var condition = trigger.Conditions[i];
-                TriggerElement triggerElement = new TriggerElement(condition);
+                TriggerElement triggerElement = new TriggerElement(condition, explorerElementTrigger);
                 this.categoryCondition.Items.Add(triggerElement);
             }
             for (int i = 0; i < trigger.Actions.Count; i++)
             {
                 var action = trigger.Actions[i];
-                TriggerElement triggerElement = new TriggerElement(action);
+                TriggerElement triggerElement = new TriggerElement(action, explorerElementTrigger);
                 this.categoryAction.Items.Add(triggerElement);
             }
 
@@ -84,9 +89,24 @@ namespace GUI.Components
             this.categoryAction.ExpandSubtree();
         }
 
-        public string GetSaveString()
+        /*
+        public void RefreshEditorView()
         {
-            Model.SaveableData.Trigger trigger = new Model.SaveableData.Trigger();
+            for (int i = 0; i < categoryEvent.Items.Count; i++)
+            {
+                var _event = categoryEvent.Items[i] as TriggerElement;
+                _event.refr
+                this.categoryEvent.Items.Add(triggerElement);
+            }
+        }
+        */
+
+        public Model.SaveableData.Trigger GenerateTriggerFromControl()
+        {
+            Model.SaveableData.Trigger trigger = new Model.SaveableData.Trigger()
+            {
+                Id = explorerElementTrigger.trigger.Id
+            };
 
             var nodeEvents = this.categoryEvent;
             for (int i = 0; i < nodeEvents.Items.Count; i++)
@@ -109,6 +129,12 @@ namespace GUI.Components
                 trigger.Actions.Add(action.function);
             }
 
+            return trigger;
+        }
+
+        public string GetSaveString()
+        {
+            var trigger = GenerateTriggerFromControl();
             return JsonConvert.SerializeObject(trigger);
         }
 
@@ -125,7 +151,7 @@ namespace GUI.Components
 
             if (_event != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(_event, categoryEvent, 0); // change 0 to other index
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, _event, categoryEvent, 0); // change 0 to other index
                 command.Execute();
 
                 categoryEvent.IsExpanded = true;
@@ -141,7 +167,7 @@ namespace GUI.Components
 
             if (condition != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(condition, categoryCondition, 0); // change 0 to other index
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, condition, categoryCondition, 0); // change 0 to other index
                 command.Execute();
 
                 categoryCondition.IsExpanded = true;
@@ -156,7 +182,7 @@ namespace GUI.Components
 
             if (action != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(action, categoryAction, 0); // change 0 to other index
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, action, categoryAction, 0); // change 0 to other index
                 command.Execute();
 
                 categoryAction.IsExpanded = true;

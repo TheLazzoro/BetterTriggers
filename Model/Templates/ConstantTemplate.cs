@@ -2,14 +2,20 @@
 
 namespace Model.Templates
 {
-    public class ConstantTemplate : ParameterTemplate, ICloneable
+    public class ConstantTemplate : ParameterTemplate
     {
         public readonly int ParamType = 2; // DO NOT CHANGE
         public string codeText;
 
-        public object Clone()
+        public ConstantTemplate Clone()
         {
-            return MemberwiseClone();
+            ConstantTemplate clone = (ConstantTemplate)this.MemberwiseClone();
+            clone.codeText = string.Copy(codeText);
+            clone.identifier = string.Copy(identifier);
+            clone.name = string.Copy(name);
+            clone.returnType = string.Copy(returnType);
+
+            return clone;
         }
     }
 }

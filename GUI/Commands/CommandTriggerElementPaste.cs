@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using GUI.Components.TriggerEditor;
+using Model.EditorData;
 using Model.SaveableData;
 
 namespace GUI.Commands
@@ -15,9 +16,9 @@ namespace GUI.Commands
         TreeViewItem parent;
         int pastedIndex = 0;
 
-        public CommandTriggerElementPaste(Function function, TreeViewItem parent, int pastedIndex)
+        public CommandTriggerElementPaste(ExplorerElementTrigger explorerElement, Function function, TreeViewItem parent, int pastedIndex)
         {
-            this.triggerElement = new Components.TriggerEditor.TriggerElement(function);
+            this.triggerElement = new Components.TriggerEditor.TriggerElement(function, explorerElement);
             this.parent = parent;
             this.pastedIndex = pastedIndex;
         }

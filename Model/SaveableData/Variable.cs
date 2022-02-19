@@ -16,6 +16,6 @@ namespace Model.SaveableData
         public int[] ArraySize = new int[2];
         public string InitialValue;
 
-        public List<string> FilesUsing = new List<string>(); // trigger files using this variable
+        public List<int> TriggersUsing = new List<int>(); // trigger Id's using this variable
     }
 }

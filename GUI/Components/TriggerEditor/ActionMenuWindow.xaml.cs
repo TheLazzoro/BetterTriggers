@@ -37,7 +37,7 @@ namespace GUI
                 var action = ContainerTriggerData.ActionTemplates[i];
                 ListViewItem item = new ListViewItem();
                 item.Content = action.name;
-                item.Tag = action;
+                item.Tag = action.Clone();
                 listViewEvents.Items.Add(item);
             }
         }

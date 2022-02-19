@@ -63,5 +63,10 @@ namespace Model.EditorData
                 observer.Delete();
             }
         }
+
+        public int GetId()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

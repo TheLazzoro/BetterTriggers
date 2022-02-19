@@ -23,7 +23,7 @@ namespace Facades.Controllers
             int i = 0;
             while (!ok)
             {
-                if(!ContainerTriggers.Contains(name))
+                if (!ContainerTriggers.Contains(name))
                     ok = true;
                 else
                 {
@@ -33,7 +33,10 @@ namespace Facades.Controllers
                 i++;
             }
 
-            Trigger trigger = new Trigger();
+            Trigger trigger = new Trigger()
+            {
+                Id = ContainerTriggers.GenerateId(),
+            };
             string json = JsonConvert.SerializeObject(trigger);
 
             File.WriteAllText(directory + @"\" + name + ".trg", json);

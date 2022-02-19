@@ -10,7 +10,6 @@ namespace Model.EditorData
     {
         public string path;
         public Variable variable;
-        public List<string> variableReferences = new List<string>(); // list of files with reference to the variable.
         public List<IExplorerElementObserver> observers = new List<IExplorerElementObserver>();
 
         public ExplorerElementVariable(string path)
@@ -64,6 +63,11 @@ namespace Model.EditorData
         public void SaveInMemory(string saveableString)
         {
             variable = JsonConvert.DeserializeObject<Variable>(saveableString);
+        }
+
+        public int GetId()
+        {
+            return variable.Id;
         }
     }
 }

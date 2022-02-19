@@ -28,16 +28,20 @@ namespace GUI.Components
     /// </summary>
     public partial class VariableControl : UserControl, IEditor
     {
-        private Variable variable;
+        private ExplorerElementVariable explorerElementVariable;
         private ComboBoxItemType previousSelected;
         private string confirmationText = "This variable is in use. Changing it will reset all references to it. Are you sure?";
+        private bool isLoading = true;
+        private int defaultSelected = 0;
 
 
-        public VariableControl(Variable variable, string varName)
+
+        public VariableControl(ExplorerElementVariable explorerElementVariable, string varName)
         {
             InitializeComponent();
 
-            this.variable = variable;
+            this.explorerElementVariable = explorerElementVariable;
+            Variable variable = explorerElementVariable.variable;
 
             ControllerTriggerData controller = new ControllerTriggerData();
             List<VariableType> types = controller.LoadVariableTypes();
@@ -51,24 +55,38 @@ namespace GUI.Components
                 comboBoxVariableType.Items.Add(item);
 
                 if (variable.Type == item.Type)
-                    comboBoxVariableType.SelectedItem = item;
+                    defaultSelected = i;
             }
+
 
             Rename(varName);
             checkBoxIsArray.IsChecked = variable.IsArray;
-            checkBoxIsArray.IsEnabled = variable.IsArray;
+            textBoxArraySize0.IsEnabled = variable.IsArray;
+            comboBoxArrayDimensions.IsEnabled = variable.IsArray;
             textBoxArraySize0.Text = variable.ArraySize[0].ToString();
             textBoxArraySize1.Text = variable.ArraySize[1].ToString();
             if (!variable.IsTwoDimensions)
                 comboBoxArrayDimensions.SelectedIndex = 0;
-            else 
+            else
+            {
                 comboBoxArrayDimensions.SelectedIndex = 1;
+                textBoxArraySize1.IsEnabled = variable.IsArray;
+            }
+
 
             // Events in the variableControl
             this.OnRename += delegate
             {
                 //OnElementRename(textBoxVariableName.Text);
             };
+
+
+            isLoading = false;
+        }
+
+        private void comboBoxVariableType_Loaded(object sender, RoutedEventArgs e)
+        {
+            comboBoxVariableType.SelectedIndex = defaultSelected;
         }
 
         public void Hide()
@@ -89,17 +107,17 @@ namespace GUI.Components
 
         public string GetSaveString()
         {
-            var selectedComboBoxItem = (ComboBoxItemType) comboBoxVariableType.SelectedItem;
+            var selectedComboBoxItem = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
             var isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             int[] arraySize = new int[] { int.Parse(textBoxArraySize0.Text), int.Parse(textBoxArraySize1.Text) };
 
-            variable.Type = selectedComboBoxItem.Type;
-            variable.IsArray = (bool)checkBoxIsArray.IsChecked;
-            variable.IsTwoDimensions = isTwoDimensions;
-            variable.ArraySize = arraySize;
-            variable.InitialValue = "???????????";
+            explorerElementVariable.variable.Type = selectedComboBoxItem.Type;
+            explorerElementVariable.variable.IsArray = (bool)checkBoxIsArray.IsChecked;
+            explorerElementVariable.variable.IsTwoDimensions = isTwoDimensions;
+            explorerElementVariable.variable.ArraySize = arraySize;
+            explorerElementVariable.variable.InitialValue = "???????????";
 
-            return JsonConvert.SerializeObject(variable);
+            return JsonConvert.SerializeObject(explorerElementVariable.variable);
         }
 
         public UserControl GetControl()
@@ -113,7 +131,7 @@ namespace GUI.Components
 
         private void textBoxVariableName_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 //bubble the event up to the parent
                 if (this.OnRename != null)
@@ -123,24 +141,26 @@ namespace GUI.Components
 
         private void checkBoxIsArray_Click(object sender, RoutedEventArgs e)
         {
-            textBoxArraySize0.IsEnabled = (bool)checkBoxIsArray.IsChecked;
-            lblSize0.IsEnabled = (bool)checkBoxIsArray.IsChecked;
+            if (ResetVarRefs())
+            {
+                textBoxArraySize0.IsEnabled = (bool)checkBoxIsArray.IsChecked;
+                comboBoxArrayDimensions.IsEnabled = (bool)checkBoxIsArray.IsChecked;
+                if (comboBoxArrayDimensions.SelectedIndex == 1)
+                    textBoxArraySize1.IsEnabled = (bool)checkBoxIsArray.IsChecked;
+            }
+            else
+            {
+                checkBoxIsArray.IsChecked = !checkBoxIsArray.IsChecked;
+                e.Handled = false;
+            }
         }
 
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bool ok = true;
-            if(variable.FilesUsing.Count > 0)
-            {
-                DialogBox dialog = new DialogBox("Confirmation", confirmationText);
-                dialog.ShowDialog();
-                ok = dialog.OK;
-            }
-
-            if (ok)
+            if (ResetVarRefs())
             {
                 previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
-                variable.FilesUsing.Clear();
+                defaultSelected = comboBoxVariableType.SelectedIndex;
             }
             else
             {
@@ -156,30 +176,45 @@ namespace GUI.Components
 
         private void comboBoxArrayDimensions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bool ok = true;
-            if (variable.FilesUsing.Count > 0)
-            {
-                DialogBox dialog = new DialogBox("Confirmation", confirmationText);
-                dialog.ShowDialog();
-                ok = dialog.OK;
-            }
-
-            if (ok)
+            if (ResetVarRefs())
             {
                 int array0 = int.Parse(textBoxArraySize0.Text);
                 int array1 = int.Parse(textBoxArraySize1.Text);
 
                 if (comboBoxArrayDimensions.SelectedIndex == 0)
                 {
-                    variable.IsTwoDimensions = false;
+                    explorerElementVariable.variable.IsTwoDimensions = false;
                     textBoxArraySize1.IsEnabled = false;
                 }
                 else
                 {
-                    variable.IsTwoDimensions = true;
+                    explorerElementVariable.variable.IsTwoDimensions = true;
                     textBoxArraySize1.IsEnabled = true;
                 }
             }
+        }
+
+        private bool ResetVarRefs()
+        {
+            if (isLoading)
+                return false;
+
+            bool ok = true;
+            if (explorerElementVariable.variable.TriggersUsing.Count > 0)
+            {
+                DialogBox dialog = new DialogBox("Confirmation", confirmationText);
+                dialog.ShowDialog();
+                ok = dialog.OK;
+
+                if(ok)
+                {
+                    
+                    ControllerVariable controller = new ControllerVariable();
+                    controller.RemoveVariableRefFromTriggers(this.explorerElementVariable);
+                }
+            }
+
+            return ok;
         }
 
     }

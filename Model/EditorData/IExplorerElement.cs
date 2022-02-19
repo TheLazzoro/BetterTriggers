@@ -8,6 +8,7 @@ namespace Model.EditorData
 {
     public interface IExplorerElement
     {
+        int GetId();
         string GetPath();
         void SetPath(string newPath);
         string GetName();
