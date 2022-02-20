@@ -89,17 +89,24 @@ namespace GUI.Components
             this.categoryAction.ExpandSubtree();
         }
 
-        /*
-        public void RefreshEditorView()
+        public void Refresh()
         {
             for (int i = 0; i < categoryEvent.Items.Count; i++)
             {
                 var _event = categoryEvent.Items[i] as TriggerElement;
-                _event.refr
-                this.categoryEvent.Items.Add(triggerElement);
+                _event.FormatParameterText();
+            }
+            for (int i = 0; i < categoryEvent.Items.Count; i++)
+            {
+                var condition = categoryCondition.Items[i] as TriggerElement;
+                condition.FormatParameterText();
+            }
+            for (int i = 0; i < categoryAction.Items.Count; i++)
+            {
+                var action = categoryAction.Items[i] as TriggerElement;
+                action.FormatParameterText();
             }
         }
-        */
 
         public Model.SaveableData.Trigger GenerateTriggerFromControl()
         {

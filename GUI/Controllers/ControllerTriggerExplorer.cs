@@ -70,7 +70,9 @@ namespace GUI.Controllers
                 tabControl.Items.Add(tabItem);
             }
 
-            if(selectedItem.tabItem != null)
+            if (selectedItem.editor != null)
+                selectedItem.editor.Refresh();
+            if (selectedItem.tabItem != null)
                 tabControl.SelectedItem = selectedItem.tabItem;
         }
 

@@ -71,5 +71,10 @@ namespace GUI.Components
         {
             throw new NotImplementedException();
         }
+
+        public void Refresh()
+        {
+
+        }
     }
 }

@@ -2,6 +2,7 @@
 {
     public interface IEditor
     {
+        void Refresh();
         string GetSaveString();
         void OnRemoteChange();
     }

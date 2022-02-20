@@ -73,6 +73,9 @@ namespace GUI.Components.TriggerExplorer
                 var control = this.editor as VariableControl;
                 control.Rename(Ielement.GetName());
             }
+
+            if (this.editor != null)
+                this.editor.Refresh();
         }
 
         public void Save()
