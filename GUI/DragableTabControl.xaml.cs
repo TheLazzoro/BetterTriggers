@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dragablz;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -22,5 +23,6 @@ namespace GUI
         {
             InitializeComponent();
         }
+
     }
 }

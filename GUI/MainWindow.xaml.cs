@@ -44,6 +44,11 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
+
+            menuRecentFiles.Items.Add("Item 1");
+            menuRecentFiles.Items.Add("Item 2");
+            menuRecentFiles.Items.Add("Item 3");
+            menuRecentFiles.Items.Add("Item 4");
         }
 
         private void menuNewProject_Click(object sender, RoutedEventArgs e)

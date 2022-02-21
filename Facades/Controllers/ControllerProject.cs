@@ -50,6 +50,16 @@ namespace Facades.Controllers
                 OnCreateElement(filesInRoot[i]);
             }
 
+
+            var recentFiles = System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\" + "recent";
+            var recentFilesContent = string.Empty;
+            if (File.Exists(recentFiles))
+                recentFilesContent = File.ReadAllText(recentFiles);
+
+            recentFilesContent += "\n" + filepath;
+            File.WriteAllText(recentFiles, recentFilesContent);
+
+
             return project;
         }
 

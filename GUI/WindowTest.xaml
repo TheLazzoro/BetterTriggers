@@ -10,7 +10,7 @@
     <dockablz:Layout >
 
         <Grid>
-            <dragablz:TabablzControl Margin="100" ConsolidateOrphanedItems="True">
+            <dragablz:TabablzControl x:Name="tabcontrol" Margin="100" ConsolidateOrphanedItems="True">
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController  />
             </dragablz:TabablzControl.InterTabController>
