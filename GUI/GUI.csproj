@@ -197,6 +197,7 @@
 
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+    <PackageReference Include="Dragablz" Version="0.0.3.223" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
@@ -211,6 +212,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Components\CategoryControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\RootControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ActionMenuWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -226,6 +233,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Components\CategoryControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\RootControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Components\TriggerEditor\ActionMenuWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

@@ -1,4 +1,5 @@
 ﻿using Facades.Containers;
+using Model.EditorData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -40,9 +41,41 @@ namespace Facades.Controllers
         {
             string script = string.Empty;
             if (File.Exists(filePath))
-                script = File.ReadAllText(filePath);
+            {
+                try
+                {
+                    script = File.ReadAllText(filePath);
+                }
+                catch (IOException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.StackTrace);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.StackTrace);
+                }
+            }
 
             return script;
+        }
+
+        public ExplorerElementScript GetExplorerElementByFileName(string filePath)
+        {
+            ExplorerElementScript explorerElement = null;
+
+            for (int i = 0; i < ContainerScripts.Count(); i++)
+            {
+                var element = ContainerScripts.Get(i);
+                if (element.GetPath() == filePath)
+                {
+                    explorerElement = element;
+                    break;
+                }
+            }
+
+            return explorerElement;
         }
 
         /*

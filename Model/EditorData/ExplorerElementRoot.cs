@@ -9,13 +9,14 @@ namespace Model.EditorData
     public class ExplorerElementRoot : IExplorerElement
     {
         public string path;
-        public string header;
+        public War3Project project;
         public List<IExplorerElement> explorerElements = new List<IExplorerElement>();
         public List<IExplorerElementObserver> observers = new List<IExplorerElementObserver>();
 
-        public ExplorerElementRoot(string path)
+        public ExplorerElementRoot(War3Project project, string path)
         {
             this.path = path;
+            this.project = project;
         }
 
         public string GetName()
@@ -53,7 +54,7 @@ namespace Model.EditorData
 
         public void SaveInMemory(string saveableString)
         {
-            throw new NotImplementedException();
+            project = JsonConvert.DeserializeObject<War3Project>(saveableString);
         }
 
         public void DeleteObservers()

@@ -40,14 +40,14 @@ namespace GUI.Controllers
             }
         }
 
-        public void OnSelectItem(TreeItemExplorerElement selectedItem, TabControl tabControl)
+        public void OnSelectItem(TreeItemExplorerElement selectedItem, DragableTabControl dragableTabControl)
         {
             if (selectedItem.editor == null)
             {
                 switch (Path.GetExtension(selectedItem.Ielement.GetPath()))
                 {
                     case "":
-                        selectedItem.editor = null; // TODO
+                        selectedItem.editor = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
                         break;
                     case ".trg":
                         ControllerTrigger controllerTrigger = new ControllerTrigger();
@@ -55,11 +55,14 @@ namespace GUI.Controllers
                         break;
                     case ".j":
                         ControllerScript controllerScript = new ControllerScript();
-                        selectedItem.editor = new ScriptControl(controllerScript.LoadScriptFromFile(selectedItem.Ielement.GetPath()));
+                        selectedItem.editor = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
                         break;
                     case ".var":
                         ControllerVariable controllerVariable = new ControllerVariable();
                         selectedItem.editor = new VariableControl(controllerVariable.GetExplorerElementVariableInMemory(selectedItem.Ielement.GetPath()), selectedItem.Ielement.GetName());
+                        break;
+                    case ".json":
+                        selectedItem.editor = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
                         break;
                     default:
                         break;
@@ -67,13 +70,13 @@ namespace GUI.Controllers
 
                 TabItemBT tabItem = new TabItemBT(selectedItem.editor, selectedItem.Ielement.GetName());
                 selectedItem.tabItem = tabItem;
-                tabControl.Items.Add(tabItem);
+                dragableTabControl.tabControl.Items.Add(tabItem);
             }
 
             if (selectedItem.editor != null)
                 selectedItem.editor.Refresh();
             if (selectedItem.tabItem != null)
-                tabControl.SelectedItem = selectedItem.tabItem;
+                dragableTabControl.tabControl.SelectedItem = selectedItem.tabItem;
         }
 
 

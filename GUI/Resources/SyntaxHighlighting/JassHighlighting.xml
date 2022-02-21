@@ -71,6 +71,7 @@
             <Word>endmethod</Word>
             <Word>private</Word>
             <Word>public</Word>
+            <Word>native</Word>
         </Keywords>
 
         <!-- TYPES -->
@@ -221,6 +222,9 @@
         </Rule>
         <Rule foreground="#DCDCAA">
             (?&lt;=\binitializer\s)(\w+)
+        </Rule>
+        <Rule foreground="#DCDCAA">
+          (?&lt;=\bnative\s)(\w+)
         </Rule>
 
         <!-- FUNCTION NAMES (uses regex lookahead) -->

@@ -28,7 +28,7 @@ namespace Facades.Controllers
             Directory.CreateDirectory(destinationFolder + @"\" + name);
 
             ContainerProject container = new ContainerProject();
-            container.NewProject(project);
+            container.NewProject(project, filepath);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Facades.Controllers
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
 
             ContainerProject container = new ContainerProject();
-            container.NewProject(project);
+            container.NewProject(project, filepath);
             // Loads all elements into the backend
             //ContainerFolders.AddFolder(new ExplorerElementFolder(project.Root));
 
@@ -51,6 +51,11 @@ namespace Facades.Controllers
             }
 
             return project;
+        }
+
+        public War3Project GetCurrentProject()
+        {
+            return ContainerProject.project;
         }
 
         public void OnCreateElement(string fullPath)
@@ -207,6 +212,13 @@ namespace Facades.Controllers
 
                 //notify()?
             }
+        }
+
+        public void OnElementChanged(string fullPath)
+        {
+            var rootNode = ContainerProject.projectFiles[0];
+            IExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
+            elementToChange.Notify();
         }
 
         public IExplorerElement FindExplorerElement(IExplorerElement parent, string path)

@@ -1,10 +1,15 @@
 ﻿using Facades.Controllers;
+using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TextEditor;
+using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
+using GUI.Utility;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Model.EditorData;
+using Model.SaveableData;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,19 +28,22 @@ using System.Xml;
 namespace GUI.Components
 {
     /// <summary>
-    /// Interaction logic for ScriptControl.xaml
+    /// Interaction logic for TriggerControl.xaml
     /// </summary>
-    public partial class ScriptControl : UserControl, IEditor
+    public partial class RootControl : UserControl, IEditor
     {
         public ICSharpCode.AvalonEdit.TextEditor textEditor;
-        private ExplorerElementScript explorerElementScript;
+        private ExplorerElementRoot explorerElementRoot;
 
-        public ScriptControl(ExplorerElementScript explorerElementScript)
+
+        public RootControl(ExplorerElementRoot explorerElementRoot)
         {
             InitializeComponent();
 
             this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();
             this.grid.Children.Add(textEditor);
+            Grid.SetColumn(textEditor, 0);
+            Grid.SetRow(textEditor, 3);
             this.textEditor.Margin = new Thickness(0, 0, 0, 0);
             this.textEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             this.textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
@@ -52,19 +60,33 @@ namespace GUI.Components
                 }
             }
 
-            this.explorerElementScript = explorerElementScript;
-            textEditor.Text = explorerElementScript.script;
+            this.explorerElementRoot = explorerElementRoot;
+            richTextBoxComment.Document.Blocks.Clear();
+            richTextBoxComment.Document.Blocks.Add(new Paragraph(new Run(explorerElementRoot.project.Comment)));
+            textEditor.Text = explorerElementRoot.project.Header;
         }
 
+        public void Refresh()
+        {
+            
+        }
+
+        
         public string GetSaveString()
         {
-            return this.textEditor.Text;
+            ControllerProject controller = new ControllerProject();
+            War3Project project = controller.GetCurrentProject();
+            project.Comment = new TextRange(richTextBoxComment.Document.ContentStart, richTextBoxComment.Document.ContentEnd).Text;
+            project.Header = textEditor.Text;
+
+            return JsonConvert.SerializeObject(project);
         }
 
         public UserControl GetControl()
         {
-            throw new NotImplementedException();
+            return this;
         }
+
 
         public void OnElementRename(string name)
         {
@@ -74,12 +96,6 @@ namespace GUI.Components
         public void OnRemoteChange()
         {
             throw new NotImplementedException();
-        }
-
-        public void Refresh()
-        {
-            ControllerScript controller = new ControllerScript();
-            textEditor.Text = controller.LoadScriptFromFile(explorerElementScript.GetPath());
         }
     }
 }

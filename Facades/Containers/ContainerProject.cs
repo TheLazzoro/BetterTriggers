@@ -17,14 +17,13 @@ namespace Facades.Containers
         static FileSystemWatcher fileSystemWatcher;
 
         public static event FileSystemEventHandler OnCreated;
-        
 
-        public void NewProject(War3Project project)
+
+        public void NewProject(War3Project project, string path)
         {
-            //ContainerFolders.Clear();
             ContainerProject.project = project;
             projectFiles = new List<IExplorerElement>();
-            projectFiles.Add(new ExplorerElementRoot(project.Root)); // add root folder for safety measures :))
+            projectFiles.Add(new ExplorerElementRoot(project, path)); // add root folder for safety measures :))
             currentSelectedElement = project.Root; // defaults to here when nothing has been selected yet.
 
             if (fileSystemWatcher != null)
@@ -37,7 +36,7 @@ namespace Facades.Containers
             fileSystemWatcher.Created += FileSystemWatcher_Created;
             fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
             fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
-            //fileSystemWatcher.Changed += FileSystemWatcher_Changed;
+            fileSystemWatcher.Changed += FileSystemWatcher_Changed;
             //fileSystemWatcher.Error += FileSystemWatcher_Error;
         }
 
@@ -74,17 +73,11 @@ namespace Facades.Containers
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            /*
-            Application.Current.Dispatcher.Invoke(delegate
+            if (e.ChangeType == WatcherChangeTypes.Changed)
             {
-                if (e.ChangeType == WatcherChangeTypes.Changed)
-                {
-                    ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                    //controller.MoveElement(this, e.OldFullPath, e.FullPath);
-                    string s = e.FullPath;
-                }
-            });
-            */
+                ControllerProject controller = new ControllerProject();
+                controller.OnElementChanged(e.FullPath);
+            }
         }
 
         private void FileSystemWatcher_Error(object sender, ErrorEventArgs e)

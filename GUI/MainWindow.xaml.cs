@@ -40,6 +40,7 @@ namespace GUI
         TriggerExplorer triggerExplorer;
         TreeItemExplorerElement selectedExplorerItem;
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -92,7 +93,7 @@ namespace GUI
             ContainerProject.currentSelectedElement = selectedExplorerItem.Ielement.GetPath();
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectItem(selectedExplorerItem, tabControl);
+            controller.OnSelectItem(selectedExplorerItem, dragableTabControl);
 
             if (selectedExplorerItem.editor as TriggerControl != null)
             {

@@ -10,6 +10,7 @@ namespace Model.SaveableData
     {
         public string Name;
         public string Language;
+        public string Comment;
         public string Header;
         public string Root;
         public string War3MapDirectory;
