@@ -36,6 +36,14 @@ namespace Facades.Controllers
         /// </summary>
         public War3Project LoadProject(string filepath)
         {
+            ControllerRecentFiles controllerRecentFiles = new ControllerRecentFiles();
+
+            if (!File.Exists(filepath))
+            {
+                controllerRecentFiles.RemoveRecentByPath(filepath);
+                return null;
+            }
+
             string json = File.ReadAllText(filepath);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
 
@@ -50,15 +58,7 @@ namespace Facades.Controllers
                 OnCreateElement(filesInRoot[i]);
             }
 
-
-            var recentFiles = System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\" + "recent";
-            var recentFilesContent = string.Empty;
-            if (File.Exists(recentFiles))
-                recentFilesContent = File.ReadAllText(recentFiles);
-
-            recentFilesContent += "\n" + filepath;
-            File.WriteAllText(recentFiles, recentFilesContent);
-
+            controllerRecentFiles.AddProjectToRecent(filepath);
 
             return project;
         }

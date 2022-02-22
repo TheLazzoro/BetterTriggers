@@ -216,9 +216,9 @@ namespace GUI
                 Commands.CommandManager.Redo();
             }
         }
-        
 
-        
+
+
 
         private void menuSave_Click(object sender, RoutedEventArgs e)
         {
@@ -232,35 +232,64 @@ namespace GUI
             dialog.Filter = "JSON Files (*.json)|*.json";
             if (dialog.ShowDialog() == true)
             {
-                var file = dialog.FileName;
-
-                ControllerProject controllerProject = new ControllerProject();
-                var project = controllerProject.LoadProject(file);
-
-                if (triggerExplorer != null)
-                {
-                    var parent = (Grid)triggerExplorer.Parent;
-                    parent.Children.Remove(triggerExplorer);
-                }
-                triggerExplorer = new TriggerExplorer();
-                triggerExplorer.Margin = new Thickness(-1, 1, 4, -1);
-                triggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
-                triggerExplorer.Width = Double.NaN;
-                //currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
-                triggerExplorer.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 32, 32, 32));
-                mainGrid.Children.Add(triggerExplorer);
-                Grid.SetRow(triggerExplorer, 3);
-                Grid.SetRowSpan(triggerExplorer, 4);
-                Grid.SetColumn(triggerExplorer, 0);
-
-                triggerExplorer.CreateRootItem();
-
-                //triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged; 
-                triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_SelectedItemChanged; // subscribe to item selection changed event
-
-                ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-                controllerTriggerExplorer.Populate(triggerExplorer);
+                OpenProject(dialog.FileName);
             }
+        }
+
+        private void menuRecentFiles_MouseEnter(object sender, MouseEventArgs e)
+        {
+            menuRecentFiles.Items.Clear();
+            ControllerRecentFiles controllerRecentFiles = new ControllerRecentFiles();
+            List<string> recentFiles = controllerRecentFiles.GetRecentFiles();
+
+            for (int i = 0; i < recentFiles.Count; i++)
+            {
+                int index = i;
+                MenuItem item = new MenuItem();
+                item.Header = recentFiles[i];
+                item.Click += delegate
+                {
+                    OpenProject(recentFiles[index]);
+                };
+                menuRecentFiles.Items.Add(item);
+            }
+        }
+
+        private void OpenProject(string file)
+        {
+            ControllerProject controllerProject = new ControllerProject();
+            var project = controllerProject.LoadProject(file);
+
+            if (project == null)
+            {
+                DialogBox dialog = new DialogBox("Error", $"File '{file}' does not exist.");
+                dialog.ShowDialog();
+                return;
+            }
+
+            if (triggerExplorer != null)
+            {
+                var parent = (Grid)triggerExplorer.Parent;
+                parent.Children.Remove(triggerExplorer);
+            }
+            triggerExplorer = new TriggerExplorer();
+            triggerExplorer.Margin = new Thickness(-1, 1, 4, -1);
+            triggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
+            triggerExplorer.Width = Double.NaN;
+            //currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
+            triggerExplorer.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 32, 32, 32));
+            mainGrid.Children.Add(triggerExplorer);
+            Grid.SetRow(triggerExplorer, 3);
+            Grid.SetRowSpan(triggerExplorer, 4);
+            Grid.SetColumn(triggerExplorer, 0);
+
+            triggerExplorer.CreateRootItem();
+
+            //triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged; 
+            triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_SelectedItemChanged; // subscribe to item selection changed event
+
+            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
+            controllerTriggerExplorer.Populate(triggerExplorer);
         }
     }
 }
