@@ -33,6 +33,10 @@ namespace GUI
         Point _startPoint;
         TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
+        
+        // attaches to a treeviewitem
+        AdornerLayer adorner;
+        TreeItemAdorner lineIndicator;
 
         public TriggerExplorer()
         {
@@ -62,6 +66,44 @@ namespace GUI
             //controller.OnClick_ExplorerElement(treeViewTriggerExplorer.SelectedItem as TreeViewItem, new Grid());
 
             e.Handled = true; // prevents event from firing up the parent items
+        }
+
+        public static bool IsMouseInFirstHalf(FrameworkElement container, Point mousePosition, Orientation orientation)
+        {
+            if (orientation == Orientation.Vertical)
+            {
+                return mousePosition.Y < container.ActualHeight / 2;
+            }
+            return mousePosition.X < container.ActualWidth / 2;
+        }
+
+        /// <summary>
+        /// // It is necessary to traverse the item's parents since drag & drop picks up
+        /// things like 'TextBlock' and 'Border' on the drop target when dropping the 
+        /// dragged element.
+        /// </summary>
+        /// <returns></returns>
+        private TreeItemExplorerElement GetTraversedItem(UIElement uiElement)
+        {
+            FrameworkElement target = uiElement as FrameworkElement;
+
+            if (target is TreeView)
+                return null;
+
+            TreeItemExplorerElement traversedTarget = null;
+            if (target != null && !(target is TreeView))
+            {
+                while (traversedTarget == null)
+                {
+                    target = target.Parent as FrameworkElement;
+                    if (target is TreeItemExplorerElement)
+                    {
+                        traversedTarget = (TreeItemExplorerElement)target;
+                    }
+                }
+            }
+
+            return traversedTarget;
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -142,31 +184,15 @@ namespace GUI
         {
             if (_IsDragging && dragItem != null)
             {
+                adorner.Remove(lineIndicator);
                 var parent = (TreeViewItem)dragItem.Parent;
 
+                TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
 
-                // It is necessary to traverse the item's parents since drag & drop picks up
-                // things like 'TextBlock' and 'Border' on the drop target when dropping the 
-                // dragged element.
-                FrameworkElement dropTarget = e.Source as FrameworkElement;
-
-                if (dropTarget is TreeView)
-                    return;
-
-                TreeItemExplorerElement traversedTarget = null;
-                while (traversedTarget == null)
-                {
-                    dropTarget = dropTarget.Parent as FrameworkElement;
-                    if (dropTarget is TreeItemExplorerElement)
-                    {
-                        traversedTarget = (TreeItemExplorerElement)dropTarget;
-                    }
-                }
-
-                if (dragItem != traversedTarget)
+                if (dragItem != dropTarget && dropTarget != null)
                 {
                     ControllerFileSystem controller = new ControllerFileSystem();
-                    controller.MoveFile(dragItem.Ielement.GetPath(), traversedTarget.Ielement.GetPath());
+                    controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath());
                 }
 
                 /*
@@ -194,92 +220,42 @@ namespace GUI
 
         private void treeViewTriggerExplorer_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // DUPLICATE CODE
-            // It is necessary to traverse the item's parents since drag & drop picks up
-            // things like 'TextBlock' and 'Border' on the drop target when dropping the 
-            // dragged element.
-            FrameworkElement rightClickedElement = e.Source as FrameworkElement;
-            TreeItemExplorerElement traversedTarget = null;
-            if (rightClickedElement != null && !(rightClickedElement is TreeView))
-            {
-                while (traversedTarget == null)
-                {
-                    rightClickedElement = rightClickedElement.Parent as FrameworkElement;
-                    if (rightClickedElement is TreeItemExplorerElement)
-                    {
-                        traversedTarget = (TreeItemExplorerElement)rightClickedElement;
-                    }
-                }
-            }
+            TreeItemExplorerElement rightClickedElement = GetTraversedItem(e.Source as FrameworkElement);
 
-            if (traversedTarget == null)
+            if (rightClickedElement == null)
                 return;
 
             // Set selected item
-            traversedTarget.IsSelected = true;
+            rightClickedElement.IsSelected = true;
+            ContextMenuExplorer contextMenu = new ContextMenuExplorer(rightClickedElement);
+            rightClickedElement.ContextMenu = contextMenu;
+        }
 
-            ContextMenu contextMenu = new ContextMenu();
-            MenuItem menuItemReplace = new MenuItem
-            {
-                Header = "Cut",
-            };
-            MenuItem menuItemReset = new MenuItem
-            {
-                Header = "Copy",
-            };
-            MenuItem menuItemPaste = new MenuItem
-            {
-                Header = "Paste",
-            };
-            MenuItem menuItemDelete = new MenuItem
-            {
-                Header = "Delete",
-            };
-            MenuItem menuItemCategory = new MenuItem
-            {
-                Header = "New Category",
-            };
-            MenuItem menuItemTrigger = new MenuItem
-            {
-                Header = "New Trigger",
-            };
-            MenuItem menuItemTriggerComment = new MenuItem
-            {
-                Header = "New Trigger Comment",
-            };
-            MenuItem menuItemScript = new MenuItem
-            {
-                Header = "New Script",
-            };
-            MenuItem menuItemGlobalVariable = new MenuItem
-            {
-                Header = "New Global Variable",
-            };
-            MenuItem menuItemEnableTrigger = new MenuItem
-            {
-                Header = "Enable Trigger",
-            };
-            MenuItem menuItemInitiallyOn = new MenuItem
-            {
-                Header = "Initially On",
-            };
-            contextMenu.Items.Add(menuItemReplace);
-            contextMenu.Items.Add(menuItemReset);
-            contextMenu.Items.Add(menuItemPaste);
-            contextMenu.Items.Add(menuItemDelete);
-            contextMenu.Items.Add(new Separator());
-            contextMenu.Items.Add(menuItemCategory);
-            contextMenu.Items.Add(menuItemTrigger);
-            contextMenu.Items.Add(menuItemTriggerComment);
-            contextMenu.Items.Add(menuItemScript);
-            contextMenu.Items.Add(menuItemGlobalVariable);
-            contextMenu.Items.Add(new Separator());
-            contextMenu.Items.Add(menuItemEnableTrigger);
-            contextMenu.Items.Add(menuItemInitiallyOn);
-            //menuItemReplace.Click += ReplaceTexture;
-            //menuItemReset.Click += ResetTexture;
+        private void treeViewTriggerExplorer_DragOver(object sender, DragEventArgs e)
+        {
+            if (dragItem == null)
+                return;
 
-            traversedTarget.ContextMenu = contextMenu;
+            TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
+            if (dropTarget == null)
+                return;
+
+            if (lineIndicator != null)
+                adorner.Remove(lineIndicator);
+
+            var relativePos = e.GetPosition(dropTarget);
+            bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
+            if(inFirstHalf)
+            {
+                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
+                lineIndicator = new TreeItemAdorner(dropTarget, true);
+                adorner.Add(lineIndicator);
+            } else
+            {
+                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
+                lineIndicator = new TreeItemAdorner(dropTarget, false);
+                adorner.Add(lineIndicator);
+            }
         }
     }
 }

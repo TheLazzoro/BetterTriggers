@@ -3,6 +3,7 @@ using Facades.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using Model.EditorData;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
@@ -29,7 +30,7 @@ namespace GUI.Controllers
             element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
             parent.Items.Add(treeItem);
 
-            if(element is ExplorerElementFolder)
+            if (element is ExplorerElementFolder)
             {
                 var folder = element as ExplorerElementFolder;
                 for (int i = 0; i < folder.explorerElements.Count; i++)
@@ -44,10 +45,17 @@ namespace GUI.Controllers
         {
             if (selectedItem.editor == null)
             {
-                switch (Path.GetExtension(selectedItem.Ielement.GetPath()))
+                switch (Path.GetExtension(selectedItem.Ielement.GetPath())) // hack
                 {
                     case "":
-                        selectedItem.editor = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
+                        try
+                        {
+                            selectedItem.editor = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
+                        }
+                        catch (Exception e)
+                        {
+                            selectedItem.editor = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                        }
                         break;
                     case ".trg":
                         ControllerTrigger controllerTrigger = new ControllerTrigger();
@@ -80,7 +88,7 @@ namespace GUI.Controllers
         }
 
 
-        
+
         public void OnCreateElement(TriggerExplorer te, string fullPath)
         {
             ControllerProject controller = new ControllerProject();

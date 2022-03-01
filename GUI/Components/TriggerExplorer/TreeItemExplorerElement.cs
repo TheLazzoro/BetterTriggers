@@ -9,6 +9,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace GUI.Components.TriggerExplorer
@@ -22,6 +23,8 @@ namespace GUI.Components.TriggerExplorer
         public TreeItemExplorerElement(IExplorerElement explorerElement)
         {
             this.Ielement = explorerElement;
+
+            
 
             RefreshElement();
         }

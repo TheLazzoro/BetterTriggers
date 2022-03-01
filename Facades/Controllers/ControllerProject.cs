@@ -68,6 +68,11 @@ namespace Facades.Controllers
             return ContainerProject.project;
         }
 
+        public void SetCurrentElement()
+        {
+
+        }
+
         public void OnCreateElement(string fullPath)
         {
             string directory = Path.GetDirectoryName(fullPath);

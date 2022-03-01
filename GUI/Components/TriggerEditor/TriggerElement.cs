@@ -166,6 +166,8 @@ namespace GUI.Components.TriggerEditor
 
                         i++;
 
+
+                        // TODO: This will crash if a referenced variable is deleted.
                         var variableRef = (VariableRef)parameters[paramIndex];
                         var variable = ContainerVariables.GetVariableById(variableRef.VariableId);
                         var varName = ContainerVariables.GetVariableNameById(variable.Id);

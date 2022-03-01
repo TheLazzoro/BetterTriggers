@@ -26,7 +26,7 @@ namespace Model.EditorData
 
         public string GetPath()
         {
-            return path;
+            return project.Root;
         }
 
         public void SetPath(string newPath)
