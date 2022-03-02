@@ -12,6 +12,8 @@ namespace Model.EditorData
         string GetPath();
         void SetPath(string newPath);
         string GetName();
+        void AddToList(IExplorerElement element);
+        void RemoveFromList(IExplorerElement element);
 
         void SaveInMemory(string saveableString);
         // Attach an observer to the subject.

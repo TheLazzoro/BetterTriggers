@@ -135,13 +135,18 @@ namespace Facades.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+            IExplorerElement oldParent = FindExplorerElementFolder(rootNode, oldFullPath);
+            IExplorerElement newParent = FindExplorerElementFolder(rootNode, newFullPath);
+
+            oldParent.RemoveFromList(elementToRename);
+            newParent.AddToList(elementToRename);
 
             RecurseRenameElement(elementToRename, oldFullPath, newFullPath);
-
         }
 
         /// <summary>
-        /// Needed when a folder containing files is renamed.
+        /// Needed when a folder containing files is renamed. This is also used when files are moved, hence why we need
+        /// to detach it from its current parent and attach it to the other.
         /// </summary>
         /// <param name="elementToRename"></param>
         /// <param name="oldFullPath"></param>
@@ -208,20 +213,6 @@ namespace Facades.Controllers
                 ContainerTriggers.RemoveByFilePath(elementToDelete.GetPath());
                 ContainerScripts.RemoveByFilePath(elementToDelete.GetPath());
                 ContainerVariables.RemoveByFilePath(elementToDelete.GetPath());
-
-                // Remove item from TriggerExplorer
-                //var parent = (TreeItemExplorerElement)elementToDelete.Parent;
-                //parent.Items.Remove(elementToDelete);
-
-                // Remove tab item
-
-                /*
-                if (elementToDelete.tabItem != null)
-                {
-                    var tabParent = (TabControl)elementToDelete.tabItem.Parent;
-                    tabParent.Items.Remove(elementToDelete.tabItem);
-                }
-                */
 
                 elementToDelete.DeleteObservers();
 

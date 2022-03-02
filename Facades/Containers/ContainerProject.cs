@@ -17,6 +17,11 @@ namespace Facades.Containers
         static FileSystemWatcher fileSystemWatcher;
 
         public static event FileSystemEventHandler OnCreated;
+        public static event FileSystemEventHandler OnMoved;
+        static bool wasDeleted;
+        static bool wasCreated;
+        public static string createdPath = string.Empty;
+        public static string deletedPath = string.Empty;
 
 
         public void NewProject(War3Project project, string path)
@@ -35,8 +40,8 @@ namespace Facades.Containers
             fileSystemWatcher.IncludeSubdirectories = true;
             fileSystemWatcher.Created += FileSystemWatcher_Created;
             fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
-            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
             fileSystemWatcher.Changed += FileSystemWatcher_Changed;
+            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
             //fileSystemWatcher.Error += FileSystemWatcher_Error;
         }
 
@@ -47,37 +52,65 @@ namespace Facades.Containers
                 OnCreated(this, e);
         }
 
+        private void InvokeMove(object sender, FileSystemEventArgs e)
+        {
+            // bubble up event
+            if (OnMoved != null)
+                OnMoved(this, e);
+        }
+
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            string path = e.FullPath;
-            ControllerProject controller = new ControllerProject();
-            controller.OnCreateElement(path);
+            wasCreated = true;
+            createdPath = e.FullPath;
+        }
 
-            InvokeCreate(sender, e);
+        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            wasDeleted = true;
+            deletedPath = e.FullPath;
         }
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
             controller.OnRenameElement(e.OldFullPath, e.FullPath);
-
-        }
-
-        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
-        {
-            string path = e.FullPath;
-            ControllerProject controller = new ControllerProject();
-            controller.OnDeleteElement(path);
         }
 
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            if (wasDeleted && wasCreated)
+            {
+                ControllerProject controller = new ControllerProject();
+                controller.OnRenameElement(deletedPath, createdPath);
+
+                InvokeMove(sender, e);
+            }
+            else if (wasDeleted)
+            {
+                string path = deletedPath;
+                ControllerProject controller = new ControllerProject();
+                controller.OnDeleteElement(path);
+            }
+            else if (wasCreated)
+            {
+                string path = createdPath;
+                ControllerProject controller = new ControllerProject();
+                controller.OnCreateElement(path);
+
+                InvokeCreate(sender, e);
+            }
+
+
             if (e.ChangeType == WatcherChangeTypes.Changed)
             {
                 ControllerProject controller = new ControllerProject();
                 controller.OnElementChanged(e.FullPath);
             }
+
+            wasCreated = false;
+            wasDeleted = false;
         }
 
         private void FileSystemWatcher_Error(object sender, ErrorEventArgs e)

@@ -34,6 +34,16 @@ namespace Model.EditorData
             this.path = newPath;
         }
 
+        public void AddToList(IExplorerElement element)
+        {
+            explorerElements.Add(element);
+        }
+
+        public void RemoveFromList(IExplorerElement element)
+        {
+            explorerElements.Remove(element);
+        }
+
         public void Attach(IExplorerElementObserver observer)
         {
             this.observers.Add(observer);
@@ -69,5 +79,7 @@ namespace Model.EditorData
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

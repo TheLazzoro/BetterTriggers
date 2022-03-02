@@ -69,5 +69,15 @@ namespace Model.EditorData
         {
             return trigger.Id;
         }
+
+        public void AddToList(IExplorerElement element)
+        {
+            throw new Exception("This is not a directory");
+        }
+
+        public void RemoveFromList(IExplorerElement element)
+        {
+            throw new Exception("This is not a directory");
+        }
     }
 }

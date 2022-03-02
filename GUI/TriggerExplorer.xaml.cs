@@ -33,6 +33,8 @@ namespace GUI
         Point _startPoint;
         TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
+        int insertIndex = 0; // used when a file is moved from one location to the other.
+        // We can use it when the user wants to drop a file at a specific index.
         
         // attaches to a treeviewitem
         AdornerLayer adorner;
@@ -43,6 +45,7 @@ namespace GUI
             InitializeComponent();
 
             ContainerProject.OnCreated += ContainerProject_OnElementCreated;
+            ContainerProject.OnMoved += ContainerProject_OnElementMoved;
         }
 
         // This function is invoked by a method in the container when a new file is created.
@@ -51,7 +54,16 @@ namespace GUI
             Application.Current.Dispatcher.Invoke(delegate
             {
                 ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                controller.OnCreateElement(this, e.FullPath);
+                controller.OnCreateElement(this, ContainerProject.createdPath); // hack
+            });
+        }
+
+        private void ContainerProject_OnElementMoved(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+                controller.OnMoveElement(this, ContainerProject.createdPath, insertIndex); // hack
             });
         }
 
@@ -174,7 +186,6 @@ namespace GUI
         {
             // Use this event to display feedback to the user when dragging?
 
-
             // var header = (TreeViewItem)treeViewTriggerExplorer.Items[0];
             //header.Header = ;
 
@@ -185,9 +196,18 @@ namespace GUI
             if (_IsDragging && dragItem != null)
             {
                 adorner.Remove(lineIndicator);
-                var parent = (TreeViewItem)dragItem.Parent;
 
                 TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
+                var targetParent = (TreeItemExplorerElement)dropTarget.Parent;
+
+                var relativePos = e.GetPosition(dropTarget);
+                bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
+                if(inFirstHalf)
+                    this.insertIndex = targetParent.Items.IndexOf(dropTarget);
+                else
+                    this.insertIndex = targetParent.Items.IndexOf(dropTarget) + 1;
+
+
 
                 if (dragItem != dropTarget && dropTarget != null)
                 {

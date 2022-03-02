@@ -88,7 +88,6 @@ namespace GUI.Controllers
         }
 
 
-
         public void OnCreateElement(TriggerExplorer te, string fullPath)
         {
             ControllerProject controller = new ControllerProject();
@@ -138,6 +137,17 @@ namespace GUI.Controllers
                     RecurseCreateElement((ExplorerElementFolder)createdElement, treeElement, entries[i]);
                 }
             }
+        }
+
+        internal void OnMoveElement(TriggerExplorer te, string fullPath, int insertIndex)
+        {
+            TreeItemExplorerElement elementToMove = FindTreeNodeElement(te.map, fullPath);
+            TreeItemExplorerElement oldParent = elementToMove.Parent as TreeItemExplorerElement;
+            TreeItemExplorerElement newParent = FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
+
+
+            oldParent.Items.Remove(elementToMove);
+            newParent.Items.Insert(insertIndex, elementToMove);
         }
 
         private TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)
