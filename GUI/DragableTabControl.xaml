@@ -11,19 +11,19 @@
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController  />
             </dragablz:TabablzControl.InterTabController>
-            <TabItem Header="Tab No. 1" IsSelected="True">
+            <!--<TabItem Header="Tab No. 1" IsSelected="True">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello World</TextBlock>
             </TabItem>
             <TabItem Header="Tab No. 2">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">We Have Tearable Tabs!</TextBlock>
             </TabItem>
             <TabItem>
-                <!-- with context menu -->
+                --><!-- with context menu --><!--
                 <TabItem.Header>
                     <Grid>
                         <Grid.ContextMenu>
                             <ContextMenu>
-                                <!--we'll be in a popup, so give dragablz a hint as to what tab header content needs closing -->
+                                --><!--we'll be in a popup, so give dragablz a hint as to what tab header content needs closing --><!--
                                 <MenuItem Command="{x:Static dragablz:TabablzControl.CloseItemCommand}"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
@@ -31,7 +31,7 @@
                     </Grid>
                 </TabItem.Header>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">I feel like an ice cold drink</TextBlock>
-            </TabItem>
+            </TabItem>-->
         </dragablz:TabablzControl>
     </dockablz:Layout>
 </UserControl>

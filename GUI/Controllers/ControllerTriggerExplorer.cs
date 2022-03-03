@@ -148,6 +148,7 @@ namespace GUI.Controllers
 
             oldParent.Items.Remove(elementToMove);
             newParent.Items.Insert(insertIndex, elementToMove);
+            elementToMove.IsSelected = true;
         }
 
         private TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)

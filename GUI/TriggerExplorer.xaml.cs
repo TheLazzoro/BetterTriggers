@@ -34,8 +34,8 @@ namespace GUI
         TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
         int insertIndex = 0; // used when a file is moved from one location to the other.
-        // We can use it when the user wants to drop a file at a specific index.
-        
+                             // We can use it when the user wants to drop a file at a specific index.
+
         // attaches to a treeviewitem
         AdornerLayer adorner;
         TreeItemAdorner lineIndicator;
@@ -198,30 +198,28 @@ namespace GUI
                 adorner.Remove(lineIndicator);
 
                 TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
+                if (dragItem == dropTarget || dropTarget == null)
+                    return;
+
                 var targetParent = (TreeItemExplorerElement)dropTarget.Parent;
 
+                var dragItemParent = (TreeItemExplorerElement)dragItem.Parent;
+                dragItemParent.Items.Remove(dragItem);
                 var relativePos = e.GetPosition(dropTarget);
                 bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
-                if(inFirstHalf)
+                if (inFirstHalf)
                     this.insertIndex = targetParent.Items.IndexOf(dropTarget);
                 else
                     this.insertIndex = targetParent.Items.IndexOf(dropTarget) + 1;
 
+                // We also insert the item here, in case the file didn't get moved to another location
+                targetParent.Items.Insert(this.insertIndex, dragItem);
 
+                ControllerFileSystem controller = new ControllerFileSystem();
+                controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath());
 
-                if (dragItem != dropTarget && dropTarget != null)
-                {
-                    ControllerFileSystem controller = new ControllerFileSystem();
-                    controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath());
-                }
-
-                /*
-                if (traversedTarget != dragItem)
-                {
-                    parent.Items.Remove(dragItem);
-                    traversedTarget.Items.Insert(0, dragItem);
-                }
-                */
+                // focus select item again
+                dragItem.IsSelected = true;
             }
         }
 
@@ -265,12 +263,13 @@ namespace GUI
 
             var relativePos = e.GetPosition(dropTarget);
             bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
-            if(inFirstHalf)
+            if (inFirstHalf)
             {
                 adorner = AdornerLayer.GetAdornerLayer(dropTarget);
                 lineIndicator = new TreeItemAdorner(dropTarget, true);
                 adorner.Add(lineIndicator);
-            } else
+            }
+            else
             {
                 adorner = AdornerLayer.GetAdornerLayer(dropTarget);
                 lineIndicator = new TreeItemAdorner(dropTarget, false);
