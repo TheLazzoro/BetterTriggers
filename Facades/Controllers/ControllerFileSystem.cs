@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using Facades.Containers;
+using Microsoft.VisualBasic.FileIO;
 using Model.EditorData;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,9 @@ namespace Facades.Controllers
             File.WriteAllText(path, json);
         }
 
-        public void MoveFile(string elementToMove, string target)
+        public void MoveFile(string elementToMove, string target, int insertIndex)
         {
+            ContainerProject.insertIndex = insertIndex;
             string directory = target;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(target);

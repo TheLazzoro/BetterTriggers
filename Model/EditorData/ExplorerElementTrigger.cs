@@ -70,7 +70,7 @@ namespace Model.EditorData
             return trigger.Id;
         }
 
-        public void AddToList(IExplorerElement element)
+        public void InsertIntoList(IExplorerElement element, int insertIndex)
         {
             throw new Exception("This is not a directory");
         }

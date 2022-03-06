@@ -34,9 +34,9 @@ namespace Model.EditorData
             this.path = newPath;
         }
 
-        public void AddToList(IExplorerElement element)
+        public void InsertIntoList(IExplorerElement element, int insertIndex)
         {
-            explorerElements.Add(element);
+            explorerElements.Insert(insertIndex, element);
         }
 
         public void RemoveFromList(IExplorerElement element)

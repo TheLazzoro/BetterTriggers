@@ -131,22 +131,27 @@ namespace Facades.Controllers
             }
         }
 
-        public void OnRenameElement(string oldFullPath, string newFullPath)
+        /// <summary>
+        /// This is also used when files are moved, hence why we need
+        /// to detach it from its current parent and attach it to the other.
+        /// </summary>
+        /// <param name="oldFullPath"></param>
+        /// <param name="newFullPath"></param>
+        public void OnRenameElement(string oldFullPath, string newFullPath, int insertIndex)
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
-            IExplorerElement oldParent = FindExplorerElementFolder(rootNode, oldFullPath);
-            IExplorerElement newParent = FindExplorerElementFolder(rootNode, newFullPath);
+            IExplorerElement oldParent = FindExplorerElementFolder(rootNode, Path.GetDirectoryName(oldFullPath));
+            IExplorerElement newParent = FindExplorerElementFolder(rootNode, Path.GetDirectoryName(newFullPath));
 
             oldParent.RemoveFromList(elementToRename);
-            newParent.AddToList(elementToRename);
+            newParent.InsertIntoList(elementToRename, insertIndex);
 
             RecurseRenameElement(elementToRename, oldFullPath, newFullPath);
         }
 
         /// <summary>
-        /// Needed when a folder containing files is renamed. This is also used when files are moved, hence why we need
-        /// to detach it from its current parent and attach it to the other.
+        /// Needed when a folder containing files is renamed. 
         /// </summary>
         /// <param name="elementToRename"></param>
         /// <param name="oldFullPath"></param>
@@ -224,7 +229,9 @@ namespace Facades.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
-            elementToChange.Notify();
+
+            if(elementToChange != null)
+                elementToChange.Notify();
         }
 
         public IExplorerElement FindExplorerElement(IExplorerElement parent, string path)
@@ -261,12 +268,12 @@ namespace Facades.Controllers
 
         public IExplorerElement FindExplorerElementFolder(IExplorerElement parent, string directory)
         {
-            IExplorerElement matching = parent;
+            IExplorerElement matching = null;
             List<IExplorerElement> children = null;
 
             if (parent is ExplorerElementRoot)
             {
-                var root = parent as ExplorerElementRoot; // defaults to root
+                var root = parent as ExplorerElementRoot;
                 children = root.explorerElements;
             }
             else if (parent is ExplorerElementFolder)
@@ -291,6 +298,11 @@ namespace Facades.Controllers
                     }
                 }
             }
+
+            // Returns root if no matching parent node was found.
+            // Usually only need when loading a new project.
+            if (matching == null)
+                return ContainerProject.projectFiles[0];
 
             return matching;
         }

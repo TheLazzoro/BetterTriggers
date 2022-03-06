@@ -1,0 +1,4 @@
+Parse successful:     4197 lines: common.j
+Parse successful:    10812 lines: Blizzard.j
+Parse successful:       49 lines: logs\currentmapscript.j
+Parse successful:    15058 lines: <total>

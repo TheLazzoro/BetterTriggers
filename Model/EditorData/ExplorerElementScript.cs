@@ -67,7 +67,7 @@ namespace Model.EditorData
             throw new NotImplementedException();
         }
 
-        public void AddToList(IExplorerElement element)
+        public void InsertIntoList(IExplorerElement element, int insertIndex)
         {
             throw new Exception("This is not a directory");
         }

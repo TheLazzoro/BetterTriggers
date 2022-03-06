@@ -22,6 +22,7 @@ namespace Facades.Containers
         static bool wasCreated;
         public static string createdPath = string.Empty;
         public static string deletedPath = string.Empty;
+        public static int insertIndex = 0;
 
 
         public void NewProject(War3Project project, string path)
@@ -74,7 +75,8 @@ namespace Facades.Containers
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
-            controller.OnRenameElement(e.OldFullPath, e.FullPath);
+            controller.OnRenameElement(e.OldFullPath, e.FullPath, insertIndex);
+            insertIndex = 0; // reset
         }
 
 
@@ -83,7 +85,8 @@ namespace Facades.Containers
             if (wasDeleted && wasCreated)
             {
                 ControllerProject controller = new ControllerProject();
-                controller.OnRenameElement(deletedPath, createdPath);
+                controller.OnRenameElement(deletedPath, createdPath, insertIndex);
+                insertIndex = 0; // reset
 
                 InvokeMove(sender, e);
             }

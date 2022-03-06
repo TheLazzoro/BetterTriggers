@@ -30,9 +30,12 @@ namespace GUI
     {
         public TreeItemExplorerElement map;
         public TreeItemExplorerElement currentElement;
+
+        // Drag and drop fields
         Point _startPoint;
         TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
+        
         int insertIndex = 0; // used when a file is moved from one location to the other.
                              // We can use it when the user wants to drop a file at a specific index.
 
@@ -216,7 +219,7 @@ namespace GUI
                 targetParent.Items.Insert(this.insertIndex, dragItem);
 
                 ControllerFileSystem controller = new ControllerFileSystem();
-                controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath());
+                controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
 
                 // focus select item again
                 dragItem.IsSelected = true;
