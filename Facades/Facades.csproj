@@ -45,4 +45,8 @@
     <ProjectReference Include="..\WorldEditParser\WorldEditParser.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\JassHelper\" />
+  </ItemGroup>
+
 </Project>

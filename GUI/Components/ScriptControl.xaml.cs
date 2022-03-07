@@ -29,6 +29,8 @@ namespace GUI.Components
     {
         public ICSharpCode.AvalonEdit.TextEditor textEditor;
         private ExplorerElementScript explorerElementScript;
+        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
+        private bool suppressStateChange = false;
 
         public ScriptControl(ExplorerElementScript explorerElementScript)
         {
@@ -54,6 +56,17 @@ namespace GUI.Components
 
             this.explorerElementScript = explorerElementScript;
             textEditor.Text = explorerElementScript.script;
+
+            textEditor.TextChanged += delegate
+            {
+                if (this.suppressStateChange)
+                {
+                    this.suppressStateChange = false;
+                    return;
+                }
+
+                OnStateChange();
+            };
         }
 
         public string GetSaveString()
@@ -78,8 +91,27 @@ namespace GUI.Components
 
         public void Refresh()
         {
+            this.suppressStateChange = true;
             ControllerScript controller = new ControllerScript();
             textEditor.Text = controller.LoadScriptFromFile(explorerElementScript.GetPath());
+        }
+
+        public void Attach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+        }
+
+        public void Detach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+        }
+
+        public void OnStateChange()
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnStateChange();
+            }
         }
     }
 }

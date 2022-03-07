@@ -2,6 +2,7 @@
 using Facades.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
+using GUI.Container;
 using Model.EditorData;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,18 @@ namespace GUI.Controllers
             }
         }
 
+        public void SaveAll()
+        {
+            var unsaved = ContainerUnsavedElements.UnsavedElements;
+            for(int i = 0; i < unsaved.Count; i++)
+            {
+                var element = unsaved[i];
+                element.Save();
+            }
+
+            unsaved.Clear();
+        }
+
         public void OnSelectItem(TreeItemExplorerElement selectedItem, DragableTabControl dragableTabControl)
         {
             if (selectedItem.editor == null)
@@ -50,27 +63,39 @@ namespace GUI.Controllers
                     case "":
                         try
                         {
-                            selectedItem.editor = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
+                            var categoryControl = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
+                            categoryControl.Attach(selectedItem);
+                            selectedItem.editor = categoryControl;
                         }
                         catch (Exception e)
                         {
-                            selectedItem.editor = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                            var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                            rootControl.Attach(selectedItem);
+                            selectedItem.editor = rootControl;
                         }
                         break;
                     case ".trg":
                         ControllerTrigger controllerTrigger = new ControllerTrigger();
-                        selectedItem.editor = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
+                        var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
+                        triggerControl.Attach(selectedItem);
+                        selectedItem.editor = triggerControl;
                         break;
                     case ".j":
                         ControllerScript controllerScript = new ControllerScript();
-                        selectedItem.editor = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
+                        var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
+                        scriptControl.Attach(selectedItem);
+                        selectedItem.editor = scriptControl;
                         break;
                     case ".var":
                         ControllerVariable controllerVariable = new ControllerVariable();
-                        selectedItem.editor = new VariableControl(controllerVariable.GetExplorerElementVariableInMemory(selectedItem.Ielement.GetPath()), selectedItem.Ielement.GetName());
+                        var variableControl = new VariableControl(controllerVariable.GetExplorerElementVariableInMemory(selectedItem.Ielement.GetPath()), selectedItem.Ielement.GetName());
+                        variableControl.Attach(selectedItem);
+                        selectedItem.editor = variableControl;
                         break;
                     case ".json":
-                        selectedItem.editor = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                        var rootControl2 = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                        rootControl2.Attach(selectedItem);
+                        selectedItem.editor = rootControl2;
                         break;
                     default:
                         break;

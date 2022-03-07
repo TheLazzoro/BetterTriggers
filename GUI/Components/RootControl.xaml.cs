@@ -34,7 +34,7 @@ namespace GUI.Components
     {
         public ICSharpCode.AvalonEdit.TextEditor textEditor;
         private ExplorerElementRoot explorerElementRoot;
-
+        List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
         public RootControl(ExplorerElementRoot explorerElementRoot)
         {
@@ -96,6 +96,24 @@ namespace GUI.Components
         public void OnRemoteChange()
         {
             throw new NotImplementedException();
+        }
+
+        public void Attach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+        }
+
+        public void Detach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+        }
+
+        public void OnStateChange()
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnStateChange();
+            }
         }
     }
 }

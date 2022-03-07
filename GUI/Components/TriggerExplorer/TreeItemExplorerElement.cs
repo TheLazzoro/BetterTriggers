@@ -1,4 +1,5 @@
 ﻿using Facades.Controllers;
+using GUI.Controllers;
 using GUI.Utility;
 using Model.Data;
 using Model.EditorData;
@@ -35,7 +36,11 @@ namespace GUI.Components.TriggerExplorer
             {
                 var parent = this.Parent as TreeViewItem;
                 if (parent != null)
+                {
                     parent.Items.Remove(this);
+                    ControllerExplorerElement controller = new ControllerExplorerElement();
+                    controller.RemoveFromUnsaved(this);
+                }
 
                 if (tabItem != null)
                 {
@@ -88,6 +93,9 @@ namespace GUI.Components.TriggerExplorer
 
             ControllerFileSystem controller = new ControllerFileSystem();
             controller.SaveFile(Ielement.GetPath(), saveableString);
+
+            if (this.tabItem != null)
+                tabItem.RefreshHeader(this.Ielement.GetName());
         }
 
         public void Update(IExplorerElement subject)
@@ -96,6 +104,19 @@ namespace GUI.Components.TriggerExplorer
             {
                 RefreshElement();
             });
+        }
+
+        /// <summary>
+        /// Gets invoked when an action in the 'editor' field triggers a state of change
+        /// E.g. new letters in script were typed (ScriptControl), new action gets added (TriggerControl).
+        /// </summary>
+        public void OnStateChange()
+        {
+            if (this.tabItem != null)
+                tabItem.RefreshHeader(this.Ielement.GetName() + " *");
+
+            ControllerExplorerElement controller = new ControllerExplorerElement();
+            controller.AddToUnsaved(this);
         }
     }
 }

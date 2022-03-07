@@ -215,6 +215,11 @@ namespace GUI
             {
                 Commands.CommandManager.Redo();
             }
+            else if (e.Key == Key.S && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+                controller.SaveAll();
+            }
         }
 
 
@@ -222,7 +227,8 @@ namespace GUI
 
         private void menuSave_Click(object sender, RoutedEventArgs e)
         {
-            triggerExplorer.currentElement.Save();
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            controller.SaveAll();
         }
 
         private void menuOpen_Click(object sender, RoutedEventArgs e)

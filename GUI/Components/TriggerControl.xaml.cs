@@ -41,6 +41,7 @@ namespace GUI.Components
         bool _IsDragging = false;
 
         TriggerElement copiedTriggerElement;
+        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
         public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
         {
@@ -422,6 +423,25 @@ namespace GUI.Components
         public void OnRemoteChange()
         {
             throw new NotImplementedException();
+        }
+
+        public void Attach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+        }
+
+        public void Detach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+
+        }
+
+        public void OnStateChange()
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnStateChange();
+            }
         }
     }
 }

@@ -34,6 +34,7 @@ namespace GUI.Components
         private string confirmationText = "This variable is still in use. Changing it will reset all references to it and cannot be undone. Continue with change?";
         private bool isLoading = true;
         private int defaultSelected = 0;
+        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
 
 
@@ -83,9 +84,6 @@ namespace GUI.Components
             {
                 //OnElementRename(textBoxVariableName.Text);
             };
-
-
-
         }
 
         private void comboBoxVariableType_Loaded(object sender, RoutedEventArgs e)
@@ -155,6 +153,7 @@ namespace GUI.Components
 
                 CommandVariableModifyType command = new CommandVariableModifyType(explorerElementVariable, selected.Type, previousSelected.Type);
                 command.Execute();
+                OnStateChange();
 
                 previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
                 defaultSelected = comboBoxVariableType.SelectedIndex;
@@ -175,6 +174,7 @@ namespace GUI.Components
             {
                 CommandVariableModifyArray command = new CommandVariableModifyArray(explorerElementVariable, (bool)checkBoxIsArray.IsChecked);
                 command.Execute();
+                OnStateChange();
 
                 textBoxArraySize0.IsEnabled = (bool)checkBoxIsArray.IsChecked;
                 comboBoxArrayDimensions.IsEnabled = (bool)checkBoxIsArray.IsChecked;
@@ -199,7 +199,7 @@ namespace GUI.Components
             {
                 CommandVariableModifyDimension command = new CommandVariableModifyDimension(explorerElementVariable, isTwoDimensions);
                 command.Execute();
-
+                OnStateChange();
             }
             else
             {
@@ -268,6 +268,24 @@ namespace GUI.Components
             }
 
             isLoading = false;
+        }
+
+        public void Attach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+        }
+
+        public void Detach(TreeItemExplorerElement explorerElement)
+        {
+            this.observers.Add(explorerElement);
+        }
+
+        public void OnStateChange()
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnStateChange();
+            }
         }
     }
 }
