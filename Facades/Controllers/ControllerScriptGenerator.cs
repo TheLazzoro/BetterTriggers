@@ -1,15 +1,17 @@
 ﻿using Model;
 using Model.Data;
+using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using WorldEditParser;
 
-namespace GUI.Controllers
+namespace Facades.Containers
 {
     public class ControllerScriptGenerator
     {
@@ -17,52 +19,73 @@ namespace GUI.Controllers
         List<string> scripts = new List<string>();
         List<Trigger> triggers = new List<Trigger>();
 
-        /*
-        public string GenerateScript(TriggerExplorer triggerExplorer) // hack
+        public string GenerateScript(string outputPath)
         {
-            var root = triggerExplorer.map;
-            GatherTriggerElements(root);
-            string script = GenerateScript();
+            var inMemoryFiles = ContainerProject.projectFiles;
+
+            GatherTriggerElements(inMemoryFiles[0]); // root node.
+            string script = Generate();
+
+            var scriptFileToInput = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/vJass.j";
+            File.WriteAllText(scriptFileToInput, script);
+
+            string JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
+            string CommonJ = "\""+System.IO.Directory.GetCurrentDirectory()+ "/Resources/JassHelper/common.j\"";
+            string BlizzardJ = "\""+System.IO.Directory.GetCurrentDirectory()+ "/Resources/JassHelper/Blizzard.j\"";
+            string fileOutput = "\""+System.IO.Directory.GetCurrentDirectory()+ "/Resources/JassHelper/output.j\"";
+            Process p = Process.Start($"{JassHelper}", $"--scriptonly {CommonJ} {BlizzardJ} \"{scriptFileToInput}\" \"{outputPath}\"");
+            p.WaitForExit();
 
             return script;
         }
 
-        private void GatherTriggerElements(ExplorerElement parent)
+        private void GatherTriggerElements(IExplorerElement parent)
         {
             string script = string.Empty;
 
             // Gather all explorer elements
-
-            for (int i = 0; i < parent.Items.Count; i++)
+            List<IExplorerElement> children = new List<IExplorerElement>();
+            if(parent is ExplorerElementRoot)
             {
-                var element = (ExplorerElement)parent.Items[i];
+                var root = (ExplorerElementRoot)parent;
+                children = root.explorerElements;
+            }
+            else if (parent is ExplorerElementFolder)
+            {
+                var root = (ExplorerElementFolder)parent;
+                children = root.explorerElements;
+            }
 
-                if (Directory.Exists(element.FilePath))
+            for (int i = 0; i < children.Count; i++)
+            {
+                var element = (IExplorerElement)children[i];
+
+                if (Directory.Exists(element.GetPath()))
                     GatherTriggerElements(element);
-                else if (File.Exists(element.FilePath))
+                else if (File.Exists(element.GetPath()))
                 {
-                    if (Path.GetExtension(element.FilePath) == ".trg")
+                    if (Path.GetExtension(element.GetPath()) == ".trg")
                     {
-                        string json = File.ReadAllText(element.FilePath);
+                        string json = File.ReadAllText(element.GetPath());
                         Trigger trig = JsonConvert.DeserializeObject<Trigger>(json);
                         triggers.Add(trig);
                     }
-                    else if (Path.GetExtension(element.FilePath) == ".j")
+                    else if (Path.GetExtension(element.GetPath()) == ".j")
                     {
-                        scripts.Add(File.ReadAllText(element.FilePath) + System.Environment.NewLine);
+                        scripts.Add(File.ReadAllText(element.GetPath()) + System.Environment.NewLine);
                     }
-                    else if (Path.GetExtension(element.FilePath) == ".var")
+                    else if (Path.GetExtension(element.GetPath()) == ".var")
                     {
-                        string json = File.ReadAllText(element.FilePath);
+                        string json = File.ReadAllText(element.GetPath());
                         var variable = JsonConvert.DeserializeObject<Variable>(json);
-                        variable.Name = Path.GetFileNameWithoutExtension(element.FilePath); // hack
+                        variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
                         variables.Add(variable);
                     }
                 }
             }
         }
 
-        private string GenerateScript()
+        private string Generate()
         {
             string script = string.Empty;
 
@@ -179,7 +202,5 @@ namespace GUI.Controllers
 
             return script;
         }
-
-        */
     }
 }

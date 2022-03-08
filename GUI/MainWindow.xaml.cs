@@ -160,19 +160,8 @@ namespace GUI
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
-            string fileJassHelper = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/jasshelper.exe";
-            string fileCommonJ = "\"C:/Users/Lasse Dam/Desktop/JassHelper Experiement/common.j\"";
-            string fileBlizzardJ = "\"C:/Users/Lasse Dam/Desktop/JassHelper Experiement/Blizzard.j\"";
-            string fileInput = "C:/Users/Lasse Dam/Desktop/JassHelper Experiement/vJass.j";
-            string fileOutput = "\"C:/Users/Lasse Dam/Desktop/JassHelper Experiement/output.j\"";
-
-            /*
             ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
-            string script = scriptGenerator.GenerateScript(ContainerTriggerExplorer.triggerExplorer);
-
-            JassHelper.SaveVJassScript(fileInput, script);
-            JassHelper.RunJassHelper(fileJassHelper, fileCommonJ, fileBlizzardJ, "\"" + fileInput + "\"", fileOutput);
-            */
+            string script = scriptGenerator.GenerateScript("C:/Users/Lasse Dam/Desktop/jass.j");
         }
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)

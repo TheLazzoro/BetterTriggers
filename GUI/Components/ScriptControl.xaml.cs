@@ -59,6 +59,7 @@ namespace GUI.Components
 
             textEditor.TextChanged += delegate
             {
+                explorerElementScript.script = textEditor.Text;
                 if (this.suppressStateChange)
                 {
                     this.suppressStateChange = false;

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Facades.Controllers;
 using GUI.Components.TriggerEditor;
+using Model.EditorData;
 using Model.SaveableData;
 
 namespace GUI.Commands
@@ -13,19 +14,21 @@ namespace GUI.Commands
     {
         string commandName = "Modify Parameter";
         int triggerId;
+        ExplorerElementTrigger explorerElement;
         TriggerElement triggerElement;
         List<Parameter> paramCollection;
         Parameter paramToAdd;
         Parameter oldParameter;
         int paramIndex = 0;
 
-        public CommandTriggerElementParamModify(int triggerId, TriggerElement triggerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(ExplorerElementTrigger explorerElement, TriggerElement triggerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
             this.paramCollection = paramCollection;
             this.paramIndex = paramIndex;
             this.paramToAdd = paramToAdd;
 
-            this.triggerId = triggerId;
+            this.explorerElement = explorerElement;
+            this.triggerId = explorerElement.GetId();
             this.triggerElement = triggerElement;
             this.oldParameter = paramCollection[this.paramIndex];
         }

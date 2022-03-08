@@ -288,7 +288,7 @@ namespace GUI.Components.TriggerEditor
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(explorerElementTrigger.GetId(), this, parameters, paramIndex, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(explorerElementTrigger, this, parameters, paramIndex, window.selectedParameter);
                 command.Execute();
 
             }
