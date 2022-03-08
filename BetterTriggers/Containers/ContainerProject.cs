@@ -82,7 +82,7 @@ namespace BetterTriggers.Containers
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (wasDeleted && wasCreated)
+            if (wasDeleted && wasCreated) // was moved
             {
                 ControllerProject controller = new ControllerProject();
                 controller.OnRenameElement(deletedPath, createdPath, insertIndex);

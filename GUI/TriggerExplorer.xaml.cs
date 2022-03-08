@@ -35,7 +35,7 @@ namespace GUI
         Point _startPoint;
         TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
-        
+
         int insertIndex = 0; // used when a file is moved from one location to the other.
                              // We can use it when the user wants to drop a file at a specific index.
 
@@ -207,7 +207,7 @@ namespace GUI
                 var targetParent = (TreeItemExplorerElement)dropTarget.Parent;
 
                 var dragItemParent = (TreeItemExplorerElement)dragItem.Parent;
-                dragItemParent.Items.Remove(dragItem);
+                dragItemParent.Items.Remove(dragItem); // suspect
                 var relativePos = e.GetPosition(dropTarget);
                 bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
                 if (inFirstHalf)
@@ -217,6 +217,11 @@ namespace GUI
 
                 // We also insert the item here, in case the file didn't get moved to another location
                 targetParent.Items.Insert(this.insertIndex, dragItem);
+                if (dragItemParent == targetParent)
+                {
+                    ControllerProject controllerProject = new ControllerProject();
+                    controllerProject.RearrangeElement(dragItem.Ielement, insertIndex);
+                }
 
                 ControllerFileSystem controller = new ControllerFileSystem();
                 controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);

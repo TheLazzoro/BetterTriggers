@@ -225,6 +225,29 @@ namespace BetterTriggers.Controllers
             }
         }
 
+        /// <summary>
+        /// Used when an element is rearranged within it's current folder.
+        /// </summary>
+        /// <param name="fullPath"></param>
+        /// <param name="index"></param>
+        public void RearrangeElement(IExplorerElement element, int insertIndex)
+        {
+            var parent = FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(element.GetPath()));
+
+            if(parent is ExplorerElementRoot)
+            {
+                var root = (ExplorerElementRoot)parent;
+                root.RemoveFromList(element);
+                root.InsertIntoList(element, insertIndex);
+            }
+            else if (parent is ExplorerElementFolder)
+            {
+                var folder = (ExplorerElementFolder)parent;
+                folder.RemoveFromList(element);
+                folder.InsertIntoList(element, insertIndex);
+            }
+        }
+
         public void OnElementChanged(string fullPath)
         {
             var rootNode = ContainerProject.projectFiles[0];
@@ -285,7 +308,7 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < children.Count; i++)
             {
                 IExplorerElement element = children[i];
-                if (Directory.Exists(element.GetPath()) && matching == null)
+                if (Directory.Exists(element.GetPath()) && (matching == null || matching is ExplorerElementRoot))
                 {
                     if (element.GetPath() == directory)
                     {
