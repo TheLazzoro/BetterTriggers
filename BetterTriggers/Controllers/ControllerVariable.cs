@@ -1,4 +1,4 @@
-﻿using Facades.Containers;
+﻿using BetterTriggers.Containers;
 using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace Facades.Controllers
+namespace BetterTriggers.Controllers
 {
     public class ControllerVariable
     {

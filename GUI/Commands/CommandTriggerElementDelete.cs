@@ -4,7 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using GUI.Components.TriggerEditor;
-using Facades.Controllers;
+using BetterTriggers.Controllers;
 using Model.SaveableData;
 
 namespace GUI.Commands

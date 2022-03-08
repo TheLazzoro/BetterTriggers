@@ -1,4 +1,4 @@
-﻿using Facades.Containers;
+﻿using BetterTriggers.Containers;
 using GUI.Components.TriggerExplorer;
 using GUI.Utility;
 using Model.Data;

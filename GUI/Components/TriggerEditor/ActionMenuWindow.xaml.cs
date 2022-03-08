@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using Model;
 using Model.Templates;
 using Model.SaveableData;
-using Facades.Containers;
+using BetterTriggers.Containers;
 
 namespace GUI
 {

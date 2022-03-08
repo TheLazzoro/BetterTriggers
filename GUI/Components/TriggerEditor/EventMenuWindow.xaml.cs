@@ -15,7 +15,7 @@ using Model.Data;
 using GUI.Controllers;
 using Model.Templates;
 using Model.SaveableData;
-using Facades.Controllers;
+using BetterTriggers.Controllers;
 using Model.EditorData.Enums;
 
 namespace GUI

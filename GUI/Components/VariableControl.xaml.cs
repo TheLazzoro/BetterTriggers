@@ -1,4 +1,4 @@
-﻿using Facades.Controllers;
+﻿using BetterTriggers.Controllers;
 using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;

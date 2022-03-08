@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Facades</AssemblyName>
-    <RootNamespace>Facades</RootNamespace>
+    <AssemblyName>BetterTriggers</AssemblyName>
+    <RootNamespace>BetterTriggers</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

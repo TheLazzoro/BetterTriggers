@@ -1,5 +1,5 @@
-﻿using Facades.Containers;
-using Facades.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Container;

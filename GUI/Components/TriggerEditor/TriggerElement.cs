@@ -13,7 +13,7 @@ using GUI.Commands;
 using Model.Templates;
 using Model.SaveableData;
 using Model.EditorData.Enums;
-using Facades.Containers;
+using BetterTriggers.Containers;
 using Model.EditorData;
 
 namespace GUI.Components.TriggerEditor

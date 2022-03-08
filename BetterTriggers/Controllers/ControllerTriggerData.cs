@@ -1,4 +1,4 @@
-﻿using Facades.Containers;
+﻿using BetterTriggers.Containers;
 using Model.Data;
 using Model.EditorData;
 using Model.Templates;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Facades.Controllers
+namespace BetterTriggers.Controllers
 {
     /// <summary>
     /// Responisble for loading trigger data from .json files

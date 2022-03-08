@@ -1,10 +1,10 @@
-﻿using Facades.Containers;
+﻿using BetterTriggers.Containers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Facades.Controllers
+namespace BetterTriggers.Controllers
 {
     public class ControllerRecentFiles
     {

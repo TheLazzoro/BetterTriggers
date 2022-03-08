@@ -1,4 +1,4 @@
-using Facades.Controllers;
+using BetterTriggers.Controllers;
 using GUI.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;

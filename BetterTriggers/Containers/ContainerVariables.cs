@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Facades.Containers
+namespace BetterTriggers.Containers
 {
     public static class ContainerVariables
     {

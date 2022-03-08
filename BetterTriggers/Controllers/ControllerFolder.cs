@@ -1,7 +1,7 @@
-﻿using Facades.Containers;
+﻿using BetterTriggers.Containers;
 using System.IO;
 
-namespace Facades.Controllers
+namespace BetterTriggers.Controllers
 {
     public class ControllerFolder
     {

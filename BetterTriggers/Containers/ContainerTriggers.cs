@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Facades.Containers
+namespace BetterTriggers.Containers
 {
     public static class ContainerTriggers
     {

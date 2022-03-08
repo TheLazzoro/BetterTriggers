@@ -16,8 +16,8 @@ using System.Windows.Shapes;
 using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
 using Model.EditorData.Enums;
-using Facades.Controllers;
-using Facades.Containers;
+using BetterTriggers.Controllers;
+using BetterTriggers.Containers;
 using GUI.Components;
 
 namespace GUI

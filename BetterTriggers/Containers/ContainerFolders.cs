@@ -3,20 +3,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Facades.Containers
+namespace BetterTriggers.Containers
 {
-    public static class ContainerScripts
+    public static class ContainerFolders
     {
-        private static List<ExplorerElementScript> scriptContainer = new List<ExplorerElementScript>();
+        private static List<ExplorerElementFolder> folderContainer = new List<ExplorerElementFolder>();
 
-        public static void AddScript(ExplorerElementScript script)
+        public static void Clear()
         {
-            scriptContainer.Add(script);
+            folderContainer.Clear();
+        }
+        
+        public static void AddFolder(ExplorerElementFolder folder)
+        {
+            folderContainer.Add(folder);
         }
 
         public static int Count()
         {
-            return scriptContainer.Count;
+            return folderContainer.Count;
         }
 
         /// <summary>
@@ -28,7 +33,7 @@ namespace Facades.Containers
         {
             bool found = false;
 
-            foreach (var item in scriptContainer)
+            foreach (var item in folderContainer)
             {
                 if (item.GetName() == name)
                 {
@@ -39,24 +44,24 @@ namespace Facades.Containers
             return found;
         }
 
-        public static ExplorerElementScript Get(int index)
+        public static ExplorerElementFolder Get(int index)
         {
-            return scriptContainer[index];
+            return folderContainer[index];
         }
 
-        public static void Remove(ExplorerElementScript explorerElement)
+        public static void Remove(ExplorerElementFolder explorerElement)
         {
-            scriptContainer.Remove(explorerElement);
+            folderContainer.Remove(explorerElement);
         }
 
         public static void RemoveByFilePath(string filePath)
         {
-            for (int i = 0; i < scriptContainer.Count; i++)
+            for (int i = 0; i < folderContainer.Count; i++)
             {
-                var item = scriptContainer[i];
+                var item = folderContainer[i];
                 if (item.GetPath() == filePath)
                 {
-                    scriptContainer.Remove(item);
+                    folderContainer.Remove(item);
                 }
             }
         }

@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Facades.Controllers;
+using BetterTriggers.Controllers;
 using GUI.Controllers;
 using Model;
 using Model.SaveableData;

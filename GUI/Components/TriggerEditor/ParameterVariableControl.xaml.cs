@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Facades.Containers;
+using BetterTriggers.Containers;
 using Model;
 using Model.Data;
 using Model.SaveableData;

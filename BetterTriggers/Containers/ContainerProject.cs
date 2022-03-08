@@ -1,4 +1,4 @@
-﻿using Facades.Controllers;
+﻿using BetterTriggers.Controllers;
 using Model.EditorData;
 using Model.SaveableData;
 using System;
@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Text;
 
-namespace Facades.Containers
+namespace BetterTriggers.Containers
 {
     public class ContainerProject
     {

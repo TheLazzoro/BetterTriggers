@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using BetterTriggers.Containers;
+using Model;
 using Model.Data;
 using Model.EditorData;
 using Model.SaveableData;
@@ -11,7 +12,7 @@ using System.IO;
 using System.Text;
 using WorldEditParser;
 
-namespace Facades.Containers
+namespace BetterTriggers.Controllers
 {
     public class ControllerScriptGenerator
     {

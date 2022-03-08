@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using Facades.Controllers;
+using BetterTriggers.Controllers;
 using GUI.Components.TriggerEditor;
 using Model.EditorData;
 using Model.SaveableData;

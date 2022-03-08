@@ -1,4 +1,4 @@
-﻿using Facades.Containers;
+﻿using BetterTriggers.Containers;
 using Microsoft.VisualBasic.FileIO;
 using Model.EditorData;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Facades.Controllers
+namespace BetterTriggers.Controllers
 {
     public class ControllerFileSystem
     {
