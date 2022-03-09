@@ -14,8 +14,8 @@
             <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
 
-        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" Margin="5,5,0,0" />
-        <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="White" Margin="100,5,0,0"/>
+        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" Margin="5,5,0,0" Click="checkBoxIsEnabled_Click" />
+        <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="White" Margin="100,5,0,0" Click="checkBoxIsInitiallyOn_Click"/>
         <Label Content="Trigger Comment:" VerticalAlignment="Top" Foreground="White" Margin="0,24,0,0"/>
 
         <RichTextBox x:Name="richTextBoxComment" Background="#FF282828" BorderBrush="#00828790" Grid.Row="1"/>

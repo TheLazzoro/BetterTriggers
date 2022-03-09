@@ -14,7 +14,7 @@ namespace GUI.Utility
 {
     public static class TreeViewManipulator
     {
-        public static void SetTreeViewItemAppearance(TreeViewItem treeViewitem, string text, Category iconCategory, bool isValid = true)
+        public static void SetTreeViewItemAppearance(TreeViewItem treeViewitem, string text, Category iconCategory, bool isValid = true, bool isInitiallyOn = true)
         {
             // create stack panel
             StackPanel stack = new StackPanel();
@@ -41,7 +41,10 @@ namespace GUI.Utility
             // TextBlock
             TextBlock txtBlock = new TextBlock();
             txtBlock.Text = text;
-            txtBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+            if(isInitiallyOn)
+                txtBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+            else
+            txtBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#AAAAAA");
             txtBlock.Margin = new Thickness(5, 0, 0, 0);
 
             // Add into stack

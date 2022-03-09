@@ -38,6 +38,7 @@ namespace GUI.Components
 
             this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();
             this.grid.Children.Add(textEditor);
+            Grid.SetRow(textEditor, 1);
             this.textEditor.Margin = new Thickness(0, 0, 0, 0);
             this.textEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             this.textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
@@ -113,6 +114,13 @@ namespace GUI.Components
             {
                 observer.OnStateChange();
             }
+        }
+
+        private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementEnabled(explorerElementScript, (bool)checkBoxIsEnabled.IsChecked);
+            OnStateChange();
         }
     }
 }

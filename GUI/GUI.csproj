@@ -40,6 +40,7 @@
     <None Remove="Resources\Icons\actions-visibility.png" />
     <None Remove="Resources\Icons\actions-wait.png" />
     <None Remove="Resources\Icons\events-time.png" />
+    <None Remove="Resources\Icons\green-check.png" />
     <None Remove="Resources\Icons\trigger-error.png" />
     <None Remove="Resources\map.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
@@ -143,6 +144,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\events-time.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\green-check.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\map.png">

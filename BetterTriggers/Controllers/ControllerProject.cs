@@ -68,9 +68,14 @@ namespace BetterTriggers.Controllers
             return ContainerProject.project;
         }
 
-        public void SetCurrentElement()
+        public void SetElementEnabled(IExplorerElement element, bool isEnabled)
         {
+            element.SetEnabled(isEnabled);
+        }
 
+        public void SetElementInitiallyOn(IExplorerElement element, bool isInitiallyOn)
+        {
+            element.SetInitiallyOn(isInitiallyOn);
         }
 
         public void OnCreateElement(string fullPath)

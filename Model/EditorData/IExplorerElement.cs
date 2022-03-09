@@ -12,6 +12,10 @@ namespace Model.EditorData
         string GetPath();
         void SetPath(string newPath);
         string GetName();
+        void SetEnabled(bool isEnabled);
+        void SetInitiallyOn(bool isInitiallyOn);
+        bool GetEnabled();
+        bool GetInitiallyOn();
         void InsertIntoList(IExplorerElement element, int insertIndex);
         void RemoveFromList(IExplorerElement element);
 

@@ -78,6 +78,24 @@ namespace Model.EditorData
             throw new NotImplementedException();
         }
 
-        
+        public void SetEnabled(bool isEnabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetInitiallyOn(bool isInitiallyOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetEnabled()
+        {
+            return true;
+        }
+
+        public bool GetInitiallyOn()
+        {
+            return true;
+        }
     }
 }

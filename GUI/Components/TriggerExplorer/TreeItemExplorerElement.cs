@@ -25,8 +25,6 @@ namespace GUI.Components.TriggerExplorer
         {
             this.Ielement = explorerElement;
 
-            
-
             RefreshElement();
         }
 
@@ -55,7 +53,23 @@ namespace GUI.Components.TriggerExplorer
         {
             //if (this.Ielement == null)
             //    return;
+            RefreshElementIcon();
 
+            if (this.tabItem != null)
+                tabItem.RefreshHeader(this.Ielement.GetName());
+
+            if(this.editor is VariableControl)
+            {
+                var control = this.editor as VariableControl;
+                control.Rename(Ielement.GetName());
+            }
+
+            if (this.editor != null)
+                this.editor.Refresh();
+        }
+
+        private void RefreshElementIcon()
+        {
             Category category;
 
             if (Ielement is ExplorerElementRoot)
@@ -71,19 +85,7 @@ namespace GUI.Components.TriggerExplorer
             else
                 category = Category.Wait;
 
-            TreeViewManipulator.SetTreeViewItemAppearance(this, this.Ielement.GetName(), category);
-
-            if (this.tabItem != null)
-                tabItem.RefreshHeader(this.Ielement.GetName());
-
-            if(this.editor is VariableControl)
-            {
-                var control = this.editor as VariableControl;
-                control.Rename(Ielement.GetName());
-            }
-
-            if (this.editor != null)
-                this.editor.Refresh();
+            TreeViewManipulator.SetTreeViewItemAppearance(this, this.Ielement.GetName(), category, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
         }
 
         public void Save()
@@ -112,6 +114,8 @@ namespace GUI.Components.TriggerExplorer
         /// </summary>
         public void OnStateChange()
         {
+            RefreshElementIcon();
+
             if (this.tabItem != null)
                 tabItem.RefreshHeader(this.Ielement.GetName() + " *");
 

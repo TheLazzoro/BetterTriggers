@@ -1,4 +1,5 @@
-﻿using GUI.Commands;
+﻿using BetterTriggers.Controllers;
+using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
@@ -442,6 +443,20 @@ namespace GUI.Components
             {
                 observer.OnStateChange();
             }
+        }
+
+        private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementEnabled(explorerElementTrigger, (bool) checkBoxIsEnabled.IsChecked);
+            OnStateChange();
+        }
+
+        private void checkBoxIsInitiallyOn_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementInitiallyOn(explorerElementTrigger, (bool)checkBoxIsInitiallyOn.IsChecked);
+            OnStateChange();
         }
     }
 }

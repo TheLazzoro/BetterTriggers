@@ -8,6 +8,7 @@ namespace Model.EditorData
     {
         public string path;
         public string script;
+        public bool isEnabled = true;
         public List<IExplorerElementObserver> observers = new List<IExplorerElementObserver>();
 
         public ExplorerElementScript(string path)
@@ -75,6 +76,26 @@ namespace Model.EditorData
         public void RemoveFromList(IExplorerElement element)
         {
             throw new Exception("This is not a directory");
+        }
+
+        public void SetEnabled(bool isEnabled)
+        {
+            this.isEnabled = isEnabled;
+        }
+
+        public void SetInitiallyOn(bool isInitiallyOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetEnabled()
+        {
+            return this.isEnabled;
+        }
+
+        public bool GetInitiallyOn()
+        {
+            return true;
         }
     }
 }

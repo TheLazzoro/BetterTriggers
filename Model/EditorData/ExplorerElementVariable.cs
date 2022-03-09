@@ -79,5 +79,25 @@ namespace Model.EditorData
         {
             throw new Exception("This is not a directory");
         }
+
+        public void SetEnabled(bool isEnabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetInitiallyOn(bool isInitiallyOn)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetEnabled()
+        {
+            return true;
+        }
+
+        public bool GetInitiallyOn()
+        {
+            return true;
+        }
     }
 }

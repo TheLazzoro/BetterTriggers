@@ -10,6 +10,8 @@ namespace Model.EditorData
     {
         public string path;
         public Trigger trigger;
+        public bool isEnabled = true;
+        public bool isInitiallyOn = true;
         public List<IExplorerElementObserver> observers = new List<IExplorerElementObserver>();
 
         public ExplorerElementTrigger(string path)
@@ -78,6 +80,26 @@ namespace Model.EditorData
         public void RemoveFromList(IExplorerElement element)
         {
             throw new Exception("This is not a directory");
+        }
+
+        public void SetEnabled(bool isEnabled)
+        {
+            this.isEnabled = isEnabled;
+        }
+
+        public void SetInitiallyOn(bool isInitiallyOn)
+        {
+            this.isInitiallyOn = isInitiallyOn;
+        }
+
+        public bool GetEnabled()
+        {
+            return this.isEnabled;
+        }
+
+        public bool GetInitiallyOn()
+        {
+            return this.isInitiallyOn;
         }
     }
 }
