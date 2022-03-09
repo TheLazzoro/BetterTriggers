@@ -64,8 +64,6 @@ namespace GUI.Components.TriggerExplorer
             this.Items.Add(new SeparatorExplorer());
             this.Items.Add(menuItemEnableTrigger);
             this.Items.Add(menuItemInitiallyOn);
-            //menuItemReplace.Click += ReplaceTexture;
-            //menuItemReset.Click += ResetTexture;
 
             menuItemDelete.Click += delegate
             {
@@ -91,6 +89,15 @@ namespace GUI.Components.TriggerExplorer
             {
                 var controller = new ControllerVariable();
                 controller.CreateVariable();
+            };
+            menuItemEnableTrigger.Click += delegate
+            {
+                treeItem.editor.SetElementEnabled(!treeItem.Ielement.GetEnabled());
+            };
+            menuItemInitiallyOn.Click += delegate
+            {
+                treeItem.editor.SetElementInitiallyOn(!treeItem.Ielement.GetInitiallyOn());
+
             };
         }
     }

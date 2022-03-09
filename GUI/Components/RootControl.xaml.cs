@@ -98,6 +98,16 @@ namespace GUI.Components
             throw new NotImplementedException();
         }
 
+        public void SetElementEnabled(bool isEnabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetElementInitiallyOn(bool isInitiallyOn)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Attach(TreeItemExplorerElement explorerElement)
         {
             this.observers.Add(explorerElement);

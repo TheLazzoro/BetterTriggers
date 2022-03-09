@@ -152,6 +152,8 @@ namespace GUI.Components
             return this;
         }
 
+        
+
         public void CreateEvent()
         {
             var eventMenu = new EventMenuWindow();
@@ -443,6 +445,22 @@ namespace GUI.Components
             {
                 observer.OnStateChange();
             }
+        }
+
+        public void SetElementEnabled(bool isEnabled)
+        {
+            checkBoxIsEnabled.IsChecked = isEnabled;
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementEnabled(explorerElementTrigger, (bool)checkBoxIsEnabled.IsChecked);
+            OnStateChange();
+        }
+
+        public void SetElementInitiallyOn(bool isInitiallyOn)
+        {
+            checkBoxIsInitiallyOn.IsChecked = isInitiallyOn;
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementInitiallyOn(explorerElementTrigger, (bool)checkBoxIsInitiallyOn.IsChecked);
+            OnStateChange();
         }
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)

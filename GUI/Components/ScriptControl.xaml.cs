@@ -98,6 +98,19 @@ namespace GUI.Components
             textEditor.Text = controller.LoadScriptFromFile(explorerElementScript.GetPath());
         }
 
+        public void SetElementEnabled(bool isEnabled)
+        {
+            checkBoxIsEnabled.IsChecked = isEnabled;
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementEnabled(explorerElementScript, (bool)checkBoxIsEnabled.IsChecked);
+            OnStateChange();
+        }
+
+        public void SetElementInitiallyOn(bool isInitiallyOn)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Attach(TreeItemExplorerElement explorerElement)
         {
             this.observers.Add(explorerElement);
