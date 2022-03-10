@@ -32,7 +32,7 @@ namespace GUI
             InitializeComponent();
 
             ControllerTriggerData controller = new ControllerTriggerData();
-            List<FunctionTemplate> events = controller.LoadAllEvents(@"C:\Users\Lasse Dam\Desktop\JSON\events.json");
+            List<FunctionTemplate> events = controller.LoadAllEvents();
 
             for(int i = 0; i < events.Count; i++)
             {

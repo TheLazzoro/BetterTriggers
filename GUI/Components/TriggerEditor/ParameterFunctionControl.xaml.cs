@@ -30,7 +30,7 @@ namespace GUI
             InitializeComponent();
 
             ControllerTriggerData controller = new ControllerTriggerData();
-            List<FunctionTemplate> functions = controller.LoadAllFunctions(@"C:\Users\Lasse Dam\Desktop\JSON\calls.json");
+            List<FunctionTemplate> functions = controller.LoadAllCalls();
 
             for (int i = 0; i < functions.Count; i++)
             {

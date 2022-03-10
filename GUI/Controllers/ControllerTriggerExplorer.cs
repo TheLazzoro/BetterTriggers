@@ -52,6 +52,9 @@ namespace GUI.Controllers
             }
 
             unsaved.Clear();
+
+            ControllerProject controller = new ControllerProject();
+            controller.SaveProject();
         }
 
         public void OnSelectItem(TreeItemExplorerElement selectedItem, DragableTabControl dragableTabControl)

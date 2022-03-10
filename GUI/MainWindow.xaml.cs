@@ -211,9 +211,6 @@ namespace GUI
             }
         }
 
-
-
-
         private void menuSave_Click(object sender, RoutedEventArgs e)
         {
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();

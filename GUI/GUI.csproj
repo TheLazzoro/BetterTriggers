@@ -180,7 +180,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
-    <ProjectReference Include="..\Facades\BetterTriggers.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 

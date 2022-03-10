@@ -25,7 +25,13 @@ namespace BetterTriggers.Controllers
             if (File.Exists(elementToMove))
                 File.Move(elementToMove, directory + "/" + Path.GetFileName(elementToMove));
             else if (Directory.Exists(elementToMove))
-                Directory.Move(elementToMove, directory + "/" + Path.GetFileName(elementToMove));
+            {
+                var name = Path.GetFileName(elementToMove);
+                if (elementToMove == directory + "\\" + name)
+                    return;
+
+                Directory.Move(elementToMove, directory + "/" + name);
+            }
         }
 
         public void DeleteElement(string path)

@@ -15,6 +15,7 @@ using Model.SaveableData;
 using Model.EditorData.Enums;
 using BetterTriggers.Containers;
 using Model.EditorData;
+using BetterTriggers.Controllers;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -48,9 +49,10 @@ namespace GUI.Components.TriggerEditor
             this.descriptionTextBlock.Background = new SolidColorBrush(Color.FromRgb(40, 40, 40));
             Grid.SetRow(this.descriptionTextBlock, 4);
 
-            this.paramText = ContainerTriggerData.GetParamText(function);
-            this.descriptionTextBlock.Text = ContainerTriggerData.GetDescription(function);
-            this.category = ContainerTriggerData.GetCategory(function);
+            ControllerTriggerData controller = new ControllerTriggerData();
+            this.paramText = controller.GetParamText(function);
+            this.descriptionTextBlock.Text = controller.GetDescription(function);
+            this.category = controller.GetCategory(function);
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", this.category);
 
@@ -97,6 +99,7 @@ namespace GUI.Components.TriggerEditor
 
         private void RecurseParameters(TextBlock textBlock, List<Parameter> parameters, string paramText)
         {
+            ControllerTriggerData controller = new ControllerTriggerData();
             int paramIndex = 0;
 
             for (int i = 0; i < paramText.Length; i++)
@@ -116,7 +119,7 @@ namespace GUI.Components.TriggerEditor
                         RemoveCommaBeforeParamIndicator(textBlock);
 
                         var index = paramIndex; // copy current iterated index to prevent referenced values in hyperlink.click delegate
-                        CreateHyperlink(textBlock, ContainerTriggerData.GetParamDisplayName(parameters[paramIndex]), parameters, index);
+                        CreateHyperlink(textBlock, controller.GetParamDisplayName(parameters[paramIndex]), parameters, index);
                         paramIndex++;
 
                         while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
@@ -134,7 +137,7 @@ namespace GUI.Components.TriggerEditor
                         if (function.parameters.Count > 0) // first bracket gets hyperlinked
                         {
                             CreateHyperlink(textBlock, "(", parameters, index);
-                            RecurseParameters(textBlock, function.parameters, ContainerTriggerData.GetParamText(function)); // recurse
+                            RecurseParameters(textBlock, function.parameters, controller.GetParamText(function)); // recurse
                         }
                         else // whole displayname gets hyperlinked
                         {
@@ -143,7 +146,7 @@ namespace GUI.Components.TriggerEditor
                             runFirstBracket.FontFamily = new FontFamily("Verdana");
                             textBlock.Inlines.Add(runFirstBracket);
 
-                            CreateHyperlink(textBlock, ContainerTriggerData.GetParamDisplayName(function), parameters, index);
+                            CreateHyperlink(textBlock, controller.GetParamDisplayName(function), parameters, index);
                         }
                         paramIndex++;
 

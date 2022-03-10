@@ -14,6 +14,6 @@ namespace Model.SaveableData
         public string Header;
         public string Root;
         public string War3MapDirectory;
-        public List<string> Files;
+        public List<War3ProjectFileEntry> Files;
     }
 }

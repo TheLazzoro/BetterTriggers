@@ -67,6 +67,7 @@
     <Compile Include="SaveableData\Variable.cs" />
     <Compile Include="JsonBaseConverter\BaseConverter.cs" />
     <Compile Include="JsonBaseConverter\ParameterConverter.cs" />
+    <Compile Include="SaveableData\War3ProjectFileEntry.cs" />
     <Compile Include="Templates\FunctionTemplate.cs" />
     <Compile Include="Templates\ParameterTemplate.cs" />
     <Compile Include="Templates\ConstantTemplate.cs" />

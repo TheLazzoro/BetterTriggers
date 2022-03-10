@@ -18,7 +18,7 @@ namespace BetterTriggers.Controllers
                 Language = language,
                 Header = "",
                 Root = destinationFolder + @"\" + name,
-                Files = new List<string>(),
+                Files = new List<War3ProjectFileEntry>()
             };
 
             string json = JsonConvert.SerializeObject(project);
@@ -46,21 +46,138 @@ namespace BetterTriggers.Controllers
 
             string json = File.ReadAllText(filepath);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
-
             ContainerProject container = new ContainerProject();
             container.NewProject(project, filepath);
-            // Loads all elements into the backend
-            //ContainerFolders.AddFolder(new ExplorerElementFolder(project.Root));
-
-            string[] filesInRoot = Directory.GetFileSystemEntries(project.Root);
-            for (int i = 0; i < filesInRoot.Length; i++)
+            var projectRootEntry = new War3ProjectFileEntry()
             {
-                OnCreateElement(filesInRoot[i]);
+                isEnabled = true,
+                isInitiallyOn = true,
+                path = project.Root,
+                Files = project.Files,
+            };
+
+            // get all files
+            string[] files = Directory.GetFileSystemEntries(project.Root, "*", SearchOption.AllDirectories);
+            List<string> fileCheckList = new List<string>();
+            fileCheckList.AddRange(files);
+
+            // Recurse through elements found in the project file
+            RecurseLoad(projectRootEntry, ContainerProject.projectFiles[0], fileCheckList);
+
+            // Loop through elements not found
+            for(int i = 0; i < fileCheckList.Count; i++)
+            {
+                OnCreateElement(fileCheckList[i], false);
             }
 
             controllerRecentFiles.AddProjectToRecent(filepath);
 
             return project;
+        }
+
+        private void RecurseLoad(War3ProjectFileEntry entryParent, IExplorerElement elementParent, List<string> fileCheckList)
+        {
+            List<IExplorerElement> elementChildren = null;
+            if (elementParent is ExplorerElementRoot)
+            {
+                var root = (ExplorerElementRoot)elementParent;
+                elementChildren = root.explorerElements;
+            }
+            else if (elementParent is ExplorerElementFolder)
+            {
+                var folder = (ExplorerElementFolder)elementParent;
+                elementChildren = folder.explorerElements;
+            }
+
+            for (int i = 0; i < entryParent.Files.Count; i++)
+            {
+                var entryChild = entryParent.Files[i];
+                IExplorerElement explorerElementChild = null;
+
+                if (File.Exists(entryChild.path) || Directory.Exists(entryChild.path))
+                {
+                    fileCheckList.Remove(entryChild.path);
+
+                    // Add item to appropriate container
+                    switch (Path.GetExtension(entryChild.path))
+                    {
+                        case "":
+                            explorerElementChild = new ExplorerElementFolder(entryChild.path);
+                            ContainerFolders.AddFolder(explorerElementChild as ExplorerElementFolder);
+                            break;
+                        case ".trg":
+                            explorerElementChild = new ExplorerElementTrigger(entryChild.path);
+                            ContainerTriggers.AddTrigger(explorerElementChild as ExplorerElementTrigger);
+                            break;
+                        case ".j":
+                            explorerElementChild = new ExplorerElementScript(entryChild.path);
+                            ContainerScripts.AddScript(explorerElementChild as ExplorerElementScript);
+                            break;
+                        case ".var":
+                            explorerElementChild = new ExplorerElementVariable(entryChild.path);
+                            ContainerVariables.AddVariable(explorerElementChild as ExplorerElementVariable);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    elementChildren.Add(explorerElementChild);
+                    if (Directory.Exists(explorerElementChild.GetPath()))
+                        RecurseLoad(entryChild, explorerElementChild, fileCheckList);
+                }
+            }
+
+        }
+
+        public void SaveProject()
+        {
+            var root = (ExplorerElementRoot)ContainerProject.projectFiles[0];
+            var project = ContainerProject.project;
+            project.Files = new List<War3ProjectFileEntry>();
+
+
+            for (int i = 0; i < root.explorerElements.Count; i++)
+            {
+                var element = root.explorerElements[i];
+
+                var fileEntry = new War3ProjectFileEntry();
+                fileEntry.path = element.GetPath();
+                fileEntry.isEnabled = element.GetEnabled();
+                fileEntry.isInitiallyOn = element.GetInitiallyOn();
+
+                project.Files.Add(fileEntry);
+
+                if (element is ExplorerElementFolder)
+                {
+                    RecurseSaveFileEntries((ExplorerElementFolder)element, fileEntry);
+                }
+            }
+
+            var json = JsonConvert.SerializeObject(project);
+            File.WriteAllText(root.path, json);
+        }
+
+        private void RecurseSaveFileEntries(ExplorerElementFolder parent, War3ProjectFileEntry parentEntry)
+        {
+            List<IExplorerElement> children = parent.explorerElements;
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                var element = children[i];
+
+                // TODO: DUPLICATE CODE!!
+                var fileEntryChild = new War3ProjectFileEntry();
+                fileEntryChild.path = element.GetPath();
+                fileEntryChild.isEnabled = element.GetEnabled();
+                fileEntryChild.isInitiallyOn = element.GetInitiallyOn();
+
+                parentEntry.Files.Add(fileEntryChild);
+
+                if (element is ExplorerElementFolder)
+                {
+                    RecurseSaveFileEntries((ExplorerElementFolder)element, fileEntryChild);
+                }
+            }
         }
 
         public War3Project GetCurrentProject()
@@ -78,17 +195,17 @@ namespace BetterTriggers.Controllers
             element.SetInitiallyOn(isInitiallyOn);
         }
 
-        public void OnCreateElement(string fullPath)
+        public void OnCreateElement(string fullPath, bool doRecurse = true)
         {
             string directory = Path.GetDirectoryName(fullPath);
 
             ExplorerElementRoot root = ContainerProject.projectFiles[0] as ExplorerElementRoot;
             IExplorerElement parent = FindExplorerElementFolder(root, directory);
 
-            RecurseCreateElement(parent, fullPath);
+            RecurseCreateElement(parent, fullPath, doRecurse);
         }
 
-        private void RecurseCreateElement(IExplorerElement parent, string fullPath)
+        private void RecurseCreateElement(IExplorerElement parent, string fullPath, bool doRecurse)
         {
             IExplorerElement explorerElement = null;
 
@@ -119,11 +236,15 @@ namespace BetterTriggers.Controllers
             {
                 var root = (ExplorerElementRoot)parent;
                 root.explorerElements.Add(explorerElement);
-            } else if(parent is ExplorerElementFolder)
+            }
+            else if (parent is ExplorerElementFolder)
             {
                 var folder = (ExplorerElementFolder)parent;
                 folder.explorerElements.Add(explorerElement);
             }
+
+            if (!doRecurse)
+                return;
 
             // Recurse into the element if it's a folder
             if (Directory.Exists(fullPath))
@@ -131,7 +252,7 @@ namespace BetterTriggers.Controllers
                 string[] entries = Directory.GetFileSystemEntries(fullPath);
                 for (int i = 0; i < entries.Length; i++)
                 {
-                    RecurseCreateElement((ExplorerElementFolder)explorerElement, entries[i]);
+                    RecurseCreateElement((ExplorerElementFolder)explorerElement, entries[i], doRecurse);
                 }
             }
         }
@@ -174,11 +295,11 @@ namespace BetterTriggers.Controllers
                     {
                         IExplorerElement elementInSubSearch = null;
                         string filename = Path.GetFileName(entries[i]);
-                        
+
                         // find element with matching old path
-                        for(int e = 0; e < folder.explorerElements.Count; e++)
+                        for (int e = 0; e < folder.explorerElements.Count; e++)
                         {
-                            if(filename == Path.GetFileName(folder.explorerElements[e].GetPath()))
+                            if (filename == Path.GetFileName(folder.explorerElements[e].GetPath()))
                             {
                                 elementInSubSearch = folder.explorerElements[e];
                                 break;
@@ -239,7 +360,7 @@ namespace BetterTriggers.Controllers
         {
             var parent = FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(element.GetPath()));
 
-            if(parent is ExplorerElementRoot)
+            if (parent is ExplorerElementRoot)
             {
                 var root = (ExplorerElementRoot)parent;
                 root.RemoveFromList(element);
@@ -258,7 +379,7 @@ namespace BetterTriggers.Controllers
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
 
-            if(elementToChange != null)
+            if (elementToChange != null)
                 elementToChange.Notify();
         }
 
@@ -317,7 +438,7 @@ namespace BetterTriggers.Controllers
                 {
                     if (element.GetPath() == directory)
                     {
-                        matching = (ExplorerElementFolder) element;
+                        matching = (ExplorerElementFolder)element;
                         break;
                     }
                     else

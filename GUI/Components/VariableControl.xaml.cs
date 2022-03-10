@@ -46,7 +46,7 @@ namespace GUI.Components
             Variable variable = explorerElementVariable.variable;
 
             ControllerTriggerData controller = new ControllerTriggerData();
-            List<VariableType> types = controller.LoadVariableTypes();
+            List<VariableType> types = controller.LoadAllVariableTypes();
 
             for (int i = 0; i < types.Count; i++)
             {
