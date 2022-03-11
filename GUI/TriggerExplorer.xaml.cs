@@ -198,7 +198,8 @@ namespace GUI
         {
             if (_IsDragging && dragItem != null)
             {
-                adorner.Remove(lineIndicator);
+                if(adorner != null)
+                    adorner.Remove(lineIndicator);
 
                 TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
                 if (dragItem == dropTarget || dropTarget == null)
