@@ -202,7 +202,7 @@ namespace GUI
                     adorner.Remove(lineIndicator);
 
                 TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
-                if (dragItem == dropTarget || dropTarget == null)
+                if (dragItem == dropTarget || dropTarget == null || dropTarget.Parent is TreeView)
                     return;
 
                 var targetParent = (TreeItemExplorerElement)dropTarget.Parent;

@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using BetterTriggers.Controllers;
+using GUI.Components;
 using GUI.Components.TriggerEditor;
 using Model.EditorData;
 using Model.SaveableData;
@@ -14,21 +15,21 @@ namespace GUI.Commands
     {
         string commandName = "Modify Parameter";
         int triggerId;
-        ExplorerElementTrigger explorerElement;
+        TriggerControl triggerControl;
         TriggerElement triggerElement;
         List<Parameter> paramCollection;
         Parameter paramToAdd;
         Parameter oldParameter;
         int paramIndex = 0;
 
-        public CommandTriggerElementParamModify(ExplorerElementTrigger explorerElement, TriggerElement triggerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(TriggerControl triggerControl, TriggerElement triggerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
             this.paramCollection = paramCollection;
             this.paramIndex = paramIndex;
             this.paramToAdd = paramToAdd;
 
-            this.explorerElement = explorerElement;
-            this.triggerId = explorerElement.GetId();
+            this.triggerControl = triggerControl;
+            this.triggerId = triggerControl.explorerElementTrigger.GetId();
             this.triggerElement = triggerElement;
             this.oldParameter = paramCollection[this.paramIndex];
         }
@@ -56,6 +57,8 @@ namespace GUI.Commands
             this.triggerElement.FormatParameterText();
 
             CommandManager.AddCommand(this);
+
+            triggerControl.OnStateChange();
         }
 
         public void Redo()
@@ -79,6 +82,8 @@ namespace GUI.Commands
 
             paramCollection[paramIndex] = paramToAdd;
             this.triggerElement.FormatParameterText();
+
+            triggerControl.OnStateChange();
         }
 
         public void Undo()
@@ -102,6 +107,8 @@ namespace GUI.Commands
 
             paramCollection[paramIndex] = oldParameter;
             this.triggerElement.FormatParameterText();
+
+            triggerControl.OnStateChange();
         }
 
         public string GetCommandName()

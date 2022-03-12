@@ -28,6 +28,7 @@ namespace GUI.Components.TriggerExplorer
             MenuItem menuItemGlobalVariable = new MenuItemExplorer("New Global Variable");
             MenuItem menuItemEnableTrigger = new MenuItemExplorer("Enable Trigger");
             MenuItem menuItemInitiallyOn = new MenuItemExplorer("Initially On");
+            MenuItem menuItemOpenInExplorer = new MenuItemExplorer("Open Containing Folder");
 
             var element = treeItem.Ielement;
             if (element is ExplorerElementRoot || element is ExplorerElementFolder || element is ExplorerElementVariable)
@@ -64,6 +65,8 @@ namespace GUI.Components.TriggerExplorer
             this.Items.Add(new SeparatorExplorer());
             this.Items.Add(menuItemEnableTrigger);
             this.Items.Add(menuItemInitiallyOn);
+            this.Items.Add(new SeparatorExplorer());
+            this.Items.Add(menuItemOpenInExplorer);
 
             menuItemDelete.Click += delegate
             {
@@ -98,6 +101,11 @@ namespace GUI.Components.TriggerExplorer
             {
                 treeItem.editor.SetElementInitiallyOn(!treeItem.Ielement.GetInitiallyOn());
 
+            };
+            menuItemOpenInExplorer.Click += delegate
+            {
+                ControllerFileSystem controller = new ControllerFileSystem();
+                controller.OpenInExplorer(treeItem.Ielement.GetPath());
             };
         }
     }

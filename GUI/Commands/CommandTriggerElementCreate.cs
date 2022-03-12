@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using GUI.Components;
 using GUI.Components.TriggerEditor;
 using Model.EditorData;
 using Model.SaveableData;
@@ -11,15 +12,17 @@ namespace GUI.Commands
 {
     public class CommandTriggerElementCreate : ICommand
     {
+        TriggerControl triggerControl;
         string commandName = "Create Trigger Element";
         Components.TriggerEditor.TriggerElement triggerElement;
         Function function;
         TreeViewItem parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementCreate(ExplorerElementTrigger explorerElement, Function function, TreeViewItem parent, int insertIndex)
+        public CommandTriggerElementCreate(TriggerControl triggerControl, Function function, TreeViewItem parent, int insertIndex)
         {
-            this.triggerElement = new TriggerElement(function, explorerElement);
+            this.triggerControl = triggerControl;
+            this.triggerElement = new TriggerElement(function, triggerControl);
             this.function = function;
             this.parent = parent;
             this.insertIndex = insertIndex;
@@ -35,8 +38,9 @@ namespace GUI.Commands
                 triggerElement.explorerElementTrigger.trigger.Actions.Insert(insertIndex, function);
 
             this.parent.Items.Insert(this.insertIndex, this.triggerElement);
-
             CommandManager.AddCommand(this);
+
+            triggerControl.OnStateChange();
         }
 
         public void Redo()
@@ -49,6 +53,8 @@ namespace GUI.Commands
                 triggerElement.explorerElementTrigger.trigger.Actions.Insert(insertIndex, function);
 
             parent.Items.Insert(this.insertIndex, triggerElement);
+
+            triggerControl.OnStateChange();
         }
 
         public void Undo()
@@ -61,6 +67,8 @@ namespace GUI.Commands
                 triggerElement.explorerElementTrigger.trigger.Actions.Remove(function);
 
             parent.Items.Remove(this.triggerElement);
+
+            triggerControl.OnStateChange();
         }
 
         public string GetCommandName()

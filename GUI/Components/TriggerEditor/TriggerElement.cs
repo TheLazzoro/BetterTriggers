@@ -21,6 +21,7 @@ namespace GUI.Components.TriggerEditor
 {
     public class TriggerElement : TreeViewItem
     {
+        public TriggerControl triggerControl;
         public ExplorerElementTrigger explorerElementTrigger;
         internal Function function;
         public TextBlock paramTextBlock;
@@ -29,10 +30,11 @@ namespace GUI.Components.TriggerEditor
         protected Category category;
         private string formattedParamText = string.Empty;
 
-        public TriggerElement(Function function, ExplorerElementTrigger explorerElementTrigger)
+        public TriggerElement(Function function, TriggerControl triggerControl)
         {
             this.function = function;
-            this.explorerElementTrigger = explorerElementTrigger;
+            this.triggerControl = triggerControl; ;
+            this.explorerElementTrigger = triggerControl.explorerElementTrigger;
 
             this.paramTextBlock = new TextBlock();
             this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
@@ -291,9 +293,8 @@ namespace GUI.Components.TriggerEditor
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(explorerElementTrigger, this, parameters, paramIndex, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(this.triggerControl, this, parameters, paramIndex, window.selectedParameter);
                 command.Execute();
-
             }
         }
     }

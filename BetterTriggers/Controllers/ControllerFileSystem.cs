@@ -3,6 +3,7 @@ using Microsoft.VisualBasic.FileIO;
 using Model.EditorData;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -47,6 +48,20 @@ namespace BetterTriggers.Controllers
         {
             string newPath = Path.GetDirectoryName(oldPath) + @"/" + renamed;
             File.Move(oldPath, newPath);
+        }
+
+        public void OpenInExplorer(string fullPath)
+        {
+            if (Directory.Exists(Path.GetDirectoryName(fullPath)))
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    Arguments = Path.GetDirectoryName(fullPath),
+                    FileName = "explorer.exe"
+                };
+
+                Process.Start(startInfo);
+            }
         }
     }
 }

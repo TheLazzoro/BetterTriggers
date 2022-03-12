@@ -28,7 +28,7 @@ namespace GUI.Components
     /// </summary>
     public partial class TriggerControl : UserControl, IEditor
     {
-        ExplorerElementTrigger explorerElementTrigger; // needed to get file references to variables in TriggerElements
+        public ExplorerElementTrigger explorerElementTrigger; // needed to get file references to variables in TriggerElements
 
         public NodeEvent categoryEvent;
         public NodeCondition categoryCondition;
@@ -70,19 +70,19 @@ namespace GUI.Components
             for (int i = 0; i < trigger.Events.Count; i++)
             {
                 var _event = trigger.Events[i];
-                TriggerElement triggerElement = new TriggerElement(_event, explorerElementTrigger);
+                TriggerElement triggerElement = new TriggerElement(_event, this);
                 this.categoryEvent.Items.Add(triggerElement);
             }
             for (int i = 0; i < trigger.Conditions.Count; i++)
             {
                 var condition = trigger.Conditions[i];
-                TriggerElement triggerElement = new TriggerElement(condition, explorerElementTrigger);
+                TriggerElement triggerElement = new TriggerElement(condition, this);
                 this.categoryCondition.Items.Add(triggerElement);
             }
             for (int i = 0; i < trigger.Actions.Count; i++)
             {
                 var action = trigger.Actions[i];
-                TriggerElement triggerElement = new TriggerElement(action, explorerElementTrigger);
+                TriggerElement triggerElement = new TriggerElement(action, this);
                 this.categoryAction.Items.Add(triggerElement);
             }
 
@@ -152,7 +152,7 @@ namespace GUI.Components
             return this;
         }
 
-        
+
 
         public void CreateEvent()
         {
@@ -162,7 +162,7 @@ namespace GUI.Components
 
             if (_event != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, _event, categoryEvent, 0); // change 0 to other index
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(this, _event, categoryEvent, 0); // change 0 to other index
                 command.Execute();
 
                 categoryEvent.IsExpanded = true;
@@ -178,7 +178,7 @@ namespace GUI.Components
 
             if (condition != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, condition, categoryCondition, 0); // change 0 to other index
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(this, condition, categoryCondition, 0); // change 0 to other index
                 command.Execute();
 
                 categoryCondition.IsExpanded = true;
@@ -193,7 +193,7 @@ namespace GUI.Components
 
             if (action != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, action, categoryAction, 0); // change 0 to other index
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(this, action, categoryAction, 0); // change 0 to other index
                 command.Execute();
 
                 categoryAction.IsExpanded = true;
@@ -292,7 +292,7 @@ namespace GUI.Components
 
                 if (actionNode != dragItem)
                 {
-                    CommandTriggerElementMove command = new CommandTriggerElementMove(this.dragItem, parent, actionNode, indexInTree);
+                    CommandTriggerElementMove command = new CommandTriggerElementMove(this, this.dragItem, parent, actionNode, indexInTree);
                     command.Execute();
                 }
             }
@@ -353,7 +353,7 @@ namespace GUI.Components
             if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
                 return;
 
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(selectedItem as TriggerElement, (TreeViewItem)selectedItem.Parent);
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(this, selectedItem as TriggerElement, (TreeViewItem)selectedItem.Parent);
             command.Execute();
         }
 
@@ -466,7 +466,7 @@ namespace GUI.Components
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
-            controller.SetElementEnabled(explorerElementTrigger, (bool) checkBoxIsEnabled.IsChecked);
+            controller.SetElementEnabled(explorerElementTrigger, (bool)checkBoxIsEnabled.IsChecked);
             OnStateChange();
         }
 

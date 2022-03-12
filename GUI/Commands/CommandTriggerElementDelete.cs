@@ -6,19 +6,22 @@ using System.Windows.Controls;
 using GUI.Components.TriggerEditor;
 using BetterTriggers.Controllers;
 using Model.SaveableData;
+using GUI.Components;
 
 namespace GUI.Commands
 {
     public class CommandTriggerElementDelete : ICommand
     {
         string commandName = "Delete Trigger Element";
+        TriggerControl triggerControl;
         TriggerElement triggerElement;
         TreeViewItem parent;
         int treeIndex;
         Function functionToRemove;
 
-        public CommandTriggerElementDelete(TriggerElement triggerElement, TreeViewItem parent)
+        public CommandTriggerElementDelete(TriggerControl triggerControl, TriggerElement triggerElement, TreeViewItem parent)
         {
+            this.triggerControl = triggerControl;
             this.triggerElement = triggerElement;
             this.parent = parent;
 
@@ -49,10 +52,10 @@ namespace GUI.Commands
             // We might need to refactor 'TriggerElement' so it listens to changes made on the 'explorerElementTrigger'.
             // Observer pattern is a possibility.
 
-
             parent.Items.Remove(this.triggerElement);
-            
             CommandManager.AddCommand(this);
+
+            triggerControl.OnStateChange();
         }
 
         public void Redo()
@@ -68,6 +71,8 @@ namespace GUI.Commands
             controller.RecurseRemoveVariableRefs(triggerElement.function, triggerElement.explorerElementTrigger.trigger.Id);
 
             parent.Items.Remove(this.triggerElement);
+
+            triggerControl.OnStateChange();
         }
 
         public void Undo()
@@ -84,6 +89,8 @@ namespace GUI.Commands
 
             parent.Items.Insert(this.treeIndex, triggerElement);
             triggerElement.IsSelected = true;
+
+            triggerControl.OnStateChange();
         }
 
         public string GetCommandName()

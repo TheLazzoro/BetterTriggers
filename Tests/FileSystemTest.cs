@@ -1,4 +1,4 @@
-﻿using GUI.Controllers;
+﻿using BetterTriggers.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -10,12 +10,21 @@ namespace Tests
     [TestClass]
     public class FileSystemTest
     {
+        static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "source";
+        static string targetFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "target";
+
+        [TestInitialize]
+        public void BeforeEach()
+        {
+            Directory.Delete(sourceFolder, true);
+            Directory.Delete(targetFolder, true);
+            Directory.CreateDirectory(sourceFolder);
+            Directory.CreateDirectory(targetFolder);
+        }
+
         [TestMethod]
         public void FileMove()
         {
-            /*
-            var sourceFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "source";
-            var targetFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "target";
             Directory.CreateDirectory(sourceFolder);
             Directory.CreateDirectory(targetFolder);
 
@@ -23,7 +32,7 @@ namespace Tests
             File.WriteAllText(file, "This is a test.");
 
             ControllerFileSystem controller = new ControllerFileSystem();
-            controller.MoveFile(file, targetFolder);
+            controller.MoveFile(file, targetFolder, 0);
 
 
             var newPath = targetFolder + @"\" + "testFile";
@@ -32,7 +41,6 @@ namespace Tests
             var actual = File.Exists(newPath);
 
             Assert.AreEqual(expected, actual);
-            */
         }
     }
 }
