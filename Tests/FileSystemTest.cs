@@ -16,8 +16,10 @@ namespace Tests
         [TestInitialize]
         public void BeforeEach()
         {
-            Directory.Delete(sourceFolder, true);
-            Directory.Delete(targetFolder, true);
+            if (Directory.Exists(sourceFolder))
+                Directory.Delete(sourceFolder, true);
+            if (Directory.Exists(targetFolder))
+                Directory.Delete(targetFolder, true);
             Directory.CreateDirectory(sourceFolder);
             Directory.CreateDirectory(targetFolder);
         }
@@ -36,7 +38,7 @@ namespace Tests
 
 
             var newPath = targetFolder + @"\" + "testFile";
-            
+
             var expected = true;
             var actual = File.Exists(newPath);
 
