@@ -11,7 +11,6 @@ namespace GUI.Commands
 
         public static void AddCommand(ICommand command)
         {
-            // Add ICommand
             undoStack.Push(command);
             redoStack.Clear();
 

@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Container;
@@ -118,16 +119,11 @@ namespace GUI.Controllers
 
         public void OnCreateElement(TriggerExplorer te, string fullPath)
         {
-            ControllerProject controller = new ControllerProject();
-            IExplorerElement folder = controller.FindExplorerElementFolder(ContainerProject.projectFiles[0], fullPath);
-            TreeItemExplorerElement parent = FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            if (parent == null)
-                parent = te.map;
-
-            RecurseCreateElement(folder, parent, fullPath);
+            CommandExplorerElementCreate command = new CommandExplorerElementCreate(te, fullPath);
+            command.Execute();
         }
 
-        private void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath)
+        public void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath)
         {
             ControllerProject controller = new ControllerProject();
             IExplorerElement createdElement = controller.FindExplorerElement(folder, fullPath);
@@ -179,7 +175,13 @@ namespace GUI.Controllers
             elementToMove.IsSelected = true;
         }
 
-        private TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)
+        internal void OnDeleteElement(TriggerExplorer te, string fullPath)
+        {
+            CommandExplorerElementDelete command = new CommandExplorerElementDelete(te, fullPath);
+            command.Execute();
+        }
+
+        internal TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)
         {
             TreeItemExplorerElement node = null;
 
@@ -200,7 +202,7 @@ namespace GUI.Controllers
             return node;
         }
 
-        private TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)
+        internal TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)
         {
             TreeItemExplorerElement node = null;
 

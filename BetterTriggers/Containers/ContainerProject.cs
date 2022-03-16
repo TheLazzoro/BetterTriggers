@@ -14,16 +14,16 @@ namespace BetterTriggers.Containers
         public static War3Project project;
         public static List<IExplorerElement> projectFiles;
         public static string currentSelectedElement;
-        static FileSystemWatcher fileSystemWatcher;
+        internal static FileSystemWatcher fileSystemWatcher;
 
         public static event FileSystemEventHandler OnCreated;
         public static event FileSystemEventHandler OnMoved;
+        public static event FileSystemEventHandler OnDeleted;
         static bool wasDeleted;
         static bool wasCreated;
         public static string createdPath = string.Empty;
         public static string deletedPath = string.Empty;
         public static int insertIndex = 0;
-
 
         public void NewProject(War3Project project, string path)
         {
@@ -58,6 +58,13 @@ namespace BetterTriggers.Containers
             // bubble up event
             if (OnMoved != null)
                 OnMoved(this, e);
+        }
+
+        private void InvokeDelete(object sender, FileSystemEventArgs e)
+        {
+            // bubble up event
+            if (OnDeleted != null)
+                OnDeleted(this, e);
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
@@ -95,6 +102,8 @@ namespace BetterTriggers.Containers
                 string path = deletedPath;
                 ControllerProject controller = new ControllerProject();
                 controller.OnDeleteElement(path);
+
+                InvokeDelete(sender, e);
             }
             else if (wasCreated)
             {

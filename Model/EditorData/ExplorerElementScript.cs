@@ -44,9 +44,10 @@ namespace Model.EditorData
 
         public void Notify()
         {
-            foreach (var observer in observers)
+            //foreach (var observer in observers)
+            for (int i = 0; i < observers.Count; i++)
             {
-                observer.Update(this);
+                observers[i].Update(this);
             }
         }
 
@@ -96,6 +97,11 @@ namespace Model.EditorData
         public bool GetInitiallyOn()
         {
             return true;
+        }
+
+        public string GetSaveableString()
+        {
+            return script;
         }
     }
 }

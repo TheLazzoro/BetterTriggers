@@ -195,6 +195,15 @@ namespace BetterTriggers.Controllers
             element.SetInitiallyOn(isInitiallyOn);
         }
 
+        /// <summary>
+        /// Prevents the system from responding to file changes.
+        /// </summary>
+        /// <param name="doEnable"></param>
+        public void SetEnableFileEvents(bool doEnable)
+        {
+            ContainerProject.fileSystemWatcher.EnableRaisingEvents = doEnable;
+        }
+
         public void OnCreateElement(string fullPath, bool doRecurse = true)
         {
             string directory = Path.GetDirectoryName(fullPath);
@@ -320,36 +329,21 @@ namespace BetterTriggers.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
+            IExplorerElement parent = FindExplorerElementFolder(rootNode, fullPath);
 
-            RecurseDeleteElement(elementToDelete);
-        }
-
-        private void RecurseDeleteElement(IExplorerElement elementToDelete)
-        {
-            if (elementToDelete != null)
+            if(parent is ExplorerElementRoot)
             {
-                if (elementToDelete is ExplorerElementFolder)
-                {
-                    var folder = elementToDelete as ExplorerElementFolder;
-                    // Delete all child elements (items in folders and all their subfoldes with item etc.)
-                    for (int i = 0; i < folder.explorerElements.Count; i++)
-                    {
-                        RecurseDeleteElement(folder.explorerElements[i]);
-                    }
-                }
-
-                // Remove item from container
-                // Hack.
-                ContainerFolders.RemoveByFilePath(elementToDelete.GetPath());
-                ContainerTriggers.RemoveByFilePath(elementToDelete.GetPath());
-                ContainerScripts.RemoveByFilePath(elementToDelete.GetPath());
-                ContainerVariables.RemoveByFilePath(elementToDelete.GetPath());
-
-                elementToDelete.DeleteObservers();
-
-                //notify()?
+                var root = (ExplorerElementRoot)parent;
+                root.explorerElements.Remove(elementToDelete);
+            } else if( parent is ExplorerElementFolder)
+            {
+                var folder = (ExplorerElementFolder)parent;
+                folder.explorerElements.Remove(elementToDelete);
             }
+
+            //elementToDelete.DeleteObservers(); 
         }
+
 
         /// <summary>
         /// Used when an element is rearranged within it's current folder.

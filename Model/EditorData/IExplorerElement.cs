@@ -19,6 +19,7 @@ namespace Model.EditorData
         void InsertIntoList(IExplorerElement element, int insertIndex);
         void RemoveFromList(IExplorerElement element);
 
+        string GetSaveableString();
         void SaveInMemory(string saveableString);
         // Attach an observer to the subject.
         void Attach(IExplorerElementObserver observer);
