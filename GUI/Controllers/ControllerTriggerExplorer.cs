@@ -123,7 +123,7 @@ namespace GUI.Controllers
             command.Execute();
         }
 
-        public void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath)
+        public void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath, bool doRecurse = true)
         {
             ControllerProject controller = new ControllerProject();
             IExplorerElement createdElement = controller.FindExplorerElement(folder, fullPath);
@@ -151,6 +151,9 @@ namespace GUI.Controllers
                 default:
                     break;
             }
+
+            if (!doRecurse)
+                return;
 
             // Recurse into the element if it's a folder
             if (Directory.Exists(fullPath))

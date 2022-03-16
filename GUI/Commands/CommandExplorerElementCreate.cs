@@ -33,13 +33,12 @@ namespace GUI.Commands
         {
             ControllerProject controllerProject = new ControllerProject();
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            IExplorerElement folder = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], fullPath);
             TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
             if (parent == null)
                 parent = te.map;
 
-
-            controllerTriggerExplorer.RecurseCreateElement(folder, parent, fullPath);
+            controllerTriggerExplorer.RecurseCreateElement(ContainerProject.projectFiles[0], parent, fullPath, false);
+            this.createdElement = controllerProject.FindExplorerElement(ContainerProject.projectFiles[0], fullPath);
 
             CommandManager.AddCommand(this);
 
@@ -57,6 +56,7 @@ namespace GUI.Commands
             if (parent == null)
                 parent = te.map;
 
+            controllerProject.RecurseCreateElementsWithContent(createdElement);
             controllerTriggerExplorer.RecurseCreateElement(folder, parent, fullPath);
 
             controllerProject.SetEnableFileEvents(true);

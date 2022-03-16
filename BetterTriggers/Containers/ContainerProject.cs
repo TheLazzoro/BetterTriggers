@@ -109,7 +109,7 @@ namespace BetterTriggers.Containers
             {
                 string path = createdPath;
                 ControllerProject controller = new ControllerProject();
-                controller.OnCreateElement(path);
+                controller.OnCreateElement(path, false);
 
                 InvokeCreate(sender, e);
             }

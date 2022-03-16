@@ -101,7 +101,8 @@ namespace Model.EditorData
 
         public string GetSaveableString()
         {
-            throw new NotImplementedException("Is a folder.");
+            // is a folder
+            return null;
         }
     }
 }

@@ -267,6 +267,27 @@ namespace BetterTriggers.Controllers
         }
 
         /// <summary>
+        /// This is used when we want to redo a 'create file' action.
+        /// </summary>
+        public void RecurseCreateElementsWithContent(IExplorerElement topElement)
+        {
+            if (!(topElement is ExplorerElementFolder))
+                File.WriteAllText(topElement.GetPath(), topElement.GetSaveableString());
+            else
+                Directory.CreateDirectory(topElement.GetPath());
+
+            if(Directory.Exists(topElement.GetPath()))
+            {
+                var folder = (ExplorerElementFolder)topElement;
+                for (int i = 0; i < folder.explorerElements.Count; i++)
+                {
+                    var element = folder.explorerElements[i];
+                    RecurseCreateElementsWithContent(element);
+                }
+            }
+        }
+
+        /// <summary>
         /// This is also used when files are moved, hence why we need
         /// to detach it from its current parent and attach it to the other.
         /// </summary>
@@ -449,113 +470,5 @@ namespace BetterTriggers.Controllers
 
             return matching;
         }
-
-        /*
-        private void LoadFiles(string folder, TreeViewItem parentNode)
-        {
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
-
-            string[] entries = Directory.GetFileSystemEntries(folder);
-            foreach (var entry in entries)
-            {
-
-                if (Directory.Exists(entry))
-                {
-                    ExplorerElement item = new ExplorerElement(entry);
-                    ContainerFolders.AddTriggerElement(item);
-                    parentNode.Items.Add(item);
-                    TreeViewManipulator.SetTreeViewItemAppearance(item, Reader.GetFileNameAndExtension(entry), Category.Folder);
-                    LoadFiles(entry, item);
-                }
-                else if (File.Exists(entry))
-                {
-                    ExplorerElement item = new ExplorerElement(entry);
-                    parentNode.Items.Add(item);
-
-                    switch (Reader.GetFileExtension(entry))
-                    {
-                        case ".trg":
-                            ContainerTriggers.AddTriggerElement(item);
-                            break;
-                        case ".j":
-                            ContainerScripts.AddTriggerElement(item);
-                            break;
-                        case ".var":
-                            ContainerVariables.AddTriggerElement(item);
-                            break;
-                        default:
-                            break;
-                    }
-                    //var file = File.ReadAllText(entry);
-                    //Model.Trigger trigger = JsonConvert.DeserializeObject<Model.Trigger>(file);
-
-                    //controllerTrigger.CreateTriggerWithElements(triggerExplorer, mainGrid, entry, trigger);
-                }
-            }
-        }
-
-        public void OnClick_ExplorerElement(ExplorerElement selectedElement, TabControl tabControl)
-        {
-            if (selectedElement != null && selectedElement.Ielement == null) // Load file data if the element is null
-            {
-                switch (Reader.GetFileExtension(selectedElement.FilePath))
-                {
-                    case ".trg":
-                        ControllerTrigger triggerController = new ControllerTrigger();
-                        Model.Trigger trigger = triggerController.LoadTriggerFromFile(selectedElement.FilePath);
-                        var triggerControl = triggerController.CreateTriggerWithElements(tabControl, trigger);
-                        TabItemBT tabItemTrigger = new TabItemBT(triggerControl, Reader.GetFileName(selectedElement.FilePath));
-                        tabControl.Items.Add(tabItemTrigger);
-                        //tabControl.ItemsSource.
-                        selectedElement.tabItem = tabItemTrigger;
-                        selectedElement.Ielement = triggerControl;
-                        break;
-                    case ".var":
-                        ControllerVariable controllerVariable = new ControllerVariable();
-                        Model.Data.Variable variable = controllerVariable.LoadVariableFromFile(selectedElement.FilePath);
-                        variable.Name = Path.GetFileNameWithoutExtension(selectedElement.FilePath); // hack
-                        var variableControl = controllerVariable.CreateVariableWithElements(tabControl, variable);
-                        TabItemBT tabItemVariable = new TabItemBT(variableControl, Reader.GetFileName(selectedElement.FilePath));
-                        tabControl.Items.Add(tabItemVariable);
-                        //tabControl.ItemsSource.
-                        selectedElement.tabItem = tabItemVariable;
-                        selectedElement.Ielement = variableControl;
-                        break;
-                    case ".j":
-                        ControllerScript scriptController = new ControllerScript();
-                        var scripControl = scriptController.CreateScriptControlWithScript(tabControl, selectedElement.FilePath);
-                        TabItemBT tabItemScript = new TabItemBT(scripControl, Reader.GetFileName(selectedElement.FilePath));
-                        tabControl.Items.Add(tabItemScript);
-                        selectedElement.tabItem = tabItemScript;
-                        selectedElement.Ielement = scripControl;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            if (selectedElement != null && selectedElement.Ielement != null)
-            {
-                currentExplorerElement = selectedElement;
-                selectedElement.Ielement.OnElementClick();
-                tabControl.SelectedItem = selectedElement.tabItem;
-            }
-        }
-
-        public string GetDirectoryFromSelection(TreeView treeViewTriggerExplorer)
-        {
-            ExplorerElement selectedItem = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
-
-            if (selectedItem == null)
-                return null;
-
-            if (Directory.Exists(selectedItem.FilePath))
-                return selectedItem.FilePath;
-
-            else if (File.Exists(selectedItem.FilePath))
-                return Path.GetDirectoryName(selectedItem.FilePath);
-
-            return null;
-        }
-        */
     }
 }

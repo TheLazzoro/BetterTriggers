@@ -51,8 +51,9 @@ namespace GUI.Components.TriggerExplorer
 
         public void RefreshElement()
         {
-            //if (this.Ielement == null)
-            //    return;
+            if (this.Ielement == null)
+                return;
+            
             RefreshElementIcon();
 
             if (this.tabItem != null)
