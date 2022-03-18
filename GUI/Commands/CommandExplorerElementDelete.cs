@@ -21,7 +21,7 @@ namespace GUI.Commands
         TriggerExplorer te;
         string fullPath;
         IExplorerElement deletedElement;
-        IExplorerElement parent;
+        IExplorerElement folder;
         string fileContent = string.Empty;
         int index;
 
@@ -36,10 +36,10 @@ namespace GUI.Commands
             ControllerProject controllerProject = new ControllerProject();
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
 
-            this.deletedElement = controllerProject.FindExplorerElement(ContainerProject.projectFiles[0], fullPath);
-            this.parent = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(fullPath));
             TreeItemExplorerElement element = controllerTriggerExplorer.FindTreeNodeElement(te.map, fullPath);
             TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
+            this.deletedElement = element.Ielement;
+            this.folder = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(fullPath));
             if (parent == null)
                 parent = te.map;
 
@@ -61,7 +61,7 @@ namespace GUI.Commands
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
 
             this.deletedElement = controllerProject.FindExplorerElement(ContainerProject.projectFiles[0], fullPath);
-            this.parent = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(fullPath));
+            this.folder = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(fullPath));
             TreeItemExplorerElement element = controllerTriggerExplorer.FindTreeNodeElement(te.map, fullPath);
             TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
             if (parent == null)
@@ -83,13 +83,13 @@ namespace GUI.Commands
             ControllerProject controller = new ControllerProject();
             controller.SetEnableFileEvents(false);
 
-            if(parent is ExplorerElementRoot)
+            if(folder is ExplorerElementRoot)
             {
-                var root = (ExplorerElementRoot)parent;
+                var root = (ExplorerElementRoot)folder;
                 root.explorerElements.Insert(this.index, deletedElement);
-            } else if (parent is ExplorerElementFolder)
+            } else if (folder is ExplorerElementFolder)
             {
-                var folder = (ExplorerElementFolder)parent;
+                var folder = (ExplorerElementFolder)this.folder;
                 folder.explorerElements.Insert(this.index, deletedElement);
             }
 
@@ -102,7 +102,7 @@ namespace GUI.Commands
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             TreeItemExplorerElement uiParent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            controllerTriggerExplorer.RecurseCreateElement(parent, uiParent, fullPath);
+            controllerTriggerExplorer.RecurseCreateElement(folder, uiParent, fullPath);
             // TODO: ALSO MAKE UI INSERT ON CORRECT INDEX!!!!
 
 

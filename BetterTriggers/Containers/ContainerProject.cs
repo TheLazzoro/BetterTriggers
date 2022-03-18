@@ -43,7 +43,7 @@ namespace BetterTriggers.Containers
             fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
             fileSystemWatcher.Changed += FileSystemWatcher_Changed;
             fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
-            //fileSystemWatcher.Error += FileSystemWatcher_Error;
+            fileSystemWatcher.Error += FileSystemWatcher_Error;
         }
 
         private void InvokeCreate(object sender, FileSystemEventArgs e)
@@ -77,6 +77,11 @@ namespace BetterTriggers.Containers
         {
             wasDeleted = true;
             deletedPath = e.FullPath;
+
+            ControllerProject controller = new ControllerProject();
+            controller.OnDeleteElement(deletedPath);
+
+            InvokeDelete(sender, e);
         }
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
@@ -99,11 +104,11 @@ namespace BetterTriggers.Containers
             }
             else if (wasDeleted)
             {
-                string path = deletedPath;
-                ControllerProject controller = new ControllerProject();
-                controller.OnDeleteElement(path);
-
-                InvokeDelete(sender, e);
+                /* I explicitly write this comment and put nothing in this 'else if' clause because:
+                 * When deleting a directory from the filesystem it never actually fires the 'changed'
+                 * event because the directory is actually 'moved' to the recycle bin.
+                 * But it does fire when we delete a file.
+                 */
             }
             else if (wasCreated)
             {
@@ -127,10 +132,7 @@ namespace BetterTriggers.Containers
 
         private void FileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
-            /*
-            MessageBox.Show(e.GetException().Message, "Critical File System Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            Application.Current.Shutdown();
-            */
+            
         }
     }
 }

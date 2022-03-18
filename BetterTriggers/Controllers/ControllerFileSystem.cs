@@ -38,9 +38,11 @@ namespace BetterTriggers.Controllers
         public void DeleteElement(string path)
         {
             if (File.Exists(path))
-                FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                File.Delete(path);
+            //FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
             else if (Directory.Exists(path))
-                FileSystem.DeleteDirectory(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                Directory.Delete(path, true);
+                //FileSystem.DeleteDirectory(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
         }
 
         // used when renaming an element in the editor

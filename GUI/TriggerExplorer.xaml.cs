@@ -49,7 +49,7 @@ namespace GUI
 
             ContainerProject.OnCreated += ContainerProject_OnElementCreated;
             ContainerProject.OnMoved += ContainerProject_OnElementMoved;
-            ContainerProject.OnDeleted += ContainerProject_OnDeleted; ;
+            ContainerProject.OnDeleted += ContainerProject_OnDeleted;
         }
 
         // This function is invoked by a method in the container when a new file is created.
