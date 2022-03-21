@@ -56,7 +56,7 @@ namespace GUI.Commands
             if (parent == null)
                 parent = te.map;
 
-            controllerProject.RecurseCreateElementsWithContent(createdElement);
+            controllerProject.RecurseCreateElementsWithContent(createdElement, false);
             controllerTriggerExplorer.RecurseCreateElement(folder, parent, fullPath);
 
             controllerProject.SetEnableFileEvents(true);

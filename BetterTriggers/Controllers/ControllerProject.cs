@@ -269,7 +269,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// This is used when we want to redo a 'create file' action.
         /// </summary>
-        public void RecurseCreateElementsWithContent(IExplorerElement topElement)
+        public void RecurseCreateElementsWithContent(IExplorerElement topElement, bool doRecurse = true)
         {
             if (!(topElement is ExplorerElementFolder))
                 File.WriteAllText(topElement.GetPath(), topElement.GetSaveableString());
@@ -279,6 +279,9 @@ namespace BetterTriggers.Controllers
             if(Directory.Exists(topElement.GetPath()))
             {
                 var folder = (ExplorerElementFolder)topElement;
+                if (!doRecurse)
+                    return;
+
                 for (int i = 0; i < folder.explorerElements.Count; i++)
                 {
                     var element = folder.explorerElements[i];

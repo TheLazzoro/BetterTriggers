@@ -80,6 +80,8 @@ namespace BetterTriggers.Containers
 
             ControllerProject controller = new ControllerProject();
             controller.OnDeleteElement(deletedPath);
+            wasDeleted = false; // because it is not in the 'changed' function we need it here.
+
 
             InvokeDelete(sender, e);
         }

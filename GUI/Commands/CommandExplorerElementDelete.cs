@@ -44,7 +44,6 @@ namespace GUI.Commands
                 parent = te.map;
 
             this.fileContent = deletedElement.GetSaveableString();
-
             this.index = parent.Items.IndexOf(element);
             parent.Items.Remove(element);
 
@@ -60,8 +59,6 @@ namespace GUI.Commands
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
 
-            this.deletedElement = controllerProject.FindExplorerElement(ContainerProject.projectFiles[0], fullPath);
-            this.folder = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(fullPath));
             TreeItemExplorerElement element = controllerTriggerExplorer.FindTreeNodeElement(te.map, fullPath);
             TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
             if (parent == null)
@@ -96,9 +93,8 @@ namespace GUI.Commands
             // This is unfinished.
             // If we want to undo the deletion of a folder,
             // we need to recreate all contents of the folder as well.
-            // Same thing must be done in the Create command.
-            ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.SaveFile(fullPath, this.fileContent);
+            // Same thing must be done in the Create command?
+            controller.RecurseCreateElementsWithContent(deletedElement);
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             TreeItemExplorerElement uiParent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
