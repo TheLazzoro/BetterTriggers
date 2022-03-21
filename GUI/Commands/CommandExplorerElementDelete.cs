@@ -90,16 +90,11 @@ namespace GUI.Commands
                 folder.explorerElements.Insert(this.index, deletedElement);
             }
 
-            // This is unfinished.
-            // If we want to undo the deletion of a folder,
-            // we need to recreate all contents of the folder as well.
-            // Same thing must be done in the Create command?
             controller.RecurseCreateElementsWithContent(deletedElement);
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             TreeItemExplorerElement uiParent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            controllerTriggerExplorer.RecurseCreateElement(folder, uiParent, fullPath);
-            // TODO: ALSO MAKE UI INSERT ON CORRECT INDEX!!!!
+            controllerTriggerExplorer.RecurseCreateElement(folder, uiParent, fullPath, true, true, this.index);
 
 
             controller.SetEnableFileEvents(true);

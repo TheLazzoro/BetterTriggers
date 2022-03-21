@@ -123,7 +123,7 @@ namespace GUI.Controllers
             command.Execute();
         }
 
-        public void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath, bool doRecurse = true)
+        public void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath, bool doRecurse = true, bool doInsert = false, int insertIndex = 0)
         {
             ControllerProject controller = new ControllerProject();
             IExplorerElement createdElement = controller.FindExplorerElement(folder, fullPath);
@@ -131,7 +131,10 @@ namespace GUI.Controllers
             // Create ExplorerElement in the parent node
             TreeItemExplorerElement treeElement = new TreeItemExplorerElement(createdElement);
             createdElement.Attach(treeElement);
-            parent.Items.Insert(parent.Items.Count, treeElement);
+            if(doInsert)
+                parent.Items.Insert(insertIndex, treeElement);
+            else
+                parent.Items.Insert(parent.Items.Count, treeElement);
 
             // Add item to appropriate container
             switch (Path.GetExtension(createdElement.GetPath()))
