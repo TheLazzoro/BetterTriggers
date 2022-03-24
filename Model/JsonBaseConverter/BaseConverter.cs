@@ -31,6 +31,8 @@ namespace Model.JsonBaseConverter
                         return new Constant();
                     case 3:
                         return new VariableRef();
+                    case 4:
+                        return new Value();
                     default:
                         return new Parameter();
                 }

@@ -54,7 +54,7 @@ namespace GUI.Components.TriggerEditor
             ControllerTriggerData controller = new ControllerTriggerData();
             this.paramText = controller.GetParamText(function);
             this.descriptionTextBlock.Text = controller.GetDescription(function);
-            this.category = controller.GetCategory(function);
+            this.category = controller.GetCategoryTriggerElement(function);
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", this.category);
 

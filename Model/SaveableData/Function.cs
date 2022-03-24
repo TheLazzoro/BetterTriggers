@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Model.SaveableData
 {
+    /// <summary>
+    /// Things like 'CreateNUnitsAtLoc' or 'TriggerRegisterDeathEvent'
+    /// </summary>
     public class Function : Parameter, ICloneable
     {
         public readonly int ParamType = 1; // DO NOT CHANGE

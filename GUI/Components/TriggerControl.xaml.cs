@@ -98,7 +98,7 @@ namespace GUI.Components
                 var _event = categoryEvent.Items[i] as TriggerElement;
                 _event.FormatParameterText();
             }
-            for (int i = 0; i < categoryEvent.Items.Count; i++)
+            for (int i = 0; i < categoryCondition.Items.Count; i++)
             {
                 var condition = categoryCondition.Items[i] as TriggerElement;
                 condition.FormatParameterText();

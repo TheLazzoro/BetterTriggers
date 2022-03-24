@@ -8,7 +8,7 @@ namespace Model.SaveableData
     [JsonConverter(typeof(BaseConverter))]
     public class Parameter
     {
-        public string identifier;
+        public string identifier; // For convenience, values also use this field.
         public string returnType;
     }
 }

@@ -46,6 +46,9 @@ namespace BetterTriggers.Controllers
 
         public string GetParamDisplayName(Parameter parameter)
         {
+            if (parameter is Value)
+                return parameter.identifier;
+
             string displayName = string.Empty;
             bool found = false;
             int i = 0;
@@ -113,7 +116,7 @@ namespace BetterTriggers.Controllers
             return displayName;
         }
 
-        public  string GetParamText(Function function)
+        public string GetParamText(Function function)
         {
             string paramText = string.Empty;
             bool found = false;
@@ -170,7 +173,7 @@ namespace BetterTriggers.Controllers
             return paramText;
         }
 
-        public   string GetDescription(Function function)
+        public string GetDescription(Function function)
         {
             string description = string.Empty;
             bool found = false;
@@ -227,7 +230,7 @@ namespace BetterTriggers.Controllers
             return description;
         }
 
-        public   Category GetCategory(Function function)
+        public Category GetCategoryTriggerElement(Function function)
         {
             Category category = Category.AI;
             bool found = false;
