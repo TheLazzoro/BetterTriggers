@@ -28,55 +28,21 @@ namespace GUI
         public ParameterValueControl(string returnType)
         {
             InitializeComponent();
-
-            ControllerTriggerData controller = new ControllerTriggerData();
-            List<FunctionTemplate> functions = controller.LoadAllCalls();
-
-            for (int i = 0; i < functions.Count; i++)
-            {
-                if (functions[i].returnType == returnType)
-                {
-                    Function function = new Function()
-                    {
-                        identifier = functions[i].identifier,
-                        parameters = new List<Parameter>(),
-                        returnType = functions[i].returnType,
-                    };
-                    ListViewItem item = new ListViewItem();
-                    item.Content = functions[i].name;
-                    item.Tag = functions[i];
-
-                    listViewFunctions.Items.Add(item);
-                    this.selectedItem = listViewFunctions.Items.GetItemAt(0) as ListViewItem;
-                }
-            }
         }
 
         public int GetElementCount()
         {
-            return listViewFunctions.Items.Count;
+            throw new NotImplementedException();
         }
 
         public Parameter GetSelectedItem()
         {
-            var template = (FunctionTemplate)selectedItem.Tag;
-            var parameter = new Function()
-            {
-                identifier = template.identifier,
-                parameters = template.parameters,
-                returnType = template.returnType,
-            };
-            return parameter;
+            throw new NotImplementedException();
         }
 
         public void SetVisibility(Visibility visibility)
         {
             this.Visibility = visibility;
-        }
-
-        private void listViewFunction_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            selectedItem = listViewFunctions.SelectedItem as ListViewItem;
         }
     }
 }

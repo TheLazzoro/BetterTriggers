@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Threading;
-using Shell32;
 
 namespace BetterTriggers.Containers
 {
@@ -96,7 +95,7 @@ namespace BetterTriggers.Containers
                  * But it does fire when we delete a file.
                  * 
                  * EDIT: Apparently it DOES fire when recycle bin is empty?
-                 * I'm not sure about this yet, but it seems to work now
+                 * I'm not sure about this yet, but it seems to work now.
                  */
         }
 
@@ -149,6 +148,8 @@ namespace BetterTriggers.Containers
 
         }
 
+
+        // Also removed COM reference.
         /*
         [STAThread]
         private bool isInRecycleBin(string fullPath)

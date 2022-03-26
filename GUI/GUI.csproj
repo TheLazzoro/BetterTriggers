@@ -203,6 +203,9 @@
     <Compile Update="Components\TriggerEditor\ParameterConstantControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterValueControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterVariableControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -226,6 +229,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterConstantControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterValueControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

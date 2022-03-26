@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
     <ProjectReference Include="..\WorldEditParser\WorldEditParser.csproj" />
   </ItemGroup>
 
