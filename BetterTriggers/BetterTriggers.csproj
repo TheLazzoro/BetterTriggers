@@ -100,7 +100,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj" />
-    <ProjectReference Include="..\WorldEditParser\WorldEditParser.csproj" />
   </ItemGroup>
 
 </Project>

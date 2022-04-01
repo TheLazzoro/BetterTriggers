@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 
-namespace WorldEditParser
+namespace BetterTriggers.WorldEditParsers
 {
     public class UnitParser
     {

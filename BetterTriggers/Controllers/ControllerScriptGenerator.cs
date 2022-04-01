@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.WorldEditParsers;
 using Model;
 using Model.Data;
 using Model.EditorData;
@@ -10,7 +11,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using WorldEditParser;
 
 namespace BetterTriggers.Controllers
 {

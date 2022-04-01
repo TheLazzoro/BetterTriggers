@@ -1,6 +1,5 @@
-﻿using BetterTriggers.Casc;
+﻿using BetterTriggers.WorldEditParsers;
 using System;
-using WorldEditParser;
 
 namespace ConsoleTest
 {
@@ -8,9 +7,11 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
+            UnitDataParser unitDataParser = new UnitDataParser();
+            unitDataParser.ParseUnitData();
+            
             Casc c = new Casc();
             c.test();
-
 
             Console.WriteLine("Hello World!");
 

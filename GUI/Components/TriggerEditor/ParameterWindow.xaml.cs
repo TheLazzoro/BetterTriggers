@@ -23,6 +23,7 @@ namespace GUI
         ParameterFunctionControl functionControl;
         ParameterConstantControl constantControl;
         ParameterVariableControl variableControl;
+        ParameterValueControl valueControl;
 
         public ParameterWindow(string returnType)
         {
@@ -37,6 +38,11 @@ namespace GUI
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             variableControl.Visibility = Visibility.Hidden;
+
+            this.valueControl = new ParameterValueControl(returnType);
+            grid.Children.Add(valueControl);
+            Grid.SetRow(valueControl, 1);
+            valueControl.Visibility = Visibility.Hidden;
 
             this.constantControl = new ParameterConstantControl(returnType);
             grid.Children.Add(constantControl);
@@ -65,6 +71,7 @@ namespace GUI
             functionControl.Visibility = Visibility.Hidden;
             constantControl.Visibility = Visibility.Hidden;
             variableControl.Visibility = Visibility.Hidden;
+            valueControl.Visibility = Visibility.Hidden;
 
             control.SetVisibility(Visibility.Visible);
             if (control.GetElementCount() > 0)
@@ -93,7 +100,7 @@ namespace GUI
 
         private void radioBtnValue_Checked(object sender, RoutedEventArgs e)
         {
-            //ShowHideTabs(sender as UserControl);
+            ShowHideTabs(valueControl);
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
