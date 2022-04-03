@@ -200,13 +200,13 @@
     <Compile Update="Components\TriggerEditor\ConditionMenuWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\ParameterConstantControl.xaml.cs">
+    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterConstantControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\ParameterValueControl.xaml.cs">
+    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterValueControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\ParameterVariableControl.xaml.cs">
+    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -228,15 +228,15 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TriggerEditor\ParameterConstantControl.xaml">
+    <Page Update="Components\TriggerEditor\ParameterControls\ParameterConstantControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TriggerEditor\ParameterValueControl.xaml">
+    <Page Update="Components\TriggerEditor\ParameterControls\ParameterValueControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TriggerEditor\ParameterVariableControl.xaml">
+    <Page Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

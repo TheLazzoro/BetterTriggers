@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GUI
+namespace GUI.Components.TriggerEditor.ParameterControls
 {
     /// <summary>
     /// Interaction logic for ParameterFunctionControl.xaml

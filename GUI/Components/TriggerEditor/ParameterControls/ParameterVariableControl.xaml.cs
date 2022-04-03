@@ -17,7 +17,7 @@ using Model.Data;
 using Model.SaveableData;
 using Newtonsoft.Json;
 
-namespace GUI
+namespace GUI.Components.TriggerEditor.ParameterControls
 {
     /// <summary>
     /// Interaction logic for ParameterFunctionControl.xaml

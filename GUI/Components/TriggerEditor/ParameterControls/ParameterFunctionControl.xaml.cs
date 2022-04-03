@@ -16,7 +16,7 @@ using Model;
 using Model.SaveableData;
 using Model.Templates;
 
-namespace GUI
+namespace GUI.Components.TriggerEditor.ParameterControls
 {
     /// <summary>
     /// Interaction logic for ParameterFunctionControl.xaml

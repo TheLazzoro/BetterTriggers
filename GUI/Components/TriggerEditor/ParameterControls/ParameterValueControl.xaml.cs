@@ -11,12 +11,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BetterTriggers.Controllers;
+using GUI.Components.TriggerEditor;
 using GUI.Controllers;
 using Model;
 using Model.SaveableData;
 using Model.Templates;
 
-namespace GUI
+namespace GUI.Components.TriggerEditor.ParameterControls
 {
     /// <summary>
     /// Interaction logic for ParameterFunctionControl.xaml
@@ -24,20 +25,40 @@ namespace GUI
     public partial class ParameterValueControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
+        private IValueControl valueControl;
 
         public ParameterValueControl(string returnType)
         {
             InitializeComponent();
+
+            switch (returnType)
+            {
+                case "unitcode":
+                    this.valueControl = new ValueControlUnitTypes();
+                    break;
+                default:
+                    break;
+            }
+
+            var control = (UserControl)this.valueControl;
+            this.grid.Children.Add(control);
+            Grid.SetRow(control, 0);
+            Grid.SetColumn(control, 0);
+            control.Margin = new Thickness(10, 10, 10, 10);
+            control.HorizontalAlignment = HorizontalAlignment.Stretch;
+            control.VerticalAlignment = VerticalAlignment.Stretch;
+            control.VerticalContentAlignment = VerticalAlignment.Stretch;
+            control.HorizontalContentAlignment = HorizontalAlignment.Stretch;
         }
 
         public int GetElementCount()
         {
-            throw new NotImplementedException();
+            return -1;
         }
 
         public Parameter GetSelectedItem()
         {
-            throw new NotImplementedException();
+            return new Parameter();
         }
 
         public void SetVisibility(Visibility visibility)

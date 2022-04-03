@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Model.War3Data
@@ -10,5 +11,6 @@ namespace Model.War3Data
         public string Sort; // category
         public string Race;
         public string Icon;
+        public Stream Image;
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace GUI
+namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public interface IParameterControl
     {

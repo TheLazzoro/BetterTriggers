@@ -1,4 +1,5 @@
-﻿using Model.SaveableData;
+﻿using GUI.Components.TriggerEditor.ParameterControls;
+using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Text;

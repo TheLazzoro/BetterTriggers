@@ -102,8 +102,11 @@ namespace BetterTriggers.WorldEditParsers
                                     if (unitSkinsData[lineNumber].Length > 4)
                                         key = unitSkinsData[lineNumber].Substring(0, 4);
                                 }
+
+                                // Found icon
                                 string icon = unitSkinsData[lineNumber].Substring(4, unitSkinsData[lineNumber].Length - 4);
-                                unitType.Icon = icon;
+                                unitType.Icon = Path.ChangeExtension(icon, ".dds");
+                                unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + unitType.Icon);
                             }
 
                             lineNumber++;
