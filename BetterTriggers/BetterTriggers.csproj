@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>BetterTriggers</AssemblyName>
     <RootNamespace>BetterTriggers</RootNamespace>
   </PropertyGroup>
@@ -96,6 +96,9 @@
     <PackageReference Include="CascLib" Version="1.0.19" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="War3Net.Build" Version="5.4.1" />
+    <PackageReference Include="War3Net.IO.Mpq" Version="5.4.3" />
+    <PackageReference Include="War3Net.IO.Slk" Version="5.4.0" />
   </ItemGroup>
 
   <ItemGroup>

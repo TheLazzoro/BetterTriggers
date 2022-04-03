@@ -58,7 +58,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             unitData = parser.ParseUnitData();
 
             comboboxRace.SelectedIndex = 0;
-            comboboxObjectFamily.SelectedIndex = 0;
         }
 
 
@@ -81,18 +80,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             RePopulate();
         }
 
-
-        private void comboboxObjectFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (comboboxObjectFamily.SelectedIndex == 0)
-                selectedFamily = CategoryFamily.Melee;
-            else if (comboboxObjectFamily.SelectedIndex == 1)
-                selectedFamily = CategoryFamily.Campaign;
-            else if (comboboxObjectFamily.SelectedIndex == 2)
-                selectedFamily = CategoryFamily.Custom;
-
-            RePopulate();
-        }
 
         private void RePopulate()
         {
@@ -121,19 +108,16 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 else
                     unitRace = CategoryRace.Neutral;
 
-                CategoryFamily unitFamily;
-                var isCampaign = unit.Sort.Substring(0, 1) == "z";
-                if (isCampaign)
-                    unitFamily = CategoryFamily.Campaign;
-                else
-                    unitFamily = CategoryFamily.Melee;
-
-
-                if (unitRace == selectedRace && unitFamily == selectedFamily)
+                if (unitRace == selectedRace)
                 {
                     string unitCategory = unit.Sort.Substring(1, 1);
 
-                    if (unitCategory == "2")
+                    if(unit.isSpecial)
+                    {
+                        var btn = new ButtonUnitType(unit);
+                        itemControlSpecial.Items.Add(btn);
+                    }
+                    else if (unitCategory == "2")
                     {
                         var btn = new ButtonUnitType(unit);
                         itemControlUnits.Items.Add(btn);

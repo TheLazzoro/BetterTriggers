@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEditParsers
 {
@@ -21,102 +22,80 @@ namespace BetterTriggers.WorldEditParsers
 
             List<CASCFile> files = null;
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-            files = CASCFolder.GetFiles(units.Entries.Select(kv => kv.Value), null, false).ToList();
+            //files = CASCFolder.GetFiles(units.Entries.Select(kv => kv.Value), null, false).ToList();
 
-            int iterator = 0;
-            while (iterator < files.Count)
+            // Extract base data
+            CASCFile unitData = (CASCFile)units.Entries["unitdata.slk"];
+            var file = Casc.GetCasc().OpenFile(unitData.FullName);
+            SylkParser sylkParser = new SylkParser();
+            SylkTable table = sylkParser.Parse(file);
+            for(int i = 1; i < table.Count(); i++)
             {
-                if (files[iterator].Name.ToLower() == "unitdata.slk")
+                var row = table.ElementAt(i);
+                UnitType unitType = new UnitType()
                 {
-                    CASCFile unitData = files[iterator];
-                    var file = Casc.GetCasc().OpenFile(unitData.FullName);
-                    StreamReader reader = new StreamReader(file);
-                    string data = reader.ReadToEnd();
-                    string[] slkUnitData = data.Split("\r\n");
+                    Id = (string)row.GetValue(0),
+                    Sort = (string)row.GetValue(1),
+                    Race = (string)row.GetValue(3),
+                };
 
-
-
-                    Regex regexUnitType = new Regex(@";X1;"); // 'X1' is unit Id
-                    Regex regexSort = new Regex(@";X2;");     // 'X2' is sort
-                    Regex regexRace = new Regex(@";X4;");     // 'X4' is race
-
-                    for (int i = 0; i < slkUnitData.Length; i++)
-                    {
-                        MatchCollection matches = regexUnitType.Matches(slkUnitData[i]);
-                        if (matches.Count > 0)
-                        {
-                            UnitType unitType = new UnitType();
-                            unitType.Id = ParseCell(slkUnitData[i]);
-                            unitTypes.Add(unitType);
-                        }
-
-                        matches = regexSort.Matches(slkUnitData[i]);
-                        if (matches.Count > 0)
-                        {
-                            // Was created in first match
-                            unitTypes[unitTypes.Count - 1].Sort = ParseCell(slkUnitData[i]);
-                        }
-
-                        matches = regexRace.Matches(slkUnitData[i]);
-                        if (matches.Count > 0)
-                        {
-                            // Was created in first match
-                            unitTypes[unitTypes.Count - 1].Race = ParseCell(slkUnitData[i]);
-                        }
-                    }
-
-                    unitTypes.RemoveAt(0);
-                }
-
-                // Set icons on all unit type entries
-                if (files[iterator].Name.ToLower() == "unitskin.txt")
-                {
-                    CASCFile unitSkins = files[iterator];
-                    var file = Casc.GetCasc().OpenFile(unitSkins.FullName);
-                    StreamReader reader = new StreamReader(file);
-                    string data = reader.ReadToEnd();
-                    string[] unitSkinsData = data.Split("\r\n");
-
-                    // Loop through all unit types and regex their Id to find the art
-                    for (int i = 0; i < unitTypes.Count; i++)
-                    {
-                        var unitType = unitTypes[i];
-
-                        Regex regexUnitType = new Regex("\\[" + unitType.Id + "\\]");
-
-                        int lineNumber = 0;
-                        bool matchesUnitType = false;
-                        while(!matchesUnitType && lineNumber < unitSkinsData.Length)
-                        {
-                            MatchCollection matches = regexUnitType.Matches(unitSkinsData[lineNumber]);
-                            if(matches.Count > 0)
-                            {
-                                matchesUnitType = true;
-
-                                // find icon
-                                string key = unitSkinsData[lineNumber].Substring(0, 4);
-                                while(key != "Art=")
-                                {
-                                    lineNumber++;
-
-                                    if (unitSkinsData[lineNumber].Length > 4)
-                                        key = unitSkinsData[lineNumber].Substring(0, 4);
-                                }
-
-                                // Found icon
-                                string icon = unitSkinsData[lineNumber].Substring(4, unitSkinsData[lineNumber].Length - 4);
-                                unitType.Icon = Path.ChangeExtension(icon, ".dds");
-                                unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + unitType.Icon);
-                            }
-
-                            lineNumber++;
-                        }
-                    }
-                }
-
-                iterator++;
+                unitTypes.Add(unitType);
             }
 
+            // Set 'special' units
+            CASCFile unitUI = (CASCFile)units.Entries["unitui.slk"];
+            file = Casc.GetCasc().OpenFile(unitUI.FullName);
+            sylkParser = new SylkParser();
+            table = sylkParser.Parse(file);
+            for (int i = 0; i < unitTypes.Count(); i++)
+            {
+                var unitType = unitTypes[i];
+                var row = table.ElementAt(i+1);
+                unitType.isSpecial = (int)row.GetValue(6) == 1;
+            }
+
+            // Set icons on all unit type entries
+            CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
+            file = Casc.GetCasc().OpenFile(unitSkins.FullName);
+            var reader = new StreamReader(file);
+            var data = reader.ReadToEnd();
+            string[] unitSkinsData = data.Split("\r\n");
+
+            // Loop through all unit types and regex their Id to find the art
+            for (int i = 0; i < unitTypes.Count; i++)
+            {
+                var unitType = unitTypes[i];
+
+                var regexUnitType = new Regex("\\[" + unitType.Id + "\\]");
+
+                int lineNumber = 0;
+                bool matchesUnitType = false;
+                while (!matchesUnitType && lineNumber < unitSkinsData.Length)
+                {
+                    MatchCollection matches = regexUnitType.Matches(unitSkinsData[lineNumber]);
+                    if (matches.Count > 0)
+                    {
+                        matchesUnitType = true;
+
+                        // find icon
+                        string key = unitSkinsData[lineNumber].Substring(0, 4);
+                        while (key != "Art=")
+                        {
+                            lineNumber++;
+
+                            if (unitSkinsData[lineNumber].Length > 4)
+                                key = unitSkinsData[lineNumber].Substring(0, 4);
+                        }
+
+                        // Found icon
+                        string icon = unitSkinsData[lineNumber].Substring(4, unitSkinsData[lineNumber].Length - 4);
+                        unitType.Icon = Path.ChangeExtension(icon, ".dds");
+                        unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + unitType.Icon);
+                    }
+
+                    lineNumber++;
+                }
+            }
 
             return unitTypes;
         }

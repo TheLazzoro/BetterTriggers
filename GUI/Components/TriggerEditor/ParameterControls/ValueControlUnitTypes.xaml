@@ -33,11 +33,6 @@
             <ComboBoxItem Content="Neutral"/>
             <ComboBoxItem Content="Neutral - Naga"/>
         </ComboBox>
-        <ComboBox x:Name="comboboxObjectFamily" Height="22" Margin="0,0,5,0" Grid.Column="1" Grid.ColumnSpan="1" SelectionChanged="comboboxObjectFamily_SelectionChanged" >
-            <ComboBoxItem Content="Melee"/>
-            <ComboBoxItem Content="Campaign"/>
-            <ComboBoxItem Content="Custom"/>
-        </ComboBox>
         <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="50,5,0,5" Grid.ColumnSpan="3"/>
         <Label x:Name="lblSearch" Content="Search:" Grid.Row="1" Foreground="White" VerticalAlignment="Top"/>
 
