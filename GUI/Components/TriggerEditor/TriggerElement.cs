@@ -196,6 +196,38 @@ namespace GUI.Components.TriggerEditor
                             i++;
                         }
                     }
+                    else if (parameters[paramIndex] is Value)
+                    {
+                        RemoveCommaBeforeParamIndicator(textBlock);
+
+                        var index = paramIndex;
+
+                        i++;
+
+
+                        // TODO: This will crash if a referenced variable is deleted.
+                        var value = (Value)parameters[paramIndex];
+                        var name = value.identifier;
+
+                        // This exists in case a variable has been changed
+                        if (name == null || name == "" || value.returnType != parameters[paramIndex].returnType)
+                        {
+                            parameters[paramIndex] = new Parameter()
+                            {
+                                returnType = value.returnType,
+                            };
+                            name = "null";
+                        }
+
+                        CreateHyperlink(textBlock, name, parameters, index);
+
+                        paramIndex++;
+
+                        while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
+                        {
+                            i++;
+                        }
+                    }
                     else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?
                     {
                         RemoveCommaBeforeParamIndicator(textBlock);
@@ -245,7 +277,7 @@ namespace GUI.Components.TriggerEditor
 
         private void RecolorHyperlink(Parameter parameter, Hyperlink hyperlink)
         {
-            if (parameter is Constant || parameter is Function || parameter is VariableRef)
+            if (parameter is Constant || parameter is Function || parameter is VariableRef || parameter is Value)
                 hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
             else
                 hyperlink.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));

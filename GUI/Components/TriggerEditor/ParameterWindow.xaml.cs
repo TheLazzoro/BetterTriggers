@@ -25,6 +25,7 @@ namespace GUI
         ParameterConstantControl constantControl;
         ParameterVariableControl variableControl;
         ParameterValueControl valueControl;
+        IParameterControl selectedControl;
 
         public ParameterWindow(string returnType)
         {
@@ -50,25 +51,11 @@ namespace GUI
             Grid.SetRow(constantControl, 1);
             constantControl.Visibility = Visibility.Visible;
             radioBtnPreset.IsChecked = true;
-
-
-            this.functionControl.listViewFunctions.SelectionChanged += SelectionChanged;
-            this.constantControl.listViewConstant.SelectionChanged += SelectionChanged;
-            this.variableControl.listViewVariables.SelectionChanged += SelectionChanged;
-        }
-
-        private void SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var listView = (ListView)sender;
-            var grid = (Grid) listView.Parent; // parent of listview
-            var control = (IParameterControl)grid.Parent; // parent of grid
-            // I consider this a 'working' hack for now
-
-            this.selectedParameter = control.GetSelectedItem();
         }
 
         private void ShowHideTabs(IParameterControl control)
         {
+            this.selectedControl = control;
             functionControl.Visibility = Visibility.Hidden;
             constantControl.Visibility = Visibility.Hidden;
             variableControl.Visibility = Visibility.Hidden;
@@ -77,7 +64,6 @@ namespace GUI
             control.SetVisibility(Visibility.Visible);
             if (control.GetElementCount() > 0)
             {
-                this.selectedParameter = control.GetSelectedItem();
                 btnOK.IsEnabled = true;
             }
             else
@@ -106,6 +92,7 @@ namespace GUI
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            this.selectedParameter = selectedControl.GetSelectedItem();
             this.isOK = true;
             this.Close();
         }

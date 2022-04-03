@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.WorldEditParsers;
+using Model.SaveableData;
 using Model.War3Data;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private List<UnitType> unitData = new List<UnitType>();
         private CategoryRace selectedRace = CategoryRace.Human;
-        private CategoryFamily selectedFamily = CategoryFamily.Melee;
+        private Value selectedType;
+        private int elementCount;
+        private ButtonUnitType selectedButton;
 
         public ValueControlUnitTypes()
         {
@@ -60,6 +63,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             comboboxRace.SelectedIndex = 0;
         }
 
+        public Parameter GetSelected()
+        {
+            return selectedType;
+        }
+
+        public int GetElementCount()
+        {
+            return elementCount;
+        }
 
         private void comboboxRace_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -80,13 +92,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             RePopulate();
         }
 
-
         private void RePopulate()
         {
             itemControlUnits.Items.Clear();
             itemControlHeroes.Items.Clear();
             itemControlBuildings.Items.Clear();
             itemControlSpecial.Items.Clear();
+            elementCount = 0;
 
             for (int i = 0; i < unitData.Count; i++)
             {
@@ -111,35 +123,38 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 if (unitRace == selectedRace)
                 {
                     string unitCategory = unit.Sort.Substring(1, 1);
+                    var btn = new ButtonUnitType(unit);
+                    btn.Click += Btn_Click;
 
-                    if(unit.isSpecial)
-                    {
-                        var btn = new ButtonUnitType(unit);
+                    if (unit.isSpecial)
                         itemControlSpecial.Items.Add(btn);
-                    }
                     else if (unitCategory == "2")
-                    {
-                        var btn = new ButtonUnitType(unit);
                         itemControlUnits.Items.Add(btn);
-                    }
                     else if (unitCategory == "1")
-                    {
-                        var btn = new ButtonUnitType(unit);
                         itemControlHeroes.Items.Add(btn);
-                    }
                     else if (unitCategory == "3")
-                    {
-                        var btn = new ButtonUnitType(unit);
                         itemControlBuildings.Items.Add(btn);
-                    }
                     else
-                    {
-                        var btn = new ButtonUnitType(unit);
                         itemControlSpecial.Items.Add(btn);
-                    }
+
+                    elementCount++;
                 }
             }
         }
 
+        private void Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedButton != null)
+                selectedButton.RemoveSelectedBorder();
+
+
+            var btnClicked = (ButtonUnitType) e.Source;
+            selectedButton = btnClicked;
+            this.selectedType = new Value()
+            {
+                identifier = btnClicked.UnitType,
+                returnType = "unitcode",
+            };
+        }
     }
 }

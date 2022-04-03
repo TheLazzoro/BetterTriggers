@@ -12,7 +12,7 @@ namespace BetterTriggers.WorldEditParsers
     {
         private static bool _onlineMode = false;
         private static string product = "w3";
-        private static string path = @"E:\Programmer\Warcraft III";
+        private static string path = @"E:\Programmer\Warcraft III"; // we need to change this
         private static CASCFolder war3_w3mod;
         private static CASCHandler casc;
 

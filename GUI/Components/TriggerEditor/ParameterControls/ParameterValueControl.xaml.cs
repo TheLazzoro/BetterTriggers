@@ -40,6 +40,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     break;
             }
 
+            if (this.valueControl == null)
+                return;
+
             var control = (UserControl)this.valueControl;
             this.grid.Children.Add(control);
             Grid.SetRow(control, 0);
@@ -53,12 +56,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public int GetElementCount()
         {
-            return -1;
+            return valueControl.GetElementCount();
         }
 
         public Parameter GetSelectedItem()
         {
-            return new Parameter();
+            return valueControl.GetSelected();
         }
 
         public void SetVisibility(Visibility visibility)
