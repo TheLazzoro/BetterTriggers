@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CASCLib;
 
-namespace BetterTriggers.WorldEditParsers
+namespace BetterTriggers.WorldEdit
 {
     public class Casc
     {

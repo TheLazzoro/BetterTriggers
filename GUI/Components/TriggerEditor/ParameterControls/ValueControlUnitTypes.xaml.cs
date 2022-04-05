@@ -1,4 +1,4 @@
-﻿using BetterTriggers.WorldEditParsers;
+﻿using BetterTriggers.WorldEdit;
 using Model.SaveableData;
 using Model.War3Data;
 using System;
@@ -57,9 +57,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            UnitDataParser parser = new UnitDataParser();
-            unitData = parser.ParseUnitData();
-
+            unitData = UnitData.GetUnitTypesAll();
             comboboxRace.SelectedIndex = 0;
         }
 

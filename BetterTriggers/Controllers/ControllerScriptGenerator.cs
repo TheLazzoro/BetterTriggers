@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.WorldEditParsers;
+using BetterTriggers.WorldEdit;
 using Model;
 using Model.Data;
 using Model.EditorData;
@@ -157,9 +157,9 @@ namespace BetterTriggers.Controllers
             script += "\tlocal trigger t\n";
             script += "\tlocal real life\n";
 
-            UnitParser unitParser = new UnitParser();
+            Units unitParser = new Units();
             unitParser.ParseUnits();
-            foreach (var u in unitParser.Units)
+            foreach (var u in unitParser.units)
             {
                 if (u.Id == "sloc")
                     continue;

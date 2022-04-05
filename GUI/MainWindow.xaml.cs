@@ -45,6 +45,8 @@ namespace GUI
         {
             InitializeComponent();
 
+            BetterTriggers.Init.Initialize();
+
             menuRecentFiles.Items.Add("Item 1");
             menuRecentFiles.Items.Add("Item 2");
             menuRecentFiles.Items.Add("Item 3");

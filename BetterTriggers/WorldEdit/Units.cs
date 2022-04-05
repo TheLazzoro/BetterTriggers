@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 
-namespace BetterTriggers.WorldEditParsers
+namespace BetterTriggers.WorldEdit
 {
-    public class UnitParser
+    public class Units
     {
-        public List<Unit> Units = new List<Unit>();
+        public List<Unit> units = new List<Unit>();
 
         public void ParseUnits()
         {
@@ -22,32 +22,32 @@ namespace BetterTriggers.WorldEditParsers
 
             for (int k = 0; k < unit_count; k++)
             {
-                Unit i = new Unit();
-                i.Id = new string(reader.ReadChars(4));
-                i.Variation = reader.ReadUInt32();
+                Unit u = new Unit();
+                u.Id = new string(reader.ReadChars(4));
+                u.Variation = reader.ReadUInt32();
                 float x = reader.ReadSingle();
                 float y = reader.ReadSingle();
                 float z = reader.ReadSingle();
-                i.Position = new Vector3(x, y, z);
-                i.Angle = reader.ReadSingle();
+                u.Position = new Vector3(x, y, z);
+                u.Angle = reader.ReadSingle();
                 float scaleX = reader.ReadSingle();
                 float scaleY = reader.ReadSingle();
                 float scaleZ = reader.ReadSingle();
-                i.Scale = new Vector3(scaleX, scaleY, scaleZ);
+                u.Scale = new Vector3(scaleX, scaleY, scaleZ);
 
-                i.SkinId = new string(reader.ReadChars(4));
-                i.Flags = reader.ReadByte();
-                i.Owner = reader.ReadInt32();
+                u.SkinId = new string(reader.ReadChars(4));
+                u.Flags = reader.ReadByte();
+                u.Owner = reader.ReadInt32();
 
                 reader.ReadByte(); // unknown
                 reader.ReadByte(); // unknown
 
-                i.HitPointsPercent = reader.ReadInt32();
-                i.ManaPoints = reader.ReadInt32();
+                u.HitPointsPercent = reader.ReadInt32();
+                u.ManaPoints = reader.ReadInt32();
 
                 if (subversion >= 11)
                 {
-                    i.ItemTablePointer = reader.ReadInt32();
+                    u.ItemTablePointer = reader.ReadInt32();
                 }
 
                 int itemCount = reader.ReadInt32(); // total items count?
@@ -60,39 +60,39 @@ namespace BetterTriggers.WorldEditParsers
                     itemSet.items.Add(new Tuple<string, int>(itemId, chance));
                 }
 
-                i.Gold = reader.ReadInt32();
-                i.TargetAcquisition = reader.ReadSingle();
-                i.Level = reader.ReadInt32();
+                u.Gold = reader.ReadInt32();
+                u.TargetAcquisition = reader.ReadSingle();
+                u.Level = reader.ReadInt32();
 
                 if (subversion >= 11)
                 {
-                    i.Strength = reader.ReadInt32();
-                    i.Agility = reader.ReadInt32();
-                    i.Intelligence = reader.ReadInt32();
+                    u.Strength = reader.ReadInt32();
+                    u.Agility = reader.ReadInt32();
+                    u.Intelligence = reader.ReadInt32();
                 }
 
                 int equippedItemCount = reader.ReadInt32();
-                i.Items = new List<Tuple<int, string>>();
+                u.Items = new List<Tuple<int, string>>();
                 for (int j = 0; j < equippedItemCount; j++)
                 {
                     int slot = reader.ReadInt32();
                     string id = new string(reader.ReadChars(4));
-                    i.Items.Add(new Tuple<int, string>(slot, id));
+                    u.Items.Add(new Tuple<int, string>(slot, id));
                 }
 
                 int totalAbilites = reader.ReadInt32();
-                i.Abilites = new List<Tuple<string, int, int>>();
+                u.Abilites = new List<Tuple<string, int, int>>();
                 for (int j = 0; j < totalAbilites; j++)
                 {
                     string id = new string(reader.ReadChars(4));
                     int autocast = reader.ReadInt32();
                     int level = reader.ReadInt32();
-                    i.Abilites.Add(new Tuple<string, int, int>(id, autocast, level));
+                    u.Abilites.Add(new Tuple<string, int, int>(id, autocast, level));
                 }
 
-                i.random_Type = reader.ReadInt32();
+                u.random_Type = reader.ReadInt32();
                 // TODO
-                switch (i.random_Type)
+                switch (u.random_Type)
                 {
                     case 0:
                         reader.BaseStream.Position += reader.ReadByte() * 4;
@@ -109,11 +109,11 @@ namespace BetterTriggers.WorldEditParsers
                 }
 
 
-                i.CustomColor = reader.ReadInt32();
-                i.Waygate = reader.ReadInt32();
-                i.CreationNumber = reader.ReadInt32();
+                u.CustomColor = reader.ReadInt32();
+                u.Waygate = reader.ReadInt32();
+                u.CreationNumber = reader.ReadInt32();
 
-                Units.Add(i);
+                units.Add(u);
 
                 // Either a unit or an item
                 /*

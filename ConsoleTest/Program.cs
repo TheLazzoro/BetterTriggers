@@ -1,4 +1,4 @@
-﻿using BetterTriggers.WorldEditParsers;
+﻿using BetterTriggers.WorldEdit;
 using System;
 
 namespace ConsoleTest
@@ -7,7 +7,10 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            UnitDataParser unitDataParser = new UnitDataParser();
+            AbilityData abilityDataParser = new AbilityData();
+            abilityDataParser.ParseAbilityData();
+
+            UnitData unitDataParser = new UnitData();
             unitDataParser.ParseUnitData();
             
             Casc c = new Casc();
@@ -15,7 +18,7 @@ namespace ConsoleTest
 
             Console.WriteLine("Hello World!");
 
-            UnitParser parser = new UnitParser();
+            Units parser = new Units();
             parser.ParseUnits();
         }
     }

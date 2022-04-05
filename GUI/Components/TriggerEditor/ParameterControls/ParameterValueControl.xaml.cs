@@ -36,6 +36,21 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 case "unitcode":
                     this.valueControl = new ValueControlUnitTypes();
                     break;
+                case "abilcode":
+                    this.valueControl = new ValueControlAbilities();
+                    break;
+                case "buffcode":
+                    this.valueControl = new ValueControlBuffs();
+                    break;
+                case "destructablecode":
+                    this.valueControl = new ValueControlDestructibles();
+                    break;
+                case "techcode":
+                    this.valueControl = new ValueControlUpgrades();
+                    break;
+                case "itemcode":
+                    this.valueControl = new ValueControlItems();
+                    break;
                 default:
                     break;
             }

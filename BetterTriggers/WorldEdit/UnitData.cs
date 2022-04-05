@@ -8,19 +8,25 @@ using System.Text;
 using System.Text.RegularExpressions;
 using War3Net.IO.Slk;
 
-namespace BetterTriggers.WorldEditParsers
+namespace BetterTriggers.WorldEdit
 {
-    public class UnitDataParser
+    public class UnitData
     {
+        private static List<UnitType> unitTypes { get; set; }
+
+        public static List<UnitType> GetUnitTypesAll()
+        {
+            return unitTypes;
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns>A list of all base unit types.</returns>
-        public List<UnitType> ParseUnitData()
+        internal static void Load()
         {
-            List<UnitType> unitTypes = new List<UnitType>();
+            unitTypes = new List<UnitType>();
 
-            List<CASCFile> files = null;
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
             //files = CASCFolder.GetFiles(units.Entries.Select(kv => kv.Value), null, false).ToList();
 
@@ -96,8 +102,6 @@ namespace BetterTriggers.WorldEditParsers
                     lineNumber++;
                 }
             }
-
-            return unitTypes;
         }
 
         /// <summary>
