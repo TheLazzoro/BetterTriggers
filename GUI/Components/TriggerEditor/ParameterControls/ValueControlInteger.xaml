@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="GUI.Components.TriggerEditor.ParameterControls.ValueControlInteger"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GUI" xmlns:numericInput="http://gu.se/NumericInput"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" Width="auto">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Value:" Foreground="White"/>
+        <TextBox x:Name="textBox" Height="22" Margin="50,0,0,0" Width="100" HorizontalAlignment="Left" PreviewTextInput="textBox_PreviewTextInput" TextChanged="textBox_TextChanged" />
+
+    </Grid>
+</UserControl>

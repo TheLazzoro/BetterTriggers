@@ -7,11 +7,7 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            AbilityData abilityDataParser = new AbilityData();
-            abilityDataParser.ParseAbilityData();
-
-            UnitData unitDataParser = new UnitData();
-            unitDataParser.ParseUnitData();
+            BetterTriggers.Init.Initialize();
             
             Casc c = new Casc();
             c.test();

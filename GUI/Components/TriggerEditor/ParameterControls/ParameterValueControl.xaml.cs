@@ -33,6 +33,18 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             switch (returnType)
             {
+                case "boolean":
+                    this.valueControl = new ValueControlBoolean();
+                    break;
+                case "integer":
+                    this.valueControl = new ValueControlInteger();
+                    break;
+                case "real":
+                    this.valueControl = new ValueControlReal();
+                    break;
+                case "StringExt":
+                    this.valueControl = new ValueControlString();
+                    break;
                 case "unitcode":
                     this.valueControl = new ValueControlUnitTypes();
                     break;

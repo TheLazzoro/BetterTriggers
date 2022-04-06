@@ -11,6 +11,9 @@ namespace BetterTriggers
     {
         private static bool hasLoaded;
 
+        /// <summary>
+        /// Loads all War3 data from CASC into memory.
+        /// </summary>
         public static void Initialize()
         {
             if (hasLoaded)

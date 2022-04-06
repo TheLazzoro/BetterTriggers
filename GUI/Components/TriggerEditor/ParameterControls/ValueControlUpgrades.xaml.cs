@@ -56,11 +56,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return (Value)this.selectedItem.Tag;
         }
 
-        public void SetVisibility(Visibility visibility)
-        {
-            this.Visibility = visibility;
-        }
-
         private void listViewAbilities_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedItem = listViewBuffs.SelectedItem as ListViewItem;

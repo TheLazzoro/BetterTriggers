@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="GUI.Components.TriggerEditor.ParameterControls.ValueControlString"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" Width="auto">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="85"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="85"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBox x:Name="textBoxString" Height="22" Grid.ColumnSpan="3" TextChanged="textBoxString_TextChanged"></TextBox>
+        <Button x:Name="btnColor0" Grid.Row="1" Height="22"></Button>
+        <Button x:Name="btnApplyColor0" Content="Apply Color" Grid.Row="2" Height="22"></Button>
+
+        <Button x:Name="btnColor1" Grid.Row="1" Grid.Column="2" Height="22"></Button>
+        <Button x:Name="btnApplyColor1" Grid.Column="2" Content="Apply Color" Grid.Row="2" Height="22"></Button>
+
+        <Rectangle x:Name="rectGradient" Grid.Column="1" Grid.Row="1" Height="22" Margin="5,0,5,0">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop x:Name="gradient0" Color="Black" Offset="1"/>
+                    <GradientStop x:Name="gradient1" Color="White"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button x:Name="btnApplyGradient" Grid.Column="1" Grid.Row="2" Content="Apply Gradient" Height="22" Margin="5,0,5,0"></Button>
+
+        <Button x:Name="btnNewLine" Content="New Line" Grid.Row="3" Grid.ColumnSpan="3" Height="22" ></Button>
+
+        <TextBlock x:Name="textBlockPreview" Grid.Row="4" Grid.ColumnSpan="3" Foreground="White" Background="#FF182231"></TextBlock>
+    </Grid>
+</UserControl>
