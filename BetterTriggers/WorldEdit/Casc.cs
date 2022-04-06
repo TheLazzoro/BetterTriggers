@@ -50,6 +50,33 @@ namespace BetterTriggers.WorldEdit
             return war3_w3mod;
         }
 
+        public static CASCFolder Getx86Folder()
+        {
+            if (war3_w3mod == null)
+            {
+                var casc = GetCasc();
+                var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
+                casc.Root.MergeInstall(casc.Install);
+                war3_w3mod = (CASCFolder)fldr.Entries["x86_64"];
+            }
+
+            return war3_w3mod;
+        }
+
+        public static void SaveFile(CASCFile file, string fullPath)
+        {
+            var stream = Casc.GetCasc().OpenFile(file.FullName);
+
+            var dir = Path.GetDirectoryName(fullPath);
+            var name = Path.GetFileName(fullPath);
+
+            FileStream fileStream = File.Create(Path.Combine(dir, name), (int)stream.Length);
+            byte[] bytesInStream = new byte[stream.Length];
+            stream.Read(bytesInStream, 0, bytesInStream.Length);
+            fileStream.Write(bytesInStream, 0, bytesInStream.Length);
+            fileStream.Close();
+        } 
+
 
         public void test()
         {

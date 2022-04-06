@@ -7,20 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\JassHelper\Blizzard.j" />
     <None Remove="Resources\JassHelper\clijasshelper.exe" />
-    <None Remove="Resources\JassHelper\common.j" />
-    <None Remove="Resources\JassHelper\GOLD Parser-LICENSE.txt" />
-    <None Remove="Resources\JassHelper\jasshelper-LICENSE.txt" />
     <None Remove="Resources\JassHelper\jasshelper.conf" />
     <None Remove="Resources\JassHelper\jasshelper.exe" />
-    <None Remove="Resources\JassHelper\output.j" />
-    <None Remove="Resources\JassHelper\pjass-readme.txt" />
     <None Remove="Resources\JassHelper\pjass.exe" />
-    <None Remove="Resources\JassHelper\result.j" />
-    <None Remove="Resources\JassHelper\sfmpq-LICENSE.txt" />
     <None Remove="Resources\JassHelper\sfmpq.dll" />
-    <None Remove="Resources\JassHelper\vJass.j" />
     <None Remove="Resources\TriggerData\actions.json" />
     <None Remove="Resources\TriggerData\calls.json" />
     <None Remove="Resources\TriggerData\conditions.json" />
@@ -30,19 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\JassHelper\Blizzard.j">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\JassHelper\clijasshelper.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\JassHelper\common.j">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\JassHelper\GOLD Parser-LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\JassHelper\jasshelper-LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\JassHelper\jasshelper.conf">
@@ -51,25 +30,10 @@
     <Content Include="Resources\JassHelper\jasshelper.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\JassHelper\output.j">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\JassHelper\pjass-readme.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\JassHelper\pjass.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\JassHelper\result.j">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\JassHelper\sfmpq-LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\JassHelper\sfmpq.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\JassHelper\vJass.j">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\TriggerData\actions.json">
