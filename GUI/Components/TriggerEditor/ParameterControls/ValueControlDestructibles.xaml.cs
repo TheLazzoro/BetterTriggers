@@ -27,7 +27,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var destructibles = DestructibleData.GetDestructiblesAll();
+            var destructibles = DestructibleTypes.GetDestructiblesTypesAll();
 
             for (int i = 0; i < destructibles.Count; i++)
             {

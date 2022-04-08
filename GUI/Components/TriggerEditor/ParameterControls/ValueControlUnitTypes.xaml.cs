@@ -57,7 +57,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            unitData = UnitData.GetUnitTypesAll();
+            unitData = UnitTypes.GetUnitTypesAll();
             comboboxRace.SelectedIndex = 0;
         }
 

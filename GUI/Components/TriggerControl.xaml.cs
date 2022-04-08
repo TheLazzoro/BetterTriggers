@@ -50,9 +50,9 @@ namespace GUI.Components
 
             this.explorerElementTrigger = explorerElementTrigger;
 
-            categoryEvent = new NodeEvent();
-            categoryCondition = new NodeCondition();
-            categoryAction = new NodeAction();
+            categoryEvent = new NodeEvent("Events");
+            categoryCondition = new NodeCondition("Conditions");
+            categoryAction = new NodeAction("Actions");
 
             treeViewTriggers.Items.Add(categoryEvent);
             treeViewTriggers.Items.Add(categoryCondition);

@@ -10,9 +10,9 @@ namespace GUI.Components.TriggerEditor
 {
     public class NodeAction : TreeViewItem
     {
-        public NodeAction()
+        public NodeAction(string text)
         {
-            TreeViewManipulator.SetTreeViewItemAppearance(this, "Action", Category.Action);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, text, Category.Action);
         }
     }
 }

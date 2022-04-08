@@ -157,18 +157,17 @@ namespace BetterTriggers.Controllers
             script += "\tlocal trigger t\n";
             script += "\tlocal real life\n";
 
-            Units unitParser = new Units();
-            unitParser.ParseUnits();
-            foreach (var u in unitParser.units)
+            var units = Units.Load();
+            foreach (var u in units)
             {
-                if (u.Id == "sloc")
+                if (u.ToString() == "sloc")
                     continue;
 
-                var owner = u.Owner;
-                var id = u.Id;
+                var id = u.ToString();
+                var owner = u.OwnerId;
                 var x = u.Position.X.ToString(new CultureInfo("en-US"));
                 var y = u.Position.Y.ToString(new CultureInfo("en-US"));
-                var angle = u.Angle.ToString(new CultureInfo("en-US"));
+                var angle = u.Rotation.ToString(new CultureInfo("en-US"));
                 var skinId = u.SkinId;
 
                 script += $"call BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}')\n";

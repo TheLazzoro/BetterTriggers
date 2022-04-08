@@ -27,7 +27,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var abilities = AbilityData.GetAbilitiesAll();
+            var abilities = AbilityTypes.GetAbilitiesAll();
 
             for (int i = 0; i < abilities.Count; i++)
             {

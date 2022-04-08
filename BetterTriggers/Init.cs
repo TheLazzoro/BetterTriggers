@@ -20,11 +20,11 @@ namespace BetterTriggers
                 return;
 
             Natives.Load();
-            UnitData.Load();
-            AbilityData.Load();
+            UnitTypes.Load();
+            AbilityTypes.Load();
             BuffData.Load();
-            DestructibleData.Load();
-            UpgradeData.Load();
+            DestructibleTypes.Load();
+            UpgradeTypes.Load();
             ItemData.Load();
 
             hasLoaded = true;

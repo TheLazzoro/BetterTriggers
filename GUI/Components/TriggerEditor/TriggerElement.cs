@@ -57,8 +57,14 @@ namespace GUI.Components.TriggerEditor
             this.category = controller.GetCategoryTriggerElement(function);
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", this.category);
-
             this.FormatParameterText();
+
+            if(function.identifier == "IfThenElseMultiple")
+            {
+                this.Items.Add(new NodeCondition("If - Conditions"));
+                this.Items.Add(new NodeAction("Then - Actions"));
+                this.Items.Add(new NodeAction("Else - Actions"));
+            }
         }
 
         public void FormatParameterText()

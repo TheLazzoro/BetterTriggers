@@ -45,6 +45,8 @@ namespace GUI
             grid.Children.Add(valueControl);
             Grid.SetRow(valueControl, 1);
             valueControl.Visibility = Visibility.Hidden;
+            if(!valueControl.ValueControlExists())
+                radioBtnValue.Visibility = Visibility.Hidden;
 
             this.constantControl = new ParameterConstantControl(returnType);
             grid.Children.Add(constantControl);

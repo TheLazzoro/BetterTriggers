@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Model.War3Data
 {
+    [Obsolete("Not used any more", true)]
     public class Unit
     {
         public string Id;

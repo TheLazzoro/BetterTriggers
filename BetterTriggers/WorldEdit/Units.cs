@@ -3,18 +3,33 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using War3Net.Build.Extensions;
+using War3Net.Build.Widget;
 
 namespace BetterTriggers.WorldEdit
 {
     public class Units
     {
-        public List<Unit> units = new List<Unit>();
-
-        public void ParseUnits()
+        public static List<UnitData> Load()
         {
             Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3mapUnits.doo", FileMode.Open);
-
             BinaryReader reader = new BinaryReader(s);
+            var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
+
+            var id = mapUnits.Units[1].ToString();
+
+            return mapUnits.Units;
+        }
+
+        [Obsolete("ParseUnits is deprecated, please use static Load instead.", true)]
+        public void ParseUnits()
+        {
+            /*
+            Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3mapUnits.doo", FileMode.Open);
+            BinaryReader reader = new BinaryReader(s);
+
+            var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
+
             string format = new string(reader.ReadChars(4));
             UInt32 version = reader.ReadUInt32();
             int subversion = reader.ReadInt32();
@@ -125,10 +140,10 @@ namespace BetterTriggers.WorldEdit
                 {
                     items.push_back(i);
                 }
-                */
             }
 
             s.Close();
+            */
         }
     }
 }

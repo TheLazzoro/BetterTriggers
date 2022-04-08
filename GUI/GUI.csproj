@@ -203,10 +203,19 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterConstantControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlMapCameras.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlMapDestructibles.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlReal.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlInteger.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlMapUnits.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlString.xaml.cs">
@@ -216,6 +225,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlBoolean.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlRegions.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlUpgrades.xaml.cs">
@@ -259,11 +271,23 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ValueControlMapCameras.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ValueControlMapDestructibles.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ValueControlReal.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ValueControlInteger.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ValueControlMapUnits.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -276,6 +300,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ValueControlBoolean.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ValueControlRegions.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

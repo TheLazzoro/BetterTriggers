@@ -10,9 +10,9 @@ namespace GUI.Components.TriggerEditor
 {
     public class NodeCondition : TreeViewItem
     {
-        public NodeCondition()
+        public NodeCondition(string text)
         {
-            TreeViewManipulator.SetTreeViewItemAppearance(this, "Condition", Category.Condition);
+            TreeViewManipulator.SetTreeViewItemAppearance(this, text, Category.Condition);
         }
     }
 }

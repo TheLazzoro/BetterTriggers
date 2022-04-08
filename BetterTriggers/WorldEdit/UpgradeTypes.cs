@@ -9,38 +9,38 @@ using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class AbilityData
+    public class UpgradeTypes
     {
-        private static List<AbilityType> abilities;
+        private static List<UpgradeType> upgrades;
 
-        public static List<AbilityType> GetAbilitiesAll()
+        public static List<UpgradeType> GetUpgradesAll()
         {
-            return abilities;
+            return upgrades;
         }
 
         internal static void Load()
         {
-            abilities = new List<AbilityType>();
+            upgrades = new List<UpgradeType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
-            CASCFile abilityData = (CASCFile)units.Entries["abilitydata.slk"];
+            CASCFile abilityData = (CASCFile)units.Entries["upgradedata.slk"];
             var file = Casc.GetCasc().OpenFile(abilityData.FullName);
             SylkParser sylkParser = new SylkParser();
             SylkTable table = sylkParser.Parse(file);
             for (int i = 1; i < table.Count(); i++)
             {
                 var row = table.ElementAt(i);
-                AbilityType ability = new AbilityType()
+                UpgradeType upgrade = new UpgradeType()
                 {
-                    AbilCode = (string)row.GetValue(0),
-                    DisplayName = (string)row.GetValue(2), // We want to replace this display name with locales
+                    UpgradeCode = (string)row.GetValue(0),
+                    DisplayName = (string)row.GetValue(1), // We want to replace this display name with locales
                 };
 
-                if (ability.AbilCode == null)
+                if (upgrade.UpgradeCode == null)
                     continue;
 
-                abilities.Add(ability);
+                upgrades.Add(upgrade);
             }
         }
     }

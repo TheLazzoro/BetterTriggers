@@ -19,36 +19,36 @@ using Model.Templates;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    public partial class ValueControlUpgrades : UserControl, IValueControl
+    public partial class ValueControlMapCameras : UserControl, IValueControl
     {
         private ListViewItem selectedItem;
 
-        public ValueControlUpgrades()
+        public ValueControlMapCameras()
         {
             InitializeComponent();
 
-            var upgrades = UpgradeTypes.GetUpgradesAll();
+            var cameras = Cameras.Load();
 
-            for (int i = 0; i < upgrades.Count; i++)
+            for (int i = 0; i < cameras.Count; i++)
             {
-                var upgrade = upgrades[i];
+                var camera = cameras[i];
                 Value value = new Value()
                 {
-                    identifier = upgrade.UpgradeCode,
-                    returnType = "buffcode",
+                    identifier = $"{camera.Name}",
+                    returnType = "camerasetup",
                 };
                 ListViewItem item = new ListViewItem();
-                item.Content = $"[{upgrade.UpgradeCode}] {upgrade.DisplayName}";
+                item.Content = $"{value.identifier}";
                 item.Tag = value;
 
-                listViewBuffs.Items.Add(item);
-                this.selectedItem = listViewBuffs.Items.GetItemAt(0) as ListViewItem;
+                listView.Items.Add(item);
+                this.selectedItem = listView.Items.GetItemAt(0) as ListViewItem;
             }
         }
 
         public int GetElementCount()
         {
-            return listViewBuffs.Items.Count;
+            return listView.Items.Count;
         }
 
         public Parameter GetSelected()
@@ -58,7 +58,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void listViewAbilities_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedItem = listViewBuffs.SelectedItem as ListViewItem;
+            selectedItem = listView.SelectedItem as ListViewItem;
         }
     }
 }

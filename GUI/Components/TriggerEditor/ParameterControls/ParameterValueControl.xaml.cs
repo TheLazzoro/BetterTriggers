@@ -63,6 +63,18 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 case "itemcode":
                     this.valueControl = new ValueControlItems();
                     break;
+                case "unit":
+                    this.valueControl = new ValueControlMapUnits();
+                    break;
+                case "destructable":
+                    this.valueControl = new ValueControlMapDestructibles();
+                    break;
+                case "rect":
+                    this.valueControl = new ValueControlRegions();
+                    break;
+                case "camerasetup":
+                    this.valueControl = new ValueControlMapCameras();
+                    break;
                 default:
                     break;
             }
@@ -94,6 +106,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public void SetVisibility(Visibility visibility)
         {
             this.Visibility = visibility;
+        }
+
+        public bool ValueControlExists()
+        {
+            return valueControl != null;
         }
     }
 }

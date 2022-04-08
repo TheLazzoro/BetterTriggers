@@ -2,18 +2,20 @@
 using Model.War3Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class DestructibleData
+    public class DestructibleTypes
     {
         private static List<DestructibleType> destructibles;
 
-        public static List<DestructibleType> GetDestructiblesAll()
+        public static List<DestructibleType> GetDestructiblesTypesAll()
         {
             return destructibles;
         }
@@ -40,6 +42,26 @@ namespace BetterTriggers.WorldEdit
                 if (destructible.DestCode == null)
                     continue;
 
+                destructibles.Add(destructible);
+            }
+
+            // Read custom destructible definition data
+            string path = @"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.w3b";
+            if (!File.Exists(path))
+                return;
+
+            Stream s = new FileStream(path, FileMode.Open);
+            BinaryReader reader = new BinaryReader(s);
+            var customDestructibles = BinaryReaderExtensions.ReadMapDestructableObjectData(reader);
+
+            for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
+            {
+                var dest = customDestructibles.NewDestructables[i];
+                DestructibleType destructible = new DestructibleType()
+                {
+                    DestCode = dest.ToString().Substring(0, 4),
+                    DisplayName = dest.ToString(), // We want to replace this display name with locales
+                };
                 destructibles.Add(destructible);
             }
         }

@@ -10,7 +10,7 @@ using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class UnitData
+    public class UnitTypes
     {
         private static List<UnitType> unitTypes { get; set; }
 
