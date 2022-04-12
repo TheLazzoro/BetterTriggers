@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using GUI.Controllers;
 using Model.SaveableData;
 using Model.Templates;
@@ -28,9 +29,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            for (int i = 0; i < ContainerTriggerData.ConstantTemplates.Count; i++)
+            var controllerTriggerData = new ControllerTriggerData();
+            var templates = controllerTriggerData.LoadAllConstants();
+            for (int i = 0; i < templates.Count; i++)
             {
-                var constant = ContainerTriggerData.ConstantTemplates[i];
+                var constant = templates[i];
                 if (constant.returnType == returnType)
                 {
                     ListViewItem item = new ListViewItem();

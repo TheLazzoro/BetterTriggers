@@ -194,10 +194,7 @@
     <Compile Update="Components\RootControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\ActionMenuWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Components\TriggerEditor\ConditionMenuWindow.xaml.cs">
+    <Compile Update="Components\TriggerEditor\TriggerElementMenuWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterConstantControl.xaml.cs">
@@ -259,11 +256,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TriggerEditor\ActionMenuWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Components\TriggerEditor\ConditionMenuWindow.xaml">
+    <Page Update="Components\TriggerEditor\TriggerElementMenuWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

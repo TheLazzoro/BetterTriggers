@@ -33,6 +33,8 @@ namespace Model.JsonBaseConverter
                         return new VariableRef();
                     case 4:
                         return new Value();
+                    case 5:
+                        return new IfThenElse();
                     default:
                         return new Parameter();
                 }

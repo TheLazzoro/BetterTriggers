@@ -14,7 +14,7 @@ namespace TriggerParser.Converter
 {
     public static class EventConverter
     {
-        public static void ConvertEvents(List<TriggerElement> triggerElements)
+        public static void ConvertEvents(List<TriggerParser.TriggerElements.TriggerElement> triggerElements)
         {
             foreach (var item in triggerElements)
             {

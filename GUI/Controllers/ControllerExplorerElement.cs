@@ -7,7 +7,8 @@ namespace GUI.Controllers
     {
         public void AddToUnsaved(TreeItemExplorerElement explorerElement)
         {
-            ContainerUnsavedElements.UnsavedElements.Add(explorerElement);
+            if(!ContainerUnsavedElements.UnsavedElements.Contains(explorerElement))
+                ContainerUnsavedElements.UnsavedElements.Add(explorerElement);
         }
 
         public void RemoveFromUnsaved(TreeItemExplorerElement explorerElement)

@@ -128,8 +128,8 @@ namespace BetterTriggers.Controllers
                 var trig = triggers[i];
                 for (int t = 0; t < trig.Actions.Count; t++)
                 {
-                    script += $"call {trig.Actions[t].identifier}(";
-                    script += RecurseParameters(trig.Actions[t].parameters);
+                    script += $"call {trig.Actions[t].function.identifier}(";
+                    script += RecurseParameters(trig.Actions[t].function.parameters);
                     script += ")" + System.Environment.NewLine;
                 }
             }

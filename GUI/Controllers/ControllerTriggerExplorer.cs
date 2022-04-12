@@ -17,9 +17,6 @@ namespace GUI.Controllers
         public void Populate(TriggerExplorer te)
         {
             var root = ContainerProject.projectFiles[0] as ExplorerElementRoot;
-
-
-
             for (int i = 0; i < root.explorerElements.Count; i++)
             {
                 RecursePopulate(te, te.map, root.explorerElements[i]);

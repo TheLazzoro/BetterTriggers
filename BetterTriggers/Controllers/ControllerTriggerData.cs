@@ -21,27 +21,57 @@ namespace BetterTriggers.Controllers
 
         public List<FunctionTemplate> LoadAllEvents()
         {
-            return ContainerTriggerData.EventTemplates;
+            List<FunctionTemplate> list = new List<FunctionTemplate>();
+            for (int i = 0; i < ContainerTriggerData.EventTemplates.Count; i++)
+            {
+                var template = ContainerTriggerData.EventTemplates[i];
+                list.Add(template.Clone());
+            }
+            return list;
         }
 
         public List<FunctionTemplate> LoadAllCalls()
         {
-            return ContainerTriggerData.CallTemplates;
+            List<FunctionTemplate> list = new List<FunctionTemplate>();
+            for (int i = 0; i < ContainerTriggerData.CallTemplates.Count; i++)
+            {
+                var template = ContainerTriggerData.CallTemplates[i];
+                list.Add(template.Clone());
+            }
+            return list;
         }
 
         public List<ConstantTemplate> LoadAllConstants()
         {
-            return ContainerTriggerData.ConstantTemplates;
+            List<ConstantTemplate> list = new List<ConstantTemplate>();
+            for (int i = 0; i < ContainerTriggerData.ConstantTemplates.Count; i++)
+            {
+                var template = ContainerTriggerData.ConstantTemplates[i];
+                list.Add(template.Clone());
+            }
+            return list;
         }
 
         public List<FunctionTemplate> LoadAllConditions()
         {
-            return ContainerTriggerData.ConditionTemplates;
+            List<FunctionTemplate> list = new List<FunctionTemplate>();
+            for (int i = 0; i < ContainerTriggerData.ConditionTemplates.Count; i++)
+            {
+                var template = ContainerTriggerData.ConditionTemplates[i];
+                list.Add(template.Clone());
+            }
+            return list;
         }
 
         public List<FunctionTemplate> LoadAllActions()
         {
-            return ContainerTriggerData.ActionTemplates;
+            List<FunctionTemplate> list = new List<FunctionTemplate>();
+            for (int i = 0; i < ContainerTriggerData.ActionTemplates.Count; i++)
+            {
+                var template = ContainerTriggerData.ActionTemplates[i];
+                list.Add(template.Clone());
+            }
+            return list;
         }
 
         public string GetParamDisplayName(Parameter parameter)

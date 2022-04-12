@@ -8,8 +8,8 @@ namespace Model.SaveableData
     public class Trigger
     {
         public int Id;
-        public List<Function> Events = new List<Function>();
-        public List<Function> Conditions = new List<Function>();
-        public List<Function> Actions = new List<Function>();
+        public List<TriggerElement> Events = new List<TriggerElement>();
+        public List<TriggerElement> Conditions = new List<TriggerElement>();
+        public List<TriggerElement> Actions = new List<TriggerElement>();
     }
 }

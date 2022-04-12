@@ -1,5 +1,5 @@
-﻿using BetterTriggers.Controllers;
-using GUI.Commands;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
@@ -41,7 +41,7 @@ namespace GUI.Components
         TreeViewItem dragItem;
         bool _IsDragging = false;
 
-        TriggerElement copiedTriggerElement;
+        TreeViewTriggerElement copiedTriggerElement;
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
         public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
@@ -61,52 +61,61 @@ namespace GUI.Components
             LoadTrigger(explorerElementTrigger.trigger);
         }
 
+        public void Refresh()
+        {
+            for (int i = 0; i < categoryEvent.Items.Count; i++)
+            {
+                var _event = categoryEvent.Items[i] as TreeViewTriggerElement;
+                _event.FormatParameterText();
+            }
+            for (int i = 0; i < categoryCondition.Items.Count; i++)
+            {
+                var condition = categoryCondition.Items[i] as TreeViewTriggerElement;
+                condition.FormatParameterText();
+            }
+            for (int i = 0; i < categoryAction.Items.Count; i++)
+            {
+                var action = categoryAction.Items[i] as TreeViewTriggerElement;
+                action.FormatParameterText();
+            }
+        }
+
         private void LoadTrigger(Model.SaveableData.Trigger trigger)
         {
             this.categoryEvent.Items.Clear();
             this.categoryCondition.Items.Clear();
             this.categoryAction.Items.Clear();
 
-            for (int i = 0; i < trigger.Events.Count; i++)
-            {
-                var _event = trigger.Events[i];
-                TriggerElement triggerElement = new TriggerElement(_event, this);
-                this.categoryEvent.Items.Add(triggerElement);
-            }
-            for (int i = 0; i < trigger.Conditions.Count; i++)
-            {
-                var condition = trigger.Conditions[i];
-                TriggerElement triggerElement = new TriggerElement(condition, this);
-                this.categoryCondition.Items.Add(triggerElement);
-            }
-            for (int i = 0; i < trigger.Actions.Count; i++)
-            {
-                var action = trigger.Actions[i];
-                TriggerElement triggerElement = new TriggerElement(action, this);
-                this.categoryAction.Items.Add(triggerElement);
-            }
+            RecurseLoadTrigger(trigger.Events, this.categoryEvent);
+            RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
+            RecurseLoadTrigger(trigger.Actions, this.categoryAction);
 
             this.categoryEvent.ExpandSubtree();
             this.categoryCondition.ExpandSubtree();
             this.categoryAction.ExpandSubtree();
         }
 
-        public void Refresh()
+        private void RecurseLoadTrigger(List<TriggerElement> functions, INode parent)
         {
-            for (int i = 0; i < categoryEvent.Items.Count; i++)
+            for (int i = 0; i < functions.Count; i++)
             {
-                var _event = categoryEvent.Items[i] as TriggerElement;
-                _event.FormatParameterText();
-            }
-            for (int i = 0; i < categoryCondition.Items.Count; i++)
-            {
-                var condition = categoryCondition.Items[i] as TriggerElement;
-                condition.FormatParameterText();
-            }
-            for (int i = 0; i < categoryAction.Items.Count; i++)
-            {
-                var action = categoryAction.Items[i] as TriggerElement;
-                action.FormatParameterText();
+                var function = functions[i];
+                TreeViewTriggerElement triggerElement = new TreeViewTriggerElement(function, this);
+                parent.Add(triggerElement);
+                if (function is IfThenElse)
+                {
+                    var ifThenElse = (IfThenElse)function;
+
+                    var nodeIf = new NodeCondition("If - Conditions");
+                    var nodeThen = new NodeAction("Then - Actions");
+                    var nodeElse = new NodeAction("Else - Actions");
+                    triggerElement.Items.Add(nodeIf);
+                    triggerElement.Items.Add(nodeThen);
+                    triggerElement.Items.Add(nodeElse);
+                    RecurseLoadTrigger(ifThenElse.If, nodeIf);
+                    RecurseLoadTrigger(ifThenElse.Then, nodeThen);
+                    RecurseLoadTrigger(ifThenElse.Else, nodeElse);
+                }
             }
         }
 
@@ -117,28 +126,33 @@ namespace GUI.Components
                 Id = explorerElementTrigger.trigger.Id
             };
 
-            var nodeEvents = this.categoryEvent;
-            for (int i = 0; i < nodeEvents.Items.Count; i++)
-            {
-                var _event = (TriggerElement)nodeEvents.Items[i];
-                trigger.Events.Add(_event.function);
-            }
-
-            var nodeConditions = this.categoryCondition;
-            for (int i = 0; i < nodeConditions.Items.Count; i++)
-            {
-                var condition = (TriggerElement)nodeConditions.Items[i];
-                trigger.Conditions.Add(condition.function);
-            }
-
-            var nodeActions = this.categoryAction;
-            for (int i = 0; i < nodeActions.Items.Count; i++)
-            {
-                var action = (TriggerElement)nodeActions.Items[i];
-                trigger.Actions.Add(action.function);
-            }
+            RecurseGenerateTrigger(trigger.Events, this.categoryEvent);
+            RecurseGenerateTrigger(trigger.Conditions, this.categoryCondition);
+            RecurseGenerateTrigger(trigger.Actions, this.categoryAction);
 
             return trigger;
+        }
+
+        private void RecurseGenerateTrigger(List<TriggerElement> functions, INode node)
+        {
+            var treeViewTriggerElements = node.GetTreeViewTriggerElements();
+            for (int i = 0; i < treeViewTriggerElements.Count; i++)
+            {
+                var triggerElement = treeViewTriggerElements[i];
+                var function = triggerElement.triggerElement;
+                functions.Add(function);
+
+                if (function is IfThenElse)
+                {
+                    var ifThenElse = (IfThenElse)function;
+                    var nodeIf = (NodeCondition)triggerElement.Items[0];
+                    var nodeThen = (NodeAction)triggerElement.Items[1];
+                    var nodeElse = (NodeAction)triggerElement.Items[2];
+                    RecurseGenerateTrigger(ifThenElse.If, nodeIf);
+                    RecurseGenerateTrigger(ifThenElse.Then, nodeThen);
+                    RecurseGenerateTrigger(ifThenElse.Else, nodeElse);
+                }
+            }
         }
 
         public string GetSaveString()
@@ -152,75 +166,79 @@ namespace GUI.Components
             return this;
         }
 
-
-
         public void CreateEvent()
         {
-            var eventMenu = new EventMenuWindow();
-            eventMenu.ShowDialog();
-            Function _event = eventMenu.selectedEvent;
-
-            if (_event != null)
-            {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(this, _event, categoryEvent, 0); // change 0 to other index
-                command.Execute();
-
-                categoryEvent.IsExpanded = true;
-            }
-
+            CreateTriggerElement(TriggerElementType.Event);
         }
 
         public void CreateCondition()
         {
-            var conditionMenu = new ConditionMenuWindow();
-            conditionMenu.ShowDialog();
-            Function condition = conditionMenu.selectedCondition;
-
-            if (condition != null)
-            {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(this, condition, categoryCondition, 0); // change 0 to other index
-                command.Execute();
-
-                categoryCondition.IsExpanded = true;
-            }
+            CreateTriggerElement(TriggerElementType.Condition);
         }
 
         public void CreateAction()
         {
-            var actionMenu = new ActionMenuWindow();
-            actionMenu.ShowDialog();
-            Function action = actionMenu.selectedAction;
+            CreateTriggerElement(TriggerElementType.Action);
+        }
 
-            if (action != null)
+        private void CreateTriggerElement(TriggerElementType type)
+        {
+            var menu = new TriggerElementMenuWindow(type);
+            menu.ShowDialog();
+            Function func = menu.selectedTriggerElement;
+            TriggerElement triggerElement = new TriggerElement();
+            triggerElement.function = func;
+
+            List<TriggerElement> parent = null;
+            var selected = treeViewTriggers.SelectedItem;
+            int insertIndex = 0;
+            if (selected is TriggerElement)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(this, action, categoryAction, 0); // change 0 to other index
-                command.Execute();
+                var treeItem = (TreeViewItem)selected;
+                var node = (INode)treeItem.Parent;
+                if (node.GetNodeType() == type)
+                {
+                    parent = node.GetTriggerElements();
+                    insertIndex = parent.IndexOf((TriggerElement)selected);
+                }
+                else
+                {
+                    if (type == TriggerElementType.Event)
+                        parent = categoryEvent.GetTriggerElements();
+                    else if (type == TriggerElementType.Condition)
+                        parent = categoryCondition.GetTriggerElements();
+                    else if (type == TriggerElementType.Action)
+                        parent = categoryAction.GetTriggerElements();
 
-                categoryAction.IsExpanded = true;
+                    insertIndex = parent.Count;
+                }
+            }
+
+            if (func != null)
+            {
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(triggerElement, parent, insertIndex);
+                command.Execute();
             }
         }
 
         private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var item = treeViewTriggers.SelectedItem as TriggerElement;
-            if (item != null)
-            {
-                var textBlockParameters = item.paramTextBlock;
-                var textBlockDescription = item.descriptionTextBlock;
+            if (currentParameterBlock != null && currentParameterBlock.Parent != null) { }
+            grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
+            if (currentDescriptionBlock != null && currentDescriptionBlock.Parent != null) { }
+            grid.Children.Remove(currentDescriptionBlock);
 
-                if (currentParameterBlock != null && currentParameterBlock.Parent != null) { }
-                grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
-                if (currentDescriptionBlock != null && currentDescriptionBlock.Parent != null) { }
-                grid.Children.Remove(currentDescriptionBlock);
+            var item = treeViewTriggers.SelectedItem as TreeViewTriggerElement;
+            if (item == null)
+                return;
 
-
-                // Display appropriate textblock
-                grid.Children.Add(textBlockParameters);
-                grid.Children.Add(textBlockDescription);
-
-                currentParameterBlock = textBlockParameters;
-                currentDescriptionBlock = textBlockDescription;
-            }
+            var textBlockParameters = item.paramTextBlock;
+            var textBlockDescription = item.descriptionTextBlock;
+            // Display appropriate textblock
+            grid.Children.Add(textBlockParameters);
+            grid.Children.Add(textBlockDescription);
+            currentParameterBlock = textBlockParameters;
+            currentDescriptionBlock = textBlockDescription;
         }
 
         private void treeViewTriggers_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -276,23 +294,45 @@ namespace GUI.Components
                 // It is necessary to traverse the item's parents since drag & drop picks up
                 // things like 'TextBlock' and 'Border' on the drop target when dropping the 
                 // dragged element.
-                TreeViewItem actionNode = GetDropTarget(e.Source as FrameworkElement);
-
+                INode node = GetCategoryTarget(e.Source as FrameworkElement);
                 TreeViewItem whereItemWasDropped = GetTraversedTargetDropItem(e.Source as FrameworkElement);
 
-                int indexInTree = 0;
+                var item = (TreeViewTriggerElement)this.dragItem;
+                if (whereItemWasDropped is TreeViewTriggerElement)
+                {
+                    var location = (TreeViewTriggerElement)whereItemWasDropped;
+                    int insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
+                    int oldIndex = item.triggerElement.Parent.IndexOf(item.triggerElement);
+                    bool isSameParent = location.triggerElement.Parent == item.triggerElement.Parent;
+
+                    if (isSameParent && insertIndex == oldIndex)
+                        return;
+
+                }
+                else if (whereItemWasDropped is NodeEvent || whereItemWasDropped is NodeCondition || whereItemWasDropped is NodeAction)
+                {
+                    if (item.triggerElement.Parent as )
+                }
+
+
+
+
+
+
+
+                int insertIndex = 0;
                 TreeViewItem parentToDropLocation;
-                if (whereItemWasDropped is NodeAction)
-                    indexInTree = 0;
+                if (whereItemWasDropped.GetType() == NodeAction)
+                    insertIndex = 0;
                 else
                 {
                     parentToDropLocation = whereItemWasDropped.Parent as TreeViewItem;
-                    indexInTree = parentToDropLocation.Items.IndexOf(whereItemWasDropped);
+                    insertIndex = parentToDropLocation.Items.IndexOf(whereItemWasDropped);
                 }
 
-                if (actionNode != dragItem)
+                if (node != dragItem)
                 {
-                    CommandTriggerElementMove command = new CommandTriggerElementMove(this, this.dragItem, parent, actionNode, indexInTree);
+                    CommandTriggerElementMove command = new CommandTriggerElementMove(this, this.dragItem, parent, node, insertIndex);
                     command.Execute();
                 }
             }
@@ -313,18 +353,18 @@ namespace GUI.Components
             return traversedTarget;
         }
 
-        private TreeViewItem GetDropTarget(FrameworkElement dropTarget)
+        private INode GetCategoryTarget(FrameworkElement dropTarget)
         {
             if (dropTarget is NodeEvent || dropTarget is NodeCondition || dropTarget is NodeAction)
-                return (TreeViewItem)dropTarget;
+                return (INode)dropTarget;
 
             TreeViewItem traversedTarget = GetTraversedTargetDropItem(dropTarget);
             if (traversedTarget is NodeEvent || traversedTarget is NodeCondition || traversedTarget is NodeAction)
-                return traversedTarget;
+                return (INode)traversedTarget;
             else
                 traversedTarget = GetTraversedTargetDropItem(traversedTarget); // traverse one more time to get the action node
 
-            return traversedTarget;
+            return (INode)traversedTarget;
         }
 
         private void treeViewTriggers_PreviewDragEnter(object sender, DragEventArgs e)
@@ -353,7 +393,7 @@ namespace GUI.Components
             if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
                 return;
 
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(this, selectedItem as TriggerElement, (TreeViewItem)selectedItem.Parent);
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(this, selectedItem as TreeViewTriggerElement, (TreeViewItem)selectedItem.Parent);
             command.Execute();
         }
 
@@ -363,7 +403,7 @@ namespace GUI.Components
             if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
                 return;
 
-            var selectedItemCast = (TriggerElement)selectedItem;
+            var selectedItemCast = (TreeViewTriggerElement)selectedItem;
             this.copiedTriggerElement = selectedItemCast;
         }
 

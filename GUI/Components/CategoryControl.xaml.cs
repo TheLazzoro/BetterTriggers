@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Controllers;
-using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TextEditor;
 using GUI.Components.TriggerEditor;

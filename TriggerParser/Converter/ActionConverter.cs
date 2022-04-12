@@ -14,7 +14,7 @@ namespace TriggerParser.Converter
 {
     public static class ActionConverter
     {
-        public static void ConvertActions(List<TriggerElement> triggerElements)
+        public static void ConvertActions(List<TriggerParser.TriggerElements.TriggerElement> triggerElements)
         {
             foreach (var item in triggerElements)
             {

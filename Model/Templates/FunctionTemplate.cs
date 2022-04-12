@@ -18,13 +18,38 @@ namespace Model.Templates
         {
             FunctionTemplate clone = (FunctionTemplate)this.MemberwiseClone();
             clone.parameters = new List<Parameter>(parameters);
-            clone.paramText = string.Copy(paramText);
-            clone.description = string.Copy(description);
+            if (paramText != null) // some are null
+                clone.paramText = string.Copy(paramText);
+            if (description != null) // some are null
+                clone.description = string.Copy(description);
             clone.identifier = string.Copy(identifier);
             clone.name = string.Copy(name);
-            clone.returnType = string.Copy(returnType);
+            if (returnType != null) // some are null
+                clone.returnType = string.Copy(returnType);
 
             return clone;
+        }
+
+        public TriggerElement ToTriggerElement()
+        {
+            TriggerElement f = new TriggerElement();
+            f.function.identifier = identifier;
+            f.function.parameters = parameters;
+            f.function.returnType = returnType;
+
+            switch (identifier)
+            {
+                case "IfThenElseMultiple":
+                    f = new IfThenElse();
+                    f.function.identifier = identifier;
+                    f.function.parameters = parameters;
+                    f.function.returnType = returnType;
+                    break;
+                default:
+                    break;
+            }
+
+            return f;
         }
     }
 }
