@@ -33,7 +33,7 @@ namespace Model.SaveableData
             triggerElementUIs.Add(elementUI);
         }
 
-        public void Dettach(ITriggerElementUI elementUI)
+        public void Detach(ITriggerElementUI elementUI)
         {
             triggerElementUIs.Remove(elementUI);
         }
@@ -61,6 +61,14 @@ namespace Model.SaveableData
                 triggerElementUIs[i].UpdateEnabled(isEnabled);
             }
         }
+        
+        public void Created()
+        {
+            for (int i = 0; i < triggerElementUIs.Count; i++)
+            {
+                triggerElementUIs[i].OnCreated();
+            }
+        }
 
         public void Deleted()
         {
@@ -69,5 +77,6 @@ namespace Model.SaveableData
                 triggerElementUIs[i].OnDeleted();
             }
         }
+
     }
 }

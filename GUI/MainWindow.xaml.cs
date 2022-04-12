@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -29,6 +28,8 @@ using BetterTriggers.Containers;
 using GUI.Controllers;
 using Model.EditorData.Enums;
 using GUI.Components;
+using BetterTriggers.Commands;
+using System.Windows.Input;
 
 namespace GUI
 {
@@ -168,10 +169,10 @@ namespace GUI
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            bool canUndo = Commands.CommandManager.CanUndo();
-            bool canRedo = Commands.CommandManager.CanRedo();
-            string nameCommandToUndo = Commands.CommandManager.GetNameCommandToUndo();
-            string nameCommandToRedo = Commands.CommandManager.GetNameCommandToRedo();
+            bool canUndo = BetterTriggers.Commands.CommandManager.CanUndo();
+            bool canRedo = BetterTriggers.Commands.CommandManager.CanRedo();
+            string nameCommandToUndo = BetterTriggers.Commands.CommandManager.GetNameCommandToUndo();
+            string nameCommandToRedo = BetterTriggers.Commands.CommandManager.GetNameCommandToRedo();
 
             menuItemUndo.IsEnabled = canUndo;
             menuItemRedo.IsEnabled = canRedo;
@@ -188,23 +189,23 @@ namespace GUI
 
         private void menuItemUndo_Click(object sender, RoutedEventArgs e)
         {
-            Commands.CommandManager.Undo();
+            BetterTriggers.Commands.CommandManager.Undo();
         }
 
         private void menuItemRedo_Click(object sender, RoutedEventArgs e)
         {
-            Commands.CommandManager.Redo();
+            BetterTriggers.Commands.CommandManager.Redo();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Z && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
             {
-                Commands.CommandManager.Undo();
+                BetterTriggers.Commands.CommandManager.Undo();
             }
             else if (e.Key == Key.Y && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
             {
-                Commands.CommandManager.Redo();
+                BetterTriggers.Commands.CommandManager.Redo();
             }
             else if (e.Key == Key.S && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
             {

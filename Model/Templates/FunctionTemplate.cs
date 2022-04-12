@@ -32,24 +32,26 @@ namespace Model.Templates
 
         public TriggerElement ToTriggerElement()
         {
-            TriggerElement f = new TriggerElement();
-            f.function.identifier = identifier;
-            f.function.parameters = parameters;
-            f.function.returnType = returnType;
+            TriggerElement te = new TriggerElement();
+            te.function = new Function();
+            te.function.identifier = identifier;
+            te.function.parameters = parameters;
+            te.function.returnType = returnType;
 
             switch (identifier)
             {
                 case "IfThenElseMultiple":
-                    f = new IfThenElse();
-                    f.function.identifier = identifier;
-                    f.function.parameters = parameters;
-                    f.function.returnType = returnType;
+                    te = new IfThenElse();
+                    te.function = new Function();
+                    te.function.identifier = identifier;
+                    te.function.parameters = parameters;
+                    te.function.returnType = returnType;
                     break;
                 default:
                     break;
             }
 
-            return f;
+            return te;
         }
     }
 }

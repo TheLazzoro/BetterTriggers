@@ -1,5 +1,4 @@
-﻿/*
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -13,6 +12,7 @@ using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
 using Model.EditorData;
 using Model.SaveableData;
+using BetterTriggers.Commands;
 
 namespace GUI.Commands
 {
@@ -108,5 +108,3 @@ namespace GUI.Commands
         }
     }
 }
-
-*/

@@ -11,14 +11,16 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementParamModify : ICommand
     {
         string commandName = "Modify Parameter";
+        TriggerElement triggerElement;
         int triggerId;
         List<Parameter> paramCollection;
         Parameter paramToAdd;
         Parameter oldParameter;
         int paramIndex = 0;
 
-        public CommandTriggerElementParamModify(int triggerId, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(TriggerElement triggerElement, int triggerId, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
+            this.triggerElement = triggerElement;
             this.paramCollection = paramCollection;
             this.paramIndex = paramIndex;
             this.paramToAdd = paramToAdd;
@@ -48,6 +50,7 @@ namespace BetterTriggers.Commands
             }
 
             paramCollection[paramIndex] = paramToAdd;
+            triggerElement.ChangedParams();
 
             CommandManager.AddCommand(this);
 
@@ -74,6 +77,7 @@ namespace BetterTriggers.Commands
             }
 
             paramCollection[paramIndex] = paramToAdd;
+            triggerElement.ChangedParams();
 
             //triggerControl.OnStateChange();
         }
@@ -98,6 +102,7 @@ namespace BetterTriggers.Commands
             }
 
             paramCollection[paramIndex] = oldParameter;
+            triggerElement.ChangedParams();
 
             //triggerControl.OnStateChange();
         }

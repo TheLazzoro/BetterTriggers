@@ -41,15 +41,6 @@ namespace BetterTriggers.Controllers
 
             File.WriteAllText(directory + @"\" + name + ".trg", json);
         }
-        /*
-        public TriggerControl CreateTriggerWithElements(TabControl tabControl, Model.Trigger trigger)
-        {
-            var triggerControl = CreateTriggerControl(tabControl);
-            GenerateTriggerElements(triggerControl, trigger);
-
-            return triggerControl;
-        }
-        */
 
         public Trigger LoadTriggerFromFile(string filename)
         {
@@ -58,15 +49,5 @@ namespace BetterTriggers.Controllers
 
             return trigger;
         }
-        /*
-        private TriggerControl CreateTriggerControl(TabControl tabControl)
-        {
-            var triggerControl = new TriggerControl();
-            triggerControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            triggerControl.VerticalContentAlignment = VerticalAlignment.Stretch;
-
-            return triggerControl;
-        }
-        */
     }
 }

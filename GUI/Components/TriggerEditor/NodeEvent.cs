@@ -11,7 +11,7 @@ namespace GUI.Components.TriggerEditor
 {
     public class NodeEvent : TreeViewItem, INode
     {
-        public List<TriggerElement> TriggerElements;
+        public List<TriggerElement> TriggerElements = new List<TriggerElement>();
 
         public NodeEvent(string text)
         {

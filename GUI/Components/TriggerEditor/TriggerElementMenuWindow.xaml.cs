@@ -23,7 +23,7 @@ namespace GUI.Components.TriggerEditor
     /// </summary>
     public partial class TriggerElementMenuWindow : Window
     {
-        public Function selectedTriggerElement;
+        public TriggerElement createdTriggerElement;
 
         public TriggerElementMenuWindow(TriggerElementType triggerElementType)
         {
@@ -65,7 +65,7 @@ namespace GUI.Components.TriggerEditor
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             var item = (ListViewItem)listView.SelectedItem;
-            selectedTriggerElement = (Function)item.Tag;
+            createdTriggerElement = (TriggerElement)item.Tag;
             this.Close();
         }
 

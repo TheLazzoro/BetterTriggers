@@ -29,6 +29,7 @@ namespace BetterTriggers.Commands
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
+            triggerElement.ChangedPosition();
             CommandManager.AddCommand(this);
 
             //triggerControl.OnStateChange();
@@ -37,6 +38,7 @@ namespace BetterTriggers.Commands
         public void Redo()
         {
             triggerElement.RemoveFromParent();
+            triggerElement.ChangedPosition();
             triggerElement.SetParent(NewParent, NewInsertIndex);
 
             //triggerControl.OnStateChange();
@@ -45,6 +47,7 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             triggerElement.RemoveFromParent();
+            triggerElement.ChangedPosition();
             triggerElement.SetParent(OldParent, OldInsertIndex);
 
             //triggerControl.OnStateChange();

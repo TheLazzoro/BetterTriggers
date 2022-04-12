@@ -1,29 +1,33 @@
-﻿/*using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using GUI.Components;
+using GUI.Components.TriggerEditor;
+using GUI.Components.TriggerExplorer;
+using GUI.Controllers;
 using Model.EditorData;
 using Model.SaveableData;
+using BetterTriggers.Commands;
 
-namespace BetterTriggers.Commands
+namespace GUI.Commands
 {
     public class CommandExplorerElementCreate : ICommand
     {
         string commandName = "Create Explorer Element";
-        List<IExplorerElement> parent;
+        TriggerExplorer te;
         string fullPath;
         IExplorerElement createdElement;
-        int insertIndex;
         string fileContent = string.Empty;
 
-        public CommandExplorerElementCreate(IExplorerElement createdElement, List<IExplorerElement> parent, int insertIndex)
+        public CommandExplorerElementCreate(TriggerExplorer te, string fullPath)
         {
-            this.createdElement = createdElement;
-            this.parent = parent;
-            this.insertIndex = insertIndex;
+            this.te = te;
+            this.fullPath = fullPath;
         }
 
         public void Execute()
@@ -32,7 +36,7 @@ namespace BetterTriggers.Commands
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
             if (parent == null)
-                parent = root;
+                parent = te.map;
 
             controllerTriggerExplorer.RecurseCreateElement(ContainerProject.projectFiles[0], parent, fullPath, false);
             this.createdElement = controllerProject.FindExplorerElement(ContainerProject.projectFiles[0], fullPath);
@@ -88,4 +92,3 @@ namespace BetterTriggers.Commands
         
     }
 }
-*/

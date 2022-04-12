@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Controllers;
 using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;

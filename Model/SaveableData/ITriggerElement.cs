@@ -7,10 +7,11 @@ namespace Model.SaveableData
     public interface ITriggerElement
     {
         void Attach(ITriggerElementUI elementUI);
-        void Dettach(ITriggerElementUI elementUI);
+        void Detach(ITriggerElementUI elementUI);
         void ChangedPosition();
         void ChangedParams();
         void ChangedEnabled();
         void Deleted();
+        void Created();
     }
 }

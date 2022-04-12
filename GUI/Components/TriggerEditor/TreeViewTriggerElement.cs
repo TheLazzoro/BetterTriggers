@@ -9,13 +9,13 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.ComponentModel;
 using System.Threading;
-using GUI.Commands;
 using Model.Templates;
 using Model.SaveableData;
 using Model.EditorData.Enums;
 using BetterTriggers.Containers;
 using Model.EditorData;
 using BetterTriggers.Controllers;
+using BetterTriggers.Commands;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -33,7 +33,7 @@ namespace GUI.Components.TriggerEditor
         public TreeViewTriggerElement(TriggerElement triggerElement, TriggerControl triggerControl)
         {
             this.triggerElement = triggerElement;
-            this.triggerControl = triggerControl; ;
+            this.triggerControl = triggerControl;
             this.explorerElementTrigger = triggerControl.explorerElementTrigger;
 
             this.paramTextBlock = new TextBlock();
@@ -324,19 +324,20 @@ namespace GUI.Components.TriggerEditor
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(this.triggerControl, this, parameters, paramIndex, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(triggerElement, explorerElementTrigger.GetId(), parameters, paramIndex, window.selectedParameter);
                 command.Execute();
             }
         }
 
         public void UpdatePosition()
         {
-            throw new NotImplementedException();
+            triggerControl.OnStateChange();
         }
 
         public void UpdateParams()
         {
-            throw new NotImplementedException();
+            FormatParameterText();
+            triggerControl.OnStateChange();
         }
 
         public void UpdateEnabled(bool isEnabled)
@@ -347,6 +348,11 @@ namespace GUI.Components.TriggerEditor
         public void OnDeleted()
         {
             throw new NotImplementedException();
+        }
+
+        public void OnCreated()
+        {
+            this.triggerControl.OnStateChange();
         }
     }
 }

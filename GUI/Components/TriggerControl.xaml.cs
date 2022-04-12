@@ -3,6 +3,7 @@ using BetterTriggers.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
+using GUI.Controllers;
 using GUI.Utility;
 using Model.EditorData;
 using Model.SaveableData;
@@ -185,39 +186,45 @@ namespace GUI.Components
         {
             var menu = new TriggerElementMenuWindow(type);
             menu.ShowDialog();
-            Function func = menu.selectedTriggerElement;
-            TriggerElement triggerElement = new TriggerElement();
-            triggerElement.function = func;
+            TriggerElement triggerElement = menu.createdTriggerElement;
 
-            List<TriggerElement> parent = null;
+            INode parent = null;
+            List<TriggerElement> parentItems = null;
             var selected = treeViewTriggers.SelectedItem;
             int insertIndex = 0;
             if (selected is TriggerElement)
             {
-                var treeItem = (TreeViewItem)selected;
-                var node = (INode)treeItem.Parent;
-                if (node.GetNodeType() == type)
+                var selectedTreeItem = (TreeViewItem)selected;
+                var node = (INode)selectedTreeItem.Parent;
+                if (node.GetNodeType() == type) // valid parent if 'created' matches 'selected' type
                 {
-                    parent = node.GetTriggerElements();
-                    insertIndex = parent.IndexOf((TriggerElement)selected);
-                }
-                else
-                {
-                    if (type == TriggerElementType.Event)
-                        parent = categoryEvent.GetTriggerElements();
-                    else if (type == TriggerElementType.Condition)
-                        parent = categoryCondition.GetTriggerElements();
-                    else if (type == TriggerElementType.Action)
-                        parent = categoryAction.GetTriggerElements();
-
-                    insertIndex = parent.Count;
+                    parent = node;
+                    parentItems = parent.GetTriggerElements();
+                    insertIndex = parentItems.IndexOf((TriggerElement)selected);
                 }
             }
-
-            if (func != null)
+            if (parent == null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(triggerElement, parent, insertIndex);
+                if (type == TriggerElementType.Event)
+                    parent = categoryEvent;
+                else if (type == TriggerElementType.Condition)
+                    parent = categoryCondition;
+                else if (type == TriggerElementType.Action)
+                    parent = categoryAction;
+
+                parentItems = parent.GetTriggerElements();
+                insertIndex = parentItems.Count;
+            }
+
+            if (triggerElement != null)
+            {
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(triggerElement, parentItems, insertIndex);
                 command.Execute();
+
+                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(triggerElement, this);
+                triggerElement.Attach(treeViewTriggerElement);
+                ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
+                controllerTriggerControl.OnTriggerElementCreate(treeViewTriggerElement, parent, insertIndex);
             }
         }
 
@@ -289,50 +296,39 @@ namespace GUI.Components
         {
             if (_IsDragging && dragItem != null)
             {
-                var parent = (TreeViewItem)dragItem.Parent;
+                var parent = (INode)dragItem.Parent;
 
                 // It is necessary to traverse the item's parents since drag & drop picks up
                 // things like 'TextBlock' and 'Border' on the drop target when dropping the 
                 // dragged element.
                 INode node = GetCategoryTarget(e.Source as FrameworkElement);
                 TreeViewItem whereItemWasDropped = GetTraversedTargetDropItem(e.Source as FrameworkElement);
-
                 var item = (TreeViewTriggerElement)this.dragItem;
+                int oldIndex = item.triggerElement.Parent.IndexOf(item.triggerElement);
+                var location = (TreeViewTriggerElement)whereItemWasDropped;
+                int insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
+
                 if (whereItemWasDropped is TreeViewTriggerElement)
                 {
-                    var location = (TreeViewTriggerElement)whereItemWasDropped;
-                    int insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
-                    int oldIndex = item.triggerElement.Parent.IndexOf(item.triggerElement);
                     bool isSameParent = location.triggerElement.Parent == item.triggerElement.Parent;
-
                     if (isSameParent && insertIndex == oldIndex)
                         return;
 
+                    parent = node;
+
                 }
-                else if (whereItemWasDropped is NodeEvent || whereItemWasDropped is NodeCondition || whereItemWasDropped is NodeAction)
+                else if (whereItemWasDropped is NodeEvent && dragItem.Parent is NodeEvent)
+                    parent = (INode)whereItemWasDropped;
+                else if (whereItemWasDropped is NodeCondition && dragItem.Parent is NodeCondition)
+                    parent = (INode)whereItemWasDropped;
+                else if (whereItemWasDropped is NodeAction && dragItem.Parent is NodeAction)
+                    parent = (INode)whereItemWasDropped;
+
+
+
+                if (whereItemWasDropped != dragItem)
                 {
-                    if (item.triggerElement.Parent as )
-                }
-
-
-
-
-
-
-
-                int insertIndex = 0;
-                TreeViewItem parentToDropLocation;
-                if (whereItemWasDropped.GetType() == NodeAction)
-                    insertIndex = 0;
-                else
-                {
-                    parentToDropLocation = whereItemWasDropped.Parent as TreeViewItem;
-                    insertIndex = parentToDropLocation.Items.IndexOf(whereItemWasDropped);
-                }
-
-                if (node != dragItem)
-                {
-                    CommandTriggerElementMove command = new CommandTriggerElementMove(this, this.dragItem, parent, node, insertIndex);
+                    CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, parent.GetTriggerElements(), insertIndex);
                     command.Execute();
                 }
             }
@@ -353,6 +349,12 @@ namespace GUI.Components
             return traversedTarget;
         }
 
+        /// <summary>
+        /// Gets either an 'Event', 'Condition' or 'Action' node
+        /// based on the parent of the drop target.
+        /// </summary>
+        /// <param name="dropTarget"></param>
+        /// <returns></returns>
         private INode GetCategoryTarget(FrameworkElement dropTarget)
         {
             if (dropTarget is NodeEvent || dropTarget is NodeCondition || dropTarget is NodeAction)
@@ -393,7 +395,8 @@ namespace GUI.Components
             if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
                 return;
 
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(this, selectedItem as TreeViewTriggerElement, (TreeViewItem)selectedItem.Parent);
+            var item = (TreeViewTriggerElement)selectedItem;
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(item.triggerElement);
             command.Execute();
         }
 
