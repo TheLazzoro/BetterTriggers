@@ -96,23 +96,26 @@ namespace GUI.Components
             this.categoryAction.ExpandSubtree();
         }
 
-        private void RecurseLoadTrigger(List<TriggerElement> functions, INode parent)
+        private void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
         {
-            for (int i = 0; i < functions.Count; i++)
+            parentNode.SetTriggerElements(triggerElements);
+            for (int i = 0; i < triggerElements.Count; i++)
             {
-                var function = functions[i];
-                TreeViewTriggerElement triggerElement = new TreeViewTriggerElement(function, this);
-                parent.Add(triggerElement);
-                if (function is IfThenElse)
+                var triggerElement = triggerElements[i];
+                TreeViewTriggerElement treeItem = new TreeViewTriggerElement(triggerElement, this);
+                triggerElement.Attach(treeItem);
+                triggerElement.Parent = triggerElements;
+                parentNode.Add(treeItem);
+                if (triggerElement is IfThenElse)
                 {
-                    var ifThenElse = (IfThenElse)function;
+                    var ifThenElse = (IfThenElse)triggerElement;
 
                     var nodeIf = new NodeCondition("If - Conditions");
                     var nodeThen = new NodeAction("Then - Actions");
                     var nodeElse = new NodeAction("Else - Actions");
-                    triggerElement.Items.Add(nodeIf);
-                    triggerElement.Items.Add(nodeThen);
-                    triggerElement.Items.Add(nodeElse);
+                    treeItem.Items.Add(nodeIf);
+                    treeItem.Items.Add(nodeThen);
+                    treeItem.Items.Add(nodeElse);
                     RecurseLoadTrigger(ifThenElse.If, nodeIf);
                     RecurseLoadTrigger(ifThenElse.Then, nodeThen);
                     RecurseLoadTrigger(ifThenElse.Else, nodeElse);
@@ -223,8 +226,7 @@ namespace GUI.Components
 
                 TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(triggerElement, this);
                 triggerElement.Attach(treeViewTriggerElement);
-                ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
-                controllerTriggerControl.OnTriggerElementCreate(treeViewTriggerElement, parent, insertIndex);
+                treeViewTriggerElement.OnCreated(insertIndex);
             }
         }
 

@@ -41,7 +41,7 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             triggerElement.SetParent(Parent, insertIndex);
-            triggerElement.Created();
+            triggerElement.Created(insertIndex);
 
             //triggerControl.OnStateChange();
         }

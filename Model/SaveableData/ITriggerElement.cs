@@ -12,6 +12,6 @@ namespace Model.SaveableData
         void ChangedParams();
         void ChangedEnabled();
         void Deleted();
-        void Created();
+        void Created(int insertIndex);
     }
 }

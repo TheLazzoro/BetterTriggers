@@ -15,13 +15,59 @@ namespace GUI.Controllers
         {
             var parentTreeItem = (TreeViewItem)parent;
             parentTreeItem.Items.Insert(insertIndex, item);
-            item.OnCreated();
         }
 
-        private TreeViewItem FindParent(INode parent, TreeViewTriggerElement triggerElement)
+        /// <summary>
+        /// Moves a 'TreeViewTriggerElement' to its correct location based on the 'TriggerElement'.
+        /// </summary>
+        /// <param name="treeViewTriggerElement"></param>
+        /// <param name="insertIndex"></param>
+        internal void OnTriggerElementMove(TreeViewTriggerElement treeViewTriggerElement, int insertIndex)
         {
-            throw new NotImplementedException();
+            var parent = (INode)treeViewTriggerElement.Parent;
+            var triggerElement = treeViewTriggerElement.triggerElement;
+            var treeView = treeViewTriggerElement.triggerControl.treeViewTriggers;
+            parent.Remove(treeViewTriggerElement);
+
+            INode newParent = null;
+            for (int i = 0; i < treeView.Items.Count; i++)
+            {
+                newParent = FindParent(treeView.Items[i] as INode, treeViewTriggerElement);
+                if (newParent != null)
+                    break;
+            }
+            if (newParent == null)
+                throw new Exception("Target 'Parent' was not found.");
+
+            newParent.Insert(treeViewTriggerElement, insertIndex);
         }
+
+        /// <summary>
+        /// Finds the parent to attach a TreeViewTriggerElement to.
+        /// This assumes the item has 'Parent', otherwise expect a crash.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="treeViewTriggerElement"></param>
+        /// <returns></returns>
+        internal INode FindParent(INode parent, TreeViewTriggerElement treeViewTriggerElement)
+        {
+            if (parent == null)
+                return null;
+
+            if (parent.GetTriggerElements() == treeViewTriggerElement.triggerElement.Parent)
+                return parent;
+            
+            var items = parent.GetTreeViewTriggerElements();
+            for(int i = 0; i < items.Count; i++)
+            {
+                var par = FindParent(items[i] as INode, treeViewTriggerElement);
+                if (par != null)
+                    return par;
+            }
+
+            return null;
+        }
+
 
         /*
         internal TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)

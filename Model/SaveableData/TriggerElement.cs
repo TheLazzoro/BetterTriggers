@@ -11,6 +11,10 @@ namespace Model.SaveableData
         public bool isEnabled;
         public Function function;
 
+        /// <summary>
+        /// Only directly set this field when the trigger loads the first time.
+        /// Otherwise use SetParent().
+        /// </summary>
         [JsonIgnore]
         public List<TriggerElement> Parent;
         [JsonIgnore]
@@ -62,11 +66,11 @@ namespace Model.SaveableData
             }
         }
         
-        public void Created()
+        public void Created(int insertIndex)
         {
             for (int i = 0; i < triggerElementUIs.Count; i++)
             {
-                triggerElementUIs[i].OnCreated();
+                triggerElementUIs[i].OnCreated(insertIndex);
             }
         }
 

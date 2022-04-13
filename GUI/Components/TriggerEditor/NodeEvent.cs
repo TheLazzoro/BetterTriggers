@@ -23,6 +23,11 @@ namespace GUI.Components.TriggerEditor
             this.Items.Add(triggerElement);
         }
 
+        public void Insert(TreeViewTriggerElement treeViewTriggerElement, int insertIndex)
+        {
+            this.Items.Insert(insertIndex, treeViewTriggerElement);
+        }
+
         public void Remove(TreeViewTriggerElement triggerElement)
         {
             this.Items.Remove(triggerElement);
@@ -47,6 +52,11 @@ namespace GUI.Components.TriggerEditor
         public TriggerElementType GetNodeType()
         {
             return TriggerElementType.Event;
+        }
+
+        public void SetTriggerElements(List<TriggerElement> triggerElements)
+        {
+            this.TriggerElements = triggerElements;
         }
     }
 }

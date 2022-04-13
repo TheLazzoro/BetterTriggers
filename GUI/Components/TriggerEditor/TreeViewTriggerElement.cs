@@ -16,6 +16,7 @@ using BetterTriggers.Containers;
 using Model.EditorData;
 using BetterTriggers.Controllers;
 using BetterTriggers.Commands;
+using GUI.Controllers;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -331,6 +332,8 @@ namespace GUI.Components.TriggerEditor
 
         public void UpdatePosition()
         {
+            ControllerTriggerControl controller = new ControllerTriggerControl();
+            controller.OnTriggerElementMove(this, triggerElement.Parent.IndexOf(triggerElement));
             triggerControl.OnStateChange();
         }
 
@@ -347,12 +350,38 @@ namespace GUI.Components.TriggerEditor
 
         public void OnDeleted()
         {
-            throw new NotImplementedException();
+            var parent = (TreeViewItem)this.Parent;
+            TreeViewItem nextToSelect = null;
+            if (parent.Items.Count > 1 && parent.Items.IndexOf(this) < parent.Items.Count - 1)
+                nextToSelect = (TreeViewItem)parent.Items[parent.Items.IndexOf(this) + 1];
+            else if (parent.Items.Count > 1)
+                nextToSelect = (TreeViewItem)parent.Items[parent.Items.Count - 2];
+            else
+                nextToSelect = parent;
+
+            parent.Items.Remove(this);
+
+            nextToSelect.IsSelected = true;
+            nextToSelect.Focus();
+            this.triggerControl.OnStateChange();
         }
 
-        public void OnCreated()
+        public void OnCreated(int insertIndex)
         {
+            ControllerTriggerControl controller = new ControllerTriggerControl();
+            INode parent = null;
+            for (int i = 0; i < triggerControl.treeViewTriggers.Items.Count; i++)
+            {
+                var node = triggerControl.treeViewTriggers.Items[i];
+                parent = controller.FindParent(node as INode, this);
+                if (parent != null)
+                    break;
+            }
+            controller.OnTriggerElementCreate(this, parent, insertIndex);
             this.triggerControl.OnStateChange();
+
+            this.IsSelected = true;
+            this.Focus();
         }
     }
 }
