@@ -41,8 +41,7 @@ namespace Model.Templates
             switch (identifier)
             {
                 case "IfThenElseMultiple":
-                    te = new IfThenElse();
-                    te.function = new Function();
+                    te.function = new IfThenElse();
                     te.function.identifier = identifier;
                     te.function.parameters = parameters;
                     te.function.returnType = returnType;

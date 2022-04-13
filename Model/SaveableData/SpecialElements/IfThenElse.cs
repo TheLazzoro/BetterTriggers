@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Model.SaveableData
 {
-    public class IfThenElse : TriggerElement, ICloneable
+    public class IfThenElse : Function, ICloneable
     {
         public readonly int ParamType = 5; // DO NOT CHANGE
         public List<TriggerElement> If = new List<TriggerElement>();

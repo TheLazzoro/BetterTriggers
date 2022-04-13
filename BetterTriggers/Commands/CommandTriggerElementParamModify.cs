@@ -53,8 +53,6 @@ namespace BetterTriggers.Commands
             triggerElement.ChangedParams();
 
             CommandManager.AddCommand(this);
-
-            //triggerControl.OnStateChange();
         }
 
         public void Redo()
@@ -78,8 +76,6 @@ namespace BetterTriggers.Commands
 
             paramCollection[paramIndex] = paramToAdd;
             triggerElement.ChangedParams();
-
-            //triggerControl.OnStateChange();
         }
 
         public void Undo()
@@ -103,8 +99,6 @@ namespace BetterTriggers.Commands
 
             paramCollection[paramIndex] = oldParameter;
             triggerElement.ChangedParams();
-
-            //triggerControl.OnStateChange();
         }
 
         public string GetCommandName()

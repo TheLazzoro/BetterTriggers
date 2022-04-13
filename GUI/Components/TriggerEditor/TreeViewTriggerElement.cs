@@ -22,20 +22,17 @@ namespace GUI.Components.TriggerEditor
 {
     public class TreeViewTriggerElement : TreeViewItem, ITriggerElementUI
     {
-        public TriggerControl triggerControl;
-        public ExplorerElementTrigger explorerElementTrigger;
         internal TriggerElement triggerElement;
         public TextBlock paramTextBlock;
         public TextBlock descriptionTextBlock;
         protected string paramText;
         protected Category category;
         private string formattedParamText = string.Empty;
+        private TriggerControl triggerControl;
 
-        public TreeViewTriggerElement(TriggerElement triggerElement, TriggerControl triggerControl)
+        public TreeViewTriggerElement(TriggerElement triggerElement)
         {
             this.triggerElement = triggerElement;
-            this.triggerControl = triggerControl;
-            this.explorerElementTrigger = triggerControl.explorerElementTrigger;
 
             this.paramTextBlock = new TextBlock();
             this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
@@ -59,6 +56,43 @@ namespace GUI.Components.TriggerEditor
 
             TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", this.category);
             this.FormatParameterText();
+
+            ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
+            controllerTriggerControl.CreateSpecialTriggerElement(this);
+        }
+
+        public TriggerControl GetTriggerControl()
+        {
+            if (this.triggerControl != null)
+                return this.triggerControl;
+
+            // hack
+            if (this.Parent is TreeView)
+            {
+                var treeView = (TreeView)this.Parent;
+                var grid = (Grid)treeView.Parent;
+                return (TriggerControl)grid.Parent;
+            }
+
+            TriggerControl triggerControl = null;
+            FrameworkElement treeViewParent = (FrameworkElement) this.Parent;
+            while (triggerControl == null && treeViewParent != null)
+            {
+                var parent = treeViewParent.Parent;
+                if (parent is TriggerControl)
+                    triggerControl = (TriggerControl)parent;
+                else
+                    treeViewParent = (FrameworkElement)parent;
+            }
+
+            this.triggerControl = triggerControl;
+
+            return triggerControl;
+        }
+
+        public ExplorerElementTrigger GetExplorerElementTrigger()
+        {
+            return GetTriggerControl().explorerElementTrigger;
         }
 
         public void FormatParameterText()
@@ -325,7 +359,7 @@ namespace GUI.Components.TriggerEditor
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(triggerElement, explorerElementTrigger.GetId(), parameters, paramIndex, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(triggerElement, GetExplorerElementTrigger().GetId(), parameters, paramIndex, window.selectedParameter);
                 command.Execute();
             }
         }
@@ -334,13 +368,16 @@ namespace GUI.Components.TriggerEditor
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
             controller.OnTriggerElementMove(this, triggerElement.Parent.IndexOf(triggerElement));
-            triggerControl.OnStateChange();
+            GetTriggerControl().OnStateChange();
+
+            this.IsSelected = true;
+            this.Focus();
         }
 
         public void UpdateParams()
         {
             FormatParameterText();
-            triggerControl.OnStateChange();
+            GetTriggerControl().OnStateChange();
         }
 
         public void UpdateEnabled(bool isEnabled)
@@ -359,26 +396,26 @@ namespace GUI.Components.TriggerEditor
             else
                 nextToSelect = parent;
 
+            this.GetTriggerControl().OnStateChange();
             parent.Items.Remove(this);
 
             nextToSelect.IsSelected = true;
             nextToSelect.Focus();
-            this.triggerControl.OnStateChange();
         }
 
         public void OnCreated(int insertIndex)
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
             INode parent = null;
-            for (int i = 0; i < triggerControl.treeViewTriggers.Items.Count; i++)
+            for (int i = 0; i < GetTriggerControl().treeViewTriggers.Items.Count; i++)
             {
-                var node = triggerControl.treeViewTriggers.Items[i];
+                var node = GetTriggerControl().treeViewTriggers.Items[i];
                 parent = controller.FindParent(node as INode, this);
                 if (parent != null)
                     break;
             }
             controller.OnTriggerElementCreate(this, parent, insertIndex);
-            this.triggerControl.OnStateChange();
+            this.GetTriggerControl().OnStateChange();
 
             this.IsSelected = true;
             this.Focus();

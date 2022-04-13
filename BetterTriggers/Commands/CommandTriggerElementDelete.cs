@@ -26,24 +26,18 @@ namespace BetterTriggers.Commands
             triggerElement.RemoveFromParent();
             triggerElement.Deleted();
             CommandManager.AddCommand(this);
-
-            //triggerControl.OnStateChange();
         }
 
         public void Redo()
         {
             triggerElement.RemoveFromParent();
             triggerElement.Deleted();
-
-            //triggerControl.OnStateChange();
         }
 
         public void Undo()
         {
             triggerElement.SetParent(Parent, insertIndex);
             triggerElement.Created(insertIndex);
-
-            //triggerControl.OnStateChange();
         }
 
         public string GetCommandName()

@@ -31,26 +31,20 @@ namespace BetterTriggers.Commands
             triggerElement.SetParent(NewParent, NewInsertIndex);
             triggerElement.ChangedPosition();
             CommandManager.AddCommand(this);
-
-            //triggerControl.OnStateChange();
         }
 
         public void Redo()
         {
             triggerElement.RemoveFromParent();
-            triggerElement.ChangedPosition();
             triggerElement.SetParent(NewParent, NewInsertIndex);
-
-            //triggerControl.OnStateChange();
+            triggerElement.ChangedPosition();
         }
 
         public void Undo()
         {
             triggerElement.RemoveFromParent();
-            triggerElement.ChangedPosition();
             triggerElement.SetParent(OldParent, OldInsertIndex);
-
-            //triggerControl.OnStateChange();
+            triggerElement.ChangedPosition();
         }
 
         public string GetCommandName()

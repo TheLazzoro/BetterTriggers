@@ -1,5 +1,6 @@
 ﻿using GUI.Components;
 using GUI.Components.TriggerEditor;
+using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,20 @@ namespace GUI.Controllers
     {
         public void OnTriggerElementCreate(TreeViewTriggerElement item, INode parent, int insertIndex)
         {
+            if (item.Parent != null) // needed because of another hack
+            {
+                if (item.Parent is TreeView)
+                {
+                    var unwantedParent = (TreeView)item.Parent;
+                    unwantedParent.Items.Remove(item);
+                }
+                else if (item.Parent is TreeViewItem)
+                {
+                    var unwantedParent = (TreeViewItem)item.Parent;
+                    unwantedParent.Items.Remove(item);
+                }
+            }
+
             var parentTreeItem = (TreeViewItem)parent;
             parentTreeItem.Items.Insert(insertIndex, item);
         }
@@ -26,7 +41,7 @@ namespace GUI.Controllers
         {
             var parent = (INode)treeViewTriggerElement.Parent;
             var triggerElement = treeViewTriggerElement.triggerElement;
-            var treeView = treeViewTriggerElement.triggerControl.treeViewTriggers;
+            var treeView = treeViewTriggerElement.GetTriggerControl().treeViewTriggers;
             parent.Remove(treeViewTriggerElement);
 
             INode newParent = null;
@@ -56,9 +71,9 @@ namespace GUI.Controllers
 
             if (parent.GetTriggerElements() == treeViewTriggerElement.triggerElement.Parent)
                 return parent;
-            
+
             var items = parent.GetTreeViewTriggerElements();
-            for(int i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 var par = FindParent(items[i] as INode, treeViewTriggerElement);
                 if (par != null)
@@ -66,6 +81,41 @@ namespace GUI.Controllers
             }
 
             return null;
+        }
+
+        internal void CreateSpecialTriggerElement(TreeViewTriggerElement treeViewTriggerElement)
+        {
+            if (treeViewTriggerElement.triggerElement.function is IfThenElse)
+            {
+                var function = (IfThenElse)treeViewTriggerElement.triggerElement.function;
+
+                var If = new NodeCondition("If - Conditions");
+                var Then = new NodeAction("Then - Actions");
+                var Else = new NodeAction("Else - Actions");
+                If.SetTriggerElements(function.If);
+                Then.SetTriggerElements(function.Then);
+                Else.SetTriggerElements(function.Else);
+                treeViewTriggerElement.Items.Add(If);
+                treeViewTriggerElement.Items.Add(Then);
+                treeViewTriggerElement.Items.Add(Else);
+
+                RecurseLoadTrigger(If.GetTriggerElements(), If);
+                RecurseLoadTrigger(Then.GetTriggerElements(), Then);
+                RecurseLoadTrigger(Else.GetTriggerElements(), Else);
+            }
+        }
+
+        public void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
+        {
+            parentNode.SetTriggerElements(triggerElements);
+            for (int i = 0; i < triggerElements.Count; i++)
+            {
+                var triggerElement = triggerElements[i];
+                TreeViewTriggerElement treeItem = new TreeViewTriggerElement(triggerElement);
+                triggerElement.Attach(treeItem);
+                triggerElement.Parent = triggerElements;
+                parentNode.Add(treeItem);
+            }
         }
 
 

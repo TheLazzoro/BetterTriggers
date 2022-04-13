@@ -87,41 +87,18 @@ namespace GUI.Components
             this.categoryCondition.Items.Clear();
             this.categoryAction.Items.Clear();
 
-            RecurseLoadTrigger(trigger.Events, this.categoryEvent);
-            RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
-            RecurseLoadTrigger(trigger.Actions, this.categoryAction);
+            ControllerTriggerControl controller = new ControllerTriggerControl();
+
+            controller.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
+            controller.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
+            controller.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
 
             this.categoryEvent.ExpandSubtree();
             this.categoryCondition.ExpandSubtree();
             this.categoryAction.ExpandSubtree();
         }
 
-        private void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
-        {
-            parentNode.SetTriggerElements(triggerElements);
-            for (int i = 0; i < triggerElements.Count; i++)
-            {
-                var triggerElement = triggerElements[i];
-                TreeViewTriggerElement treeItem = new TreeViewTriggerElement(triggerElement, this);
-                triggerElement.Attach(treeItem);
-                triggerElement.Parent = triggerElements;
-                parentNode.Add(treeItem);
-                if (triggerElement is IfThenElse)
-                {
-                    var ifThenElse = (IfThenElse)triggerElement;
-
-                    var nodeIf = new NodeCondition("If - Conditions");
-                    var nodeThen = new NodeAction("Then - Actions");
-                    var nodeElse = new NodeAction("Else - Actions");
-                    treeItem.Items.Add(nodeIf);
-                    treeItem.Items.Add(nodeThen);
-                    treeItem.Items.Add(nodeElse);
-                    RecurseLoadTrigger(ifThenElse.If, nodeIf);
-                    RecurseLoadTrigger(ifThenElse.Then, nodeThen);
-                    RecurseLoadTrigger(ifThenElse.Else, nodeElse);
-                }
-            }
-        }
+        
 
         public Model.SaveableData.Trigger GenerateTriggerFromControl()
         {
@@ -142,16 +119,16 @@ namespace GUI.Components
             var treeViewTriggerElements = node.GetTreeViewTriggerElements();
             for (int i = 0; i < treeViewTriggerElements.Count; i++)
             {
-                var triggerElement = treeViewTriggerElements[i];
-                var function = triggerElement.triggerElement;
-                functions.Add(function);
+                var treeItem = treeViewTriggerElements[i];
+                var triggerElement = treeItem.triggerElement;
+                functions.Add(triggerElement);
 
-                if (function is IfThenElse)
+                if (triggerElement.function is IfThenElse)
                 {
-                    var ifThenElse = (IfThenElse)function;
-                    var nodeIf = (NodeCondition)triggerElement.Items[0];
-                    var nodeThen = (NodeAction)triggerElement.Items[1];
-                    var nodeElse = (NodeAction)triggerElement.Items[2];
+                    var ifThenElse = (IfThenElse)triggerElement.function;
+                    var nodeIf = (NodeCondition)treeItem.Items[0];
+                    var nodeThen = (NodeAction)treeItem.Items[1];
+                    var nodeElse = (NodeAction)treeItem.Items[2];
                     RecurseGenerateTrigger(ifThenElse.If, nodeIf);
                     RecurseGenerateTrigger(ifThenElse.Then, nodeThen);
                     RecurseGenerateTrigger(ifThenElse.Else, nodeElse);
@@ -224,7 +201,9 @@ namespace GUI.Components
                 CommandTriggerElementCreate command = new CommandTriggerElementCreate(triggerElement, parentItems, insertIndex);
                 command.Execute();
 
-                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(triggerElement, this);
+                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(triggerElement);
+                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated meth
+
                 triggerElement.Attach(treeViewTriggerElement);
                 treeViewTriggerElement.OnCreated(insertIndex);
             }
@@ -307,12 +286,23 @@ namespace GUI.Components
                 TreeViewItem whereItemWasDropped = GetTraversedTargetDropItem(e.Source as FrameworkElement);
                 var item = (TreeViewTriggerElement)this.dragItem;
                 int oldIndex = item.triggerElement.Parent.IndexOf(item.triggerElement);
-                var location = (TreeViewTriggerElement)whereItemWasDropped;
-                int insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
+                int insertIndex;
+                List<TriggerElement> newParent;
+                if (whereItemWasDropped is TreeViewTriggerElement)
+                {
+                    var location = (TreeViewTriggerElement)whereItemWasDropped;
+                    insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
+                    newParent = location.triggerElement.Parent;
+                } else
+                {
+                    var location = (INode)whereItemWasDropped;
+                    insertIndex = 0;
+                    newParent = location.GetTriggerElements();
+                }
 
                 if (whereItemWasDropped is TreeViewTriggerElement)
                 {
-                    bool isSameParent = location.triggerElement.Parent == item.triggerElement.Parent;
+                    bool isSameParent = newParent == item.triggerElement.Parent;
                     if (isSameParent && insertIndex == oldIndex)
                         return;
 
