@@ -34,21 +34,40 @@ namespace Model.Templates
         {
             TriggerElement te = new TriggerElement();
             te.function = new Function();
-            te.function.identifier = identifier;
-            te.function.parameters = parameters;
-            te.function.returnType = returnType;
 
             switch (identifier)
             {
                 case "IfThenElseMultiple":
                     te.function = new IfThenElse();
-                    te.function.identifier = identifier;
-                    te.function.parameters = parameters;
-                    te.function.returnType = returnType;
+                    break;
+                case "AndMultiple":
+                    te.function = new AndMultiple();
+                    break;
+                case "OrMultiple":
+                    te.function = new OrMultiple();
+                    break;
+                case "ForGroup":
+                    te.function = new ForGroupMultiple();
+                    break;
+                case "ForForce":
+                    te.function = new ForForceMultiple();
+                    break;
+                case "ForLoopAMultiple":
+                    te.function = new ForLoopAMultiple();
+                    break;
+                case "ForLoopBMultiple":
+                    te.function = new ForLoopBMultiple();
+                    break;
+                case "ForLoopVarMultiple":
+                    te.function = new ForLoopVarMultiple();
                     break;
                 default:
                     break;
             }
+
+            te.function.identifier = identifier;
+            te.function.parameters = parameters;
+            te.function.returnType = returnType;
 
             return te;
         }

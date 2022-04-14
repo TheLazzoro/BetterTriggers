@@ -12,7 +12,6 @@ namespace BetterTriggers.Commands
         string commandName = "Create Trigger Element";
         TriggerElement triggerElement;
         List<TriggerElement> parent;
-        Function function;
         int insertIndex = 0;
 
         public CommandTriggerElementCreate(TriggerElement triggerElement, List<TriggerElement> parent, int insertIndex)

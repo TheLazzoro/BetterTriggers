@@ -45,13 +45,8 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
-
+            
             BetterTriggers.Init.Initialize();
-
-            menuRecentFiles.Items.Add("Item 1");
-            menuRecentFiles.Items.Add("Item 2");
-            menuRecentFiles.Items.Add("Item 3");
-            menuRecentFiles.Items.Add("Item 4");
         }
 
         private void menuNewProject_Click(object sender, RoutedEventArgs e)
@@ -73,26 +68,6 @@ namespace GUI
                 this.triggerExplorer = te;
             }
         }
-
-        /*
-        private void TriggerExplorer_ItemSelectionChanged(object sender, EventArgs e)
-        {
-            selectedExplorerItem = triggerExplorer.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-
-            if (selectedExplorerItem.editor as TriggerControl != null)
-            {
-                btnCreateEvent.IsEnabled = true;
-                btnCreateCondition.IsEnabled = true;
-                btnCreateAction.IsEnabled = true;
-            }
-            else
-            {
-                btnCreateEvent.IsEnabled = false;
-                btnCreateCondition.IsEnabled = false;
-                btnCreateAction.IsEnabled = false;
-            }
-        }
-        */
 
         private void TriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

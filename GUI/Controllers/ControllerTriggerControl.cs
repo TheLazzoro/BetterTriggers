@@ -14,7 +14,7 @@ namespace GUI.Controllers
     {
         public void OnTriggerElementCreate(TreeViewTriggerElement item, INode parent, int insertIndex)
         {
-            if (item.Parent != null) // needed because of another hack
+            if (item.Parent != null) // needed because of another hack. Basically, the item is already attached, so we need to detach it.
             {
                 if (item.Parent is TreeView)
                 {
@@ -40,14 +40,13 @@ namespace GUI.Controllers
         internal void OnTriggerElementMove(TreeViewTriggerElement treeViewTriggerElement, int insertIndex)
         {
             var parent = (INode)treeViewTriggerElement.Parent;
-            var triggerElement = treeViewTriggerElement.triggerElement;
             var treeView = treeViewTriggerElement.GetTriggerControl().treeViewTriggers;
             parent.Remove(treeViewTriggerElement);
 
             INode newParent = null;
             for (int i = 0; i < treeView.Items.Count; i++)
             {
-                newParent = FindParent(treeView.Items[i] as INode, treeViewTriggerElement);
+                newParent = FindParent(treeView.Items[i] as TreeViewItem, treeViewTriggerElement);
                 if (newParent != null)
                     break;
             }
@@ -64,23 +63,37 @@ namespace GUI.Controllers
         /// <param name="parent"></param>
         /// <param name="treeViewTriggerElement"></param>
         /// <returns></returns>
-        internal INode FindParent(INode parent, TreeViewTriggerElement treeViewTriggerElement)
+        internal INode FindParent(TreeViewItem parent, TreeViewTriggerElement treeViewTriggerElement)
         {
-            if (parent == null)
-                return null;
+            INode node = null;
 
-            if (parent.GetTriggerElements() == treeViewTriggerElement.triggerElement.Parent)
-                return parent;
-
-            var items = parent.GetTreeViewTriggerElements();
-            for (int i = 0; i < items.Count; i++)
+            // Ugly code
+            // we need to check the parent right away, because the loop below
+            // will never check it.
+            if (parent is INode)
             {
-                var par = FindParent(items[i] as INode, treeViewTriggerElement);
-                if (par != null)
-                    return par;
+                var tmpNode = (INode)parent;
+                if (tmpNode.GetTriggerElements() == treeViewTriggerElement.triggerElement.Parent)
+                    return tmpNode;
             }
 
-            return null;
+            for (int i = 0; i < parent.Items.Count; i++)
+            {
+                var treeItem = (TreeViewItem)parent.Items[i];
+                if (treeItem is INode)
+                {
+                    var tmpNode = (INode)treeItem;
+                    if (tmpNode.GetTriggerElements() == treeViewTriggerElement.triggerElement.Parent)
+                    {
+                        return tmpNode;
+                    }
+                }
+
+                if (treeItem.Items.Count > 0)
+                    node = FindParent(treeItem, treeViewTriggerElement);
+            }
+
+            return node;
         }
 
         internal void CreateSpecialTriggerElement(TreeViewTriggerElement treeViewTriggerElement)
@@ -103,6 +116,69 @@ namespace GUI.Controllers
                 RecurseLoadTrigger(Then.GetTriggerElements(), Then);
                 RecurseLoadTrigger(Else.GetTriggerElements(), Else);
             }
+            else if (treeViewTriggerElement.triggerElement.function is AndMultiple)
+            {
+                var function = (AndMultiple)treeViewTriggerElement.triggerElement.function;
+                var And = new NodeCondition("Conditions");
+                And.SetTriggerElements(function.And);
+                treeViewTriggerElement.Items.Add(And);
+
+                RecurseLoadTrigger(And.GetTriggerElements(), And);
+            }
+            else if (treeViewTriggerElement.triggerElement.function is OrMultiple)
+            {
+                var function = (OrMultiple)treeViewTriggerElement.triggerElement.function;
+                var Or = new NodeCondition("Conditions");
+                Or.SetTriggerElements(function.Or);
+                treeViewTriggerElement.Items.Add(Or);
+
+                RecurseLoadTrigger(Or.GetTriggerElements(), Or);
+            }
+            else if (treeViewTriggerElement.triggerElement.function is ForGroupMultiple)
+            {
+                var function = (ForGroupMultiple)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
+            else if (treeViewTriggerElement.triggerElement.function is ForForceMultiple)
+            {
+                var function = (ForForceMultiple)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
+            else if (treeViewTriggerElement.triggerElement.function is ForLoopAMultiple)
+            {
+                var function = (ForLoopAMultiple)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
+            else if (treeViewTriggerElement.triggerElement.function is ForLoopBMultiple)
+            {
+                var function = (ForLoopBMultiple)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
+            else if (treeViewTriggerElement.triggerElement.function is ForLoopVarMultiple)
+            {
+                var function = (ForLoopVarMultiple)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
         }
 
         public void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
@@ -111,38 +187,11 @@ namespace GUI.Controllers
             for (int i = 0; i < triggerElements.Count; i++)
             {
                 var triggerElement = triggerElements[i];
+                triggerElement.Parent = triggerElements;
                 TreeViewTriggerElement treeItem = new TreeViewTriggerElement(triggerElement);
                 triggerElement.Attach(treeItem);
-                triggerElement.Parent = triggerElements;
                 parentNode.Add(treeItem);
             }
         }
-
-
-        /*
-        internal TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)
-        {
-            TreeItemExplorerElement node = null;
-
-            for (int i = 0; i < parent.Items.Count; i++)
-            {
-                TreeItemExplorerElement element = parent.Items[i] as TreeItemExplorerElement;
-                if (Directory.Exists(element.Ielement.GetPath()) && node == null)
-                {
-                    if (element.Ielement.GetPath() == directory)
-                    {
-                        node = element;
-                        break;
-                    }
-                    else
-                    {
-                        node = FindTreeNodeDirectory(element, directory);
-                    }
-                }
-            }
-
-            return node;
-        }
-        */
     }
 }

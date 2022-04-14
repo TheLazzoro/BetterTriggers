@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:gui="clr-namespace:GUI"
         UseLayoutRounding="True"
         mc:Ignorable="d"
-        Title="Better Triggers" Height="450" Width="800" Background="#FF131313" KeyDown="Window_KeyDown">
+        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -68,89 +68,89 @@
     </Window.Resources>
 
 
-        <Grid x:Name="mainGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="28"/>
-                <RowDefinition Height="4"/>
-                <RowDefinition Height="125"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <Grid x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="125"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" >
-                <MenuItem Header="File" Height="25">
-                    <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black" Click="menuNewProject_Click"/>
-                    <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black" Click="menuOpen_Click"/>
-                    <MenuItem Name="menuSave" Header="Save All" FontFamily="Bahnschrift" Foreground="Black" Click="menuSave_Click"/>
-                    <MenuItem Name="menuRecentFiles" Header="Recent Files" FontFamily="Bahnschrift" Foreground="Black" MouseEnter="menuRecentFiles_MouseEnter"/>
+        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" >
+            <MenuItem Header="File" Height="25">
+                <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black" Click="menuNewProject_Click"/>
+                <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black" Click="menuOpen_Click"/>
+                <MenuItem Name="menuSave" Header="Save All" FontFamily="Bahnschrift" Foreground="Black" Click="menuSave_Click"/>
+                <MenuItem Name="menuRecentFiles" Header="Recent Files" FontFamily="Bahnschrift" Foreground="Black" MouseEnter="menuRecentFiles_MouseEnter"/>
             </MenuItem>
-                <MenuItem Header="Edit" Height="25" SubmenuOpened="MenuItem_SubmenuOpened">
-                    <MenuItem Name="menuItemUndo" Header="Undo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemUndo_Click"/>
-                    <MenuItem Name="menuItemRedo" Header="Redo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemRedo_Click"/>
-                </MenuItem>
-                <MenuItem Header="New" Height="25"/>
-                <MenuItem Header="JassHelper" Height="25"/>
-            </Menu>
+            <MenuItem Header="Edit" Height="25" SubmenuOpened="MenuItem_SubmenuOpened">
+                <MenuItem Name="menuItemUndo" Header="Undo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemUndo_Click"/>
+                <MenuItem Name="menuItemRedo" Header="Redo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemRedo_Click"/>
+            </MenuItem>
+            <MenuItem Header="New" Height="25"/>
+            <MenuItem Header="JassHelper" Height="25"/>
+        </Menu>
 
-            <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="2" />
-            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Fill="#FF404040" />
+        <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="2" />
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Fill="#FF404040" />
 
-            <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="10,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-                <Button.Background>
-                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="10,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="35,0,5,0" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_element.png" Stretch="None" />
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="35,0,5,0" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_element.png" Stretch="None" />
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateScript_Click" >
-                <Button.Background >
-                    <ImageBrush ImageSource="Resources/Icons/editor-triggerscript.png" Stretch="None" />
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateScript_Click" >
+            <Button.Background >
+                <ImageBrush ImageSource="Resources/Icons/editor-triggerscript.png" Stretch="None" />
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="85,0,0,0" Click="btnCreateVariable_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="Resources/Icons/actions-setvariables.png" Stretch="None"/>
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="85,0,0,0" Click="btnCreateVariable_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/actions-setvariables.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnCreateComment" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="110,0,0,0">
-                <Button.Background>
-                    <ImageBrush ImageSource="Resources/Icons/editor-toolbar-triggercomment.png" Stretch="None"/>
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateComment" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="110,0,0,0">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/editor-toolbar-triggercomment.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnCreateEvent_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="Resources/Icons/editor-triggerevent.png" Stretch="None"/>
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnCreateEvent_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/editor-triggerevent.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="35,0,0,0" Click="btnCreateCondition_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="35,0,0,0" Click="btnCreateCondition_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateAction_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
-                </Button.Background>
-            </Button>
+        <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateAction_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
 
-            <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
+        <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
 
-            <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
+        <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
-            <gui:DragableTabControl x:Name="dragableTabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0" />
-        </Grid>
+        <gui:DragableTabControl x:Name="dragableTabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0" />
+    </Grid>
 </Window>

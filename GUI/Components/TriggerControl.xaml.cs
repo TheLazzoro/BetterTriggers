@@ -83,12 +83,7 @@ namespace GUI.Components
 
         private void LoadTrigger(Model.SaveableData.Trigger trigger)
         {
-            this.categoryEvent.Items.Clear();
-            this.categoryCondition.Items.Clear();
-            this.categoryAction.Items.Clear();
-
             ControllerTriggerControl controller = new ControllerTriggerControl();
-
             controller.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
             controller.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
             controller.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
@@ -98,48 +93,10 @@ namespace GUI.Components
             this.categoryAction.ExpandSubtree();
         }
 
-        
-
-        public Model.SaveableData.Trigger GenerateTriggerFromControl()
-        {
-            Model.SaveableData.Trigger trigger = new Model.SaveableData.Trigger()
-            {
-                Id = explorerElementTrigger.trigger.Id
-            };
-
-            RecurseGenerateTrigger(trigger.Events, this.categoryEvent);
-            RecurseGenerateTrigger(trigger.Conditions, this.categoryCondition);
-            RecurseGenerateTrigger(trigger.Actions, this.categoryAction);
-
-            return trigger;
-        }
-
-        private void RecurseGenerateTrigger(List<TriggerElement> functions, INode node)
-        {
-            var treeViewTriggerElements = node.GetTreeViewTriggerElements();
-            for (int i = 0; i < treeViewTriggerElements.Count; i++)
-            {
-                var treeItem = treeViewTriggerElements[i];
-                var triggerElement = treeItem.triggerElement;
-                functions.Add(triggerElement);
-
-                if (triggerElement.function is IfThenElse)
-                {
-                    var ifThenElse = (IfThenElse)triggerElement.function;
-                    var nodeIf = (NodeCondition)treeItem.Items[0];
-                    var nodeThen = (NodeAction)treeItem.Items[1];
-                    var nodeElse = (NodeAction)treeItem.Items[2];
-                    RecurseGenerateTrigger(ifThenElse.If, nodeIf);
-                    RecurseGenerateTrigger(ifThenElse.Then, nodeThen);
-                    RecurseGenerateTrigger(ifThenElse.Else, nodeElse);
-                }
-            }
-        }
-
         public string GetSaveString()
         {
-            var trigger = GenerateTriggerFromControl();
-            return JsonConvert.SerializeObject(trigger);
+            //var trigger = GenerateTriggerFromControl();
+            return JsonConvert.SerializeObject(this.explorerElementTrigger.trigger);
         }
 
         public UserControl GetControl()
@@ -172,15 +129,16 @@ namespace GUI.Components
             List<TriggerElement> parentItems = null;
             var selected = treeViewTriggers.SelectedItem;
             int insertIndex = 0;
-            if (selected is TriggerElement)
+            if (selected is TreeViewTriggerElement)
             {
-                var selectedTreeItem = (TreeViewItem)selected;
+                var selectedTreeItem = (TreeViewTriggerElement)selected;
                 var node = (INode)selectedTreeItem.Parent;
                 if (node.GetNodeType() == type) // valid parent if 'created' matches 'selected' type
                 {
+                    var selectedTriggerElement = selectedTreeItem.triggerElement;
                     parent = node;
                     parentItems = parent.GetTriggerElements();
-                    insertIndex = parentItems.IndexOf((TriggerElement)selected);
+                    insertIndex = parentItems.IndexOf(selectedTriggerElement);
                 }
             }
             if (parent == null)

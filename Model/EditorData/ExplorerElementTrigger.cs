@@ -57,7 +57,7 @@ namespace Model.EditorData
 
         public void SaveInMemory(string saveableString)
         {
-            trigger = JsonConvert.DeserializeObject<Trigger>(saveableString);
+            // Every action is already saved in memory. We may need to delete this method entirely, also for other elements.
         }
 
         public void DeleteObservers()

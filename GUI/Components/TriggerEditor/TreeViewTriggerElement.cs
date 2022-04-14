@@ -410,7 +410,7 @@ namespace GUI.Components.TriggerEditor
             for (int i = 0; i < GetTriggerControl().treeViewTriggers.Items.Count; i++)
             {
                 var node = GetTriggerControl().treeViewTriggers.Items[i];
-                parent = controller.FindParent(node as INode, this);
+                parent = controller.FindParent(node as TreeViewItem, this);
                 if (parent != null)
                     break;
             }

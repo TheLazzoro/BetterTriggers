@@ -35,6 +35,20 @@ namespace Model.JsonBaseConverter
                         return new Value();
                     case 5:
                         return new IfThenElse();
+                    case 6:
+                        return new AndMultiple();
+                    case 7:
+                        return new OrMultiple();
+                    case 8:
+                        return new ForGroupMultiple();
+                    case 9:
+                        return new ForForceMultiple();
+                    case 10:
+                        return new ForLoopAMultiple();
+                    case 11:
+                        return new ForLoopBMultiple();
+                    case 12:
+                        return new ForLoopVarMultiple();
                     default:
                         return new Parameter();
                 }

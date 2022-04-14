@@ -25,7 +25,6 @@ namespace BetterTriggers.Commands
             this.paramIndex = paramIndex;
             this.paramToAdd = paramToAdd;
 
-            //this.triggerControl = triggerControl;
             this.triggerId = triggerId;
             this.oldParameter = paramCollection[this.paramIndex];
         }
