@@ -6,9 +6,9 @@ using System.Windows.Media;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class MenuItemExplorer : MenuItem
+    public class ContextMenuItem : MenuItem
     {
-        public MenuItemExplorer(string header)
+        public ContextMenuItem(string header)
         {
             var background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             var foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");

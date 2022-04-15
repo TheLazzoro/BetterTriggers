@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace GUI.Components.TriggerExplorer
+namespace GUI.Components.Shared
 {
-    public class SeparatorExplorer: Separator
+    public class ContextMenuSeperator: Separator
     {
-        public SeparatorExplorer()
+        public ContextMenuSeperator()
         {
             this.BorderThickness = new System.Windows.Thickness(0);
             var background = (SolidColorBrush)new BrushConverter().ConvertFromString("#000000");

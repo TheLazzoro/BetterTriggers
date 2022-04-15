@@ -86,7 +86,7 @@ namespace GUI.Components.TriggerExplorer
             else
                 category = Category.Wait;
 
-            TreeViewManipulator.SetTreeViewItemAppearance(this, this.Ielement.GetName(), category, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
+            TreeViewRenderer.SetTreeViewItemAppearance(this, this.Ielement.GetName(), category, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
         }
 
         public void Save()

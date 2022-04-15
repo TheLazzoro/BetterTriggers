@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Controllers;
+using GUI.Components.Shared;
 using Model.EditorData;
 using System;
 using System.Collections.Generic;
@@ -17,18 +18,18 @@ namespace GUI.Components.TriggerExplorer
             this.Background = background;
             this.BorderThickness = new System.Windows.Thickness(0);
 
-            MenuItem menuItemCut = new MenuItemExplorer("Cut");
-            MenuItem menuItemReset = new MenuItemExplorer("Copy");
-            MenuItem menuItemPaste = new MenuItemExplorer("Paste");
-            MenuItem menuItemDelete = new MenuItemExplorer("Delete");
-            MenuItem menuItemCategory = new MenuItemExplorer("New Category");
-            MenuItem menuItemTrigger = new MenuItemExplorer("New Trigger");
-            MenuItem menuItemTriggerComment = new MenuItemExplorer("New Trigger Comment");
-            MenuItem menuItemScript = new MenuItemExplorer("New Script");
-            MenuItem menuItemGlobalVariable = new MenuItemExplorer("New Global Variable");
-            MenuItem menuItemEnableTrigger = new MenuItemExplorer("Enable Trigger");
-            MenuItem menuItemInitiallyOn = new MenuItemExplorer("Initially On");
-            MenuItem menuItemOpenInExplorer = new MenuItemExplorer("Open Containing Folder");
+            MenuItem menuItemCut = new ContextMenuItem("Cut");
+            MenuItem menuItemReset = new ContextMenuItem("Copy");
+            MenuItem menuItemPaste = new ContextMenuItem("Paste");
+            MenuItem menuItemDelete = new ContextMenuItem("Delete");
+            MenuItem menuItemCategory = new ContextMenuItem("New Category");
+            MenuItem menuItemTrigger = new ContextMenuItem("New Trigger");
+            MenuItem menuItemTriggerComment = new ContextMenuItem("New Trigger Comment");
+            MenuItem menuItemScript = new ContextMenuItem("New Script");
+            MenuItem menuItemGlobalVariable = new ContextMenuItem("New Global Variable");
+            MenuItem menuItemEnableTrigger = new ContextMenuItem("Enable Trigger");
+            MenuItem menuItemInitiallyOn = new ContextMenuItem("Initially On");
+            MenuItem menuItemOpenInExplorer = new ContextMenuItem("Open Containing Folder");
 
             var element = treeItem.Ielement;
             if (element is ExplorerElementRoot || element is ExplorerElementFolder || element is ExplorerElementVariable)
@@ -56,16 +57,16 @@ namespace GUI.Components.TriggerExplorer
             this.Items.Add(menuItemReset);
             this.Items.Add(menuItemPaste);
             this.Items.Add(menuItemDelete);
-            this.Items.Add(new SeparatorExplorer());
+            this.Items.Add(new ContextMenuSeperator());
             this.Items.Add(menuItemCategory);
             this.Items.Add(menuItemTrigger);
             this.Items.Add(menuItemTriggerComment);
             this.Items.Add(menuItemScript);
             this.Items.Add(menuItemGlobalVariable);
-            this.Items.Add(new SeparatorExplorer());
+            this.Items.Add(new ContextMenuSeperator());
             this.Items.Add(menuItemEnableTrigger);
             this.Items.Add(menuItemInitiallyOn);
-            this.Items.Add(new SeparatorExplorer());
+            this.Items.Add(new ContextMenuSeperator());
             this.Items.Add(menuItemOpenInExplorer);
 
             menuItemDelete.Click += delegate

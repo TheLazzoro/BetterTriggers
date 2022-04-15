@@ -1,25 +1,16 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
-using GUI.Components;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
-using GUI.Utility;
 using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 namespace GUI.Components
@@ -140,6 +131,15 @@ namespace GUI.Components
                     parentItems = parent.GetTriggerElements();
                     insertIndex = parentItems.IndexOf(selectedTriggerElement);
                 }
+            } else if (selected is INode)
+            {
+                var node = (INode)selected;
+                if (node.GetNodeType() == type)
+                {
+                    parent = node;
+                    insertIndex = 0;
+                    parentItems = parent.GetTriggerElements();
+                }
             }
             if (parent == null)
             {
@@ -154,13 +154,16 @@ namespace GUI.Components
                 insertIndex = parentItems.Count;
             }
 
+            var parentAsItem = (TreeViewItem)parent;
+            parentAsItem.IsExpanded = true;
+
             if (triggerElement != null)
             {
                 CommandTriggerElementCreate command = new CommandTriggerElementCreate(triggerElement, parentItems, insertIndex);
                 command.Execute();
 
                 TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(triggerElement);
-                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated meth
+                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method.
 
                 triggerElement.Attach(treeViewTriggerElement);
                 treeViewTriggerElement.OnCreated(insertIndex);
@@ -286,6 +289,9 @@ namespace GUI.Components
 
         private TreeViewItem GetTraversedTargetDropItem(FrameworkElement dropTarget)
         {
+            if (dropTarget == null)
+                return null;
+
             TreeViewItem traversedTarget = null;
             while (traversedTarget == null)
             {
@@ -339,7 +345,7 @@ namespace GUI.Components
                 PasteTriggerElement();
         }
 
-        private void DeleteTriggerElement()
+        public void DeleteTriggerElement()
         {
             var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
             if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
@@ -468,6 +474,19 @@ namespace GUI.Components
             ControllerProject controller = new ControllerProject();
             controller.SetElementInitiallyOn(explorerElementTrigger, (bool)checkBoxIsInitiallyOn.IsChecked);
             OnStateChange();
+        }
+
+        private void treeViewTriggers_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewItem rightClickedElement = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+
+            if (rightClickedElement == null)
+                return;
+
+            // Set selected item
+            rightClickedElement.IsSelected = true;
+            ContextMenuTrigger contextMenu = new ContextMenuTrigger(rightClickedElement);
+            rightClickedElement.ContextMenu = contextMenu;
         }
     }
 }

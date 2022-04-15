@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 
 namespace GUI.Utility
 {
-    public static class TreeViewManipulator
+    public static class TreeViewRenderer
     {
         public static void SetTreeViewItemAppearance(TreeViewItem treeViewitem, string text, Category iconCategory, bool isValid = true, bool isInitiallyOn = true)
         {

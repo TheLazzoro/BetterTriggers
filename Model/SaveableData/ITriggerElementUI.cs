@@ -8,7 +8,7 @@ namespace Model.SaveableData
     {
         void UpdatePosition();
         void UpdateParams();
-        void UpdateEnabled(bool isEnabled);
+        void UpdateEnabled();
         void OnCreated(int insertIndex);
         void OnDeleted();
     }

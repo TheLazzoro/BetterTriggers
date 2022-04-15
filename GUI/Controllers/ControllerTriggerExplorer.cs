@@ -6,9 +6,7 @@ using GUI.Components.TriggerExplorer;
 using GUI.Container;
 using Model.EditorData;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Windows.Controls;
 
 namespace GUI.Controllers
 {

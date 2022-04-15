@@ -1,22 +1,16 @@
-﻿using Model.Data;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
+using GUI.Controllers;
 using GUI.Utility;
-using System;
+using Model.EditorData;
+using Model.EditorData.Enums;
+using Model.SaveableData;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.ComponentModel;
-using System.Threading;
-using Model.Templates;
-using Model.SaveableData;
-using Model.EditorData.Enums;
-using BetterTriggers.Containers;
-using Model.EditorData;
-using BetterTriggers.Controllers;
-using BetterTriggers.Commands;
-using GUI.Controllers;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -54,7 +48,7 @@ namespace GUI.Components.TriggerEditor
             this.descriptionTextBlock.Text = controller.GetDescription(triggerElement.function);
             this.category = controller.GetCategoryTriggerElement(triggerElement.function);
 
-            TreeViewManipulator.SetTreeViewItemAppearance(this, "placeholder", this.category);
+            TreeViewRenderer.SetTreeViewItemAppearance(this, "placeholder", this.category);
             this.FormatParameterText();
 
             ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
@@ -75,7 +69,7 @@ namespace GUI.Components.TriggerEditor
             }
 
             TriggerControl triggerControl = null;
-            FrameworkElement treeViewParent = (FrameworkElement) this.Parent;
+            FrameworkElement treeViewParent = (FrameworkElement)this.Parent;
             while (triggerControl == null && treeViewParent != null)
             {
                 var parent = treeViewParent.Parent;
@@ -105,11 +99,11 @@ namespace GUI.Components.TriggerEditor
 
             RecurseParameters(textBlock, parameters, paramText);
             bool areParametersValid = IsParameterListValid(parameters);
+            if (parameters.Count == 1 && parameters[0].returnType == "nothing") // hack
+                areParametersValid = true;
+            bool isEnabled = triggerElement.isEnabled;
 
-            if (areParametersValid)
-                TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category);
-            else
-                TreeViewManipulator.SetTreeViewItemAppearance(this, this.formattedParamText, category, false);
+            TreeViewRenderer.SetTreeViewItemAppearance(this, this.formattedParamText, category, areParametersValid, isEnabled);
         }
 
         private bool IsParameterListValid(List<Parameter> parameters, bool isValid = true)
@@ -380,9 +374,10 @@ namespace GUI.Components.TriggerEditor
             GetTriggerControl().OnStateChange();
         }
 
-        public void UpdateEnabled(bool isEnabled)
+        public void UpdateEnabled()
         {
-            throw new NotImplementedException();
+            FormatParameterText();
+            GetTriggerControl().OnStateChange();
         }
 
         public void OnDeleted()

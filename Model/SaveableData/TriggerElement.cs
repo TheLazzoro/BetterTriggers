@@ -8,7 +8,7 @@ namespace Model.SaveableData
 {
     public class TriggerElement : ITriggerElement
     {
-        public bool isEnabled;
+        public bool isEnabled = true;
         public Function function;
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Model.SaveableData
         {
             for (int i = 0; i < triggerElementUIs.Count; i++)
             {
-                triggerElementUIs[i].UpdateEnabled(isEnabled);
+                triggerElementUIs[i].UpdateEnabled();
             }
         }
         

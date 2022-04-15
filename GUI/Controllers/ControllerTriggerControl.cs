@@ -1,11 +1,7 @@
-﻿using GUI.Components;
-using GUI.Components.TriggerEditor;
+﻿using GUI.Components.TriggerEditor;
 using Model.SaveableData;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace GUI.Controllers
