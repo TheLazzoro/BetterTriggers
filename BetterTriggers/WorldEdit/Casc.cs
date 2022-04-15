@@ -12,7 +12,6 @@ namespace BetterTriggers.WorldEdit
     {
         private static bool _onlineMode = false;
         private static string product = "w3";
-        private static string path = @"D:\Programmer\Warcraft III"; // we need to change this
         private static CASCFolder war3_w3mod;
         private static CASCHandler casc;
 
@@ -20,8 +19,11 @@ namespace BetterTriggers.WorldEdit
         {
             if (casc == null)
             {
+                // settings from BetterTriggers
+                Settings settings = Settings.Load();
+
                 CASCConfig.LoadFlags |= LoadFlags.Install;
-                CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(path, product);
+                CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(settings.war3root, product);
 
                 casc = CASCHandler.OpenStorage(config);
 
@@ -35,6 +37,36 @@ namespace BetterTriggers.WorldEdit
             }
 
             return casc;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Valid if true</returns>
+        public static bool VerifyWc3Storage()
+        {
+            bool isValid = false;
+            
+            try
+            {
+                Settings settings = Settings.Load();
+
+                CASCConfig.LoadFlags |= LoadFlags.Install;
+                CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(settings.war3root, product);
+                var casc = CASCHandler.OpenStorage(config);
+                casc.Root.SetFlags(LocaleFlags.enGB, false, false);
+                using (var _ = new PerfCounter("LoadListFile()"))
+                {
+                    casc.Root.LoadListFile("listfile.csv");
+                }
+
+                isValid = true;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return isValid;
         }
 
         public static CASCFolder GetWar3ModFolder()

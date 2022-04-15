@@ -12,7 +12,6 @@ namespace Model.SaveableData
     public class Function : Parameter, ICloneable
     {
         public readonly int ParamType = 1; // DO NOT CHANGE
-        public bool IsEnabled = true;
         public List<Parameter> parameters = new List<Parameter>();
 
         public object Clone()

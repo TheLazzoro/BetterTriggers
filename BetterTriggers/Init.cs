@@ -19,6 +19,7 @@ namespace BetterTriggers
             if (hasLoaded)
                 return;
 
+            Settings.Load();
             Natives.Load();
             UnitTypes.Load();
             AbilityTypes.Load();
