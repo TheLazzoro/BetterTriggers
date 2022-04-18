@@ -15,6 +15,7 @@ using Model.Templates;
 using Model.SaveableData;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -24,6 +25,7 @@ namespace GUI.Components.TriggerEditor
     public partial class TriggerElementMenuWindow : Window
     {
         public TriggerElement createdTriggerElement;
+        private SearchObjects searchObjects;
 
         public TriggerElementMenuWindow(TriggerElementType triggerElementType)
         {
@@ -51,14 +53,34 @@ namespace GUI.Components.TriggerEditor
                 templates = controllerTriggerData.LoadAllActions();
             }
 
-
+            List<SearchObject> objects = new List<SearchObject>();
             for (int i = 0; i < templates.Count; i++)
             {
-                var template = templates[i];
-                ListViewItem item = new ListViewItem();
-                item.Content = template.name;
-                item.Tag = template.ToTriggerElement();
-                listView.Items.Add(item);
+                ListViewItem listItem = new ListViewItem();
+                listItem.Content = templates[i].name;
+                listItem.Tag = templates[i].ToTriggerElement();
+                objects.Add(new SearchObject()
+                {
+                    Object = listItem,
+                    Words = new List<string>()
+                    {
+                        templates[i].name.ToLower(),
+                        templates[i].identifier.ToLower(),
+                        string.Empty
+                    },
+                });
+            }
+            searchObjects = new SearchObjects(objects);
+            PopulateList("");
+        }
+
+        private void PopulateList(string searchWord)
+        {
+            listView.Items.Clear();
+            var list = searchObjects.Search(searchWord);
+            for (int i = 0; i < list.Count; i++)
+            {
+                listView.Items.Add(list[i].Object);
             }
         }
 
@@ -77,6 +99,11 @@ namespace GUI.Components.TriggerEditor
         private void listViewEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             btnOK.IsEnabled = true;
+        }
+
+        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            PopulateList(textBoxSearch.Text);
         }
     }
 }

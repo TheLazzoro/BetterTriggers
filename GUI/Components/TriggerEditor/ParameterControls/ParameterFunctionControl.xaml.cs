@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
 using GUI.Controllers;
 using Model;
 using Model.SaveableData;
@@ -24,6 +25,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ParameterFunctionControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
+        private SearchObjects searchObjects;
 
         public ParameterFunctionControl(string returnType)
         {
@@ -32,23 +34,37 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             ControllerTriggerData controller = new ControllerTriggerData();
             List<FunctionTemplate> functions = controller.LoadAllCalls();
 
+            List<SearchObject> objects = new List<SearchObject>();
             for (int i = 0; i < functions.Count; i++)
             {
-                if (functions[i].returnType == returnType)
-                {
-                    Function function = new Function()
-                    {
-                        identifier = functions[i].identifier,
-                        parameters = new List<Parameter>(),
-                        returnType = functions[i].returnType,
-                    };
-                    ListViewItem item = new ListViewItem();
-                    item.Content = functions[i].name;
-                    item.Tag = functions[i];
+                if (functions[i].returnType != returnType)
+                    continue;
 
-                    listViewFunctions.Items.Add(item);
-                    this.selectedItem = listViewFunctions.Items.GetItemAt(0) as ListViewItem;
-                }
+                ListViewItem listItem = new ListViewItem();
+                listItem.Content = functions[i].name;
+                listItem.Tag = functions[i];
+                objects.Add(new SearchObject()
+                {
+                    Object = listItem,
+                    Words = new List<string>()
+                    {
+                        functions[i].name.ToLower(),
+                        functions[i].identifier.ToLower(),
+                        string.Empty
+                    },
+                });
+            }
+            searchObjects = new SearchObjects(objects);
+            PopulateList("");
+        }
+
+        public void PopulateList(string searchWord)
+        {
+            listViewFunctions.Items.Clear();
+            var list = searchObjects.Search(searchWord);
+            for (int i = 0; i < list.Count; i++)
+            {
+                listViewFunctions.Items.Add(list[i].Object);
             }
         }
 
@@ -77,6 +93,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private void listViewFunction_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedItem = listViewFunctions.SelectedItem as ListViewItem;
+        }
+
+        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            PopulateList(textBoxSearch.Text);
         }
     }
 }
