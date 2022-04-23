@@ -12,6 +12,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public class ButtonUnitType : Button
     {
         public string UnitType { get; }
+        public bool isSpecial;
+        public string Category;
         private int Width = 32;
         private int Height = 32;
         private Brush defaultBorderBrush;
@@ -19,6 +21,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public ButtonUnitType(UnitType unit)
         {
             this.UnitType = unit.Id;
+            this.isSpecial = unit.isSpecial;
             Image img = new Image();
             img.Width = Width;
             img.Height = Height;

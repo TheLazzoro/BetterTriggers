@@ -1,31 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using BetterTriggers.Controllers;
+﻿using BetterTriggers.Controllers;
 using BetterTriggers.Utility;
-using GUI.Controllers;
-using Model;
+using GUI.Components.Shared;
 using Model.SaveableData;
 using Model.Templates;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    /// <summary>
-    /// Interaction logic for ParameterFunctionControl.xaml
-    /// </summary>
     public partial class ParameterFunctionControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
-        private SearchObjects searchObjects;
 
         public ParameterFunctionControl(string returnType)
         {
@@ -33,8 +19,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             ControllerTriggerData controller = new ControllerTriggerData();
             List<FunctionTemplate> functions = controller.LoadAllCalls();
+            List<Searchable> objects = new List<Searchable>();
 
-            List<SearchObject> objects = new List<SearchObject>();
             for (int i = 0; i < functions.Count; i++)
             {
                 if (functions[i].returnType != returnType)
@@ -43,34 +29,31 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = functions[i].name;
                 listItem.Tag = functions[i];
-                objects.Add(new SearchObject()
+                objects.Add(new Searchable()
                 {
                     Object = listItem,
+                    Category = (int) functions[i].category,
                     Words = new List<string>()
                     {
                         functions[i].name.ToLower(),
-                        functions[i].identifier.ToLower(),
-                        string.Empty
+                        functions[i].identifier.ToLower()
                     },
                 });
             }
-            searchObjects = new SearchObjects(objects);
-            PopulateList("");
-        }
+            var searchables = new Searchables(objects);
+            listControl.SetSearchableList(searchables);
 
-        public void PopulateList(string searchWord)
-        {
-            listViewFunctions.Items.Clear();
-            var list = searchObjects.Search(searchWord);
-            for (int i = 0; i < list.Count; i++)
-            {
-                listViewFunctions.Items.Add(list[i].Object);
-            }
+            var categoryControl = new GenericCategoryControl(searchables);
+            grid.Children.Add(categoryControl);
+            Grid.SetRow(categoryControl, 1);
+            Grid.SetRowSpan(categoryControl, 3);
+
+            listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
         public int GetElementCount()
         {
-            return listViewFunctions.Items.Count;
+            return listControl.listView.Items.Count;
         }
 
         public Parameter GetSelectedItem()
@@ -90,14 +73,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             this.Visibility = visibility;
         }
 
-        private void listViewFunction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedItem = listViewFunctions.SelectedItem as ListViewItem;
-        }
-
-        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            PopulateList(textBoxSearch.Text);
+            selectedItem = listControl.listView.SelectedItem as ListViewItem;
         }
     }
 }

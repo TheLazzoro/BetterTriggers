@@ -1,19 +1,10 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using Model.SaveableData;
 using Model.War3Data;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -42,16 +33,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         Custom
     }
 
-    /// <summary>
-    /// Interaction logic for ValueControlUnitTypes.xaml
-    /// </summary>
-    public partial class ValueControlUnitTypes : UserControl, IValueControl
+    public partial class ValueControlUnitTypes : UserControl, IValueControl, ISearchablesObserverList
     {
         private List<UnitType> unitData = new List<UnitType>();
         private CategoryRace selectedRace = CategoryRace.Human;
         private Value selectedType;
         private int elementCount;
         private ButtonUnitType selectedButton;
+
+        private Searchables searchables;
 
         public ValueControlUnitTypes()
         {
@@ -73,7 +63,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void comboboxRace_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // This is clean af heheh
+            // This is clean af kapp
             if (comboboxRace.SelectedIndex == 0)
                 selectedRace = CategoryRace.Human;
             else if (comboboxRace.SelectedIndex == 1)
@@ -97,6 +87,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             itemControlBuildings.Items.Clear();
             itemControlSpecial.Items.Clear();
             elementCount = 0;
+
+            List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < unitData.Count; i++)
             {
@@ -122,37 +114,70 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 {
                     string unitCategory = unit.Sort.Substring(1, 1);
                     var btn = new ButtonUnitType(unit);
+                    btn.Category = unitCategory;
                     btn.Click += Btn_Click;
 
-                    if (unit.isSpecial)
-                        itemControlSpecial.Items.Add(btn);
-                    else if (unitCategory == "2")
-                        itemControlUnits.Items.Add(btn);
-                    else if (unitCategory == "1")
-                        itemControlHeroes.Items.Add(btn);
-                    else if (unitCategory == "3")
-                        itemControlBuildings.Items.Add(btn);
-                    else
-                        itemControlSpecial.Items.Add(btn);
+                    objects.Add(new Searchable()
+                    {
+                        Object = btn,
+                        Words = new List<string>()
+                            {
+                                unit.Id.ToLower()
+                            }
+                    });
 
                     elementCount++;
                 }
             }
+
+            searchables = new Searchables(objects);
+            searchables.AttachList(this);
+
+            searchables.Search("");
         }
+
 
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
             if (selectedButton != null)
                 selectedButton.RemoveSelectedBorder();
 
-
-            var btnClicked = (ButtonUnitType) e.Source;
+            var btnClicked = (ButtonUnitType)e.Source;
             selectedButton = btnClicked;
             this.selectedType = new Value()
             {
                 identifier = btnClicked.UnitType,
                 returnType = "unitcode",
             };
+        }
+
+        public void Update()
+        {
+            itemControlUnits.Items.Clear();
+            itemControlHeroes.Items.Clear();
+            itemControlBuildings.Items.Clear();
+            itemControlSpecial.Items.Clear();
+
+            var units = searchables.GetObjects();
+            for (int i = 0; i < units.Count; i++)
+            {
+                var btn = (ButtonUnitType)units[i].Object;
+                if (btn.isSpecial)
+                    itemControlSpecial.Items.Add(btn);
+                else if (btn.Category == "2")
+                    itemControlUnits.Items.Add(btn);
+                else if (btn.Category == "1")
+                    itemControlHeroes.Items.Add(btn);
+                else if (btn.Category == "3")
+                    itemControlBuildings.Items.Add(btn);
+                else
+                    itemControlSpecial.Items.Add(btn);
+            }
+        }
+
+        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            searchables.Search(textBoxSearch.Text);
         }
     }
 }

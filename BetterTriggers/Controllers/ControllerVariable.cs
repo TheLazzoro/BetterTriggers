@@ -47,6 +47,11 @@ namespace BetterTriggers.Controllers
             File.WriteAllText(directory + @"\" + name + ".var", json);
         }
 
+        public List<ExplorerElementVariable> GetExplorerElementAll()
+        {
+            return ContainerVariables.variableContainer;
+        }
+
         public Variable LoadVariableFromFile(string filePath)
         {
             string json = File.ReadAllText(filePath);

@@ -1,10 +1,7 @@
 ﻿using CASCLib;
 using Model.War3Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit

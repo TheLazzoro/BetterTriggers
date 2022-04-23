@@ -1,27 +1,13 @@
-﻿using System;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
+using Model.EditorData;
+using Model.SaveableData;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using BetterTriggers.Containers;
-using Model;
-using Model.Data;
-using Model.SaveableData;
-using Newtonsoft.Json;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    /// <summary>
-    /// Interaction logic for ParameterFunctionControl.xaml
-    /// </summary>
     public partial class ParameterVariableControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
@@ -30,38 +16,52 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            ControllerVariable controllerVariable = new ControllerVariable();
+            List<ExplorerElementVariable> elements = controllerVariable.GetExplorerElementAll();
             List<Variable> variables = new List<Variable>();
+            List<Searchable> objects = new List<Searchable>();
 
-            for (int i = 0; i < ContainerVariables.Count(); i++)
+            for (int i = 0; i < elements.Count; i++)
             {
-                var explorerElement = ContainerVariables.Get(i);
-                string json = File.ReadAllText(explorerElement.GetPath());
-                Variable variable = JsonConvert.DeserializeObject<Variable>(json);
-                variable.Name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.GetPath()); // hack
+                if (elements[i].variable.Type != returnType)
+                    continue;
 
-                if (variable.Type == returnType)
-                    variables.Add(variable);
+                var explorerElement = elements[i];
+                string name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.GetPath());
+                Variable variable = explorerElement.variable;
+                variable.Name = name;
+                variables.Add(variable);
             }
 
-            // Create a list of saveable variables
+            // Creates a list of saveable variables
             for (int i = 0; i < variables.Count; i++)
             {
-                ListViewItem item = new ListViewItem();
-                item.Content = variables[i].Name;
-                item.Tag = new VariableRef()
+                ListViewItem listItem = new ListViewItem();
+                listItem.Content = variables[i].Name;
+                listItem.Tag = new VariableRef()
                 {
                     returnType = variables[i].Type,
                     VariableId = variables[i].Id,
                 };
+                
+                objects.Add(new Searchable()
+                {
+                    Object = listItem,
+                    Words = new List<string>()
+                    {
+                        variables[i].Name.ToLower()
+                    },
+                });
+                var searchables = new Searchables(objects);
+                listControl.SetSearchableList(searchables);
 
-                listViewVariables.Items.Add(item);
-                this.selectedItem = listViewVariables.Items.GetItemAt(0) as ListViewItem;
+                listControl.listView.SelectionChanged += ListView_SelectionChanged;
             }
         }
 
         public int GetElementCount()
         {
-            return listViewVariables.Items.Count;
+            return listControl.listView.Items.Count;
         }
 
         public Parameter GetSelectedItem()
@@ -75,9 +75,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             this.Visibility = visibility;
         }
 
-        private void listViewFunction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedItem = listViewVariables.SelectedItem as ListViewItem;
+            selectedItem = listControl.listView.SelectedItem as ListViewItem;
         }
     }
 }

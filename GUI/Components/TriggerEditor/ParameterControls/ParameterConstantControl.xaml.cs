@@ -1,5 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
+using GUI.Components.Shared;
 using GUI.Controllers;
 using Model.SaveableData;
 using Model.Templates;
@@ -30,25 +32,44 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             InitializeComponent();
 
             var controllerTriggerData = new ControllerTriggerData();
-            var templates = controllerTriggerData.LoadAllConstants();
-            for (int i = 0; i < templates.Count; i++)
-            {
-                var constant = templates[i];
-                if (constant.returnType == returnType)
-                {
-                    ListViewItem item = new ListViewItem();
-                    item.Content = constant.name;
-                    item.Tag = constant;
+            var constants = controllerTriggerData.LoadAllConstants();
+            List<Searchable> objects = new List<Searchable>();
 
-                    listViewConstant.Items.Add(item);
-                    this.selectedItem = listViewConstant.Items.GetItemAt(0) as ListViewItem;
-                }
+
+            for (int i = 0; i < constants.Count; i++)
+            {
+                var constant = constants[i];
+                if (constant.returnType != returnType)
+                    continue;
+
+                ListViewItem listItem = new ListViewItem();
+                listItem.Content = constant.name;
+                listItem.Tag = constant;
+                objects.Add(new Searchable()
+                {
+                    Object = listItem,
+                    Words = new List<string>()
+                    {
+                        constant.name.ToLower(),
+                        constant.identifier.ToLower()
+                    },
+                });
+
+                var searchables = new Searchables(objects);
+                listControl.SetSearchableList(searchables);
+
+                var categoryControl = new GenericCategoryControl(searchables);
+                grid.Children.Add(categoryControl);
+                Grid.SetRow(categoryControl, 1);
+                Grid.SetRowSpan(categoryControl, 3);
+
+                listControl.listView.SelectionChanged += ListView_SelectionChanged;
             }
         }
 
         public int GetElementCount()
         {
-            return listViewConstant.Items.Count;
+            return listControl.listView.Items.Count;
         }
 
         public Parameter GetSelectedItem()
@@ -67,9 +88,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             this.Visibility = visibility;
         }
 
-        private void listViewConstant_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedItem = listViewConstant.SelectedItem as ListViewItem;
+            selectedItem = listControl.listView.SelectedItem as ListViewItem;
         }
     }
 }

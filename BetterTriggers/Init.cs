@@ -1,4 +1,5 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.Locales;
+using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace BetterTriggers
                 return;
 
             Settings.Load();
+            Locale.Load();
             Natives.Load();
             UnitTypes.Load();
             AbilityTypes.Load();

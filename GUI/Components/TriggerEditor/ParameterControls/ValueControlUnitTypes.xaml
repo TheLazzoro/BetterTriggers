@@ -33,7 +33,7 @@
             <ComboBoxItem Content="Neutral"/>
             <ComboBoxItem Content="Neutral - Naga"/>
         </ComboBox>
-        <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="50,5,0,5" Grid.ColumnSpan="3"/>
+        <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="50,5,0,5" Grid.ColumnSpan="3" TextChanged="textBoxSearch_TextChanged"/>
         <Label x:Name="lblSearch" Content="Search:" Grid.Row="1" Foreground="White" VerticalAlignment="Top"/>
 
         <Label x:Name="lblUnits" Content="Units" Grid.Row="2" Foreground="White" />

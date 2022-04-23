@@ -27,7 +27,7 @@ namespace BetterTriggers.WorldEdit
 
                 casc = CASCHandler.OpenStorage(config);
 
-                casc.Root.SetFlags(LocaleFlags.enGB, false, false);
+                casc.Root.SetFlags(LocaleFlags.All, false, false);
 
 
                 using (var _ = new PerfCounter("LoadListFile()"))

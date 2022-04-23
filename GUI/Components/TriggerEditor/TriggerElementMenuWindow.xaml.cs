@@ -1,92 +1,73 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
+using GUI.Components.Shared;
+using Model.SaveableData;
+using Model.Templates;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Model;
-using Model.Templates;
-using Model.SaveableData;
-using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
-using BetterTriggers.Utility;
 
 namespace GUI.Components.TriggerEditor
 {
-    /// <summary>
-    /// Interaction logic for EventMenuWindow.xaml
-    /// </summary>
     public partial class TriggerElementMenuWindow : Window
     {
         public TriggerElement createdTriggerElement;
-        private SearchObjects searchObjects;
 
         public TriggerElementMenuWindow(TriggerElementType triggerElementType)
         {
             InitializeComponent();
 
-            listViewCategory.Items.Add("- All");
-            listViewCategory.Items.Add("- General");
-            listViewCategory.Items.Add("Ability");
-
             var controllerTriggerData = new ControllerTriggerData();
             var templates = new List<FunctionTemplate>();
             if (triggerElementType == TriggerElementType.Event)
             {
-                listViewHeader.Header = "Event";
+                listControl.listViewHeader.Header = "Event";
                 templates = controllerTriggerData.LoadAllEvents();
             }
             else if (triggerElementType == TriggerElementType.Condition)
             {
-                listViewHeader.Header = "Condition";
+                listControl.listViewHeader.Header = "Condition";
                 templates = controllerTriggerData.LoadAllConditions();
             }
             else if (triggerElementType == TriggerElementType.Action)
             {
-                listViewHeader.Header = "Action";
+                listControl.listViewHeader.Header = "Action";
                 templates = controllerTriggerData.LoadAllActions();
             }
 
-            List<SearchObject> objects = new List<SearchObject>();
+            List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < templates.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = templates[i].name;
                 listItem.Tag = templates[i].ToTriggerElement();
-                objects.Add(new SearchObject()
+                objects.Add(new Searchable()
                 {
                     Object = listItem,
+                    Category = (int)templates[i].category,
                     Words = new List<string>()
                     {
                         templates[i].name.ToLower(),
-                        templates[i].identifier.ToLower(),
-                        string.Empty
+                        templates[i].identifier.ToLower()
                     },
                 });
             }
-            searchObjects = new SearchObjects(objects);
-            PopulateList("");
-        }
-
-        private void PopulateList(string searchWord)
-        {
-            listView.Items.Clear();
-            var list = searchObjects.Search(searchWord);
-            for (int i = 0; i < list.Count; i++)
+            var searchables = new Searchables(objects);
+            listControl.SetSearchableList(searchables);
+            listControl.ListViewChanged += delegate
             {
-                listView.Items.Add(list[i].Object);
-            }
+                btnOK.IsEnabled = listControl.GetItemsCount() > 0;
+            };
+
+            var categoryControl = new GenericCategoryControl(searchables);
+            grid.Children.Add(categoryControl);
+            Grid.SetRow(categoryControl, 1);
+            Grid.SetRowSpan(categoryControl, 3);
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            var item = (ListViewItem)listView.SelectedItem;
+            var item = (ListViewItem)listControl.listView.SelectedItem;
             createdTriggerElement = (TriggerElement)item.Tag;
             this.Close();
         }
@@ -94,16 +75,6 @@ namespace GUI.Components.TriggerEditor
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void listViewEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            btnOK.IsEnabled = true;
-        }
-
-        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            PopulateList(textBoxSearch.Text);
         }
     }
 }

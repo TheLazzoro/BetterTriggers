@@ -1,27 +1,12 @@
-﻿using System;
+﻿using BetterTriggers.WorldEdit;
+using Model.SaveableData;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using BetterTriggers.Controllers;
-using GUI.Components.TriggerEditor;
-using GUI.Controllers;
-using Model;
-using Model.SaveableData;
-using Model.Templates;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    /// <summary>
-    /// Interaction logic for ParameterFunctionControl.xaml
-    /// </summary>
     public partial class ParameterValueControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
@@ -31,6 +16,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            List<Value> values;
             switch (returnType)
             {
                 case "boolean":
@@ -49,31 +35,49 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     this.valueControl = new ValueControlUnitTypes();
                     break;
                 case "abilcode":
-                    this.valueControl = new ValueControlAbilities();
+                    var abilities = AbilityTypes.GetAbilitiesAll();
+                    values = abilities.Select(a => new Value() { identifier = a.AbilCode, returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "buffcode":
-                    this.valueControl = new ValueControlBuffs();
+                    var buffs = BuffData.GetBuffsAll();
+                    values = buffs.Select(b => new Value() { identifier = b.BuffCode, returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "destructablecode":
-                    this.valueControl = new ValueControlDestructibles();
+                    var destructibles = DestructibleTypes.GetDestructiblesTypesAll();
+                    values = destructibles.Select(d => new Value() { identifier = d.DestCode, returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "techcode":
-                    this.valueControl = new ValueControlUpgrades();
+                    var upgrades = UpgradeTypes.GetUpgradesAll();
+                    values = upgrades.Select(up => new Value() { identifier = up.UpgradeCode, returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "itemcode":
-                    this.valueControl = new ValueControlItems();
+                    var items = ItemData.GetItemsAll();
+                    values = items.Select(i => new Value() { identifier = i.ItemCode, returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "unit":
-                    this.valueControl = new ValueControlMapUnits();
+                    var units = Units.Load();
+                    values = units.Select(u => new Value() { identifier = u.ToString(), returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "destructable":
-                    this.valueControl = new ValueControlMapDestructibles();
+                    var mapDestructibles = Destructibles.Load();
+                    values = mapDestructibles.Select(dest => new Value() { identifier = dest.ToString(), returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "rect":
-                    this.valueControl = new ValueControlRegions();
+                    var rects = Regions.Load();
+                    values = rects.Select(rect => new Value() { identifier = rect.ToString(), returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "camerasetup":
-                    this.valueControl = new ValueControlMapCameras();
+                    var cameras = Cameras.Load();
+                    values = cameras.Select(c => new Value() { identifier = c.ToString(), returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 default:
                     break;
