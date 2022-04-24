@@ -10,7 +10,7 @@ namespace BetterTriggers.Utility
     public class Searchable
     {
         public object Object;
-        public int Category;
+        public string Category;
         public List<string> Words;
 
         public bool HasWord(string word)
@@ -30,16 +30,16 @@ namespace BetterTriggers.Utility
         private List<ISearchablesObserverCategories> observerCategories = new List<ISearchablesObserverCategories>();
         private List<Searchable> ItemsAll;
         private List<Searchable> ItemsFiltered;
-        private HashSet<int> Categories;
+        private HashSet<string> Categories;
         private string currentWord;
-        private int currentCategory = -1;
+        private string currentCategory = "-1";
 
         public Searchables(List<Searchable> searchObjects)
         {
             ItemsAll = searchObjects;
             ItemsFiltered = searchObjects;
-            Categories = new HashSet<int>();
-            Categories.Add(-1);
+            Categories = new HashSet<string>();
+            Categories.Add("-1");
             for (int i = 0; i < ItemsAll.Count; i++)
             {
                 Categories.Add(ItemsAll[i].Category);
@@ -50,7 +50,7 @@ namespace BetterTriggers.Utility
         {
             currentWord = word.ToLower();
             ItemsFiltered = new List<Searchable>();
-            Categories = new HashSet<int>();
+            Categories = new HashSet<string>();
 
             if (currentWord == "")
             {
@@ -88,7 +88,7 @@ namespace BetterTriggers.Utility
         public List<Searchable> GetObjects()
         {
             List<Searchable> list = new List<Searchable>();
-            if (currentCategory == -1)
+            if (currentCategory == "-1")
                 return ItemsFiltered;
 
             for (int i = 0; i < ItemsFiltered.Count; i++)
@@ -104,9 +104,9 @@ namespace BetterTriggers.Utility
         /// Returns a list of categories found with the last search.
         /// </summary>
         /// <returns></returns>
-        public List<int> GetCurrentCategories()
+        public List<string> GetCurrentCategories()
         {
-            List<int> categories = new List<int>();
+            List<string> categories = new List<string>();
             foreach (var item in Categories)
             {
                 categories.Add(item);
@@ -114,7 +114,7 @@ namespace BetterTriggers.Utility
             return categories;
         }
 
-        public void SetCurrentCategory(int categoryId)
+        public void SetCurrentCategory(string categoryId)
         {
             this.currentCategory = categoryId;
             NotifyList();

@@ -1,71 +1,65 @@
-﻿using BetterTriggers.Controllers;
-using BetterTriggers.Utility;
+﻿using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using Model.SaveableData;
-using Model.Templates;
+using Model.War3Data;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    public partial class ParameterFunctionControl : UserControl, IParameterControl
+    public partial class ValueControlModels : UserControl, IValueControl
     {
-        private ListViewItem selectedItem;
-
-        public ParameterFunctionControl(string returnType)
+        public ValueControlModels()
         {
             InitializeComponent();
 
-            ControllerTriggerData controller = new ControllerTriggerData();
-            List<FunctionTemplate> functions = controller.LoadAllCalls();
+            var models = ModelData.GetModelsAll();
             List<Searchable> objects = new List<Searchable>();
 
-            for (int i = 0; i < functions.Count; i++)
+            for (int i = 0; i < models.Count; i++)
             {
-                if (functions[i].returnType != returnType)
-                    continue;
-
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = functions[i].name;
-                listItem.Tag = functions[i];
+                listItem.Content = $"{models[i].Path} PLACEHOLDER";
+                listItem.Tag = models[i];
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
-                    Category = functions[i].category.ToString(),
+                    Category = models[i].Category,
                     Words = new List<string>()
                     {
-                        functions[i].name.ToLower(),
-                        functions[i].identifier.ToLower()
+                        "PLACEHOLDER",
+                        models[i].Path.ToLower()
                     },
                 });
             }
+
             var searchables = new Searchables(objects);
             listControl.SetSearchableList(searchables);
 
             var categoryControl = new GenericCategoryControl(searchables);
             grid.Children.Add(categoryControl);
-            Grid.SetRow(categoryControl, 1);
-            Grid.SetRowSpan(categoryControl, 3);
+            Grid.SetRow(categoryControl, 0);
+            Grid.SetRowSpan(categoryControl, 2);
 
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
+
+        
 
         public int GetElementCount()
         {
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelectedItem()
+        public Parameter GetSelected()
         {
-            var template = (FunctionTemplate)selectedItem.Tag;
-            var parameter = new Function()
+            return  new Value()
             {
-                identifier = template.identifier,
-                parameters = template.parameters,
-                returnType = template.returnType,
+                identifier = textBoxAsset.Text,
+                returnType = "modelfile"
             };
-            return parameter;
         }
 
         public void SetVisibility(Visibility visibility)
@@ -75,7 +69,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedItem = listControl.listView.SelectedItem as ListViewItem;
+            var selectedItem = listControl.listView.SelectedItem as ListViewItem;
+            if (selectedItem == null)
+                return;
+
+            var model = (AssetModel)selectedItem.Tag;
+            textBoxAsset.Text = model.Path;
         }
     }
 }

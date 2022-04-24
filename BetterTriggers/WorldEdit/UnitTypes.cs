@@ -1,4 +1,7 @@
-﻿using CASCLib;
+﻿using BetterTriggers.Utility;
+using CASCLib;
+using IniParser.Model;
+using IniParser.Parser;
 using Model.War3Data;
 using System;
 using System.Collections.Generic;
@@ -19,23 +22,18 @@ namespace BetterTriggers.WorldEdit
             return unitTypes;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>A list of all base unit types.</returns>
         internal static void Load()
         {
             unitTypes = new List<UnitType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-            //files = CASCFolder.GetFiles(units.Entries.Select(kv => kv.Value), null, false).ToList();
 
             // Extract base data
             CASCFile unitData = (CASCFile)units.Entries["unitdata.slk"];
             var file = Casc.GetCasc().OpenFile(unitData.FullName);
             SylkParser sylkParser = new SylkParser();
             SylkTable table = sylkParser.Parse(file);
-            for(int i = 1; i < table.Count(); i++)
+            for (int i = 1; i < table.Count(); i++)
             {
                 var row = table.ElementAt(i);
                 UnitType unitType = new UnitType()
@@ -48,90 +46,33 @@ namespace BetterTriggers.WorldEdit
                 unitTypes.Add(unitType);
             }
 
-            // Set 'special' units
-            CASCFile unitUI = (CASCFile)units.Entries["unitui.slk"];
-            file = Casc.GetCasc().OpenFile(unitUI.FullName);
-            sylkParser = new SylkParser();
-            table = sylkParser.Parse(file);
-            for (int i = 0; i < unitTypes.Count(); i++)
-            {
-                var unitType = unitTypes[i];
-                var row = table.ElementAt(i+1);
-                unitType.isSpecial = (int)row.GetValue(6) == 1;
-            }
-
-            // Set icons on all unit type entries
+            // Parse ini file
             CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
             file = Casc.GetCasc().OpenFile(unitSkins.FullName);
             var reader = new StreamReader(file);
-            var data = reader.ReadToEnd();
-            string[] unitSkinsData = data.Split("\r\n");
+            var text = reader.ReadToEnd();
 
-            // Loop through all unit types and regex their Id to find the art
+            var iniFile = IniFileConverter.Convert(text);
+            IniDataParser parser = new IniDataParser();
+            parser.Configuration.AllowDuplicateSections = true;
+            parser.Configuration.AllowDuplicateKeys = true;
+            IniData data = parser.Parse(iniFile);
+
             for (int i = 0; i < unitTypes.Count; i++)
             {
-                var unitType = unitTypes[i];
+                var section = data[unitTypes[i].Id];
 
-                var regexUnitType = new Regex("\\[" + unitType.Id + "\\]");
+                var icon = section["Art"];
+                var sort = section["sortUI"];
+                var isSpecial = section["special"];
+                var model = section["file"];
 
-                int lineNumber = 0;
-                bool matchesUnitType = false;
-                while (!matchesUnitType && lineNumber < unitSkinsData.Length)
-                {
-                    MatchCollection matches = regexUnitType.Matches(unitSkinsData[lineNumber]);
-                    if (matches.Count > 0)
-                    {
-                        matchesUnitType = true;
-
-                        // find icon
-                        string key = unitSkinsData[lineNumber].Substring(0, 4);
-                        while (key != "Art=")
-                        {
-                            lineNumber++;
-
-                            if (unitSkinsData[lineNumber].Length > 4)
-                                key = unitSkinsData[lineNumber].Substring(0, 4);
-                        }
-
-                        // Found icon
-                        string icon = unitSkinsData[lineNumber].Substring(4, unitSkinsData[lineNumber].Length - 4);
-                        unitType.Icon = Path.ChangeExtension(icon, ".dds");
-                        unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + unitType.Icon);
-                    }
-
-                    lineNumber++;
-                }
+                unitTypes[i].Icon = icon;
+                unitTypes[i].Sort = sort;
+                unitTypes[i].isSpecial = isSpecial == "1";
+                unitTypes[i].Model = model;
+                unitTypes[i].Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="line">A line in the .slk file.</param>
-        /// <returns>Value in the given cell</returns>
-        private string ParseCell(string line)
-        {
-            // 'K' is present before each value in the table
-            string magicChar = "K";
-            int i = 0;
-            bool gotValue = false;
-            bool startValueParsing = false;
-            string value = string.Empty;
-            while (!gotValue && i < line.Length)
-            {
-                string s = line.Substring(i, 1);
-
-
-                if (startValueParsing && s != "\"") // removes " from the final value
-                    value += s;
-
-                if (s == magicChar)
-                    startValueParsing = true;
-
-                i++;
-            }
-
-            return value;
         }
     }
 }

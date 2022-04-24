@@ -11,6 +11,7 @@ namespace Model.War3Data
         public string Sort; // category
         public string Race;
         public string Icon;
+        public string Model;
         public bool isSpecial;
         public Stream Image;
     }

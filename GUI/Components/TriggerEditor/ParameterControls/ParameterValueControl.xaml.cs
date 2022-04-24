@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.WorldEdit;
 using Model.SaveableData;
+using Model.War3Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -78,6 +79,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     var cameras = Cameras.Load();
                     values = cameras.Select(c => new Value() { identifier = c.ToString(), returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
+                    break;
+                case "modelfile":
+                    this.valueControl = new ValueControlModels();
                     break;
                 default:
                     break;

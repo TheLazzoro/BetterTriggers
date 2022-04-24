@@ -44,7 +44,7 @@ namespace GUI.Components.TriggerEditor
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
-                    Category = (int)templates[i].category,
+                    Category = templates[i].category.ToString(),
                     Words = new List<string>()
                     {
                         templates[i].name.ToLower(),

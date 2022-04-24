@@ -5,27 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI.Components.TriggerEditor"
              mc:Ignorable="d" Height="auto" Width="auto">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-
-        <ComboBox x:Name="comboboxRace" Height="22" Margin="0,0,5,0" SelectionChanged="comboboxRace_SelectionChanged" >
+        <ComboBox x:Name="comboboxRace" HorizontalAlignment="Left" Width="120" Height="22" Margin="0,0,5,0" SelectionChanged="comboboxRace_SelectionChanged" Foreground="Black" Background="#FF5F5F5F" >
             <ComboBoxItem Content="Human"/>
             <ComboBoxItem Content="Orc"/>
             <ComboBoxItem Content="Undead"/>
@@ -33,60 +25,84 @@
             <ComboBoxItem Content="Neutral"/>
             <ComboBoxItem Content="Neutral - Naga"/>
         </ComboBox>
-        <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="50,5,0,5" Grid.ColumnSpan="3" TextChanged="textBoxSearch_TextChanged"/>
         <Label x:Name="lblSearch" Content="Search:" Grid.Row="1" Foreground="White" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="50,5,0,5" TextChanged="textBoxSearch_TextChanged" Background="#FF202020" Foreground="White" BorderBrush="#FF0A0A0A"/>
 
-        <Label x:Name="lblUnits" Content="Units" Grid.Row="2" Foreground="White" />
-        <ItemsControl x:Name="itemControlUnits" Grid.Row="3" Grid.ColumnSpan="3" >
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding}" Margin="0,0,5,5" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Label x:Name="lblHeroes" Content="Heroes" Grid.Row="4" Foreground="White" />
-        <ItemsControl x:Name="itemControlHeroes" Grid.Row="5" Grid.ColumnSpan="3">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding}" Margin="0,0,5,5" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Label x:Name="lblBuildings" Content="Buildings" Grid.Row="6" Foreground="White" />
-        <ItemsControl x:Name="itemControlBuildings" Grid.Row="7" Grid.ColumnSpan="3">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding}" Margin="0,0,5,5" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Label x:Name="lblSpecial" Content="Special" Grid.Row="8" Foreground="White" />
-        <ItemsControl x:Name="itemControlSpecial" Grid.Row="9" Grid.ColumnSpan="3">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding}" Margin="0,0,5,5" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ScrollViewer Grid.Row="2" Grid.ColumnSpan="3" VerticalScrollBarVisibility="auto">
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Label x:Name="lblUnits" Content="Units" Grid.Row="1" Foreground="White" />
+                    <ItemsControl x:Name="itemControlUnits" Grid.Row="2" Grid.ColumnSpan="3" >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding}" Margin="0,0,5,5" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Label x:Name="lblHeroes" Content="Heroes" Grid.Row="3" Foreground="White" />
+                    <ItemsControl x:Name="itemControlHeroes" Grid.Row="4" Grid.ColumnSpan="3">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding}" Margin="0,0,5,5" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Label x:Name="lblBuildings" Content="Buildings" Grid.Row="5" Foreground="White" />
+                    <ItemsControl x:Name="itemControlBuildings" Grid.Row="6" Grid.ColumnSpan="3">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding}" Margin="0,0,5,5" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Label x:Name="lblSpecial" Content="Special" Grid.Row="7" Foreground="White" />
+                    <ItemsControl x:Name="itemControlSpecial" Grid.Row="8" Grid.ColumnSpan="3">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding}" Margin="0,0,5,5" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
+
 </UserControl>

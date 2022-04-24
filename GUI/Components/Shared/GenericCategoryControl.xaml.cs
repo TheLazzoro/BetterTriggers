@@ -62,7 +62,7 @@ namespace GUI.Components.Shared
             var categories = searchObjects.GetCurrentCategories();
             for (int i = 0; i < listItems.Count; i++)
             {
-                if (categories.Contains((int)listItems[i].Tag))
+                if (categories.Contains((string)listItems[i].Tag))
                     listViewCategory.Items.Add(listItems[i]);
             }
 
@@ -82,11 +82,11 @@ namespace GUI.Components.Shared
                 return;
 
             selected = listViewCategory.SelectedItem as ListViewItem;
-            int categoryId;
+            string categoryId;
             if (selected == null || selected == categoryAll)
-                categoryId = -1;
+                categoryId = "-1";
             else
-                categoryId = (int)selected.Tag;
+                categoryId = (string)selected.Tag;
 
             searchObjects.SetCurrentCategory(categoryId);
         }

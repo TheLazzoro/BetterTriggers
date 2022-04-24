@@ -13,7 +13,7 @@ namespace BetterTriggers
         private static bool hasLoaded;
 
         /// <summary>
-        /// Loads all War3 data from CASC into memory.
+        /// Loads all War3 data from CASC.
         /// </summary>
         public static void Initialize()
         {
@@ -24,11 +24,12 @@ namespace BetterTriggers
             Locale.Load();
             Natives.Load();
             UnitTypes.Load();
+            ModelData.Load(UnitTypes.GetUnitTypesAll());
             AbilityTypes.Load();
             BuffData.Load();
             DestructibleTypes.Load();
-            UpgradeTypes.Load();
             ItemData.Load();
+            UpgradeTypes.Load();
 
             hasLoaded = true;
         }
