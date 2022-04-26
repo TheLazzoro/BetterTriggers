@@ -7,14 +7,20 @@ using System.Threading.Tasks;
 
 namespace Model.SaveableData
 {
-    public class OrMultiple : Function, ICloneable
+    public class OrMultiple : Function
     {
         public readonly int ParamType = 7; // DO NOT CHANGE
         public List<TriggerElement> Or = new List<TriggerElement>();
         
-        public object Clone()
+        public OrMultiple Clone()
         {
-            return MemberwiseClone();
+            OrMultiple orMultiple = new OrMultiple();
+            orMultiple.identifier = new string(identifier);
+            orMultiple.returnType = new string(returnType);
+            orMultiple.Or = new List<TriggerElement>();
+            Or.ForEach(element => orMultiple.Or.Add(element.Clone()));
+
+            return orMultiple;
         }
     }
 }

@@ -10,5 +10,14 @@ namespace Model.SaveableData
     {
         public string identifier; // For convenience, values also use this field.
         public string returnType;
+
+        public Parameter Clone()
+        {
+            return new Parameter()
+            {
+                identifier = new string(identifier),
+                returnType = new string(returnType),
+            };
+        }
     }
 }

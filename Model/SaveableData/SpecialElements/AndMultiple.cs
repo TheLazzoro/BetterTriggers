@@ -7,14 +7,20 @@ using System.Threading.Tasks;
 
 namespace Model.SaveableData
 {
-    public class AndMultiple : Function, ICloneable
+    public class AndMultiple : Function
     {
         public readonly int ParamType = 6; // DO NOT CHANGE
         public List<TriggerElement> And = new List<TriggerElement>();
         
-        public object Clone()
+        public AndMultiple Clone()
         {
-            return MemberwiseClone();
+            AndMultiple andMultiple = new AndMultiple();
+            andMultiple.identifier = new string(identifier);
+            andMultiple.returnType = new string(returnType);
+            andMultiple.And = new List<TriggerElement>();
+            And.ForEach(element => andMultiple.And.Add(element.Clone()));
+
+            return andMultiple;
         }
     }
 }

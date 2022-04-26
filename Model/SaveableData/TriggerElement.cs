@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Model.SaveableData
 {
-    public class TriggerElement : ITriggerElement, ICloneable
+    public class TriggerElement : ITriggerElement
     {
         public bool isEnabled = true;
         public Function function;
@@ -20,10 +20,51 @@ namespace Model.SaveableData
         [JsonIgnore]
         private List<ITriggerElementUI> triggerElementUIs = new List<ITriggerElementUI>();
 
-        public object Clone()
+        public TriggerElement Clone()
         {
             TriggerElement clone = new TriggerElement();
-            Function fClone = (Function) function.Clone();
+            clone.isEnabled = isEnabled;
+            Function fClone;
+            if (function is IfThenElse)
+            {
+                var ifThenElse = (IfThenElse)function;
+                fClone = (IfThenElse)ifThenElse.Clone();
+            }
+            else if (function is ForLoopAMultiple)
+            {
+                var forLoopA = (ForLoopAMultiple)function;
+                fClone = (ForLoopAMultiple)forLoopA.Clone();
+            }
+            else if (function is ForLoopBMultiple)
+            {
+                var forLoopB = (ForLoopBMultiple)function;
+                fClone = (ForLoopBMultiple)forLoopB.Clone();
+            }
+            else if (function is ForLoopVarMultiple)
+            {
+                var forLoopVar = (ForLoopVarMultiple)function;
+                fClone = (ForLoopVarMultiple)forLoopVar.Clone();
+            }
+            else if (function is AndMultiple)
+            {
+                var AndMultiple = (AndMultiple)function;
+                fClone = (AndMultiple)AndMultiple.Clone();
+            }
+            else if (function is OrMultiple)
+            {
+                var OrMultiple = (OrMultiple)function;
+                fClone = (OrMultiple)OrMultiple.Clone();
+            }
+            else if (function is SetVariable)
+            {
+                var setVariable = (SetVariable)function;
+                fClone = (SetVariable)setVariable.Clone();
+            }
+            else
+            {
+                fClone = (Function)function.Clone();
+            }
+
             clone.function = fClone;
 
             return clone;
@@ -74,7 +115,7 @@ namespace Model.SaveableData
                 triggerElementUIs[i].UpdateEnabled();
             }
         }
-        
+
         public void Created(int insertIndex)
         {
             for (int i = 0; i < triggerElementUIs.Count; i++)

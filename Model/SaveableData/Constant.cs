@@ -9,13 +9,17 @@ namespace Model.SaveableData
     /// <summary>
     /// Things like 'Player00' or 'DestructableNull'
     /// </summary>
-    public class Constant : Parameter, ICloneable
+    public class Constant : Parameter
     {
         public readonly int ParamType = 2; // DO NOT CHANGE
 
-        public object Clone()
+        public Constant Clone()
         {
-            return MemberwiseClone();
+            return new Constant()
+            {
+                identifier = new string(identifier),
+                returnType = new string(returnType),
+            };
         }
     }
 }

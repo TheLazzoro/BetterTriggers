@@ -49,6 +49,8 @@ namespace Model.JsonBaseConverter
                         return new ForLoopBMultiple();
                     case 12:
                         return new ForLoopVarMultiple();
+                    case 13:
+                        return new SetVariable();
                     default:
                         return new Parameter();
                 }

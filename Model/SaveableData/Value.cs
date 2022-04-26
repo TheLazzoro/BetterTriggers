@@ -4,13 +4,17 @@ using System.Text;
 
 namespace Model.SaveableData
 {
-    public class Value : Parameter, ICloneable
+    public class Value : Parameter
     {
         public readonly int ParamType = 4; // DO NOT CHANGE
 
-        public object Clone()
+        public Value Clone()
         {
-            return MemberwiseClone();
+            return new Value()
+            {
+                identifier = new string(identifier),
+                returnType = new string(returnType),
+            };
         }
     }
 }

@@ -7,14 +7,20 @@ using System.Threading.Tasks;
 
 namespace Model.SaveableData
 {
-    public class ForForceMultiple : Function, ICloneable
+    public class ForForceMultiple : Function
     {
         public readonly int ParamType = 9; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();
         
-        public object Clone()
+        public ForForceMultiple Clone()
         {
-            return MemberwiseClone();
+            ForForceMultiple forForceMultiple = new ForForceMultiple();
+            forForceMultiple.identifier = new string(identifier);
+            forForceMultiple.returnType = new string(returnType);
+            forForceMultiple.Actions = new List<TriggerElement>();
+            Actions.ForEach(element => forForceMultiple.Actions.Add(element.Clone()));
+
+            return forForceMultiple;
         }
     }
 }

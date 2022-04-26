@@ -19,13 +19,13 @@ namespace Model.Templates
             FunctionTemplate clone = (FunctionTemplate)this.MemberwiseClone();
             clone.parameters = new List<Parameter>(parameters);
             if (paramText != null) // some are null
-                clone.paramText = string.Copy(paramText);
+                clone.paramText = new string(paramText);
             if (description != null) // some are null
-                clone.description = string.Copy(description);
-            clone.identifier = string.Copy(identifier);
-            clone.name = string.Copy(name);
+                clone.description = new string(description);
+            clone.identifier = new string(identifier);
+            clone.name = new string(name);
             if (returnType != null) // some are null
-                clone.returnType = string.Copy(returnType);
+                clone.returnType = new string(returnType);
 
             return clone;
         }
@@ -60,6 +60,9 @@ namespace Model.Templates
                     break;
                 case "ForLoopVarMultiple":
                     te.function = new ForLoopVarMultiple();
+                    break;
+                case "SetVariable":
+                    te.function = new SetVariable();
                     break;
                 default:
                     break;

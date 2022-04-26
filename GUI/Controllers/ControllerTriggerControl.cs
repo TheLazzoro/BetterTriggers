@@ -178,6 +178,11 @@ namespace GUI.Controllers
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
+            else if (treeViewTriggerElement.triggerElement.function is SetVariable)
+            {
+                // TODO
+                var function = (SetVariable)treeViewTriggerElement.triggerElement.function;
+            }
         }
 
         public void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
