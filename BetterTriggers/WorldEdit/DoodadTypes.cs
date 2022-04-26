@@ -14,24 +14,24 @@ using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class DestructibleTypes
+    public class DoodadTypes
     {
-        private static List<DestructibleType> destructibles;
+        private static List<DoodadType> doodads;
 
-        public static List<DestructibleType> GetDestructiblesTypesAll()
+        public static List<DoodadType> GetDoodadTypesAll()
         {
-            return destructibles;
+            return doodads;
         }
 
         internal static void Load()
         {
-            destructibles = new List<DestructibleType>();
+            doodads = new List<DoodadType>();
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+            var folderDoodads = (CASCFolder)Casc.GetWar3ModFolder().Entries["doodads"];
 
             // Parse ini file
-            CASCFile destSkins = (CASCFile)units.Entries["destructableskin.txt"];
-            var file = Casc.GetCasc().OpenFile(destSkins.FullName);
+            CASCFile doodadSkins = (CASCFile)folderDoodads.Entries["doodadskins.txt"];
+            var file = Casc.GetCasc().OpenFile(doodadSkins.FullName);
             var reader = new StreamReader(file);
             var text = reader.ReadToEnd();
 
@@ -50,33 +50,33 @@ namespace BetterTriggers.WorldEdit
                 var name = keys["Name"];
                 var model = keys["file"];
 
-                destructibles.Add(new DestructibleType()
+                doodads.Add(new DoodadType()
                 {
-                    DestCode = id,
+                    DoodCode = id,
                     DisplayName = name,
                     Model = model,
                 });
             }
 
 
-            // Read custom destructible definition data
-            string path = @"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.w3b";
+            // Read custom doodad definition data
+            string path = @"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.w3d";
             if (!File.Exists(path))
                 return;
 
             Stream s = new FileStream(path, FileMode.Open);
             BinaryReader binaryReader = new BinaryReader(s);
-            var customDestructibles = BinaryReaderExtensions.ReadMapDestructableObjectData(binaryReader);
+            var customDestructibles = BinaryReaderExtensions.ReadMapDoodadObjectData(binaryReader);
 
-            for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
+            for (int i = 0; i < customDestructibles.NewDoodads.Count; i++)
             {
-                var dest = customDestructibles.NewDestructables[i];
-                DestructibleType destructible = new DestructibleType()
+                var dood = customDestructibles.NewDoodads[i];
+                DoodadType destructible = new DoodadType()
                 {
-                    DestCode = dest.ToString().Substring(0, 4),
-                    DisplayName = dest.ToString(), // We want to replace this display name with locales
+                    DoodCode = dood.ToString().Substring(0, 4),
+                    DisplayName = dood.ToString(), // We want to replace this display name with locales
                 };
-                destructibles.Add(destructible);
+                doodads.Add(destructible);
             }
         }
     }

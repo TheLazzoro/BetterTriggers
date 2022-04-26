@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,38 +11,42 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementPaste : ICommand
     {
         string commandName = "Paste Trigger Element";
-        TriggerControl triggerControl;
-        Components.TriggerEditor.TreeViewTriggerElement triggerElement;
-        TreeViewItem parent;
         int pastedIndex = 0;
+        List<TriggerElement> listToPaste;
+        List<TriggerElement> parent;
 
-        public CommandTriggerElementPaste(TriggerControl triggerControl, Function function, TreeViewItem parent, int pastedIndex)
+        public CommandTriggerElementPaste(List<TriggerElement> listToPaste, List<TriggerElement> parent, int pastedIndex)
         {
-            this.triggerControl = triggerControl;
-            this.triggerElement = new Components.TriggerEditor.TreeViewTriggerElement(function, triggerControl);
+            this.listToPaste = listToPaste;
             this.parent = parent;
             this.pastedIndex = pastedIndex;
         }
 
         public void Execute()
         {
-            parent.Items.Insert(this.pastedIndex, triggerElement);
-
+            for (int i = 0; i < listToPaste.Count; i++)
+            {
+                listToPaste[i].SetParent(parent, pastedIndex + i);
+            }
             CommandManager.AddCommand(this);
-
-            triggerControl.OnStateChange();
         }
 
         public void Redo()
         {
-            parent.Items.Insert(this.pastedIndex, triggerElement);
-            triggerControl.OnStateChange();
+            for (int i = 0; i < listToPaste.Count; i++)
+            {
+                listToPaste[i].SetParent(parent, pastedIndex + i);
+                listToPaste[i].Created(pastedIndex + i);
+            }
         }
 
         public void Undo()
         {
-            parent.Items.Remove(this.triggerElement);
-            triggerControl.OnStateChange();
+            for (int i = 0; i < listToPaste.Count; i++)
+            {
+                listToPaste[i].RemoveFromParent();
+                listToPaste[i].Deleted();
+            }
         }
 
         public string GetCommandName()
@@ -51,4 +55,3 @@ namespace BetterTriggers.Commands
         }
     }
 }
-*/

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Containers;
 using Model.Data;
 using Model.SaveableData;
 using Newtonsoft.Json;
@@ -48,6 +49,36 @@ namespace BetterTriggers.Controllers
             Trigger trigger = JsonConvert.DeserializeObject<Trigger>(file);
 
             return trigger;
+        }
+
+        public void CopyTriggerElements(List<TriggerElement> list)
+        {
+            List<TriggerElement> copiedItems = new List<TriggerElement>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                copiedItems.Add((TriggerElement)list[i].Clone());
+            }
+            ContainerCopiedElements.CopiedTriggerElements = copiedItems;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parentList"></param>
+        /// <param name="insertIndex"></param>
+        /// <returns>A list of pasted elements.</returns>
+        public List<TriggerElement> PasteTriggerElements(List<TriggerElement> parentList, int insertIndex)
+        {
+            var copied = ContainerCopiedElements.CopiedTriggerElements;
+            var pasted = new List<TriggerElement>();
+            for (int i = 0; i < copied.Count; i++)
+            {
+                pasted.Add((TriggerElement)copied[i].Clone());
+            }
+            CommandTriggerElementPaste command = new CommandTriggerElementPaste(pasted, parentList, insertIndex);
+            command.Execute();
+
+            return pasted;
         }
     }
 }

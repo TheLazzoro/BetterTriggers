@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Model.SaveableData
 {
-    public class TriggerElement : ITriggerElement
+    public class TriggerElement : ITriggerElement, ICloneable
     {
         public bool isEnabled = true;
         public Function function;
@@ -19,6 +19,15 @@ namespace Model.SaveableData
         public List<TriggerElement> Parent;
         [JsonIgnore]
         private List<ITriggerElementUI> triggerElementUIs = new List<ITriggerElementUI>();
+
+        public object Clone()
+        {
+            TriggerElement clone = new TriggerElement();
+            Function fClone = (Function) function.Clone();
+            clone.function = fClone;
+
+            return clone;
+        }
 
         public void SetParent(List<TriggerElement> Parent, int insertIndex)
         {

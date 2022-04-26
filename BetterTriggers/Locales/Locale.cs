@@ -81,6 +81,9 @@ namespace BetterTriggers.Locales
                     j++;
                 }
 
+                if (WE_Strings[key] != null)
+                    throw new Exception("Key already exists");
+
                 WE_Strings.Add(key, value);
             }
         }

@@ -8,5 +8,6 @@ namespace Model.War3Data
     {
         public string DestCode;
         public string DisplayName;
+        public string Model;
     }
 }

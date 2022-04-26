@@ -22,12 +22,14 @@ namespace BetterTriggers.WorldEdit
             return assetModels;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="units">DI</param>
-        public static void Load(List<UnitType> unitData)
+        public static void Load()
         {
+            var unitData = UnitTypes.GetUnitTypesAll();
+            var destData = DestructibleTypes.GetDestructiblesTypesAll();
+            var doodData = DoodadTypes.GetDoodadTypesAll();
+            var itemData = ItemData.GetItemsAll();
+
+
             // some asset strings occur multiple times
             HashSet<AssetModel> hashset = new HashSet<AssetModel>();
 
@@ -72,6 +74,30 @@ namespace BetterTriggers.WorldEdit
                 {
                     Path = unitData[i].Model,
                     Category = "Unit"
+                });
+            }
+            for (int i = 0; i < destData.Count; i++)
+            {
+                hashset.Add(new AssetModel()
+                {
+                    Path = destData[i].Model,
+                    Category = "Destructible"
+                });
+            }
+            for (int i = 0; i < doodData.Count; i++)
+            {
+                hashset.Add(new AssetModel()
+                {
+                    Path = doodData[i].Model,
+                    Category = "Doodad"
+                });
+            }
+            for (int i = 0; i < itemData.Count; i++)
+            {
+                hashset.Add(new AssetModel()
+                {
+                    Path = itemData[i].Model,
+                    Category = "Items"
                 });
             }
 

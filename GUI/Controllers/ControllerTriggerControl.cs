@@ -3,11 +3,14 @@ using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GUI.Controllers
 {
     public class ControllerTriggerControl
     {
+        List<TreeViewTriggerElement> selectedElements = new List<TreeViewTriggerElement>();
+
         public void OnTriggerElementCreate(TreeViewTriggerElement item, INode parent, int insertIndex)
         {
             if (item.Parent != null) // needed because of another hack. Basically, the item is already attached, so we need to detach it.
@@ -188,6 +191,62 @@ namespace GUI.Controllers
                 triggerElement.Attach(treeItem);
                 parentNode.Add(treeItem);
             }
+        }
+
+        /// <summary>
+        /// Returns a list of selected elements in the editor.
+        /// Returns only the first selected element if their 'Parents' don't match.
+        /// </summary>
+        /// <param name="startElement"></param>
+        /// <param name="endElement"></param>
+        /// <returns></returns>
+        public List<TreeViewTriggerElement> SelectItemsMultiple(TreeViewTriggerElement startElement, TreeViewTriggerElement endElement)
+        {
+            // visually deselect old items
+            for (int i = 0; i < selectedElements.Count; i++)
+            {
+                selectedElements[i].Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            }
+
+            if (startElement == null && endElement == null)
+                return null;
+
+            selectedElements = new List<TreeViewTriggerElement>();
+
+            if (startElement.Parent == endElement.Parent)
+            {
+                var parent = (TreeViewItem)startElement.Parent;
+
+                TreeViewTriggerElement correctedStartElement;
+                TreeViewTriggerElement correctedEndElement;
+                if (parent.Items.IndexOf(startElement) < parent.Items.IndexOf(endElement))
+                {
+                    correctedStartElement = startElement;
+                    correctedEndElement = endElement;
+                }
+                else
+                {
+                    correctedStartElement = endElement;
+                    correctedEndElement = startElement;
+                }
+
+                int startIndex = parent.Items.IndexOf(correctedStartElement);
+                int size = parent.Items.IndexOf(correctedEndElement) - parent.Items.IndexOf(correctedStartElement);
+                for (int i = 0; i <= size; i++)
+                {
+                    selectedElements.Add((TreeViewTriggerElement)parent.Items[startIndex + i]);
+                }
+            }
+            else
+                selectedElements.Add(endElement);
+
+            // visually select elements
+            for (int i = 0; i < selectedElements.Count; i++)
+            {
+                selectedElements[i].Background = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+            }
+
+            return selectedElements;
         }
     }
 }

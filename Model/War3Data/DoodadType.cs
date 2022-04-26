@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Model.War3Data
 {
-    public class ItemType
+    public class DoodadType
     {
-        public string ItemCode;
+        public string DoodCode;
         public string DisplayName;
         public string Model;
     }

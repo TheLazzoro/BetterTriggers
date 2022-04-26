@@ -24,12 +24,14 @@ namespace BetterTriggers
             Locale.Load();
             Natives.Load();
             UnitTypes.Load();
-            ModelData.Load(UnitTypes.GetUnitTypesAll());
             AbilityTypes.Load();
             BuffData.Load();
             DestructibleTypes.Load();
+            DoodadTypes.Load();
             ItemData.Load();
             UpgradeTypes.Load();
+
+            ModelData.Load(); // requires above
 
             hasLoaded = true;
         }

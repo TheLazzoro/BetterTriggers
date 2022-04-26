@@ -36,6 +36,7 @@ namespace GUI.Components
         {
             InitializeComponent();
 
+
             this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
@@ -45,6 +46,7 @@ namespace GUI.Components
             this.textEditor.FontFamily = new FontFamily("Consolas");
             this.textEditor.ShowLineNumbers = true;
             new AutoComplete(this.textEditor);
+
 
             // Sets syntax highlighting in the comment field
             using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
@@ -95,7 +97,7 @@ namespace GUI.Components
         {
             this.suppressStateChange = true;
             ControllerScript controller = new ControllerScript();
-            textEditor.Text = controller.LoadScriptFromFile(explorerElementScript.GetPath());
+            textEditor.Document.Text = controller.LoadScriptFromFile(explorerElementScript.GetPath());
         }
 
         public void SetElementEnabled(bool isEnabled)

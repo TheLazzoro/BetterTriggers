@@ -2,6 +2,7 @@
 using BetterTriggers.Controllers;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
+using GUI.Container;
 using GUI.Controllers;
 using Model.EditorData;
 using Model.SaveableData;
@@ -15,9 +16,6 @@ using System.Windows.Input;
 
 namespace GUI.Components
 {
-    /// <summary>
-    /// Interaction logic for TriggerControl.xaml
-    /// </summary>
     public partial class TriggerControl : UserControl, IEditor
     {
         public ExplorerElementTrigger explorerElementTrigger; // needed to get file references to variables in TriggerElements
@@ -33,14 +31,18 @@ namespace GUI.Components
         TreeViewItem dragItem;
         bool _IsDragging = false;
 
-        TreeViewTriggerElement copiedTriggerElement;
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
+        private ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
+        private TreeViewTriggerElement selectedElement;
+        private TreeViewTriggerElement selectedElementEnd;
+        private List<TreeViewTriggerElement> selectedItems = new List<TreeViewTriggerElement>();
 
         public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
         {
             InitializeComponent();
 
             this.explorerElementTrigger = explorerElementTrigger;
+            treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
 
             categoryEvent = new NodeEvent("Events");
             categoryCondition = new NodeCondition("Conditions");
@@ -50,7 +52,27 @@ namespace GUI.Components
             treeViewTriggers.Items.Add(categoryCondition);
             treeViewTriggers.Items.Add(categoryAction);
 
+
             LoadTrigger(explorerElementTrigger.trigger);
+        }
+
+        private void TreeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (treeViewTriggers.SelectedItem is INode)
+            {
+                this.selectedItems = controllerTriggerControl.SelectItemsMultiple(null, null);
+                return;
+            }
+
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                selectedElementEnd = (TreeViewTriggerElement)treeViewTriggers.SelectedItem;
+            else
+            {
+                selectedElement = (TreeViewTriggerElement)treeViewTriggers.SelectedItem;
+                selectedElementEnd = (TreeViewTriggerElement)treeViewTriggers.SelectedItem;
+            }
+
+            this.selectedItems = controllerTriggerControl.SelectItemsMultiple(selectedElement, selectedElementEnd);
         }
 
         public void Refresh()
@@ -131,7 +153,8 @@ namespace GUI.Components
                     parentItems = parent.GetTriggerElements();
                     insertIndex = parentItems.IndexOf(selectedTriggerElement);
                 }
-            } else if (selected is INode)
+            }
+            else if (selected is INode)
             {
                 var node = (INode)selected;
                 if (node.GetNodeType() == type)
@@ -163,7 +186,7 @@ namespace GUI.Components
                 command.Execute();
 
                 TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(triggerElement);
-                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method.
+                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
 
                 triggerElement.Attach(treeViewTriggerElement);
                 treeViewTriggerElement.OnCreated(insertIndex);
@@ -220,6 +243,9 @@ namespace GUI.Components
 
             DataObject data = null;
 
+            if (dragItem == null)
+                return;
+
             data = new DataObject("inadt", dragItem);
 
             if (data != null)
@@ -236,60 +262,61 @@ namespace GUI.Components
 
         private void treeViewTriggers_Drop(object sender, DragEventArgs e)
         {
-            if (_IsDragging && dragItem != null)
+            if (!_IsDragging || dragItem == null || e.Source is TreeView)
+                return;
+
+            var parent = (INode)dragItem.Parent;
+
+            // It is necessary to traverse the item's parents since drag & drop picks up
+            // things like 'TextBlock' and 'Border' on the drop target when dropping the 
+            // dragged element.
+            INode node = GetCategoryTarget(e.Source as FrameworkElement);
+            TreeViewItem whereItemWasDropped = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+            var item = (TreeViewTriggerElement)this.dragItem;
+            int oldIndex = item.triggerElement.Parent.IndexOf(item.triggerElement);
+            int insertIndex;
+            List<TriggerElement> newParent;
+            if (whereItemWasDropped is TreeViewTriggerElement)
             {
-                var parent = (INode)dragItem.Parent;
+                var location = (TreeViewTriggerElement)whereItemWasDropped;
+                insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
+                newParent = location.triggerElement.Parent;
+            }
+            else
+            {
+                var location = (INode)whereItemWasDropped;
+                insertIndex = 0;
+                newParent = location.GetTriggerElements();
+            }
 
-                // It is necessary to traverse the item's parents since drag & drop picks up
-                // things like 'TextBlock' and 'Border' on the drop target when dropping the 
-                // dragged element.
-                INode node = GetCategoryTarget(e.Source as FrameworkElement);
-                TreeViewItem whereItemWasDropped = GetTraversedTargetDropItem(e.Source as FrameworkElement);
-                var item = (TreeViewTriggerElement)this.dragItem;
-                int oldIndex = item.triggerElement.Parent.IndexOf(item.triggerElement);
-                int insertIndex;
-                List<TriggerElement> newParent;
-                if (whereItemWasDropped is TreeViewTriggerElement)
-                {
-                    var location = (TreeViewTriggerElement)whereItemWasDropped;
-                    insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
-                    newParent = location.triggerElement.Parent;
-                } else
-                {
-                    var location = (INode)whereItemWasDropped;
-                    insertIndex = 0;
-                    newParent = location.GetTriggerElements();
-                }
+            if (whereItemWasDropped is TreeViewTriggerElement)
+            {
+                bool isSameParent = newParent == item.triggerElement.Parent;
+                if (isSameParent && insertIndex == oldIndex)
+                    return;
 
-                if (whereItemWasDropped is TreeViewTriggerElement)
-                {
-                    bool isSameParent = newParent == item.triggerElement.Parent;
-                    if (isSameParent && insertIndex == oldIndex)
-                        return;
+                parent = node;
 
-                    parent = node;
-
-                }
-                else if (whereItemWasDropped is NodeEvent && dragItem.Parent is NodeEvent)
-                    parent = (INode)whereItemWasDropped;
-                else if (whereItemWasDropped is NodeCondition && dragItem.Parent is NodeCondition)
-                    parent = (INode)whereItemWasDropped;
-                else if (whereItemWasDropped is NodeAction && dragItem.Parent is NodeAction)
-                    parent = (INode)whereItemWasDropped;
+            }
+            else if (whereItemWasDropped is NodeEvent && dragItem.Parent is NodeEvent)
+                parent = (INode)whereItemWasDropped;
+            else if (whereItemWasDropped is NodeCondition && dragItem.Parent is NodeCondition)
+                parent = (INode)whereItemWasDropped;
+            else if (whereItemWasDropped is NodeAction && dragItem.Parent is NodeAction)
+                parent = (INode)whereItemWasDropped;
 
 
 
-                if (whereItemWasDropped != dragItem)
-                {
-                    CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, parent.GetTriggerElements(), insertIndex);
-                    command.Execute();
-                }
+            if (whereItemWasDropped != dragItem)
+            {
+                CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, parent.GetTriggerElements(), insertIndex);
+                command.Execute();
             }
         }
 
         private TreeViewItem GetTraversedTargetDropItem(FrameworkElement dropTarget)
         {
-            if (dropTarget == null)
+            if (dropTarget == null || dropTarget is TreeView)
                 return null;
 
             TreeViewItem traversedTarget = null;
@@ -358,63 +385,49 @@ namespace GUI.Components
 
         private void CopyTriggerElement()
         {
-            var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
-            if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
-                return;
+            ControllerTrigger controller = new ControllerTrigger();
+            List<TriggerElement> triggerElements = new List<TriggerElement>();
+            for (int i = 0; i < selectedItems.Count; i++)
+            {
+                triggerElements.Add(selectedItems[i].triggerElement);
+            }
+            controller.CopyTriggerElements(triggerElements);
 
-            var selectedItemCast = (TreeViewTriggerElement)selectedItem;
-            this.copiedTriggerElement = selectedItemCast;
+            var selected = (TreeViewItem) treeViewTriggers.SelectedItem;
+            ContainerCopiedElementsGUI.copiedElementParent = (INode) selected.Parent;
         }
 
         private void PasteTriggerElement()
         {
-            throw new NotImplementedException();
-
-            /*
-            var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
-            if (selectedItem == null || this.copiedTriggerElement == null)
-                return;
-
-            // Copy the actual values from the model-layer
-            Function function = null;
-            if (copiedTriggerElement is Components.TriggerEditor.TriggerEvent)
-            {
-                var element = (Components.TriggerEditor.TriggerEvent) this.copiedTriggerElement;
-                function = (Function) element._event.Clone();
-            }
-            else if (copiedTriggerElement is Components.TriggerEditor.TriggerCondition)
-            {
-                var element = (Components.TriggerEditor.TriggerCondition)this.copiedTriggerElement;
-                throw new NotImplementedException();
-            }
-            else if(copiedTriggerElement is Components.TriggerEditor.TriggerAction)
-            {
-                var element = (Components.TriggerEditor.TriggerAction)this.copiedTriggerElement;
-                function = (Function)element.action.Clone();
-            }
-
-            // Determine where to place the pasted element
-            TreeViewItem targetParentNode;
+            var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
+            INode attachTarget = null;
             int insertIndex = 0;
-            if (selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
-                targetParentNode = selectedItem;
-            else
+            if (selected is TreeViewTriggerElement)
             {
-                targetParentNode = selectedItem.Parent as TreeViewItem;
-                insertIndex = targetParentNode.Items.IndexOf(selectedItem);
+                attachTarget = (INode) selected.Parent;
+                var parent = (TreeViewItem) selected.Parent;
+                insertIndex = parent.Items.IndexOf(selected) + 1;
+            }
+            else if (selected is INode)
+            {
+                attachTarget = (INode)selected;
             }
 
-            // Determine if the copied item is appropriate for the target node
-            if (this.copiedTriggerElement is Components.TriggerEditor.TriggerEvent && !(targetParentNode is NodeEvent))
-                return;
-            if (this.copiedTriggerElement is Components.TriggerEditor.TriggerCondition && !(targetParentNode is NodeCondition))
-                return;
-            if (this.copiedTriggerElement is Components.TriggerEditor.TriggerAction && !(targetParentNode is NodeAction))
+            if (attachTarget.GetType() != ContainerCopiedElementsGUI.copiedElementParent.GetType()) // reject if TriggerElement types don't match. 
                 return;
 
-            CommandTriggerElementPaste command = new CommandTriggerElementPaste(function, targetParentNode, insertIndex);
-            command.Execute();
-            */
+
+            ControllerTrigger controller = new ControllerTrigger();
+            var pasted = controller.PasteTriggerElements(attachTarget.GetTriggerElements(), insertIndex);
+
+            for (int i = 0; i < pasted.Count; i++)
+            {
+                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(pasted[i]);
+                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
+
+                pasted[i].Attach(treeViewTriggerElement);
+                treeViewTriggerElement.OnCreated(insertIndex + i); // index hack. May want a "GetIndex" method on TriggerElements.
+            }
         }
 
         public void OnElementRename(string name)
