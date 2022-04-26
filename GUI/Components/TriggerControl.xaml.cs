@@ -374,12 +374,16 @@ namespace GUI.Components
 
         public void DeleteTriggerElement()
         {
-            var selectedItem = (TreeViewItem)treeViewTriggers.SelectedItem;
-            if (selectedItem == null || selectedItem is NodeEvent || selectedItem is NodeCondition || selectedItem is NodeAction)
+            List<TriggerElement> elementsToDelete = new List<TriggerElement>();
+            for (int i = 0; i < selectedItems.Count; i++)
+            {
+                elementsToDelete.Add(selectedItems[i].triggerElement);
+            }
+
+            if (elementsToDelete.Count == 0)
                 return;
 
-            var item = (TreeViewTriggerElement)selectedItem;
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(item.triggerElement);
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(elementsToDelete);
             command.Execute();
         }
 
