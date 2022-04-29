@@ -10,5 +10,6 @@ namespace BetterTriggers.Containers
     internal static class ContainerCopiedElements
     {
         internal static List<TriggerElement> CopiedTriggerElements = new List<TriggerElement>();
+        internal static List<TriggerElement> CutTriggerElements = new List<TriggerElement>();
     }
 }

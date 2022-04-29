@@ -38,12 +38,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = variables[i].Name;
-                listItem.Tag = new VariableRef()
+                VariableRef varRef = new VariableRef()
                 {
                     returnType = variables[i].Type,
                     VariableId = variables[i].Id,
                 };
-                
+                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
+                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
+                listItem.Tag = varRef;
+
                 objects.Add(new Searchable()
                 {
                     Object = listItem,

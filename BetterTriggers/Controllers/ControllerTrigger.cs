@@ -51,7 +51,72 @@ namespace BetterTriggers.Controllers
             return trigger;
         }
 
-        public void CopyTriggerElements(List<TriggerElement> list)
+        public string GetParameterDisplayName(Parameter parameter)
+        {
+            string name = "PLACEHOLDER";
+
+            if (parameter is Function)
+            {
+                var function = (Function)parameter;
+                if (function.parameters.Count > 0)
+                    name = parameter.identifier;
+                else
+                {
+                    ControllerTriggerData controller = new ControllerTriggerData();
+                    name = controller.GetParamDisplayName(function);
+                }
+            }
+            else if (parameter is Constant)
+            {
+                var constant = (Constant)parameter;
+                ControllerTriggerData controller = new ControllerTriggerData();
+                name = controller.GetParamDisplayName(constant);
+            }
+            else if (parameter is VariableRef)
+            {
+
+                // TODO: This will crash if a referenced variable is deleted.
+                var variableRef = (VariableRef)parameter;
+                var variable = ContainerVariables.GetVariableById(variableRef.VariableId);
+                name = ContainerVariables.GetVariableNameById(variable.Id);
+
+                // This exists in case a variable has been changed
+                // TODO: WE NEED TO IMPLEMENT THIS IN A DIFFERENT WAY
+                /*
+                if (name == null || name == "" || variable.Type != parameter.returnType)
+                {
+                    parameters[paramIndex] = new Parameter()
+                    {
+                        returnType = variableRef.returnType,
+                    };
+                    varName = "null";
+                }
+                */
+            } else if(parameter is Value)
+            {
+                // TODO: This will crash if a referenced variable is deleted.
+                var value = (Value)parameter;
+                name = value.identifier;
+
+                // This exists in case a variable has been changed
+                // TODO: NEED TO IMPLEMENT THIS IN A DIFFERENT WAY
+                /*
+                if (name == null || name == "" || value.returnType != parameters[paramIndex].returnType)
+                {
+                    parameters[paramIndex] = new Parameter()
+                    {
+                        returnType = value.returnType,
+                    };
+                    name = "null";
+                }
+                */
+            }
+
+            return name;
+
+        }
+
+        public void CopyTriggerElements(List<TriggerElement> list, bool isCut = false)
         {
             List<TriggerElement> copiedItems = new List<TriggerElement>();
             for (int i = 0; i < list.Count; i++)
@@ -59,6 +124,11 @@ namespace BetterTriggers.Controllers
                 copiedItems.Add((TriggerElement)list[i].Clone());
             }
             ContainerCopiedElements.CopiedTriggerElements = copiedItems;
+
+            if (isCut)
+                ContainerCopiedElements.CutTriggerElements = list;
+            else
+                ContainerCopiedElements.CutTriggerElements = null;
         }
 
         /// <summary>
@@ -75,8 +145,18 @@ namespace BetterTriggers.Controllers
             {
                 pasted.Add((TriggerElement)copied[i].Clone());
             }
-            CommandTriggerElementPaste command = new CommandTriggerElementPaste(pasted, parentList, insertIndex);
-            command.Execute();
+
+            if (ContainerCopiedElements.CutTriggerElements == null)
+            {
+                CommandTriggerElementPaste command = new CommandTriggerElementPaste(pasted, parentList, insertIndex);
+                command.Execute();
+            }
+            else
+            {
+                CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(pasted, parentList, insertIndex);
+                command.Execute();
+
+            }
 
             return pasted;
         }

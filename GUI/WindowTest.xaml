@@ -6,40 +6,37 @@
         xmlns:local="clr-namespace:GUI" xmlns:dockablz="http://dragablz.net/winfx/xaml/dockablz" xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
         mc:Ignorable="d"
         Title="WindowTest" Height="450" Width="800">
-    
-    <dockablz:Layout >
 
-        <Grid>
-            <dragablz:TabablzControl x:Name="tabcontrol" Margin="100" ConsolidateOrphanedItems="True">
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController  />
-            </dragablz:TabablzControl.InterTabController>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="223*"/>
+            <ColumnDefinition Width="577*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="353*"/>
+            <RowDefinition Height="81*"/>
+        </Grid.RowDefinitions>
 
+        <WrapPanel Orientation="Horizontal">
+            <TextBlock FontSize="18">
+                <TextBlock TextWrapping="Wrap">
+                    Create
+                    <Hyperlink>1</Hyperlink>
+                    <Hyperlink>Footman</Hyperlink>
+                    on
+                    <TextBlock>
+                        <Hyperlink>(</Hyperlink>
+                        position of
+                        <Hyperlink>Unit</Hyperlink>
+                        )
+                    </TextBlock>
+                    facing
+                    <Hyperlink>270.0</Hyperlink>
+                    degrees
+                </TextBlock>
+                
+            </TextBlock>
+        </WrapPanel>
 
-            <TabItem Header="Tab No. 1" IsSelected="True">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello World</TextBlock>
-            </TabItem>
-            <TabItem Header="Tab No. 2">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">We Have Tearable Tabs!</TextBlock>
-            </TabItem>
-            <TabItem>
-                <!-- with context menu -->
-                <TabItem.Header>
-                    <Grid>
-                        <Grid.ContextMenu>
-                            <ContextMenu>
-                                <!--we'll be in a popup, so give dragablz a hint as to what tab header content needs closing -->
-                                <MenuItem Command="{x:Static dragablz:TabablzControl.CloseItemCommand}"/>
-                            </ContextMenu>
-                        </Grid.ContextMenu>
-                        <TextBlock>Tab No. 3</TextBlock>
-                    </Grid>
-                </TabItem.Header>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">I feel like an ice cold drink</TextBlock>
-            </TabItem>
-        </dragablz:TabablzControl>
-
-        </Grid>
-
-    </dockablz:Layout>
+    </Grid>
 </Window>

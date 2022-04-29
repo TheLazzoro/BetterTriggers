@@ -80,17 +80,17 @@ namespace GUI.Components
             for (int i = 0; i < categoryEvent.Items.Count; i++)
             {
                 var _event = categoryEvent.Items[i] as TreeViewTriggerElement;
-                _event.FormatParameterText();
+                _event.UpdateTreeItem();
             }
             for (int i = 0; i < categoryCondition.Items.Count; i++)
             {
                 var condition = categoryCondition.Items[i] as TreeViewTriggerElement;
-                condition.FormatParameterText();
+                condition.UpdateTreeItem();
             }
             for (int i = 0; i < categoryAction.Items.Count; i++)
             {
                 var action = categoryAction.Items[i] as TreeViewTriggerElement;
-                action.FormatParameterText();
+                action.UpdateTreeItem();
             }
         }
 
@@ -368,6 +368,8 @@ namespace GUI.Components
                 DeleteTriggerElement();
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 CopyTriggerElement();
+            else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                CopyTriggerElement(true);
             else if (e.Key == Key.V && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 PasteTriggerElement();
         }
@@ -387,7 +389,7 @@ namespace GUI.Components
             command.Execute();
         }
 
-        private void CopyTriggerElement()
+        private void CopyTriggerElement(bool isCut = false)
         {
             ControllerTrigger controller = new ControllerTrigger();
             List<TriggerElement> triggerElements = new List<TriggerElement>();
@@ -395,10 +397,10 @@ namespace GUI.Components
             {
                 triggerElements.Add(selectedItems[i].triggerElement);
             }
-            controller.CopyTriggerElements(triggerElements);
+            controller.CopyTriggerElements(triggerElements, isCut);
 
-            var selected = (TreeViewItem) treeViewTriggers.SelectedItem;
-            ContainerCopiedElementsGUI.copiedElementParent = (INode) selected.Parent;
+            var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
+            ContainerCopiedElementsGUI.copiedElementParent = (INode)selected.Parent;
         }
 
         private void PasteTriggerElement()
@@ -408,8 +410,8 @@ namespace GUI.Components
             int insertIndex = 0;
             if (selected is TreeViewTriggerElement)
             {
-                attachTarget = (INode) selected.Parent;
-                var parent = (TreeViewItem) selected.Parent;
+                attachTarget = (INode)selected.Parent;
+                var parent = (TreeViewItem)selected.Parent;
                 insertIndex = parent.Items.IndexOf(selected) + 1;
             }
             else if (selected is INode)
