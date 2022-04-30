@@ -9,6 +9,17 @@
     <Grid>
 
         <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" MouseRightButtonDown="treeViewTriggerExplorer_MouseRightButtonDown" KeyDown="treeViewTriggerExplorer_KeyDown" DragOver="treeViewTriggerExplorer_DragOver" >
+            <TreeView.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                Color="#357EC7" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                      Color="Black" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                      Color="#55FFFFFF" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                      Color="Black" />
+            </TreeView.Resources>
+            
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <!-- We have to select the item which is right-clicked on -->

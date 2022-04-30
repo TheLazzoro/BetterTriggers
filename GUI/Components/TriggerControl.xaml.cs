@@ -220,7 +220,7 @@ namespace GUI.Components
 
         private void treeViewTriggers_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_IsDragging)
+            if (e.LeftButton == MouseButtonState.Pressed && !_IsDragging && !contextMenu.IsVisible)
             {
                 Point position = e.GetPosition(null);
                 if (Math.Abs(position.X - _startPoint.X) >
@@ -495,17 +495,104 @@ namespace GUI.Components
             OnStateChange();
         }
 
-        private void treeViewTriggers_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void treeViewTriggers_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             TreeViewItem rightClickedElement = GetTraversedTargetDropItem(e.Source as FrameworkElement);
 
-            if (rightClickedElement == null)
+            if (!(rightClickedElement is TreeViewItem))
                 return;
 
-            // Set selected item
             rightClickedElement.IsSelected = true;
-            ContextMenuTrigger contextMenu = new ContextMenuTrigger(rightClickedElement);
             rightClickedElement.ContextMenu = contextMenu;
+
+            if (rightClickedElement is INode)
+            {
+                ContextMenuDisableNodeTypes((INode)rightClickedElement);
+                menuCut.IsEnabled = false;
+                menuCopy.IsEnabled = false;
+                menuDelete.IsEnabled = false;
+                menuFunctionEnabled.IsEnabled = false;
+                menuFunctionEnabled.IsChecked = false;
+            }
+
+            else
+            {
+                ContextMenuDisableNodeTypes((INode)rightClickedElement.Parent);
+                menuCut.IsEnabled = true;
+                menuCopy.IsEnabled = true;
+                menuDelete.IsEnabled = true;
+                var treeItemTriggerElement = (TreeViewTriggerElement)rightClickedElement;
+                menuFunctionEnabled.IsEnabled = true;
+                menuFunctionEnabled.IsChecked = treeItemTriggerElement.triggerElement.isEnabled;
+            }
+        }
+
+        private void ContextMenuDisableNodeTypes(INode node)
+        {
+            if (node is NodeEvent)
+            {
+                menuEvent.IsEnabled = true;
+                menuCondition.IsEnabled = false;
+                menuAction.IsEnabled = false;
+            }
+            else if (node is NodeCondition)
+            {
+                menuEvent.IsEnabled = false;
+                menuCondition.IsEnabled = true;
+                menuAction.IsEnabled = false;
+            }
+            else if (node is NodeAction)
+            {
+                menuEvent.IsEnabled = false;
+                menuCondition.IsEnabled = false;
+                menuAction.IsEnabled = true;
+            }
+        }
+
+        private void menuCut_Click(object sender, RoutedEventArgs e)
+        {
+            CopyTriggerElement(true);
+        }
+
+        private void menuCopy_Click(object sender, RoutedEventArgs e)
+        {
+            CopyTriggerElement();
+        }
+
+        private void menuCopyAsText_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void menuPaste_Click(object sender, RoutedEventArgs e)
+        {
+            PasteTriggerElement();
+        }
+
+        private void menuDelete_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteTriggerElement();
+        }
+
+        private void menuEvent_Click(object sender, RoutedEventArgs e)
+        {
+            selectedElementEnd.GetTriggerControl().CreateEvent();
+        }
+
+        private void menuCondition_Click(object sender, RoutedEventArgs e)
+        {
+            selectedElementEnd.GetTriggerControl().CreateCondition();
+        }
+
+        private void menuAction_Click(object sender, RoutedEventArgs e)
+        {
+            selectedElementEnd.GetTriggerControl().CreateAction();
+        }
+
+        private void menuFunctionEnabled_Click(object sender, RoutedEventArgs e)
+        {
+            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(selectedElementEnd.triggerElement);
+            command.Execute();
         }
     }
 }

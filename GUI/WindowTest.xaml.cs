@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GUI.Components.TriggerEditor;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,12 @@ namespace GUI
         public WindowTest()
         {
             InitializeComponent();
+        }
+
+        private void Grid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var contextMenu = new ContextMenuTrigger(new TreeViewItem());
+
         }
     }
 }

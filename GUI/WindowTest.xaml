@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="WindowTest" Height="450" Width="800">
 
-    <Grid>
+    <Grid MouseRightButtonDown="Grid_MouseRightButtonDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="223*"/>
             <ColumnDefinition Width="577*"/>
@@ -38,5 +38,10 @@
             </TextBlock>
         </WrapPanel>
 
+
+        <TreeView Grid.Column="1">
+                <TreeViewItem>asdasd</TreeViewItem>
+        </TreeView>
+        
     </Grid>
 </Window>

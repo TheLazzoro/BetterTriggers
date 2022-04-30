@@ -53,6 +53,11 @@ namespace GUI.Utility
 
             // assign stack to header
             treeViewitem.Header = stack;
+
+            //Style rectStyle = Application.Current.FindResource("RectTriggerStyle") as Style;
+            //Style textBlockStyle = Application.Current.FindResource("TextBlockTriggerStyle") as Style;
+            //rect.Style = rectStyle;
+            //txtBlock.Style = textBlockStyle;
         }
 
         private static BitmapImage OverlapImage(BitmapImage source, BitmapImage toOverlap)

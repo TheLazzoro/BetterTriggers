@@ -4,6 +4,54 @@
              xmlns:local="clr-namespace:GUI"
              StartupUri="LoadingCascWindow.xaml" DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
-         
+        
+        <!--  Custom styles  -->
+        <Style x:Key="TreeItemTriggerStyle" TargetType="{x:Type TreeViewItem}">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="False">
+                    <Setter Property="Background" Value="#0000FF00"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="StackTriggerStyle" TargetType="{x:Type StackPanel}">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="False">
+                    <Setter Property="Background" Value="#00FF0000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TextBlockTriggerStyle" TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsFocused" Value="False" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Background" Value="#880000FF" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Background" Value="#8800FF00" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="RectTriggerStyle" TargetType="{x:Type Rectangle}">
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="False">
+                    <Setter Property="Fill" Value="#000000ff"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

@@ -248,7 +248,7 @@ namespace GUI.Controllers
             // visually select elements
             for (int i = 0; i < selectedElements.Count; i++)
             {
-                selectedElements[i].Background = new SolidColorBrush(Color.FromArgb(255, 255, 0, 0));
+                selectedElements[i].Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#357EC7");
             }
 
             return selectedElements;
