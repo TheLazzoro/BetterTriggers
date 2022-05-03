@@ -25,7 +25,6 @@ namespace GUI
 
         private void Grid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var contextMenu = new ContextMenuTrigger(new TreeViewItem());
 
         }
     }

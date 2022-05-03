@@ -1,25 +1,17 @@
-﻿/*using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Windows;
-using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
+﻿using BetterTriggers.Controllers;
 using Model.EditorData;
-using Model.SaveableData;
+using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandExplorerElementCreate : ICommand
     {
         string commandName = "Create Explorer Element";
-        List<IExplorerElement> parent;
-        string fullPath;
+        IExplorerElement parent;
         IExplorerElement createdElement;
         int insertIndex;
-        string fileContent = string.Empty;
 
-        public CommandExplorerElementCreate(IExplorerElement createdElement, List<IExplorerElement> parent, int insertIndex)
+        public CommandExplorerElementCreate(IExplorerElement createdElement, IExplorerElement parent, int insertIndex)
         {
             this.createdElement = createdElement;
             this.parent = parent;
@@ -28,57 +20,33 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            if (parent == null)
-                parent = root;
-
-            controllerTriggerExplorer.RecurseCreateElement(ContainerProject.projectFiles[0], parent, fullPath, false);
-            this.createdElement = controllerProject.FindExplorerElement(ContainerProject.projectFiles[0], fullPath);
+            createdElement.SetParent(parent, insertIndex);
+            createdElement.Created(insertIndex);
 
             CommandManager.AddCommand(this);
-
-            //triggerControl.OnStateChange();
         }
 
         public void Redo()
         {
+            createdElement.SetParent(parent, insertIndex);
+            createdElement.Created(insertIndex);
+
             ControllerProject controllerProject = new ControllerProject();
             controllerProject.SetEnableFileEvents(false);
-
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            IExplorerElement folder = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], fullPath);
-            TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            if (parent == null)
-                parent = te.map;
-
-            controllerProject.RecurseCreateElementsWithContent(createdElement, false);
-            controllerTriggerExplorer.RecurseCreateElement(folder, parent, fullPath);
-
+            controllerProject.RecurseCreateElementsWithContent(createdElement);
             controllerProject.SetEnableFileEvents(true);
-
-            //triggerControl.OnStateChange();
         }
 
         public void Undo()
         {
+            createdElement.RemoveFromParent();
+            createdElement.Deleted();
+
             ControllerProject controllerProject = new ControllerProject();
             controllerProject.SetEnableFileEvents(false);
-
             ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.DeleteElement(fullPath);
-            controllerProject.OnDeleteElement(fullPath);
-
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            var element = controllerTriggerExplorer.FindTreeNodeElement(te.map, fullPath);
-            var parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-
-            parent.Items.Remove(element);
-
+            controllerFileSystem.DeleteElement(createdElement.GetPath());
             controllerProject.SetEnableFileEvents(true);
-
-            //triggerControl.OnStateChange();
         }
 
         public string GetCommandName()
@@ -88,4 +56,4 @@ namespace BetterTriggers.Commands
         
     }
 }
-*/
+

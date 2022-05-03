@@ -15,7 +15,7 @@ using System.Windows.Media;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class TreeItemExplorerElement : TreeViewItem, IExplorerElementObserver
+    public class TreeItemExplorerElement : TreeViewItem, IExplorerElementUI
     {
         public TabItemBT tabItem;
         public IExplorerElement Ielement;
@@ -45,6 +45,7 @@ namespace GUI.Components.TriggerExplorer
                     var tabControl = tabItem.Parent as TabControl;
                     if (tabControl != null)
                         tabControl.Items.Remove(tabItem);
+                    tabItem = null;
                 }
             });
         }
@@ -53,13 +54,13 @@ namespace GUI.Components.TriggerExplorer
         {
             if (this.Ielement == null)
                 return;
-            
+
             RefreshElementIcon();
 
             if (this.tabItem != null)
                 tabItem.RefreshHeader(this.Ielement.GetName());
 
-            if(this.editor is VariableControl)
+            if (this.editor is VariableControl)
             {
                 var control = this.editor as VariableControl;
                 control.Rename(Ielement.GetName());
@@ -92,8 +93,6 @@ namespace GUI.Components.TriggerExplorer
         public void Save()
         {
             string saveableString = editor.GetSaveString();
-            Ielement.SaveInMemory(saveableString);
-
             ControllerFileSystem controller = new ControllerFileSystem();
             controller.SaveFile(Ielement.GetPath(), saveableString);
 
@@ -122,6 +121,24 @@ namespace GUI.Components.TriggerExplorer
 
             ControllerExplorerElement controller = new ControllerExplorerElement();
             controller.AddToUnsaved(this);
+        }
+
+        public void UpdatePosition()
+        {
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            int insertIndex = Ielement.GetParent().GetExplorerElements().IndexOf(Ielement);
+            controller.OnMoveElement(controller.GetCurrentExplorer(), Ielement.GetPath(), insertIndex);
+        }
+
+        public void OnCreated(int insertIndex)
+        {
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            var dir = Path.GetDirectoryName(this.Ielement.GetPath());
+            var parent = controller.FindTreeNodeDirectory(Path.GetDirectoryName(this.Ielement.GetPath()));
+            parent.Items.Insert(insertIndex, this);
+
+            this.IsSelected = true;
+            this.Focus();
         }
     }
 }

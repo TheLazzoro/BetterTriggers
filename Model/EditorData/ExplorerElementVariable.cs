@@ -6,17 +6,22 @@ using System.IO;
 
 namespace Model.EditorData
 {
-    public class ExplorerElementVariable : IExplorerElement
+    public class ExplorerElementVariable : IExplorerElement, IExplorerSaveable
     {
         public string path;
         public Variable variable;
-        public List<IExplorerElementObserver> observers = new List<IExplorerElementObserver>();
+        public List<IExplorerElementUI> observers = new List<IExplorerElementUI>();
+        private DateTime LastWrite;
+        private long Size;
+
+        private IExplorerElement Parent;
 
         public ExplorerElementVariable(string path)
         {
             this.path = path;
             string json = File.ReadAllText(path);
             variable = JsonConvert.DeserializeObject<Variable>(json);
+            UpdateMetadata();
         }
 
         public string GetName()
@@ -34,12 +39,12 @@ namespace Model.EditorData
             this.path = newPath;
         }
 
-        public void Attach(IExplorerElementObserver observer)
+        public void Attach(IExplorerElementUI observer)
         {
             this.observers.Add(observer);
         }
 
-        public void Detach(IExplorerElementObserver observer)
+        public void Detach(IExplorerElementUI observer)
         {
             this.observers.Remove(observer);
         }
@@ -61,24 +66,9 @@ namespace Model.EditorData
             }
         }
 
-        public void SaveInMemory(string saveableString)
-        {
-            variable = JsonConvert.DeserializeObject<Variable>(saveableString);
-        }
-
         public int GetId()
         {
             return variable.Id;
-        }
-
-        public void InsertIntoList(IExplorerElement element, int insertIndex)
-        {
-            throw new Exception("This is not a directory");
-        }
-
-        public void RemoveFromList(IExplorerElement element)
-        {
-            throw new Exception("This is not a directory");
         }
 
         public void SetEnabled(bool isEnabled)
@@ -104,6 +94,68 @@ namespace Model.EditorData
         public string GetSaveableString()
         {
             return JsonConvert.SerializeObject(variable);
+        }
+
+        public long GetSize()
+        {
+            return Size;
+        }
+
+        public DateTime GetLastWrite()
+        {
+            return LastWrite;
+        }
+
+        public void UpdateMetadata()
+        {
+            var info = new FileInfo(path);
+            this.Size = info.Length;
+            this.LastWrite = info.LastWriteTime;
+        }
+
+        public IExplorerElement GetParent()
+        {
+            return Parent;
+        }
+
+        public void SetParent(IExplorerElement parent, int insertIndex)
+        {
+            Parent = parent;
+            parent.GetExplorerElements().Insert(insertIndex, this);
+        }
+
+        public void RemoveFromParent()
+        {
+            Parent.GetExplorerElements().Remove(this);
+        }
+
+        public void Created(int insertIndex)
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].OnCreated(insertIndex);
+            }
+        }
+
+        public void Deleted()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].Delete();
+            }
+        }
+
+        public List<IExplorerElement> GetExplorerElements()
+        {
+            throw new Exception("'" + path + "' is not a folder.");
+        }
+
+        public void ChangedPosition()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].UpdatePosition();
+            }
         }
     }
 }

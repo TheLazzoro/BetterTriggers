@@ -1,12 +1,13 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
-using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Container;
 using Model.EditorData;
 using System;
 using System.IO;
+using System.Windows;
 
 namespace GUI.Controllers
 {
@@ -14,7 +15,8 @@ namespace GUI.Controllers
     {
         public void Populate(TriggerExplorer te)
         {
-            var root = ContainerProject.projectFiles[0] as ExplorerElementRoot;
+            ControllerProject controllerProject = new ControllerProject();
+            var root = controllerProject.GetProjectRoot() as ExplorerElementRoot;
             for (int i = 0; i < root.explorerElements.Count; i++)
             {
                 RecursePopulate(te, te.map, root.explorerElements[i]);
@@ -38,10 +40,15 @@ namespace GUI.Controllers
             }
         }
 
+        internal TriggerExplorer GetCurrentExplorer()
+        {
+            return TriggerExplorer.Current;
+        }
+
         public void SaveAll()
         {
             var unsaved = ContainerUnsavedElements.UnsavedElements;
-            for(int i = 0; i < unsaved.Count; i++)
+            for (int i = 0; i < unsaved.Count; i++)
             {
                 var element = unsaved[i];
                 element.Save();
@@ -55,7 +62,7 @@ namespace GUI.Controllers
 
         public void OnSelectItem(TreeItemExplorerElement selectedItem, DragableTabControl dragableTabControl)
         {
-            if (selectedItem.editor == null)
+            if (selectedItem.editor == null || selectedItem.tabItem == null)
             {
                 switch (Path.GetExtension(selectedItem.Ielement.GetPath())) // hack
                 {
@@ -114,8 +121,15 @@ namespace GUI.Controllers
 
         public void OnCreateElement(TriggerExplorer te, string fullPath)
         {
-            CommandExplorerElementCreate command = new CommandExplorerElementCreate(te, fullPath);
-            command.Execute();
+            ControllerProject controllerProject = new ControllerProject();
+            var explorerElement = controllerProject.FindExplorerElement(controllerProject.GetProjectRoot(), fullPath);
+            int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
+
+
+
+            TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);
+            explorerElement.Attach(treeItemExplorerElement);
+            treeItemExplorerElement.OnCreated(insertIndex);
         }
 
         public void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath, bool doRecurse = true, bool doInsert = false, int insertIndex = 0)
@@ -126,7 +140,7 @@ namespace GUI.Controllers
             // Create ExplorerElement in the parent node
             TreeItemExplorerElement treeElement = new TreeItemExplorerElement(createdElement);
             createdElement.Attach(treeElement);
-            if(doInsert)
+            if (doInsert)
                 parent.Items.Insert(insertIndex, treeElement);
             else
                 parent.Items.Insert(parent.Items.Count, treeElement);
@@ -168,18 +182,17 @@ namespace GUI.Controllers
         {
             TreeItemExplorerElement elementToMove = FindTreeNodeElement(te.map, fullPath);
             TreeItemExplorerElement oldParent = elementToMove.Parent as TreeItemExplorerElement;
-            TreeItemExplorerElement newParent = FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
+            TreeItemExplorerElement newParent = FindTreeNodeDirectory(Path.GetDirectoryName(fullPath));
+            
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                if (newParent == null) // hack. idk why it fires twice
+                    return;
 
-
-            oldParent.Items.Remove(elementToMove);
-            newParent.Items.Insert(insertIndex, elementToMove);
-            elementToMove.IsSelected = true;
-        }
-
-        internal void OnDeleteElement(TriggerExplorer te, string fullPath)
-        {
-            CommandExplorerElementDelete command = new CommandExplorerElementDelete(te, fullPath);
-            command.Execute();
+                oldParent.Items.Remove(elementToMove);
+                newParent.Items.Insert(insertIndex, elementToMove);
+                elementToMove.IsSelected = true;
+            });
         }
 
         internal TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)
@@ -203,7 +216,15 @@ namespace GUI.Controllers
             return node;
         }
 
-        internal TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)
+        internal TreeItemExplorerElement FindTreeNodeDirectory(string directory)
+        {
+            if (directory == GetCurrentExplorer().map.Ielement.GetPath())
+                return GetCurrentExplorer().map;
+
+            return FindTreeNodeDirectory(GetCurrentExplorer().map, directory);
+        }
+
+        private TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)
         {
             TreeItemExplorerElement node = null;
 

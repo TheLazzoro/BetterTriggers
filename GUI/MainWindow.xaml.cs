@@ -223,6 +223,7 @@ namespace GUI
                 parent.Children.Remove(triggerExplorer);
             }
             triggerExplorer = new TriggerExplorer();
+            TriggerExplorer.Current = triggerExplorer;
             triggerExplorer.Margin = new Thickness(-1, 1, 4, -1);
             triggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
             triggerExplorer.Width = Double.NaN;

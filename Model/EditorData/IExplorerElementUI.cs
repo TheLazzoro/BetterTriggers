@@ -1,9 +1,10 @@
 ﻿namespace Model.EditorData
 {
-    public interface IExplorerElementObserver
+    public interface IExplorerElementUI
     {
-        // Receive update from subject
+        void UpdatePosition();
         void Update(IExplorerElement subject);
+        void OnCreated(int insertIndex);
         void Delete();
     }
 }

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Model.EditorData
 {
@@ -10,11 +11,16 @@ namespace Model.EditorData
     {
         public string path;
         public List<IExplorerElement> explorerElements = new List<IExplorerElement>();
-        public List<IExplorerElementObserver> observers = new List<IExplorerElementObserver>();
+        public List<IExplorerElementUI> observers = new List<IExplorerElementUI>();
+        private DateTime LastWrite;
+        private long Size;
+
+        private IExplorerElement Parent;
 
         public ExplorerElementFolder(string path)
         {
             this.path = path;
+            UpdateMetadata();
         }
 
         public string GetName()
@@ -42,12 +48,12 @@ namespace Model.EditorData
             explorerElements.Remove(element);
         }
 
-        public void Attach(IExplorerElementObserver observer)
+        public void Attach(IExplorerElementUI observer)
         {
             this.observers.Add(observer);
         }
 
-        public void Detach(IExplorerElementObserver observer)
+        public void Detach(IExplorerElementUI observer)
         {
             this.observers.Remove(observer);
         }
@@ -103,6 +109,69 @@ namespace Model.EditorData
         {
             // is a folder
             return null;
+        }
+
+        public long GetSize()
+        {
+            return Size;
+        }
+
+        public DateTime GetLastWrite()
+        {
+            return LastWrite;
+        }
+
+        public void UpdateMetadata()
+        {
+            var info = new DirectoryInfo(path);
+            this.Size = info.EnumerateFiles().Sum(file => file.Length);
+            this.LastWrite = info.LastWriteTime;
+        }
+
+        public List<IExplorerElement> GetExplorerElements()
+        {
+            return explorerElements;
+        }
+
+        public IExplorerElement GetParent()
+        {
+            return Parent;
+        }
+
+        public void SetParent(IExplorerElement parent, int insertIndex)
+        {
+            Parent = parent;
+            parent.GetExplorerElements().Insert(insertIndex, this);
+        }
+
+        public void RemoveFromParent()
+        {
+            Parent.GetExplorerElements().Remove(this);
+            Parent = null;
+        }
+
+        public void Created(int insertIndex)
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].OnCreated(insertIndex);
+            }
+        }
+
+        public void Deleted()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].Delete();
+            }
+        }
+
+        public void ChangedPosition()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].UpdatePosition();
+            }
         }
     }
 }

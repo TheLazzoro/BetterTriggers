@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
-using GUI.Commands;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Components.VariableEditor;

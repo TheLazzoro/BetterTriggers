@@ -28,6 +28,8 @@ namespace GUI
     /// 
     public partial class TriggerExplorer : UserControl
     {
+        internal static TriggerExplorer Current;
+
         public TreeItemExplorerElement map;
         public TreeItemExplorerElement currentElement;
 
@@ -48,8 +50,6 @@ namespace GUI
             InitializeComponent();
 
             ContainerProject.OnCreated += ContainerProject_OnElementCreated;
-            ContainerProject.OnMoved += ContainerProject_OnElementMoved;
-            ContainerProject.OnDeleted += ContainerProject_OnDeleted;
         }
 
         // This function is invoked by a method in the container when a new file is created.
@@ -59,24 +59,6 @@ namespace GUI
             {
                 ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
                 controller.OnCreateElement(this, ContainerProject.createdPath); // hack
-            });
-        }
-
-        private void ContainerProject_OnElementMoved(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                controller.OnMoveElement(this, ContainerProject.createdPath, insertIndex); // hack
-            });
-        }
-
-        private void ContainerProject_OnDeleted(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                controller.OnDeleteElement(this, ContainerProject.deletedPath); // hack
             });
         }
 

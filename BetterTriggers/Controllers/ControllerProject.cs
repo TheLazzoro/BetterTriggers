@@ -1,10 +1,12 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Containers;
 using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace BetterTriggers.Controllers
 {
@@ -65,7 +67,7 @@ namespace BetterTriggers.Controllers
             RecurseLoad(projectRootEntry, ContainerProject.projectFiles[0], fileCheckList);
 
             // Loop through elements not found
-            for(int i = 0; i < fileCheckList.Count; i++)
+            for (int i = 0; i < fileCheckList.Count; i++)
             {
                 OnCreateElement(fileCheckList[i], false);
             }
@@ -89,6 +91,7 @@ namespace BetterTriggers.Controllers
                 elementChildren = folder.explorerElements;
             }
 
+            int insertIndex = 0;
             for (int i = 0; i < entryParent.Files.Count; i++)
             {
                 var entryChild = entryParent.Files[i];
@@ -121,9 +124,11 @@ namespace BetterTriggers.Controllers
                             break;
                     }
 
-                    elementChildren.Add(explorerElementChild);
+                    explorerElementChild.SetParent(elementParent, insertIndex);
+                    insertIndex++;
                     if (Directory.Exists(explorerElementChild.GetPath()))
                         RecurseLoad(entryChild, explorerElementChild, fileCheckList);
+
                 }
             }
 
@@ -154,7 +159,7 @@ namespace BetterTriggers.Controllers
             }
 
             var json = JsonConvert.SerializeObject(project);
-            File.WriteAllText(root.path, json);
+            File.WriteAllText(root.GetProjectPath(), json);
         }
 
         private void RecurseSaveFileEntries(ExplorerElementFolder parent, War3ProjectFileEntry parentEntry)
@@ -183,6 +188,11 @@ namespace BetterTriggers.Controllers
         public War3Project GetCurrentProject()
         {
             return ContainerProject.project;
+        }
+
+        public IExplorerElement GetProjectRoot()
+        {
+            return ContainerProject.projectFiles[0];
         }
 
         public void SetElementEnabled(IExplorerElement element, bool isEnabled)
@@ -241,16 +251,8 @@ namespace BetterTriggers.Controllers
                     break;
             }
 
-            if (parent is ExplorerElementRoot)
-            {
-                var root = (ExplorerElementRoot)parent;
-                root.explorerElements.Add(explorerElement);
-            }
-            else if (parent is ExplorerElementFolder)
-            {
-                var folder = (ExplorerElementFolder)parent;
-                folder.explorerElements.Add(explorerElement);
-            }
+            CommandExplorerElementCreate command = new CommandExplorerElementCreate(explorerElement, parent, parent.GetExplorerElements().Count);
+            command.Execute();
 
             if (!doRecurse)
                 return;
@@ -271,12 +273,17 @@ namespace BetterTriggers.Controllers
         /// </summary>
         public void RecurseCreateElementsWithContent(IExplorerElement topElement, bool doRecurse = true)
         {
-            if (!(topElement is ExplorerElementFolder))
-                File.WriteAllText(topElement.GetPath(), topElement.GetSaveableString());
+            if (topElement is IExplorerSaveable)
+            {
+                var element = (IExplorerSaveable)topElement;
+                File.WriteAllText(topElement.GetPath(), element.GetSaveableString());
+            }
             else
                 Directory.CreateDirectory(topElement.GetPath());
 
-            if(Directory.Exists(topElement.GetPath()))
+            topElement.UpdateMetadata(); // important, because this is a pseudo-redo
+
+            if (Directory.Exists(topElement.GetPath()))
             {
                 var folder = (ExplorerElementFolder)topElement;
                 if (!doRecurse)
@@ -300,13 +307,9 @@ namespace BetterTriggers.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
-            IExplorerElement oldParent = FindExplorerElementFolder(rootNode, Path.GetDirectoryName(oldFullPath));
-            IExplorerElement newParent = FindExplorerElementFolder(rootNode, Path.GetDirectoryName(newFullPath));
 
-            oldParent.RemoveFromList(elementToRename);
-            newParent.InsertIntoList(elementToRename, insertIndex);
-
-            RecurseRenameElement(elementToRename, oldFullPath, newFullPath);
+            CommandExplorerElementMove command = new CommandExplorerElementMove(elementToRename, newFullPath, insertIndex);
+            command.Execute();
         }
 
         /// <summary>
@@ -315,7 +318,7 @@ namespace BetterTriggers.Controllers
         /// <param name="elementToRename"></param>
         /// <param name="oldFullPath"></param>
         /// <param name="newFullPath"></param>
-        private void RecurseRenameElement(IExplorerElement elementToRename, string oldFullPath, string newFullPath)
+        internal void RecurseRenameElement(IExplorerElement elementToRename, string oldFullPath, string newFullPath)
         {
             if (elementToRename != null)
             {
@@ -353,19 +356,9 @@ namespace BetterTriggers.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
-            IExplorerElement parent = FindExplorerElementFolder(rootNode, fullPath);
 
-            if(parent is ExplorerElementRoot)
-            {
-                var root = (ExplorerElementRoot)parent;
-                root.explorerElements.Remove(elementToDelete);
-            } else if( parent is ExplorerElementFolder)
-            {
-                var folder = (ExplorerElementFolder)parent;
-                folder.explorerElements.Remove(elementToDelete);
-            }
-
-            //elementToDelete.DeleteObservers(); 
+            CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
+            command.Execute();
         }
 
 
@@ -398,7 +391,10 @@ namespace BetterTriggers.Controllers
             IExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
 
             if (elementToChange != null)
+            {
+                elementToChange.UpdateMetadata();
                 elementToChange.Notify();
+            }
         }
 
         public IExplorerElement FindExplorerElement(IExplorerElement parent, string path)
@@ -472,6 +468,41 @@ namespace BetterTriggers.Controllers
                 return ContainerProject.projectFiles[0];
 
             return matching;
+        }
+
+        public bool WasFileMoved(string oldFullPath)
+        {
+            var explorerElement = FindExplorerElement(ContainerProject.projectFiles[0], oldFullPath);
+            var exPath = explorerElement.GetPath();
+
+            bool wasMoved = false;
+            var files = Directory.GetFileSystemEntries(Path.GetDirectoryName(ContainerProject.projectFiles[0].GetPath()), "*", SearchOption.AllDirectories);
+            int i = 0;
+            while (i < files.Length && !wasMoved)
+            {
+                if (Path.GetFileName(exPath) == Path.GetFileName(files[i]))
+                {
+                    long size = 0;
+                    DateTime lastWrite = new DateTime(0);
+                    if (File.Exists(files[i]))
+                    {
+                        size = new FileInfo(files[i]).Length;
+                        lastWrite = new FileInfo(files[i]).LastWriteTime;
+                    }
+                    else if (Directory.Exists(files[i]))
+                    {
+                        var info = new DirectoryInfo(files[i]);
+                        size = info.EnumerateFiles().Sum(file => file.Length);
+                        lastWrite = new DirectoryInfo(files[i]).LastWriteTime;
+                    }
+                    if (size == explorerElement.GetSize() && lastWrite == explorerElement.GetLastWrite())
+                        wasMoved = true;
+                }
+
+                i++;
+            }
+
+            return wasMoved;
         }
     }
 }

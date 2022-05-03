@@ -8,15 +8,18 @@ namespace Model.EditorData
 {
     public class ExplorerElementRoot : IExplorerElement
     {
-        public string path;
         public War3Project project;
         public List<IExplorerElement> explorerElements = new List<IExplorerElement>();
-        public List<IExplorerElementObserver> observers = new List<IExplorerElementObserver>();
+        public List<IExplorerElementUI> observers = new List<IExplorerElementUI>();
+        private string path;
+        private DateTime LastWrite;
+        private long Size;
 
         public ExplorerElementRoot(War3Project project, string path)
         {
             this.path = path;
             this.project = project;
+            UpdateMetadata();
         }
 
         public string GetName()
@@ -27,6 +30,11 @@ namespace Model.EditorData
         public string GetPath()
         {
             return project.Root;
+        }
+
+        public string GetProjectPath()
+        {
+            return path;
         }
 
         public void SetPath(string newPath)
@@ -44,12 +52,12 @@ namespace Model.EditorData
             explorerElements.Remove(element);
         }
 
-        public void Attach(IExplorerElementObserver observer)
+        public void Attach(IExplorerElementUI observer)
         {
             this.observers.Add(observer);
         }
 
-        public void Detach(IExplorerElementObserver observer)
+        public void Detach(IExplorerElementUI observer)
         {
             this.observers.Remove(observer);
         }
@@ -61,11 +69,6 @@ namespace Model.EditorData
             {
                 observers[i].Update(this);
             }
-        }
-
-        public void SaveInMemory(string saveableString)
-        {
-            project = JsonConvert.DeserializeObject<War3Project>(saveableString);
         }
 
         public void DeleteObservers()
@@ -101,9 +104,54 @@ namespace Model.EditorData
             return true;
         }
 
-        public string GetSaveableString()
+        public long GetSize()
         {
-            throw new NotImplementedException("Is root.");
+            return Size;
+        }
+
+        public DateTime GetLastWrite()
+        {
+            return LastWrite;
+        }
+
+        public void UpdateMetadata()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void RemoveFromParent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Created(int insertIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Deleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        IExplorerElement IExplorerElement.GetParent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetParent(IExplorerElement parent, int insertIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IExplorerElement> GetExplorerElements()
+        {
+            return explorerElements;
+        }
+
+        public void ChangedPosition()
+        {
+            throw new NotImplementedException();
         }
     }
 }

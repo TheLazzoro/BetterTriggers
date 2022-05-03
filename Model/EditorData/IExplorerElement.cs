@@ -12,23 +12,29 @@ namespace Model.EditorData
         string GetPath();
         void SetPath(string newPath);
         string GetName();
+        long GetSize();
+        DateTime GetLastWrite();
+        IExplorerElement GetParent();
+        void SetParent(IExplorerElement parent, int insertIndex);
+        void RemoveFromParent();
+        List<IExplorerElement> GetExplorerElements();
+        void UpdateMetadata();
+        void Created(int insertIndex);
+        void Deleted();
         void SetEnabled(bool isEnabled);
         void SetInitiallyOn(bool isInitiallyOn);
         bool GetEnabled();
         bool GetInitiallyOn();
-        void InsertIntoList(IExplorerElement element, int insertIndex);
-        void RemoveFromList(IExplorerElement element);
 
-        string GetSaveableString();
-        void SaveInMemory(string saveableString);
         // Attach an observer to the subject.
-        void Attach(IExplorerElementObserver observer);
+        void Attach(IExplorerElementUI observer);
 
         // Detach an observer from the subject.
-        void Detach(IExplorerElementObserver observer);
+        void Detach(IExplorerElementUI observer);
 
         // Notify all observers about an event.
         void Notify();
         void DeleteObservers();
+        void ChangedPosition();
     }
 }

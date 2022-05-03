@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Model.SaveableData;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using Model.EditorData;
-using Model.SaveableData;
 
 namespace BetterTriggers.Commands
 {

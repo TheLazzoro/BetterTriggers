@@ -1,105 +1,69 @@
-﻿/*
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
-using GUI.Components;
-using GUI.Components.TriggerEditor;
-using GUI.Components.TriggerExplorer;
-using GUI.Controllers;
 using Model.EditorData;
-using Model.SaveableData;
 
-namespace GUI.Commands
+namespace BetterTriggers.Commands
 {
     public class CommandExplorerElementDelete : ICommand
     {
         string commandName = "Delete Explorer Element";
-        TriggerExplorer te;
-        string fullPath;
         IExplorerElement deletedElement;
-        IExplorerElement folder;
+        IExplorerElement parent;
         string fileContent = string.Empty;
+        bool isFolder = false;
         int index;
 
-        public CommandExplorerElementDelete(TriggerExplorer te, string fullPath)
+        public CommandExplorerElementDelete(IExplorerElement deletedElement)
         {
-            this.te = te;
-            this.fullPath = fullPath;
+            this.deletedElement = deletedElement;
+            this.parent = deletedElement.GetParent();
+            this.index = parent.GetExplorerElements().IndexOf(deletedElement);
+
+            if (deletedElement is ExplorerElementFolder)
+                isFolder = true;
+            else
+            {
+                var saveable = (IExplorerSaveable)deletedElement;
+                fileContent = saveable.GetSaveableString();
+            }
         }
 
         public void Execute()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-
-            TreeItemExplorerElement element = controllerTriggerExplorer.FindTreeNodeElement(te.map, fullPath);
-            TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            this.deletedElement = element.Ielement;
-            this.folder = controllerProject.FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(fullPath));
-            if (parent == null)
-                parent = te.map;
-
-            this.fileContent = deletedElement.GetSaveableString();
-            this.index = parent.Items.IndexOf(element);
-            parent.Items.Remove(element);
+            deletedElement.RemoveFromParent();
+            deletedElement.Deleted();
 
             CommandManager.AddCommand(this);
-
-            //triggerControl.OnStateChange();
         }
 
         public void Redo()
         {
+            deletedElement.RemoveFromParent();
+            deletedElement.Deleted();
             ControllerProject controllerProject = new ControllerProject();
             controllerProject.SetEnableFileEvents(false);
 
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-
-            TreeItemExplorerElement element = controllerTriggerExplorer.FindTreeNodeElement(te.map, fullPath);
-            TreeItemExplorerElement parent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            if (parent == null)
-                parent = te.map;
-
-            //this.index = parent.Items.IndexOf(element);
-            parent.Items.Remove(element);
-
             ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.DeleteElement(fullPath);
+            controllerFileSystem.DeleteElement(deletedElement.GetPath());
 
             controllerProject.SetEnableFileEvents(true);
-
-            //triggerControl.OnStateChange();
         }
 
-        public void Undo() // hacky?
+        public void Undo()
         {
+            deletedElement.SetParent(parent, index);
+            deletedElement.Created(index);
             ControllerProject controller = new ControllerProject();
             controller.SetEnableFileEvents(false);
 
-            if(folder is ExplorerElementRoot)
-            {
-                var root = (ExplorerElementRoot)folder;
-                root.explorerElements.Insert(this.index, deletedElement);
-            } else if (folder is ExplorerElementFolder)
-            {
-                var folder = (ExplorerElementFolder)this.folder;
-                folder.explorerElements.Insert(this.index, deletedElement);
-            }
-
             controller.RecurseCreateElementsWithContent(deletedElement);
-
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            TreeItemExplorerElement uiParent = controllerTriggerExplorer.FindTreeNodeDirectory(te.map, Path.GetDirectoryName(fullPath));
-            controllerTriggerExplorer.RecurseCreateElement(folder, uiParent, fullPath, true, true, this.index);
-
+            deletedElement.UpdateMetadata(); // this is important because we do a pseudo-undo (create the file from scratch)
+            // We may want to do the same 
 
             controller.SetEnableFileEvents(true);
-            //triggerControl.OnStateChange();
         }
 
         public string GetCommandName()
@@ -108,5 +72,3 @@ namespace GUI.Commands
         }
     }
 }
-
-*/
