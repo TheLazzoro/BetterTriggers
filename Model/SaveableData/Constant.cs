@@ -15,9 +15,13 @@ namespace Model.SaveableData
 
         public Constant Clone()
         {
+            string identifier = null;
+            if (this.identifier != null)
+                identifier = new string(this.identifier);
+
             return new Constant()
             {
-                identifier = new string(identifier),
+                identifier = identifier,
                 returnType = new string(returnType),
             };
         }

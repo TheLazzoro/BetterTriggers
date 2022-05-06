@@ -214,6 +214,39 @@ namespace BetterTriggers.Controllers
             ContainerProject.fileSystemWatcher.EnableRaisingEvents = doEnable;
         }
 
+        /// <summary>
+        /// Add newly created ExplorerElements to their appropriate container.
+        /// </summary>
+        /// <param name="createdElement"></param>
+        public void AddElementToContainer(IExplorerElement element)
+        {
+            if (element is ExplorerElementFolder)
+                ContainerFolders.AddFolder(element as ExplorerElementFolder);
+            else if (element is ExplorerElementTrigger)
+                ContainerTriggers.AddTrigger(element as ExplorerElementTrigger);
+            else if (element is ExplorerElementScript)
+                ContainerScripts.AddScript(element as ExplorerElementScript);
+            else if (element is ExplorerElementVariable)
+                ContainerVariables.AddVariable(element as ExplorerElementVariable);
+
+        }
+
+        /// <summary>
+        /// Removes deleted ExplorerElements from their appropriate container.
+        /// </summary>
+        /// <param name="element"></param>
+        public void RemoveElementFromContainer(IExplorerElement element)
+        {
+            if (element is ExplorerElementFolder)
+                ContainerFolders.Remove(element as ExplorerElementFolder);
+            else if (element is ExplorerElementTrigger)
+                ContainerTriggers.Remove(element as ExplorerElementTrigger);
+            else if (element is ExplorerElementScript)
+                ContainerScripts.Remove(element as ExplorerElementScript);
+            else if (element is ExplorerElementVariable)
+                ContainerVariables.Remove(element as ExplorerElementVariable);
+        }
+
         public void OnCreateElement(string fullPath, bool doRecurse = true)
         {
             string directory = Path.GetDirectoryName(fullPath);
@@ -228,28 +261,24 @@ namespace BetterTriggers.Controllers
         {
             IExplorerElement explorerElement = null;
 
-            // Add item to appropriate container
             switch (Path.GetExtension(fullPath))
             {
                 case "":
                     explorerElement = new ExplorerElementFolder(fullPath);
-                    ContainerFolders.AddFolder(explorerElement as ExplorerElementFolder);
                     break;
                 case ".trg":
                     explorerElement = new ExplorerElementTrigger(fullPath);
-                    ContainerTriggers.AddTrigger(explorerElement as ExplorerElementTrigger);
                     break;
                 case ".j":
                     explorerElement = new ExplorerElementScript(fullPath);
-                    ContainerScripts.AddScript(explorerElement as ExplorerElementScript);
                     break;
                 case ".var":
                     explorerElement = new ExplorerElementVariable(fullPath);
-                    ContainerVariables.AddVariable(explorerElement as ExplorerElementVariable);
                     break;
                 default:
                     break;
             }
+            AddElementToContainer(explorerElement);
 
             CommandExplorerElementCreate command = new CommandExplorerElementCreate(explorerElement, parent, parent.GetExplorerElements().Count);
             command.Execute();
@@ -269,7 +298,8 @@ namespace BetterTriggers.Controllers
         }
 
         /// <summary>
-        /// This is used when we want to redo a 'create file' action.
+        /// This is used when we want to redo a 'create file' action
+        /// or undo a 'delete' action.
         /// </summary>
         public void RecurseCreateElementsWithContent(IExplorerElement topElement, bool doRecurse = true)
         {
@@ -356,6 +386,7 @@ namespace BetterTriggers.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
+            RemoveElementFromContainer(elementToDelete);
 
             CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
             command.Execute();
@@ -503,6 +534,81 @@ namespace BetterTriggers.Controllers
             }
 
             return wasMoved;
+        }
+
+        public void CopyExplorerElement(IExplorerElement explorerElement, bool isCut = false)
+        {
+            IExplorerElement copied = explorerElement.Clone();
+            ContainerCopiedElements.CopiedExplorerElement = copied;
+
+            if (isCut)
+                ContainerCopiedElements.CutExplorerElement = explorerElement;
+            else
+                ContainerCopiedElements.CutExplorerElement = null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pasteTarget"></param>
+        /// <param name="insertIndex"></param>
+        /// <returns>The pasted ExplorerElement.</returns>
+        public IExplorerElement PasteExplorerElement(IExplorerElement pasteTarget)
+        {
+            int insertIndex;
+            IExplorerElement parent = null;
+            if (pasteTarget is ExplorerElementFolder || pasteTarget is ExplorerElementRoot)
+            {
+                parent = pasteTarget;
+                insertIndex = 0;
+            }
+            else
+            {
+                parent = pasteTarget.GetParent();
+                insertIndex = parent.GetExplorerElements().IndexOf(pasteTarget);
+            }
+
+            var pasted = ContainerCopiedElements.CopiedExplorerElement.Clone();
+            if (ContainerCopiedElements.CutExplorerElement == null)
+                PrepareExplorerElement(pasted);
+
+            CommandExplorerElementPaste command = new CommandExplorerElementPaste(pasted, parent, insertIndex);
+            command.Execute();
+
+            return pasted;
+        }
+
+        /// <summary>
+        /// Adjusts the name and id of ExplorerElement(s) so they don't get an name/id that's already in use.
+        /// Use when new elements are about to get created or pasted.
+        /// </summary>
+        /// <param name="explorerElement"></param>
+        public void PrepareExplorerElement(IExplorerElement explorerElement)
+        {
+            if (explorerElement is ExplorerElementTrigger)
+            {
+                ControllerTrigger controllerTrigger = new ControllerTrigger();
+                var element = (ExplorerElementTrigger)explorerElement;
+
+                string folder = Path.GetDirectoryName(element.GetPath());
+                string name = controllerTrigger.GenerateTriggerName();
+
+                element.trigger.Id = ContainerTriggers.GenerateId();
+                element.SetPath(Path.Combine(folder, name));
+            }
+            else if (explorerElement is ExplorerElementVariable)
+            {
+                var element = (ExplorerElementVariable)explorerElement;
+                element.variable.Id = ContainerVariables.GenerateId();
+            }
+            else if (explorerElement is ExplorerElementFolder)
+            {
+                var children = explorerElement.GetExplorerElements();
+                for (int i = 0; i < children.Count; i++)
+                {
+                    PrepareExplorerElement(children[i]);
+                }
+            }
         }
     }
 }

@@ -91,6 +91,7 @@ namespace BetterTriggers.Containers
                 deletedPath = e.FullPath;
                 controller.OnDeleteElement(deletedPath);
                 InvokeDelete(sender, e);
+                wasMoved = false;
             }
             else
             {

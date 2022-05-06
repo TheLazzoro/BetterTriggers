@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:gui="clr-namespace:GUI"
         UseLayoutRounding="True"
         mc:Ignorable="d"
-        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown">
+        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" WindowStartupLocation="Manual" WindowState="Normal" >
+    <!--Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" ResizeMode="CanResize" WindowStyle="None" WindowStartupLocation="Manual" WindowState="Normal" AllowsTransparency="True" > -->
     <Window.Resources>
+        <Style x:Key="Chromeless" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border BorderThickness="0" Width="54" Height="54">
+                            <ContentPresenter/>
+                        </Border>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -68,6 +81,8 @@
     </Window.Resources>
 
 
+
+
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -81,7 +96,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" >
+        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" MouseLeftButtonDown="Menu_MouseLeftButtonDown" >
             <MenuItem Header="File" Height="25">
                 <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black" Click="menuNewProject_Click"/>
                 <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black" Click="menuOpen_Click"/>
@@ -97,60 +112,138 @@
         </Menu>
 
         <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="2" />
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Fill="#FF404040" />
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Fill="#FF282828" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" />
 
-        <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="10,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+        <Button x:Name="btnNewMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/map.png" Stretch="Fill"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnOpenMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="35,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_open.png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnSaveAll" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="60,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_save.png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="97,4,0,4" Fill="#444" />
+
+        <Button x:Name="btnUndo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="110,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/undo.png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnRedo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="135,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/redo.png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+        
+        <Button x:Name="btnCut" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="160,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_cut.png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnCopy" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="185,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_copy.png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnPaste" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="210,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_paste.png" Stretch="Fill" />
+            </Button.Background>
+        </Button>
+
+
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="247,4,0,4" Fill="#444" />
+
+        <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="260,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Margin="35,0,5,0" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
+        <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="285,0,5,0" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_element.png" Stretch="None" />
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateScript_Click" >
+        <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="310,0,0,0" Click="btnCreateScript_Click" >
             <Button.Background >
                 <ImageBrush ImageSource="Resources/Icons/editor-triggerscript.png" Stretch="None" />
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="85,0,0,0" Click="btnCreateVariable_Click">
+        <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="335,0,0,0" Click="btnCreateVariable_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/actions-setvariables.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateComment" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="110,0,0,0">
+        <Button x:Name="btnCreateComment" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="360,0,0,0">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/editor-toolbar-triggercomment.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnCreateEvent_Click">
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="397,4,0,4" Fill="#444" />
+
+        <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="410,0,0,0" Click="btnCreateEvent_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/editor-triggerevent.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="35,0,0,0" Click="btnCreateCondition_Click">
+        <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="435,0,0,0" Click="btnCreateCondition_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="60,0,0,0" Click="btnCreateAction_Click">
+        <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="460,0,0,0" Click="btnCreateAction_Click">
             <Button.Background>
                 <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnSaveScript" Content="Save Script" Grid.Row="1" Grid.Column="1" Width="70" HorizontalAlignment="Left" Margin="150,0,0,0" Click="btnSaveScript_Click"/>
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="497,4,0,4" Fill="#444" />
+
+
+        <Button x:Name="btnSaveScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="510,0,0,0" Click="btnSaveScript_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/editor-toolbar-mapvalidation.png" Stretch="None"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnTestMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="545,0,0,0" Click="btnSaveScript_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/editor-testmap.dds" Stretch="None"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="btnBuildMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="580,0,0,0" Click="btnSaveScript_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Resources/Icons/editor-toolbar-exportmap.dds" Stretch="None"/>
+            </Button.Background>
+        </Button>
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
         <gui:DragableTabControl x:Name="dragableTabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0" />
+
+
+
     </Grid>
+
 </Window>

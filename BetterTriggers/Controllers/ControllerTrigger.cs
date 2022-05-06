@@ -18,8 +18,20 @@ namespace BetterTriggers.Controllers
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
-            string name = "Untitled Trigger";
+            string name = GenerateTriggerName();
 
+            Trigger trigger = new Trigger()
+            {
+                Id = ContainerTriggers.GenerateId(),
+            };
+            string json = JsonConvert.SerializeObject(trigger);
+
+            File.WriteAllText(directory + @"\" + name, json);
+        }
+
+        public string GenerateTriggerName()
+        {
+            string name = "Untitled Trigger";
             bool ok = false;
             int i = 0;
             while (!ok)
@@ -34,13 +46,7 @@ namespace BetterTriggers.Controllers
                 i++;
             }
 
-            Trigger trigger = new Trigger()
-            {
-                Id = ContainerTriggers.GenerateId(),
-            };
-            string json = JsonConvert.SerializeObject(trigger);
-
-            File.WriteAllText(directory + @"\" + name + ".trg", json);
+            return name + ".trg";
         }
 
         public Trigger LoadTriggerFromFile(string filename)

@@ -16,6 +16,8 @@ namespace Model.EditorData
 
         private IExplorerElement Parent;
 
+        public ExplorerElementVariable() { }
+
         public ExplorerElementVariable(string path)
         {
             this.path = path;
@@ -156,6 +158,15 @@ namespace Model.EditorData
             {
                 observers[i].UpdatePosition();
             }
+        }
+
+        public IExplorerElement Clone()
+        {
+            ExplorerElementVariable newVariable = new ExplorerElementVariable(); 
+            newVariable.path = new string(this.path); // we need this path in paste command.
+            newVariable.Parent = this.Parent;
+            newVariable.variable = this.variable.Clone();
+            return newVariable;
         }
     }
 }

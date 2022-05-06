@@ -16,8 +16,12 @@ namespace Model.SaveableData
 
         public Function Clone()
         {
+            string identifier = null;
+            if (this.identifier != null)
+                identifier = new string(this.identifier);
+
             Function f = new Function();
-            f.identifier = new string(identifier);
+            f.identifier = identifier;
             f.returnType = new string(returnType);
             List<Parameter> parameters = new List<Parameter>();
             

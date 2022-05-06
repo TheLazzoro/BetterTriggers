@@ -21,9 +21,13 @@ namespace Model.SaveableData
             Parameter array1 = this.arrayIndexValues[1].Clone();
             newArrayIndexValues.Add(array0);
             newArrayIndexValues.Add(array1);
+
+            string identifier = null;
+            if (this.identifier != null)
+                identifier = new string(this.identifier);
             return new VariableRef()
             {
-                identifier = new string(identifier),
+                identifier = identifier,
                 returnType = new string(returnType),
                 VariableId = VariableId,
                 arrayIndexValues = newArrayIndexValues,

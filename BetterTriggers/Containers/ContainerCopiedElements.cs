@@ -1,9 +1,6 @@
-﻿using Model.SaveableData;
-using System;
+﻿using Model.EditorData;
+using Model.SaveableData;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterTriggers.Containers
 {
@@ -11,5 +8,8 @@ namespace BetterTriggers.Containers
     {
         internal static List<TriggerElement> CopiedTriggerElements = new List<TriggerElement>();
         internal static List<TriggerElement> CutTriggerElements = new List<TriggerElement>();
+
+        internal static IExplorerElement CopiedExplorerElement;
+        internal static IExplorerElement CutExplorerElement;
     }
 }

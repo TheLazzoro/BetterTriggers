@@ -16,6 +16,8 @@ namespace Model.EditorData
 
         private IExplorerElement Parent;
 
+        public ExplorerElementScript() { }
+
         public ExplorerElementScript(string path)
         {
             this.path = path;
@@ -168,6 +170,17 @@ namespace Model.EditorData
             {
                 observers[i].UpdatePosition();
             }
+        }
+
+        public IExplorerElement Clone()
+        {
+            ExplorerElementScript newScript = new ExplorerElementScript();
+            newScript.path = new string(this.path); // we need this path in paste command.
+            newScript.Parent = this.Parent;
+            newScript.isEnabled = this.isEnabled;
+            newScript.script = new string(this.script);
+
+            return newScript;
         }
     }
 }

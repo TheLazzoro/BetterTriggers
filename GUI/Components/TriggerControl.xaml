@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
-             mc:Ignorable="d" Background="#FF404040">
+             mc:Ignorable="d" Background="#363636">
     <UserControl.Resources>
         <!-- Background -->
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">

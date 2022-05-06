@@ -153,5 +153,10 @@ namespace Model.EditorData
         {
             throw new NotImplementedException();
         }
+
+        public IExplorerElement Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

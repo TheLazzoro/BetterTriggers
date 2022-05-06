@@ -13,9 +13,13 @@ namespace Model.SaveableData
 
         public Parameter Clone()
         {
+            string identifier = null;
+            if (this.identifier != null)
+                identifier = new string(this.identifier);
+
             return new Parameter()
             {
-                identifier = new string(identifier),
+                identifier = identifier,
                 returnType = new string(returnType),
             };
         }

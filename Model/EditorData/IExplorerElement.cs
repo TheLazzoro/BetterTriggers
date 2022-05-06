@@ -36,5 +36,6 @@ namespace Model.EditorData
         void Notify();
         void DeleteObservers();
         void ChangedPosition();
+        IExplorerElement Clone();
     }
 }

@@ -10,6 +10,9 @@ using BetterTriggers.Containers;
 using GUI.Controllers;
 using GUI.Components;
 using System.Windows.Input;
+using System.Windows.Shapes;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace GUI
 {
@@ -241,6 +244,16 @@ namespace GUI
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             controllerTriggerExplorer.Populate(triggerExplorer);
+        }
+
+        private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void Menu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

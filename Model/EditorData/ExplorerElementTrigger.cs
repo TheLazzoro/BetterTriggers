@@ -19,11 +19,14 @@ namespace Model.EditorData
 
         private IExplorerElement Parent;
 
+        public ExplorerElementTrigger() { }
+
         public ExplorerElementTrigger(string path)
         {
             this.path = path;
             string json = string.Empty;
             bool isReadyForRead = false;
+            int sleepTolerance = 100;
             while (!isReadyForRead)
             {
                 try
@@ -31,9 +34,13 @@ namespace Model.EditorData
                     json = File.ReadAllText(path);
                     isReadyForRead = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    if (sleepTolerance < 0)
+                        throw new Exception(ex.Message);
+
                     Thread.Sleep(100);
+                    sleepTolerance--;
                 }
             }
             trigger = JsonConvert.DeserializeObject<Trigger>(json);
@@ -85,7 +92,7 @@ namespace Model.EditorData
         {
             return trigger.Id;
         }
-        
+
         public void SetEnabled(bool isEnabled)
         {
             this.isEnabled = isEnabled;
@@ -172,6 +179,18 @@ namespace Model.EditorData
             {
                 observers[i].UpdatePosition();
             }
+        }
+
+        public IExplorerElement Clone()
+        {
+            ExplorerElementTrigger newTrigger = new ExplorerElementTrigger();
+            newTrigger.path = new string(this.path); // we need this path in paste command.
+            newTrigger.Parent = this.Parent;
+            newTrigger.isInitiallyOn = this.isInitiallyOn;
+            newTrigger.isEnabled = this.isEnabled;
+            newTrigger.trigger = this.trigger.Clone();
+
+            return newTrigger;
         }
     }
 }

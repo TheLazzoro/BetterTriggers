@@ -10,9 +10,12 @@ namespace Model.SaveableData
 
         public Value Clone()
         {
+            string identifier = null;
+            if (this.identifier != null)
+                identifier = new string(this.identifier);
             return new Value()
             {
-                identifier = new string(identifier),
+                identifier = identifier,
                 returnType = new string(returnType),
             };
         }

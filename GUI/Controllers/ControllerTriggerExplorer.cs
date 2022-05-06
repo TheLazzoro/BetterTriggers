@@ -23,7 +23,7 @@ namespace GUI.Controllers
             }
         }
 
-        private void RecursePopulate(TriggerExplorer te, TreeItemExplorerElement parent, IExplorerElement element)
+        public void RecursePopulate(TriggerExplorer te, TreeItemExplorerElement parent, IExplorerElement element)
         {
             var treeItem = new TreeItemExplorerElement(element);
             element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
@@ -130,52 +130,6 @@ namespace GUI.Controllers
             TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);
             explorerElement.Attach(treeItemExplorerElement);
             treeItemExplorerElement.OnCreated(insertIndex);
-        }
-
-        public void RecurseCreateElement(IExplorerElement folder, TreeItemExplorerElement parent, string fullPath, bool doRecurse = true, bool doInsert = false, int insertIndex = 0)
-        {
-            ControllerProject controller = new ControllerProject();
-            IExplorerElement createdElement = controller.FindExplorerElement(folder, fullPath);
-
-            // Create ExplorerElement in the parent node
-            TreeItemExplorerElement treeElement = new TreeItemExplorerElement(createdElement);
-            createdElement.Attach(treeElement);
-            if (doInsert)
-                parent.Items.Insert(insertIndex, treeElement);
-            else
-                parent.Items.Insert(parent.Items.Count, treeElement);
-
-            // Add item to appropriate container
-            switch (Path.GetExtension(createdElement.GetPath()))
-            {
-                case "":
-                    ContainerFolders.AddFolder(createdElement as ExplorerElementFolder);
-                    break;
-                case ".trg":
-                    ContainerTriggers.AddTrigger(createdElement as ExplorerElementTrigger);
-                    break;
-                case ".j":
-                    ContainerScripts.AddScript(createdElement as ExplorerElementScript);
-                    break;
-                case ".var":
-                    ContainerVariables.AddVariable(createdElement as ExplorerElementVariable);
-                    break;
-                default:
-                    break;
-            }
-
-            if (!doRecurse)
-                return;
-
-            // Recurse into the element if it's a folder
-            if (Directory.Exists(fullPath))
-            {
-                string[] entries = Directory.GetFileSystemEntries(fullPath);
-                for (int i = 0; i < entries.Length; i++)
-                {
-                    RecurseCreateElement((ExplorerElementFolder)createdElement, treeElement, entries[i]);
-                }
-            }
         }
 
         internal void OnMoveElement(TriggerExplorer te, string fullPath, int insertIndex)

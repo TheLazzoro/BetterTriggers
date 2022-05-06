@@ -19,6 +19,7 @@ using Model.EditorData.Enums;
 using BetterTriggers.Controllers;
 using BetterTriggers.Containers;
 using GUI.Components;
+using Model.EditorData;
 
 namespace GUI
 {
@@ -190,7 +191,7 @@ namespace GUI
         {
             if (_IsDragging && dragItem != null)
             {
-                if(adorner != null)
+                if (adorner != null)
                     adorner.Remove(lineIndicator);
 
                 TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
@@ -234,6 +235,28 @@ namespace GUI
 
                 ControllerFileSystem controller = new ControllerFileSystem();
                 controller.DeleteElement(selectedElement.Ielement.GetPath());
+            }
+            else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+                ControllerProject controllerProject = new ControllerProject();
+                controllerProject.CopyExplorerElement(selectedElement.Ielement);
+            }
+            else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+                ControllerProject controllerProject = new ControllerProject();
+                controllerProject.CopyExplorerElement(selectedElement.Ielement, true);
+            }
+            else if (e.Key == Key.V && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+                ControllerProject controllerProject = new ControllerProject();
+                IExplorerElement pasted = controllerProject.PasteExplorerElement(selectedElement.Ielement);
+
+                ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
+                var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
+                controllerTriggerExplorer.RecursePopulate(controllerTriggerExplorer.GetCurrentExplorer(), parent, pasted);
             }
         }
 

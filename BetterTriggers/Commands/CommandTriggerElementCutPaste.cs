@@ -11,7 +11,7 @@ namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementCutPaste : ICommand
     {
-        string commandName = "Cut/Paste Trigger Element";
+        string commandName = "Paste Trigger Element";
         int pastedIndex = 0;
         int cutIndex = 0;
         List<TriggerElement> listToCut;

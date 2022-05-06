@@ -110,6 +110,11 @@ namespace BetterTriggers.Containers
             return name;
         }
 
+        public static void Remove(ExplorerElementVariable explorerElementVariable)
+        {
+            variableContainer.Remove(explorerElementVariable);
+        }
+
         public static void RemoveByFilePath(string filePath)
         {
             for (int i = 0; i < variableContainer.Count; i++)

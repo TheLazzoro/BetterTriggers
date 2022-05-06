@@ -17,6 +17,8 @@ namespace Model.EditorData
 
         private IExplorerElement Parent;
 
+        public ExplorerElementFolder() { }
+
         public ExplorerElementFolder(string path)
         {
             this.path = path;
@@ -67,11 +69,6 @@ namespace Model.EditorData
             }
         }
 
-        public void SaveInMemory(string saveableString)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DeleteObservers()
         {
             foreach (var observer in observers)
@@ -103,12 +100,6 @@ namespace Model.EditorData
         public bool GetInitiallyOn()
         {
             return true;
-        }
-
-        public string GetSaveableString()
-        {
-            // is a folder
-            return null;
         }
 
         public long GetSize()
@@ -172,6 +163,17 @@ namespace Model.EditorData
             {
                 observers[i].UpdatePosition();
             }
+        }
+
+        public IExplorerElement Clone()
+        {
+            ExplorerElementFolder newFolder = new ExplorerElementFolder();
+            newFolder.path = new string(this.path); // we need this path in paste command.
+            newFolder.Parent = this.Parent;
+            List<IExplorerElement> explorerElements = new List<IExplorerElement>();
+            this.explorerElements.ForEach(element => newFolder.explorerElements.Add(element.Clone()));
+
+            return newFolder;
         }
     }
 }
