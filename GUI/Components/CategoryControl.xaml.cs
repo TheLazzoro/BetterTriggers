@@ -3,7 +3,6 @@ using GUI.Components;
 using GUI.Components.TextEditor;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
-using GUI.Utility;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Model.EditorData;

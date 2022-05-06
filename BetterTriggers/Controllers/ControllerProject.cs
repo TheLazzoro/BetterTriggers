@@ -596,6 +596,11 @@ namespace BetterTriggers.Controllers
             controller.RenameElement(explorerElement.GetPath(), formattedName);
         }
 
+        public IExplorerElement GetCopiedElement()
+        {
+            return ContainerCopiedElements.CopiedExplorerElement;
+        }
+
         public void CopyExplorerElement(IExplorerElement explorerElement, bool isCut = false)
         {
             IExplorerElement copied = explorerElement.Clone();

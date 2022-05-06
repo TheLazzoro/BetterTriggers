@@ -1,9 +1,6 @@
 ﻿using BetterTriggers.Containers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GUI.Utility
+namespace BetterTriggers.Utility
 {
     public static class NameGenerator
     {

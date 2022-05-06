@@ -1,6 +1,6 @@
 ﻿using BetterTriggers.Controllers;
+using GUI.Components.Shared;
 using GUI.Controllers;
-using GUI.Utility;
 using Model.Data;
 using Model.EditorData;
 using Model.EditorData.Enums;

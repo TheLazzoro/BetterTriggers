@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace GUI.Utility
+namespace GUI.Components.Shared
 {
     public class TreeItemHeader : StackPanel
     {

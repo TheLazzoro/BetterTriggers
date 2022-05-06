@@ -1,5 +1,4 @@
 ﻿using Model.Data;
-using GUI.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -260,18 +259,6 @@ namespace GUI
             }
         }
 
-        private void treeViewTriggerExplorer_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            TreeItemExplorerElement rightClickedElement = GetTraversedItem(e.Source as FrameworkElement);
-
-            if (rightClickedElement == null)
-                return;
-
-            // Set selected item
-            rightClickedElement.IsSelected = true;
-            ContextMenuExplorer contextMenu = new ContextMenuExplorer(rightClickedElement);
-            rightClickedElement.ContextMenu = contextMenu;
-        }
 
         private void treeViewTriggerExplorer_DragOver(object sender, DragEventArgs e)
         {
@@ -299,6 +286,87 @@ namespace GUI
                 lineIndicator = new TreeItemAdorner(dropTarget, false);
                 adorner.Add(lineIndicator);
             }
+        }
+
+        private void treeViewTriggerExplorer_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TreeItemExplorerElement rightClickedElement = GetTraversedItem(e.Source as FrameworkElement);
+
+            if (rightClickedElement == null)
+                return;
+
+            rightClickedElement.IsSelected = true;
+            rightClickedElement.ContextMenu = contextMenu;
+
+            ControllerProject controller = new ControllerProject();
+
+            menuPaste.IsEnabled = controller.GetCopiedElement() != null;
+            menuElementEnabled.IsChecked = rightClickedElement.Ielement.GetEnabled();
+            menuElementInitiallyOn.IsChecked = rightClickedElement.Ielement.GetInitiallyOn();
+        }
+
+        private void menuCut_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.CopyExplorerElement(currentElement.Ielement, true);
+        }
+
+        private void menuCopy_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.CopyExplorerElement(currentElement.Ielement);
+        }
+
+        private void menuPaste_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.PasteExplorerElement(currentElement.Ielement);
+        }
+
+        private void menuDelete_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerFileSystem controller = new ControllerFileSystem();
+            controller.DeleteElement(currentElement.Ielement.GetPath());
+        }
+
+        private void menuNewCategory_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerFolder controller = new ControllerFolder();
+            controller.CreateFolder();
+        }
+
+        private void menuNewTrigger_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerTrigger controller = new ControllerTrigger();
+            controller.CreateTrigger();
+        }
+
+        private void menuNewScript_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerScript controller = new ControllerScript();
+            controller.CreateScript();
+        }
+
+        private void menuNewVariable_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerVariable controller = new ControllerVariable();
+            controller.CreateVariable();
+        }
+
+        private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
+        {
+            currentElement.editor.SetElementEnabled(!currentElement.Ielement.GetEnabled());
+        }
+
+        private void menuElementInitiallyOn_Click(object sender, RoutedEventArgs e)
+        {
+            currentElement.editor.SetElementInitiallyOn(!currentElement.Ielement.GetInitiallyOn());
+        }
+
+        private void menuOpenInExplorer_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerFileSystem controller = new ControllerFileSystem();
+            controller.OpenInExplorer(currentElement.Ielement.GetPath());
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using Model.Data;
-using GUI.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
 using Model.EditorData.Enums;
 using Model.SaveableData;
+using GUI.Components.Shared;
 
 namespace GUI.Components.TriggerEditor
 {
