@@ -5,35 +5,23 @@ using System.IO;
 
 namespace BetterTriggers.Commands
 {
-    public class CommandExplorerElementMove : ICommand
+    public class CommandExplorerElementRename : ICommand
     {
-        string commandName = "Move Explorer Element";
+        string commandName = "Rename Explorer Element";
         IExplorerElement explorerElement;
-        IExplorerElement oldParent;
-        IExplorerElement newParent;
         string oldFullPath;
         string newFullPath;
-        int OldInsertIndex = 0;
-        int NewInsertIndex = 0;
 
-        public CommandExplorerElementMove(IExplorerElement explorerElement, string newFullPath, int NewInsertIndex)
+        public CommandExplorerElementRename(IExplorerElement explorerElement, string newFullPath)
         {
-            ControllerProject controller = new ControllerProject();
-            var rootNode = ContainerProject.projectFiles[0];
-            newParent = controller.FindExplorerElementFolder(rootNode, Path.GetDirectoryName(newFullPath));
             this.oldFullPath = explorerElement.GetPath();
             this.newFullPath = newFullPath;
 
             this.explorerElement = explorerElement;
-            this.oldParent = explorerElement.GetParent();
-            this.OldInsertIndex = this.oldParent.GetExplorerElements().IndexOf(explorerElement);
-            this.NewInsertIndex = NewInsertIndex;
         }
 
         public void Execute()
         {
-            explorerElement.RemoveFromParent();
-            explorerElement.SetParent(newParent, NewInsertIndex);
             ControllerProject controller = new ControllerProject();
             controller.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
             explorerElement.ChangedPosition();
@@ -43,13 +31,10 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            explorerElement.RemoveFromParent();
-            explorerElement.SetParent(newParent, NewInsertIndex);
-
             ControllerProject controller = new ControllerProject();
             controller.SetEnableFileEvents(false);
             ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.MoveFile(explorerElement.GetPath(), newParent.GetPath(), NewInsertIndex);
+            controllerFileSystem.RenameElementPath(explorerElement.GetPath(), newFullPath);
             controller.SetEnableFileEvents(true);
 
 
@@ -60,13 +45,10 @@ namespace BetterTriggers.Commands
 
         public void Undo()
         {
-            explorerElement.RemoveFromParent();
-            explorerElement.SetParent(oldParent, OldInsertIndex);
-
             ControllerProject controller = new ControllerProject();
             controller.SetEnableFileEvents(false);
             ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.MoveFile(explorerElement.GetPath(), oldParent.GetPath(), OldInsertIndex);
+            controllerFileSystem.RenameElementPath(explorerElement.GetPath(), oldFullPath);
             controller.SetEnableFileEvents(true);
 
             controller.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);

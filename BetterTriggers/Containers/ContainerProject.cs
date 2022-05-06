@@ -72,7 +72,7 @@ namespace BetterTriggers.Containers
             ControllerProject controller = new ControllerProject();
             if (wasMoved)
             {
-                controller.OnRenameElement(deletedPath, createdPath, insertIndex);
+                controller.OnMoveElement(deletedPath, createdPath, insertIndex);
                 insertIndex = 0; // reset
             }
             else
@@ -103,8 +103,7 @@ namespace BetterTriggers.Containers
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
-            controller.OnRenameElement(e.OldFullPath, e.FullPath, insertIndex);
-            insertIndex = 0; // reset
+            controller.OnRenameElement(e.OldFullPath, e.FullPath);
         }
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)

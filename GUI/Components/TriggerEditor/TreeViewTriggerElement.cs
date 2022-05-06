@@ -113,7 +113,8 @@ namespace GUI.Components.TriggerEditor
             string text = string.Empty;
             textRanges.ForEach(element => text += element.Text);
 
-            TreeViewRenderer.SetTreeViewItemAppearance(this, text, category, areParametersValid, isEnabled);
+            TreeItemHeader header = new TreeItemHeader(text, category, areParametersValid, isEnabled);
+            this.Header = header;
         }
 
         private bool IsParameterListValid(List<Parameter> parameters, bool isValid = true)

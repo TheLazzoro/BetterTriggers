@@ -11,6 +11,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GUI.Components.TriggerExplorer
@@ -20,13 +21,34 @@ namespace GUI.Components.TriggerExplorer
         public TabItemBT tabItem;
         public IExplorerElement Ielement;
         public IEditor editor;
+        private TreeItemHeader treeItemHeader;
+        private Category category;
 
         public TreeItemExplorerElement(IExplorerElement explorerElement)
         {
             this.Ielement = explorerElement;
 
+            if (Ielement is ExplorerElementRoot)
+                category = Category.Map;
+            else if (Ielement is ExplorerElementFolder)
+                category = Category.Folder;
+            else if (Ielement is ExplorerElementTrigger)
+                category = Category.Trigger;
+            else if (Ielement is ExplorerElementScript)
+                category = Category.AI;
+            else if (Ielement is ExplorerElementVariable)
+                category = Category.SetVariable;
+            else
+                category = Category.Wait;
+
+            this.treeItemHeader = new TreeItemHeader(explorerElement.GetName(), category, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
+            this.Header = treeItemHeader;
+            this.KeyDown += TreeItemExplorerElement_KeyDown;
+            this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
+
             RefreshElement();
         }
+
 
         public void Delete()
         {
@@ -55,7 +77,7 @@ namespace GUI.Components.TriggerExplorer
             if (this.Ielement == null)
                 return;
 
-            RefreshElementIcon();
+            treeItemHeader.SetIcon(category, Ielement.GetEnabled());
 
             if (this.tabItem != null)
                 tabItem.RefreshHeader(this.Ielement.GetName());
@@ -68,26 +90,6 @@ namespace GUI.Components.TriggerExplorer
 
             if (this.editor != null)
                 this.editor.Refresh();
-        }
-
-        private void RefreshElementIcon()
-        {
-            Category category;
-
-            if (Ielement is ExplorerElementRoot)
-                category = Category.Map;
-            else if (Ielement is ExplorerElementFolder)
-                category = Category.Folder;
-            else if (Ielement is ExplorerElementTrigger)
-                category = Category.Trigger;
-            else if (Ielement is ExplorerElementScript)
-                category = Category.AI;
-            else if (Ielement is ExplorerElementVariable)
-                category = Category.SetVariable;
-            else
-                category = Category.Wait;
-
-            TreeViewRenderer.SetTreeViewItemAppearance(this, this.Ielement.GetName(), category, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
         }
 
         public void Save()
@@ -108,13 +110,50 @@ namespace GUI.Components.TriggerExplorer
             });
         }
 
+        public void ShowRenameBox()
+        {
+            this.treeItemHeader.ShowRenameBox(true);
+        }
+
+        private void TreeItemExplorerElement_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F2)
+            {
+                ShowRenameBox();
+                e.Handled = true;
+            }
+
+        }
+
+        private void RenameBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            string renameText = this.treeItemHeader.GetRenameText();
+            ControllerProject controller = new ControllerProject();
+            if (e.Key == Key.Enter)
+            {
+                if (!controller.DoesNameExist(this.Ielement, renameText))
+                {
+                    this.treeItemHeader.ShowRenameBox(false);
+                    controller.RenameElement(this.Ielement, renameText);
+                }
+                else
+                    MessageBox.Show($"An element with name '{renameText}' already exists.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.OK);
+            }
+            else if (e.Key == Key.Escape)
+            {
+                this.treeItemHeader.ShowRenameBox(false);
+                this.treeItemHeader.SetDisplayText(this.Ielement.GetName());
+                this.Focus();
+            }
+        }
+
         /// <summary>
         /// Gets invoked when an action in the 'editor' field triggers a state of change
         /// E.g. new letters in script were typed (ScriptControl), new action gets added (TriggerControl).
         /// </summary>
         public void OnStateChange()
         {
-            RefreshElementIcon();
+            treeItemHeader.SetIcon(category, Ielement.GetEnabled());
 
             if (this.tabItem != null)
                 tabItem.RefreshHeader(this.Ielement.GetName() + " *");
@@ -125,9 +164,16 @@ namespace GUI.Components.TriggerExplorer
 
         public void UpdatePosition()
         {
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            int insertIndex = Ielement.GetParent().GetExplorerElements().IndexOf(Ielement);
-            controller.OnMoveElement(controller.GetCurrentExplorer(), Ielement.GetPath(), insertIndex);
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+                int insertIndex = Ielement.GetParent().GetExplorerElements().IndexOf(Ielement);
+                controller.OnMoveElement(controller.GetCurrentExplorer(), Ielement.GetPath(), insertIndex);
+                this.treeItemHeader.SetDisplayText(this.Ielement.GetName());
+
+                this.IsSelected = true;
+                this.Focus();
+            });
         }
 
         public void OnCreated(int insertIndex)

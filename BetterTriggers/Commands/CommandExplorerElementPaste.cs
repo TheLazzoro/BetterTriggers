@@ -61,7 +61,6 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            // TODO: Maybe we don't need to adjust paths again?
             ControllerProject controllerProject = new ControllerProject();
             ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
             controllerProject.SetEnableFileEvents(false);

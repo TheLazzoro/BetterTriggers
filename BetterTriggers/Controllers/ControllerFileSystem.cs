@@ -16,12 +16,12 @@ namespace BetterTriggers.Controllers
             File.WriteAllText(path, json);
         }
 
-        public void MoveFile(string elementToMove, string target, int insertIndex)
+        public void MoveFile(string elementToMove, string targetDir, int insertIndex)
         {
             ContainerProject.insertIndex = insertIndex;
-            string directory = target;
+            string directory = targetDir;
             if (!Directory.Exists(directory))
-                directory = Path.GetDirectoryName(target);
+                directory = Path.GetDirectoryName(targetDir);
 
             if (File.Exists(elementToMove))
                 File.Move(elementToMove, directory + "/" + Path.GetFileName(elementToMove));
@@ -45,11 +45,25 @@ namespace BetterTriggers.Controllers
                 FileSystem.DeleteDirectory(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
         }
 
-        // used when renaming an element in the editor
-        public void RenameElement(string oldPath, string renamed)
+        /// <summary>
+        /// Used when renaming an element in the editor.
+        /// </summary>
+        /// <param name="oldPath"></param>
+        /// <param name="renamedText"></param>
+        public void RenameElement(string oldPath, string renamedText)
         {
-            string newPath = Path.GetDirectoryName(oldPath) + @"/" + renamed;
+            string newPath = Path.GetDirectoryName(oldPath) + @"/" + renamedText;
             File.Move(oldPath, newPath);
+        }
+
+        /// <summary>
+        /// Used to undo/redo renames.
+        /// </summary>
+        /// <param name="oldFullPath"></param>
+        /// <param name="newFullPath"></param>
+        public void RenameElementPath(string oldFullPath, string newFullPath)
+        {
+            File.Move(oldFullPath, newFullPath);
         }
 
         public void OpenInExplorer(string fullPath)

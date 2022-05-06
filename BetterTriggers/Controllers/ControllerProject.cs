@@ -327,13 +327,22 @@ namespace BetterTriggers.Controllers
             }
         }
 
+        public void OnRenameElement(string oldFullPath, string newFullPath)
+        {
+            var rootNode = ContainerProject.projectFiles[0];
+            IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+
+            CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
+            command.Execute();
+        }
+
         /// <summary>
         /// This is also used when files are moved, hence why we need
         /// to detach it from its current parent and attach it to the other.
         /// </summary>
         /// <param name="oldFullPath"></param>
         /// <param name="newFullPath"></param>
-        public void OnRenameElement(string oldFullPath, string newFullPath, int insertIndex)
+        public void OnMoveElement(string oldFullPath, string newFullPath, int insertIndex)
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
@@ -348,7 +357,7 @@ namespace BetterTriggers.Controllers
         /// <param name="elementToRename"></param>
         /// <param name="oldFullPath"></param>
         /// <param name="newFullPath"></param>
-        internal void RecurseRenameElement(IExplorerElement elementToRename, string oldFullPath, string newFullPath)
+        internal void RecurseMoveElement(IExplorerElement elementToRename, string oldFullPath, string newFullPath)
         {
             if (elementToRename != null)
             {
@@ -373,7 +382,7 @@ namespace BetterTriggers.Controllers
                         }
 
                         // we need to loop through all items with the old path
-                        RecurseRenameElement(elementInSubSearch, elementToRename.GetPath(), entries[i]);
+                        RecurseMoveElement(elementInSubSearch, elementToRename.GetPath(), entries[i]);
                     }
                 }
 
@@ -534,6 +543,57 @@ namespace BetterTriggers.Controllers
             }
 
             return wasMoved;
+        }
+
+        /// <summary>
+        /// Determines whether an ExplorerElement with the given name exists or not.
+        /// </summary>
+        /// <param name="explorerElement"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        public bool DoesNameExist(IExplorerElement explorerElement, string newName)
+        {
+            bool exists = false;
+
+            if (explorerElement is ExplorerElementTrigger)
+                exists = ContainerTriggers.Contains(newName);
+            else if (explorerElement is ExplorerElementScript)
+                exists = ContainerScripts.Contains(newName);
+            else if (explorerElement is ExplorerElementVariable)
+                exists = ContainerVariables.Contains(newName);
+            else if (explorerElement is ExplorerElementFolder)
+            {
+                string parentDir = explorerElement.GetParent().GetPath();
+                string[] files = Directory.GetFileSystemEntries(parentDir, "*", SearchOption.TopDirectoryOnly);
+                int i = 0;
+                while (!exists && i < files.Length)
+                {
+                    if(Directory.Exists(files[i]) && files[i] == Path.Combine(parentDir, newName)) 
+                    {
+                        exists = true;
+                    }
+                    i++;
+                }
+            }
+
+            return exists;
+        }
+
+        public void RenameElement(IExplorerElement explorerElement, string renameText)
+        {
+            string formattedName = string.Empty;
+            if (explorerElement is ExplorerElementFolder)
+                formattedName = renameText;
+            else if (explorerElement is ExplorerElementTrigger)
+                formattedName = renameText + ".trg";
+            else if (explorerElement is ExplorerElementScript)
+                formattedName = renameText + ".j";
+            else if (explorerElement is ExplorerElementVariable)
+                formattedName = renameText + ".var";
+
+            ContainerProject.insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
+            ControllerFileSystem controller = new ControllerFileSystem();
+            controller.RenameElement(explorerElement.GetPath(), formattedName);
         }
 
         public void CopyExplorerElement(IExplorerElement explorerElement, bool isCut = false)

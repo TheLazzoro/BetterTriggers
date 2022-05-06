@@ -15,7 +15,8 @@ namespace GUI.Components.TriggerEditor
         
         public NodeAction(string text)
         {
-            TreeViewRenderer.SetTreeViewItemAppearance(this, text, Category.Action);
+            TreeItemHeader header = new TreeItemHeader(text, Category.Action);
+            this.Header = header;
         }
 
         public void Add(TreeViewTriggerElement triggerElement)

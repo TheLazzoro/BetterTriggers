@@ -1,9 +1,10 @@
-﻿using Model.Data;
-using Model.EditorData.Enums;
+﻿using Model.EditorData.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,52 +13,93 @@ using System.Windows.Shapes;
 
 namespace GUI.Utility
 {
-    public static class TreeViewRenderer
+    public class TreeItemHeader : StackPanel
     {
-        public static void SetTreeViewItemAppearance(TreeViewItem treeViewitem, string text, Category iconCategory, bool isValid = true, bool isInitiallyOn = true)
+        private Rectangle Icon;
+        private TextBlock DisplayText;
+        internal TextBox RenameBox;
+
+        public TreeItemHeader(string text, Category iconCategory, bool isValid = true, bool isInitiallyOn = true)
         {
-            // create stack panel
-            StackPanel stack = new StackPanel();
-            stack.Orientation = Orientation.Horizontal;
-            stack.Height = 18;
-            stack.Margin = new Thickness(0, 0, 0, 0);
+            this.Orientation = Orientation.Horizontal;
+            this.Height = 18;
+            this.Margin = new Thickness(0, 0, 0, 0);
 
-            // create category Image
-            var group = new DrawingGroup();
-            Rectangle rect = new Rectangle();
-            var img = GetIconImage(iconCategory);
+            Icon = new Rectangle();
+            Icon.Width = 16;
+            Icon.Height = 16;
 
-            // Red cross over image
-            if (!isValid)
-            {
+            DisplayText = new TextBlock();
+            DisplayText.Margin = new Thickness(5, 0, 0, 0);
+
+            RenameBox = new TextBox();
+            RenameBox.Margin = new Thickness(5, 0, 0, 0);
+
+            SetIcon(iconCategory, isValid);
+            SetDisplayText(text);
+            SetTextEnabled(isInitiallyOn);
+
+            this.Children.Add(Icon);
+            this.Children.Add(DisplayText);
+
+            this.RenameBox.LostFocus += RenameBox_LostFocus;
+        }
+
+
+        public void SetIcon(Category iconCategory, bool isValid)
+        {
+            BitmapImage img = GetIconImage(iconCategory);
+
+            if (!isValid) // red cross over image
                 img = OverlapImage(img, GetIconImage(Category.Error));
-            }
 
             ImageBrush brush = new ImageBrush(img);
-            rect.Fill = brush;
-            rect.Width = 16;
-            rect.Height = 16;
+            Icon.Fill = brush;
+        }
 
-            // TextBlock
-            TextBlock txtBlock = new TextBlock();
-            txtBlock.Text = text;
-            if(isInitiallyOn)
-                txtBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+        public void SetDisplayText(string text)
+        {
+            DisplayText.Text = text;
+            RenameBox.Text = text;
+        }
+
+        public void ShowRenameBox(bool doShow)
+        {
+            if (doShow)
+            {
+                this.Children.Remove(DisplayText);
+                this.Children.Add(RenameBox);
+                RenameBox.Focus();
+                RenameBox.SelectAll();
+            }
             else
-            txtBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#AAAAAA");
-            txtBlock.Margin = new Thickness(5, 0, 0, 0);
+            {
+                this.Children.Remove(RenameBox);
+                this.Children.Add(DisplayText);
+            }
+        }
 
-            // Add into stack
-            stack.Children.Add(rect);
-            stack.Children.Add(txtBlock);
+        public void SetTextEnabled(bool isEnabled)
+        {
+            if (isEnabled)
+                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+            else
+                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#AAAAAA");
+        }
 
-            // assign stack to header
-            treeViewitem.Header = stack;
+        public string GetRenameText()
+        {
+            return RenameBox.Text;
+        }
 
-            //Style rectStyle = Application.Current.FindResource("RectTriggerStyle") as Style;
-            //Style textBlockStyle = Application.Current.FindResource("TextBlockTriggerStyle") as Style;
-            //rect.Style = rectStyle;
-            //txtBlock.Style = textBlockStyle;
+
+        private void RenameBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (RenameBox.Parent != null)
+            {
+                ShowRenameBox(false);
+                SetDisplayText(DisplayText.Text);
+            }
         }
 
         private static BitmapImage OverlapImage(BitmapImage source, BitmapImage toOverlap)
