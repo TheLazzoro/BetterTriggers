@@ -13,15 +13,16 @@
             <ColumnDefinition Width="85"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="textBoxString" Height="22" Grid.ColumnSpan="3" TextChanged="textBoxString_TextChanged"></TextBox>
+        <ScrollViewer Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+            <TextBox x:Name="textBoxString" TextWrapping="Wrap" TextChanged="textBoxString_TextChanged"></TextBox>
+        </ScrollViewer>
         <Button x:Name="btnColor0" Grid.Row="1" Height="22"></Button>
         <Button x:Name="btnApplyColor0" Content="Apply Color" Grid.Row="2" Height="22"></Button>
 
@@ -40,6 +41,8 @@
 
         <Button x:Name="btnNewLine" Content="New Line" Grid.Row="3" Grid.ColumnSpan="3" Height="22" ></Button>
 
-        <TextBlock x:Name="textBlockPreview" Grid.Row="4" Grid.ColumnSpan="3" Foreground="White" Background="#FF182231"></TextBlock>
+        <ScrollViewer Grid.ColumnSpan="3" Grid.Row="4" VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="textBlockPreview" FontSize="20" TextWrapping="Wrap" Foreground="White" Background="#FF182231"></TextBlock>
+        </ScrollViewer>
     </Grid>
 </UserControl>

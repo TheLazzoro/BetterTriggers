@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using BetterTriggers.Controllers;
 using BetterTriggers.WorldEdit;
 using GUI.Controllers;
+using GUI.Utility;
 using Model;
 using Model.SaveableData;
 using Model.Templates;
@@ -44,7 +45,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void textBoxString_TextChanged(object sender, TextChangedEventArgs e)
         {
-            textBlockPreview.Text = textBoxString.Text;
+            textBlockPreview.Inlines.Clear();
+            textBlockPreview.Inlines.AddRange(TextFormatter.Format(textBoxString.Text));
         }
     }
 }
