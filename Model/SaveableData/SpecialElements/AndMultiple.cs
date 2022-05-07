@@ -1,9 +1,4 @@
-﻿using Model.EditorData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Model.SaveableData
 {
@@ -19,6 +14,9 @@ namespace Model.SaveableData
             andMultiple.returnType = new string(returnType);
             andMultiple.And = new List<TriggerElement>();
             And.ForEach(element => andMultiple.And.Add(element.Clone()));
+
+            Function f = base.Clone();
+            andMultiple.parameters = f.parameters;
 
             return andMultiple;
         }

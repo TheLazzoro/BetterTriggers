@@ -1,9 +1,4 @@
-﻿using Model.EditorData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Model.SaveableData
 {
@@ -19,6 +14,9 @@ namespace Model.SaveableData
             forLoopAMultiple.returnType = new string(returnType);
             forLoopAMultiple.Actions = new List<TriggerElement>();
             Actions.ForEach(element => forLoopAMultiple.Actions.Add(element.Clone()));
+
+            Function f = base.Clone();
+            forLoopAMultiple.parameters = f.parameters;
 
             return forLoopAMultiple;
         }

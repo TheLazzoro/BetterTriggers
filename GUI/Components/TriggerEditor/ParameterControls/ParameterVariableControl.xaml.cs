@@ -23,7 +23,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             for (int i = 0; i < elements.Count; i++)
             {
-                if (elements[i].variable.Type != returnType)
+                if (returnType != "AnyGlobal" && elements[i].variable.Type != returnType)
                     continue;
 
                 var explorerElement = elements[i];
@@ -40,6 +40,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 listItem.Content = variables[i].Name;
                 VariableRef varRef = new VariableRef()
                 {
+                    identifier = controllerVariable.GetVariableNameById(variables[i].Id),
                     returnType = variables[i].Type,
                     VariableId = variables[i].Id,
                 };

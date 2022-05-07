@@ -17,8 +17,8 @@ namespace GUI.Components.TriggerEditor
     public class HyperlinkParameter : Hyperlink
     {
         private TreeViewTriggerElement treeViewTriggerElement;
-        private List<Parameter> parameters;
-        private int index;
+        internal readonly List<Parameter> parameters;
+        internal readonly int index;
 
         public HyperlinkParameter(TreeViewTriggerElement treeViewTriggerElement, string text, List<Parameter> parameters, int index)
         {
@@ -46,10 +46,21 @@ namespace GUI.Components.TriggerEditor
             RecolorHyperlink();
         }
 
+        /// <summary>
+        /// Disables and greys out hyperlink.
+        /// </summary>
+        public void Disable()
+        {
+            this.IsEnabled = false;
+            this.Inlines.Clear();
+            this.Inlines.Add("Value");
+            this.Foreground = new SolidColorBrush(Color.FromRgb(150, 150, 150));
+        }
+
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var window = new ParameterWindow(parameter.returnType);
+            var window = new ParameterWindow(treeViewTriggerElement.triggerElement.function, parameter);
             window.Title = parameter.returnType;
             window.ShowDialog();
 
@@ -78,7 +89,7 @@ namespace GUI.Components.TriggerEditor
         private void RecolorHyperlink()
         {
             var parameter = parameters[index];
-            if(this.IsFocused)
+            if (this.IsFocused)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0));
             else if (parameter is Constant || parameter is Function || parameter is VariableRef || parameter is Value)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));

@@ -27,32 +27,56 @@ namespace GUI
         ParameterValueControl valueControl;
         IParameterControl selectedControl;
 
-        public ParameterWindow(string returnType)
+        public ParameterWindow(Function function, Parameter parameter)
         {
             InitializeComponent();
+
+            string returnType = parameter.returnType;
+
+            if (function is SetVariable && parameter == function.parameters[0])
+                returnType = "AnyGlobal";
 
             this.functionControl = new ParameterFunctionControl(returnType);
             grid.Children.Add(functionControl);
             Grid.SetRow(functionControl, 1);
-            functionControl.Visibility = Visibility.Hidden;
-
-            this.variableControl = new ParameterVariableControl(returnType);
-            grid.Children.Add(variableControl);
-            Grid.SetRow(variableControl, 1);
-            variableControl.Visibility = Visibility.Hidden;
-
-            this.valueControl = new ParameterValueControl(returnType);
-            grid.Children.Add(valueControl);
-            Grid.SetRow(valueControl, 1);
-            valueControl.Visibility = Visibility.Hidden;
-            if(!valueControl.ValueControlExists())
-                radioBtnValue.Visibility = Visibility.Hidden;
 
             this.constantControl = new ParameterConstantControl(returnType);
             grid.Children.Add(constantControl);
             Grid.SetRow(constantControl, 1);
+
+            this.variableControl = new ParameterVariableControl(returnType);
+            grid.Children.Add(variableControl);
+            Grid.SetRow(variableControl, 1);
+
+            this.valueControl = new ParameterValueControl(returnType);
+            grid.Children.Add(valueControl);
+            Grid.SetRow(valueControl, 1);
+
+            functionControl.Visibility = Visibility.Hidden;
             constantControl.Visibility = Visibility.Visible;
+            variableControl.Visibility = Visibility.Hidden;
+            valueControl.Visibility = Visibility.Hidden;
+
             radioBtnPreset.IsChecked = true;
+
+            if (returnType == "AnyGlobal")
+            {
+                functionControl.Visibility = Visibility.Hidden;
+                constantControl.Visibility = Visibility.Hidden;
+                variableControl.Visibility = Visibility.Visible;
+                valueControl.Visibility = Visibility.Hidden;
+
+                radioBtnFunction.Visibility = Visibility.Hidden;
+                radioBtnPreset.Visibility = Visibility.Hidden;
+                radioBtnValue.Visibility = Visibility.Hidden;
+
+                radioBtnVariable.IsChecked = true;
+
+            }
+
+            if (!valueControl.ValueControlExists())
+                radioBtnValue.Visibility = Visibility.Hidden;
+
         }
 
         private void ShowHideTabs(IParameterControl control)

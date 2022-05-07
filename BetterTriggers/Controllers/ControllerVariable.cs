@@ -52,12 +52,9 @@ namespace BetterTriggers.Controllers
             return ContainerVariables.variableContainer;
         }
 
-        public Variable LoadVariableFromFile(string filePath)
+        public string GetVariableNameById(int id)
         {
-            string json = File.ReadAllText(filePath);
-            Variable variable = JsonConvert.DeserializeObject<Variable>(json);
-
-            return variable;
+            return ContainerVariables.GetVariableNameById(id);
         }
 
         public ExplorerElementVariable GetExplorerElementVariableInMemory(string filepath)

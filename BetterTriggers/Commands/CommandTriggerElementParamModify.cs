@@ -18,6 +18,10 @@ namespace BetterTriggers.Commands
         Parameter oldParameter;
         int paramIndex = 0;
 
+        // special case 'SetVariable'
+        Parameter setVarValueOld;
+        Parameter setVarValueNew;
+
         public CommandTriggerElementParamModify(TriggerElement triggerElement, int triggerId, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
             this.triggerElement = triggerElement;
@@ -49,6 +53,27 @@ namespace BetterTriggers.Commands
             }
 
             paramCollection[paramIndex] = paramToAdd;
+
+            // Special case
+            if (triggerElement.function is SetVariable)
+            {
+                Parameter setVarParam = triggerElement.function.parameters[0];
+                Parameter value = triggerElement.function.parameters[1];
+
+                // Reset if value type doesn't match variable type
+                if (paramCollection[paramIndex] == setVarParam && paramToAdd.identifier != value.identifier)
+                {
+                    setVarValueOld = value;
+                    setVarValueNew = new Parameter()
+                    {
+                        identifier = null,
+                        returnType = setVarParam.returnType,
+                    };
+
+                    paramCollection[paramIndex + 1] = setVarValueNew;
+                }
+            }
+
             triggerElement.ChangedParams();
 
             CommandManager.AddCommand(this);
@@ -73,6 +98,12 @@ namespace BetterTriggers.Commands
                 controller.RecurseAddVariableRefs((Function)oldParameter, triggerId);
             }
 
+            // 'SetVariable' special case
+            if(setVarValueNew != null)
+            {
+                paramCollection[paramIndex + 1] = setVarValueNew;
+            }
+
             paramCollection[paramIndex] = paramToAdd;
             triggerElement.ChangedParams();
         }
@@ -80,7 +111,7 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             ControllerVariable controller = new ControllerVariable();
-            
+
             if (paramToAdd is VariableRef)
             {
                 var variableRef = paramToAdd as VariableRef;
@@ -94,6 +125,12 @@ namespace BetterTriggers.Commands
             else if (oldParameter is Function)
             {
                 controller.RecurseRemoveVariableRefs((Function)oldParameter, triggerId);
+            }
+
+            // 'SetVariable' special case
+            if (setVarValueNew != null)
+            {
+                paramCollection[paramIndex + 1] = setVarValueOld;
             }
 
             paramCollection[paramIndex] = oldParameter;

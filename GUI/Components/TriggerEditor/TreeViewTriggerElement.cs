@@ -21,7 +21,6 @@ namespace GUI.Components.TriggerEditor
         public TextBlock descriptionTextBlock;
         internal string paramText;
         protected Category category;
-        private string formattedParamText = string.Empty;
         private TriggerControl triggerControl;
 
         public TreeViewTriggerElement(TriggerElement triggerElement)

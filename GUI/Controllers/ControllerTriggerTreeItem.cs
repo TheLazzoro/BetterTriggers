@@ -2,11 +2,7 @@
 using BetterTriggers.Controllers;
 using GUI.Components.TriggerEditor;
 using Model.SaveableData;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -17,6 +13,7 @@ namespace GUI.Controllers
     {
         TreeViewTriggerElement treeItem;
         TextBlock textBlock;
+        List<HyperlinkParameter> hyperlinkParameters = new List<HyperlinkParameter>();
 
         public ControllerTriggerTreeItem(TreeViewTriggerElement treeViewTriggerElement)
         {
@@ -28,9 +25,45 @@ namespace GUI.Controllers
         {
             textBlock.Inlines.Clear();
             var inlines = RecurseGenerateParamText(treeItem.triggerElement.function.parameters, treeItem.paramText);
+            
+            // First and last inline must be a string.
+            // Otherwise hyperlinks get cut from the treeitem header (WPF black magic).
+            textBlock.Inlines.Add(new Run("")); 
             textBlock.Inlines.AddRange(inlines);
+            textBlock.Inlines.Add(new Run(""));
+
+            // Specially handled SetVariable
+            if(treeItem.triggerElement.function is SetVariable)
+            {
+                SetVariable setVariable = (SetVariable) treeItem.triggerElement.function;
+
+                HyperlinkParameter[] topLayerParams = new HyperlinkParameter[2];
+                int index = 0;
+                int i = 0;
+                while(i < hyperlinkParameters.Count && index < 2)
+                {
+                    var hyperlink = hyperlinkParameters[i];
+                    if (hyperlink.parameters[hyperlink.index] == setVariable.parameters[index])
+                    {
+                        topLayerParams[index] = hyperlinkParameters[index];
+                        index++;
+                    }
+                    i++;
+                }
+
+                Parameter setVarParam = topLayerParams[0].parameters[topLayerParams[0].index];
+                var isVariableSetEmpty = setVarParam.identifier == null;
+                if (isVariableSetEmpty)
+                    topLayerParams[1].Disable();
+            }
         }
 
+        /// <summary>
+        /// Draws the parameter text with selectable hyperlinks for TriggerElements.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="paramText"></param>
+        /// <returns></returns>
         private List<Inline> RecurseGenerateParamText(List<Parameter> parameters, string paramText)
         {
             List<Inline> inlines = new List<Inline>();
@@ -54,7 +87,7 @@ namespace GUI.Controllers
                     var function = (Function)parameters[paramIndex];
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
-                        inlines.Add(new HyperlinkParameter(treeItem, "(", parameters, paramIndex));
+                        inlines.Add(AddHyperlink(treeItem, "(", parameters, paramIndex));
                         inlines.AddRange(RecurseGenerateParamText(function.parameters, controller.GetParamText(function))); // recurse
                     }
                     else // whole displayname gets hyperlinked
@@ -62,7 +95,7 @@ namespace GUI.Controllers
                         Run runFirstBracket = new Run("(");
                         runFirstBracket.FontFamily = new FontFamily("Verdana");
                         inlines.Add(runFirstBracket);
-                        inlines.Add(new HyperlinkParameter(treeItem, controller.GetParamDisplayName(function), parameters, paramIndex));
+                        inlines.Add(AddHyperlink(treeItem, controller.GetParamDisplayName(function), parameters, paramIndex));
                     }
                     Run run = new Run(")");
                     run.FontFamily = new FontFamily("Verdana");
@@ -70,7 +103,7 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is Constant)
                 {
-                    inlines.Add(new HyperlinkParameter(treeItem, controller.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, controller.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex));
                 }
                 else if (parameters[paramIndex] is VariableRef)
                 {
@@ -88,7 +121,7 @@ namespace GUI.Controllers
                         };
                         varName = "null";
                     }
-                    inlines.Add(new HyperlinkParameter(treeItem, varName, parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, varName, parameters, paramIndex));
 
                     if (variable.IsArray && !variable.IsTwoDimensions)
                         inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, "[,~Number,]"));
@@ -110,7 +143,7 @@ namespace GUI.Controllers
                         };
                         name = "null";
                     }
-                    inlines.Add(new HyperlinkParameter(treeItem, name, parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, name, parameters, paramIndex));
                 }
                 else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?
                 {
@@ -129,7 +162,7 @@ namespace GUI.Controllers
                         }
                     }
                     string paramName = paramText.Substring(startIndex, length);
-                    inlines.Add(new HyperlinkParameter(treeItem, paramName, parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, paramName, parameters, paramIndex));
                 }
 
                 while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
@@ -140,6 +173,14 @@ namespace GUI.Controllers
             }
 
             return inlines;
+        }
+
+        private HyperlinkParameter AddHyperlink(TreeViewTriggerElement treeViewTriggerElement, string text, List<Parameter> parameters, int index)
+        {
+            HyperlinkParameter hyperlink = new HyperlinkParameter(treeViewTriggerElement, text, parameters, index);
+            hyperlinkParameters.Add(hyperlink);
+
+            return hyperlink;
         }
 
         private void RemoveCommaBeforeParamIndicator(List<Inline> inlines)

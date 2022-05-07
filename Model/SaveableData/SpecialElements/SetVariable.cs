@@ -1,11 +1,4 @@
-﻿using Model.EditorData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Model.SaveableData
+﻿namespace Model.SaveableData
 {
     public class SetVariable : Function
     {
@@ -13,7 +6,14 @@ namespace Model.SaveableData
         
         public SetVariable Clone()
         {
-            throw new NotImplementedException();
+            SetVariable setVariable = new SetVariable();
+
+            Function f = base.Clone();
+            setVariable.identifier = f.identifier;
+            setVariable.returnType = f.returnType;
+            setVariable.parameters = f.parameters;
+
+            return setVariable;
         }
     }
 }

@@ -57,6 +57,33 @@ namespace BetterTriggers.Controllers
             return trigger;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="function"></param>
+        /// <returns>A list of all parameters given to a TriggerElement</returns>
+        public List<Parameter> GetElementParametersAll(TriggerElement te)
+        {
+            List<Parameter> list = GetElementParametersAll(te.function.parameters);
+            return list;
+        }
+
+        private List<Parameter> GetElementParametersAll(List<Parameter> parameters)
+        {
+            List<Parameter> list = new List<Parameter>();
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                list.Add(parameters[i]);
+                if (parameters[i] is Function)
+                {
+                    Function f = (Function)parameters[i];
+                    list.AddRange(GetElementParametersAll(parameters));
+                }
+            }
+
+            return list;
+        }
+
         public void CopyTriggerElements(List<TriggerElement> list, bool isCut = false)
         {
             List<TriggerElement> copiedItems = new List<TriggerElement>();
@@ -96,7 +123,6 @@ namespace BetterTriggers.Controllers
             {
                 CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(pasted, parentList, insertIndex);
                 command.Execute();
-
             }
 
             return pasted;
