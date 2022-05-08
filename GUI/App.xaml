@@ -4,8 +4,68 @@
              xmlns:local="clr-namespace:GUI"
              StartupUri="LoadingCascWindow.xaml" DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
+
+        <!-- Default styles are defined here -->
         
-        <!--  Custom styles  -->
+        <Style TargetType="Button" >
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="black"/>
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button" >
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" >
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStop Offset="0.5" Color="#555" />
+                                                <GradientStop Offset="1.0" Color="#444" />
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False" >
+                                <Setter Property="Foreground" Value="#777" />
+                                <Setter Property="BorderBrush" Value="#333" />
+                                <Setter Property="Background" Value="#0000" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" >
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0.5" Color="#444" />
+                            <GradientStop Offset="1.0" Color="#333" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="1" />
+                </Style>
+            </Style.Resources>
+        </Style>
+        
+        
+        
+        
+        
+        
+
+        <!--  Experimental styles  -->
         <Style x:Key="TreeItemTriggerStyle" TargetType="{x:Type TreeViewItem}">
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="False">

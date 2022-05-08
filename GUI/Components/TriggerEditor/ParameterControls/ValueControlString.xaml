@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" Width="auto">
     <Grid>
@@ -21,25 +22,26 @@
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
-            <TextBox x:Name="textBoxString" TextWrapping="Wrap" TextChanged="textBoxString_TextChanged"></TextBox>
+            <TextBox x:Name="textBoxString" Background="#222" Foreground="White" TextWrapping="Wrap" TextChanged="textBoxString_TextChanged" ></TextBox>
         </ScrollViewer>
-        <Button x:Name="btnColor0" Grid.Row="1" Height="22"></Button>
-        <Button x:Name="btnApplyColor0" Content="Apply Color" Grid.Row="2" Height="22"></Button>
 
-        <Button x:Name="btnColor1" Grid.Row="1" Grid.Column="2" Height="22"></Button>
-        <Button x:Name="btnApplyColor1" Grid.Column="2" Content="Apply Color" Grid.Row="2" Height="22"></Button>
+        <xctk:ColorPicker x:Name="colorPicker0" Grid.Row="1" Height="22" DropDownBackground="#333" DropDownBorderThickness="0" BorderThickness="0" TabBackground="#333" Foreground="White" TabForeground="White" SelectedColorChanged="colorPicker0_SelectedColorChanged" />
+        <Button x:Name="btnApplyColor0" Content="Apply Color" Grid.Row="2" Height="22" Click="btnApplyColor0_Click"></Button>
+
+        <xctk:ColorPicker x:Name="colorPicker1" Grid.Row="1" Grid.Column="2" Height="22" DropDownBackground="#333" DropDownBorderThickness="0" BorderThickness="0" TabBackground="#333" Foreground="White" TabForeground="White" SelectedColorChanged="colorPicker1_SelectedColorChanged"></xctk:ColorPicker>
+        <Button x:Name="btnApplyColor1" Grid.Column="2" Content="Apply Color" Grid.Row="2" Height="22" Click="btnApplyColor1_Click"></Button>
 
         <Rectangle x:Name="rectGradient" Grid.Column="1" Grid.Row="1" Height="22" Margin="5,0,5,0">
             <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                    <GradientStop x:Name="gradient0" Color="Black" Offset="1"/>
-                    <GradientStop x:Name="gradient1" Color="White"/>
+                <LinearGradientBrush x:Name="gradientBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop x:Name="gradient0" Color="White"/>
+                    <GradientStop x:Name="gradient1" Color="Black" Offset="1"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Button x:Name="btnApplyGradient" Grid.Column="1" Grid.Row="2" Content="Apply Gradient" Height="22" Margin="5,0,5,0"></Button>
+        <Button x:Name="btnApplyGradient" Grid.Column="1" Grid.Row="2" Content="Apply Gradient (Not Implemented)" IsEnabled="False" Height="22" Margin="5,0,5,0"></Button>
 
-        <Button x:Name="btnNewLine" Content="New Line" Grid.Row="3" Grid.ColumnSpan="3" Height="22" ></Button>
+        <Button x:Name="btnNewLine" Content="New Line" Grid.Row="3" Grid.ColumnSpan="3" Height="22" Click="btnNewLine_Click" ></Button>
 
         <ScrollViewer Grid.ColumnSpan="3" Grid.Row="4" VerticalScrollBarVisibility="Auto">
             <TextBlock x:Name="textBlockPreview" FontSize="20" TextWrapping="Wrap" Foreground="White" Background="#FF182231"></TextBlock>
