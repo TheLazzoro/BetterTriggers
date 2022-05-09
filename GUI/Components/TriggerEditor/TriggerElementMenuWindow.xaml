@@ -20,14 +20,14 @@
         </Grid.RowDefinitions>
 
         <Label Content="Category" Foreground="White" />
-        <GridSplitter Grid.Row="0" Grid.RowSpan="4" Width="5" Background="#FF404040" />
+        <GridSplitter Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="Transparent" />
 
-        <shared:SearchableListControl x:Name="listControl" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" />
+        <shared:SearchableListControl x:Name="listControl" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" />
 
-        <TextBlock x:Name="textBoxDescription" Grid.Row="3" Grid.Column="1" Background="#FF282828" Margin="2,5,0,0" />
+        <TextBlock x:Name="textBoxDescription" Grid.Row="3" Grid.Column="2" Background="#FF282828" Margin="1,0,1,1" />
 
-        <Button x:Name="btnOK" Content="OK" Grid.Row="5" Grid.Column="1" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />
-        <Button x:Name="btnCancel" Content="Cancel" Grid.Row="5" Grid.Column="1" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" IsCancel="True" Click="btnCancel_Click" />
+        <Button x:Name="btnOK" Content="OK" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />
+        <Button x:Name="btnCancel" Content="Cancel" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" IsCancel="True" Click="btnCancel_Click" />
 
     </Grid>
 </Window>

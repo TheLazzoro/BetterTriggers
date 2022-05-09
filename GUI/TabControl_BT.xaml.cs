@@ -1,5 +1,4 @@
-﻿using Dragablz;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -14,15 +13,11 @@ using System.Windows.Shapes;
 
 namespace GUI
 {
-    /// <summary>
-    /// Interaction logic for DragableTabControl.xaml
-    /// </summary>
-    public partial class DragableTabControl : UserControl
+    public partial class TabControl_BT : UserControl
     {
-        public DragableTabControl()
+        public TabControl_BT()
         {
             InitializeComponent();
         }
-
     }
 }

@@ -240,7 +240,7 @@
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
-        <gui:DragableTabControl x:Name="dragableTabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0" />
+        <gui:TabControl_BT x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0" />
 
 
 

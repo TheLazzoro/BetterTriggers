@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="GUI.TabControl_BT"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate x:Key="CustomHeaderTemplate">
+                <DockPanel LastChildFill="True">
+                    <Button Content="X" DockPanel.Dock="Right"
+                            Command="{Binding DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}"
+                            CommandParameter="{Binding ID}">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Label FontWeight="Bold" Content="X" />
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Label Content="{Binding ID}" />
+                </DockPanel>
+            </DataTemplate>
+        </Grid.Resources>
+
+
+        <TabControl x:Name="tabControl" Margin="0,0,0,0" Background="Transparent" BorderBrush="#00ACACAC" DockPanel.Dock="Right" ItemTemplate="{StaticResource CustomHeaderTemplate}"></TabControl>
+            
+        
+    </Grid>
+            
+</UserControl>

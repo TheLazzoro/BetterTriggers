@@ -59,7 +59,7 @@ namespace GUI
             ContainerProject.currentSelectedElement = selectedExplorerItem.Ielement.GetPath();
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectItem(selectedExplorerItem, dragableTabControl);
+            controller.OnSelectItem(selectedExplorerItem, tabControl);
 
             if (selectedExplorerItem.editor as TriggerControl != null)
             {

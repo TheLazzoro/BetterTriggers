@@ -57,6 +57,7 @@ namespace GUI.Components.TriggerEditor
             };
 
             var categoryControl = new GenericCategoryControl(searchables);
+            categoryControl.Margin = new Thickness(0, 0, 4, 0);
             grid.Children.Add(categoryControl);
             Grid.SetRow(categoryControl, 1);
             Grid.SetRowSpan(categoryControl, 3);

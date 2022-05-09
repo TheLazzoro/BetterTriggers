@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace GUI.Components.TriggerExplorer
@@ -17,13 +18,22 @@ namespace GUI.Components.TriggerExplorer
 
         public void RefreshHeader(string header)
         {
-            this.Header = header;
-            /*
-            this.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-            this.Background = new SolidColorBrush(Color.FromRgb(64, 64, 64));
-            this.BorderBrush = new SolidColorBrush(Color.FromRgb(64, 64, 64));
+            //StackPanel panel = new StackPanel();
+            //panel.Orientation = Orientation.Horizontal;
+            //panel.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#00000000");
+            //this.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
 
-            */
+            //TextBlock textBlock = new TextBlock();
+            //textBlock.Inlines.Add(new Run(header));
+
+            //Button btnCloseTab = new Button();
+            //btnCloseTab.Content = "X";
+
+            //panel.Children.Add(textBlock);
+            //panel.Children.Add(btnCloseTab);
+
+
+            this.Header = header;
         }
     }
 }

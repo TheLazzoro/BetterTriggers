@@ -31,7 +31,7 @@ namespace GUI.Components.TriggerEditor
             this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
             this.paramTextBlock.FontSize = 18;
             this.paramTextBlock.TextWrapping = TextWrapping.Wrap;
-            this.paramTextBlock.Foreground = Brushes.White;
+            this.paramTextBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#EEE");
             Grid.SetRow(this.paramTextBlock, 3);
 
             this.descriptionTextBlock = new TextBlock();

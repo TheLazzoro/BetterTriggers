@@ -23,7 +23,7 @@ namespace GUI.Components.Shared
         {
             this.Orientation = Orientation.Horizontal;
             this.Height = 18;
-            this.Margin = new Thickness(0, 0, 0, 0);
+            this.Margin = new Thickness(-1, -1, 0, -1);
 
             Icon = new Rectangle();
             Icon.Width = 16;
@@ -82,7 +82,7 @@ namespace GUI.Components.Shared
         public void SetTextEnabled(bool isEnabled)
         {
             if (isEnabled)
-                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
+                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#EEE");
             else
                 DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#AAAAAA");
         }

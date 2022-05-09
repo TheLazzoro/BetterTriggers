@@ -105,7 +105,7 @@
             </TreeView.Resources>
             
             <TreeView.ContextMenu>
-                <ContextMenu Name="contextMenu" Background="#FF282828" Foreground="White">
+                <ContextMenu Name="contextMenu" Background="#FF282828" Foreground="#EEE">
                     <MenuItem x:Name="menuCut" Header="Cut" Click="menuCut_Click"></MenuItem>
                     <MenuItem x:Name="menuCopy" Header="Copy" Click="menuCopy_Click"></MenuItem>
                     <MenuItem  x:Name="menuCopyAsText" Header="Copy As Text" Click="menuCopyAsText_Click"></MenuItem>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI.Components.Shared"
              mc:Ignorable="d" 
-             d:DesignHeight="450" Width="453">
+             d:DesignHeight="450" Width="auto">
     <Grid>
 
         <ListView x:Name="listViewCategory" Grid.RowSpan="2" Grid.Column="0" Background="#FF282828" BorderBrush="#00ABADB3" SelectionChanged="listViewCategory_SelectionChanged" >

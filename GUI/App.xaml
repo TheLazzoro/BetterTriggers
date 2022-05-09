@@ -348,7 +348,7 @@
             <!-- LISTVIEWITEM -->
             <Style TargetType="ListViewItem">
                 <Setter Property="BorderBrush" Value="#fff" />
-                <Setter Property="Foreground" Value="#fff" />
+                <Setter Property="Foreground" Value="#ddd" />
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Template">
                     <Setter.Value>
@@ -397,7 +397,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
 
 
             <!-- LISTVIEW HEADER -->
@@ -484,8 +483,11 @@
             </Style>
             -->
 
-
-
+            
+            
+            
+            <!-- TABCONTROL -->
+           
 
 
 

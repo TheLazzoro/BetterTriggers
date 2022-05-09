@@ -8,6 +8,7 @@ using Model.EditorData;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace GUI.Controllers
 {
@@ -60,7 +61,7 @@ namespace GUI.Controllers
             controller.SaveProject();
         }
 
-        public void OnSelectItem(TreeItemExplorerElement selectedItem, DragableTabControl dragableTabControl)
+        public void OnSelectItem(TreeItemExplorerElement selectedItem, TabControl_BT tabControl)
         {
             if (selectedItem.editor == null || selectedItem.tabItem == null)
             {
@@ -109,13 +110,13 @@ namespace GUI.Controllers
 
                 TabItemBT tabItem = new TabItemBT(selectedItem.editor, selectedItem.Ielement.GetName());
                 selectedItem.tabItem = tabItem;
-                dragableTabControl.tabControl.Items.Add(tabItem);
+                tabControl.tabControl.Items.Add(tabItem);
             }
 
             if (selectedItem.editor != null)
                 selectedItem.editor.Refresh();
             if (selectedItem.tabItem != null)
-                dragableTabControl.tabControl.SelectedItem = selectedItem.tabItem;
+                tabControl.tabControl.SelectedItem = selectedItem.tabItem;
         }
 
 
