@@ -8,9 +8,8 @@
              d:DesignHeight="450" Width="453">
     <Grid>
 
-
-
-        <ListView x:Name="listViewCategory" Grid.RowSpan="2" Grid.Column="0" Background="#FF282828" BorderBrush="#00ABADB3" SelectionChanged="listViewCategory_SelectionChanged" />
+        <ListView x:Name="listViewCategory" Grid.RowSpan="2" Grid.Column="0" Background="#FF282828" BorderBrush="#00ABADB3" SelectionChanged="listViewCategory_SelectionChanged" >
+        </ListView>
 
     </Grid>
 </UserControl>

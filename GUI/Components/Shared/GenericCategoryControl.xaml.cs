@@ -37,7 +37,6 @@ namespace GUI.Components.Shared
 
             categoryAll = new ListViewItem();
             categoryAll.Content = "- All";
-            categoryAll.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
 
             listViewCategory.Items.Add(categoryAll);
             for (int i = 0; i < categories.Count; i++)
@@ -45,7 +44,6 @@ namespace GUI.Components.Shared
                 ListViewItem item = new ListViewItem();
                 item.Content = categories[i];
                 item.Tag = categories[i];
-                item.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#FFFFFF");
 
                 listItems.Add(item);
                 listViewCategory.Items.Add(item);

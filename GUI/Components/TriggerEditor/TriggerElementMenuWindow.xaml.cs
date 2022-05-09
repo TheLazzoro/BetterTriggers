@@ -21,17 +21,14 @@ namespace GUI.Components.TriggerEditor
             var templates = new List<FunctionTemplate>();
             if (triggerElementType == TriggerElementType.Event)
             {
-                listControl.listViewHeader.Header = "Event";
                 templates = controllerTriggerData.LoadAllEvents();
             }
             else if (triggerElementType == TriggerElementType.Condition)
             {
-                listControl.listViewHeader.Header = "Condition";
                 templates = controllerTriggerData.LoadAllConditions();
             }
             else if (triggerElementType == TriggerElementType.Action)
             {
-                listControl.listViewHeader.Header = "Action";
                 templates = controllerTriggerData.LoadAllActions();
             }
 
