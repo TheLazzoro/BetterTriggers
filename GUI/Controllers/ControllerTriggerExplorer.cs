@@ -3,7 +3,6 @@ using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
-using GUI.Container;
 using Model.EditorData;
 using System;
 using System.IO;
@@ -48,15 +47,6 @@ namespace GUI.Controllers
 
         public void SaveAll()
         {
-            var unsaved = ContainerUnsavedElements.UnsavedElements;
-            for (int i = 0; i < unsaved.Count; i++)
-            {
-                var element = unsaved[i];
-                element.Save();
-            }
-
-            unsaved.Clear();
-
             ControllerProject controller = new ControllerProject();
             controller.SaveProject();
         }
@@ -65,47 +55,38 @@ namespace GUI.Controllers
         {
             if (selectedItem.editor == null || selectedItem.tabItem == null)
             {
-                switch (Path.GetExtension(selectedItem.Ielement.GetPath())) // hack
+                if(selectedItem.Ielement is ExplorerElementRoot)
                 {
-                    case "":
-                        try
-                        {
-                            var categoryControl = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
-                            categoryControl.Attach(selectedItem);
-                            selectedItem.editor = categoryControl;
-                        }
-                        catch (Exception e)
-                        {
-                            var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
-                            rootControl.Attach(selectedItem);
-                            selectedItem.editor = rootControl;
-                        }
-                        break;
-                    case ".trg":
-                        ControllerTrigger controllerTrigger = new ControllerTrigger();
-                        var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
-                        triggerControl.Attach(selectedItem);
-                        selectedItem.editor = triggerControl;
-                        break;
-                    case ".j":
-                        ControllerScript controllerScript = new ControllerScript();
-                        var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
-                        scriptControl.Attach(selectedItem);
-                        selectedItem.editor = scriptControl;
-                        break;
-                    case ".var":
-                        ControllerVariable controllerVariable = new ControllerVariable();
-                        var variableControl = new VariableControl(controllerVariable.GetExplorerElementVariableInMemory(selectedItem.Ielement.GetPath()), selectedItem.Ielement.GetName());
-                        variableControl.Attach(selectedItem);
-                        selectedItem.editor = variableControl;
-                        break;
-                    case ".json":
-                        var rootControl2 = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
-                        rootControl2.Attach(selectedItem);
-                        selectedItem.editor = rootControl2;
-                        break;
-                    default:
-                        break;
+                    var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                    rootControl.Attach(selectedItem);
+                    selectedItem.editor = rootControl;
+                }
+                else if(selectedItem.Ielement is ExplorerElementFolder)
+                {
+                    var categoryControl = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
+                    categoryControl.Attach(selectedItem);
+                    selectedItem.editor = categoryControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementTrigger)
+                {
+                    ControllerTrigger controllerTrigger = new ControllerTrigger();
+                    var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
+                    triggerControl.Attach(selectedItem);
+                    selectedItem.editor = triggerControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementScript)
+                {
+                    ControllerScript controllerScript = new ControllerScript();
+                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
+                    scriptControl.Attach(selectedItem);
+                    selectedItem.editor = scriptControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementVariable)
+                {
+                    ControllerScript controllerScript = new ControllerScript();
+                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
+                    scriptControl.Attach(selectedItem);
+                    selectedItem.editor = scriptControl;
                 }
 
                 TabItemBT tabItem = new TabItemBT(selectedItem.editor, selectedItem.Ielement.GetName());

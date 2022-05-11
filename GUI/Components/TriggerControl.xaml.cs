@@ -106,12 +106,6 @@ namespace GUI.Components
             this.categoryAction.ExpandSubtree();
         }
 
-        public string GetSaveString()
-        {
-            //var trigger = GenerateTriggerFromControl();
-            return JsonConvert.SerializeObject(this.explorerElementTrigger.trigger);
-        }
-
         public UserControl GetControl()
         {
             return this;

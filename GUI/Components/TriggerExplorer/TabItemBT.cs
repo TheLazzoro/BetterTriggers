@@ -12,28 +12,31 @@ namespace GUI.Components.TriggerExplorer
     {
         public TabItemBT(object content, string header)
         {
+            this.Style = Application.Current.FindResource("TabItemGlobal") as Style;
             this.Content = content;
             RefreshHeader(header);
         }
 
         public void RefreshHeader(string header)
         {
-            //StackPanel panel = new StackPanel();
-            //panel.Orientation = Orientation.Horizontal;
-            //panel.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#00000000");
-            //this.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
+            StackPanel panel = new StackPanel();
+            panel.Orientation = Orientation.Horizontal;
+            panel.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#00000000");
+            this.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
 
-            //TextBlock textBlock = new TextBlock();
-            //textBlock.Inlines.Add(new Run(header));
+            TextBlock textBlock = new TextBlock();
+            textBlock.Inlines.Add(new Run(header));
 
-            //Button btnCloseTab = new Button();
-            //btnCloseTab.Content = "X";
+            Button btnCloseTab = new Button();
+            btnCloseTab.Content = "X";
+            btnCloseTab.Width = 12;
+            btnCloseTab.Height = 12;
 
-            //panel.Children.Add(textBlock);
-            //panel.Children.Add(btnCloseTab);
+            panel.Children.Add(textBlock);
+            panel.Children.Add(btnCloseTab);
 
 
-            this.Header = header;
+            this.Header = panel;
         }
     }
 }

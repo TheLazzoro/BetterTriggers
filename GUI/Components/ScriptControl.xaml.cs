@@ -73,11 +73,6 @@ namespace GUI.Components
             };
         }
 
-        public string GetSaveString()
-        {
-            return this.textEditor.Text;
-        }
-
         public UserControl GetControl()
         {
             throw new NotImplementedException();

@@ -487,7 +487,17 @@
             
             
             <!-- TABCONTROL -->
-           
+            <Style x:Key="TabItemGlobal" TargetType="TabItem">
+                <Setter Property="Foreground" Value="#EEE" />
+                <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#222" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter Property="Background" Value="#555" />
+                                </Trigger>
+                </Style.Triggers>
+            </Style>
 
 
 
@@ -540,6 +550,12 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+
+
+            
+            
+            
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

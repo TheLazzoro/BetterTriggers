@@ -1,0 +1,23 @@
+﻿<Window x:Class="GUI.OnCloseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="OnCloseWindow" Height="145" Width="300" Background="#FF202020" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Save changes to [INSERT NAME]?" Foreground="#EEE" Grid.Row="1" HorizontalAlignment="Center" />
+
+        <Button x:Name="btnYes" Content="Yes" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,175,0" Click="btnYes_Click" />
+        <Button x:Name="btnOK" Content="No" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />
+        <Button x:Name="btnCancel" Content="Cancel" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" IsCancel="True" />
+
+    </Grid>
+</Window>

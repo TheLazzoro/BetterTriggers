@@ -69,17 +69,6 @@ namespace GUI.Components
             
         }
 
-        
-        public string GetSaveString()
-        {
-            ControllerProject controller = new ControllerProject();
-            War3Project project = controller.GetCurrentProject();
-            project.Comment = new TextRange(richTextBoxComment.Document.ContentStart, richTextBoxComment.Document.ContentEnd).Text;
-            project.Header = textEditor.Text;
-
-            return JsonConvert.SerializeObject(project);
-        }
-
         public UserControl GetControl()
         {
             return this;

@@ -28,7 +28,7 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
-            
+
             BetterTriggers.Init.Initialize();
         }
 
@@ -254,6 +254,21 @@ namespace GUI
         private void Menu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            if (controller.GetUnsavedFileCount() == 0)
+                return;
+
+            OnCloseWindow onCloseWindow = new OnCloseWindow();
+            onCloseWindow.ShowDialog();
+            if (onCloseWindow.Yes)
+                controller.SaveProject();
+            else if (!onCloseWindow.Yes && !onCloseWindow.No)
+                e.Cancel = true;
+
         }
     }
 }

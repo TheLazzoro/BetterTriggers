@@ -33,6 +33,11 @@ namespace BetterTriggers.Controllers
             container.NewProject(project, filepath);
         }
 
+        public int GetUnsavedFileCount()
+        {
+            return ContainerUnsavedFiles.Count();
+        }
+
         /// <summary>
         /// Loads all files from a given project into the container
         /// </summary>
@@ -131,15 +136,26 @@ namespace BetterTriggers.Controllers
 
                 }
             }
-
         }
 
         public void SaveProject()
         {
+            // Write to unsaved
+            var unsaved = ContainerUnsavedFiles.GetAllUnsaved();
+            for (int i = 0; i < ContainerUnsavedFiles.Count(); i++)
+            {
+                if(unsaved[i] is IExplorerSaveable)
+                {
+                    var saveable = (IExplorerSaveable)unsaved[i];
+                    File.WriteAllText(unsaved[i].GetPath(), saveable.GetSaveableString());
+                }
+            }
+            ContainerUnsavedFiles.Clear();
+
+            // Write to project file
             var root = (ExplorerElementRoot)ContainerProject.projectFiles[0];
             var project = ContainerProject.project;
             project.Files = new List<War3ProjectFileEntry>();
-
 
             for (int i = 0; i < root.explorerElements.Count; i++)
             {

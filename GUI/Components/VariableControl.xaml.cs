@@ -118,7 +118,7 @@ namespace GUI.Components
             explorerElementVariable.variable.IsArray = (bool)checkBoxIsArray.IsChecked;
             explorerElementVariable.variable.IsTwoDimensions = isTwoDimensions;
             explorerElementVariable.variable.ArraySize = arraySize;
-            explorerElementVariable.variable.InitialValue = "???????????";
+            explorerElementVariable.variable.InitialValue = "???????????"; // TODO
 
             return JsonConvert.SerializeObject(explorerElementVariable.variable);
         }

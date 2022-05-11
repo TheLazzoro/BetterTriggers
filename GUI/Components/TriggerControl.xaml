@@ -95,11 +95,11 @@
         <TreeView x:Name="treeViewTriggers" Background="#FF282828" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" MinHeight="100" AllowDrop="True" SelectedItemChanged="treeViewTriggers_SelectedItemChanged" PreviewMouseLeftButtonDown="treeViewTriggers_PreviewMouseLeftButtonDown" PreviewMouseMove="treeViewTriggers_PreviewMouseMove" Drop="treeViewTriggers_Drop" PreviewDragEnter="treeViewTriggers_PreviewDragEnter" PreviewDrop="treeViewTriggers_PreviewDrop" KeyDown="treeViewTriggers_KeyDown" MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp">
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                Color="#357EC7" />
+                Color="#aa357EC7" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                       Color="Black" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="#55FFFFFF" />
+                      Color="#44FFFFFF" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                       Color="Black" />
             </TreeView.Resources>

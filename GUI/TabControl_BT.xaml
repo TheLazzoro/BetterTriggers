@@ -6,25 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.Resources>
-            <DataTemplate x:Key="CustomHeaderTemplate">
-                <DockPanel LastChildFill="True">
-                    <Button Content="X" DockPanel.Dock="Right"
-                            Command="{Binding DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}"
-                            CommandParameter="{Binding ID}">
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Label FontWeight="Bold" Content="X" />
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <Label Content="{Binding ID}" />
-                </DockPanel>
-            </DataTemplate>
-        </Grid.Resources>
 
-
-        <TabControl x:Name="tabControl" Margin="0,0,0,0" Background="Transparent" BorderBrush="#00ACACAC" DockPanel.Dock="Right" ItemTemplate="{StaticResource CustomHeaderTemplate}"></TabControl>
+        <TabControl x:Name="tabControl" Background="Transparent" BorderBrush="#00ACACAC" DockPanel.Dock="Right" >
+            
+        </TabControl>
             
         
     </Grid>

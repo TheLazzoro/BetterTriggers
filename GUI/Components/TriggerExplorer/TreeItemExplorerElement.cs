@@ -59,7 +59,7 @@ namespace GUI.Components.TriggerExplorer
                 {
                     parent.Items.Remove(this);
                     ControllerExplorerElement controller = new ControllerExplorerElement();
-                    controller.RemoveFromUnsaved(this);
+                    controller.RemoveFromUnsaved(this.Ielement);
                 }
 
                 if (tabItem != null)
@@ -90,16 +90,6 @@ namespace GUI.Components.TriggerExplorer
 
             if (this.editor != null)
                 this.editor.Refresh();
-        }
-
-        public void Save()
-        {
-            string saveableString = editor.GetSaveString();
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.SaveFile(Ielement.GetPath(), saveableString);
-
-            if (this.tabItem != null)
-                tabItem.RefreshHeader(this.Ielement.GetName());
         }
 
         public void Update(IExplorerElement subject)
@@ -159,7 +149,7 @@ namespace GUI.Components.TriggerExplorer
                 tabItem.RefreshHeader(this.Ielement.GetName() + " *");
 
             ControllerExplorerElement controller = new ControllerExplorerElement();
-            controller.AddToUnsaved(this);
+            controller.AddToUnsaved(this.Ielement);
         }
 
         public void UpdatePosition()
