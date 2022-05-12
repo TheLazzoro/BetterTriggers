@@ -14,7 +14,7 @@ namespace BetterTriggers.WorldEdit
     {
         public static List<Camera> Load()
         {
-            Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.w3c", FileMode.Open);
+            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3c"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
             var cameras = BinaryReaderExtensions.ReadMapCameras(reader);
             return cameras.Cameras;

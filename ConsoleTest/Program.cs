@@ -1,4 +1,5 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers;
+using BetterTriggers.WorldEdit;
 using System;
 
 namespace ConsoleTest
@@ -7,9 +8,13 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            Units.Load();
-            Cameras.Load();
+            Settings settings = new Settings();
+            settings.war3root = @"E:\Programmer\Warcraft III";
+            Settings.Save(settings);
+
             BetterTriggers.Init.Initialize();
+            
+            CustomMapData.Load();
 
             Casc c = new Casc();
             c.test();

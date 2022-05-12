@@ -14,7 +14,7 @@ namespace BetterTriggers.WorldEdit
     {
         public static List<Region> Load()
         {
-            Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.w3r", FileMode.Open);
+            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3r"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
             var regions = BinaryReaderExtensions.ReadMapRegions(reader);
             return regions.Regions;

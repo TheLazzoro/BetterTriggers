@@ -10,9 +10,9 @@ namespace BetterTriggers.WorldEdit
 {
     public class Units
     {
-        public static List<UnitData> Load()
+        public static List<UnitData> Load( )
         {
-            Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3mapUnits.doo", FileMode.Open);
+            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3mapUnits.doo"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
             var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
 

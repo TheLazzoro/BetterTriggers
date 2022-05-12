@@ -15,14 +15,13 @@ namespace BetterTriggers.WorldEdit
     {
         /// <summary>
         /// Loads all placed destructibles on the map.
-        /// Note: We can only read all doodads at a time, so we need to filter destructibles here.
         /// </summary>
         /// <returns></returns>
         public static List<DoodadData> Load()
         {
             var destructibleData = DestructibleTypes.GetDestructiblesTypesAll();
 
-            Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.doo", FileMode.Open);
+            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.doo"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
             var doodads = BinaryReaderExtensions.ReadMapDoodads(reader);
 
