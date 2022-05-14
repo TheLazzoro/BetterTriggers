@@ -17,15 +17,29 @@ namespace BetterTriggers.WorldEdit
     public class DestructibleTypes
     {
         private static List<DestructibleType> destructibles;
+        private static List<DestructibleType> destructiblesBase;
+        private static List<DestructibleType> destructiblesCustom;
 
-        public static List<DestructibleType> GetDestructiblesTypesAll()
+        internal static List<DestructibleType> GetAll()
         {
             return destructibles;
+        }
+
+        internal static List<DestructibleType> GetBase()
+        {
+            return destructiblesBase;
+        }
+
+        internal static List<DestructibleType> GetCustom()
+        {
+            return destructiblesCustom;
         }
 
         internal static void Load()
         {
             destructibles = new List<DestructibleType>();
+            destructiblesBase = new List<DestructibleType>();
+            destructiblesCustom = new List<DestructibleType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
@@ -50,12 +64,14 @@ namespace BetterTriggers.WorldEdit
                 var name = keys["Name"];
                 var model = keys["file"];
 
-                destructibles.Add(new DestructibleType()
+                var destructible = new DestructibleType()
                 {
                     DestCode = id,
                     DisplayName = name,
                     Model = model,
-                });
+                };
+                destructibles.Add(destructible);
+                destructiblesBase.Add(destructible);
             }
 
 
@@ -77,6 +93,7 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = dest.ToString(), // We want to replace this display name with locales
                 };
                 destructibles.Add(destructible);
+                destructiblesCustom.Add(destructible);
             }
         }
     }

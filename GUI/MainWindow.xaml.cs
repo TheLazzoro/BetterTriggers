@@ -270,5 +270,11 @@ namespace GUI
                 e.Cancel = true;
 
         }
+
+        private void btnRemoveInvalidRef_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerMapData controller = new ControllerMapData();
+            controller.RemoveInvalidReferences();
+        }
     }
 }

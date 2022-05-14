@@ -3,28 +3,37 @@ using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
 using Model.War3Data;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using War3Net.IO.Slk;
+using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class ItemData
+    public class ItemTypes
     {
         private static List<ItemType> items;
+        private static List<ItemType> itemsBase;
+        private static List<ItemType> itemsCustom;
 
-        public static List<ItemType> GetItemsAll()
+        internal static List<ItemType> GetAll()
         {
             return items;
+
+        }
+        internal static List<ItemType> GetBase()
+        {
+            return itemsBase;
+        }
+        internal static List<ItemType> GetCustom()
+        {
+            return itemsCustom;
         }
 
         internal static void Load()
         {
             items = new List<ItemType>();
+            itemsBase = new List<ItemType>();
+            itemsCustom = new List<ItemType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
@@ -49,13 +58,32 @@ namespace BetterTriggers.WorldEdit
                 var name = id;
                 var model = keys["file"];
 
-                items.Add(new ItemType()
+                var item = new ItemType()
                 {
                     ItemCode = id,
                     DisplayName = name,
                     Model = model,
-                });
+                };
+                items.Add(item);
+                itemsBase.Add(item);
             }
+
+            //Custom items
+            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3t"), FileMode.Open);
+            BinaryReader bReader = new BinaryReader(s);
+            var customItems = BinaryReaderExtensions.ReadItemObjectData(bReader, true);
+
+            for (int i = 0; i < customItems.NewItems.Count; i++)
+            {
+                var customItem = customItems.NewItems[i];
+                var item = new ItemType()
+                {
+                    ItemCode = customItem.ToString(),
+                };
+                items.Add(item);
+                itemsCustom.Add(item);
+            }
+
         }
     }
 }

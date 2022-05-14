@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
@@ -16,15 +17,29 @@ namespace BetterTriggers.WorldEdit
     public class UnitTypes
     {
         private static List<UnitType> unitTypes { get; set; }
+        private static List<UnitType> unitTypesBase { get; set; }
+        private static List<UnitType> unitTypesCustom { get; set; }
 
-        public static List<UnitType> GetUnitTypesAll()
+        internal static List<UnitType> GetAll()
         {
             return unitTypes;
+        }
+
+        internal static List<UnitType> GetBase()
+        {
+            return unitTypesBase;
+        }
+
+        internal static List<UnitType> GetUnitTypesCustom()
+        {
+            return unitTypesCustom;
         }
 
         internal static void Load()
         {
             unitTypes = new List<UnitType>();
+            unitTypesBase = new List<UnitType>();
+            unitTypesCustom = new List<UnitType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
@@ -44,6 +59,7 @@ namespace BetterTriggers.WorldEdit
                 };
 
                 unitTypes.Add(unitType);
+                unitTypesBase.Add(unitType);
             }
 
             // Parse ini file
@@ -72,6 +88,22 @@ namespace BetterTriggers.WorldEdit
                 unitTypes[i].isSpecial = isSpecial == "1";
                 unitTypes[i].Model = model;
                 unitTypes[i].Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
+            }
+
+            // Custom units
+            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3u"), FileMode.Open);
+            BinaryReader bReader = new BinaryReader(s);
+            var customUnits = BinaryReaderExtensions.ReadUnitObjectData(bReader, true);
+
+            for (int i = 0; i < customUnits.NewUnits.Count; i++)
+            {
+                var customUnit = customUnits.NewUnits[i];
+                var unitType = new UnitType()
+                {
+                    Id = customUnit.ToString(),
+                };
+                unitTypes.Add(unitType);
+                unitTypesCustom.Add(unitType);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using Model.SaveableData;
@@ -15,7 +16,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var models = ModelData.GetModelsAll();
+            var controller = new ControllerMapData();
+            var models = controller.GetModelData();
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < models.Count; i++)

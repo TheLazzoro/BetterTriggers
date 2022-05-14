@@ -10,14 +10,24 @@ using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class Regions
+    internal static class Regions
     {
-        public static List<Region> Load()
+        private static List<Region> regions = new List<Region>();
+
+        internal static List<Region> GetAll()
         {
+            return regions;
+        }
+
+        internal static void Load()
+        {
+            regions.Clear();
+
             Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3r"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
-            var regions = BinaryReaderExtensions.ReadMapRegions(reader);
-            return regions.Regions;
+            var mapRegions = BinaryReaderExtensions.ReadMapRegions(reader);
+
+            mapRegions.Regions.ForEach(r => regions.Add(r));
         }
     }
 }

@@ -10,15 +10,35 @@ namespace BetterTriggers.WorldEdit
 {
     public class Units
     {
-        public static List<UnitData> Load( )
+        internal static List<UnitData> units = new List<UnitData>();
+        internal static List<UnitData> items = new List<UnitData>();
+
+        internal static List<UnitData> GetAll()
         {
+            return units;
+        }
+
+        internal static List<UnitData> GetMapItemsAll()
+        {
+            return items;
+        }
+
+        internal static void Load()
+        {
+            units.Clear();
+            items.Clear();
+
             Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3mapUnits.doo"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
             var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
 
-            var id = mapUnits.Units[1].ToString();
-
-            return mapUnits.Units;
+            for (int i = 0; i < mapUnits.Units.Count; i++)
+            {
+                if (mapUnits.Units[i].IsItem())
+                    items.Add(mapUnits.Units[i]);
+                else
+                    units.Add(mapUnits.Units[i]);
+            }
         }
 
         [Obsolete("ParseUnits is deprecated, please use static Load instead.", true)]

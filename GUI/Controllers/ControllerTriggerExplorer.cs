@@ -69,24 +69,21 @@ namespace GUI.Controllers
                 }
                 else if (selectedItem.Ielement is ExplorerElementTrigger)
                 {
-                    ControllerTrigger controllerTrigger = new ControllerTrigger();
                     var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
                     triggerControl.Attach(selectedItem);
                     selectedItem.editor = triggerControl;
                 }
                 else if (selectedItem.Ielement is ExplorerElementScript)
                 {
-                    ControllerScript controllerScript = new ControllerScript();
                     var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
                     scriptControl.Attach(selectedItem);
                     selectedItem.editor = scriptControl;
                 }
                 else if (selectedItem.Ielement is ExplorerElementVariable)
                 {
-                    ControllerScript controllerScript = new ControllerScript();
-                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
-                    scriptControl.Attach(selectedItem);
-                    selectedItem.editor = scriptControl;
+                    var variableControl = new VariableControl((ExplorerElementVariable)selectedItem.Ielement);
+                    variableControl.Attach(selectedItem);
+                    selectedItem.editor = variableControl;
                 }
 
                 TabItemBT tabItem = new TabItemBT(selectedItem.editor, selectedItem.Ielement.GetName());

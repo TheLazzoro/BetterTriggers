@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using Model.SaveableData;
 using Model.War3Data;
@@ -47,7 +48,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            unitData = UnitTypes.GetUnitTypesAll();
+            var controller = new ControllerMapData();
+            unitData = controller.GetUnitTypesAll();
             comboboxRace.SelectedIndex = 0;
         }
 

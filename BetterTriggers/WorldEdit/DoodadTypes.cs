@@ -14,18 +14,32 @@ using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class DoodadTypes
+    internal class DoodadTypes
     {
         private static List<DoodadType> doodads;
+        private static List<DoodadType> doodadsBase;
+        private static List<DoodadType> doodadsCustom;
 
-        public static List<DoodadType> GetDoodadTypesAll()
+        internal static List<DoodadType> GetAll()
         {
             return doodads;
+        }
+
+        internal static List<DoodadType> GetBase()
+        {
+            return doodadsBase;
+        }
+
+        internal static List<DoodadType> GetCustom()
+        {
+            return doodadsCustom;
         }
 
         internal static void Load()
         {
             doodads = new List<DoodadType>();
+            doodadsBase = new List<DoodadType>();
+            doodadsCustom = new List<DoodadType>();
 
             var folderDoodads = (CASCFolder)Casc.GetWar3ModFolder().Entries["doodads"];
 
@@ -50,12 +64,14 @@ namespace BetterTriggers.WorldEdit
                 var name = keys["Name"];
                 var model = keys["file"];
 
-                doodads.Add(new DoodadType()
+                var doodad = new DoodadType()
                 {
                     DoodCode = id,
                     DisplayName = name,
                     Model = model,
-                });
+                };
+                doodads.Add(doodad);
+                doodadsBase.Add(doodad);
             }
 
 
@@ -77,6 +93,7 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = dood.ToString(), // We want to replace this display name with locales
                 };
                 doodads.Add(destructible);
+                doodadsCustom.Add(destructible);
             }
         }
     }

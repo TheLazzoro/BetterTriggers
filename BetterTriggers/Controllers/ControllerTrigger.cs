@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Containers;
 using Model.Data;
+using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
@@ -126,6 +127,112 @@ namespace BetterTriggers.Controllers
             }
 
             return pasted;
+        }
+
+        public bool RemoveInvalidReferences(ExplorerElementTrigger explorerElement)
+        {
+            int removeCount = 0;
+            removeCount += RemoveInvalidReferences(explorerElement.trigger.Events);
+            removeCount += RemoveInvalidReferences(explorerElement.trigger.Conditions);
+            removeCount += RemoveInvalidReferences(explorerElement.trigger.Actions);
+
+            return removeCount > 0;
+        }
+
+        private int RemoveInvalidReferences(List<TriggerElement> triggerElements)
+        {
+            int removeCount = 0;
+
+            for (int i = 0; i < triggerElements.Count; i++)
+            {
+                var triggerElement = triggerElements[i];
+                removeCount += VerifyParameters(triggerElement.function.parameters);
+
+
+                if(triggerElement.function is IfThenElse)
+                {
+                    var special = (IfThenElse)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.If);
+                    removeCount += RemoveInvalidReferences(special.Then);
+                    removeCount += RemoveInvalidReferences(special.Else);
+                }
+                else if(triggerElement.function is AndMultiple)
+                {
+                    var special = (AndMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.And);
+                }
+                else if (triggerElement.function is ForForceMultiple)
+                {
+                    var special = (ForForceMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
+                else if (triggerElement.function is ForGroupMultiple)
+                {
+                    var special = (ForGroupMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
+                else if (triggerElement.function is ForLoopAMultiple)
+                {
+                    var special = (ForLoopAMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
+                else if (triggerElement.function is ForLoopBMultiple)
+                {
+                    var special = (ForLoopBMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
+                else if (triggerElement.function is ForLoopVarMultiple)
+                {
+                    var special = (ForLoopVarMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
+                else if (triggerElement.function is OrMultiple)
+                {
+                    var special = (OrMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Or);
+                }
+            }
+
+            return removeCount;
+        }
+
+        private int VerifyParameters(List<Parameter> parameters)
+        {
+            int removeCount = 0;
+            ControllerMapData controllerMapData = new ControllerMapData();
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
+                if(parameter is VariableRef)
+                {
+                    ControllerVariable controllerVariable = new ControllerVariable();
+                    Variable variable = controllerVariable.GetByReference(parameter as VariableRef);
+                    if(variable == null)
+                    {
+                        removeCount++;
+                        parameters[i] = new Parameter() { returnType = parameter.returnType };
+                    }
+                }
+                else if(parameter is Value)
+                {
+                    bool exists = controllerMapData.ReferencedDataExists(parameter as Value);
+                    if(!exists)
+                    {
+                        removeCount++;
+                        parameters[i] = new Parameter() { returnType = parameter.returnType };
+                    }
+
+                }
+
+                if(parameter is Function)
+                {
+                    var function = (Function)parameter;
+                    removeCount += VerifyParameters(function.parameters);
+                }
+            }
+
+            return removeCount;
         }
     }
 }

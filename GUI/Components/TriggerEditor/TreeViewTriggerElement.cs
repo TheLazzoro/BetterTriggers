@@ -95,6 +95,9 @@ namespace GUI.Components.TriggerEditor
 
         public void UpdateTreeItem()
         {
+            ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(this);
+            controllerTriggerTreeItem.GenerateParamText();
+
             List<Parameter> parameters = this.triggerElement.function.parameters;
 
             bool areParametersValid = IsParameterListValid(parameters);

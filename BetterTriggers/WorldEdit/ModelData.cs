@@ -13,21 +13,21 @@ using Model.War3Data;
 
 namespace BetterTriggers.WorldEdit
 {
-    public static class ModelData
+    internal static class ModelData
     {
         private static List<AssetModel> assetModels = new List<AssetModel>();
 
-        public static List<AssetModel> GetModelsAll()
+        internal static List<AssetModel> GetModelsAll()
         {
             return assetModels;
         }
 
-        public static void Load()
+        internal static void Load()
         {
-            var unitData = UnitTypes.GetUnitTypesAll();
-            var destData = DestructibleTypes.GetDestructiblesTypesAll();
-            var doodData = DoodadTypes.GetDoodadTypesAll();
-            var itemData = ItemData.GetItemsAll();
+            var unitData = UnitTypes.GetBase();
+            var destData = DestructibleTypes.GetBase();
+            var doodData = DoodadTypes.GetBase();
+            var itemData = ItemTypes.GetBase();
 
 
             // some asset strings occur multiple times

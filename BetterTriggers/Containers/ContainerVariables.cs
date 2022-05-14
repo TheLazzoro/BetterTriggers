@@ -70,7 +70,8 @@ namespace BetterTriggers.Containers
 
             return generatedId;
         }
-        public static Variable GetVariableById(int Id)
+        
+        internal static Variable GetVariableById(int Id)
         {
             Variable var = null;
 

@@ -108,6 +108,7 @@ namespace Model.EditorData
             return this.isEnabled;
         }
 
+
         public bool GetInitiallyOn()
         {
             return this.isInitiallyOn;

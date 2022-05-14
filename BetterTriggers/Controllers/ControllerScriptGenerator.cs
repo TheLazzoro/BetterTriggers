@@ -157,7 +157,7 @@ namespace BetterTriggers.Controllers
             script += "\tlocal trigger t\n";
             script += "\tlocal real life\n";
 
-            var units = Units.Load();
+            var units = Units.GetAll();
             foreach (var u in units)
             {
                 if (u.ToString() == "sloc")

@@ -11,23 +11,29 @@ using War3Net.Build.Widget;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class Destructibles
+    internal class Destructibles
     {
+        private static List<DoodadData> destructibles = new List<DoodadData>();
+
+        internal static List<DoodadData> GetAll()
+        {
+            return destructibles;
+        }
+
         /// <summary>
         /// Loads all placed destructibles on the map.
         /// </summary>
         /// <returns></returns>
-        public static List<DoodadData> Load()
+        internal static void Load()
         {
-            var destructibleData = DestructibleTypes.GetDestructiblesTypesAll();
+            destructibles.Clear();
+            var destructibleData = DestructibleTypes.GetAll();
 
             Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.doo"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
             var doodads = BinaryReaderExtensions.ReadMapDoodads(reader);
 
-            List<DoodadData> destructibles = new List<DoodadData>();
-
-            // ugly loop
+            // TODO: ugly loop
             for (int i = 0; i < doodads.Doodads.Count; i++)
             {
                 var doodad = doodads.Doodads[i];
@@ -42,8 +48,6 @@ namespace BetterTriggers.WorldEdit
 
                 }
             }
-
-            return destructibles;
         }
     }
 }

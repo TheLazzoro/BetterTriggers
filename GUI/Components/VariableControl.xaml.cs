@@ -37,8 +37,7 @@ namespace GUI.Components
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
 
-
-        public VariableControl(ExplorerElementVariable explorerElementVariable, string varName)
+        public VariableControl(ExplorerElementVariable explorerElementVariable)
         {
             InitializeComponent();
 
@@ -63,8 +62,8 @@ namespace GUI.Components
                 }
             }
 
-
-            Rename(varName);
+            ControllerVariable controllerVariable = new ControllerVariable();
+            Rename(controllerVariable.GetVariableNameById(variable.Id));
             checkBoxIsArray.IsChecked = variable.IsArray;
             textBoxArraySize0.IsEnabled = variable.IsArray;
             comboBoxArrayDimensions.IsEnabled = variable.IsArray;

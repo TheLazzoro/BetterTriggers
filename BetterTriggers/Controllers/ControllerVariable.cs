@@ -138,6 +138,16 @@ namespace BetterTriggers.Controllers
             explorerElementVariable.variable.TriggersUsing.Clear();
         }
 
+        public Variable GetById(int id)
+        {
+            return ContainerVariables.GetVariableById(id);
+        }
+
+        public Variable GetByReference(VariableRef variableRef)
+        {
+            return GetById(variableRef.VariableId);
+        }
+
 
         /*
         public VariableControl CreateVariableWithElements(TabControl tabControl, Model.Data.Variable variable)

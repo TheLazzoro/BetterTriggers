@@ -75,22 +75,27 @@ namespace GUI.Components
             this.selectedItems = controllerTriggerControl.SelectItemsMultiple(selectedElement, selectedElementEnd);
         }
 
+        // TODO: Not finished
         public void Refresh()
         {
-            for (int i = 0; i < categoryEvent.Items.Count; i++)
+            Refresh(categoryEvent);
+            Refresh(categoryCondition);
+            Refresh(categoryAction);
+        }
+
+        private void Refresh(TreeViewItem treeViewItem)
+        {
+            for (int i = 0; i < treeViewItem.Items.Count; i++)
             {
-                var _event = categoryEvent.Items[i] as TreeViewTriggerElement;
-                _event.UpdateTreeItem();
-            }
-            for (int i = 0; i < categoryCondition.Items.Count; i++)
-            {
-                var condition = categoryCondition.Items[i] as TreeViewTriggerElement;
-                condition.UpdateTreeItem();
-            }
-            for (int i = 0; i < categoryAction.Items.Count; i++)
-            {
-                var action = categoryAction.Items[i] as TreeViewTriggerElement;
-                action.UpdateTreeItem();
+                var child = (TreeViewItem)treeViewItem.Items[i];
+                if(child is TreeViewTriggerElement)
+                {
+                    var item = treeViewItem.Items[i] as TreeViewTriggerElement;
+                    item.UpdateTreeItem();
+                }
+
+                if (child.Items.Count > 0)
+                    Refresh(child);
             }
         }
 

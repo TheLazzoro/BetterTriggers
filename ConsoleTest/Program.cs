@@ -9,7 +9,7 @@ namespace ConsoleTest
         static void Main(string[] args)
         {
             Settings settings = new Settings();
-            settings.war3root = @"E:\Programmer\Warcraft III";
+            settings.war3root = @"D:\Programmer\Warcraft III";
             Settings.Save(settings);
 
             BetterTriggers.Init.Initialize();

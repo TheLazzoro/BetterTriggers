@@ -107,9 +107,10 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is VariableRef)
                 {
+                    var controllerVariable = new ControllerVariable();
                     // TODO: This will crash if a referenced variable is deleted.
                     var variableRef = (VariableRef)parameters[paramIndex];
-                    var variable = ContainerVariables.GetVariableById(variableRef.VariableId);
+                    var variable = controllerVariable.GetByReference(variableRef);
                     var varName = ContainerVariables.GetVariableNameById(variable.Id);
 
                     // This exists in case a variable has been changed

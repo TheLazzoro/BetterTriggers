@@ -1,4 +1,7 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
+using BetterTriggers.WorldEdit;
+using Model.EditorData;
 using Model.War3Data;
 using System;
 using System.Collections.Generic;
@@ -17,31 +20,43 @@ namespace BetterTriggers
     {
         public static string mapPath = @"D:\Test\TestMap.w3x";
 
-        public static List<UnitType> customUnits = new List<UnitType>();
-        public static List<ItemType> customItems = new List<ItemType>();
-        public static List<DestructibleType> customDest = new List<DestructibleType>();
-        public static List<AbilityType> customAbilities = new List<AbilityType>();
-        public static List<BuffType> customBuffs = new List<BuffType>();
-        public static List<UpgradeType> customUpgrades = new List<UpgradeType>();
-
-        public static List<Camera> cameras = new List<Camera>();
-        public static List<DoodadData> destructibles = new List<DoodadData>();
-        public static List<Region> regions = new List<Region>();
-        public static List<UnitData> units = new List<UnitData>();
-
         public static void Load()
         {
-            cameras = Cameras.Load();
-            destructibles = Destructibles.Load();
-            regions = Regions.Load();
-            units = Units.Load();
+            UnitTypes.Load();
+            ItemTypes.Load();
+            DestructibleTypes.Load();
+            DoodadTypes.Load();
+            AbilityTypes.Load();
+            BuffTypes.Load();
+            UpgradeTypes.Load();
 
-            customUnits = UnitTypesCustom.Load();
-            customItems = ItemTypesCustom.Load();
-            customDest = DestructibleTypesCustom.Load();
-            customAbilities = AbilityTypesCustom.Load();
-            customBuffs = BuffTypesCustom.Load();
-            customUpgrades = UpgradeTypesCustom.Load();
+            Cameras.Load();
+            Destructibles.Load();
+            Regions.Load();
+            Units.Load();
+
+            ModelData.Load(); // requires above
+        }
+
+        /// <summary>
+        /// Removes all used map data that no longer exists in the map.
+        /// </summary>
+        /// <returns>A list of modified triggers.</returns>
+        public static List<ExplorerElementTrigger> RemoveInvalidReferences()
+        {
+            List<ExplorerElementTrigger> modified = new List<ExplorerElementTrigger>();
+            ControllerTrigger controller = new ControllerTrigger();
+            var triggers = ContainerTriggers.GetAll();
+            for (int i = 0; i < triggers.Count; i++)
+            {
+                bool wasRemoved = controller.RemoveInvalidReferences(triggers[i]);
+                if (wasRemoved)
+                    modified.Add(triggers[i]);
+
+                triggers[i].Notify();
+            }
+
+            return modified;
         }
     }
 }

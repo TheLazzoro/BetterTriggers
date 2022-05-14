@@ -69,6 +69,11 @@ namespace BetterTriggers.Containers
             return triggerElementContainer[index];
         }
 
+        internal static List<ExplorerElementTrigger> GetAll()
+        {
+            return triggerElementContainer;
+        }
+
         public static void Remove(ExplorerElementTrigger explorerElement)
         {
             triggerElementContainer.Remove(explorerElement);

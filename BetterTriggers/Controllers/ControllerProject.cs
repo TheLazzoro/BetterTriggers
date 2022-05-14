@@ -206,9 +206,9 @@ namespace BetterTriggers.Controllers
             return ContainerProject.project;
         }
 
-        public IExplorerElement GetProjectRoot()
+        public ExplorerElementRoot GetProjectRoot()
         {
-            return ContainerProject.projectFiles[0];
+            return (ExplorerElementRoot) ContainerProject.projectFiles[0];
         }
 
         public void SetElementEnabled(IExplorerElement element, bool isEnabled)

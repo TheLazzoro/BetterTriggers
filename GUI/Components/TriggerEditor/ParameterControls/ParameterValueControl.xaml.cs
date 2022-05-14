@@ -1,4 +1,5 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.WorldEdit;
 using Model.SaveableData;
 using Model.War3Data;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public ParameterValueControl(string returnType)
         {
             InitializeComponent();
+
+            var controllerMapData = new ControllerMapData();
 
             List<Value> values;
             switch (returnType)
@@ -36,47 +39,57 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     this.valueControl = new ValueControlUnitTypes();
                     break;
                 case "abilcode":
-                    var abilities = AbilityTypes.GetAbilitiesAll();
+                    var abilities = controllerMapData.GetAbilitiesAll();
                     values = abilities.Select(a => new Value() { identifier = a.AbilCode, returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "buffcode":
-                    var buffs = BuffData.GetBuffsAll();
+                    var buffs = controllerMapData.GetBuffsAll();
                     values = buffs.Select(b => new Value() { identifier = b.BuffCode, returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "destructablecode":
-                    var destructibles = DestructibleTypes.GetDestructiblesTypesAll();
+                    var destructibles = controllerMapData.GetDestTypesAll();
                     values = destructibles.Select(d => new Value() { identifier = d.DestCode, returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
+                case "doodadcode":
+                    var doodads = controllerMapData.GetDoodadTypesAll();
+                    values = doodads.Select(d => new Value() { identifier = d.DoodCode, returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
+                    break;
                 case "techcode":
-                    var upgrades = UpgradeTypes.GetUpgradesAll();
+                    var upgrades = controllerMapData.GetUpgradeTypesAll();
                     values = upgrades.Select(up => new Value() { identifier = up.UpgradeCode, returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "itemcode":
-                    var items = ItemData.GetItemsAll();
-                    values = items.Select(i => new Value() { identifier = i.ItemCode, returnType = returnType }).ToList();
+                    var itemTypes = controllerMapData.GetItemTypesAll();
+                    values = itemTypes.Select(i => new Value() { identifier = i.ItemCode, returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
+                    break;
+                case "item":
+                    var items = controllerMapData.GetMapItems();
+                    values = items.Select(i => new Value() { identifier = $"{i.ToString()}_{i.CreationNumber}", returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "unit":
-                    var units = Units.Load();
-                    values = units.Select(u => new Value() { identifier = u.ToString(), returnType = returnType }).ToList();
+                    var units = controllerMapData.GetMapUnits();
+                    values = units.Select(u => new Value() { identifier = $"{u.ToString()}_{u.CreationNumber}", returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "destructable":
-                    var mapDestructibles = Destructibles.Load();
+                    var mapDestructibles = controllerMapData.GetMapDests();
                     values = mapDestructibles.Select(dest => new Value() { identifier = dest.ToString(), returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "rect":
-                    var rects = Regions.Load();
+                    var rects = controllerMapData.GetMapRegions();
                     values = rects.Select(rect => new Value() { identifier = rect.ToString(), returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "camerasetup":
-                    var cameras = Cameras.Load();
+                    var cameras = controllerMapData.GetMapCameras();
                     values = cameras.Select(c => new Value() { identifier = c.ToString(), returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;

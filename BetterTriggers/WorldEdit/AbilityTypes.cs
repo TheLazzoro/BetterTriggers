@@ -1,7 +1,9 @@
 ﻿using CASCLib;
 using Model.War3Data;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
@@ -9,15 +11,29 @@ namespace BetterTriggers.WorldEdit
     public class AbilityTypes
     {
         private static List<AbilityType> abilities;
+        private static List<AbilityType> abilitiesBase;
+        private static List<AbilityType> abilitiesCustom;
 
-        public static List<AbilityType> GetAbilitiesAll()
+        internal static List<AbilityType> GetAll()
         {
             return abilities;
+        }
+
+        internal static List<AbilityType> GetBase()
+        {
+            return abilitiesBase;
+        }
+
+        internal static List<AbilityType> GetCustom()
+        {
+            return abilitiesCustom;
         }
 
         internal static void Load()
         {
             abilities = new List<AbilityType>();
+            abilitiesBase = new List<AbilityType>();
+            abilitiesCustom = new List<AbilityType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
@@ -38,6 +54,23 @@ namespace BetterTriggers.WorldEdit
                     continue;
 
                 abilities.Add(ability);
+                abilitiesBase.Add(ability);
+            }
+
+            // Custom abilities
+            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3a"), FileMode.Open);
+            BinaryReader reader = new BinaryReader(s);
+            var customAbilities = BinaryReaderExtensions.ReadAbilityObjectData(reader, true);
+
+            for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
+            {
+                var customAbility = customAbilities.NewAbilities[i];
+                var ability = new AbilityType()
+                {
+                    AbilCode = customAbility.ToString(),
+                };
+                abilities.Add(ability);
+                abilitiesCustom.Add(ability);
             }
         }
     }

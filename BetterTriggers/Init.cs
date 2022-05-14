@@ -1,10 +1,5 @@
 ﻿using BetterTriggers.Locales;
 using BetterTriggers.WorldEdit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterTriggers
 {
@@ -23,15 +18,8 @@ namespace BetterTriggers
             Settings.Load();
             Locale.Load();
             Natives.Load();
-            UnitTypes.Load();
-            AbilityTypes.Load();
-            BuffData.Load();
-            DestructibleTypes.Load();
-            DoodadTypes.Load();
-            ItemData.Load();
-            UpgradeTypes.Load();
 
-            ModelData.Load(); // requires above
+            CustomMapData.Load();
 
             hasLoaded = true;
         }

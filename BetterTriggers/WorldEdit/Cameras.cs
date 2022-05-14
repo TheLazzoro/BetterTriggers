@@ -10,14 +10,24 @@ using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
-    public class Cameras
+    internal class Cameras
     {
-        public static List<Camera> Load()
+        private static List<Camera> cameras = new List<Camera>();
+
+        internal static List<Camera> GetAll()
         {
+            return cameras;
+        } 
+
+        internal static void Load()
+        {
+            cameras.Clear();
+
             Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3c"), FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
-            var cameras = BinaryReaderExtensions.ReadMapCameras(reader);
-            return cameras.Cameras;
+            var mapCameras = BinaryReaderExtensions.ReadMapCameras(reader);
+
+            mapCameras.Cameras.ForEach(c => cameras.Add(c));
         }
     }
 }
