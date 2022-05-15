@@ -3,6 +3,7 @@ using Model.War3Data;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
 
@@ -57,20 +58,31 @@ namespace BetterTriggers.WorldEdit
                 abilitiesBase.Add(ability);
             }
 
-            // Custom abilities
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3a"), FileMode.Open);
-            BinaryReader reader = new BinaryReader(s);
-            var customAbilities = BinaryReaderExtensions.ReadAbilityObjectData(reader, true);
+            string filePath = "war3map.w3a";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var customAbility = customAbilities.NewAbilities[i];
-                var ability = new AbilityType()
+                Thread.Sleep(1000);
+            }
+
+            // Custom abilities
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader reader = new BinaryReader(s);
+                var customAbilities = BinaryReaderExtensions.ReadAbilityObjectData(reader, true);
+
+                for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
                 {
-                    AbilCode = customAbility.ToString(),
-                };
-                abilities.Add(ability);
-                abilitiesCustom.Add(ability);
+                    var customAbility = customAbilities.NewAbilities[i];
+                    var ability = new AbilityType()
+                    {
+                        AbilCode = customAbility.ToString(),
+                    };
+                    abilities.Add(ability);
+                    abilitiesCustom.Add(ability);
+                }
             }
         }
     }

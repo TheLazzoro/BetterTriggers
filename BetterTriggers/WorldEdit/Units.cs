@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using System.Threading;
 using War3Net.Build.Extensions;
 using War3Net.Build.Widget;
 
@@ -28,16 +29,27 @@ namespace BetterTriggers.WorldEdit
             units.Clear();
             items.Clear();
 
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3mapUnits.doo"), FileMode.Open);
-            BinaryReader reader = new BinaryReader(s);
-            var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
+            string filePath = "war3mapUnits.doo";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            for (int i = 0; i < mapUnits.Units.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                if (mapUnits.Units[i].IsItem())
-                    items.Add(mapUnits.Units[i]);
-                else
-                    units.Add(mapUnits.Units[i]);
+                Thread.Sleep(1000);
+            }
+
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader reader = new BinaryReader(s);
+                var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
+
+                for (int i = 0; i < mapUnits.Units.Count; i++)
+                {
+                    if (mapUnits.Units[i].IsItem())
+                        items.Add(mapUnits.Units[i]);
+                    else
+                        units.Add(mapUnits.Units[i]);
+                }
             }
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
@@ -60,20 +61,31 @@ namespace BetterTriggers.WorldEdit
                 upgradesBase.Add(upgrade);
             }
 
-            // Custom upgrades
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3q"), FileMode.Open);
-            BinaryReader reader = new BinaryReader(s);
-            var customUpgrades = BinaryReaderExtensions.ReadUpgradeObjectData(reader, true);
+            string filePath = "war3map.w3q";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            for (int i = 0; i < customUpgrades.NewUpgrades.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var customUpgrade = customUpgrades.NewUpgrades[i];
-                var upgrade = new UpgradeType()
+                Thread.Sleep(1000);
+            }
+
+            // Custom upgrades
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader reader = new BinaryReader(s);
+                var customUpgrades = BinaryReaderExtensions.ReadUpgradeObjectData(reader, true);
+
+                for (int i = 0; i < customUpgrades.NewUpgrades.Count; i++)
                 {
-                    UpgradeCode = customUpgrade.ToString(),
-                };
-                upgrades.Add(upgrade);
-                upgradesCustom.Add(upgrade);
+                    var customUpgrade = customUpgrades.NewUpgrades[i];
+                    var upgrade = new UpgradeType()
+                    {
+                        UpgradeCode = customUpgrade.ToString(),
+                    };
+                    upgrades.Add(upgrade);
+                    upgradesCustom.Add(upgrade);
+                }
             }
         }
     }

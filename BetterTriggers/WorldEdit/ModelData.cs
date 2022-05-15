@@ -24,6 +24,7 @@ namespace BetterTriggers.WorldEdit
 
         internal static void Load()
         {
+            assetModels.Clear();
             var unitData = UnitTypes.GetBase();
             var destData = DestructibleTypes.GetBase();
             var doodData = DoodadTypes.GetBase();

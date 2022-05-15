@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
@@ -60,20 +61,31 @@ namespace BetterTriggers.WorldEdit
                 buffsBase.Add(buff);
             }
 
-            // Custom buffs
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3h"), FileMode.Open);
-            BinaryReader reader = new BinaryReader(s);
-            var customBuffs = BinaryReaderExtensions.ReadBuffObjectData(reader, true);
+            string filePath = "war3map.w3h";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            for (int i = 0; i < customBuffs.NewBuffs.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var customBuff = customBuffs.NewBuffs[i];
-                var buff = new BuffType()
+                Thread.Sleep(1000);
+            }
+
+            // Custom buffs
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader reader = new BinaryReader(s);
+                var customBuffs = BinaryReaderExtensions.ReadBuffObjectData(reader, true);
+
+                for (int i = 0; i < customBuffs.NewBuffs.Count; i++)
                 {
-                    BuffCode = customBuff.ToString(),
-                };
-                buffs.Add(buff);
-                buffsCustom.Add(buff);
+                    var customBuff = customBuffs.NewBuffs[i];
+                    var buff = new BuffType()
+                    {
+                        BuffCode = customBuff.ToString(),
+                    };
+                    buffs.Add(buff);
+                    buffsCustom.Add(buff);
+                }
             }
         }
     }

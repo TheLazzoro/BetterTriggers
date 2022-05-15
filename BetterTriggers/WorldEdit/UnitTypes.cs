@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
 
@@ -90,20 +91,31 @@ namespace BetterTriggers.WorldEdit
                 unitTypes[i].Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
             }
 
-            // Custom units
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3u"), FileMode.Open);
-            BinaryReader bReader = new BinaryReader(s);
-            var customUnits = BinaryReaderExtensions.ReadUnitObjectData(bReader, true);
+            string filePath = "war3map.w3u";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            for (int i = 0; i < customUnits.NewUnits.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var customUnit = customUnits.NewUnits[i];
-                var unitType = new UnitType()
+                Thread.Sleep(1000);
+            }
+
+            // Custom units
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader bReader = new BinaryReader(s);
+                var customUnits = BinaryReaderExtensions.ReadUnitObjectData(bReader, true);
+
+                for (int i = 0; i < customUnits.NewUnits.Count; i++)
                 {
-                    Id = customUnit.ToString(),
-                };
-                unitTypes.Add(unitType);
-                unitTypesCustom.Add(unitType);
+                    var customUnit = customUnits.NewUnits[i];
+                    var unitType = new UnitType()
+                    {
+                        Id = customUnit.ToString(),
+                    };
+                    unitTypes.Add(unitType);
+                    unitTypesCustom.Add(unitType);
+                }
             }
         }
     }

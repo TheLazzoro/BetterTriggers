@@ -17,6 +17,12 @@ namespace BetterTriggers.Commands
             nameCommandToUndo = command.GetCommandName();
         }
 
+        public static void Reset()
+        {
+            undoStack.Clear();
+            redoStack.Clear();
+        }
+
         public static void Undo()
         {
             if (undoStack.Count > 0)

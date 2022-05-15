@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Environment;
 using War3Net.Build.Extensions;
@@ -16,12 +17,55 @@ using War3Net.Build.Widget;
 
 namespace BetterTriggers
 {
-    public static class CustomMapData
+    public class CustomMapData
     {
-        public static string mapPath = @"D:\Test\TestMap.w3x";
+        public static string mapPath = @"D:\Test\Direct Strike Reforged Test.w3x";
+        private static FileSystemWatcher watcher;
+        public static event FileSystemEventHandler OnSaving;
+
+        private static void InvokeOnSaving(object sender, FileSystemEventArgs e)
+        {
+            if (OnSaving != null)
+                OnSaving(sender, e);
+        }
+
+        internal static void Init()
+        {
+            watcher = new System.IO.FileSystemWatcher();
+            watcher.Path = Path.GetDirectoryName(mapPath);
+            watcher.EnableRaisingEvents = true;
+            watcher.Created += Watcher_Created;
+
+            Load();
+        }
+
+        private static void Watcher_Created(object sender, FileSystemEventArgs e)
+        {
+            if(e.Name == Path.GetFileName(mapPath) + "Temp")
+                InvokeOnSaving(sender, e);
+        }
+
+        /// <summary>
+        /// Checks if the map is being saved.
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsMapSaving()
+        {
+            if (Directory.Exists(mapPath + "Temp"))
+                return true;
+            else if (Directory.Exists(mapPath + "Backup"))
+                return true;
+            else
+                return false;
+        }
 
         public static void Load()
         {
+            while (IsMapSaving())
+            {
+                Thread.Sleep(1000);
+            }
+
             UnitTypes.Load();
             ItemTypes.Load();
             DestructibleTypes.Load();

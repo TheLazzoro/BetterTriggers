@@ -5,6 +5,7 @@ using IniParser.Parser;
 using Model.War3Data;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
@@ -68,22 +69,32 @@ namespace BetterTriggers.WorldEdit
                 itemsBase.Add(item);
             }
 
-            //Custom items
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3t"), FileMode.Open);
-            BinaryReader bReader = new BinaryReader(s);
-            var customItems = BinaryReaderExtensions.ReadItemObjectData(bReader, true);
+            string filePath = "war3map.w3t";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            for (int i = 0; i < customItems.NewItems.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var customItem = customItems.NewItems[i];
-                var item = new ItemType()
-                {
-                    ItemCode = customItem.ToString(),
-                };
-                items.Add(item);
-                itemsCustom.Add(item);
+                Thread.Sleep(1000);
             }
 
+            //Custom items
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader bReader = new BinaryReader(s);
+                var customItems = BinaryReaderExtensions.ReadItemObjectData(bReader, true);
+
+                for (int i = 0; i < customItems.NewItems.Count; i++)
+                {
+                    var customItem = customItems.NewItems[i];
+                    var item = new ItemType()
+                    {
+                        ItemCode = customItem.ToString(),
+                    };
+                    items.Add(item);
+                    itemsCustom.Add(item);
+                }
+            }
         }
     }
 }

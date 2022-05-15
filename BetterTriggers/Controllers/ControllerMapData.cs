@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.WorldEdit;
+using Model.EditorData;
 using Model.SaveableData;
 using Model.War3Data;
 using System;
@@ -78,10 +79,6 @@ namespace BetterTriggers.Controllers
             return ModelData.GetModelsAll();
         }
 
-        public void RemoveInvalidReferences()
-        {
-            CustomMapData.RemoveInvalidReferences();
-        }
 
         /// <summary>
         /// 
@@ -229,5 +226,10 @@ namespace BetterTriggers.Controllers
             return false;
         }
 
+        public List<ExplorerElementTrigger> RemoveInvalidReferences()
+        {
+            Commands.CommandManager.Reset();
+            return CustomMapData.RemoveInvalidReferences();
+        }
     }
 }

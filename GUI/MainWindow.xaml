@@ -238,8 +238,6 @@
             </Button.Background>
         </Button>
 
-        <Button x:Name="btnRemoveInvalidRef" Content="Remove Invalid Params" Width="140" Grid.ColumnSpan="2" Grid.Row="1" Margin="400,0,0,0" Click="btnRemoveInvalidRef_Click" />
-
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
         <gui:TabControl_BT x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0" />

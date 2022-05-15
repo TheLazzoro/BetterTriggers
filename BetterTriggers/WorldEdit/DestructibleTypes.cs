@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
@@ -76,24 +77,31 @@ namespace BetterTriggers.WorldEdit
 
 
             // Read custom destructible definition data
-            string path = @"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.w3b";
-            if (!File.Exists(path))
+            string filePath = "war3map.w3b";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
                 return;
 
-            Stream s = new FileStream(path, FileMode.Open);
-            BinaryReader binaryReader = new BinaryReader(s);
-            var customDestructibles = BinaryReaderExtensions.ReadMapDestructableObjectData(binaryReader);
-
-            for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var dest = customDestructibles.NewDestructables[i];
-                DestructibleType destructible = new DestructibleType()
+                Thread.Sleep(1000);
+            }
+
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader binaryReader = new BinaryReader(s);
+                var customDestructibles = BinaryReaderExtensions.ReadMapDestructableObjectData(binaryReader);
+
+                for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
                 {
-                    DestCode = dest.ToString().Substring(0, 4),
-                    DisplayName = dest.ToString(), // We want to replace this display name with locales
-                };
-                destructibles.Add(destructible);
-                destructiblesCustom.Add(destructible);
+                    var dest = customDestructibles.NewDestructables[i];
+                    DestructibleType destructible = new DestructibleType()
+                    {
+                        DestCode = dest.ToString().Substring(0, 4),
+                        DisplayName = dest.ToString(), // We want to replace this display name with locales
+                    };
+                    destructibles.Add(destructible);
+                    destructiblesCustom.Add(destructible);
+                }
             }
         }
     }

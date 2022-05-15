@@ -14,8 +14,6 @@ namespace ConsoleTest
 
             BetterTriggers.Init.Initialize();
             
-            CustomMapData.Load();
-
             Casc c = new Casc();
             c.test();
 

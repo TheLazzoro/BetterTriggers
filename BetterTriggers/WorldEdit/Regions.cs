@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Environment;
 using War3Net.Build.Extensions;
@@ -23,11 +24,22 @@ namespace BetterTriggers.WorldEdit
         {
             regions.Clear();
 
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.w3r"), FileMode.Open);
-            BinaryReader reader = new BinaryReader(s);
-            var mapRegions = BinaryReaderExtensions.ReadMapRegions(reader);
+            string filePath = "war3map.w3r";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            mapRegions.Regions.ForEach(r => regions.Add(r));
+            while (CustomMapData.IsMapSaving())
+            {
+                Thread.Sleep(1000);
+            }
+
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader reader = new BinaryReader(s);
+                var mapRegions = BinaryReaderExtensions.ReadMapRegions(reader);
+
+                mapRegions.Regions.ForEach(r => regions.Add(r));
+            }
         }
     }
 }

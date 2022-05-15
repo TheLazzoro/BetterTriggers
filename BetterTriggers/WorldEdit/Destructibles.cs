@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Environment;
 using War3Net.Build.Extensions;
@@ -29,23 +30,34 @@ namespace BetterTriggers.WorldEdit
             destructibles.Clear();
             var destructibleData = DestructibleTypes.GetAll();
 
-            Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, "war3map.doo"), FileMode.Open);
-            BinaryReader reader = new BinaryReader(s);
-            var doodads = BinaryReaderExtensions.ReadMapDoodads(reader);
+            string filePath = "war3map.doo";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+                return;
 
-            // TODO: ugly loop
-            for (int i = 0; i < doodads.Doodads.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var doodad = doodads.Doodads[i];
+                Thread.Sleep(1000);
+            }
 
-                for (int j = 0; j < destructibleData.Count; j++)
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader reader = new BinaryReader(s);
+                var doodads = BinaryReaderExtensions.ReadMapDoodads(reader);
+
+                // TODO: ugly loop
+                for (int i = 0; i < doodads.Doodads.Count; i++)
                 {
-                    if (doodad.ToString() == destructibleData[j].DestCode)
-                    {
-                        destructibles.Add(doodad);
-                        break;
-                    }
+                    var doodad = doodads.Doodads[i];
 
+                    for (int j = 0; j < destructibleData.Count; j++)
+                    {
+                        if (doodad.ToString() == destructibleData[j].DestCode)
+                        {
+                            destructibles.Add(doodad);
+                            break;
+                        }
+
+                    }
                 }
             }
         }

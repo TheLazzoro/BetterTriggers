@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Locales;
 using BetterTriggers.WorldEdit;
+using System.IO;
 
 namespace BetterTriggers
 {
@@ -19,7 +20,7 @@ namespace BetterTriggers
             Locale.Load();
             Natives.Load();
 
-            CustomMapData.Load();
+            CustomMapData.Init();
 
             hasLoaded = true;
         }

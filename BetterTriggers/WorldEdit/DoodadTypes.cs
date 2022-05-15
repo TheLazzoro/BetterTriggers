@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Extensions;
 using War3Net.IO.Slk;
@@ -76,24 +77,31 @@ namespace BetterTriggers.WorldEdit
 
 
             // Read custom doodad definition data
-            string path = @"C:\Users\Lasse Dam\Desktop\test2.w3x\war3map.w3d";
-            if (!File.Exists(path))
+            string filePath = "war3map.w3d";
+            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
                 return;
 
-            Stream s = new FileStream(path, FileMode.Open);
-            BinaryReader binaryReader = new BinaryReader(s);
-            var customDestructibles = BinaryReaderExtensions.ReadMapDoodadObjectData(binaryReader);
-
-            for (int i = 0; i < customDestructibles.NewDoodads.Count; i++)
+            while (CustomMapData.IsMapSaving())
             {
-                var dood = customDestructibles.NewDoodads[i];
-                DoodadType destructible = new DoodadType()
+                Thread.Sleep(1000);
+            }
+
+            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            {
+                BinaryReader binaryReader = new BinaryReader(s);
+                var customDestructibles = BinaryReaderExtensions.ReadMapDoodadObjectData(binaryReader);
+
+                for (int i = 0; i < customDestructibles.NewDoodads.Count; i++)
                 {
-                    DoodCode = dood.ToString().Substring(0, 4),
-                    DisplayName = dood.ToString(), // We want to replace this display name with locales
-                };
-                doodads.Add(destructible);
-                doodadsCustom.Add(destructible);
+                    var dood = customDestructibles.NewDoodads[i];
+                    DoodadType destructible = new DoodadType()
+                    {
+                        DoodCode = dood.ToString().Substring(0, 4),
+                        DisplayName = dood.ToString(), // We want to replace this display name with locales
+                    };
+                    doodads.Add(destructible);
+                    doodadsCustom.Add(destructible);
+                }
             }
         }
     }

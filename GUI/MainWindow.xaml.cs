@@ -1,18 +1,16 @@
-﻿using System;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
+using GUI.Components;
+using GUI.Components.TriggerExplorer;
+using GUI.Controllers;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using GUI.Components.TriggerExplorer;
-using Microsoft.Win32;
-using BetterTriggers.Controllers;
-using BetterTriggers.Containers;
-using GUI.Controllers;
-using GUI.Components;
 using System.Windows.Input;
-using System.Windows.Shapes;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace GUI
 {
@@ -30,7 +28,9 @@ namespace GUI
             InitializeComponent();
 
             BetterTriggers.Init.Initialize();
+            CustomMapData.OnSaving += CustomMapData_OnSaving;
         }
+
 
         private void menuNewProject_Click(object sender, RoutedEventArgs e)
         {
@@ -50,6 +50,22 @@ namespace GUI
 
                 this.triggerExplorer = te;
             }
+        }
+
+        private void CustomMapData_OnSaving(object sender, System.IO.FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                var window = new SavingMapWindow();
+                window.ShowDialog();
+                ControllerMapData controllerMapData = new ControllerMapData();
+                var modifiedTriggers = controllerMapData.RemoveInvalidReferences();
+                if (modifiedTriggers.Count == 0)
+                    return;
+
+                ChangedTriggersWindow changedTriggersWindow = new ChangedTriggersWindow(modifiedTriggers);
+                changedTriggersWindow.Show();
+            });
         }
 
         private void TriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -269,12 +285,6 @@ namespace GUI
             else if (!onCloseWindow.Yes && !onCloseWindow.No)
                 e.Cancel = true;
 
-        }
-
-        private void btnRemoveInvalidRef_Click(object sender, RoutedEventArgs e)
-        {
-            ControllerMapData controller = new ControllerMapData();
-            controller.RemoveInvalidReferences();
         }
     }
 }
