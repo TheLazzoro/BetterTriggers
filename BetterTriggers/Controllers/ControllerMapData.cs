@@ -1,4 +1,5 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.WorldEdit;
 using Model.EditorData;
 using Model.SaveableData;
 using Model.War3Data;
@@ -226,10 +227,14 @@ namespace BetterTriggers.Controllers
             return false;
         }
 
-        public List<ExplorerElementTrigger> RemoveInvalidReferences()
+        public List<ExplorerElementTrigger> ReloadMapData()
         {
             Commands.CommandManager.Reset();
-            return CustomMapData.RemoveInvalidReferences();
+            CustomMapData.Load();
+            var changedTriggers = CustomMapData.RemoveInvalidReferences();
+            changedTriggers.ForEach(trig => ContainerUnsavedFiles.AddToUnsaved(trig));
+
+            return changedTriggers;
         }
     }
 }

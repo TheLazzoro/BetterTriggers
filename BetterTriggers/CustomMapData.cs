@@ -19,7 +19,7 @@ namespace BetterTriggers
 {
     public class CustomMapData
     {
-        public static string mapPath = @"D:\Test\Direct Strike Reforged Test.w3x";
+        public static string mapPath = @"D:\Test\TestMap.w3x";
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
 
@@ -45,10 +45,6 @@ namespace BetterTriggers
                 InvokeOnSaving(sender, e);
         }
 
-        /// <summary>
-        /// Checks if the map is being saved.
-        /// </summary>
-        /// <returns></returns>
         public static bool IsMapSaving()
         {
             if (Directory.Exists(mapPath + "Temp"))
@@ -59,6 +55,8 @@ namespace BetterTriggers
                 return false;
         }
 
+        // TODO: Optimize to only reload custom map data
+        // Right now this is re-run when new map data is detected.
         public static void Load()
         {
             while (IsMapSaving())

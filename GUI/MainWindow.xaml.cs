@@ -59,7 +59,7 @@ namespace GUI
                 var window = new SavingMapWindow();
                 window.ShowDialog();
                 ControllerMapData controllerMapData = new ControllerMapData();
-                var modifiedTriggers = controllerMapData.RemoveInvalidReferences();
+                var modifiedTriggers = controllerMapData.ReloadMapData();
                 if (modifiedTriggers.Count == 0)
                     return;
 
@@ -138,7 +138,7 @@ namespace GUI
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
             ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
-            string script = scriptGenerator.GenerateScript("C:/Users/Lasse Dam/Desktop/jass.j");
+            scriptGenerator.GenerateScript("C:/Users/Lasse Dam/Desktop/jass.j");
         }
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)

@@ -78,7 +78,7 @@ namespace BetterTriggers.Controllers
                 if (parameters[i] is Function)
                 {
                     Function f = (Function)parameters[i];
-                    list.AddRange(GetElementParametersAll(parameters));
+                    list.AddRange(GetElementParametersAll(f.parameters));
                 }
             }
 
@@ -233,6 +233,88 @@ namespace BetterTriggers.Controllers
             }
 
             return removeCount;
+        }
+
+
+        /// <summary>
+        /// </summary>
+        /// <returns>A list of every parameter in every trigger.</returns>
+        public List<Parameter> GetParametersAll()
+        {
+            var triggers = ContainerTriggers.GetAll();
+            List<Parameter> parameters = new List<Parameter>();
+            triggers.ForEach(trig => parameters.AddRange(GatherTriggerElements(trig)));
+
+            return parameters;
+        }
+
+        private List<Parameter> GatherTriggerElements(ExplorerElementTrigger explorerElement)
+        {
+            List<Parameter> list = new List<Parameter>();
+            list.AddRange(GatherTriggerParameters(explorerElement.trigger.Events));
+            list.AddRange(GatherTriggerParameters(explorerElement.trigger.Conditions));
+            list.AddRange(GatherTriggerParameters(explorerElement.trigger.Actions));
+
+            return list;
+        }
+
+        private List<Parameter> GatherTriggerParameters(List<TriggerElement> triggerElements)
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            ControllerTrigger controller = new ControllerTrigger();
+
+            for (int i = 0; i < triggerElements.Count; i++)
+            {
+                var triggerElement = triggerElements[i];
+                parameters.AddRange(controller.GetElementParametersAll(triggerElement));
+
+
+                if (triggerElement.function is IfThenElse)
+                {
+                    var special = (IfThenElse)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.If));
+                    parameters.AddRange(GatherTriggerParameters(special.Then));
+                    parameters.AddRange(GatherTriggerParameters(special.Else));
+                }
+                else if (triggerElement.function is AndMultiple)
+                {
+                    var special = (AndMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.And));
+                }
+                else if (triggerElement.function is ForForceMultiple)
+                {
+                    var special = (ForForceMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
+                else if (triggerElement.function is ForGroupMultiple)
+                {
+                    var special = (ForGroupMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
+                else if (triggerElement.function is ForLoopAMultiple)
+                {
+                    var special = (ForLoopAMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
+                else if (triggerElement.function is ForLoopBMultiple)
+                {
+                    var special = (ForLoopBMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
+                else if (triggerElement.function is ForLoopVarMultiple)
+                {
+                    var special = (ForLoopVarMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
+                else if (triggerElement.function is OrMultiple)
+                {
+                    var special = (OrMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Or));
+                }
+
+            }
+
+            return parameters;
         }
     }
 }
