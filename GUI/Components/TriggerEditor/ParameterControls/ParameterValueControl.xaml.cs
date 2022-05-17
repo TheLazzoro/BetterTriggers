@@ -80,7 +80,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     break;
                 case "destructable":
                     var mapDestructibles = controllerMapData.GetMapDests();
-                    values = mapDestructibles.Select(dest => new Value() { identifier = dest.ToString(), returnType = returnType }).ToList();
+                    values = mapDestructibles.Select(dest => new Value() { identifier = $"{dest.ToString()}_{dest.CreationNumber}", returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
                 case "rect":

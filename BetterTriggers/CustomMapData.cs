@@ -64,6 +64,7 @@ namespace BetterTriggers
                 Thread.Sleep(1000);
             }
 
+            Info.Load();
             UnitTypes.Load();
             ItemTypes.Load();
             DestructibleTypes.Load();
@@ -75,6 +76,7 @@ namespace BetterTriggers
             Cameras.Load();
             Destructibles.Load();
             Regions.Load();
+            Sounds.Load();
             Units.Load();
 
             ModelData.Load(); // requires above
