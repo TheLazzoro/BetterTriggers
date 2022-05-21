@@ -51,6 +51,10 @@ namespace Model.JsonBaseConverter
                         return new ForLoopVarMultiple();
                     case 13:
                         return new SetVariable();
+                    case 14:
+                        return new EnumDestructablesInRectAllMultiple();
+                    case 15:
+                        return new EnumDestructiblesInCircleBJMultiple();
                     default:
                         return new Parameter();
                 }

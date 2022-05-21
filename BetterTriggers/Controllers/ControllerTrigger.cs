@@ -191,6 +191,16 @@ namespace BetterTriggers.Controllers
                     var special = (OrMultiple)triggerElement.function;
                     removeCount += RemoveInvalidReferences(special.Or);
                 }
+                else if (triggerElement.function is EnumDestructablesInRectAllMultiple)
+                {
+                    var special = (EnumDestructablesInRectAllMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
+                else if (triggerElement.function is EnumDestructiblesInCircleBJMultiple)
+                {
+                    var special = (EnumDestructiblesInCircleBJMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
             }
 
             return removeCount;
@@ -311,7 +321,16 @@ namespace BetterTriggers.Controllers
                     var special = (OrMultiple)triggerElement.function;
                     parameters.AddRange(GatherTriggerParameters(special.Or));
                 }
-
+                else if (triggerElement.function is EnumDestructablesInRectAllMultiple)
+                {
+                    var special = (EnumDestructablesInRectAllMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
+                else if (triggerElement.function is EnumDestructiblesInCircleBJMultiple)
+                {
+                    var special = (EnumDestructiblesInCircleBJMultiple)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
             }
 
             return parameters;

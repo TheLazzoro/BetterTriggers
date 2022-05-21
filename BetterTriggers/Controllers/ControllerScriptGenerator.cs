@@ -29,6 +29,8 @@ namespace BetterTriggers.Controllers
         string separator = "//***************************************************************************";
 
         List<string> initialization_triggers = new List<string>();
+        int nameNumber = 0;
+
 
         public void GenerateScript(string outputPath)
         {
@@ -134,7 +136,7 @@ namespace BetterTriggers.Controllers
             }
             script.Append("globals" + System.Environment.NewLine);
 
-            // Unit globals 
+            // Generated unit globals 
             foreach (KeyValuePair<string, Value> kvp in generatedVarNames)
             {
                 string varName = kvp.Key;
@@ -142,7 +144,7 @@ namespace BetterTriggers.Controllers
                 script.Append($"{type} {varName} = null {System.Environment.NewLine}");
             }
 
-            // Destructible globals
+            // Generated destructible globals
             foreach (KeyValuePair<string, Value> kvp in generatedDestVars)
             {
                 string varName = kvp.Key;
@@ -174,44 +176,31 @@ namespace BetterTriggers.Controllers
             script.Append("endfunction" + System.Environment.NewLine);
 
 
-            CreateUnits(script);
-            CreateDestructibles(script);
-            CreateItems(script);
-            CreateRegions(script);
-            CreateCameras(script);
-            CreateSounds(script);
             CreateItemTables(script);
             GenerateUnitItemTables(script);
+            CreateSounds(script);
+
+            CreateDestructibles(script);
+            CreateItems(script);
+            CreateUnits(script);
+            CreateRegions(script);
+            CreateCameras(script);
+
+            CreateCustomScripts(script);
+            GenerateTriggers(script);
             GenerateTriggerInitialization(script);
+
             GenerateTriggerPlayers(script);
             GenerateCustomTeams(script);
             GenerateAllyPriorities(script);
+
             GenerateMain(script);
             GenerateMapConfiguration(script);
 
-            // Append scripts
-            for (int i = 0; i < scripts.Count; i++)
-            {
-                script.Append(scripts[i] + System.Environment.NewLine);
-            }
 
-            // Generate trigger scripts
-            for (int i = 0; i < triggers.Count; i++)
-            {
-                var trig = triggers[i];
-                for (int t = 0; t < trig.trigger.Actions.Count; t++)
-                {
-                    script.Append($"call {trig.trigger.Actions[t].function.identifier}(");
-                    RecurseParameters(script, trig.trigger.Actions[t].function.parameters);
-                    script.Append(")" + System.Environment.NewLine);
-                }
-            }
+            // TODO: Feed to jasshelper here
 
 
-
-            // main
-            script.Append("function main takes nothing returns nothing" + System.Environment.NewLine);
-            script.Append("endfunction" + System.Environment.NewLine);
 
             return script;
         }
@@ -588,7 +577,7 @@ endfunction
                 if (d.ItemTableSets.Count == 0)
                     continue;
 
-                script.Append($"function UnitItemDrops_{ d.CreationNumber} takes nothing returns nothing\n");
+                script.Append($"function UnitItemDrops_{d.CreationNumber} takes nothing returns nothing\n");
                 script.Append(@"
     local widget trigWidget = null
     local unit trigUnit = null
@@ -693,11 +682,11 @@ endfunction
             foreach (var p in players)
             {
                 string player = $"Player({p.Id}), ";
-                script.Append($"\tcall SetPlayerStartLocation(\"{ player + index.ToString()}\")\n");
+                script.Append($"\tcall SetPlayerStartLocation(\"{player + index.ToString()}\")\n");
                 if (p.Flags.HasFlag(PlayerFlags.FixedStartPosition) || p.Race == PlayerRace.Selectable)
-                    script.Append($"\tcall ForcePlayerStartLocation(\"{ player + index.ToString()}\")\n");
+                    script.Append($"\tcall ForcePlayerStartLocation(\"{player + index.ToString()}\")\n");
 
-                script.Append($"\tcall SetPlayerColor({player} ConvertPlayerColor(\"{ player + index.ToString()}\"))\n");
+                script.Append($"\tcall SetPlayerColor({player} ConvertPlayerColor(\"{player + index.ToString()}\"))\n");
                 script.Append($"\tcall SetPlayerRacePreference({player} {races[(int)p.Race]} )\n");
                 script.Append($"\tcall SetPlayerRaceSelectable({player} true)\n");
                 script.Append($"\tcall SetPlayerController({player} {playerType[(int)p.Controller]} )\n");
@@ -707,7 +696,7 @@ endfunction
                     foreach (var j in players)
                     {
                         if (j.Race == PlayerRace.Human) // why is this here, eejin?
-                            script.Append($"\tcall SetPlayerAlliance({player} Player({ j.Id}), ALLIANCE_RESCUABLE, true)\n");
+                            script.Append($"\tcall SetPlayerAlliance({player} Player({j.Id}), ALLIANCE_RESCUABLE, true)\n");
                     }
                 }
 
@@ -882,12 +871,471 @@ endfunction
             script.Append("//*\n");
             script.Append(separator);
 
+            script.Append("function config takes nothing returns nothing\n");
 
+            script.Append($"\tcall SetMapName(\"{Info.MapInfo.MapName}\")\n");
+            script.Append($"\tcall SetMapDescription(\"{Info.MapInfo.MapDescription}\")\n");
+            script.Append($"\tcall SetPlayers({Info.MapInfo.Players.Count})\n");
+            script.Append($"\tcall SetTeams({Info.MapInfo.Forces.Count})\n");
+            script.Append($"\tcall SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)\n");
 
+            script.Append("\n");
+
+            var units = Units.GetAll();
+            foreach (var u in units)
+            {
+                if (u.ToString() == "sloc")
+                    script.Append($"\tcall DefineStartLocation({u.OwnerId}, {u.Position.X * 128f + Info.MapInfo.PlayableMapAreaWidth}, {u.Position.Y * 128f + Info.MapInfo.PlayableMapAreaHeight})\n");
+            }
+
+            script.Append("\n");
+
+            script.Append("\tcall InitCustomPlayerSlots()\n");
+            if (Info.MapInfo.MapFlags.HasFlag(MapFlags.UseCustomForces))
+                script.Append("\tcall InitCustomTeams()\n");
+            else
+            {
+                foreach (var p in Info.MapInfo.Players)
+                {
+                    script.Append($"\tcall SetPlayerSlotAvailable(Player({p.Id}), MAP_CONTROL_USER)\n");
+                }
+                script.Append("\tcall InitGenericPlayerSlots()\n");
+            }
+            script.Append("\tcall InitAllyPriorities()\n");
+            script.Append("endfunction\n");
         }
 
 
 
+        private void CreateCustomScripts(StringBuilder script)
+        {
+            script.Append(separator);
+            script.Append("//*\n");
+            script.Append("//*  Custom Script Code\n");
+            script.Append("//*\n");
+            script.Append(separator);
+
+            foreach (var s in scripts)
+            {
+                script.Append(s.script);
+                script.Append("\n");
+            }
+        }
+
+
+
+        private void GenerateTriggers(StringBuilder script)
+        {
+            script.Append(separator);
+            script.Append("//*\n");
+            script.Append("//*  Triggers\n");
+            script.Append("//*\n");
+            script.Append(separator);
+
+            foreach (var i in triggers)
+            {
+                if (!i.isEnabled)
+                    continue;
+
+                /* TODO: support trigger to script conversion in editor.
+                if (!i.custom_text.empty())
+                {
+                    trigger_script += i.custom_text + "\n";
+                }
+                else
+                */
+                //{
+                script.Append(ConvertGUIToJass(i, initialization_triggers));
+                //}
+            }
+
+
+            // TODO:
+            // Search the trigger script for global unit/destructible definitons
+            /*
+            size_t pos = trigger_script.find("gg_unit", 0);
+            while (pos != std::string::npos) {
+                std::string type = trigger_script.substr(pos + 8, 4);
+                std::string creation_number = trigger_script.substr(pos + 13, 4);
+                unit_variables[creation_number] = type;
+                pos = trigger_script.find("gg_unit", pos + 17);
+            }
+
+            pos = trigger_script.find("gg_dest", 0);
+            while (pos != std::string::npos) {
+                std::string type = trigger_script.substr(pos + 8, 4);
+                std::string creation_number = trigger_script.substr(pos + 13, trigger_script.find_first_not_of("0123456789", pos + 13) - pos - 13);
+                destructable_variables[creation_number] = type;
+                pos = trigger_script.find("gg_dest", pos + 17);
+            }
+            */
+        }
+
+        private string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
+        {
+            string triggerName = t.GetName().Replace(" ", "_");
+            string triggerVarName = "gg_trg_" + triggerName;
+            string triggerActionName = "Trig_" + triggerName + "_Actions";
+
+            StringBuilder events = new StringBuilder();
+            StringBuilder conditions = new StringBuilder();
+            StringBuilder pre_actions = new StringBuilder();
+            StringBuilder actions = new StringBuilder();
+
+            events.Append($"function InitTrig_{triggerName} takes nothing returns nothing\n");
+            events.Append($"\tset {triggerVarName} takes nothing returns nothing\n");
+
+            actions.Append($"function {triggerActionName} takes nothing returns nothing\n");
+
+            foreach (var e in t.trigger.Events)
+            {
+                if (!e.isEnabled)
+                    continue;
+
+                if (e.function.identifier == "MapInitializationEvent")
+                {
+                    initialization_triggers.Add(triggerVarName);
+                    continue;
+                }
+
+                events.Append($"\tcall {e.function.identifier}({triggerVarName}, ");
+                for (int i = 0; i < e.function.parameters.Count; i++)
+                {
+                    var p = e.function.parameters[i];
+
+                    if (p.identifier == "VarAsString_Real")
+                        events.Append($"\"{ConvertParametersToJass(p)}\"");
+                    else
+                        events.Append($"{ConvertParametersToJass(p)}");
+
+                    if (i < e.function.parameters.Count - 1)
+                        events.Append(", ");
+
+                }
+                events.Append(")\n");
+            }
+            foreach (var c in t.trigger.Conditions)
+            {
+                conditions.Append($"\tif (not{ConvertTriggerElementToJass(c, pre_actions, triggerName, true)})) then\n");
+                conditions.Append("\treturn false\n");
+                conditions.Append("\tendif\n");
+            }
+            foreach (var a in t.trigger.Actions)
+            {
+                actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, triggerName, false)}\n");
+            }
+            actions.Append("endfunction\n\n");
+
+            if (conditions.ToString() != "")
+            {
+                conditions.Insert(0, $"function Trig_{triggerName}_Conditions takes nothing returns nothing\n");
+                conditions.Append("\treturn true\n");
+                conditions.Append("endfunction\n");
+
+                events.Append($"\tcall TriggerAddCondition({triggerVarName}, Condition(function Trig_{triggerName}_Conditions))\n");
+            }
+
+            if (!t.isInitiallyOn)
+                events.Append($"\tcall DisableTrigger({triggerVarName})\n");
+
+            events.Append($"\tcall TriggerAddAction({triggerVarName}, function {triggerActionName})\n");
+            events.Append($"endfunction\n");
+
+            string finalTrigger = $"// Trigger {triggerName}\n{separator}{pre_actions.ToString()}{conditions.ToString()}{actions.ToString()}{separator}{events.ToString()}";
+
+            return finalTrigger;
+        }
+
+
+
+        private string ConvertTriggerElementToJass(TriggerElement t, StringBuilder pre_actions, string triggerName, bool nested)
+        {
+            string script = string.Empty;
+
+            if (!t.isEnabled)
+                return "";
+
+            Function f = (Function)t.function;
+
+            // Specials
+            if (t.function.identifier == "WaitForCondition")
+            {
+                script += "loop\n";
+                script += $"exitwhen({ConvertParametersToJass(f.parameters[0])}\n)";
+                script += $"call TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1])}))\n)";
+                script += "endloop";
+                return script;
+            }
+
+            else if (f.identifier == "ForLoopAMultiple" || f.identifier == "ForLoopBMultiple")
+            {
+                string loopIndex = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
+                string loopIndexEnd = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
+
+                script += $"set {loopIndex}={ConvertParametersToJass(f.parameters[0])}";
+                script += $"set {loopIndexEnd}={ConvertParametersToJass(f.parameters[1])}";
+                script += $"loop\n";
+                script += $"\texitwhen {loopIndex} > {loopIndexEnd}\n";
+
+                if (f.identifier == "ForLoopAMultiple")
+                {
+                    ForLoopAMultiple loopA = (ForLoopAMultiple)f;
+                    foreach (var action in loopA.Actions)
+                    {
+                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    }
+                }
+                else
+                {
+                    ForLoopBMultiple loopB = (ForLoopBMultiple)f;
+                    foreach (var action in loopB.Actions)
+                    {
+                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    }
+                }
+                script += $"\tset {loopIndex}={loopIndex}+1\n";
+                script += $"endloop";
+                return script;
+            }
+
+            else if (f.identifier == "ForLoopVarMultiple")
+            {
+                ForLoopVarMultiple loopVar = (ForLoopVarMultiple)f;
+                string variable = loopVar.parameters[0].identifier;
+
+                script += $"set {variable} = ";
+                script += ConvertParametersToJass(loopVar.parameters[1]) + "\n";
+                script += "loop\n";
+                script += $"exitwhen {variable} > {ConvertParametersToJass(loopVar.parameters[2])}\n";
+                foreach (var action in loopVar.Actions)
+                {
+                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                }
+                script += $"set {variable} = {variable} + 1\n";
+                script += "endloop\n";
+                return script;
+            }
+
+            else if (f.identifier == "IfThenElseMultiple")
+            {
+                IfThenElse ifThenElse = (IfThenElse)f;
+
+                script += "if (";
+                foreach (var condition in ifThenElse.If)
+                {
+                    script += $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ";
+
+                    if (ifThenElse.If.IndexOf(condition) != ifThenElse.If.Count - 1)
+                        script += "and ";
+                }
+                script += ") then\n";
+                foreach (var action in ifThenElse.Then)
+                {
+                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                }
+                script += "else\n";
+                foreach (var action in ifThenElse.Else)
+                {
+                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                }
+                script += "\tendif\n";
+
+                return script;
+            }
+
+            else if (f.identifier == "ForForceMultiple" || f.identifier == "ForGroupMultiple")
+            {
+                string function_name = generate_function_name(triggerName);
+
+                // Remove multiple
+                script += $"call {f.identifier.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0])}), function {function_name})\n";
+
+                string pre = string.Empty;
+                if (f.identifier == "ForForceMultiple")
+                {
+                    ForForceMultiple forForce = (ForForceMultiple)f;
+                    foreach (var action in forForce.Actions)
+                    {
+                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    }
+                }
+                else
+                {
+                    ForGroupMultiple forGroup = (ForGroupMultiple)f;
+                    foreach (var action in forGroup.Actions)
+                    {
+                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    }
+                }
+                pre_actions.Append($"function {function_name} takes nothing returns nothing\n");
+                pre_actions.Append(pre);
+                pre_actions.Append("\nendfunction\n");
+
+                return script;
+            }
+
+            else if (f.identifier == "EnumDestructablesInRectAllMultiple")
+            {
+                EnumDestructablesInRectAllMultiple enumDest = (EnumDestructablesInRectAllMultiple)f;
+
+                /* TODO: What is this?
+                string script_name = trigger_data.data("TriggerActions", "_" + eca.name + "_ScriptName");
+
+                const std::string function_name = generate_function_name(trigger_name);
+
+                // Remove multiple
+                output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", function " + function_name + ")\n";
+                */
+
+                string function_name = generate_function_name(triggerName);
+
+                // Remove multiple
+                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}), function {function_name})\n";
+
+                string pre = string.Empty;
+                foreach (var action in enumDest.Actions)
+                {
+                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                }
+                pre_actions.Append($"function {function_name} takes nothing returns nothing\n");
+                pre_actions.Append(pre);
+                pre_actions.Append("\nendfunction\n");
+
+                return script;
+            }
+
+            else if (f.identifier == "EnumDestructablesInCircleBJMultiple")
+            {
+                EnumDestructiblesInCircleBJMultiple enumDest = (EnumDestructiblesInCircleBJMultiple)f;
+
+                /* TODO: What is this?
+                string script_name = trigger_data.data("TriggerActions", "_" + eca.name + "_ScriptName");
+
+                const std::string function_name = generate_function_name(trigger_name);
+
+                // Remove multiple
+               output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", " +
+			        resolve_parameter(eca.parameters[1], trigger_name, pre_actions, get_type(eca.name, 1)) + ", function " + function_name + ")\n";
+                */
+
+                string function_name = generate_function_name(triggerName);
+
+                // Remove multiple
+                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}, {ConvertParametersToJass(f.parameters[0])}), function {function_name})\n";
+
+                string pre = string.Empty;
+                foreach (var action in enumDest.Actions)
+                {
+                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                }
+                pre_actions.Append($"function {function_name} takes nothing returns nothing\n");
+                pre_actions.Append(pre);
+                pre_actions.Append("\nendfunction\n");
+
+                return script;
+            }
+
+            else if (f.identifier == "AndMultiple")
+            {
+                AndMultiple andMultiple = (AndMultiple)f;
+
+                script += "(";
+                foreach (var condition in andMultiple.And)
+                {
+                    script += $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ";
+
+                    if (andMultiple.And.IndexOf(condition) != andMultiple.And.Count - 1)
+                        script += "and ";
+                }
+                script += ")";
+
+                return script;
+            }
+
+            else if (f.identifier == "OrMultiple")
+            {
+                OrMultiple orMultiple = (OrMultiple)f;
+
+                script += "(";
+                foreach (var condition in orMultiple.Or)
+                {
+                    script += $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ";
+
+                    if (orMultiple.Or.IndexOf(condition) != orMultiple.Or.Count - 1)
+                        script += "or ";
+                }
+                script += ")";
+
+                return script;
+            }
+
+            //script = ConvertEcasToJass(t.function, pre_actions, triggerName, nested);
+            script += $"call {ConvertParametersToJass(t.function)}";
+
+            return script;
+        }
+
+
+
+        private string ConvertParametersToJass(Parameter parameter)
+        {
+            string output = string.Empty;
+
+            if (parameter is Function)
+            {
+                Function f = (Function)parameter;
+                output += f.identifier + "(";
+                for (int i = 0; i < f.parameters.Count; i++)
+                {
+                    Parameter p = f.parameters[i];
+                    output += ConvertParametersToJass(p);
+                    if (i != f.parameters.Count - 1)
+                        output += ",";
+                }
+                output += ")";
+            }
+            else if (parameter is Constant)
+            {
+                Constant c = (Constant)parameter;
+                output += c.identifier;
+            }
+            else if (parameter is VariableRef)
+            {
+                VariableRef v = (VariableRef)parameter;
+                output += v.identifier;
+
+                ControllerVariable controller = new ControllerVariable();
+                Variable variable = controller.GetByReference(v);
+                if (variable.IsArray)
+                    output += $"[{v.arrayIndexValues[0]}]";
+                else if (variable.IsArray && variable.IsTwoDimensions)
+                    output += $"[{v.arrayIndexValues[1]}]";
+            }
+            else if (parameter is Value)
+            {
+                Value v = (Value)parameter;
+                output += v.identifier;
+            }
+
+            return output;
+        }
+
+
+
+        private string generate_function_name(string triggerName)
+        {
+            string name = $"Trig_{triggerName}_{nameNumber}";
+            nameNumber++;
+                
+            return name;
+            /*
+            auto time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+	        return "Trig_" + trigger_name + "_" + std::to_string(time & 0xFFFFFFFF);
+            */
+        }
+
+
+        // TODO: Delete?
         private void RecurseParameters(StringBuilder script, List<Parameter> parameters)
         {
             for (int i = 0; i < parameters.Count; i++)

@@ -25,41 +25,51 @@ namespace Model.SaveableData
             if (function is IfThenElse)
             {
                 var ifThenElse = (IfThenElse)function;
-                fClone = (IfThenElse)ifThenElse.Clone();
+                fClone = ifThenElse.Clone();
             }
             else if (function is ForLoopAMultiple)
             {
                 var forLoopA = (ForLoopAMultiple)function;
-                fClone = (ForLoopAMultiple)forLoopA.Clone();
+                fClone = forLoopA.Clone();
             }
             else if (function is ForLoopBMultiple)
             {
                 var forLoopB = (ForLoopBMultiple)function;
-                fClone = (ForLoopBMultiple)forLoopB.Clone();
+                fClone = forLoopB.Clone();
             }
             else if (function is ForLoopVarMultiple)
             {
                 var forLoopVar = (ForLoopVarMultiple)function;
-                fClone = (ForLoopVarMultiple)forLoopVar.Clone();
+                fClone = forLoopVar.Clone();
             }
             else if (function is AndMultiple)
             {
                 var AndMultiple = (AndMultiple)function;
-                fClone = (AndMultiple)AndMultiple.Clone();
+                fClone = AndMultiple.Clone();
             }
             else if (function is OrMultiple)
             {
                 var OrMultiple = (OrMultiple)function;
-                fClone = (OrMultiple)OrMultiple.Clone();
+                fClone = OrMultiple.Clone();
             }
             else if (function is SetVariable)
             {
                 var setVariable = (SetVariable)function;
-                fClone = (SetVariable)setVariable.Clone();
+                fClone = setVariable.Clone();
+            }
+            else if (function is EnumDestructablesInRectAllMultiple)
+            {
+                var enumDest = (EnumDestructablesInRectAllMultiple)function;
+                fClone = enumDest.Clone();
+            }
+            else if (function is EnumDestructiblesInCircleBJMultiple)
+            {
+                var enumDest = (EnumDestructiblesInCircleBJMultiple)function;
+                fClone = enumDest.Clone();
             }
             else
             {
-                fClone = (Function)function.Clone();
+                fClone = function.Clone();
             }
 
             clone.function = fClone;

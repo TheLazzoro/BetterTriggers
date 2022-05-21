@@ -183,6 +183,24 @@ namespace GUI.Controllers
                 // TODO
                 var function = (SetVariable)treeViewTriggerElement.triggerElement.function;
             }
+            else if (treeViewTriggerElement.triggerElement.function is EnumDestructablesInRectAllMultiple)
+            {
+                var function = (EnumDestructablesInRectAllMultiple)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
+            else if (treeViewTriggerElement.triggerElement.function is EnumDestructiblesInCircleBJMultiple)
+            {
+                var function = (EnumDestructiblesInCircleBJMultiple)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
         }
 
         public void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
