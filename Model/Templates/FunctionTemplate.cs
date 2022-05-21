@@ -46,10 +46,10 @@ namespace Model.Templates
                 case "OrMultiple":
                     te.function = new OrMultiple();
                     break;
-                case "ForGroup":
+                case "ForGroupMultiple":
                     te.function = new ForGroupMultiple();
                     break;
-                case "ForForce":
+                case "ForForceMultiple":
                     te.function = new ForForceMultiple();
                     break;
                 case "ForLoopAMultiple":
@@ -63,6 +63,12 @@ namespace Model.Templates
                     break;
                 case "SetVariable":
                     te.function = new SetVariable();
+                    break;
+                case "EnumDestructablesInRectAllMultiple":
+                    te.function = new EnumDestructablesInRectAllMultiple();
+                    break;
+                case "EnumDestructiblesInCircleBJMultiple":
+                    te.function = new EnumDestructiblesInCircleBJMultiple();
                     break;
                 default:
                     break;

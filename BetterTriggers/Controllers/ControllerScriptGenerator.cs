@@ -23,13 +23,13 @@ namespace BetterTriggers.Controllers
         List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
         List<ExplorerElementScript> scripts = new List<ExplorerElementScript>();
         List<ExplorerElementTrigger> triggers = new List<ExplorerElementTrigger>();
-        Dictionary<string, Value> generatedUnitVars = new Dictionary<string, Value>();
-        Dictionary<string, Value> generatedDestVars = new Dictionary<string, Value>();
+        Dictionary<string, Value> generatedVarNames = new Dictionary<string, Value>();
         CultureInfo enUS = new CultureInfo("en-US");
-        string separator = "//***************************************************************************";
+        string separator = $"//***************************************************************************{System.Environment.NewLine}";
 
         List<string> initialization_triggers = new List<string>();
         int nameNumber = 0;
+        string newline = System.Environment.NewLine;
 
 
         public void GenerateScript(string outputPath)
@@ -104,76 +104,79 @@ namespace BetterTriggers.Controllers
                 Variable variable = variables[i].variable;
                 InitGlobals.Add(variable);
 
-                script.Append("globals" + System.Environment.NewLine);
-                script.Append(System.Environment.NewLine);
+                script.Append("globals" + newline);
+                script.Append(newline);
                 script.Append(variable.Type + " " + variable.Name);
-                script.Append(System.Environment.NewLine);
-                script.Append("endglobals" + System.Environment.NewLine);
+                script.Append(newline);
+                script.Append("endglobals" + newline);
             }
 
             // Generated variables
             ControllerTrigger controllerTrigger = new ControllerTrigger();
             var parameters = controllerTrigger.GetParametersAll();
-            Dictionary<string, Value> generatedVarNames = new Dictionary<string, Value>();
             for (int i = 0; i < parameters.Count; i++)
             {
                 if (parameters[i] is Value && (
                     parameters[i].returnType == "unit" ||
                     parameters[i].returnType == "destructable" ||
                     parameters[i].returnType == "item" ||
-                    parameters[i].returnType == "rect" ||
-                    parameters[i].returnType == "camerasetup"
+                    parameters[i].returnType == "rect" //||
+                    //parameters[i].returnType == "camerasetup" // not needed?
                     ))
                 {
                     Value value = (Value)parameters[i];
-                    generatedVarNames.TryAdd(value.identifier, value);
 
-                    if (value.returnType == "unit")
-                        generatedUnitVars.TryAdd(value.identifier, value);
-                    if (value.returnType == "destructable")
-                        generatedDestVars.TryAdd(value.identifier, value);
+                    generatedVarNames.TryAdd(value.identifier, value);
                 }
             }
-            script.Append("globals" + System.Environment.NewLine);
+            script.Append("globals" + newline);
 
-            // Generated unit globals 
+            // Generated map object globals 
             foreach (KeyValuePair<string, Value> kvp in generatedVarNames)
             {
                 string varName = kvp.Key;
                 string type = kvp.Value.returnType;
-                script.Append($"{type} {varName} = null {System.Environment.NewLine}");
+                script.Append($"{type} {varName} = null {newline}");
             }
 
-            // Generated destructible globals
-            foreach (KeyValuePair<string, Value> kvp in generatedDestVars)
-            {
-                string varName = kvp.Key;
-                string type = kvp.Value.returnType;
-                script.Append($"{type} {varName} = null {System.Environment.NewLine}");
-            }
             var regions = Regions.GetAll();
             foreach (var r in regions)
             {
-                script.Append($"rect {r.Name.Replace(" ", "_")} = null {System.Environment.NewLine}");
+                script.Append($"rect {r.Name.Replace(" ", "_")} = null {newline}");
             }
-            var sounds = Sounds.GetAll();
+            var sounds = Sounds.GetSoundsAll();
             foreach (var s in sounds)
             {
-                script.Append($"sound {s.Name} = null {System.Environment.NewLine}");
+                script.Append($"sound {s.Name} = null {newline}");
+            }
+            var music = Sounds.GetMusicAll();
+            foreach (var s in music)
+            {
+                script.Append($"string {s.Name} = null {newline}");
+            }
+            var cameras = Cameras.GetAll();
+            foreach (var c in cameras)
+            {
+                script.Append($"camerasetup {c.Name.Replace(" ", "_")} = null {newline}");
+            }
+            
+            foreach (var trigger in triggers)
+            {
+                script.Append($"trigger gg_trg_{trigger.GetName().Replace(" ", "_")} {newline}");
             }
 
-            script.Append("endglobals" + System.Environment.NewLine);
-            script.Append(System.Environment.NewLine);
+            script.Append("endglobals" + newline);
+            script.Append(newline);
 
 
             // Init global variables
-            script.Append("function InitGlobals takes nothing returns nothing" + System.Environment.NewLine);
+            script.Append("function InitGlobals takes nothing returns nothing" + newline);
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
-                script.Append("set " + variable.Name + "=" + variable.InitialValue + System.Environment.NewLine);
+                script.Append("set " + variable.Name + "=" + variable.InitialValue + newline);
             }
-            script.Append("endfunction" + System.Environment.NewLine);
+            script.Append("endfunction" + newline);
 
 
             CreateItemTables(script);
@@ -210,16 +213,16 @@ namespace BetterTriggers.Controllers
         private void CreateUnits(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Unit Creation\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Unit Creation{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function CreateUnits takes nothing returns nothing\n");
-            script.Append("\tlocal unit u\n");
-            script.Append("\tlocal integer unitID\n");
-            script.Append("\tlocal trigger t\n");
-            script.Append("\tlocal real life\n");
+            script.Append($"function CreateUnits takes nothing returns nothing{newline}");
+            script.Append($"\tlocal unit u{newline}");
+            script.Append($"\tlocal integer unitID{newline}");
+            script.Append($"\tlocal trigger t{newline}");
+            script.Append($"\tlocal real life{newline}");
 
             var units = Units.GetAll();
             foreach (var u in units)
@@ -240,25 +243,25 @@ namespace BetterTriggers.Controllers
                     owner = "PLAYER_NEUTRAL_PASSIVE";
 
                 Value value;
-                if (generatedUnitVars.TryGetValue($"{u.ToString()}_{u.CreationNumber}", out value)) // unit with generated variable
-                    script.Append($"set {u.ToString()}_{u.CreationNumber} = BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}')\n");
+                if (generatedVarNames.TryGetValue($"{u.ToString()}_{u.CreationNumber}", out value)) // unit with generated variable
+                    script.Append($"set {u.ToString()}_{u.CreationNumber} = BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}'){newline}");
                 else
-                    script.Append($"call BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}')\n");
+                    script.Append($"call BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}'){newline}");
             }
 
-            script.Append("endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
         private void CreateDestructibles(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Destructible Objects\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Destructible Objects{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function CreateAllDestructibles takes nothing returns nothing\n");
-            script.Append("local real life\n");
+            script.Append($"function CreateAllDestructibles takes nothing returns nothing{newline}");
+            script.Append($"local real life{newline}");
 
             var dests = Destructibles.GetAll();
             foreach (var d in dests)
@@ -272,29 +275,29 @@ namespace BetterTriggers.Controllers
                 var skin = Int32Extensions.ToRawcode(d.SkinId);
 
                 Value value;
-                if (generatedDestVars.TryGetValue($"{d.ToString()}_{d.CreationNumber}", out value)) // dest with generated variable
+                if (generatedVarNames.TryGetValue($"{d.ToString()}_{d.CreationNumber}", out value)) // dest with generated variable
                 {
-                    script.Append($"set {d.ToString()}_{d.CreationNumber} = BlzCreateDestructableWithSkin('{id}', {x}, {y}, {angle}, {scale}, {variation}, '{skin}')\n");
+                    script.Append($"set {d.ToString()}_{d.CreationNumber} = BlzCreateDestructableWithSkin('{id}', {x}, {y}, {angle}, {scale}, {variation}, '{skin}'){newline}");
                     if (d.Life < 100)
                     {
-                        script.Append($"set life = GetDestructableLife({d.ToString()}_{d.CreationNumber})\n");
-                        script.Append($"call SetDestructableLife({d.ToString()}_{d.CreationNumber}, {(d.Life * 0.01).ToString(enUS)} * life)\n");
+                        script.Append($"set life = GetDestructableLife({d.ToString()}_{d.CreationNumber}){newline}");
+                        script.Append($"call SetDestructableLife({d.ToString()}_{d.CreationNumber}, {(d.Life * 0.01).ToString(enUS)} * life){newline}");
                     }
                 }
             }
 
-            script.Append("endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
         private void CreateItems(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Item Creation\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Item Creation{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function CreateAllItems takes nothing returns nothing\n");
+            script.Append($"function CreateAllItems takes nothing returns nothing{newline}");
 
             var items = Units.GetMapItemsAll();
             foreach (var i in items)
@@ -307,24 +310,24 @@ namespace BetterTriggers.Controllers
                 var y = i.Position.Y.ToString(enUS);
                 var skinId = Int32Extensions.ToRawcode(i.SkinId);
 
-                script.Append($"call BlzCreateItemWithSkin('{id}', {x}, {y}, '{skinId}')\n");
+                script.Append($"call BlzCreateItemWithSkin('{id}', {x}, {y}, '{skinId}'){newline}");
             }
 
-            script.Append("endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
         private void CreateRegions(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Regions\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Regions{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function CreateAllRegions takes nothing returns nothing\n");
-            script.Append("local weathereffect we\n");
-            script.Append("\n");
+            script.Append($"function CreateAllRegions takes nothing returns nothing{newline}");
+            script.Append($"local weathereffect we{newline}");
+            script.Append($"{newline}");
 
             var regions = Regions.GetAll();
             foreach (var r in regions)
@@ -335,65 +338,65 @@ namespace BetterTriggers.Controllers
                 var right = r.Right;
                 var top = r.Top;
 
-                script.Append($"set {id} = Rect({left}, {bottom}, {right}, {top})\n");
+                script.Append($"set {id} = Rect({left}, {bottom}, {right}, {top}){newline}");
                 if (r.WeatherType == War3Net.Build.WeatherType.None)
                     continue;
 
-                script.Append($"set we = AddWeatherEffect({id}, '{Int32Extensions.ToRawcode((int)r.WeatherType)}')\n");
-                script.Append($"EnableWeatherEffect(we, true)\n");
+                script.Append($"set we = AddWeatherEffect({id}, '{Int32Extensions.ToRawcode((int)r.WeatherType)}'){newline}");
+                script.Append($"EnableWeatherEffect(we, true){newline}");
             }
 
 
-            script.Append("endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
         private void CreateCameras(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Cameras\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Cameras{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function CreateCameras takes nothing returns nothing\n");
-            script.Append("\n");
+            script.Append($"function CreateCameras takes nothing returns nothing{newline}");
+            script.Append($"{newline}");
 
             var cameras = Cameras.GetAll();
             foreach (var c in cameras)
             {
                 var id = c.Name.Replace(" ", "_");
 
-                script.Append($"set {id} = CreateCameraSetup()\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ZOFFSET, {c.ZOffset.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ROTATION, {c.Rotation.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ANGLE_OF_ATTACK, {c.AngleOfAttack.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_TARGET_DISTANCE, {c.TargetDistance.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ROLL, {c.Roll.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_FIELD_OF_VIEW, {c.FieldOfView.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_FARZ, {c.FarClippingPlane.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_NEARZ, {c.NearClippingPlane.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_PITCH, {c.LocalPitch.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_YAW, {c.LocalYaw.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_ROLL, {c.LocalRoll.ToString(enUS)}, 0.0)\n");
-                script.Append($"call CameraSetupSetDestPosition({id}, {c.TargetPosition.X.ToString(enUS)}, {c.TargetPosition.Y.ToString(enUS)}, 0.0)\n");
-                script.Append("\n");
+                script.Append($"set {id} = CreateCameraSetup(){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ZOFFSET, {c.ZOffset.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ROTATION, {c.Rotation.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ANGLE_OF_ATTACK, {c.AngleOfAttack.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_TARGET_DISTANCE, {c.TargetDistance.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ROLL, {c.Roll.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_FIELD_OF_VIEW, {c.FieldOfView.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_FARZ, {c.FarClippingPlane.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_NEARZ, {c.NearClippingPlane.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_PITCH, {c.LocalPitch.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_YAW, {c.LocalYaw.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_ROLL, {c.LocalRoll.ToString(enUS)}, 0.0){newline}");
+                script.Append($"call CameraSetupSetDestPosition({id}, {c.TargetPosition.X.ToString(enUS)}, {c.TargetPosition.Y.ToString(enUS)}, 0.0){newline}");
+                script.Append($"{newline}");
             }
 
-            script.Append("endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
         private void CreateSounds(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Sounds\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Sounds{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function InitSounds takes nothing returns nothing\n");
-            script.Append("\n");
+            script.Append($"function InitSounds takes nothing returns nothing{newline}");
+            script.Append($"{newline}");
 
             var sounds = Sounds.GetSoundsAll();
             var music = Sounds.GetMusicAll();
@@ -415,41 +418,42 @@ namespace BetterTriggers.Controllers
                 if (pitch >= UInt32.MaxValue)
                     pitch = 1;
 
-                script.Append($"set {id} = CreateSound(\"{path}\", {looping}, {is3D}, {stopRange}, {fadeInRate}, {fadeOutRate}, \"{eax}\")\n");
-                script.Append($"call SetSoundParamsFromLabel({id}, \"{s.SoundName}\")\n");
-                script.Append($"call SetSoundDuration({id}, {s.FadeInRate})\n"); // TODO: This is not the duration. We should pull from CASC data.
-                script.Append($"call SetSoundChannel({id}, {(int)s.Channel})\n");
+                script.Append($"set {id} = CreateSound(\"{path}\", {looping.ToString().ToLower()}, {is3D.ToString().ToLower()}, {stopRange.ToString().ToLower()}, {fadeInRate}, {fadeOutRate}, \"{eax}\"){newline}");
+                script.Append($"call SetSoundParamsFromLabel({id}, \"{s.SoundName}\"){newline}");
+                script.Append($"call SetSoundDuration({id}, {s.FadeInRate}){newline}"); // TODO: This is not the duration. We should pull from CASC data.
+                script.Append($"call SetSoundChannel({id}, {(int)s.Channel}){newline}");
                 if (s.MinDistance < 100000 && s.Channel != SoundChannel.UserInterface)
-                    script.Append($"call SetSoundDistances({id}, {s.MinDistance}, {s.MaxDistance})\n");
+                    script.Append($"call SetSoundDistances({id}, {s.MinDistance}, {s.MaxDistance}){newline}");
                 if (cutoff != 3000)
-                    script.Append($"call SetSoundDistanceCutoff({id}, {s.DistanceCutoff})\n");
-                script.Append($"call SetSoundVolume({id}, {s.Volume})\n");
+                    script.Append($"call SetSoundDistanceCutoff({id}, {s.DistanceCutoff}){newline}");
+                script.Append($"call SetSoundVolume({id}, {s.Volume}){newline}");
                 if (pitch != 1)
-                    script.Append($"call SetSoundPitch({id}, {pitch})\n");
+                    script.Append($"call SetSoundPitch({id}, {pitch}){newline}");
             }
             foreach (var s in music)
             {
                 var id = s.Name;
-                script.Append($"set {id} = \"{s.SoundName}\"\n");
+                script.Append($"set {id} = \"{s.SoundName}\"{newline}");
             }
+
+            script.Append($"endfunction{newline}");
         }
 
 
         private void CreateItemTables(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Map Item Tables\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Map Item Tables{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function CreateItemTables takes nothing returns nothing\n");
-            script.Append("\n");
+            script.Append(newline);
 
             var itemTables = Info.MapInfo.RandomItemTables;
             foreach (var table in itemTables)
             {
-                script.Append($"function ItemTable_{table.Index} takes nothing returns nothing\n");
+                script.Append($"function ItemTable_{table.Index} takes nothing returns nothing{newline}");
                 script.Append(@"
     local widget trigWidget= null
 	local unit trigUnit= null
@@ -467,17 +471,16 @@ namespace BetterTriggers.Controllers
 	endif
 
     if ( canDrop ) then
-		)
 ");
 
-                script.Append("\n");
+                script.Append($"{newline}");
 
                 foreach (var itemSets in table.ItemSets)
                 {
-                    script.Append("\t\tcall RandomDistReset()\n");
+                    script.Append($"\t\tcall RandomDistReset(){newline}");
                     foreach (var item in itemSets.Items)
                     {
-                        script.Append($"\t\tcall RandomDistAddItem('{Int32Extensions.ToRawcode(item.ItemId)}', {item.Chance})\n");
+                        script.Append($"\t\tcall RandomDistAddItem('{Int32Extensions.ToRawcode(item.ItemId)}', {item.Chance}){newline}");
                     }
 
                     script.Append(@"
@@ -487,7 +490,6 @@ namespace BetterTriggers.Controllers
 		else
 			call WidgetDropItem(trigWidget, itemID)
 		endif
-		)
 ");
                 }
 
@@ -496,20 +498,19 @@ namespace BetterTriggers.Controllers
 	set bj_lastDyingWidget=null
 	call DestroyTrigger(GetTriggeringTrigger())
 endfunction
-		)
                 ");
             }
 
-            script.Append("\n");
+            script.Append($"{newline}");
         }
 
 
         private void GenerateUnitItemTables(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Unit Item Tables\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Unit Item Tables{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
 
@@ -519,7 +520,7 @@ endfunction
                 if (u.ItemTableSets.Count == 0)
                     continue;
 
-                script.Append($"function UnitItemDrops_{u.CreationNumber} takes nothing returns nothing\n");
+                script.Append($"function UnitItemDrops_{u.CreationNumber} takes nothing returns nothing{newline}");
                 script.Append(@"
     local widget trigWidget= null
 	local unit trigUnit= null
@@ -539,14 +540,14 @@ endfunction
 		)
 ");
 
-                script.Append("\n");
+                script.Append($"{newline}");
 
                 foreach (var itemSet in u.ItemTableSets)
                 {
-                    script.Append("\t\tcall RandomDistReset()\n");
+                    script.Append($"\t\tcall RandomDistReset(){newline}");
                     foreach (var item in itemSet.Items)
                     {
-                        script.Append($"\t\tcall RandomDistAddItem('{Int32Extensions.ToRawcode(item.ItemId)}', {item.Chance})\n");
+                        script.Append($"\t\tcall RandomDistAddItem('{Int32Extensions.ToRawcode(item.ItemId)}', {item.Chance}){newline}");
                     }
 
                     script.Append(@"
@@ -568,7 +569,7 @@ endfunction
 ");
 
 
-                script.Append("\n");
+                script.Append($"{newline}");
             }
 
             var destructibles = Destructibles.GetAll();
@@ -577,7 +578,7 @@ endfunction
                 if (d.ItemTableSets.Count == 0)
                     continue;
 
-                script.Append($"function UnitItemDrops_{d.CreationNumber} takes nothing returns nothing\n");
+                script.Append($"function UnitItemDrops_{d.CreationNumber} takes nothing returns nothing{newline}");
                 script.Append(@"
     local widget trigWidget = null
     local unit trigUnit = null
@@ -597,14 +598,14 @@ endfunction
     if (canDrop) then
 		)");
 
-                script.Append("\n");
+                script.Append($"{newline}");
 
                 foreach (var itemSets in d.ItemTableSets)
                 {
-                    script.Append("\t\tcall RandomDistReset()\n");
+                    script.Append($"\t\tcall RandomDistReset(){newline}");
                     foreach (var item in itemSets.Items)
                     {
-                        script.Append($"\t\tcall RandomDistAddItem('{Int32Extensions.ToRawcode(item.ItemId)}', {item.Chance})\n");
+                        script.Append($"\t\tcall RandomDistAddItem('{Int32Extensions.ToRawcode(item.ItemId)}', {item.Chance}){newline}");
                     }
 
                     script.Append(@"
@@ -627,7 +628,7 @@ endfunction
 endfunction
         )");
 
-                script.Append("\n");
+                script.Append($"{newline}");
             }
         }
 
@@ -636,12 +637,12 @@ endfunction
         private void GenerateTriggerInitialization(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Triggers\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Triggers{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function InitCustomTriggers takes nothing returns nothing\n");
+            script.Append($"function InitCustomTriggers takes nothing returns nothing{newline}");
 
             foreach (var t in triggers)
             {
@@ -649,17 +650,17 @@ endfunction
                     continue;
 
                 string triggerName = t.GetName().Replace(" ", "_");
-                script.Append($"\tcall InitTrig_{triggerName}()\n");
+                script.Append($"\tcall InitTrig_{triggerName}(){newline}");
             }
-            script.Append($"endfunction\n");
-            script.Append($"\n");
+            script.Append($"endfunction{newline}");
+            script.Append($"{newline}");
 
-            script.Append("function RunInitializationTriggers takes nothing returns nothing\n");
+            script.Append($"function RunInitializationTriggers takes nothing returns nothing{newline}");
             foreach (var t in initialization_triggers)
             {
-                script.Append($"\tcall ConditionalTriggerExecute(\"{t}\")\n");
+                script.Append($"\tcall ConditionalTriggerExecute(\"{t}\"){newline}");
             }
-            script.Append($"endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
@@ -667,12 +668,12 @@ endfunction
         private void GenerateTriggerPlayers(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Players\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Players{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function InitCustomPlayerSlots takes nothing returns nothing\n");
+            script.Append($"function InitCustomPlayerSlots takes nothing returns nothing{newline}");
 
             string[] playerType = new string[] { "MAP_CONTROL_USER", "MAP_CONTROL_COMPUTER", "MAP_CONTROL_NEUTRAL", "MAP_CONTROL_RESCUABLE" };
             string[] races = new string[] { "RACE_PREF_RANDOM", "RACE_PREF_HUMAN", "RACE_PREF_ORC", "RACE_PREF_UNDEAD", "RACE_PREF_NIGHTELF" };
@@ -682,29 +683,29 @@ endfunction
             foreach (var p in players)
             {
                 string player = $"Player({p.Id}), ";
-                script.Append($"\tcall SetPlayerStartLocation(\"{player + index.ToString()}\")\n");
+                script.Append($"\tcall SetPlayerStartLocation({player + index.ToString()}){newline}");
                 if (p.Flags.HasFlag(PlayerFlags.FixedStartPosition) || p.Race == PlayerRace.Selectable)
-                    script.Append($"\tcall ForcePlayerStartLocation(\"{player + index.ToString()}\")\n");
+                    script.Append($"\tcall ForcePlayerStartLocation({player + index.ToString()}){newline}");
 
-                script.Append($"\tcall SetPlayerColor({player} ConvertPlayerColor(\"{player + index.ToString()}\"))\n");
-                script.Append($"\tcall SetPlayerRacePreference({player} {races[(int)p.Race]} )\n");
-                script.Append($"\tcall SetPlayerRaceSelectable({player} true)\n");
-                script.Append($"\tcall SetPlayerController({player} {playerType[(int)p.Controller]} )\n");
+                script.Append($"\tcall SetPlayerColor({player} ConvertPlayerColor(\"{player + index.ToString()}\")){newline}");
+                script.Append($"\tcall SetPlayerRacePreference({player} {races[(int)p.Race]} ){newline}");
+                script.Append($"\tcall SetPlayerRaceSelectable({player} true){newline}");
+                script.Append($"\tcall SetPlayerController({player} {playerType[(int)p.Controller]} ){newline}");
 
                 if (p.Controller == PlayerController.Rescuable)
                 {
                     foreach (var j in players)
                     {
                         if (j.Race == PlayerRace.Human) // why is this here, eejin?
-                            script.Append($"\tcall SetPlayerAlliance({player} Player({j.Id}), ALLIANCE_RESCUABLE, true)\n");
+                            script.Append($"\tcall SetPlayerAlliance({player} Player({j.Id}), ALLIANCE_RESCUABLE, true){newline}");
                     }
                 }
 
-                script.Append($"\n");
+                script.Append($"{newline}");
                 index++;
             }
 
-            script.Append($"endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
@@ -712,27 +713,29 @@ endfunction
         private void GenerateCustomTeams(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Custom Teams\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Custom Teams{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
+
+            script.Append($"function InitCustomTeams takes nothing returns nothing{newline}");
 
             int current_force = 0;
             var forces = Info.MapInfo.Forces;
             foreach (var f in forces)
             {
-                script.Append($"\n");
-                script.Append($"\t// Force: " + f.Name + "\n");
+                script.Append($"{newline}");
+                script.Append($"\t// Force: {f.Name}{newline}");
 
                 string post_state = string.Empty;
                 foreach (var p in Info.MapInfo.Players)
                 {
                     // something about player masks here? (HiveWE)
-                    script.Append($"\tcall SetPlayerTeam(Player({p.Id}), {current_force})\n");
+                    script.Append($"\tcall SetPlayerTeam(Player({p.Id}), {current_force}){newline}");
 
                     if (f.Flags.HasFlag(ForceFlags.AlliedVictory))
                     {
-                        script.Append($"\tcall SetPlayerState(Player({p.Id}), PLAYER_STATE_ALLIED_VICTORY, 1)\n");
+                        script.Append($"\tcall SetPlayerState(Player({p.Id}), PLAYER_STATE_ALLIED_VICTORY, 1){newline}");
                     }
 
                     foreach (var k in Info.MapInfo.Players)
@@ -741,13 +744,13 @@ endfunction
                         if (p.Id != k.Id)
                         {
                             if (f.Flags.HasFlag(ForceFlags.Allied))
-                                post_state += $"\tcall SetPlayerAllianceStateAllyBJ(Player({p.Id}), Player({k.Id}), true)\n";
+                                post_state += $"\tcall SetPlayerAllianceStateAllyBJ(Player({p.Id}), Player({k.Id}), true){newline}";
                             if (f.Flags.HasFlag(ForceFlags.ShareVision))
-                                post_state += $"\tcall SetPlayerAllianceStateVisionBJ(Player({p.Id}), Player({k.Id}), true)\n";
+                                post_state += $"\tcall SetPlayerAllianceStateVisionBJ(Player({p.Id}), Player({k.Id}), true){newline}";
                             if (f.Flags.HasFlag(ForceFlags.ShareUnitControl))
-                                post_state += $"\tcall SetPlayerAllianceStateControlBJ(Player({p.Id}), Player({k.Id}), true)\n";
+                                post_state += $"\tcall SetPlayerAllianceStateControlBJ(Player({p.Id}), Player({k.Id}), true){newline}";
                             if (f.Flags.HasFlag(ForceFlags.ShareAdvancedUnitControl))
-                                post_state += $"\tcall SetPlayerAllianceStateFullControlBJ(Player({p.Id}), Player({k.Id}), true)\n";
+                                post_state += $"\tcall SetPlayerAllianceStateFullControlBJ(Player({p.Id}), Player({k.Id}), true){newline}";
                         }
                     }
                 }
@@ -756,17 +759,17 @@ endfunction
                     script.Append(post_state);
                 }
 
-                script.Append("\n");
+                script.Append($"{newline}");
                 current_force++;
             }
 
-            script.Append("endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
         private void GenerateAllyPriorities(StringBuilder script)
         {
-            script.Append("function InitAllyPriorities takes nothing returns nothing\n");
+            script.Append($"function InitAllyPriorities takes nothing returns nothing{newline}");
 
             Dictionary<int, int> player_to_startloc = new Dictionary<int, int>();
 
@@ -787,22 +790,22 @@ endfunction
                 {
                     if (p.EnemyLowPriorityFlags == 1 && p.Id != j.Id)
                     {
-                        player_text += $"\tcall SetStartLocPrio({current_player}, {current_index}, {player_to_startloc[j.Id]}, MAP_LOC_PRIO_LOW)\n";
+                        player_text += $"\tcall SetStartLocPrio({current_player}, {current_index}, {player_to_startloc[j.Id]}, MAP_LOC_PRIO_LOW){newline}";
                         current_index++;
                     }
                     else if (p.EnemyHighPriorityFlags == 1 && p.Id != j.Id)
                     {
-                        player_text += $"\tcall SetStartLocPrio({current_player}, {current_index}, {player_to_startloc[j.Id]}, MAP_LOC_PRIO_HIGH)\n";
+                        player_text += $"\tcall SetStartLocPrio({current_player}, {current_index}, {player_to_startloc[j.Id]}, MAP_LOC_PRIO_HIGH){newline}";
                         current_index++;
                     }
                 }
 
-                player_text = $"\tcall SetStartLocPrioCount({current_player}, {current_index})\n";
+                player_text = $"\tcall SetStartLocPrioCount({current_player}, {current_index}){newline}";
                 script.Append(player_text);
                 current_player++;
             }
 
-            script.Append("endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
@@ -810,12 +813,12 @@ endfunction
         private void GenerateMain(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append($"//*  Main Initialization\n");
-            script.Append($"//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Main Initialization{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append($"function main takes nothing returns nothing\n");
+            script.Append($"function main takes nothing returns nothing{newline}");
 
             string camera_bounds = "\tcall SetCameraBounds(" +
                 (Info.MapInfo.CameraBounds.BottomLeft.X - 512f) + " + GetCameraMargin(CAMERA_MARGIN_LEFT), " +
@@ -828,37 +831,37 @@ endfunction
                 (Info.MapInfo.CameraBounds.TopLeft.Y + 256f) + " - GetCameraMargin(CAMERA_MARGIN_TOP), " +
 
                 (Info.MapInfo.CameraBounds.BottomRight.X + 512f) + " - GetCameraMargin(CAMERA_MARGIN_RIGHT), " +
-                (Info.MapInfo.CameraBounds.BottomRight.Y - 256f) + " + GetCameraMargin(CAMERA_MARGIN_BOTTOM))\n";
+                (Info.MapInfo.CameraBounds.BottomRight.Y - 256f) + $" + GetCameraMargin(CAMERA_MARGIN_BOTTOM)){newline}";
 
             script.Append(camera_bounds);
 
             string terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(Info.MapInfo.LightEnvironment);
             string unit_lights = LightEnvironmentProvider.GetUnitLightEnvironmentModel(Info.MapInfo.LightEnvironment);
-            script.Append($"\tcall SetDayNightModels(\"" + terrain_lights + "\", \"" + unit_lights + "\")\n");
+            script.Append($"\tcall SetDayNightModels(\"" + terrain_lights + "\", \"" + unit_lights + $"\"){newline}");
 
             string sound_environment = Info.MapInfo.SoundEnvironment;
-            script.Append($"\tcall NewSoundEnvironment(\"" + sound_environment + "\")\n");
+            script.Append($"\tcall NewSoundEnvironment(\"" + sound_environment + $"\"){newline}");
 
             string ambient_day = "LordaeronSummerDay"; // TODO: Hardcoded
-            script.Append($"\tcall SetAmbientDaySound(\"" + ambient_day + "\")\n");
+            script.Append($"\tcall SetAmbientDaySound(\"" + ambient_day + $"\"){newline}");
 
             string ambient_night = "LordaeronSummerNight"; // TODO: Hardcoded
-            script.Append($"\tcall SetAmbientNightSound(\"" + ambient_night + "\")\n");
+            script.Append($"\tcall SetAmbientNightSound(\"" + ambient_night + $"\"){newline}");
 
-            script.Append($"\tcall SetMapMusic(\"Music\", true, 0)\n");
-            script.Append($"\tcall InitSounds()\n");
-            script.Append($"\tcall CreateRegions()\n");
-            script.Append($"\tcall CreateCameras()\n");
-            script.Append($"\tcall CreateDestructables()\n");
-            script.Append($"\tcall CreateItems()\n");
-            script.Append($"\tcall CreateUnits()\n");
-            script.Append($"\tcall InitBlizzard()\n");
+            script.Append($"\tcall SetMapMusic(\"Music\", true, 0){newline}");
+            script.Append($"\tcall InitSounds(){newline}");
+            script.Append($"\tcall CreateRegions(){newline}");
+            script.Append($"\tcall CreateCameras(){newline}");
+            script.Append($"\tcall CreateDestructables(){newline}");
+            script.Append($"\tcall CreateItems(){newline}");
+            script.Append($"\tcall CreateUnits(){newline}");
+            script.Append($"\tcall InitBlizzard(){newline}");
 
-            script.Append($"\tcall InitGlobals()\n");
-            script.Append($"\tcall InitCustomTriggers()\n");
-            script.Append($"\tcall RunInitializationTriggers()\n");
+            script.Append($"\tcall InitGlobals(){newline}");
+            script.Append($"\tcall InitCustomTriggers(){newline}");
+            script.Append($"\tcall RunInitializationTriggers(){newline}");
 
-            script.Append($"endfunction\n");
+            script.Append($"endfunction{newline}");
         }
 
 
@@ -866,43 +869,43 @@ endfunction
         private void GenerateMapConfiguration(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Map Configuration\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Map Configuration{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append("function config takes nothing returns nothing\n");
+            script.Append($"function config takes nothing returns nothing{newline}");
 
-            script.Append($"\tcall SetMapName(\"{Info.MapInfo.MapName}\")\n");
-            script.Append($"\tcall SetMapDescription(\"{Info.MapInfo.MapDescription}\")\n");
-            script.Append($"\tcall SetPlayers({Info.MapInfo.Players.Count})\n");
-            script.Append($"\tcall SetTeams({Info.MapInfo.Forces.Count})\n");
-            script.Append($"\tcall SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)\n");
+            script.Append($"\tcall SetMapName(\"{Info.MapInfo.MapName}\"){newline}");
+            script.Append($"\tcall SetMapDescription(\"{Info.MapInfo.MapDescription}\"){newline}");
+            script.Append($"\tcall SetPlayers({Info.MapInfo.Players.Count}){newline}");
+            script.Append($"\tcall SetTeams({Info.MapInfo.Forces.Count}){newline}");
+            script.Append($"\tcall SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER){newline}");
 
-            script.Append("\n");
+            script.Append($"{newline}");
 
             var units = Units.GetAll();
             foreach (var u in units)
             {
                 if (u.ToString() == "sloc")
-                    script.Append($"\tcall DefineStartLocation({u.OwnerId}, {u.Position.X * 128f + Info.MapInfo.PlayableMapAreaWidth}, {u.Position.Y * 128f + Info.MapInfo.PlayableMapAreaHeight})\n");
+                    script.Append($"\tcall DefineStartLocation({u.OwnerId}, {u.Position.X * 128f + Info.MapInfo.PlayableMapAreaWidth}, {u.Position.Y * 128f + Info.MapInfo.PlayableMapAreaHeight}){newline}");
             }
 
-            script.Append("\n");
+            script.Append($"{newline}");
 
-            script.Append("\tcall InitCustomPlayerSlots()\n");
+            script.Append($"\tcall InitCustomPlayerSlots(){newline}");
             if (Info.MapInfo.MapFlags.HasFlag(MapFlags.UseCustomForces))
-                script.Append("\tcall InitCustomTeams()\n");
+                script.Append($"\tcall InitCustomTeams(){newline}");
             else
             {
                 foreach (var p in Info.MapInfo.Players)
                 {
-                    script.Append($"\tcall SetPlayerSlotAvailable(Player({p.Id}), MAP_CONTROL_USER)\n");
+                    script.Append($"\tcall SetPlayerSlotAvailable(Player({p.Id}), MAP_CONTROL_USER){newline}");
                 }
-                script.Append("\tcall InitGenericPlayerSlots()\n");
+                script.Append($"\tcall InitGenericPlayerSlots(){newline}");
             }
-            script.Append("\tcall InitAllyPriorities()\n");
-            script.Append("endfunction\n");
+            script.Append($"\tcall InitAllyPriorities(){newline}");
+            script.Append($"endfunction{newline}");
         }
 
 
@@ -910,15 +913,15 @@ endfunction
         private void CreateCustomScripts(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Custom Script Code\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Custom Script Code{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
             foreach (var s in scripts)
             {
                 script.Append(s.script);
-                script.Append("\n");
+                script.Append($"{newline}");
             }
         }
 
@@ -927,9 +930,9 @@ endfunction
         private void GenerateTriggers(StringBuilder script)
         {
             script.Append(separator);
-            script.Append("//*\n");
-            script.Append("//*  Triggers\n");
-            script.Append("//*\n");
+            script.Append($"//*{newline}");
+            script.Append($"//*  Triggers{newline}");
+            script.Append($"//*{newline}");
             script.Append(separator);
 
             foreach (var i in triggers)
@@ -940,7 +943,7 @@ endfunction
                 /* TODO: support trigger to script conversion in editor.
                 if (!i.custom_text.empty())
                 {
-                    trigger_script += i.custom_text + "\n";
+                    trigger_script += i.custom_text + "{newline}";
                 }
                 else
                 */
@@ -982,10 +985,10 @@ endfunction
             StringBuilder pre_actions = new StringBuilder();
             StringBuilder actions = new StringBuilder();
 
-            events.Append($"function InitTrig_{triggerName} takes nothing returns nothing\n");
-            events.Append($"\tset {triggerVarName} takes nothing returns nothing\n");
+            events.Append($"function InitTrig_{triggerName} takes nothing returns nothing{newline}");
+            events.Append($"\tset {triggerVarName} = CreateTrigger(){newline}");
 
-            actions.Append($"function {triggerActionName} takes nothing returns nothing\n");
+            actions.Append($"function {triggerActionName} takes nothing returns nothing{newline}");
 
             foreach (var e in t.trigger.Events)
             {
@@ -1012,36 +1015,36 @@ endfunction
                         events.Append(", ");
 
                 }
-                events.Append(")\n");
+                events.Append($"){newline}");
             }
             foreach (var c in t.trigger.Conditions)
             {
-                conditions.Append($"\tif (not{ConvertTriggerElementToJass(c, pre_actions, triggerName, true)})) then\n");
-                conditions.Append("\treturn false\n");
-                conditions.Append("\tendif\n");
+                conditions.Append($"\tif (not{ConvertTriggerElementToJass(c, pre_actions, triggerName, true)})) then{newline}");
+                conditions.Append($"\treturn false{newline}");
+                conditions.Append($"\tendif{newline}");
             }
             foreach (var a in t.trigger.Actions)
             {
-                actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, triggerName, false)}\n");
+                actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, triggerName, false)}{newline}");
             }
-            actions.Append("endfunction\n\n");
+            actions.Append($"endfunction{newline}{newline}");
 
             if (conditions.ToString() != "")
             {
-                conditions.Insert(0, $"function Trig_{triggerName}_Conditions takes nothing returns nothing\n");
-                conditions.Append("\treturn true\n");
-                conditions.Append("endfunction\n");
+                conditions.Insert(0, $"function Trig_{triggerName}_Conditions takes nothing returns nothing{newline}");
+                conditions.Append($"\treturn true{newline}");
+                conditions.Append($"endfunction{newline}");
 
-                events.Append($"\tcall TriggerAddCondition({triggerVarName}, Condition(function Trig_{triggerName}_Conditions))\n");
+                events.Append($"\tcall TriggerAddCondition({triggerVarName}, Condition(function Trig_{triggerName}_Conditions)){newline}");
             }
 
             if (!t.isInitiallyOn)
-                events.Append($"\tcall DisableTrigger({triggerVarName})\n");
+                events.Append($"\tcall DisableTrigger({triggerVarName}){newline}");
 
-            events.Append($"\tcall TriggerAddAction({triggerVarName}, function {triggerActionName})\n");
-            events.Append($"endfunction\n");
+            events.Append($"\tcall TriggerAddAction({triggerVarName}, function {triggerActionName}){newline}");
+            events.Append($"endfunction{newline}");
 
-            string finalTrigger = $"// Trigger {triggerName}\n{separator}{pre_actions.ToString()}{conditions.ToString()}{actions.ToString()}{separator}{events.ToString()}";
+            string finalTrigger = $"// Trigger {triggerName}{newline}{separator}{pre_actions.ToString()}{conditions.ToString()}{actions.ToString()}{separator}{events.ToString()}";
 
             return finalTrigger;
         }
@@ -1060,9 +1063,9 @@ endfunction
             // Specials
             if (t.function.identifier == "WaitForCondition")
             {
-                script += "loop\n";
-                script += $"exitwhen({ConvertParametersToJass(f.parameters[0])}\n)";
-                script += $"call TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1])}))\n)";
+                script += $"loop{newline}";
+                script += $"exitwhen({ConvertParametersToJass(f.parameters[0])}{newline})";
+                script += $"call TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1])})){newline})";
                 script += "endloop";
                 return script;
             }
@@ -1074,15 +1077,15 @@ endfunction
 
                 script += $"set {loopIndex}={ConvertParametersToJass(f.parameters[0])}";
                 script += $"set {loopIndexEnd}={ConvertParametersToJass(f.parameters[1])}";
-                script += $"loop\n";
-                script += $"\texitwhen {loopIndex} > {loopIndexEnd}\n";
+                script += $"loop{newline}";
+                script += $"\texitwhen {loopIndex} > {loopIndexEnd}{newline}";
 
                 if (f.identifier == "ForLoopAMultiple")
                 {
                     ForLoopAMultiple loopA = (ForLoopAMultiple)f;
                     foreach (var action in loopA.Actions)
                     {
-                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                     }
                 }
                 else
@@ -1090,10 +1093,10 @@ endfunction
                     ForLoopBMultiple loopB = (ForLoopBMultiple)f;
                     foreach (var action in loopB.Actions)
                     {
-                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                     }
                 }
-                script += $"\tset {loopIndex}={loopIndex}+1\n";
+                script += $"\tset {loopIndex}={loopIndex}+1{newline}";
                 script += $"endloop";
                 return script;
             }
@@ -1104,15 +1107,15 @@ endfunction
                 string variable = loopVar.parameters[0].identifier;
 
                 script += $"set {variable} = ";
-                script += ConvertParametersToJass(loopVar.parameters[1]) + "\n";
-                script += "loop\n";
-                script += $"exitwhen {variable} > {ConvertParametersToJass(loopVar.parameters[2])}\n";
+                script += ConvertParametersToJass(loopVar.parameters[1]) + $"{newline}";
+                script += "loop{newline}";
+                script += $"exitwhen {variable} > {ConvertParametersToJass(loopVar.parameters[2])}{newline}";
                 foreach (var action in loopVar.Actions)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                 }
-                script += $"set {variable} = {variable} + 1\n";
-                script += "endloop\n";
+                script += $"set {variable} = {variable} + 1{newline}";
+                script += $"endloop{newline}";
                 return script;
             }
 
@@ -1128,17 +1131,20 @@ endfunction
                     if (ifThenElse.If.IndexOf(condition) != ifThenElse.If.Count - 1)
                         script += "and ";
                 }
-                script += ") then\n";
+                if (ifThenElse.If.Count == 0)
+                    script += "(true)";
+
+                script += $") then{newline}";
                 foreach (var action in ifThenElse.Then)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                 }
-                script += "else\n";
+                script += $"\telse{newline}";
                 foreach (var action in ifThenElse.Else)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                 }
-                script += "\tendif\n";
+                script += $"\tendif{newline}";
 
                 return script;
             }
@@ -1148,7 +1154,7 @@ endfunction
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script += $"call {f.identifier.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0])}), function {function_name})\n";
+                script += $"call {f.identifier.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0])}, function {function_name}){newline}";
 
                 string pre = string.Empty;
                 if (f.identifier == "ForForceMultiple")
@@ -1156,7 +1162,7 @@ endfunction
                     ForForceMultiple forForce = (ForForceMultiple)f;
                     foreach (var action in forForce.Actions)
                     {
-                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                     }
                 }
                 else
@@ -1164,12 +1170,12 @@ endfunction
                     ForGroupMultiple forGroup = (ForGroupMultiple)f;
                     foreach (var action in forGroup.Actions)
                     {
-                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                     }
                 }
-                pre_actions.Append($"function {function_name} takes nothing returns nothing\n");
+                pre_actions.Append($"function {function_name} takes nothing returns nothing{newline}");
                 pre_actions.Append(pre);
-                pre_actions.Append("\nendfunction\n");
+                pre_actions.Append($"{newline}endfunction{newline}");
 
                 return script;
             }
@@ -1184,22 +1190,22 @@ endfunction
                 const std::string function_name = generate_function_name(trigger_name);
 
                 // Remove multiple
-                output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", function " + function_name + ")\n";
+                output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", function " + function_name + "){newline}";
                 */
 
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}), function {function_name})\n";
+                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}), function {function_name}){newline}";
 
                 string pre = string.Empty;
                 foreach (var action in enumDest.Actions)
                 {
-                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                 }
-                pre_actions.Append($"function {function_name} takes nothing returns nothing\n");
+                pre_actions.Append($"function {function_name} takes nothing returns nothing{newline}");
                 pre_actions.Append(pre);
-                pre_actions.Append("\nendfunction\n");
+                pre_actions.Append($"{newline}endfunction{newline}");
 
                 return script;
             }
@@ -1215,22 +1221,22 @@ endfunction
 
                 // Remove multiple
                output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", " +
-			        resolve_parameter(eca.parameters[1], trigger_name, pre_actions, get_type(eca.name, 1)) + ", function " + function_name + ")\n";
+			        resolve_parameter(eca.parameters[1], trigger_name, pre_actions, get_type(eca.name, 1)) + ", function " + function_name + "){newline}";
                 */
 
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}, {ConvertParametersToJass(f.parameters[0])}), function {function_name})\n";
+                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}, {ConvertParametersToJass(f.parameters[0])}), function {function_name}){newline}";
 
                 string pre = string.Empty;
                 foreach (var action in enumDest.Actions)
                 {
-                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}\n";
+                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
                 }
-                pre_actions.Append($"function {function_name} takes nothing returns nothing\n");
+                pre_actions.Append($"function {function_name} takes nothing returns nothing{newline}");
                 pre_actions.Append(pre);
-                pre_actions.Append("\nendfunction\n");
+                pre_actions.Append($"{newline}endfunction{newline}");
 
                 return script;
             }
@@ -1326,7 +1332,7 @@ endfunction
         {
             string name = $"Trig_{triggerName}_{nameNumber}";
             nameNumber++;
-                
+
             return name;
             /*
             auto time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
