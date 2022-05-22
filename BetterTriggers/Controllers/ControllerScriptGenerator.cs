@@ -121,7 +121,7 @@ namespace BetterTriggers.Controllers
                     parameters[i].returnType == "destructable" ||
                     parameters[i].returnType == "item" ||
                     parameters[i].returnType == "rect" //||
-                    //parameters[i].returnType == "camerasetup" // not needed?
+                                                       //parameters[i].returnType == "camerasetup" // not needed?
                     ))
                 {
                     Value value = (Value)parameters[i];
@@ -159,7 +159,7 @@ namespace BetterTriggers.Controllers
             {
                 script.Append($"camerasetup {c.Name.Replace(" ", "_")} = null {newline}");
             }
-            
+
             foreach (var trigger in triggers)
             {
                 script.Append($"trigger gg_trg_{trigger.GetName().Replace(" ", "_")} {newline}");
@@ -201,7 +201,7 @@ namespace BetterTriggers.Controllers
             GenerateMapConfiguration(script);
 
 
-            // TODO: Feed to jasshelper here
+            // TODO: Feed to jasshelper here?
 
 
 
@@ -218,7 +218,7 @@ namespace BetterTriggers.Controllers
             script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append($"function CreateUnits takes nothing returns nothing{newline}");
+            script.Append($"function CreateAllUnits takes nothing returns nothing{newline}");
             script.Append($"\tlocal unit u{newline}");
             script.Append($"\tlocal integer unitID{newline}");
             script.Append($"\tlocal trigger t{newline}");
@@ -260,7 +260,7 @@ namespace BetterTriggers.Controllers
             script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append($"function CreateAllDestructibles takes nothing returns nothing{newline}");
+            script.Append($"function CreateAllDestructables takes nothing returns nothing{newline}");
             script.Append($"local real life{newline}");
 
             var dests = Destructibles.GetAll();
@@ -325,7 +325,7 @@ namespace BetterTriggers.Controllers
             script.Append($"//*{newline}");
             script.Append(separator);
 
-            script.Append($"function CreateAllRegions takes nothing returns nothing{newline}");
+            script.Append($"function CreateRegions takes nothing returns nothing{newline}");
             script.Append($"local weathereffect we{newline}");
             script.Append($"{newline}");
 
@@ -687,7 +687,7 @@ endfunction
                 if (p.Flags.HasFlag(PlayerFlags.FixedStartPosition) || p.Race == PlayerRace.Selectable)
                     script.Append($"\tcall ForcePlayerStartLocation({player + index.ToString()}){newline}");
 
-                script.Append($"\tcall SetPlayerColor({player} ConvertPlayerColor(\"{player + index.ToString()}\")){newline}");
+                script.Append($"\tcall SetPlayerColor({player} ConvertPlayerColor({index.ToString()})){newline}");
                 script.Append($"\tcall SetPlayerRacePreference({player} {races[(int)p.Race]} ){newline}");
                 script.Append($"\tcall SetPlayerRaceSelectable({player} true){newline}");
                 script.Append($"\tcall SetPlayerController({player} {playerType[(int)p.Controller]} ){newline}");
@@ -837,9 +837,17 @@ endfunction
 
             string terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(Info.MapInfo.LightEnvironment);
             string unit_lights = LightEnvironmentProvider.GetUnitLightEnvironmentModel(Info.MapInfo.LightEnvironment);
-            script.Append($"\tcall SetDayNightModels(\"" + terrain_lights + "\", \"" + unit_lights + $"\"){newline}");
+            //string terrain_lights = Info.MapInfo.LightEnvironment.ToString();
+            //string unit_lights = Info.MapInfo.LightEnvironment.ToString();
+            if (terrain_lights == "")
+                terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(War3Net.Build.Common.Tileset.LordaeronSummer);
+            if (unit_lights == "")
+                unit_lights = LightEnvironmentProvider.GetUnitLightEnvironmentModel(War3Net.Build.Common.Tileset.LordaeronSummer);
 
-            string sound_environment = Info.MapInfo.SoundEnvironment;
+
+            script.Append($"\tcall SetDayNightModels(\"" + terrain_lights.Replace(@"\", @"\\") + "\", \"" + unit_lights.Replace(@"\", @"\\") + $"\"){newline}");
+
+            string sound_environment = Info.MapInfo.SoundEnvironment; // TODO: Not working
             script.Append($"\tcall NewSoundEnvironment(\"" + sound_environment + $"\"){newline}");
 
             string ambient_day = "LordaeronSummerDay"; // TODO: Hardcoded
@@ -852,9 +860,9 @@ endfunction
             script.Append($"\tcall InitSounds(){newline}");
             script.Append($"\tcall CreateRegions(){newline}");
             script.Append($"\tcall CreateCameras(){newline}");
-            script.Append($"\tcall CreateDestructables(){newline}");
-            script.Append($"\tcall CreateItems(){newline}");
-            script.Append($"\tcall CreateUnits(){newline}");
+            script.Append($"\tcall CreateAllDestructables(){newline}");
+            script.Append($"\tcall CreateAllItems(){newline}");
+            script.Append($"\tcall CreateAllUnits(){newline}");
             script.Append($"\tcall InitBlizzard(){newline}");
 
             script.Append($"\tcall InitGlobals(){newline}");
@@ -1273,6 +1281,11 @@ endfunction
                 script += ")";
 
                 return script;
+            }
+
+            else if (f.identifier == "ReturnAction")
+            {
+                return $"return {newline}";
             }
 
             //script = ConvertEcasToJass(t.function, pre_actions, triggerName, nested);
