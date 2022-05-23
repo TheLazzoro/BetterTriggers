@@ -1061,7 +1061,7 @@ endfunction
 
         private string ConvertTriggerElementToJass(TriggerElement t, StringBuilder pre_actions, string triggerName, bool nested)
         {
-            string script = string.Empty;
+            StringBuilder script = new StringBuilder();
 
             if (!t.isEnabled)
                 return "";
@@ -1071,11 +1071,11 @@ endfunction
             // Specials
             if (t.function.identifier == "WaitForCondition")
             {
-                script += $"loop{newline}";
-                script += $"exitwhen({ConvertParametersToJass(f.parameters[0])}{newline})";
-                script += $"call TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1])})){newline})";
-                script += "endloop";
-                return script;
+                script.Append($"loop{newline}");
+                script.Append($"exitwhen({ConvertParametersToJass(f.parameters[0])}{newline})");
+                script.Append($"call TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1])})){newline})");
+                script.Append("endloop");
+                return script.ToString();
             }
 
             else if (f.identifier == "ForLoopAMultiple" || f.identifier == "ForLoopBMultiple")
@@ -1083,17 +1083,17 @@ endfunction
                 string loopIndex = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
                 string loopIndexEnd = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
 
-                script += $"set {loopIndex}={ConvertParametersToJass(f.parameters[0])}";
-                script += $"set {loopIndexEnd}={ConvertParametersToJass(f.parameters[1])}";
-                script += $"loop{newline}";
-                script += $"\texitwhen {loopIndex} > {loopIndexEnd}{newline}";
+                script.Append($"set {loopIndex}={ConvertParametersToJass(f.parameters[0])}");
+                script.Append($"set {loopIndexEnd}={ConvertParametersToJass(f.parameters[1])}");
+                script.Append($"loop{newline}");
+                script.Append($"\texitwhen {loopIndex} > {loopIndexEnd}{newline}");
 
                 if (f.identifier == "ForLoopAMultiple")
                 {
                     ForLoopAMultiple loopA = (ForLoopAMultiple)f;
                     foreach (var action in loopA.Actions)
                     {
-                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                        script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                     }
                 }
                 else
@@ -1101,12 +1101,12 @@ endfunction
                     ForLoopBMultiple loopB = (ForLoopBMultiple)f;
                     foreach (var action in loopB.Actions)
                     {
-                        script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                        script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                     }
                 }
-                script += $"\tset {loopIndex}={loopIndex}+1{newline}";
-                script += $"endloop";
-                return script;
+                script.Append($"\tset {loopIndex}={loopIndex}+1{newline}");
+                script.Append($"endloop");
+                return script.ToString();
             }
 
             else if (f.identifier == "ForLoopVarMultiple")
@@ -1114,47 +1114,47 @@ endfunction
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)f;
                 string variable = loopVar.parameters[0].identifier;
 
-                script += $"set {variable} = ";
-                script += ConvertParametersToJass(loopVar.parameters[1]) + $"{newline}";
-                script += "loop{newline}";
-                script += $"exitwhen {variable} > {ConvertParametersToJass(loopVar.parameters[2])}{newline}";
+                script.Append($"set {variable} = ");
+                script.Append(ConvertParametersToJass(loopVar.parameters[1]) + $"{newline}");
+                script.Append("loop{newline}");
+                script.Append($"exitwhen {variable} > {ConvertParametersToJass(loopVar.parameters[2])}{newline}");
                 foreach (var action in loopVar.Actions)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                    script.Append( $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                 }
-                script += $"set {variable} = {variable} + 1{newline}";
-                script += $"endloop{newline}";
-                return script;
+                script.Append($"set {variable} = {variable} + 1{newline}");
+                script.Append($"endloop{newline}");
+                return script.ToString();
             }
 
             else if (f.identifier == "IfThenElseMultiple")
             {
                 IfThenElse ifThenElse = (IfThenElse)f;
 
-                script += "if (";
+                script.Append("if (");
                 foreach (var condition in ifThenElse.If)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ";
+                    script.Append( $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
 
                     if (ifThenElse.If.IndexOf(condition) != ifThenElse.If.Count - 1)
-                        script += "and ";
+                        script.Append( "and ");
                 }
                 if (ifThenElse.If.Count == 0)
-                    script += "(true)";
+                    script.Append("(true)");
 
-                script += $") then{newline}";
+                script.Append( $") then{newline}");
                 foreach (var action in ifThenElse.Then)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                 }
-                script += $"\telse{newline}";
+                script.Append($"\telse{newline}");
                 foreach (var action in ifThenElse.Else)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                    script.Append( $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                 }
-                script += $"\tendif{newline}";
+                script.Append($"\tendif{newline}");
 
-                return script;
+                return script.ToString();
             }
 
             else if (f.identifier == "ForForceMultiple" || f.identifier == "ForGroupMultiple")
@@ -1162,7 +1162,7 @@ endfunction
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script += $"call {f.identifier.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0])}, function {function_name}){newline}";
+                script.Append($"call {f.identifier.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0])}, function {function_name}){newline}");
 
                 string pre = string.Empty;
                 if (f.identifier == "ForForceMultiple")
@@ -1185,7 +1185,7 @@ endfunction
                 pre_actions.Append(pre);
                 pre_actions.Append($"{newline}endfunction{newline}");
 
-                return script;
+                return script.ToString();
             }
 
             else if (f.identifier == "EnumDestructablesInRectAllMultiple")
@@ -1204,7 +1204,7 @@ endfunction
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}), function {function_name}){newline}";
+                script.Append($"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}), function {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumDest.Actions)
@@ -1215,7 +1215,7 @@ endfunction
                 pre_actions.Append(pre);
                 pre_actions.Append($"{newline}endfunction{newline}");
 
-                return script;
+                return script.ToString();
             }
 
             else if (f.identifier == "EnumDestructablesInCircleBJMultiple")
@@ -1235,7 +1235,7 @@ endfunction
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script += $"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}, {ConvertParametersToJass(f.parameters[0])}), function {function_name}){newline}";
+                script.Append($"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0])}, {ConvertParametersToJass(f.parameters[0])}), function {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumDest.Actions)
@@ -1246,41 +1246,41 @@ endfunction
                 pre_actions.Append(pre);
                 pre_actions.Append($"{newline}endfunction{newline}");
 
-                return script;
+                return script.ToString();
             }
 
             else if (f.identifier == "AndMultiple")
             {
                 AndMultiple andMultiple = (AndMultiple)f;
 
-                script += "(";
+                script.Append( "(");
                 foreach (var condition in andMultiple.And)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ";
+                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
 
                     if (andMultiple.And.IndexOf(condition) != andMultiple.And.Count - 1)
-                        script += "and ";
+                        script.Append("and ");
                 }
-                script += ")";
+                script.Append( ")");
 
-                return script;
+                return script.ToString();
             }
 
             else if (f.identifier == "OrMultiple")
             {
                 OrMultiple orMultiple = (OrMultiple)f;
 
-                script += "(";
+                script.Append( "(");
                 foreach (var condition in orMultiple.Or)
                 {
-                    script += $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ";
+                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
 
                     if (orMultiple.Or.IndexOf(condition) != orMultiple.Or.Count - 1)
-                        script += "or ";
+                        script.Append("or ");
                 }
-                script += ")";
+                script.Append(")");
 
-                return script;
+                return script.ToString();
             }
 
             else if (f.identifier == "ReturnAction")
@@ -1289,9 +1289,9 @@ endfunction
             }
 
             //script = ConvertEcasToJass(t.function, pre_actions, triggerName, nested);
-            script += $"call {ConvertParametersToJass(t.function)}";
+            script.Append($"call {ConvertParametersToJass(t.function)}");
 
-            return script;
+            return script.ToString();
         }
 
 
@@ -1351,29 +1351,6 @@ endfunction
             auto time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	        return "Trig_" + trigger_name + "_" + std::to_string(time & 0xFFFFFFFF);
             */
-        }
-
-
-        // TODO: Delete?
-        private void RecurseParameters(StringBuilder script, List<Parameter> parameters)
-        {
-            for (int i = 0; i < parameters.Count; i++)
-            {
-                if (parameters[i] is Function)
-                {
-                    var func = (Function)parameters[i];
-                    script.Append($"{func.identifier}(");
-                    RecurseParameters(script, func.parameters);
-                    script.Append(")");
-                }
-                else if (parameters[i] is Constant)
-                {
-                    var constant = (Constant)parameters[i];
-                    //script.Append(constant.codeText;
-                }
-                if (i < parameters.Count - 1)
-                    script.Append(",");
-            }
         }
     }
 }
