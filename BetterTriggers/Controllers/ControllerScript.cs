@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Xml;
 
@@ -42,19 +43,27 @@ namespace BetterTriggers.Controllers
             string script = string.Empty;
             if (File.Exists(filePath))
             {
-                try
+                bool didLoad = false;
+                while (!didLoad)
                 {
-                    script = File.ReadAllText(filePath);
-                }
-                catch (IOException e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine(e.StackTrace);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine(e.StackTrace);
+                    try
+                    {
+                        script = File.ReadAllText(filePath);
+                        didLoad = true;
+                    }
+                    catch (IOException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine(e.StackTrace);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine(e.StackTrace);
+                    } finally
+                    {
+                        Thread.Sleep(100);
+                    }
                 }
             }
 

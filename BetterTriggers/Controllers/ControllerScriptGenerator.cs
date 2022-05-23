@@ -1333,7 +1333,10 @@ endfunction
             else if (parameter is Value)
             {
                 Value v = (Value)parameter;
-                output += v.identifier;
+                if (v.returnType == "StringExt")
+                    output += "\"" + v.identifier + "\"";
+                else
+                    output += v.identifier;
             }
 
             return output;

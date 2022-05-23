@@ -37,7 +37,7 @@
 
         <Label Content="Select Warcraft III installation directory:" Grid.Column="1" Grid.Row="4" Foreground="White" />
         <TextBox x:Name="textBoxRoot" Grid.Column="1" Grid.Row="5" Margin="0,0,70,0" Background="#FF323232" Foreground="White"/>
-        <Button x:Name="btnSelectWar3Dir" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right" Width="60" Content="Select..." Foreground="White" Background="#FF323232" Click="btnSelectWar3Dir_Click" />
+        <Button x:Name="btnSelectWar3Dir" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right" Width="60" Content="Select..." Click="btnSelectWar3Dir_Click" />
         <Label x:Name="lblError" Content="Invalid directory" Visibility="Hidden" Grid.Column="1" Grid.Row="6" VerticalAlignment="Top" Foreground="#FFFF6262" />
 
         <Label Content="Select language:" Grid.Column="1" Grid.Row="7" Foreground="White" />
@@ -55,6 +55,6 @@
             <ComboBoxItem Content="Chinese (Taiwan)"></ComboBoxItem>
         </ComboBox>
 
-        <Button x:Name="btnContinue" Content="Continue"  Grid.Column="1" Grid.Row="10" Foreground="White" Background="#FF323232" Click="btnContinue_Click" />
+        <Button x:Name="btnContinue" Content="Continue"  Grid.Column="1" Grid.Row="10" Click="btnContinue_Click" />
     </Grid>
 </Window>
