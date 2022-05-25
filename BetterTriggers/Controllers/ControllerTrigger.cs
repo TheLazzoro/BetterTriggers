@@ -146,7 +146,7 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < triggerElements.Count; i++)
             {
                 var triggerElement = triggerElements[i];
-                removeCount += VerifyParameters(triggerElement.function.parameters);
+                removeCount += VerifyParametersAndRemove(triggerElement.function.parameters);
 
 
                 if(triggerElement.function is IfThenElse)
@@ -206,7 +206,7 @@ namespace BetterTriggers.Controllers
             return removeCount;
         }
 
-        private int VerifyParameters(List<Parameter> parameters)
+        private int VerifyParametersAndRemove(List<Parameter> parameters)
         {
             int removeCount = 0;
             ControllerMapData controllerMapData = new ControllerMapData();
@@ -238,11 +238,32 @@ namespace BetterTriggers.Controllers
                 if(parameter is Function)
                 {
                     var function = (Function)parameter;
-                    removeCount += VerifyParameters(function.parameters);
+                    removeCount += VerifyParametersAndRemove(function.parameters);
                 }
             }
 
             return removeCount;
+        }
+
+        public int VerifyParameters(List<Parameter> parameters)
+        {
+            int invalidCount = 0;
+            ControllerMapData controllerMapData = new ControllerMapData();
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
+                if(parameter.identifier == null && parameter.returnType != "nothing")
+                    invalidCount++;
+
+                if(parameter is Function)
+                {
+                    var function = (Function)parameter;
+                    invalidCount += VerifyParameters(function.parameters);
+                }
+            }
+
+            return invalidCount;
         }
 
 

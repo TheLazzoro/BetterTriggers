@@ -31,6 +31,8 @@ namespace BetterTriggers.Controllers
         int nameNumber = 0;
         string newline = System.Environment.NewLine;
 
+        ControllerTrigger controllerTrigger = new ControllerTrigger();
+
 
         public void GenerateScript(string outputPath)
         {
@@ -106,7 +108,7 @@ namespace BetterTriggers.Controllers
 
                 script.Append("globals" + newline);
                 script.Append(newline);
-                script.Append(variable.Type + " " + variable.Name);
+                script.Append(variable.Type + " udg_" + variable.Name);
                 script.Append(newline);
                 script.Append("endglobals" + newline);
             }
@@ -116,17 +118,16 @@ namespace BetterTriggers.Controllers
             var parameters = controllerTrigger.GetParametersAll();
             for (int i = 0; i < parameters.Count; i++)
             {
-                if (parameters[i] is Value && (
-                    parameters[i].returnType == "unit" ||
-                    parameters[i].returnType == "destructable" ||
-                    parameters[i].returnType == "item" ||
-                    parameters[i].returnType == "rect" //||
-                                                       //parameters[i].returnType == "camerasetup" // not needed?
-                    ))
+                if (parameters[i] is Value && isMapObject(parameters[i] as Value))
                 {
                     Value value = (Value)parameters[i];
 
-                    generatedVarNames.TryAdd(value.identifier, value);
+                    if (value.returnType == "unit")
+                        generatedVarNames.TryAdd("gg_unit_" + value.identifier, value);
+                    else if (value.returnType == "destructable")
+                        generatedVarNames.TryAdd("gg_dest_" + value.identifier, value);
+                    else if (value.returnType == "item")
+                        generatedVarNames.TryAdd("gg_item_" + value.identifier, value);
                 }
             }
             script.Append("globals" + newline);
@@ -142,7 +143,7 @@ namespace BetterTriggers.Controllers
             var regions = Regions.GetAll();
             foreach (var r in regions)
             {
-                script.Append($"rect {r.Name.Replace(" ", "_")} = null {newline}");
+                script.Append($"rect gg_rect_{r.Name.Replace(" ", "_")} = null {newline}");
             }
             var sounds = Sounds.GetSoundsAll();
             foreach (var s in sounds)
@@ -157,7 +158,8 @@ namespace BetterTriggers.Controllers
             var cameras = Cameras.GetAll();
             foreach (var c in cameras)
             {
-                script.Append($"camerasetup {c.Name.Replace(" ", "_")} = null {newline}");
+                var cameraName = $"gg_cam_{c.Name.Replace(" ", "_")}";
+                script.Append($"camerasetup {cameraName} = null {newline}");
             }
 
             foreach (var trigger in triggers)
@@ -174,7 +176,7 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
-                script.Append("set " + variable.Name + "=" + variable.InitialValue + newline);
+                script.Append("set udg_" + variable.Name + "=" + variable.InitialValue + newline);
             }
             script.Append("endfunction" + newline);
 
@@ -209,6 +211,19 @@ namespace BetterTriggers.Controllers
         }
 
 
+        private bool isMapObject(Value value)
+        {
+            if (
+                    value.returnType == "unit" ||
+                    value.returnType == "destructable" ||
+                    value.returnType == "item" ||
+                    value.returnType == "rect" ||
+                    value.returnType == "camerasetup"
+                    )
+                return true;
+            else return false;
+        }
+
 
         private void CreateUnits(StringBuilder script)
         {
@@ -242,9 +257,11 @@ namespace BetterTriggers.Controllers
                 if (owner == "27")
                     owner = "PLAYER_NEUTRAL_PASSIVE";
 
+                var varName = $"gg_unit_{u.ToString()}_{u.CreationNumber}";
+
                 Value value;
-                if (generatedVarNames.TryGetValue($"{u.ToString()}_{u.CreationNumber}", out value)) // unit with generated variable
-                    script.Append($"set {u.ToString()}_{u.CreationNumber} = BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}'){newline}");
+                if (generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
+                    script.Append($"set {varName} = BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}'){newline}");
                 else
                     script.Append($"call BlzCreateUnitWithSkin(Player({owner}), '{id}', {x}, {y}, {angle}, '{skinId}'){newline}");
             }
@@ -274,14 +291,16 @@ namespace BetterTriggers.Controllers
                 var variation = d.Variation;
                 var skin = Int32Extensions.ToRawcode(d.SkinId);
 
+                var varName = $"gg_dest_{d.ToString()}_{d.CreationNumber}";
+
                 Value value;
-                if (generatedVarNames.TryGetValue($"{d.ToString()}_{d.CreationNumber}", out value)) // dest with generated variable
+                if (generatedVarNames.TryGetValue(varName, out value)) // dest with generated variable
                 {
-                    script.Append($"set {d.ToString()}_{d.CreationNumber} = BlzCreateDestructableWithSkin('{id}', {x}, {y}, {angle}, {scale}, {variation}, '{skin}'){newline}");
+                    script.Append($"set {varName} = BlzCreateDestructableWithSkin('{id}', {x}, {y}, {angle}, {scale}, {variation}, '{skin}'){newline}");
                     if (d.Life < 100)
                     {
-                        script.Append($"set life = GetDestructableLife({d.ToString()}_{d.CreationNumber}){newline}");
-                        script.Append($"call SetDestructableLife({d.ToString()}_{d.CreationNumber}, {(d.Life * 0.01).ToString(enUS)} * life){newline}");
+                        script.Append($"set life = GetDestructableLife({varName}){newline}");
+                        script.Append($"call SetDestructableLife({varName}, {(d.Life * 0.01).ToString(enUS)} * life){newline}");
                     }
                 }
             }
@@ -338,12 +357,14 @@ namespace BetterTriggers.Controllers
                 var right = r.Right;
                 var top = r.Top;
 
-                script.Append($"set {id} = Rect({left}, {bottom}, {right}, {top}){newline}");
+                var varName = "gg_rect_" + id;
+
+                script.Append($"set {varName} = Rect({left}, {bottom}, {right}, {top}){newline}");
                 if (r.WeatherType == War3Net.Build.WeatherType.None)
                     continue;
 
-                script.Append($"set we = AddWeatherEffect({id}, '{Int32Extensions.ToRawcode((int)r.WeatherType)}'){newline}");
-                script.Append($"EnableWeatherEffect(we, true){newline}");
+                script.Append($"set we = AddWeatherEffect({varName}, '{Int32Extensions.ToRawcode((int)r.WeatherType)}'){newline}");
+                script.Append($"call EnableWeatherEffect(we, true){newline}");
             }
 
 
@@ -365,7 +386,8 @@ namespace BetterTriggers.Controllers
             var cameras = Cameras.GetAll();
             foreach (var c in cameras)
             {
-                var id = c.Name.Replace(" ", "_");
+                var id = $"gg_cam_{c.Name.Replace(" ", "_")}";
+
 
                 script.Append($"set {id} = CreateCameraSetup(){newline}");
                 script.Append($"call CameraSetupSetField({id}, CAMERA_FIELD_ZOFFSET, {c.ZOffset.ToString(enUS)}, 0.0){newline}");
@@ -658,7 +680,7 @@ endfunction
             script.Append($"function RunInitializationTriggers takes nothing returns nothing{newline}");
             foreach (var t in initialization_triggers)
             {
-                script.Append($"\tcall ConditionalTriggerExecute(\"{t}\"){newline}");
+                script.Append($"\tcall ConditionalTriggerExecute({t}){newline}");
             }
             script.Append($"endfunction{newline}");
         }
@@ -1066,10 +1088,21 @@ endfunction
             if (!t.isEnabled)
                 return "";
 
-            Function f = (Function)t.function;
+            Function f = t.function;
+
+            int invalidParams = controllerTrigger.VerifyParameters(f.parameters);
+            if (invalidParams > 0)
+                return "";
+
 
             // Specials
-            if (t.function.identifier == "WaitForCondition")
+            if (f.identifier == "SetVariable")
+            {
+                script.Append($"set {ConvertParametersToJass(f.parameters[0])} = {ConvertParametersToJass(f.parameters[1])}");
+                return script.ToString();
+            }
+
+            else if (f.identifier == "WaitForCondition")
             {
                 script.Append($"loop{newline}");
                 script.Append($"exitwhen({ConvertParametersToJass(f.parameters[0])}{newline})");
@@ -1120,7 +1153,7 @@ endfunction
                 script.Append($"exitwhen {variable} > {ConvertParametersToJass(loopVar.parameters[2])}{newline}");
                 foreach (var action in loopVar.Actions)
                 {
-                    script.Append( $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
+                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                 }
                 script.Append($"set {variable} = {variable} + 1{newline}");
                 script.Append($"endloop{newline}");
@@ -1134,15 +1167,15 @@ endfunction
                 script.Append("if (");
                 foreach (var condition in ifThenElse.If)
                 {
-                    script.Append( $"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
+                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
 
                     if (ifThenElse.If.IndexOf(condition) != ifThenElse.If.Count - 1)
-                        script.Append( "and ");
+                        script.Append("and ");
                 }
                 if (ifThenElse.If.Count == 0)
                     script.Append("(true)");
 
-                script.Append( $") then{newline}");
+                script.Append($") then{newline}");
                 foreach (var action in ifThenElse.Then)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
@@ -1150,7 +1183,7 @@ endfunction
                 script.Append($"\telse{newline}");
                 foreach (var action in ifThenElse.Else)
                 {
-                    script.Append( $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
+                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                 }
                 script.Append($"\tendif{newline}");
 
@@ -1253,7 +1286,7 @@ endfunction
             {
                 AndMultiple andMultiple = (AndMultiple)f;
 
-                script.Append( "(");
+                script.Append("(");
                 foreach (var condition in andMultiple.And)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
@@ -1261,7 +1294,7 @@ endfunction
                     if (andMultiple.And.IndexOf(condition) != andMultiple.And.Count - 1)
                         script.Append("and ");
                 }
-                script.Append( ")");
+                script.Append(")");
 
                 return script.ToString();
             }
@@ -1270,7 +1303,7 @@ endfunction
             {
                 OrMultiple orMultiple = (OrMultiple)f;
 
-                script.Append( "(");
+                script.Append("(");
                 foreach (var condition in orMultiple.Or)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
@@ -1321,10 +1354,11 @@ endfunction
             else if (parameter is VariableRef)
             {
                 VariableRef v = (VariableRef)parameter;
-                output += v.identifier;
-
                 ControllerVariable controller = new ControllerVariable();
                 Variable variable = controller.GetByReference(v);
+
+                output += "udg_" + v.identifier;
+
                 if (variable.IsArray)
                     output += $"[{v.arrayIndexValues[0]}]";
                 else if (variable.IsArray && variable.IsTwoDimensions)
@@ -1333,8 +1367,20 @@ endfunction
             else if (parameter is Value)
             {
                 Value v = (Value)parameter;
-                if (v.returnType == "StringExt")
-                    output += "\"" + v.identifier + "\"";
+                if (v.returnType == "StringExt" || v.returnType == "modelfile")
+                    output += "\"" + v.identifier.Replace(@"\", @"\\") + "\"";
+                else if (v.returnType == "unitcode")
+                    output += "'" + v.identifier + "'";
+                else if (v.returnType == "unit")
+                    output += $"gg_unit_{v.identifier.Replace(" ", "_")}";
+                else if (v.returnType == "destructable")
+                    output += $"gg_dest_{v.identifier.Replace(" ", "_")}";
+                else if (v.returnType == "item")
+                    output += $"gg_item_{v.identifier.Replace(" ", "_")}";
+                else if (v.returnType == "rect")
+                    output += $"gg_rect_{v.identifier.Replace(" ", "_")}";
+                else if (v.returnType == "camerasetup")
+                    output += $"gg_cam_{v.identifier.Replace(" ", "_")}";
                 else
                     output += v.identifier;
             }
