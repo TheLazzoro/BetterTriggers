@@ -189,16 +189,17 @@ namespace GUI.Components.TriggerEditor
         public void OnCreated(int insertIndex)
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
+            var triggerControl = this.GetTriggerControl();
             INode parent = null;
-            for (int i = 0; i < GetTriggerControl().treeViewTriggers.Items.Count; i++)
+            for (int i = 0; i < triggerControl.treeViewTriggers.Items.Count; i++)
             {
-                var node = GetTriggerControl().treeViewTriggers.Items[i];
+                var node = triggerControl.treeViewTriggers.Items[i];
                 parent = controller.FindParent(node as TreeViewItem, this);
                 if (parent != null)
                     break;
             }
             controller.OnTriggerElementCreate(this, parent, insertIndex);
-            this.GetTriggerControl().OnStateChange();
+            triggerControl.OnStateChange();
 
             this.IsSelected = true;
             this.Focus();

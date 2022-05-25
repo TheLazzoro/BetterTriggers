@@ -88,7 +88,7 @@ namespace GUI.Components
             for (int i = 0; i < treeViewItem.Items.Count; i++)
             {
                 var child = (TreeViewItem)treeViewItem.Items[i];
-                if(child is TreeViewTriggerElement)
+                if (child is TreeViewTriggerElement)
                 {
                     var item = treeViewItem.Items[i] as TreeViewTriggerElement;
                     item.UpdateTreeItem();
@@ -212,12 +212,7 @@ namespace GUI.Components
             currentDescriptionBlock = textBlockDescription;
         }
 
-        private void treeViewTriggers_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _startPoint = e.GetPosition(null);
-        }
-
-        private void treeViewTriggers_PreviewMouseMove(object sender, MouseEventArgs e)
+        private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && !_IsDragging && !contextMenu.IsVisible)
             {
@@ -264,7 +259,7 @@ namespace GUI.Components
             if (!_IsDragging || dragItem == null || e.Source is TreeView)
                 return;
 
-            var parent = (INode)dragItem.Parent;
+            INode targetParentGUI = null;
 
             // It is necessary to traverse the item's parents since drag & drop picks up
             // things like 'TextBlock' and 'Border' on the drop target when dropping the 
@@ -280,35 +275,31 @@ namespace GUI.Components
                 var location = (TreeViewTriggerElement)whereItemWasDropped;
                 insertIndex = node.GetTriggerElements().IndexOf(location.triggerElement);
                 newParent = location.triggerElement.Parent;
+                targetParentGUI = (INode)whereItemWasDropped.Parent;
+
+                bool isSameParent = newParent == item.triggerElement.Parent;
+                if (isSameParent && insertIndex == oldIndex)
+                    return;
             }
             else
             {
                 var location = (INode)whereItemWasDropped;
                 insertIndex = 0;
                 newParent = location.GetTriggerElements();
+                targetParentGUI = (INode)whereItemWasDropped;
             }
 
-            if (whereItemWasDropped is TreeViewTriggerElement)
-            {
-                bool isSameParent = newParent == item.triggerElement.Parent;
-                if (isSameParent && insertIndex == oldIndex)
-                    return;
-
-                parent = node;
-
-            }
-            else if (whereItemWasDropped is NodeEvent && dragItem.Parent is NodeEvent)
-                parent = (INode)whereItemWasDropped;
-            else if (whereItemWasDropped is NodeCondition && dragItem.Parent is NodeCondition)
-                parent = (INode)whereItemWasDropped;
-            else if (whereItemWasDropped is NodeAction && dragItem.Parent is NodeAction)
-                parent = (INode)whereItemWasDropped;
-
+            if (dragItem.Parent is NodeEvent && !(targetParentGUI is NodeEvent))
+                return;
+            else if (dragItem.Parent is NodeCondition && !(targetParentGUI is NodeCondition))
+                return;
+            else if (dragItem.Parent is NodeAction && !(targetParentGUI is NodeAction))
+                return;
 
 
             if (whereItemWasDropped != dragItem)
             {
-                CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, parent.GetTriggerElements(), insertIndex);
+                CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, targetParentGUI.GetTriggerElements(), insertIndex);
                 command.Execute();
             }
         }
@@ -351,15 +342,6 @@ namespace GUI.Components
             return (INode)traversedTarget;
         }
 
-        private void treeViewTriggers_PreviewDragEnter(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void treeViewTriggers_PreviewDrop(object sender, DragEventArgs e)
-        {
-            // Use this event to display feedback to the user when dragging?
-        }
 
         private void treeViewTriggers_KeyDown(object sender, KeyEventArgs e)
         {

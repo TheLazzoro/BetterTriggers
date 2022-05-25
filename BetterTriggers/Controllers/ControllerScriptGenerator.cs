@@ -1049,7 +1049,11 @@ endfunction
             }
             foreach (var c in t.trigger.Conditions)
             {
-                conditions.Append($"\tif (not{ConvertTriggerElementToJass(c, pre_actions, triggerName, true)})) then{newline}");
+                string condition = ConvertTriggerElementToJass(c, pre_actions, triggerName, true);
+                if (condition == "(\t)")
+                    condition = "true";
+
+                conditions.Append($"\tif (not ({condition})) then{newline}");
                 conditions.Append($"\treturn false{newline}");
                 conditions.Append($"\tendif{newline}");
             }
@@ -1061,7 +1065,7 @@ endfunction
 
             if (conditions.ToString() != "")
             {
-                conditions.Insert(0, $"function Trig_{triggerName}_Conditions takes nothing returns nothing{newline}");
+                conditions.Insert(0, $"function Trig_{triggerName}_Conditions takes nothing returns boolean{newline}");
                 conditions.Append($"\treturn true{newline}");
                 conditions.Append($"endfunction{newline}");
 
@@ -1319,6 +1323,11 @@ endfunction
             else if (f.identifier == "ReturnAction")
             {
                 return $"return {newline}";
+            }
+
+            else if (f.identifier.Length >= 15 && f.identifier.Substring(0, 15) == "OperatorCompare")
+            {
+                return $"{ConvertParametersToJass(f.parameters[0])} {ConvertParametersToJass(f.parameters[1])} {ConvertParametersToJass(f.parameters[2])}";
             }
 
             //script = ConvertEcasToJass(t.function, pre_actions, triggerName, nested);

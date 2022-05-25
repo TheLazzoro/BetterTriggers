@@ -90,6 +90,9 @@ namespace GUI.Controllers
 
                 if (treeItem.Items.Count > 0)
                     node = FindParent(treeItem, treeViewTriggerElement);
+
+                if (node != null)
+                    return node;
             }
 
             return node;

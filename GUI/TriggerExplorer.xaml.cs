@@ -115,7 +115,7 @@ namespace GUI
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed && !_IsDragging)
+            if (e.LeftButton == MouseButtonState.Pressed && !_IsDragging)
             {
                 Point position = e.GetPosition(null);
                 if (Math.Abs(position.X - _startPoint.X) >
@@ -128,10 +128,6 @@ namespace GUI
             }
         }
 
-        private void treeViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _startPoint = e.GetPosition(null);
-        }
 
         private void StartDrag(MouseEventArgs e)
         {

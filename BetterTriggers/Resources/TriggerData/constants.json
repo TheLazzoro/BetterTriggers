@@ -1,84 +1,84 @@
 [
     {
         "ParamType": 2,
-        "identifier": "\"+\"",
+        "identifier": "+",
         "key": "OperatorAdd",
         "name": "WESTRING_ARITHMETICOPERATOR_ADD",
         "returnType": "ArithmeticOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"-\"",
+        "identifier": "-",
         "key": "OperatorSubtract",
         "name": "WESTRING_ARITHMETICOPERATOR_SUBTRACT",
         "returnType": "ArithmeticOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"*\"",
+        "identifier": "*",
         "key": "OperatorMultiply",
         "name": "WESTRING_ARITHMETICOPERATOR_MULTIPLY",
         "returnType": "ArithmeticOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"/\"",
+        "identifier": "/",
         "key": "OperatorDivide",
         "name": "WESTRING_ARITHMETICOPERATOR_DIVIDE",
         "returnType": "ArithmeticOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"==\"",
+        "identifier": "==",
         "key": "OperatorEqual",
         "name": "WESTRING_COMPARISONOPERATOR_EQUAL",
         "returnType": "ComparisonOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"!=\"",
+        "identifier": "!=",
         "key": "OperatorNotEqual",
         "name": "WESTRING_COMPARISONOPERATOR_NOTEQUAL",
         "returnType": "ComparisonOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\">\"",
+        "identifier": ">",
         "key": "OperatorGreater",
         "name": "WESTRING_COMPARISONOPERATOR_GREATER",
         "returnType": "ComparisonOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\">=\"",
+        "identifier": ">=",
         "key": "OperatorGreaterEq",
         "name": "WESTRING_COMPARISONOPERATOR_GREATEREQ",
         "returnType": "ComparisonOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"<\"",
+        "identifier": "<",
         "key": "OperatorLess",
         "name": "WESTRING_COMPARISONOPERATOR_LESS",
         "returnType": "ComparisonOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"<=\"",
+        "identifier": "<=",
         "key": "OperatorLessEq",
         "name": "WESTRING_COMPARISONOPERATOR_LESSEQ",
         "returnType": "ComparisonOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"==\"",
+        "identifier": "==",
         "key": "OperatorEqualENE",
         "name": "WESTRING_EQUALNOTEQUALOPERATOR_EQUAL",
         "returnType": "EqualNotEqualOperator"
     },
     {
         "ParamType": 2,
-        "identifier": "\"!=\"",
+        "identifier": "!=",
         "key": "OperatorNotEqualENE",
         "name": "WESTRING_EQUALNOTEQUALOPERATOR_NOTEQUAL",
         "returnType": "EqualNotEqualOperator"
