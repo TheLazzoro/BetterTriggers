@@ -17,43 +17,21 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             InitializeComponent();
 
             ControllerVariable controllerVariable = new ControllerVariable();
-            List<ExplorerElementVariable> elements = controllerVariable.GetExplorerElementAll();
-            List<Variable> variables = new List<Variable>();
+            List<VariableRef> variables = controllerVariable.GetVariableRefs(returnType);
             List<Searchable> objects = new List<Searchable>();
 
-            for (int i = 0; i < elements.Count; i++)
-            {
-                if (returnType != "AnyGlobal" && elements[i].variable.Type != returnType)
-                    continue;
-
-                var explorerElement = elements[i];
-                string name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.GetPath());
-                Variable variable = explorerElement.variable;
-                variable.Name = name;
-                variables.Add(variable);
-            }
-
-            // Creates a list of saveable variables
             for (int i = 0; i < variables.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = variables[i].Name;
-                VariableRef varRef = new VariableRef()
-                {
-                    identifier = controllerVariable.GetVariableNameById(variables[i].Id),
-                    returnType = variables[i].Type,
-                    VariableId = variables[i].Id,
-                };
-                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
-                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
-                listItem.Tag = varRef;
+                listItem.Content = variables[i].identifier;
+                listItem.Tag = variables[i];
 
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
                     Words = new List<string>()
                     {
-                        variables[i].Name.ToLower()
+                        variables[i].identifier.ToLower()
                     },
                 });
                 var searchables = new Searchables(objects);

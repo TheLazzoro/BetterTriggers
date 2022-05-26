@@ -2735,6 +2735,32 @@
     },
     {
         "ParamType": 1,
+        "parameters": [
+            {
+                "identifier": null,
+                "name": "real",
+                "returnType": "real"
+            },
+            {
+                "identifier": null,
+                "name": "ArithmeticOperator",
+                "returnType": "ArithmeticOperator"
+            },
+            {
+                "identifier": null,
+                "name": "real",
+                "returnType": "real"
+            }
+        ],
+        "paramText": "~Value, ,~Operator, ,~Value",
+        "description": "",
+        "category": 8,
+        "identifier": "OperatorReal",
+        "name": "Arithmetic",
+        "returnType": "real"
+    },
+    {
+        "ParamType": 1,
         "parameters": [],
         "paramText": "Integer A",
         "description": "",

@@ -113,8 +113,10 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     var varName = ContainerVariables.GetVariableNameById(variable.Id);
 
+                    var type = variableRef.returnType == "integervar" ? "integer" : variableRef.returnType; // hack
+
                     // This exists in case a variable has been changed
-                    if (varName == null || varName == "" || variable.Type != parameters[paramIndex].returnType)
+                    if (varName == null || varName == "" || variable.Type != type)
                     {
                         parameters[paramIndex] = new Parameter()
                         {

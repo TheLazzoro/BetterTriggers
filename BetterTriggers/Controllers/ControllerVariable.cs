@@ -47,9 +47,57 @@ namespace BetterTriggers.Controllers
             File.WriteAllText(directory + @"\" + name + ".var", json);
         }
 
-        public List<ExplorerElementVariable> GetExplorerElementAll()
+        public List<Variable> GetVariables(string returnType)
         {
-            return ContainerVariables.variableContainer;
+            List<Variable> list = new List<Variable>();
+
+            for (int i = 0; i < ContainerVariables.variableContainer.Count; i++)
+            {
+                if (returnType != "AnyGlobal" && ContainerVariables.variableContainer[i].variable.Type != returnType)
+                    continue;
+
+                var explorerElement = ContainerVariables.variableContainer[i];
+                string name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.GetPath());
+                Variable variable = explorerElement.variable;
+                variable.Name = name;
+                list.Add(variable);
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Creates a list of saveable variables
+        /// </summary>
+        /// <param name="returnType"></param>
+        /// <returns></returns>
+        public List<VariableRef> GetVariableRefs(string returnType)
+        {
+            bool wasIntegervar = false;
+            if (returnType == "integervar")
+            {
+                wasIntegervar = true;
+                returnType = "integer";
+            }
+
+            List<Variable> variables = GetVariables(returnType);
+            List<VariableRef> list = new List<VariableRef>();
+
+            for (int i = 0; i < variables.Count; i++)
+            {
+                VariableRef varRef = new VariableRef()
+                {
+                    identifier = GetVariableNameById(variables[i].Id),
+                    returnType = wasIntegervar == false ? variables[i].Type : "integervar",
+                    VariableId = variables[i].Id,
+                };
+                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
+                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
+
+                list.Add(varRef);
+            }
+
+            return list;
         }
 
         public string GetVariableNameById(int id)

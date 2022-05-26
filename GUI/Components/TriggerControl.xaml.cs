@@ -272,6 +272,12 @@ namespace GUI.Components
             return mousePosition.X < container.ActualWidth / 2;
         }
 
+        /// <summary>
+        /// Event happens when trigger element is dragged.
+        /// All rules for dragging and inserting happens here.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void treeViewItem_DragOver(object sender, DragEventArgs e)
         {
             if (dragItem == null)

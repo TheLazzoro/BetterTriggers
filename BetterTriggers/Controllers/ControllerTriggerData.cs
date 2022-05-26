@@ -30,14 +30,49 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public List<FunctionTemplate> LoadAllCalls()
+        public List<FunctionTemplate> LoadAllCalls(string returnType)
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
+
+            // Special case for for GUI "Matching" parameter
+            bool wasBoolCall = false;
+            if (returnType == "boolcall")
+            {
+                wasBoolCall = true;
+                returnType = "boolexpr";
+            }
+
+            // Special case for GUI "Action" parameter
+            else if(returnType  == "code")
+            {
+                for (int i = 0; i < ContainerTriggerData.ActionTemplates.Count; i++)
+                {
+                    var template = ContainerTriggerData.ActionTemplates[i];
+                    if (!template.identifier.Contains("Multiple"))
+                        list.Add(template.Clone());
+                }
+                list.ForEach(call => call.returnType = "code");
+
+                return list;
+            }
+
             for (int i = 0; i < ContainerTriggerData.CallTemplates.Count; i++)
             {
                 var template = ContainerTriggerData.CallTemplates[i];
-                list.Add(template.Clone());
+                if (returnType == template.returnType)
+                    list.Add(template.Clone());
             }
+            for (int i = 0; i < ContainerTriggerData.ConditionTemplates.Count; i++)
+            {
+                var template = ContainerTriggerData.ConditionTemplates[i];
+                if (returnType == template.returnType)
+                    list.Add(template.Clone());
+            }
+            if(wasBoolCall)
+            {
+                list.ForEach(call => call.returnType = "boolcall");
+            }
+
             return list;
         }
 

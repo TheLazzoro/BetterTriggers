@@ -18,7 +18,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             InitializeComponent();
 
             ControllerTriggerData controller = new ControllerTriggerData();
-            List<FunctionTemplate> functions = controller.LoadAllCalls();
+            List<FunctionTemplate> functions = controller.LoadAllCalls(returnType);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < functions.Count; i++)

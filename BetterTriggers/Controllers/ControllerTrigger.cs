@@ -149,14 +149,14 @@ namespace BetterTriggers.Controllers
                 removeCount += VerifyParametersAndRemove(triggerElement.function.parameters);
 
 
-                if(triggerElement.function is IfThenElse)
+                if (triggerElement.function is IfThenElse)
                 {
                     var special = (IfThenElse)triggerElement.function;
                     removeCount += RemoveInvalidReferences(special.If);
                     removeCount += RemoveInvalidReferences(special.Then);
                     removeCount += RemoveInvalidReferences(special.Else);
                 }
-                else if(triggerElement.function is AndMultiple)
+                else if (triggerElement.function is AndMultiple)
                 {
                     var special = (AndMultiple)triggerElement.function;
                     removeCount += RemoveInvalidReferences(special.And);
@@ -214,20 +214,20 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                if(parameter is VariableRef)
+                if (parameter is VariableRef)
                 {
                     ControllerVariable controllerVariable = new ControllerVariable();
                     Variable variable = controllerVariable.GetByReference(parameter as VariableRef);
-                    if(variable == null)
+                    if (variable == null)
                     {
                         removeCount++;
                         parameters[i] = new Parameter() { returnType = parameter.returnType };
                     }
                 }
-                else if(parameter is Value)
+                else if (parameter is Value)
                 {
                     bool exists = controllerMapData.ReferencedDataExists(parameter as Value);
-                    if(!exists)
+                    if (!exists)
                     {
                         removeCount++;
                         parameters[i] = new Parameter() { returnType = parameter.returnType };
@@ -235,7 +235,7 @@ namespace BetterTriggers.Controllers
 
                 }
 
-                if(parameter is Function)
+                if (parameter is Function)
                 {
                     var function = (Function)parameter;
                     removeCount += VerifyParametersAndRemove(function.parameters);
@@ -253,10 +253,10 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                if(parameter.identifier == null && parameter.returnType != "nothing")
+                if (parameter.identifier == null && parameter.returnType != "nothing")
                     invalidCount++;
 
-                if(parameter is Function)
+                if (parameter is Function)
                 {
                     var function = (Function)parameter;
                     invalidCount += VerifyParameters(function.parameters);
