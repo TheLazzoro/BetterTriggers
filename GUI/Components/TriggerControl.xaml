@@ -108,7 +108,7 @@
                 <Style TargetType="{x:Type TreeViewItem}">
                     <!-- We have to select the item which is right-clicked on -->
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
-                    <!--<EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_PreviewDragEnter"/>-->
+                    <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
                     <!--<EventSetter Event="TreeViewItem.Drop" Handler="treeViewItem_PreviewDrop"/>-->
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
                 </Style>

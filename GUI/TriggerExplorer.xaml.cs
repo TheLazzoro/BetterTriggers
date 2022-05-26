@@ -19,6 +19,7 @@ using BetterTriggers.Controllers;
 using BetterTriggers.Containers;
 using GUI.Components;
 using Model.EditorData;
+using GUI.Components.Shared;
 
 namespace GUI
 {
@@ -43,7 +44,7 @@ namespace GUI
 
         // attaches to a treeviewitem
         AdornerLayer adorner;
-        TreeItemAdorner lineIndicator;
+        TreeItemAdornerLine lineIndicator;
 
         public TriggerExplorer()
         {
@@ -273,13 +274,13 @@ namespace GUI
             if (inFirstHalf)
             {
                 adorner = AdornerLayer.GetAdornerLayer(dropTarget);
-                lineIndicator = new TreeItemAdorner(dropTarget, true);
+                lineIndicator = new TreeItemAdornerLine(dropTarget, true);
                 adorner.Add(lineIndicator);
             }
             else
             {
                 adorner = AdornerLayer.GetAdornerLayer(dropTarget);
-                lineIndicator = new TreeItemAdorner(dropTarget, false);
+                lineIndicator = new TreeItemAdornerLine(dropTarget, false);
                 adorner.Add(lineIndicator);
             }
         }

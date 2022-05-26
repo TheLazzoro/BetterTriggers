@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace GUI.Components.TriggerExplorer
+namespace GUI.Components.Shared
 {
-    public class TreeItemAdorner : Adorner
+    public class TreeItemAdornerLine : Adorner
     {
         private bool isBefore;
 
@@ -16,8 +17,8 @@ namespace GUI.Components.TriggerExplorer
         /// 
         /// </summary>
         /// <param name="element">Element to attach this adorner to.</param>
-        /// <param name="isBefore">Whether to display the insertion in the top or not.</param>
-        public TreeItemAdorner(UIElement element, bool isBefore) : base(element)
+        /// <param name="isBefore">Whether to display the insertion in the top or bottom.</param>
+        public TreeItemAdornerLine(UIElement element, bool isBefore) : base(element)
         {
             this.isBefore = isBefore;
         }
@@ -26,7 +27,7 @@ namespace GUI.Components.TriggerExplorer
         // method, which is called by the layout system as part of a rendering pass.
         protected override void OnRender(DrawingContext drawingContext)
         {
-            Rect adornedElementRect = new Rect(this.AdornedElement.DesiredSize);
+            Rect adornedElementRect = new Rect(this.AdornedElement.RenderSize);
 
             // Some arbitrary drawing implements.
             SolidColorBrush renderBrush = new SolidColorBrush(Colors.Green);
