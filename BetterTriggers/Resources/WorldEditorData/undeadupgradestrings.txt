@@ -1,0 +1,129 @@
+[Rusp]
+Name=Destroyer Form
+Tip=Research Destroyer Form
+Ubertip="Allows the Obsidian Statue to transform into a Destroyer, a large flying unit that must devour magic to sustain its mana. The Destroyer has Spell Immunity, Devour Magic, Absorb Mana, and Orb of Annihilation. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=T
+
+[Rume]
+Name=Unholy Strength,Improved Unholy Strength,Advanced Unholy Strength
+Tip=Upgrade to Unholy Strength,Upgrade to Improved Unholy Strength,Upgrade to Advanced Unholy Strength
+Ubertip="Increases the attack damage of Ghouls, Meat Wagons, Abominations, Skeleton Warriors, and Skeletal Mages.","Further increases the attack damage of Ghouls, Meat Wagons, Abominations, Skeleton Warriors, and Skeletal Mages.","Further increases the attack damage of Ghouls, Meat Wagons, Abominations, Skeleton Warriors, and Skeletal Mages."
+Ubertip:custom,V0="Increases the attack damage of Ghouls, Meat Wagons, Abominations and Skeleton Warriors.","Further increases the attack damage of Ghouls, Meat Wagons, Abominations, and Skeleton Warriors.","Further increases the attack damage of Ghouls, Meat Wagons, Abominations, and Skeleton Warriors."
+Ubertip:melee,V0="Increases the attack damage of Ghouls, Meat Wagons, Abominations and Skeleton Warriors.","Further increases the attack damage of Ghouls, Meat Wagons, Abominations, and Skeleton Warriors.","Further increases the attack damage of Ghouls, Meat Wagons, Abominations, and Skeleton Warriors."
+Hotkey=S,S,S
+
+[Rura]
+Name=Creature Attack,Improved Creature Attack,Advanced Creature Attack
+Tip=Upgrade to Creature Attack,Upgrade to Improved Creature Attack,Upgrade to Advanced Creature Attack
+Ubertip="Increases the attack damage of Crypt Fiends, Gargoyles, Destroyers, and Frost Wyrms.","Further increases the attack damage of Crypt Fiends, Gargoyles, Destroyers, and Frost Wyrms.","Further increases the attack damage of Crypt Fiends, Gargoyles, Destroyers, and Frost Wyrms."
+Ubertip:custom,V0="Increases the attack damage of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the attack damage of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the attack damage of Crypt Fiends, Gargoyles, and Frost Wyrms."
+Ubertip:melee,V0="Increases the attack damage of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the attack damage of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the attack damage of Crypt Fiends, Gargoyles, and Frost Wyrms."
+Hotkey=A,A,A
+
+[Ruar]
+Name=Unholy Armor,Improved Unholy Armor,Advanced Unholy Armor
+Tip=Upgrade to Unholy Armor,Upgrade to Improved Unholy Armor,Upgrade to Advanced Unholy Armor
+Ubertip="Increases the armor of Ghouls, Abominations, Skeleton Warriors, and Skeletal Mages.","Further increases the armor of Ghouls, Abominations, Skeleton Warriors, and Skeletal Mages.","Further increases the armor of Ghouls, Abominations, Skeleton Warriors, and Skeletal Mages."
+Ubertip:custom,V0="Increases the armor of Ghouls, Abominations, and Skeleton Warriors.","Further increases the armor of Ghouls, Abominations, and Skeleton Warriors.","Further increases the armor of Ghouls, Abominations, and Skeleton Warriors."
+Ubertip:melee,V0="Increases the armor of Ghouls, Abominations, and Skeleton Warriors.","Further increases the armor of Ghouls, Abominations, and Skeleton Warriors.","Further increases the armor of Ghouls, Abominations, and Skeleton Warriors."
+Hotkey=U,U,U
+
+[Rucr]
+Name=Creature Carapace,Improved Creature Carapace,Advanced Creature Carapace
+Tip=Upgrade to Creature Carapace,Upgrade to Improved Creature Carapace,Upgrade to Advanced Creature Carapace
+Ubertip="Increases the armor of Crypt Fiends, Gargoyles, Destroyers, and Frost Wyrms.","Further increases the armor of Crypt Fiends, Gargoyles, Destroyers, and Frost Wyrms.","Further increases the armor of the Crypt Fiends, Gargoyles, Destroyers, and Frost Wyrms."
+Ubertip:custom,V0="Increases the armor of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the armor of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the armor of the Crypt Fiends, Gargoyles, and Frost Wyrms."
+Ubertip:melee,V0="Increases the armor of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the armor of Crypt Fiends, Gargoyles, and Frost Wyrms.","Further increases the armor of the Crypt Fiends, Gargoyles, and Frost Wyrms."
+Hotkey=C,C,C
+
+[Ruac]
+Name=Cannibalize
+Tip=Research Cannibalize
+Ubertip="Enables Ghouls and Abominations to use the Cannibalize ability. Cannibalize consumes a nearby corpse to restore health."
+Ubertip:custom,V0=Enables Ghouls to use the Cannibalize ability. Cannibalize consumes a nearby corpse to heal the Ghoul.
+Ubertip:melee,V0=Enables Ghouls to use the Cannibalize ability. Cannibalize consumes a nearby corpse to restore health.
+Hotkey=C
+Hotkey:custom,V0=C
+Hotkey:melee,V0=C
+
+[Rugf]
+Name=Ghoul Frenzy
+Tip=Research Ghoul Frenzy
+Ubertip="Increases the attack rate of Ghouls by <Rugf,base1,%>%, and increases their movement speed."
+Hotkey=Z
+
+[Ruwb]
+Name=Web
+Tip=Research Web
+Ubertip="Enables Crypt Fiends to use the Web ability. Web binds a target enemy air unit in webbing, forcing it to the ground. Webbed units can be hit as though they were land units."
+Hotkey=W
+
+[Rusf]
+Name=Stone Form
+Tip=Research Stone Form
+Ubertip="Enables the ability for Gargoyles to assume Stone Form. Stone Form transforms the Gargoyle into a statue with high armor, spell immunity, and regeneration. The Gargoyle cannot attack in this form."
+Ubertip:custom,V0=Enables the ability for Gargoyles to assume Stone Form. Stone Form transforms the Gargoyle into a statue with high armor and regeneration. The Gargoyle cannot attack in this form.
+Hotkey=S
+
+[Rune]
+Name=Necromancer Adept Training,Necromancer Master Training
+Tip=Necromancer Adept Training,Necromancer Master Training
+Ubertip="Increases Necromancers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Unholy Frenzy.","Increases Necromancers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Cripple."
+Ubertip:custom,V0="Increases Necromancers' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Unholy Frenzy.","Increases Necromancers' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Cripple."
+Ubertip:custom,V1="Increases Necromancers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Unholy Frenzy.","Increases Necromancers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Cripple."
+Ubertip:melee,V0="Increases Necromancers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Unholy Frenzy.","Increases Necromancers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Cripple."
+Hotkey=E,E
+
+[Ruba]
+Name=Banshee Adept Training,Banshee Master Training
+Tip=Banshee Adept Training,Banshee Master Training
+Ubertip="Increases Banshees' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Anti-magic Shell.","Increases Banshees' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Possession."
+Ubertip:custom,V0="Increases Banshees' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Anti-magic Shell.","Increases Banshees' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Possession."
+Hotkey=A,A
+
+[Rufb]
+Name=Freezing Breath
+Tip=Research Freezing Breath
+Ubertip="Enables Frost Wyrms to use the Freezing Breath ability. When cast on a building, temporarily stops production."
+Hotkey=B
+
+[Rusl]
+Name=Skeletal Longevity
+Tip=Research Skeletal Longevity
+Ubertip="Increases the duration of raised Skeleton Warriors and Skeletal Mages by <Rusl,base1> seconds."
+Ubertip:custom,V0="Increases the duration of raised Skeleton Warriors by <Rusl,base1> seconds."
+Ubertip:melee,V0="Increases the duration of raised Skeleton Warriors by <Rusl,base1> seconds."
+Hotkey=S
+
+[Rupc]
+Name=Disease Cloud
+Tip=Research Disease Cloud
+Ubertip="Gives Abominations a Disease Cloud aura that deals <Aap1,DataB1> damage per second for <Aap1,DataA1> seconds to nearby enemy units. Meat Wagons will cause Disease Clouds wherever they attack that deal <Aap2,DataB1> damage per second for <Aap2,DataA1> seconds to nearby enemy units. |nUndead are immune to Disease Cloud."
+Hotkey=D
+
+[Rusm]
+Name=Skeletal Mastery
+Tip=Research Skeletal Mastery
+Ubertip="Causes one of the two skeletons created by Raise Dead to be a Skeletal Mage and increases the duration of raised Skeleton Warriors and Skeletal Mages by <Rusl,base1> seconds."
+Ubertip:custom,V1=Causes one of the two skeletons created by Raise Dead to be a Skeletal Mage.
+Hotkey=M
+
+[Rubu]
+Name=Burrow
+Tip=Research Burrow
+Ubertip="Crypt Fiends gain the ability to burrow. Burrowed Crypt Fiends are invisible and gain increased hit point regeneration, but cannot attack."
+Hotkey=B
+
+
+[Ruex]
+Name=Exhume Corpses
+Tip=Research Exhume Corpses
+Ubertip="Gives Meat Wagons the ability to generate corpses."
+Hotkey=E
+
+[Rupm]
+Name=Backpack
+EditorSuffix= (Undead)
+Tip=Research Backpack
+Ubertip="Gives specific Undead ground units the ability to carry items."
+Hotkey=B

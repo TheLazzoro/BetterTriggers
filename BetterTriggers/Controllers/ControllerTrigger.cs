@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using BetterTriggers.WorldEdit;
 
 namespace BetterTriggers.Controllers
 {
@@ -56,6 +57,11 @@ namespace BetterTriggers.Controllers
             Trigger trigger = JsonConvert.DeserializeObject<Trigger>(file);
 
             return trigger;
+        }
+
+        public List<ExplorerElementTrigger> GetTriggersAll()
+        {
+            return ContainerTriggers.GetAll();
         }
 
         /// <summary>
@@ -199,6 +205,11 @@ namespace BetterTriggers.Controllers
                 else if (triggerElement.function is EnumDestructiblesInCircleBJMultiple)
                 {
                     var special = (EnumDestructiblesInCircleBJMultiple)triggerElement.function;
+                    removeCount += RemoveInvalidReferences(special.Actions);
+                }
+                else if (triggerElement.function is EnumItemsInRectBJ)
+                {
+                    var special = (EnumItemsInRectBJ)triggerElement.function;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
             }
@@ -352,9 +363,47 @@ namespace BetterTriggers.Controllers
                     var special = (EnumDestructiblesInCircleBJMultiple)triggerElement.function;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
+                else if (triggerElement.function is EnumItemsInRectBJ)
+                {
+                    var special = (EnumItemsInRectBJ)triggerElement.function;
+                    parameters.AddRange(GatherTriggerParameters(special.Actions));
+                }
             }
 
             return parameters;
+        }
+
+        // TODO:
+        public string GetValueName(string key, string returnType)
+        {
+            string text = string.Empty;
+            switch (key)
+            {
+                case "unitcode":
+                    text = $"{key}";
+                    break;
+                case "unit":
+                    text = UnitTypes.GetName(key);
+                    break;
+                case "destructablecode":
+                    text = $"{key}";
+                    break;
+                default:
+                    break;
+            }
+
+            return text;
+        }
+
+        public string GetFourCCDisplay(string key, string returnType)
+        {
+            string text = string.Empty;
+            if (returnType == "unitcode")
+                text = $"[{key}] ";
+            if (returnType == "destructablecode")
+                text = $"[{key}] ";
+
+            return text;
         }
     }
 }

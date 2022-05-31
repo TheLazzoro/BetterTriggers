@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.Utility;
 using Model.SaveableData;
 using System.Collections.Generic;
 using System.Windows;
@@ -14,12 +15,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            ControllerTrigger controller = new ControllerTrigger();
+
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < values.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = $"[{values[i].identifier}] PLACEHOLDER";
+                listItem.Content = $"{controller.GetFourCCDisplay(values[i].identifier, values[i].returnType)}{controller.GetValueName(values[i].identifier, values[i].returnType)}";
                 listItem.Tag = values[i];
                 objects.Add(new Searchable()
                 {

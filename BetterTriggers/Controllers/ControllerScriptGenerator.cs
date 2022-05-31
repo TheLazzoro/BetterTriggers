@@ -1127,8 +1127,8 @@ endfunction
                 string loopIndex = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
                 string loopIndexEnd = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
 
-                script.Append($"set {loopIndex}={ConvertParametersToJass(f.parameters[0], pre_actions)}");
-                script.Append($"set {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], pre_actions)}");
+                script.Append($"set {loopIndex}={ConvertParametersToJass(f.parameters[0], pre_actions)} {newline}");
+                script.Append($"set {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], pre_actions)} {newline}");
                 script.Append($"loop{newline}");
                 script.Append($"\texitwhen {loopIndex} > {loopIndexEnd}{newline}");
 
@@ -1293,6 +1293,37 @@ endfunction
                 return script.ToString();
             }
 
+            else if (f.identifier == "EnumItemsInRectBJMultiple")
+            {
+                EnumItemsInRectBJ enumItem = (EnumItemsInRectBJ)f;
+
+                /* TODO: What is this?
+                string script_name = trigger_data.data("TriggerActions", "_" + eca.name + "_ScriptName");
+
+                const std::string function_name = generate_function_name(trigger_name);
+
+                // Remove multiple
+               output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", " +
+			        resolve_parameter(eca.parameters[1], trigger_name, pre_actions, get_type(eca.name, 1)) + ", function " + function_name + "){newline}";
+                */
+
+                string function_name = generate_function_name(triggerName);
+
+                // Remove multiple
+                script.Append($"call {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0], pre_actions)}, {ConvertParametersToJass(f.parameters[0], pre_actions)}), function {function_name}){newline}");
+
+                string pre = string.Empty;
+                foreach (var action in enumItem.Actions)
+                {
+                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                }
+                pre_actions.Append($"function {function_name} takes nothing returns nothing{newline}");
+                pre_actions.Append(pre);
+                pre_actions.Append($"{newline}endfunction{newline}{newline}");
+
+                return script.ToString();
+            }
+
             else if (f.identifier == "AndMultiple")
             {
                 AndMultiple andMultiple = (AndMultiple)f;
@@ -1395,7 +1426,21 @@ endfunction
                 script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[3], pre_actions, triggerName)} {newline}");
                 script.Append($"set udg_{variable} = udg_{variable} + 1{newline}");
                 script.Append($"endloop{newline}");
-                
+
+                return script.ToString();
+            }
+
+            else if (f.identifier == "ForForce" || f.identifier == "ForGroup")
+            {
+                string function_name = generate_function_name(triggerName);
+
+                script.Append($"call {f.identifier}({ConvertParametersToJass(f.parameters[0], pre_actions)}, function {function_name}){newline}");
+
+                string pre = string.Empty;
+                pre_actions.Append($"function {function_name} takes nothing returns nothing{newline}");
+                pre_actions.Append($"\t{ConvertFunctionToJass(f.parameters[1] as Function, pre_actions, triggerName)}{newline}");
+                pre_actions.Append($"endfunction{newline}{newline}");
+
                 return script.ToString();
             }
 
@@ -1486,7 +1531,7 @@ endfunction
             else if (parameter is Constant)
             {
                 Constant c = (Constant)parameter;
-                output += c.identifier;
+                output += ContainerTriggerData.GetConstantCodeText(c.identifier);
             }
             else if (parameter is VariableRef)
             {
@@ -1524,7 +1569,6 @@ endfunction
 
             return output;
         }
-
 
 
         private string generate_function_name(string triggerName)

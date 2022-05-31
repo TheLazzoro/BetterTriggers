@@ -1,0 +1,298 @@
+[Hblm]
+Name=Blood Mage
+Propernames=Eldin Sunstrider,Tanin Hawkwing,Lorn Bloodseeker,Aldos Firestar,Gilaras Drakeson,Hale Magefire,Kath'ranis Remar,Tyoril Sunchaser,Sylvos Windrunner,Tenris Mirkblood,Marakanis Starfury,Geldor Earthfire,Halendor Burnkin,Kelen the Destroyer
+Hotkey=B
+Tip=Summon Blood Mage
+Ubertip="Mystical Hero, adept at controlling magic and ranged assaults. Can learn Flame Strike, Banish, Siphon Mana and Phoenix. |n|n|cffffcc00Attacks land and air units.|r"
+Revivetip=Revive Blood Mage
+Awakentip=Revive Blood Mage
+
+[halt]
+Name=Altar of Kings
+Hotkey=A
+Tip=Build Altar of Kings
+Ubertip="Summons Heroes. Revives slain Heroes."
+
+[Hamg]
+Name=Archmage
+Propernames=Tenn Flamecaster,Nilas Arcanister,Andromath,Shal Lightbinder,Aran Spellweaver,Manath Magesinger,Landazar,Doril Magefont,Peril Spellbinder,Conjurus Rex,Fordred Aran,Dalar Dawnweaver,Kelen the Seeker
+Hotkey=A
+Tip=Summon Archmage
+Ubertip="Mystical Hero, adept at ranged assaults. Can learn Blizzard, Summon Water Elemental, Brilliance Aura and Mass Teleport. |n|n|cffffcc00Attacks land and air units.|r"
+Revivetip=Revive Archmage
+Awakentip=Revive Archmage
+
+[harm]	
+Name=Workshop
+Hotkey=W
+Tip=Build Workshop
+Ubertip="Produces Siege Engines, Flying Machines, and Mortar Teams. |nAlso contains the Flare, Fragmentation Shards, Barrage, Flying Machine Bombs, and Flak Cannons upgrades."
+Ubertip:custom,V0="Produces Siege Engines, Flying Machines, and Mortar Teams. |nAlso contains the Flare and Flying Machine Bombs upgrades."
+Ubertip:melee,V0="Produces Siege Engines, Flying Machines, and Mortar Teams. |nAlso contains the Flare and Flying Machine Bombs upgrades."
+
+[hars]
+Name=Arcane Sanctum
+Hotkey=R
+Tip=Build Arcane Sanctum
+Ubertip="Trains Priests, Sorceresses, and Spellbreakers. |nAlso contains spell upgrades for Priests and Sorceresses, Control Magic, and Magic Sentry."
+Ubertip:custom,V0="Trains Priests and Sorceresses. |nAlso contains spell upgrades for Priests and Sorceresses, and the Magic Sentry upgrade that enables Human towers to detect invisible units."
+Ubertip:melee,V0="Trains Priests and Sorceresses. |nAlso contains spell upgrades for Priests and Sorceresses, and the Magic Sentry upgrade that enables Human towers to detect invisible units."
+
+[hbar]
+Name=Barracks
+Hotkey=B
+Tip=Build Barracks
+Ubertip="Primary troop production building. Trains Footmen, Riflemen and Knights. |nAlso contains the Defend, Long Rifles, Animal War Training, and Sundering Blades upgrades."
+Ubertip:custom,V0="Primary troop production building. Trains Footmen, Riflemen and Knights. |nAlso contains the Defend upgrade for Footmen, the Long Rifles upgrade for Dwarven Riflemen, and the Animal War Training upgrade for Knights and Gryphon Riders."
+Ubertip:custom,V1="Primary troop production building. Trains Footmen, Riflemen and Knights. |nAlso contains the Defend, Long Rifles, and Animal War Training upgrades."
+Ubertip:melee,V0="Primary troop production building. Trains Footmen, Riflemen and Knights. |nAlso contains the Defend upgrade for Footmen, the Long Rifles upgrade for Dwarven Riflemen, and the Animal War Training upgrade for Knights and Gryphon Riders."
+
+[hbla]
+Name=Blacksmith
+Hotkey=S
+Tip=Build Blacksmith
+Ubertip="Contains upgrades for improved armor, weaponry and gunpowder."
+
+[hcas]
+Name=Castle
+Hotkey=U
+Tip=Upgrade to Castle
+Ubertip="Upgrade to Castle to enable the production of additional types of structures and units."
+
+[hdhw]
+Name=Dragonhawk Rider
+Hotkey=D
+Tip=Train Dragonhawk Rider
+Ubertip="Swift flying unit, mounted by an Elven warrior. Has the Aerial Shackles ability, which allows it to immobilize and disarm enemy air units temporarily. Can learn Animal War Training, and the Cloud ability. |n|n|cffffcc00Attacks land and air units.|r"
+
+[hhou]
+Name=Farm
+Hotkey=F
+Tip=Build Farm
+Ubertip="Provides food, which increases the maximum number of units that can be trained."
+
+[hfoo]	
+Name=Footman
+Hotkey=F
+Tip=Train Footman
+Ubertip="Versatile foot soldier. Can learn the Defend ability. |n|n|cffffcc00Attacks land units.|r"
+
+[hgra]
+Name=Gryphon Aviary
+Hotkey=G
+Tip=Build Gryphon Aviary
+Ubertip="Trains Gryphon Riders, and Dragonhawk Riders. |nAlso contains the Storm Hammers and Cloud upgrades."
+Ubertip:custom,V0=Trains Gryphon Riders. |nAlso contains the Storm Hammers upgrade.
+Ubertip:melee,V0=Trains Gryphon Riders. |nAlso contains the Storm Hammers upgrade.
+
+[hctw]
+Name=Cannon Tower
+Hotkey=C
+Tip=Upgrade to Cannon Tower
+Ubertip="Heavy defensive structure. Particularly effective against clusters of troops. Can learn Fragmentation Shards and Magic Sentry ability. |n|n|cffffcc00Attacks land units and trees.|r"
+Ubertip:custom,V0=Heavy defensive structure. Particularly effective against clusters of troops. Can learn the Magic Sentry ability. |n|n|cffffcc00Attacks land units and trees.|r
+Ubertip:custom,V1=Heavy defensive structure. Particularly effective against clusters of troops. Can learn the Magic Sentry ability. |n|n|cffffcc00Attacks land units and trees.|r
+Ubertip:melee,V0=Heavy defensive structure. Particularly effective against clusters of troops. Can learn the Magic Sentry ability. |n|n|cffffcc00Attacks land units and trees.|r
+
+[hgtw]
+Name=Guard Tower
+Hotkey=G
+Tip=Upgrade to Guard Tower
+Ubertip="Primary defensive structure. Can learn the Magic Sentry ability. |n|n|cffffcc00Attacks land and air units.|r"
+
+[hwtw]
+Name=Scout Tower
+Hotkey=T
+Tip=Build Scout Tower
+Ubertip="Basic observation tower. Has no attack, but can be upgraded into a Guard Tower, an Arcane Tower, or a Cannon Tower. Can learn the Magic Sentry ability."
+Ubertip:custom,V0="Basic observation tower. Has no attack, but can be upgraded into either a Guard Tower or a Cannon Tower. Can learn the Magic Sentry ability."
+Ubertip:melee,V0="Basic observation tower. Has no attack, but can be upgraded into either a Guard Tower or a Cannon Tower. Can learn the Magic Sentry ability."
+
+[hatw]
+Name=Arcane Tower
+Hotkey=N
+Tip=Upgrade to Arcane Tower
+Ubertip="Magical defensive tower. Particularly effective against enemy Heroes and spellcasters. Has the Feedback ability, which causes its attacks to destroy mana, dealing extra damage equal to the mana destroyed. Deals bonus damage against summoned units. Can learn the Magic Sentry ability. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:custom,V1="Magical defensive tower. Particularly effective against enemy Heroes and spellcasters. Has the Feedback ability, which causes its attacks to destroy mana, dealing extra damage equal to the mana destroyed. Can learn the Magic Sentry ability. |n|n|cffffcc00Attacks land and air units."
+
+[hvlt]
+Name=Arcane Vault
+Hotkey=V
+Tip=Build Arcane Vault
+Ubertip="Creates a shop with purchasable items. The items available depend upon what level of upgrade your Town Hall has (Town Hall, Keep, or Castle) and which buildings you have."
+
+[hgyr]
+Name=Flying Machine
+Hotkey=F
+Hotkey:custom,V0=G
+Hotkey:melee,V0=G
+Tip=Train Flying Machine
+Tip:custom,V0=Train Gyrocopter
+Tip:melee,V0=Train Gyrocopter
+Ubertip="Fast moving flying machine. Excellent at scouting, and effective against air units. Can learn the Flying Machine Bombs and Flak Cannons upgrades. |nCan see invisible units. |n|n|cffffcc00Attacks air units.|r"
+Ubertip:custom,V0="Fast moving flying machine. Excellent at scouting, and effective against air units. Can learn the Flying Machine Bombs upgrade. |nCan see invisible units. |n|n|cffffcc00Attacks air units.|r"
+Ubertip:melee,V0="Fast moving flying machine. Excellent at scouting, and effective against air units. Can learn the Flying Machine Bombs upgrade. |nCan see invisible units. |n|n|cffffcc00Attacks air units.|r"
+
+[hkee]	
+Name=Keep
+Hotkey=U
+Tip=Upgrade to Keep
+Ubertip="Upgrade to Keep to enable the production of additional types of structures and units."
+
+[hkni]
+Name=Knight
+Hotkey=K
+Tip=Train Knight
+Ubertip="Powerful mounted warrior. Can learn Animal War Training and Sundering Blades. |n|n|cffffcc00Attacks land units.|r"
+Ubertip:custom,V0=Powerful mounted warrior. Can learn Animal War Training. |n|n|cffffcc00Attacks land units.|r
+Ubertip:custom,V1=Powerful mounted warrior. Can learn Animal War Training. |n|n|cffffcc00Attacks land units.|r
+Ubertip:melee,V0=Powerful mounted warrior. Can learn Animal War Training. |n|n|cffffcc00Attacks land units.|r
+
+[hlum]
+Name=Lumber Mill
+Hotkey=L
+Tip=Build Lumber Mill
+Ubertip="Serves as a drop-off point for harvested lumber. |nAlso contains the upgrades for Lumber Harvesting and Masonry."
+
+[hmil]
+Name=Militia
+
+[Hmkg]
+Name=Mountain King
+Propernames=Bor Stonebreaker,Munin Ironcliff,Thorgas Broadaxe,Kelv Sternhammer,Grim Thunderbrew,Buri Frostbeard,Huginn Ironcliff,Thordin Rockbeard,Bandis Forgefire,Gar Doomforge,Beazel Bludstone,Modi Stonesmith,Aggronor the Mighty
+Hotkey=M
+Tip=Summon Mountain King
+UberTip="Warrior Hero, adept at offensive combat and disrupting enemy troops. Can learn Storm Bolt, Thunder Clap, Bash and Avatar. |n|n|cffffcc00Attacks land units.|r"
+Revivetip=Revive Mountain King
+Awakentip=Revive Mountain King
+
+[hmpr]
+Name=Priest
+Hotkey=P
+Tip=Train Priest
+Ubertip="Supporting spellcaster. Can initially cast Heal, which increases the life of wounded units. Can also learn Dispel Magic and Inner Fire. |n|n|cffffcc00Attacks land and air units.|r"
+Casterupgradename=Initiate, Adept, Master
+Casterupgradetip="- Heal","- Heal|n- Dispel Magic","- Heal|n- Dispel Magic|n- Inner Fire"
+
+[hmtm]
+Name=Mortar Team
+Hotkey=M
+Tip=Train Mortar Team
+Ubertip="Long-range siege weaponry. Exceptional damage versus buildings, but slow and vulnerable. Can learn the Fragmentation Shards and Flare abilities. |n|n|cffffcc00Attacks land units and trees.|r"
+Ubertip:custom,V0="Long-range siege weaponry. Exceptional damage versus buildings, but slow and vulnerable. Can learn the Flare ability. |n|n|cffffcc00Attacks land units and trees.|r"
+Ubertip:melee,V0="Long-range siege weaponry. Exceptional damage versus buildings, but slow and vulnerable. Can learn the Flare ability. |n|n|cffffcc00Attacks land units and trees.|r"
+
+[Hpal]
+Name=Paladin
+Propernames=Granis Darkhammer,Jorn the Redeemer,Sage Truthbearer,Malak the Avenger,Gavinrad the Dire,Morlune the Mighty,Agamand the True,Ballador the Bright,Manadar the Healer,Zann the Defender,Arius the Seeker,Aurrius the Pure,Karnwield the Seeker,Buzan the Fearless
+Hotkey=L
+Tip=Summon Paladin
+Ubertip="Warrior Hero, exceptional at defense and augmenting nearby friendly troops. Can learn Holy Light, Divine Shield, Devotion Aura and Resurrection. |n|n|cffffcc00Attacks land units.|r"
+Revivetip=Revive Paladin
+Awakentip=Revive Paladin
+
+[hpea]
+Name=Peasant
+Hotkey=P
+Tip=Train Peasant
+Ubertip="Basic worker unit. Can harvest gold and lumber, build structures and Repair. Can become Militia. |n|n|cffffcc00Attacks land units and trees.|r"
+
+[hrif]
+Name=Rifleman
+Hotkey=R
+Tip=Train Rifleman
+Ubertip="Highly skilled sharpshooter, effective against air units. Can gain the Long Rifles upgrade. |n|n|cffffcc00Attacks land and air units.|r"
+
+[hsor]
+Name=Sorceress
+Hotkey=S
+Tip=Train Sorceress
+Ubertip="Versatile spellcaster. Can initially cast Slow, which decreases movement and attack speed on enemy units. Can also learn Invisibility and Polymorph. |n|n|cffffcc00Attacks land and air units.|r"
+Casterupgradename=Initiate, Adept, Master
+Casterupgradetip="- Slow","- Slow|n- Invisibility","- Slow|n- Invisibility|n- Polymorph"
+
+[hspt]
+Name=Spellbreaker
+Hotkey=B
+Tip=Train Spellbreaker
+Ubertip="Elven warrior trained to destroy spellcasters. Initially has Spell Steal, which manipulates buffs to your advantage, Spell Immunity and Feedback. Can also learn Control Magic. |n|n|cffffcc00Attacks land units.|r"
+
+[hmtt]
+Name=Siege Engine
+Hotkey=E
+Tip=Train Siege Engine
+Ubertip="Heavily armored vehicle, effective at destroying buildings. Can be upgraded with the Barrage ability. |n|n|cffffcc00Attacks buildings.|r"
+Ubertip:custom,V0="Heavily armored vehicle, effective at destroying buildings. |n|n|cffffcc00Attacks buildings.|r"
+Ubertip:melee,V0="Heavily armored vehicle, effective at destroying buildings. |n|n|cffffcc00Attacks buildings.|r"
+
+[hrtt]
+Name=Siege Engine
+EditorSuffix= (Barrage)
+Hotkey=E
+Tip=Train Siege Engine
+Ubertip="Heavily armored vehicle, effective at destroying buildings. Has the Barrage ability, which fires rockets at nearby enemy air units. |n|n|cffffcc00Attacks buildings.|r"
+
+[htow]
+Name=Town Hall
+Hotkey=H
+Tip=Build Town Hall
+Ubertip="Primary structure, used to train Peasants and receive gathered resources. Can be upgraded to Keep and then Castle to enable the production of additional types of structures and units."
+
+[hwat]
+Name=Water Elemental
+EditorSuffix= (Level 1)
+
+[hwt2]
+Name=Water Elemental
+EditorSuffix= (Level 2)
+
+[hwt3]
+Name=Water Elemental
+EditorSuffix= (Level 3)
+
+[hgry]
+Name=Gryphon Rider
+Hotkey=G
+Tip=Train Gryphon Rider
+Ubertip="Powerful flying creature, mounted by a Dwarven hammer-thrower. Can learn Animal War Training, and the Storm Hammers ability. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:custom,V0="Powerful flying creature, mounted by a Dwarven hammer-thrower. Can learn the Storm Hammers ability. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:melee,V0="Powerful flying creature, mounted by a Dwarven hammer-thrower. Can learn the Storm Hammers ability and Animal War Training. |n|n|cffffcc00Attacks land and air units.|r"
+
+[hphx]
+Name=Phoenix
+
+[hpxe]
+Name=Phoenix Egg
+
+//#RESTNOBETA
+
+[hshy]
+Name=Human Shipyard
+Tip=Build Human Shipyard
+Ubertip="Boat construction facility. Produces Human Transport Ships, Human Frigates, and Human Battleships."
+
+[hbsh]
+Name=Human Battleship
+Hotkey=B
+Tip=Hire Battleship
+Ubertip="Massive battleship good at destroying enemy ships and bombarding buildings from the sea. |n|n|cffffcc00Attacks land units.|r"
+
+[hdes]
+Name=Human Frigate
+Hotkey=F
+Tip=Hire Frigate
+Ubertip="A versatile attack ship good at destroying air attackers. |n|n|cffffcc00Attacks land and air units.|r"
+
+[hbot]
+Name=Human Transport Ship
+Hotkey=T
+Tip=Hire Transport Ship
+Ubertip="A sturdy transport ship capable of carrying units over the sea."
+
+[Agyb]
+Name:melee,V0=Flying Machine Bombs
+Ubertip:custom,V0=Allows Flying Machines to attack land units.
+Ubertip:melee,V0=Allows Flying Machines to attack land units.
+Tip:custom,V0=Flying Machine Bombs
+Tip:melee,V0=Flying Machine Bombs
+Name:custom,V0=Flying Machine Bombs

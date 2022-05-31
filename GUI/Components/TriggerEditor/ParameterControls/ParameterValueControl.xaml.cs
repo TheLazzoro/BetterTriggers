@@ -93,8 +93,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     values = cameras.Select(c => new Value() { identifier = c.ToString(), returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
-                case "modelfile":
+                case "modelfile": // TODO
                     this.valueControl = new ValueControlModels();
+                    break;
+                case "trigger":
+                    ControllerTrigger controllerTrigger = new ControllerTrigger();
+                    var triggers = controllerTrigger.GetTriggersAll();
+                    values = triggers.Select(trig => new Value() { identifier = trig.GetId().ToString(), returnType = returnType }).ToList();
+                    this.valueControl = new ValueControlGeneric(values);
                     break;
                 default:
                     break;

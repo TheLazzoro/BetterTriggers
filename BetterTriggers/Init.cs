@@ -1,5 +1,4 @@
-﻿using BetterTriggers.Locales;
-using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.WorldEdit;
 using System.IO;
 
 namespace BetterTriggers

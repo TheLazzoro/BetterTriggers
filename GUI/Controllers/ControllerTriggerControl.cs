@@ -204,6 +204,15 @@ namespace GUI.Controllers
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
+            else if (treeViewTriggerElement.triggerElement.function is EnumItemsInRectBJ)
+            {
+                var function = (EnumItemsInRectBJ)treeViewTriggerElement.triggerElement.function;
+                var Actions = new NodeAction("Loop - Actions");
+                Actions.SetTriggerElements(function.Actions);
+                treeViewTriggerElement.Items.Add(Actions);
+
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+            }
         }
 
         public void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)

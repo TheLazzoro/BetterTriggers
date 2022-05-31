@@ -70,6 +70,9 @@ namespace Model.Templates
                 case "EnumDestructiblesInCircleBJMultiple":
                     te.function = new EnumDestructiblesInCircleBJMultiple();
                     break;
+                case "EnumItemsInRectBJMultiple":
+                    te.function = new EnumItemsInRectBJ();
+                    break;
                 default:
                     break;
             }

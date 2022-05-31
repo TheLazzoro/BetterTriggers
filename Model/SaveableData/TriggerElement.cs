@@ -67,6 +67,11 @@ namespace Model.SaveableData
                 var enumDest = (EnumDestructiblesInCircleBJMultiple)function;
                 fClone = enumDest.Clone();
             }
+            else if (function is EnumItemsInRectBJ)
+            {
+                var enumItems = (EnumItemsInRectBJ)function;
+                fClone = enumItems.Clone();
+            }
             else
             {
                 fClone = function.Clone();

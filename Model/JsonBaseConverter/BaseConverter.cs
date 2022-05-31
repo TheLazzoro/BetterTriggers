@@ -55,6 +55,8 @@ namespace Model.JsonBaseConverter
                         return new EnumDestructablesInRectAllMultiple();
                     case 15:
                         return new EnumDestructiblesInCircleBJMultiple();
+                    case 16:
+                        return new EnumItemsInRectBJ();
                     default:
                         return new Parameter();
                 }

@@ -1,0 +1,142 @@
+[Roch]
+Name=Chaos
+
+[Rome]
+Name=Steel Melee Weapons,Thorium Melee Weapons,Arcanite Melee Weapons
+Tip=Upgrade to Steel Melee Weapons,Upgrade to Thorium Melee Weapons,Upgrade to Arcanite Melee Weapons
+Ubertip="Increases the melee attack damage of Grunts, Raiders and Tauren.","Further increases the melee attack damage of Grunts, Raiders and Tauren.","Further increases the melee attack damage of Grunts, Raiders and Tauren."
+Hotkey=M,M,M
+
+[Rora]
+Name=Steel Ranged Weapons,Thorium Ranged Weapons,Arcanite Ranged Weapons
+Tip=Upgrade to Steel Ranged Weapons,Upgrade to Thorium Ranged Weapons,Upgrade to Arcanite Ranged Weapons
+Ubertip="Increases the ranged attack damage of Headhunters, Wind Riders, Batriders and Demolishers.","Further increases the ranged attack damage of Headhunters, Wind Riders, Batriders and Demolishers.","Further increases the ranged attack damage of Headhunters, Wind Riders, Batriders and Demolishers."
+Ubertip:custom,V0="Increases the ranged attack damage of Headhunters, Wind Riders and Demolishers.","Further increases the ranged attack damage of Headhunters, Wind Riders and Demolishers.","Further increases the ranged attack damage of Headhunters, Wind Riders and Demolishers."
+Ubertip:melee,V0="Increases the ranged attack damage of Headhunters, Wind Riders and Demolishers.","Further increases the ranged attack damage of Headhunters, Wind Riders and Demolishers.","Further increases the ranged attack damage of Headhunters, Wind Riders and Demolishers."
+Hotkey=R,R,R
+
+[Roar]
+Name=Steel Armor,Thorium Armor,Arcanite Armor
+Tip=Upgrade to Steel Unit Armor,Upgrade to Thorium Unit Armor,Upgrade to Arcanite Unit Armor
+Ubertip="Increases the armor of Grunts, Raiders, Batriders, Tauren, Headhunters, Wind Riders and Demolishers.","Further increases the armor of Grunts, Raiders, Batriders, Tauren, Headhunters, Wind Riders and Demolishers.","Further increases the armor of Grunts, Raiders, Batriders, Tauren, Headhunters, Wind Riders and Demolishers."
+Ubertip:custom,V0="Increases the armor of Grunts, Raiders, Tauren, Headhunters, Wind Riders and Demolishers.","Further increases the armor of Grunts, Raiders, Tauren, Headhunters, Wind Riders and Demolishers.","Further increases the armor of Grunts, Raiders, Tauren, Headhunters, Wind Riders and Demolishers."
+Ubertip:melee,V0="Increases the armor of Grunts, Raiders, Tauren, Headhunters, Wind Riders and Demolishers.","Further increases the armor of Grunts, Raiders, Tauren, Headhunters, Wind Riders and Demolishers.","Further increases the armor of Grunts, Raiders, Tauren, Headhunters, Wind Riders and Demolishers."
+Hotkey=A,A,A
+
+[Rwdm]
+Name=War Drums Damage Increase
+Tip=Upgrade War Drums
+Ubertip="Increases the damage bonus that the War Drums aura on the Kodo Beast gives. War Drums increases the damage of friendly units around Kodo Beasts."
+Hotkey=D
+
+// pillage
+[Ropg]
+Name=Pillage
+Tip=Pillage
+Ubertip="Causes Peons', Grunts', and Raiders' attacks to gain resources when hitting enemy buildings."
+Hotkey=G
+
+[Robs]
+Name=Brute Strength
+Tip=Research Brute Strength
+Ubertip="Improves the fighting capabilities of Grunts with a <Robs,base1> hit point increase, and <Robs,base2> bonus attack damage."
+Hotkey=B
+
+[Rows]
+Name=Pulverize Damage Increase
+Name:custom,V0=Pulverize
+Name:custom,V1=Pulverize
+Name:melee,V0=Pulverize
+Tip=Upgrade Pulverize
+Tip:custom,V0=Research Pulverize
+Tip:custom,V1=Research Pulverize
+Tip:melee,V0=Research Pulverize
+Ubertip="Upgrades the totem carried by Tauren, increasing the damage of their Pulverize ability."
+Ubertip:custom,V0=Gives Tauren the Pulverize ability. Pulverize gives Tauren a chance of dealing area effect damage on their attacks.
+Ubertip:custom,V1=Gives Tauren the Pulverize ability. Pulverize gives Tauren a chance of dealing area effect damage on their attacks.
+Ubertip:melee,V0=Gives Tauren the Pulverize ability. Pulverize gives Tauren a chance of dealing area effect damage on their attacks.
+Hotkey=P
+
+[Roen]
+Name=Ensnare
+Tip=Research Ensnare
+Ubertip="Enables Raiders to use the Ensnare ability. Ensnare causes a target enemy unit to be bound to the ground so that it cannot move. Air units that are ensnared can be attacked as though they were land units."
+Hotkey=N
+
+[Rovs]
+Name=Envenomed Spears
+Tip=Research Envenomed Spears
+Ubertip="Adds an additional poison effect to Wind Riders' attacks. A unit poisoned by Envenomed Spears takes damage over time."
+Hotkey=E
+
+[Rowd]
+Name=Witch Doctor Adept Training,Witch Doctor Master Training
+Tip=Witch Doctor Adept Training,Witch Doctor Master Training
+Ubertip="Increases Witch Doctors' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Stasis Trap.","Increases Witch Doctors' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Healing Ward."
+Ubertip:custom,V0="Increases Witch Doctors' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Stasis Trap.","Increases Witch Doctors' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Healing Ward."
+Hotkey=D,D
+
+[Rost]
+Name=Shaman Adept Training,Shaman Master Training
+Tip=Shaman Adept Training,Shaman Master Training
+Ubertip="Increases Shaman mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Lightning Shield.","Increases Shaman mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Bloodlust."
+Ubertip:custom,V0="Increases Shaman mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Lightning Shield.","Increases Shaman mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Bloodlust."
+Hotkey=M,M
+
+[Rosp]
+Name=Spiked Barricades,Improved Spiked Barricades,Advanced Spiked Barricades
+Tip=Upgrade to Spiked Barricades,Upgrade to Improved Spiked Barricades,Upgrade to Advanced Spiked Barricades
+Ubertip="Surrounds Orc buildings with spikes that damage enemy melee attackers. Deals <Rosp,base1> damage per attack plus an additional <Rosp,base2,%>% of the attacker's damage.","Increases the additional damage by <Rosp,mod2,%>% of the attacker's damage.","Further increases the amount of damage inflicted on melee attackers by <Rosp,mod1>."
+Ubertip:custom,V0="Surrounds Orc buildings with spikes that damage enemy melee attackers. Deals <Rosp,base1> damage per attack.","Increases the amount of damage inflicted on melee attackers by <Rosp,mod1>.","Further increases the amount of damage inflicted on melee attackers by <Rosp,mod1>."
+Ubertip:custom,V1="Surrounds Orc buildings with spikes that damage enemy melee attackers. Deals <Rosp,base1> damage per attack.","Increases the amount of damage inflicted on melee attackers by <Rosp,mod1>.","Further increases the amount of damage inflicted on melee attackers by <Rosp,mod1>."
+Ubertip:melee,V0="Surrounds Orc buildings with spikes that damage enemy melee attackers. Deals <Rosp,base1> damage per attack.","Increases the amount of damage inflicted on melee attackers by <Rosp,mod1>.","Further increases the amount of damage inflicted on melee attackers by <Rosp,mod1>."
+Hotkey=S,S,S
+
+[Rotr]
+Name=Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration
+Tip=Research Troll Regeneration, Research Improved Troll Regeneration, Research Advanced Troll Regeneration
+Tip:custom,V0=Research Troll Regeneration, Research Improved Troll Regeneration, Research Advanced Troll Regeneration
+Tip:melee,V0=Research Troll Regeneration, Research Improved Troll Regeneration, Research Advanced Troll Regeneration
+Ubertip="Increases the hit point regeneration rate of Headhunters, Witch Doctors and Batriders.","Further increases the hit point regeneration rate of Headhunters, Witch Doctors and Batriders.","Further increases the hit point regeneration rate of Headhunters, Witch Doctors and Batriders."
+Ubertip:custom,V0=Increases the hit point regeneration rate of Headhunters and Witch Doctors.,Further increases the hit point regeneration of Headhunters and Witch Doctors.,Further increases the hit point regeneration of Headhunters and Witch Doctors.
+Ubertip:melee,V0=Increases the hit point regeneration rate of Headhunters and Witch Doctors.,Further increases the hit point regeneration of Headhunters and Witch Doctors.,Further increases the hit point regeneration of Headhunters and Witch Doctors.
+Hotkey=R
+Hotkey:custom,V0=T
+Hotkey:melee,V0=T
+
+[Rolf]
+Name=Liquid Fire
+Tip=Research Liquid Fire
+Ubertip="Gives Batriders the Liquid Fire attack, which deals damage over time to enemy buildings, stops them from being repaired, and reduces the attack rate of enemy buildings."
+Hotkey=L
+
+[Ropm]
+Name=Backpack
+EditorSuffix= (Orc)
+Tip=Research Backpack
+Ubertip="Gives specific Orc ground units the ability to carry items."
+Hotkey=B
+
+[Rowt]
+Name=Spirit Walker Adept Training,Spirit Walker Master Training
+Tip=Spirit Walker Adept Training,Spirit Walker Master Training
+Ubertip="Increases Spirit Walkers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Disenchant.","Increases Spirit Walkers' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Ancestral Spirit."
+Hotkey=R,R
+
+[Robk]
+Name=Berserker Upgrade
+Tip=Berserker Upgrade
+Ubertip="Transforms Headhunters into Berserkers, giving them increased hit points and the Berserk ability."
+Hotkey=E
+
+[Rorb]
+Name=Reinforced Defenses
+Tip=Reinforced Defenses
+Ubertip="Upgrades Burrows and Watch Towers so that they have Fortified armor."
+Hotkey=D
+
+[Robf]
+Name=Burning Oil
+Tip=Burning Oil
+Ubertip="Upgrades Demolishers to fire rocks smothered in burning oil, which causes the ground to burn."
+Hotkey=N

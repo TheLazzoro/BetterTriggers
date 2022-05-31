@@ -1,0 +1,148 @@
+[Rhss]
+Name=Control Magic
+Tip=Research Control Magic
+Ubertip="Gives Spellbreakers the ability to take control of enemy summoned units."
+Hotkey=G
+
+[Rhme]
+Name=Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords
+Tip=Upgrade to Iron Forged Swords,Upgrade to Steel Forged Swords,Upgrade to Mithril Forged Swords
+Ubertip="Increases the attack damage of Militia, Footmen, Spellbreakers, Dragonhawk Riders, Gryphon Riders and Knights.","Further increases the attack damage of Militia, Footmen, Spellbreakers, Dragonhawk Riders, Gryphon Riders and Knights.","Further increases the attack damage of Militia, Footmen, Spellbreakers, Dragonhawk Riders, Gryphon Riders and Knights."
+Ubertip:custom,V0="Increases the attack damage of Militia, Footmen, Gryphon Riders and Knights.","Further increases the attack damage of Militia, Footmen, Gryphon Riders and Knights.","Further increases the attack damage of Militia, Footmen, Gryphon Riders and Knights."
+Ubertip:melee,V0="Increases the attack damage of Militia, Footmen, Gryphon Riders and Knights.","Further increases the attack damage of Militia, Footmen, Gryphon Riders and Knights.","Further increases the attack damage of Militia, Footmen, Gryphon Riders and Knights."
+Hotkey=S,S,S
+
+[Rhra]
+Name=Black Gunpowder,Refined Gunpowder,Imbued Gunpowder
+Tip=Upgrade to Black Gunpowder,Upgrade to Refined Gunpowder,Upgrade to Imbued Gunpowder
+Ubertip="Increases the ranged attack damage of Riflemen, Mortar Teams, Siege Engines and Flying Machines.","Further increases the ranged attack damage of Riflemen, Mortar Teams, Siege Engines and Flying Machines.","Further increases the ranged attack damage of Riflemen, Mortar Teams, Siege Engines and Flying Machines."
+Hotkey=G,G,G
+
+[Rhar]
+Name=Iron Plating,Steel Plating,Mithril Plating
+Tip=Upgrade to Iron Plating,Upgrade to Steel Plating,Upgrade to Mithril Plating
+Ubertip="Increases the armor of Militia, Footmen, Spellbreakers, Knights, Flying Machines and Siege Engines.","Further increases the armor of Militia, Footmen, Spellbreakers, Knights, Flying Machines and Siege Engines.","Further increases the armor of Militia, Footmen, Spellbreakers, Knights, Flying Machines and Siege Engines."
+Ubertip:custom,V0="Increases the armor of Militia, Footmen, Knights, Flying Machines and Siege Engines.","Further increases the armor of Militia, Footmen, Knights, Flying Machines and Siege Engines.","Further increases the armor of Militia, Footmen, Knights, Flying Machines and Siege Engines."
+Ubertip:melee,V0="Increases the armor of Militia, Footmen, Knights, Flying Machines and Siege Engines.","Further increases the armor of Militia, Footmen, Knights, Flying Machines and Siege Engines.","Further increases the armor of Militia, Footmen, Knights, Flying Machines and Siege Engines."
+Hotkey=P,P,P
+
+[Rhla]
+Name=Studded Leather Armor,Reinforced Leather Armor,Dragonhide Armor
+Tip=Upgrade to Studded Leather Armor,Upgrade to Reinforced Leather Armor,Upgrade to Dragonhide Armor
+Ubertip="Increases the armor of Riflemen, Mortar Teams, Dragonhawk Riders and Gryphon Riders.","Further increases the armor of Riflemen, Mortar Teams, Dragonhawk Riders and Gryphon Riders.","Further increases the armor of Riflemen, Mortar Teams, Dragonhawk Riders and Gryphon Riders."
+Ubertip:custom,V0="Increases the armor of Riflemen, Mortar Teams and Gryphon Riders.","Further increases the armor of Riflemen, Mortar Teams and Gryphon Riders.","Further increases the armor of Riflemen, Mortar Teams and Gryphon Riders."
+Ubertip:melee,V0="Increases the armor of Riflemen, Mortar Teams and Gryphon Riders.","Further increases the armor of Riflemen, Mortar Teams and Gryphon Riders.","Further increases the armor of Riflemen, Mortar Teams and Gryphon Riders."
+Hotkey=A,A,A
+
+[Rhac]
+Name=Improved Masonry,Advanced Masonry,Imbued Masonry
+Tip=Upgrade to Improved Masonry,Upgrade to Advanced Masonry,Upgrade to Imbued Masonry
+Ubertip="Increases the armor and hit points of Human buildings.","Further increases the armor and hit points of Human buildings.","Further increases the armor and hit points of Human buildings."
+Hotkey=M,M,M
+
+[Rhgb]
+Name=Flying Machine Bombs
+Tip=Research Flying Machine Bombs
+Ubertip="Allows Flying Machines to attack land units."
+Hotkey=B
+
+[Rhlh]
+Name=Improved Lumber Harvesting,Advanced Lumber Harvesting
+Tip=Improved Lumber Harvesting,Advanced Lumber Harvesting
+Ubertip="Increases the amount of lumber that Peasants can carry by <Rhlh,mod1>.","Further increases the amount of lumber that Peasants can carry by <Rhlh,mod1>."
+Hotkey=L,L
+
+[Rhde]
+Name=Defend
+Tip=Research Defend
+UberTip="Allows Footmen to use the Defend ability, which increases their defensive capabilities against Piercing attacks."
+Hotkey=D
+
+[Rhan]
+Name=Animal War Training
+Tip=Research Animal War Training
+Ubertip="Increases the maximum hit points of Knights, Dragonhawk Riders, and Gryphon Riders by <Rhan,base1>."
+Ubertip:custom,V0="Increases the maximum hit points of Knights and Gryphon Riders by <Rhan,base1>."
+Ubertip:melee,V0="Increases the maximum hit points of Knights and Gryphon Riders by <Rhan,base1>."
+Hotkey=A
+
+[Rhpt]
+Name=Priest Adept Training,Priest Master Training
+Tip=Priest Adept Training,Priest Master Training
+Ubertip="Increases Priests' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Dispel Magic.","Increases Priests' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Inner Fire."
+Ubertip:custom,V0="Increases Priests' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Dispel Magic.","Increases Priests' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Inner Fire."
+Hotkey=T,T
+
+[Rhst]
+Name=Sorceress Adept Training,Sorceress Master Training
+Tip=Sorceress Adept Training,Sorceress Master Training
+Ubertip="Increases Sorceresses' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Invisibility.","Increases Sorceresses' mana capacity, mana regeneration rate, hit points, and gives them the ability to cast Polymorph."
+Ubertip:custom,V0="Increases Sorceresses' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Invisibility.","Increases Sorceresses' mana capacity, mana regeneration rate, hit points, attack damage and gives them the ability to cast Polymorph."
+Hotkey=O,O
+
+[Rhri]
+Name=Long Rifles
+Tip=Upgrade to Long Rifles
+Ubertip="Increases the range of Riflemen attacks."
+Hotkey=L
+
+[Rhse]
+Name=Magic Sentry
+Tip=Research Magic Sentry
+Ubertip="Provides Human towers with the ability to detect invisible units."
+Hotkey=M
+
+[Rhfl]
+Name=Flare
+Tip=Research Flare
+Tip:custom,V0=Research Flare
+Tip:melee,V0=Research Flare
+Ubertip="Provides Mortar Teams with the Flare ability. Flares can be used to reveal any area of the map. |nCan see invisible units."
+Hotkey=R
+Hotkey:custom,V0=F
+Hotkey:melee,V0=F
+
+[Rhhb]
+Name=Storm Hammers
+Tip=Research Storm Hammers
+Ubertip="Causes a Gryphon Rider's attacks to damage multiple units."
+Ubertip:custom,V0="Causes a Gryphon Rider's hammers to strike through an enemy land unit and hit the next land opponent, dealing damage to both."
+Hotkey=H
+
+[Rhrt]
+Name=Barrage
+Tip=Research Barrage
+Ubertip="Upgrades Siege Engines, giving them the Barrage ability, which allows them to damage nearby enemy air units."
+Hotkey=G
+
+[Rhpm]
+Name=Backpack
+EditorSuffix= (Human)
+Tip=Research Backpack
+Ubertip="Gives specific Human ground units the ability to carry items."
+Hotkey=B
+
+[Rhfc]
+Name=Flak Cannons
+Tip=Research Flak Cannons
+Ubertip="Upgrades the weapons on Flying Machines to give them an area effect damage attack against air units."
+Hotkey=C
+
+[Rhfs]
+Name=Fragmentation Shards
+Tip=Research Fragmentation Shards
+Ubertip="Upgrades the mortar shells on Mortar Teams and Cannon Towers to increase the damage they deal to Unarmored and Medium armor units."
+Ubertip:custom,V1=Upgrades the mortar shells on Mortar Teams to increase the damage they deal to Unarmored and Medium armor units.
+Hotkey=S
+
+[Rhcd]
+Name=Cloud
+Tip=Research Cloud
+Ubertip="Provides Dragonhawk Riders with the Cloud ability, which stops ranged buildings from attacking."
+Hotkey=C
+
+[Rhsb]
+Name=Sundering Blades
+Tip=Research Sundering Blades
+Ubertip="Upgrades Knights to deal increased damage to targets with Medium armor."
+Hotkey=B

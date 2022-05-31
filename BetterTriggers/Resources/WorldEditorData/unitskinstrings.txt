@@ -1,0 +1,28 @@
+﻿[Y425]
+Name=ydeng
+Description=Dummy Field
+
+[Hjas]
+Name=Archmage
+Propernames:hd=Jaina Proudmoore
+
+[Uart]
+Name=Death Knight
+Propernames:hd=Arthas Menethil
+
+[Ekce]
+Name=Keeper of the Grove
+Propernames:hd=Cenarius
+
+[Ofth]
+Name=Far Seer
+Propernames:hd=Thrall
+
+[Udef]
+Name=Death Knight
+Propernames=Lady Nightsorrow,Lady Soulrender,Lady Dethstorm,Lady Maldazzar,Lady Darkhallow,Lady Lightstalker,Baroness Bloodbane,Baroness Felblade,Dutchess Dreadmoore,Dutchess Ragereaver,Baroness Frostfel,Lady Darkscythe,Dutchess Wintermaul,Baroness Perenolde,Baroness Morte
+
+[Edef]
+Name=Demon Huntress
+Propernames=Shadowsong,Shadowfury,Shadowstalker,Flameseeker,Darkweaver,Darkterror,Darksorrow,Sindweller,Painkiller,Hellbourne,Wrathbringer,Ragerunner,Firebrand,Bloodwrath,Terrorblade
+

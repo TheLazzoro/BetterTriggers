@@ -43,7 +43,7 @@ namespace BetterTriggers.Controllers
             }
 
             // Special case for GUI "Action" parameter
-            else if(returnType  == "code")
+            else if (returnType == "code")
             {
                 for (int i = 0; i < ContainerTriggerData.ActionTemplates.Count; i++)
                 {
@@ -52,6 +52,19 @@ namespace BetterTriggers.Controllers
                         list.Add(template.Clone());
                 }
                 list.ForEach(call => call.returnType = "code");
+
+                return list;
+            }
+
+            // Special case for GUI 'eventcall' parameter
+            else if (returnType == "eventcall")
+            {
+                for (int i = 0; i < ContainerTriggerData.EventTemplates.Count; i++)
+                {
+                    var template = ContainerTriggerData.EventTemplates[i];
+                    list.Add(template.Clone());
+                }
+                list.ForEach(call => call.returnType = "eventcall");
 
                 return list;
             }
@@ -68,7 +81,7 @@ namespace BetterTriggers.Controllers
                 if (returnType == template.returnType)
                     list.Add(template.Clone());
             }
-            if(wasBoolCall)
+            if (wasBoolCall)
             {
                 list.ForEach(call => call.returnType = "boolcall");
             }
@@ -118,64 +131,70 @@ namespace BetterTriggers.Controllers
             bool found = false;
             int i = 0;
 
-            i = 0;
-            while (!found && i < ContainerTriggerData.EventTemplates.Count)
+            if (parameter is Constant)
             {
-                if (ContainerTriggerData.EventTemplates[i].identifier == parameter.identifier)
+                while (!found && i < ContainerTriggerData.ConstantTemplates.Count)
                 {
-                    found = true;
-                    displayName = ContainerTriggerData.EventTemplates[i].name;
-                }
+                    if (ContainerTriggerData.ConstantTemplates[i].identifier == parameter.identifier)
+                    {
+                        found = true;
+                        displayName = Locale.Translate(ContainerTriggerData.ConstantTemplates[i].name);
+                    }
 
-                i++;
+                    i++;
+                }
             }
 
-            i = 0;
-            while (!found && i < ContainerTriggerData.ConditionTemplates.Count)
+            else if (parameter is Function)
             {
-                if (ContainerTriggerData.ConditionTemplates[i].identifier == parameter.identifier)
+                i = 0;
+                while (!found && i < ContainerTriggerData.EventTemplates.Count)
                 {
-                    found = true;
-                    displayName = ContainerTriggerData.ConditionTemplates[i].name;
+                    if (ContainerTriggerData.EventTemplates[i].identifier == parameter.identifier)
+                    {
+                        found = true;
+                        displayName = ContainerTriggerData.EventTemplates[i].name;
+                    }
+
+                    i++;
                 }
 
-                i++;
-            }
-
-            i = 0;
-            while (!found && i < ContainerTriggerData.ActionTemplates.Count)
-            {
-                if (ContainerTriggerData.ActionTemplates[i].identifier == parameter.identifier)
+                i = 0;
+                while (!found && i < ContainerTriggerData.ConditionTemplates.Count)
                 {
-                    found = true;
-                    displayName = ContainerTriggerData.ActionTemplates[i].name;
+                    if (ContainerTriggerData.ConditionTemplates[i].identifier == parameter.identifier)
+                    {
+                        found = true;
+                        displayName = ContainerTriggerData.ConditionTemplates[i].name;
+                    }
+
+                    i++;
                 }
 
-                i++;
-            }
-
-            i = 0;
-            while (!found && i < ContainerTriggerData.CallTemplates.Count)
-            {
-                if (ContainerTriggerData.CallTemplates[i].identifier == parameter.identifier)
+                i = 0;
+                while (!found && i < ContainerTriggerData.ActionTemplates.Count)
                 {
-                    found = true;
-                    displayName = ContainerTriggerData.CallTemplates[i].name;
+                    if (ContainerTriggerData.ActionTemplates[i].identifier == parameter.identifier)
+                    {
+                        found = true;
+                        displayName = ContainerTriggerData.ActionTemplates[i].name;
+                    }
+
+                    i++;
                 }
 
-                i++;
-            }
-
-            i = 0;
-            while (!found && i < ContainerTriggerData.ConstantTemplates.Count)
-            {
-                if (ContainerTriggerData.ConstantTemplates[i].identifier == parameter.identifier)
+                i = 0;
+                while (!found && i < ContainerTriggerData.CallTemplates.Count)
                 {
-                    found = true;
-                    displayName = ContainerTriggerData.ConstantTemplates[i].name;
+                    if (ContainerTriggerData.CallTemplates[i].identifier == parameter.identifier)
+                    {
+                        found = true;
+                        displayName = ContainerTriggerData.CallTemplates[i].name;
+                    }
+
+                    i++;
                 }
 
-                i++;
             }
 
             return displayName;

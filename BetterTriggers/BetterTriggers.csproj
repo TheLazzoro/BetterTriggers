@@ -18,6 +18,36 @@
     <None Remove="Resources\TriggerData\constants.json" />
     <None Remove="Resources\TriggerData\events.json" />
     <None Remove="Resources\TriggerData\types.json" />
+    <None Remove="Resources\WorldEditorData\abilityskinstrings.txt" />
+    <None Remove="Resources\WorldEditorData\campaignabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\campaignunitstrings.txt" />
+    <None Remove="Resources\WorldEditorData\campaignupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\commandskinstrings.txt" />
+    <None Remove="Resources\WorldEditorData\commandstrings.txt" />
+    <None Remove="Resources\WorldEditorData\commonabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\destructableskinstrings.txt" />
+    <None Remove="Resources\WorldEditorData\humanabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\humanunitstrings.txt" />
+    <None Remove="Resources\WorldEditorData\humanupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\itemabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\itemskinstrings.txt" />
+    <None Remove="Resources\WorldEditorData\itemstrings.txt" />
+    <None Remove="Resources\WorldEditorData\neutralabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\neutralunitstrings.txt" />
+    <None Remove="Resources\WorldEditorData\neutralupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\nightelfabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\nightelfunitstrings.txt" />
+    <None Remove="Resources\WorldEditorData\nightelfupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\orcabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\orcunitstrings.txt" />
+    <None Remove="Resources\WorldEditorData\orcupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\undeadabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\undeadunitstrings.txt" />
+    <None Remove="Resources\WorldEditorData\undeadupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\unitglobalstrings.txt" />
+    <None Remove="Resources\WorldEditorData\unitskinstrings.txt" />
+    <None Remove="Resources\WorldEditorData\upgradeskinstrings.txt" />
+    <None Remove="Resources\WorldEditorData\worldeditstrings.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +82,96 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\TriggerData\types.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\abilityskinstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\campaignabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\campaignunitstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\campaignupgradestrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\commandskinstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\commandstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\commonabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\destructableskinstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\humanabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\humanunitstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\humanupgradestrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\itemabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\itemskinstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\itemstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\neutralabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\neutralunitstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\neutralupgradestrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\nightelfabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\nightelfunitstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\nightelfupgradestrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\orcabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\orcunitstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\orcupgradestrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\undeadabilitystrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\undeadunitstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\undeadupgradestrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\unitglobalstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\unitskinstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\upgradeskinstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\worldeditstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

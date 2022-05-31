@@ -1,0 +1,291 @@
+[Ucrl]
+Name=Crypt Lord
+Propernames=Thebis-Ra,Typhis-Ahn,Anubiros,Memphis-Ahn,Horus'aman,Nephri'thos,Arak-arahm,Tuten'arak,Pharoh-moth
+Tip=Summon Crypt Lord
+Hotkey=C
+Ubertip="Warrior Hero, adept at summoning insect minions and crushing enemies. Can learn Impale, Spiked Carapace, Carrion Beetles and Locust Swarm. |n|n|cffffcc00Attacks land units.|r"
+Revivetip=Revive Crypt Lord
+Awakentip=Revive Crypt Lord
+
+[uaco]
+Name=Acolyte
+Tip=Train Acolyte
+Ubertip="Basic worker. Can summon structures, harvest gold, and Restore. Acolytes may be sacrificed at a Sacrificial Pit to create Shades. |n|n|cffffcc00Attacks land units.|r"
+Hotkey=C
+
+[uabo]
+Name=Abomination
+Tip=Train Abomination
+Ubertip="Heavy melee unit. Can learn the Disease Cloud ability and Cannibalize. |n|n|cffffcc00Attacks land units.|r"
+Ubertip:custom,V0=Heavy melee unit. Can learn the Disease Cloud ability. |n|n|cffffcc00Attacks land units.|r
+Ubertip:melee,V0=Heavy melee unit. Can learn the Disease Cloud ability. |n|n|cffffcc00Attacks land units.|r
+Hotkey=A
+
+[Udea]
+Name=Death Knight
+Propernames=Lord Nightsorrow,Lord Soulrender,Lord Dethstorm,Lord Maldazzar,Lord Darkhallow,Lord Lightstalker,Baron Bloodbane,Baron Felblade,Duke Dreadmoore,Duke Ragereaver,Baron Frostfel,Lord Darkscythe,Duke Wintermaul,Baron Perenolde,Baron Morte
+Tip=Summon Death Knight
+Ubertip="Warrior Hero, evil counterpart to the Human Paladin. Can learn Death Coil, Death Pact, Unholy Aura, and Animate Dead. |n|n|cffffcc00Attacks land units.|r"
+Revivetip=Revive Death Knight
+Awakentip=Revive Death Knight
+Hotkey=D
+
+[uban]
+Name=Banshee
+Tip=Train Banshee
+Ubertip="Supporting caster. Can initially cast Curse, which causes enemy units to occasionally miss in combat. Can also learn Anti-magic Shell and Possession. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=B
+Casterupgradename=Initiate, Adept, Master
+Casterupgradetip="- Curse","- Curse|n- Anti-magic Shell","- Curse|n- Anti-magic Shell|n- Possession"
+
+[ucrm]
+Name=Burrowed Crypt Fiend
+Tip=Train Crypt Fiend
+Ubertip="Ranged combat support creature. Can learn the Web, and Burrow abilities. |n|n|cffffcc00Attacks land units.|r"
+Hotkey=F
+
+[ucry]
+Name=Crypt Fiend
+Tip=Train Crypt Fiend
+Ubertip="Ranged combat support creature. Can learn the Web, and Burrow abilities. |n|n|cffffcc00Attacks land units.|r"
+Ubertip:custom,V0=Ranged combat support creature. Can learn the Web ability. |n|n|cffffcc00Attacks land units.|r
+Ubertip:melee,V0=Ranged combat support creature. Can learn the Web ability. |n|n|cffffcc00Attacks land units.|r
+Hotkey=F
+
+[Udre]
+Name=Dreadlord
+Propernames=Terrordar,Nerothos,Bleakill,Necros,Fearoth,Dethecus,Maldibion,Nochthitus,Gholbine,Rashgarroth,Aramachus,Zilfallon,Lorthiras,Zenedar,Mullioch,Algammon,Banehallow,Ven'Gyr
+Propernames:custom,V0=Terrordar,Nerothos,Bleakill,Necros,Fearoth,Dethecus,Maldibion,Nochthitus,Balnazzar,Rashgarroth,Aramachus,Zilfallon,Lorthiras,Zenedar,Mullioch,Algammon,Banehallow,Ven'Gyr
+Propernames:melee,V0=Terrordar,Nerothos,Bleakill,Necros,Fearoth,Dethecus,Maldibion,Nochthitus,Balnazzar,Rashgarroth,Aramachus,Zilfallon,Lorthiras,Zenedar,Mullioch,Algammon,Banehallow,Ven'Gyr
+Tip=Summon Dreadlord
+Ubertip="Cunning Hero, adept at controlling combat. Can learn Carrion Swarm, Sleep, Vampiric Aura, and Inferno. |n|n|cffffcc00Attacks land units.|r"
+Revivetip=Revive Dreadlord
+Awakentip=Revive Dreadlord
+Hotkey=E
+
+[ufro]
+Name=Frost Wyrm
+Tip=Train Frost Wyrm
+Ubertip="Flying heavy assault creature. Can learn the Freezing Breath ability. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=F
+
+[ugar]
+Name=Gargoyle
+Tip=Train Gargoyle
+Ubertip="Flying attack creature. Can learn the Stone Form ability. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=A
+
+[ugrm]
+Name=Stone Form Gargoyle
+Tip=Train Gargoyle
+Ubertip="Flying attack creature. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=A
+
+[ugho]
+Name=Ghoul
+Tip=Train Ghoul
+Ubertip="Basic attack unit and lumber harvester. Can learn Cannibalize and Ghoul Frenzy. |n|n|cffffcc00Attacks land units and trees.|r"
+Hotkey=G
+
+[Ulic]
+Name=Lich
+Propernames=Ordin Frostbane,Ras Splinterspine,Morbent Fell,Rage Winterchill,Araj the Summoner,Kali'naj Dethknell,Rak Coldskull,Din Frostfire,Calis Wraithson,Venim Iceblade,Naze the Eternal,Ras Frostwhisper,Coldreaver,Cho'Nammoth,Kryptikk Soulslayer,Alandil Lieng
+Propernames:custom,V0=Ordin Frostbane,Ras Splinterspine,Morbent Fell,Rage Winterchill,Araj the Summoner,Kali'naj Dethknell,Rak Coldskull,Din Frostfire,Calis Wraithson,Venim Iceblade,Naze the Eternal,Ras Frostwhisper,Coldreaver,Cho'Nammoth,Alandil Lieng
+Propernames:melee,V0=Ordin Frostbane,Ras Splinterspine,Morbent Fell,Rage Winterchill,Araj the Summoner,Kali'naj Dethknell,Rak Coldskull,Din Frostfire,Calis Wraithson,Venim Iceblade,Naze the Eternal,Ras Frostwhisper,Coldreaver,Cho'Nammoth,Alandil Lieng
+Tip=Summon Lich
+Ubertip="Mystical Hero, particularly adept at cold magic. Can learn Frost Armor, Frost Nova, Dark Ritual and Death And Decay. |n|n|cffffcc00Attacks land and air units.|r"
+Revivetip=Revive Lich
+Awakentip=Revive Lich
+Hotkey=L
+
+[unec]
+Name=Necromancer
+Tip=Train Necromancer
+Ubertip="Dark spellcaster. Can initially cast Raise Dead on corpses. Can also learn Unholy Frenzy and Cripple. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:custom,V0=Essential spellcaster. Can initially cast Raise Dead on corpses. Can also learn Unholy Frenzy and Cripple. |n|n|cffffcc00Attacks land and air units.|r
+Ubertip:custom,V1=Essential spellcaster. Can initially cast Raise Dead on corpses. Can also learn Unholy Frenzy and Cripple. |n|n|cffffcc00Attacks land and air units.|r
+Ubertip:melee,V0=Essential spellcaster. Can initially cast Raise Dead on corpses. Can also learn Unholy Frenzy and Cripple. |n|n|cffffcc00Attacks land and air units.|r
+Hotkey=N
+Casterupgradename=Initiate, Adept, Master
+Casterupgradetip=- Raise Dead,- Raise Dead|n- Unholy Frenzy,- Raise Dead|n- Unholy Frenzy|n- Cripple
+
+[uske]
+Name=Skeleton Warrior
+Tip=Summon Skeleton Warrior
+
+[uskm]
+Name=Skeletal Mage
+Tip=Summon Skeletal Mage
+
+[uplg]
+Name=Disease Cloud
+
+[uaod]
+Name=Altar of Darkness
+Tip=Summon Altar of Darkness
+Ubertip="Summons Heroes. Revives slain Heroes."
+Hotkey=A
+
+[unpl]
+Name=Necropolis
+Tip=Summon Necropolis
+Ubertip="Primary structure, used to train Acolytes and receive lumber gathered by Ghouls. Can be upgraded to Halls of the Dead and then Black Citadel to enable the production of additional types of structures and units."
+Ubertip:custom,V0="Primary structure, used to train Acolytes and receive lumber gathered by Ghouls. Can be upgraded to Halls of the Dead and then Black Citadel to enable the production of additional types of structures and units."
+Ubertip:melee,V0="Primary structure, used to train Acolytes and receive lumber gathered by Ghouls. Can be upgraded to Halls of the Dead and then Black Citadel to enable the production of additional types of structures and units."
+Hotkey=N
+
+[unp1]
+Name=Halls of the Dead
+Tip=Upgrade to Halls of the Dead
+Ubertip="Upgrade to Halls of the Dead to enable the production of additional types of structures and units. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:custom,V0="Upgrade to Halls of the Dead to enable the production of additional types of structures and units. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:melee,V0="Upgrade to Halls of the Dead to enable the production of additional types of structures and units. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=U
+
+[unp2]
+Name=Black Citadel
+Tip=Upgrade to Black Citadel
+Ubertip="Upgrade to Black Citadel to enable the production of additional types of structures and units. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:custom,V0="Upgrade to Black Citadel to enable the production of additional types of structures and units. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip:melee,V0="Upgrade to Black Citadel to enable the production of additional types of structures and units. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=U
+
+[usep]
+Name=Crypt
+Tip=Summon Crypt
+Ubertip="Primary troop production building. Trains Ghouls, Crypt Fiends, and Gargoyles. Also contains the upgrades Ghoul Frenzy, Cannibalize, Stone Form, Web and Burrow."
+Ubertip:custom,V0="Primary troop production building. Trains Ghouls, Crypt Fiends, and Gargoyles. Also contains the upgrades Ghoul Frenzy, Cannibalize, Stone Form and Web."
+Ubertip:melee,V0="Primary troop production building. Trains Ghouls, Crypt Fiends, and Gargoyles. Also contains the upgrades Ghoul Frenzy, Cannibalize, Stone Form and Web."
+Hotkey=C
+
+[utod]
+Name=Temple of the Damned
+Tip=Summon Temple of the Damned
+Ubertip="Spellcaster production building. Trains Necromancers and Banshees. |nAlso contains upgrades for Necromancers, Banshees, and Skeletal Mastery."
+Ubertip:custom,V0="Spellcaster production building. Trains Necromancers and Banshees. |nAlso contains upgrades for Necromancers, Banshees and Skeletal Longevity."
+Ubertip:custom,V1="Spellcaster production building. Trains Necromancers and Banshees. |nAlso contains upgrades for Necromancers, Banshees, Skeletal Longevity, and Skeletal Mastery."
+Ubertip:melee,V0="Spellcaster production building. Trains Necromancers and Banshees. |nAlso contains upgrades for Necromancers, Banshees and Skeletal Longevity."
+Hotkey=T
+
+[utom]
+Name=Tomb of Relics
+Hotkey=R
+Tip=Summon Tomb of Relics
+Ubertip="Creates a shop with purchasable items. The items available depend upon what level of upgrade your Necropolis has (Necropolis, Halls of the Dead, or Black Citadel) and which buildings you have."
+
+[ugol]
+Name=Haunted Gold Mine
+Tip=Haunt Gold Mine
+Ubertip="Haunts a gold mine so that Acolytes can mine. Use on gold mines to corrupt them."
+Hotkey=G
+
+[uzig]
+Name=Ziggurat
+Tip=Summon Ziggurat
+Ubertip="Provides food, which increases the maximum number of units that can be trained. Can be upgraded to a defensive structure that attacks land and air units."
+Hotkey=Z
+
+[uzg1]
+Name=Spirit Tower
+Tip=Upgrade to Spirit Tower
+Ubertip="Upgrade to create a defensive structure. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=T
+
+[uzg2]
+Name=Nerubian Tower
+Tip=Upgrade to Nerubian Tower
+Ubertip="Upgrade to create a defensive structure that deals cold damage and slows enemy units. |n|n|cffffcc00Attacks land and air units.|r"
+Hotkey=N
+
+[umtw]
+Name=Meat Wagon
+Tip=Train Meat Wagon
+Ubertip="Corpse storage machine. Also serves as long-range siege weaponry. Exceptional damage versus buildings, but slow and vulnerable. Can learn the Disease Cloud ability. |n|n|cffffcc00Attacks land units and trees.|r"
+Hotkey=M
+
+[ubon]
+Name=Boneyard
+Tip=Summon Boneyard
+Ubertip="Produces Frost Wyrms. Also contains the Freezing Breath upgrade."
+Hotkey=B
+
+[usap]
+Name=Sacrificial Pit
+Tip=Summon Sacrificial Pit
+Ubertip="Has the Sacrifice ability for turning Acolytes into Shades. Shades are invisible spirits that can see invisible units, but cannot attack."
+Hotkey=S
+
+[uslh]
+Name=Slaughterhouse
+Tip=Summon Slaughterhouse
+Ubertip="Produces Abominations, Obsidian Statues, and Meat Wagons. Also contains the Disease Cloud, and Destroyer Form upgrades."
+Ubertip:custom,V0=Produces Abominations and Meat Wagons. Also contains the Disease Cloud upgrade.
+Ubertip:melee,V0=Produces Abominations and Meat Wagons. Also contains the Disease Cloud upgrade.
+Hotkey=H
+
+[ushd]
+Name=Shade
+Tip=Train Shade
+Ubertip="A permanently invisible spirit that can see other invisible units, but cannot attack."
+
+[ugrv]
+Name=Graveyard
+Tip=Summon Graveyard
+Ubertip="Provides attack and armor upgrades for Undead units. Also produces corpses and serves as a drop-off point for harvested lumber."
+Hotkey=V
+
+[ucs1]
+Name=Carrion Beetle
+EditorSuffix= (Level 1)
+
+[ucs2]
+Name=Carrion Beetle
+EditorSuffix= (Level 2)
+
+[ucsB]
+Name=Burrowed Carrion Beetle
+EditorSuffix= (Level 2)
+
+[ucs3]
+Name=Carrion Beetle
+EditorSuffix= (Level 3)
+
+[ucsC]
+Name=Burrowed Carrion Beetle
+EditorSuffix= (Level 3)
+
+[uloc]
+Name=Locust
+
+[uobs]
+Name=Obsidian Statue
+Tip=Create Obsidian Statue
+Hotkey=O
+Ubertip="Fortified statue that can help replenish the life and mana of your army. Can initially cast Spirit Touch and Essence of Blight, and learn the Destroyer Form ability. |n|n|cffffcc00Attacks land and air units.|r"
+
+[ubsp]
+Name=Destroyer
+Tip=Morph into Destroyer
+Hotkey=T
+Ubertip="Large flying unit that must consume magic to sustain its mana. Excellent at destroying enemy casters and clusters of ground forces. Initially has Spell Immunity, Devour Magic, Absorb Mana, and Orb of Annihilation. |n|n|cffffcc00Attacks land and air units.|r"
+
+//#RESTNOBETA
+[ubot]
+Name=Undead Transport Ship
+Hotkey=T
+Tip=Hire Transport Ship
+Ubertip="A sturdy transport ship capable of carrying units over the sea."
+
+
+[udes]
+Name=Undead Frigate
+Hotkey=F
+Tip=Hire Frigate
+Ubertip="A versatile attack ship good at destroying air attackers. |n|n|cffffcc00Attacks land and air units.|r"
+
+
+[uubs]
+Name=Undead Battleship
+Hotkey=B
+Tip=Hire Battleship
+Ubertip="Massive battleship good at destroying enemy ships and bombarding buildings from the sea. |n|n|cffffcc00Attacks land units.|r"

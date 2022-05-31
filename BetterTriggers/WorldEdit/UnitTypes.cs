@@ -36,6 +36,11 @@ namespace BetterTriggers.WorldEdit
             return unitTypesCustom;
         }
 
+        internal static string GetName(string unitcode)
+        {
+            throw new NotImplementedException();
+        }
+
         internal static void Load()
         {
             unitTypes = new List<UnitType>();

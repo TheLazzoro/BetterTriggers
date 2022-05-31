@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Utility;
 using GUI.Components.Shared;
@@ -43,7 +44,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     continue;
 
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = constant.name;
+                listItem.Content = Locale.Translate(constant.name);
                 listItem.Tag = constant;
                 objects.Add(new Searchable()
                 {
