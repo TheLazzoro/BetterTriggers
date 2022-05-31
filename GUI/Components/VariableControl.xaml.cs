@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Commands;
+﻿using BetterTriggers;
+using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
@@ -50,7 +51,7 @@ namespace GUI.Components
             for (int i = 0; i < types.Count; i++)
             {
                 ComboBoxItemType item = new ComboBoxItemType();
-                item.Content = types[i].displayname;
+                item.Content = Locale.Translate(types[i].displayname);
                 item.Type = types[i].key;
 
                 comboBoxVariableType.Items.Add(item);

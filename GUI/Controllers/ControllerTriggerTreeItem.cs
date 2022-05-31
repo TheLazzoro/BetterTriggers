@@ -14,6 +14,7 @@ namespace GUI.Controllers
         TreeViewTriggerElement treeItem;
         TextBlock textBlock;
         List<HyperlinkParameter> hyperlinkParameters = new List<HyperlinkParameter>();
+        ControllerTrigger controllerTrigger = new ControllerTrigger();
 
         public ControllerTriggerTreeItem(TreeViewTriggerElement treeViewTriggerElement)
         {
@@ -135,7 +136,7 @@ namespace GUI.Controllers
                 {
                     // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
-                    var name = value.identifier;
+                    var name = controllerTrigger.GetValueName(value.identifier, value.returnType);
 
                     // This exists in case a variable has been changed
                     if (name == null || name == "" || value.returnType != parameters[paramIndex].returnType)

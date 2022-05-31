@@ -1,4 +1,5 @@
-﻿using Model.War3Data;
+﻿using BetterTriggers.WorldEdit;
+using Model.War3Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,17 +36,17 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
 
 
-            this.Content = unit.Id;
             this.Content = img;
             this.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             this.defaultBorderBrush = this.BorderBrush;
 
             this.ToolTip = new ToolTip()
             {
-                Content = unit.Id,
+                Content = unit.Name,
             };
 
-            this.Click += delegate {
+            this.Click += delegate
+            {
                 this.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#00FF00");
             };
         }

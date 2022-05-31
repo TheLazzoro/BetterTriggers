@@ -124,7 +124,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                         Object = btn,
                         Words = new List<string>()
                             {
-                                unit.Id.ToLower()
+                                unit.Id.ToLower(),
+                                unit.Name.ToLower()
                             }
                     });
 

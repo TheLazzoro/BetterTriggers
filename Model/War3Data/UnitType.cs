@@ -14,6 +14,7 @@ namespace Model.War3Data
         public string Icon;
         public string Model;
         public bool isSpecial;
+        public bool isCampaign;
         public Stream Image;
     }
 }

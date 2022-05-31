@@ -36,9 +36,38 @@ namespace BetterTriggers.WorldEdit
             return unitTypesCustom;
         }
 
-        internal static string GetName(string unitcode)
+        public static string GetName(string unitcode)
         {
-            throw new NotImplementedException();
+            return GetName(GetUnitType(unitcode));
+        }
+
+        public static string GetName(UnitType unitType)
+        {
+            string name;
+            if (unitType == null)
+                return null;
+
+            UnitName unitName = Locale.GetUnitName(unitType.Id);
+            if (unitName.Propernames != null)
+                name = unitType.isCampaign ? unitName.Propernames.Split(',')[0] : unitName.Name;
+            else
+                name = unitName.Name;
+
+            return name;
+        }
+
+        public static UnitType GetUnitType(string unitcode)
+        {
+            UnitType unitType = null;
+            for (int i = 0; i < unitTypes.Count; i++)
+            {
+                if(unitTypes[i].Id == unitcode)
+                {
+                    unitType = unitTypes[i];
+                    break;
+                }
+            }
+            return unitType;
         }
 
         internal static void Load()
@@ -84,16 +113,21 @@ namespace BetterTriggers.WorldEdit
             {
                 var section = data[unitTypes[i].Id];
 
+
                 var icon = section["Art"];
                 var sort = section["sortUI"];
                 var isSpecial = section["special"];
+                var isCampaign = section["campaign"];
                 var model = section["file"];
 
                 unitTypes[i].Icon = icon;
                 unitTypes[i].Sort = sort;
                 unitTypes[i].isSpecial = isSpecial == "1";
+                unitTypes[i].isCampaign = isCampaign == "1";
                 unitTypes[i].Model = model;
                 unitTypes[i].Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
+
+                unitTypes[i].Name = GetName(unitTypes[i]);
             }
 
             string filePath = "war3map.w3u";
@@ -106,6 +140,7 @@ namespace BetterTriggers.WorldEdit
             }
 
             // Custom units
+            // TODO:
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);

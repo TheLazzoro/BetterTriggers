@@ -376,14 +376,14 @@ namespace BetterTriggers.Controllers
         // TODO:
         public string GetValueName(string key, string returnType)
         {
-            string text = string.Empty;
-            switch (key)
+            string text = key;
+            switch (returnType)
             {
                 case "unitcode":
-                    text = $"{key}";
+                    text = UnitTypes.GetName(key);
                     break;
                 case "unit":
-                    text = UnitTypes.GetName(key);
+                    text = $"{UnitTypes.GetName(key.Substring(0,4))} {key.Substring(5, key.Length-5)}";
                     break;
                 case "destructablecode":
                     text = $"{key}";

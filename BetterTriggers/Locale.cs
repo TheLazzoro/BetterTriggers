@@ -3,6 +3,7 @@ using BetterTriggers.WorldEdit;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
+using Model.War3Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,12 +16,20 @@ namespace BetterTriggers
     public static class Locale
     {
         private static Dictionary<string, string> WE_Strings = new Dictionary<string, string>();
+        private static Dictionary<string, UnitName> Unit_Names = new Dictionary<string, UnitName>();
 
         public static string Translate(string key)
         {
             string translation;
             WE_Strings.TryGetValue(key, out translation);
             return translation;
+        }
+
+        internal static UnitName GetUnitName(string unitcode)
+        {
+            UnitName name;
+            Unit_Names.TryGetValue(unitcode, out name);
+            return name;
         }
 
         internal static void Load()
@@ -49,16 +58,45 @@ namespace BetterTriggers
             AddEntries(triggerData);
             */
 
-            //var iniFile = IniFileConverter.Convert(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\abilityskinstring.txt"));
-            var iniFile = IniFileConverter.Convert(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\campaignunitstrings.txt"));
-            var abilitySkinString = IniFileHelper.Parse(iniFile);
+            List<string> genericData = new List<string>();
+            List<string> unitData = new List<string>();
+            unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\campaignunitstrings.txt"));
+            unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\humanunitstrings.txt"));
+            unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\neutralunitstrings.txt"));
+            unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\nightelfunitstrings.txt"));
+            unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\orcunitstrings.txt"));
+            unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\undeadunitstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\abilityskinstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\campaignabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\campaignupgradestrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\commandskinstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\commandstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\commonabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\destructableskinstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\humanabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\humanupgradestrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\itemabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\itemskinstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\itemstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\neutralabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\neutralupgradestrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\nightelfabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\nightelfupgradestrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\orcabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\orcupgradestrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\undeadabilitystrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\undeadupgradestrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\unitglobalstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\unitskinstrings.txt"));
+            genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\upgradeskinstrings.txt"));
 
-            AddUnitStringEntries(abilitySkinString);
+            genericData.ForEach(iniFile => AddGenericStringEntries(IniFileHelper.Parse(IniFileConverter.Convert(iniFile))));
+            unitData.ForEach(iniFile => AddUnitStringEntries(IniFileHelper.Parse(IniFileConverter.Convert(iniFile))));
 
             AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\worldeditstrings.txt"));
         }
 
-        private static void AddUnitStringEntries(IniData iniData)
+        private static void AddGenericStringEntries(IniData iniData)
         {
             for (int i = 0; i < iniData.Sections.Count; i++)
             {
@@ -69,6 +107,22 @@ namespace BetterTriggers
                         WE_Strings.TryAdd(enumerator.Current.SectionName, enumerator.Current.Keys["Name"]);
                     else if (enumerator.Current.Keys["Bufftip"] != null)
                         WE_Strings.TryAdd(enumerator.Current.SectionName, enumerator.Current.Keys["Bufftip"]);
+                }
+            }
+        }
+
+        private static void AddUnitStringEntries(IniData iniData) // TODO:
+        {
+            for (int i = 0; i < iniData.Sections.Count; i++)
+            {
+                var enumerator = iniData.Sections.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    var unitName = new UnitName() {
+                        Name = enumerator.Current.Keys["Name"],
+                        Propernames = enumerator.Current.Keys["Propernames"],
+                    };
+                    Unit_Names.TryAdd(enumerator.Current.SectionName, unitName);
                 }
             }
         }
