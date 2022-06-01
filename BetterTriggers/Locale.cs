@@ -20,9 +20,17 @@ namespace BetterTriggers
 
         public static string Translate(string key)
         {
+            if (key == null)
+                return "";
+
             string translation;
             WE_Strings.TryGetValue(key, out translation);
             return translation;
+        }
+
+        internal static void AddGenericString(string key, string value)
+        {
+            WE_Strings.TryAdd(key, value);
         }
 
         internal static UnitName GetUnitName(string unitcode)
@@ -31,6 +39,12 @@ namespace BetterTriggers
             Unit_Names.TryGetValue(unitcode, out name);
             return name;
         }
+
+        internal static void AddUnitName(string unitcode, UnitName unitName)
+        {
+            Unit_Names.TryAdd(unitcode, unitName);
+        }
+
 
         internal static void Load()
         {
@@ -94,6 +108,7 @@ namespace BetterTriggers
             unitData.ForEach(iniFile => AddUnitStringEntries(IniFileHelper.Parse(IniFileConverter.Convert(iniFile))));
 
             AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\worldeditstrings.txt"));
+            AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\worldeditgamestrings.txt"));
         }
 
         private static void AddGenericStringEntries(IniData iniData)

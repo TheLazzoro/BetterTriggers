@@ -11,29 +11,37 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using War3Net.Build.Extensions;
+using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
     public class UnitTypes
     {
-        private static List<UnitType> unitTypes { get; set; }
-        private static List<UnitType> unitTypesBase { get; set; }
-        private static List<UnitType> unitTypesCustom { get; set; }
+        private static Dictionary<string, UnitType> unitTypes { get; set; }
+        private static Dictionary<string, UnitType> unitTypesBase { get; set; }
+        private static Dictionary<string, UnitType> unitTypesCustom { get; set; }
 
         internal static List<UnitType> GetAll()
         {
-            return unitTypes;
+            return unitTypes.Select(kvp => kvp.Value).ToList();
         }
 
         internal static List<UnitType> GetBase()
         {
-            return unitTypesBase;
+            return unitTypesBase.Select(kvp => kvp.Value).ToList();
         }
 
         internal static List<UnitType> GetUnitTypesCustom()
         {
-            return unitTypesCustom;
+            return unitTypesCustom.Select(kvp => kvp.Value).ToList();
+        }
+
+        public static UnitType GetUnitType(string unitcode)
+        {
+            UnitType unitType;
+            unitTypes.TryGetValue(unitcode, out unitType);
+            return unitType;
         }
 
         public static string GetName(string unitcode)
@@ -56,25 +64,11 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        public static UnitType GetUnitType(string unitcode)
-        {
-            UnitType unitType = null;
-            for (int i = 0; i < unitTypes.Count; i++)
-            {
-                if(unitTypes[i].Id == unitcode)
-                {
-                    unitType = unitTypes[i];
-                    break;
-                }
-            }
-            return unitType;
-        }
-
         internal static void Load()
         {
-            unitTypes = new List<UnitType>();
-            unitTypesBase = new List<UnitType>();
-            unitTypesCustom = new List<UnitType>();
+            unitTypes = new Dictionary<string, UnitType>();
+            unitTypesBase = new Dictionary<string, UnitType>();
+            unitTypesCustom = new Dictionary<string, UnitType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
@@ -93,8 +87,8 @@ namespace BetterTriggers.WorldEdit
                     Race = (string)row.GetValue(3),
                 };
 
-                unitTypes.Add(unitType);
-                unitTypesBase.Add(unitType);
+                unitTypes.TryAdd(unitType.Id, unitType);
+                unitTypesBase.TryAdd(unitType.Id, unitType);
             }
 
             // Parse ini file
@@ -109,10 +103,11 @@ namespace BetterTriggers.WorldEdit
             parser.Configuration.AllowDuplicateKeys = true;
             IniData data = parser.Parse(iniFile);
 
-            for (int i = 0; i < unitTypes.Count; i++)
+            var unitTypesList = GetBase();
+            for (int i = 0; i < unitTypesList.Count; i++)
             {
-                var section = data[unitTypes[i].Id];
-
+                var unitType = unitTypesList[i];
+                var section = data[unitType.Id];
 
                 var icon = section["Art"];
                 var sort = section["sortUI"];
@@ -120,14 +115,14 @@ namespace BetterTriggers.WorldEdit
                 var isCampaign = section["campaign"];
                 var model = section["file"];
 
-                unitTypes[i].Icon = icon;
-                unitTypes[i].Sort = sort;
-                unitTypes[i].isSpecial = isSpecial == "1";
-                unitTypes[i].isCampaign = isCampaign == "1";
-                unitTypes[i].Model = model;
-                unitTypes[i].Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
+                unitType.Icon = icon;
+                unitType.Sort = sort;
+                unitType.isSpecial = isSpecial == "1";
+                unitType.isCampaign = isCampaign == "1";
+                unitType.Model = model;
+                unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
 
-                unitTypes[i].Name = GetName(unitTypes[i]);
+                unitType.Name = GetName(unitType); // Spaghetti
             }
 
             string filePath = "war3map.w3u";
@@ -144,17 +139,32 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);
-                var customUnits = BinaryReaderExtensions.ReadUnitObjectData(bReader, true);
-
+                var customUnits = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUnitObjectData(bReader, true);
                 for (int i = 0; i < customUnits.NewUnits.Count; i++)
                 {
                     var customUnit = customUnits.NewUnits[i];
+
+                    UnitType baseUnit = GetUnitType(Int32Extensions.ToRawcode(customUnit.OldId));
+                    string name = baseUnit.Name;
+                    string sort = baseUnit.Sort;
+                    foreach (var modified in customUnit.Modifications)
+                    {
+                        if (Int32Extensions.ToRawcode(modified.Id) == "unam")
+                            name = MapStrings.GetString(modified.ValueAsString);
+                    }
+
                     var unitType = new UnitType()
                     {
-                        Id = customUnit.ToString(),
+                        Id = customUnit.ToString().Substring(0, 4),
+                        Name = name,
+                        Sort = sort,
+                        Race = baseUnit.Race, // TODO
+                        Image = baseUnit.Image, // TODO
                     };
-                    unitTypes.Add(unitType);
-                    unitTypesCustom.Add(unitType);
+                    unitTypes.TryAdd(unitType.Id, unitType);
+                    unitTypesCustom.TryAdd(unitType.Id, unitType);
+
+                    Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
                 }
             }
         }

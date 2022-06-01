@@ -379,14 +379,32 @@ namespace BetterTriggers.Controllers
             string text = key;
             switch (returnType)
             {
+                case "unit":
+                    text = $"{UnitTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    break;
+                case "item":
+                    text = $"{ItemTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    break;
+                case "destructable":
+                    text = $"{DestructibleTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    break;
                 case "unitcode":
                     text = UnitTypes.GetName(key);
                     break;
-                case "unit":
-                    text = $"{UnitTypes.GetName(key.Substring(0,4))} {key.Substring(5, key.Length-5)}";
-                    break;
                 case "destructablecode":
-                    text = $"{key}";
+                    text = DestructibleTypes.GetName(key);
+                    break;
+                case "abilcode":
+                    text = AbilityTypes.GetName(key);
+                    break;
+                case "buffcode":
+                    text = BuffTypes.GetName(key);
+                    break;
+                case "techcode":
+                    text = UpgradeTypes.GetName(key);
+                    break;
+                case "itemcode":
+                    text = ItemTypes.GetName(key);
                     break;
                 default:
                     break;
@@ -400,7 +418,15 @@ namespace BetterTriggers.Controllers
             string text = string.Empty;
             if (returnType == "unitcode")
                 text = $"[{key}] ";
-            if (returnType == "destructablecode")
+            else if (returnType == "destructablecode")
+                text = $"[{key}] ";
+            else if (returnType == "abilcode")
+                text = $"[{key}] ";
+            else if (returnType == "buffcode")
+                text = $"[{key}] ";
+            else if (returnType == "techcode")
+                text = $"[{key}] ";
+            else if (returnType == "itemcode")
                 text = $"[{key}] ";
 
             return text;

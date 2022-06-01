@@ -65,6 +65,7 @@ namespace BetterTriggers
             }
 
             Info.Load();
+            MapStrings.Load();
             UnitTypes.Load();
             ItemTypes.Load();
             DestructibleTypes.Load();

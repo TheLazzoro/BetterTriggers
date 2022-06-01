@@ -45,6 +45,9 @@ namespace BetterTriggers.WorldEdit
 
                 for (int i = 0; i < mapUnits.Units.Count; i++)
                 {
+                    if (mapUnits.Units[i].ToString() == "sloc")
+                        continue;
+
                     if (mapUnits.Units[i].IsItem())
                         items.Add(mapUnits.Units[i]);
                     else

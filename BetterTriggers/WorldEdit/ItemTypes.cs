@@ -5,36 +5,50 @@ using IniParser.Parser;
 using Model.War3Data;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using War3Net.Build.Extensions;
+using War3Net.Common.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
     public class ItemTypes
     {
-        private static List<ItemType> items;
-        private static List<ItemType> itemsBase;
-        private static List<ItemType> itemsCustom;
+        private static Dictionary<string, ItemType> items;
+        private static Dictionary<string, ItemType> itemsBase;
+        private static Dictionary<string, ItemType> itemsCustom;
 
         internal static List<ItemType> GetAll()
         {
-            return items;
+            return items.Select(kvp => kvp.Value).ToList();
 
         }
         internal static List<ItemType> GetBase()
         {
-            return itemsBase;
+            return itemsBase.Select(kvp => kvp.Value).ToList();
         }
         internal static List<ItemType> GetCustom()
         {
-            return itemsCustom;
+            return itemsCustom.Select(kvp => kvp.Value).ToList();
+        }
+
+        public static ItemType GetItemType(string itemcode)
+        {
+            ItemType destType;
+            items.TryGetValue(itemcode, out destType);
+            return destType;
+        }
+
+        internal static string GetName(string itemcode)
+        {
+            return GetItemType(itemcode).DisplayName;
         }
 
         internal static void Load()
         {
-            items = new List<ItemType>();
-            itemsBase = new List<ItemType>();
-            itemsCustom = new List<ItemType>();
+            items = new Dictionary<string, ItemType>();
+            itemsBase = new Dictionary<string, ItemType>();
+            itemsCustom = new Dictionary<string, ItemType>();
 
             var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
@@ -56,17 +70,16 @@ namespace BetterTriggers.WorldEdit
             {
                 var id = sections.Current.SectionName;
                 var keys = sections.Current.Keys;
-                var name = id;
                 var model = keys["file"];
 
                 var item = new ItemType()
                 {
                     ItemCode = id,
-                    DisplayName = name,
+                    DisplayName = Locale.Translate(id),
                     Model = model,
                 };
-                items.Add(item);
-                itemsBase.Add(item);
+                items.TryAdd(item.ItemCode, item);
+                itemsBase.TryAdd(item.ItemCode, item);
             }
 
             string filePath = "war3map.w3t";
@@ -82,19 +95,30 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);
-                var customItems = BinaryReaderExtensions.ReadItemObjectData(bReader, true);
+                var customItems = War3Net.Build.Extensions.BinaryReaderExtensions.ReadItemObjectData(bReader, true);
 
                 for (int i = 0; i < customItems.NewItems.Count; i++)
                 {
                     var customItem = customItems.NewItems[i];
+
+                    ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(customItem.OldId));
+                    string name = baseAbil.DisplayName;
+                    foreach (var modified in customItem.Modifications)
+                    {
+                        if (Int32Extensions.ToRawcode(modified.Id) == "unam")
+                            name = MapStrings.GetString(modified.ValueAsString);
+                    }
+
                     var item = new ItemType()
                     {
-                        ItemCode = customItem.ToString(),
+                        ItemCode = customItem.ToString().Substring(0, 4),
+                        DisplayName = name,
                     };
-                    items.Add(item);
-                    itemsCustom.Add(item);
+                    items.TryAdd(item.ItemCode, item);
+                    itemsCustom.TryAdd(item.ItemCode, item);
                 }
             }
         }
+
     }
 }

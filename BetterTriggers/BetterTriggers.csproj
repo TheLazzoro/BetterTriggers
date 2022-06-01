@@ -47,6 +47,7 @@
     <None Remove="Resources\WorldEditorData\unitglobalstrings.txt" />
     <None Remove="Resources\WorldEditorData\unitskinstrings.txt" />
     <None Remove="Resources\WorldEditorData\upgradeskinstrings.txt" />
+    <None Remove="Resources\WorldEditorData\worldeditgamestrings.txt" />
     <None Remove="Resources\WorldEditorData\worldeditstrings.txt" />
   </ItemGroup>
 
@@ -169,6 +170,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\upgradeskinstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\worldeditgamestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\worldeditstrings.txt">

@@ -1366,7 +1366,7 @@ endfunction
                     return "";
 
                 script.Append("(");
-                foreach (var condition in orMultiple.Or)
+                foreach (var condition in verifiedTriggerElements)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
 
@@ -1551,7 +1551,7 @@ endfunction
                 Value v = (Value)parameter;
                 if (v.returnType == "StringExt" || v.returnType == "modelfile")
                     output += "\"" + v.identifier.Replace(@"\", @"\\") + "\"";
-                else if (v.returnType == "unitcode" || v.returnType == "buffcode" || v.returnType == "abilcode")
+                else if (v.returnType == "unitcode" || v.returnType == "buffcode" || v.returnType == "abilcode" || v.returnType == "destructablecode" || v.returnType == "techcode" || v.returnType == "itemcode")
                     output += "'" + v.identifier + "'";
                 else if (v.returnType == "unit")
                     output += $"gg_unit_{v.identifier.Replace(" ", "_")}";
