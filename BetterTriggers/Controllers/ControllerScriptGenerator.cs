@@ -170,6 +170,10 @@ namespace BetterTriggers.Controllers
             script.Append("endglobals" + newline);
             script.Append(newline);
 
+            // Map header
+            var root = (ExplorerElementRoot) ContainerProject.projectFiles[0];
+            script.Append(root.project.Header + newline + newline);
+
 
             // Init global variables
             script.Append("function InitGlobals takes nothing returns nothing" + newline);
@@ -1031,21 +1035,11 @@ endfunction
                     continue;
                 }
 
-                events.Append($"\tcall {e.function.identifier}({triggerVarName}, ");
                 for (int i = 0; i < e.function.parameters.Count; i++)
                 {
-                    var p = e.function.parameters[i];
-
-                    if (p.identifier == "VarAsString_Real")
-                        events.Append($"\"{ConvertParametersToJass(p, pre_actions)}\"");
-                    else
-                        events.Append($"{ConvertParametersToJass(p, pre_actions)}");
-
-                    if (i < e.function.parameters.Count - 1)
-                        events.Append(", ");
-
+                    string _event = ConvertTriggerElementToJass(e, pre_actions, triggerName, false);
+                    events.Append($"{_event} {newline}");
                 }
-                events.Append($"){newline}");
             }
             foreach (var c in t.trigger.Conditions)
             {
@@ -1330,6 +1324,9 @@ endfunction
                 var verifiedTriggerElements = new List<TriggerElement>();
                 foreach (var element in andMultiple.And)
                 {
+                    if (!element.isEnabled)
+                        continue;
+
                     int emptyParams = controllerTrigger.VerifyParameters(element.function.parameters);
                     if (emptyParams == 0)
                         verifiedTriggerElements.Add(element);
@@ -1357,6 +1354,9 @@ endfunction
                 var verifiedTriggerElements = new List<TriggerElement>();
                 foreach (var element in orMultiple.Or)
                 {
+                    if (!element.isEnabled)
+                        continue;
+
                     int emptyParams = controllerTrigger.VerifyParameters(element.function.parameters);
                     if (emptyParams == 0)
                         verifiedTriggerElements.Add(element);
@@ -1539,12 +1539,19 @@ endfunction
                 ControllerVariable controller = new ControllerVariable();
                 Variable variable = controller.GetByReference(v);
 
+                bool isVarAsString_Real = v.returnType == "VarAsString_Real";
+                if (isVarAsString_Real)
+                    output += "\"";
+
                 output += "udg_" + v.identifier;
 
                 if (variable.IsArray)
                     output += $"[{v.arrayIndexValues[0]}]";
                 else if (variable.IsArray && variable.IsTwoDimensions)
                     output += $"[{v.arrayIndexValues[1]}]";
+
+                if (isVarAsString_Real)
+                    output += "\"";
             }
             else if (parameter is Value)
             {

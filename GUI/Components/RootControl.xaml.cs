@@ -59,10 +59,12 @@ namespace GUI.Components
             }
 
             this.explorerElementRoot = explorerElementRoot;
-            richTextBoxComment.Document.Blocks.Clear();
-            richTextBoxComment.Document.Blocks.Add(new Paragraph(new Run(explorerElementRoot.project.Comment)));
+            textBoxComment.Text = explorerElementRoot.project.Comment;
             textEditor.Text = explorerElementRoot.project.Header;
+
+            textEditor.TextChanged += TextEditor_TextChanged;
         }
+
 
         public void Refresh()
         {
@@ -111,6 +113,18 @@ namespace GUI.Components
             {
                 observer.OnStateChange();
             }
+        }
+
+        private void textBoxComment_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            explorerElementRoot.project.Comment = textBoxComment.Text;
+            OnStateChange();
+        }
+
+        private void TextEditor_TextChanged(object sender, EventArgs e)
+        {
+            explorerElementRoot.project.Header = textEditor.Text;
+            OnStateChange();
         }
     }
 }

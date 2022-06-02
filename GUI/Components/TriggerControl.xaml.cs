@@ -111,6 +111,7 @@ namespace GUI.Components
         private void LoadTrigger(Model.SaveableData.Trigger trigger)
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
+            this.textBoxComment.Text = trigger.Comment;
             controller.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
             controller.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
             controller.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
@@ -653,6 +654,12 @@ namespace GUI.Components
         {
             CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(selectedElementEnd.triggerElement);
             command.Execute();
+        }
+
+        private void textBoxComment_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            explorerElementTrigger.trigger.Comment = textBoxComment.Text;
+            OnStateChange();
         }
     }
 }

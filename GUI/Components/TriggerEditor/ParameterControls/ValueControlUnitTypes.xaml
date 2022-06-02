@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox x:Name="comboboxRace" HorizontalAlignment="Left" Width="120" Height="22" Margin="0,0,5,0" SelectionChanged="comboboxRace_SelectionChanged" Foreground="Black" Background="#FF5F5F5F" >
+        <ComboBox x:Name="comboboxRace" HorizontalAlignment="Left" Width="120" Height="22" Margin="0,0,5,0" SelectionChanged="comboboxRace_SelectionChanged" >
             <ComboBoxItem Content="Human"/>
             <ComboBoxItem Content="Orc"/>
             <ComboBoxItem Content="Undead"/>

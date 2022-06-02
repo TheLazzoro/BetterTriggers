@@ -42,7 +42,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             this.ToolTip = new ToolTip()
             {
-                Content = unit.Name,
+                Content = $"[{unit.Id}] {unit.Name}",
             };
 
             this.Click += delegate

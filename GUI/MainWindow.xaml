@@ -78,8 +78,327 @@
                 </Setter.Value>
             </Setter>
         </Style>
-    </Window.Resources>
 
+        
+        <!--MENU-->
+        
+        <LinearGradientBrush x:Key="DarkBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientBrush.GradientStops>
+                <GradientStopCollection>
+                    <GradientStop Color="#939393" Offset="0.0"/>
+                    <GradientStop Color="#717171" Offset="0.05"/>
+                    <GradientStop Color="#606060" Offset="1.0"/>
+                </GradientStopCollection>
+            </GradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="Clicked" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientBrush.GradientStops>
+                <GradientStopCollection>
+                    <GradientStop Color="#363636" Offset="0.0"/>
+                    <GradientStop Color="#393939" Offset="1.0"/>
+                </GradientStopCollection>
+            </GradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+
+        <Style x:Key="{x:Type Menu}" TargetType="Menu">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Menu">
+                        <Border x:Name="MainMenu" Background="#282828">
+                            <StackPanel ClipToBounds="True" Orientation="Horizontal" IsItemsHost="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="MenuItemControlTemplate1" TargetType="{x:Type MenuItem}">
+            <Border x:Name="templateRoot" 
+                BorderBrush="#0000" 
+                CornerRadius="3" 
+                BorderThickness="1" 
+                Background="{TemplateBinding Background}" 
+                SnapsToDevicePixels="True">
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="1" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                    <Popup x:Name="PART_Popup"  AllowsTransparency="True" Focusable="False" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Bottom">
+                        <Border x:Name="SubMenuBorder" BorderBrush="#595959" BorderThickness="1" Background="#3A3A3A" Padding="2">
+                            <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                                <Grid RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle x:Name="OpaqueRect" Fill="{Binding Background, ElementName=SubMenuBorder}" Height="{Binding ActualHeight, ElementName=SubMenuBorder}" Width="{Binding ActualWidth, ElementName=SubMenuBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Cycle" Grid.IsSharedSizeScope="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" KeyboardNavigation.TabNavigation="Cycle"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsSuspendingPopupAnimation" Value="True">
+                    <Setter Property="PopupAnimation" TargetName="PART_Popup" Value="None"/>
+                </Trigger>
+
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource DarkBrush}"/>
+                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="#2C2C2C"/>
+                    <Setter Property="BorderThickness" TargetName="templateRoot" Value="1"></Setter>
+                </Trigger>
+
+                <Trigger Property="CanContentScroll" SourceName="SubMenuScrollViewer" Value="False">
+                    <Setter Property="Canvas.Top" TargetName="OpaqueRect" Value="{Binding VerticalOffset, ElementName=SubMenuScrollViewer}"/>
+                    <Setter Property="Canvas.Left" TargetName="OpaqueRect" Value="{Binding HorizontalOffset, ElementName=SubMenuScrollViewer}"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter TargetName="templateRoot" Property="Background" Value="{StaticResource Clicked}" />
+                    <Setter Property="Header" Value="Test" />
+                    <Setter Property="BorderBrush" Value="#2C2C2C"></Setter>
+                    <Setter Property="BorderThickness" Value="1"></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="MenuItemControlTemplate2" TargetType="{x:Type MenuItem}">
+            <Border x:Name="templateRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <Grid Margin="-1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="22" SharedSizeGroup="MenuItemIconColumnGroup" Width="Auto"/>
+                        <ColumnDefinition Width="13"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter x:Name="Icon" Content="{TemplateBinding Icon}" ContentSource="Icon" HorizontalAlignment="Center" Height="16" Margin="3" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="16"/>
+                    <Border x:Name="GlyphPanel" BorderBrush="#FF26A0DA" BorderThickness="1" Background="#3D26A0DA" ClipToBounds="False" HorizontalAlignment="Center" Height="22" Margin="-1,0,0,0" Visibility="Hidden" VerticalAlignment="Center" Width="22">
+                        <Path x:Name="Glyph" Data="F1M10,1.2L4.7,9.1 4.5,9.1 0,5.2 1.3,3.5 4.3,6.1 8.3,0 10,1.2z" Fill="#FF212121" FlowDirection="LeftToRight" Height="11" Width="10"/>
+                    </Border>
+                    <ContentPresenter x:Name="menuHeaderContainer" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="2" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" HorizontalAlignment="Left" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="menuGestureText" Grid.Column="4" Margin="{TemplateBinding Padding}" Opacity="0.7" Text="{TemplateBinding InputGestureText}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="#09f"/>
+                    <Setter Property="Background" TargetName="templateRoot" Value="#409f"/>
+                    <Setter Property="TextBlock.Foreground" TargetName="menuHeaderContainer" Value="#aaf" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="#FF707070"/>
+                    <Setter Property="Fill" TargetName="Glyph" Value="#FF707070"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsHighlighted" Value="True"/>
+                        <Condition Property="IsEnabled" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" TargetName="templateRoot" Value="#0A000000"/>
+                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="#21000000"/>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+        <!-- I don't know much about styling, but this is what is happening:
+        The below menu style is needed for the top menu strip, but it overrides
+        styles for the entire project.
+        However, we still need a style for ContextMenu in TriggerControl
+        and TriggerExplorer because it doesn't override all of it...
+        
+        -->
+
+
+        <!-- SubmenuItem -->
+
+        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}"
+                     TargetType="{x:Type MenuItem}">
+            <Border Name="Border">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"
+                                      SharedSizeGroup="Icon" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"
+                                      SharedSizeGroup="Shortcut" />
+                        <ColumnDefinition Width="13" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Name="Icon"
+                                  Margin="6,0,6,0"
+                                  VerticalAlignment="Center"
+                                  ContentSource="Icon" />
+                    <Border Name="Check"
+                        Width="13"
+                        Height="13"
+                        Visibility="Collapsed"
+                        Margin="6,0,6,0"
+                        Background="#0000"
+                        BorderThickness="0"
+                        BorderBrush="#5082a4">
+                        <Path Name="CheckMark"
+                          Width="10"
+                          Height="10"
+                          Visibility="Hidden"
+                          SnapsToDevicePixels="False"
+                          Stroke="#0a0"
+                          StrokeThickness="2"
+                          Data="F1 M 0.468732,4.66838L 3.03345,7.95443L 7.28127,0.420569" />
+                    </Border>
+                    <ContentPresenter Name="HeaderHost"
+                                  Grid.Column="1"
+                                  ContentSource="Header"
+                                  RecognizesAccessKey="True" />
+                    <TextBlock x:Name="InputGestureText"
+                           Grid.Column="2"
+                           Text="{TemplateBinding InputGestureText}"
+                           Margin="5,2,0,2"
+                           DockPanel.Dock="Right" />
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon"
+                     Value="{x:Null}">
+                    <Setter TargetName="Icon"
+                        Property="Visibility"
+                        Value="Hidden" />
+                </Trigger>
+                <Trigger Property="IsChecked"
+                     Value="true">
+                    <Setter TargetName="CheckMark"
+                        Property="Visibility"
+                        Value="Visible" />
+                </Trigger>
+                <Trigger Property="IsChecked"
+                     Value="false">
+                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="CheckMark" Property="Stroke" Value="#f44" />
+                    <Setter TargetName="CheckMark" Property="Data" Value="M 0 0 L 7 7 M 0 7 L 7 0" />
+                </Trigger>
+                <Trigger Property="IsCheckable"
+                     Value="true">
+                    <Setter TargetName="Check"
+                        Property="Visibility"
+                        Value="Visible" />
+                    <Setter TargetName="Icon"
+                        Property="Visibility"
+                        Value="Hidden" />
+                </Trigger>
+                <Trigger Property="IsHighlighted"
+                     Value="true">
+                    <Setter TargetName="Border"
+                        Property="Background"
+                        Value="#5082a4" />
+                </Trigger>
+                <Trigger Property="IsEnabled"
+                     Value="false">
+                    <Setter Property="Foreground"
+                        Value="#555" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- SubmenuHeader -->
+
+        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuHeaderTemplateKey}"
+                     TargetType="{x:Type MenuItem}">
+            <Border Name="Border">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"
+                                      SharedSizeGroup="Icon" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"
+                                      SharedSizeGroup="Shortcut" />
+                        <ColumnDefinition Width="13" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Name="Icon"
+                                  Margin="6,0,6,0"
+                                  VerticalAlignment="Center"
+                                  ContentSource="Icon" />
+                    <ContentPresenter Name="HeaderHost"
+                                  Grid.Column="1"
+                                  ContentSource="Header"
+                                  RecognizesAccessKey="True" />
+                    <TextBlock x:Name="InputGestureText"
+                           Grid.Column="2"
+                           Text="{TemplateBinding InputGestureText}"
+                           Margin="5,2,2,2"
+                           DockPanel.Dock="Right" />
+                    <Path Grid.Column="3"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 0 0 L 0 7 L 4 3.5 Z"
+                      Fill="#eee" />
+                    <Popup Name="Popup"
+                       Placement="Right"
+                       HorizontalOffset="-4"
+                       IsOpen="{TemplateBinding IsSubmenuOpen}"
+                       AllowsTransparency="True"
+                       Focusable="False"
+                       PopupAnimation="Fade">
+                        <Border Name="SubmenuBorder"
+                            SnapsToDevicePixels="True"
+                            Background="#333"
+                            BorderBrush="#555"
+                            BorderThickness="1">
+                            <StackPanel IsItemsHost="True"
+                                    KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </Border>
+                    </Popup>
+                </Grid>
+            </Border>
+
+            <ControlTemplate.Triggers>
+                <Trigger Property="Icon"
+                     Value="{x:Null}">
+                    <Setter TargetName="Icon"
+                        Property="Visibility"
+                        Value="Collapsed" />
+                </Trigger>
+                <Trigger Property="IsHighlighted"
+                     Value="true">
+                    <Setter TargetName="Border"
+                        Property="Background"
+                        Value="#5082a4" />
+                </Trigger>
+                <Trigger SourceName="Popup"
+                     Property="Popup.AllowsTransparency"
+                     Value="True">
+                    <Setter TargetName="SubmenuBorder"
+                        Property="CornerRadius"
+                        Value="0" />
+                    <Setter TargetName="SubmenuBorder"
+                        Property="Padding"
+                        Value="0,3,0,3" />
+                </Trigger>
+                <Trigger Property="IsEnabled"
+                     Value="false">
+                    <Setter Property="Foreground"
+                        Value="#0f3c5a" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+    </Window.Resources>
 
 
 
@@ -96,153 +415,145 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="White" MouseLeftButtonDown="Menu_MouseLeftButtonDown" >
-            <MenuItem Header="File" Height="25">
-                <MenuItem Name="menuNewProject" Header="New Project..." FontFamily="Bahnschrift" Foreground="Black" Click="menuNewProject_Click"/>
-                <MenuItem Name="menuOpen" Header="Open..." FontFamily="Bahnschrift" Foreground="Black" Click="menuOpen_Click"/>
-                <MenuItem Name="menuSave" Header="Save All" FontFamily="Bahnschrift" Foreground="Black" Click="menuSave_Click"/>
-                <MenuItem Name="menuRecentFiles" Header="Recent Files" FontFamily="Bahnschrift" Foreground="Black" MouseEnter="menuRecentFiles_MouseEnter"/>
+
+        <Menu Grid.Column="0"  Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="#eee" MouseLeftButtonDown="Menu_MouseLeftButtonDown" >
+            <MenuItem Header="File" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" >
+                <MenuItem Name="menuNewProject" Header="New Project..." Click="menuNewProject_Click"/>
+                <MenuItem Name="menuOpen" Header="Open..." Click="menuOpen_Click"/>
+                <MenuItem Name="menuSave" Header="Save All" Click="menuSave_Click"/>
+                <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
             </MenuItem>
-            <MenuItem Header="Edit" Height="25" SubmenuOpened="MenuItem_SubmenuOpened">
-                <MenuItem Name="menuItemUndo" Header="Undo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemUndo_Click"/>
-                <MenuItem Name="menuItemRedo" Header="Redo" FontFamily="Bahnschrift" Foreground="Black" Click="menuItemRedo_Click"/>
+            <MenuItem Header="Edit" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" Foreground="#eee" SubmenuOpened="MenuItem_SubmenuOpened">
+                <MenuItem Name="menuItemUndo" Header="Undo" Click="menuItemUndo_Click"/>
+                <MenuItem Name="menuItemRedo" Header="Redo" Click="menuItemRedo_Click"/>
             </MenuItem>
-            <MenuItem Header="New" Height="25"/>
-            <MenuItem Header="JassHelper" Height="25"/>
+            <MenuItem Header="New" Template="{DynamicResource MenuItemControlTemplate1}" Height="25"/>
+            <MenuItem Header="JassHelper" Template="{DynamicResource MenuItemControlTemplate1}" Height="25"/>
         </Menu>
 
         <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="2" />
         <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Fill="#FF282828" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" />
 
-        <Button x:Name="btnNewMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/map.png" Stretch="Fill"/>
-            </Button.Background>
-        </Button>
+        <ItemsControl Grid.Row="1" Grid.ColumnSpan="2" Margin="10,0,0,0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding}" Margin="0,0,5,5" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <Button x:Name="btnNewMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/map.png" Stretch="Fill"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnOpenMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_open.png" Stretch="Fill" />
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnSaveAll" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_save.png" Stretch="Fill" />
+                </Button.Background>
+            </Button>
 
-        <Button x:Name="btnOpenMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="35,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_open.png" Stretch="Fill" />
-            </Button.Background>
-        </Button>
+            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0"  Width="1" Fill="#444" />
 
-        <Button x:Name="btnSaveAll" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="60,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_save.png" Stretch="Fill" />
-            </Button.Background>
-        </Button>
-
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="97,4,0,4" Fill="#444" />
-
-        <Button x:Name="btnUndo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="110,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/undo.png" Stretch="Fill" />
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnRedo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="135,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/redo.png" Stretch="Fill" />
-            </Button.Background>
-        </Button>
-        
-        <Button x:Name="btnCut" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="160,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_cut.png" Stretch="Fill" />
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnCopy" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="185,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_copy.png" Stretch="Fill" />
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnPaste" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="210,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_paste.png" Stretch="Fill" />
-            </Button.Background>
-        </Button>
-
-
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="247,4,0,4" Fill="#444" />
-
-        <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="260,0,5,0" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="285,0,5,0" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_element.png" Stretch="None" />
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="310,0,0,0" Click="btnCreateScript_Click" >
-            <Button.Background >
-                <ImageBrush ImageSource="Resources/Icons/editor-triggerscript.png" Stretch="None" />
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="335,0,0,0" Click="btnCreateVariable_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/actions-setvariables.png" Stretch="None"/>
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnCreateComment" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="360,0,0,0">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/editor-toolbar-triggercomment.png" Stretch="None"/>
-            </Button.Background>
-        </Button>
-
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="397,4,0,4" Fill="#444" />
-
-        <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="410,0,0,0" Click="btnCreateEvent_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/editor-triggerevent.png" Stretch="None"/>
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="435,0,0,0" Click="btnCreateCondition_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="460,0,0,0" Click="btnCreateAction_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
-            </Button.Background>
-        </Button>
-
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Width="1" Margin="497,4,0,4" Fill="#444" />
+            <Button x:Name="btnUndo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/undo.png" Stretch="Fill" />
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnRedo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/redo.png" Stretch="Fill" />
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnCut" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_cut.png" Stretch="Fill" />
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnCopy" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_copy.png" Stretch="Fill" />
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnPaste" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_paste.png" Stretch="Fill" />
+                </Button.Background>
+            </Button>
 
 
-        <Button x:Name="btnSaveScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="510,0,0,0" Click="btnSaveScript_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/editor-toolbar-mapvalidation.png" Stretch="None"/>
-            </Button.Background>
-        </Button>
+            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="#444" />
 
-        <Button x:Name="btnTestMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="545,0,0,0" Click="btnSaveScript_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/editor-testmap.dds" Stretch="None"/>
-            </Button.Background>
-        </Button>
+            <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_element.png" Stretch="None" />
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateScript_Click" >
+                <Button.Background >
+                    <ImageBrush ImageSource="Resources/Icons/editor-triggerscript.png" Stretch="None" />
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateVariable_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/actions-setvariables.png" Stretch="None"/>
+                </Button.Background>
+            </Button>
 
-        <Button x:Name="btnBuildMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="580,0,0,0" Click="btnSaveScript_Click">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Icons/editor-toolbar-exportmap.dds" Stretch="None"/>
-            </Button.Background>
-        </Button>
+            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="#444" />
+
+            <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateEvent_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/editor-triggerevent.png" Stretch="None"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateCondition_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Click="btnCreateAction_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnSaveScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/editor-toolbar-mapvalidation.png" Stretch="None"/>
+                </Button.Background>
+            </Button>
+
+            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="#444" />
+
+            <Button x:Name="btnTestMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/editor-testmap.dds" Stretch="None"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnBuildMap" Style="{DynamicResource ButtonStyle1}" Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Icons/editor-toolbar-exportmap.dds" Stretch="None"/>
+                </Button.Background>
+            </Button>
+        </ItemsControl>
+
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
-        <gui:TabControl_BT x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderBrush="#FF202020" BorderThickness="0" />
-
-
+        <gui:TabControl_BT x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020"  />
 
     </Grid>
 
