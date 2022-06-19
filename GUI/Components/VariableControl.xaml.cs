@@ -225,9 +225,16 @@ namespace GUI.Components
         private bool ResetVarRefs()
         {
             bool ok = true;
-            if (explorerElementVariable.variable.TriggersUsing.Count > 0)
+            ControllerReferences controllerRef = new ControllerReferences();
+            List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(this.explorerElementVariable);
+            string triggerNames = "\n";
+            foreach (var trig in refs)
             {
-                DialogBox dialog = new DialogBox("Confirmation", confirmationText);
+                triggerNames += "\n<" + trig.GetName() + ">";
+            }
+            if (refs.Count > 0)
+            {
+                DialogBox dialog = new DialogBox("Confirmation", confirmationText + triggerNames);
                 dialog.ShowDialog();
                 ok = dialog.OK;
 

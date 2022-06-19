@@ -8,31 +8,31 @@ using System.Windows.Controls;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    public partial class ParameterVariableControl : UserControl, IParameterControl
+    public partial class ParameterTriggerControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
 
-        public ParameterVariableControl(string returnType)
+        public ParameterTriggerControl()
         {
             InitializeComponent();
 
-            ControllerVariable controllerVariable = new ControllerVariable();
-            List<VariableRef> variables = controllerVariable.GetVariableRefs(returnType);
+            ControllerTrigger controllerTrig = new ControllerTrigger();
+            List<TriggerRef> triggers = controllerTrig.GetTriggerRefs();
             List<Searchable> objects = new List<Searchable>();
 
-            for (int i = 0; i < variables.Count; i++)
+            for (int i = 0; i < triggers.Count; i++)
             {
-                string varName = controllerVariable.GetVariableNameById(variables[i].VariableId);
+                string triggerName = controllerTrig.GetTriggerName(triggers[i].TriggerId);
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = varName;
-                listItem.Tag = variables[i];
+                listItem.Content = triggerName;
+                listItem.Tag = triggers[i];
 
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
                     Words = new List<string>()
                     {
-                        varName.ToLower()
+                        triggerName.ToLower()
                     },
                 });
                 var searchables = new Searchables(objects);
@@ -49,8 +49,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelectedItem()
         {
-            var variables = (VariableRef)selectedItem.Tag;
-            return variables;
+            var trigger = (TriggerRef)selectedItem.Tag;
+            return trigger;
         }
 
         public void SetVisibility(Visibility visibility)

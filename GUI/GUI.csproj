@@ -243,6 +243,9 @@
     <Compile Update="Components\RootControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterTriggerControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlModels.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -284,6 +287,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\RootControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ParameterTriggerControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

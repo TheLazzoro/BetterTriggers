@@ -81,7 +81,6 @@
 
         
         <!--MENU-->
-        
         <LinearGradientBrush x:Key="DarkBrush" StartPoint="0.5,0" EndPoint="0.5,1">
             <GradientBrush.GradientStops>
                 <GradientStopCollection>
@@ -216,6 +215,7 @@
                 </MultiTrigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        
 
 
         <!-- I don't know much about styling, but this is what is happening:

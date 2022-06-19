@@ -4,18 +4,21 @@ using System.Text;
 using System.Windows;
 using Model.EditorData;
 using Model.SaveableData;
+using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementDelete : ICommand
     {
         string commandName = "Delete Trigger Element";
+        ExplorerElementTrigger explorerElement;
         List<TriggerElement> elementsToDelete;
         List<TriggerElement> Parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementDelete(List<TriggerElement> elementsToDelete)
+        public CommandTriggerElementDelete(ExplorerElementTrigger element, List<TriggerElement> elementsToDelete)
         {
+            this.explorerElement = element;
             this.elementsToDelete = elementsToDelete;
             this.Parent = elementsToDelete[0].Parent;
             this.insertIndex = this.Parent.IndexOf(elementsToDelete[0]);
@@ -27,8 +30,11 @@ namespace BetterTriggers.Commands
             {
                 elementsToDelete[i].RemoveFromParent();
                 elementsToDelete[i].Deleted();
-
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(explorerElement);
+
             CommandManager.AddCommand(this);
         }
 
@@ -39,6 +45,9 @@ namespace BetterTriggers.Commands
                 elementsToDelete[i].RemoveFromParent();
                 elementsToDelete[i].Deleted();
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(explorerElement);
         }
 
         public void Undo()
@@ -48,6 +57,9 @@ namespace BetterTriggers.Commands
                 elementsToDelete[i].SetParent(Parent, insertIndex + i);
                 elementsToDelete[i].Created(insertIndex + i);
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(explorerElement);
         }
 
         public string GetCommandName()

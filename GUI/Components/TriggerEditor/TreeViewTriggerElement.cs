@@ -95,12 +95,13 @@ namespace GUI.Components.TriggerEditor
 
         public void UpdateTreeItem()
         {
+            ControllerTrigger controllerTrigger = new ControllerTrigger();
             ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(this);
             controllerTriggerTreeItem.GenerateParamText();
 
             List<Parameter> parameters = this.triggerElement.function.parameters;
 
-            bool areParametersValid = IsParameterListValid(parameters);
+            bool areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
             if (parameters.Count == 1 && parameters[0].returnType == "nothing") // hack
                 areParametersValid = true;
             bool isEnabled = triggerElement.isEnabled;
@@ -118,31 +119,6 @@ namespace GUI.Components.TriggerEditor
             TreeItemHeader header = new TreeItemHeader(text, category, areParametersValid, isEnabled);
             this.Header = header;
         }
-
-        private bool IsParameterListValid(List<Parameter> parameters, bool isValid = true)
-        {
-            for (int i = 0; i < parameters.Count; i++)
-            {
-                var param = parameters[i];
-                if (param is Function)
-                {
-                    var func = (Function)param;
-                    if (func.parameters.Count > 0)
-                    {
-                        isValid = IsParameterListValid(func.parameters, isValid);
-                    }
-                }
-
-                if (param.identifier == null)
-                    isValid = false;
-            }
-
-            return isValid;
-        }
-
-        
-
-        
 
         public void UpdatePosition()
         {

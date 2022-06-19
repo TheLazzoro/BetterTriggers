@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using Model.EditorData;
 using Model.SaveableData;
+using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Commands
 {
@@ -12,11 +13,13 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Paste Trigger Element";
         int pastedIndex = 0;
+        ExplorerElementTrigger explorerElement;
         List<TriggerElement> listToPaste;
         List<TriggerElement> parent;
 
-        public CommandTriggerElementPaste(List<TriggerElement> listToPaste, List<TriggerElement> parent, int pastedIndex)
+        public CommandTriggerElementPaste(ExplorerElementTrigger element, List<TriggerElement> listToPaste, List<TriggerElement> parent, int pastedIndex)
         {
+            this.explorerElement = element;
             this.listToPaste = listToPaste;
             this.parent = parent;
             this.pastedIndex = pastedIndex;
@@ -28,6 +31,9 @@ namespace BetterTriggers.Commands
             {
                 listToPaste[i].SetParent(parent, pastedIndex + i);
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(explorerElement);
             CommandManager.AddCommand(this);
         }
 
@@ -38,6 +44,9 @@ namespace BetterTriggers.Commands
                 listToPaste[i].SetParent(parent, pastedIndex + i);
                 listToPaste[i].Created(pastedIndex + i);
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(explorerElement);
         }
 
         public void Undo()
@@ -47,6 +56,9 @@ namespace BetterTriggers.Commands
                 listToPaste[i].RemoveFromParent();
                 listToPaste[i].Deleted();
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(explorerElement);
         }
 
         public string GetCommandName()

@@ -1553,6 +1553,15 @@ endfunction
                 if (isVarAsString_Real)
                     output += "\"";
             }
+            else if (parameter is TriggerRef)
+            {
+                TriggerRef t = (TriggerRef)parameter;
+                ControllerTrigger controller = new ControllerTrigger();
+                Trigger trigger = controller.GetById(t.TriggerId);
+                string name = controller.GetTriggerName(trigger.Id);
+
+                output += "gg_trg_" + name.Replace(" ", "_");
+            }
             else if (parameter is Value)
             {
                 Value v = (Value)parameter;

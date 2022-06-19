@@ -70,6 +70,26 @@ namespace BetterTriggers.Containers
 
             return generatedId;
         }
+
+        internal static ExplorerElementVariable FindExplorerVariableById(int Id)
+        {
+            ExplorerElementVariable var = null;
+
+            bool found = false;
+            int i = 0;
+            while (!found && i < variableContainer.Count)
+            {
+                if (variableContainer[i].variable.Id == Id)
+                {
+                    var = variableContainer[i];
+                    found = true;
+                }
+
+                i++;
+            }
+
+            return var;
+        }
         
         internal static Variable GetVariableById(int Id)
         {

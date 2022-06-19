@@ -1,4 +1,5 @@
 ﻿using Model.EditorData;
+using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -64,9 +65,25 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public static ExplorerElementTrigger Get(int index)
+        internal static string GetName(int triggerId)
         {
-            return triggerElementContainer[index];
+            var element = FindById(triggerId);
+            return element.GetName();
+        }
+
+        public static ExplorerElementTrigger FindById(int id)
+        {
+            ExplorerElementTrigger trigger = null;
+            for (int i = 0; i < triggerElementContainer.Count; i++)
+            {
+                if(triggerElementContainer[i].trigger.Id == id)
+                {
+                    trigger = triggerElementContainer[i];
+                    break;
+                }
+            }
+
+            return trigger;
         }
 
         internal static List<ExplorerElementTrigger> GetAll()
@@ -89,6 +106,11 @@ namespace BetterTriggers.Containers
                     triggerElementContainer.Remove(item);
                 }
             }
+        }
+
+        internal static ExplorerElementTrigger GetByReference(TriggerRef triggerRef)
+        {
+            return FindById(triggerRef.TriggerId);
         }
     }
 }

@@ -13,7 +13,6 @@ namespace BetterTriggers.Commands
         IExplorerElement deletedElement;
         IExplorerElement parent;
         string fileContent = string.Empty;
-        bool isFolder = false;
         int index;
 
         public CommandExplorerElementDelete(IExplorerElement deletedElement)
@@ -22,9 +21,7 @@ namespace BetterTriggers.Commands
             this.parent = deletedElement.GetParent();
             this.index = parent.GetExplorerElements().IndexOf(deletedElement);
 
-            if (deletedElement is ExplorerElementFolder)
-                isFolder = true;
-            else
+            if (!(deletedElement is ExplorerElementFolder))
             {
                 var saveable = (IExplorerSaveable)deletedElement;
                 fileContent = saveable.GetSaveableString();
@@ -36,6 +33,12 @@ namespace BetterTriggers.Commands
             deletedElement.RemoveFromParent();
             deletedElement.Deleted();
 
+            if (deletedElement is ExplorerElementTrigger)
+            {
+                ControllerReferences controllerRef = new ControllerReferences();
+                controllerRef.RemoveReferences(deletedElement as ExplorerElementTrigger);
+            }
+
             CommandManager.AddCommand(this);
         }
 
@@ -44,12 +47,21 @@ namespace BetterTriggers.Commands
             deletedElement.RemoveFromParent();
             deletedElement.Deleted();
             ControllerProject controllerProject = new ControllerProject();
+            
             controllerProject.SetEnableFileEvents(false);
 
             ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
             controllerFileSystem.DeleteElement(deletedElement.GetPath());
 
             controllerProject.SetEnableFileEvents(true);
+
+            
+            
+            if (deletedElement is ExplorerElementTrigger)
+            {
+                ControllerReferences controllerRef = new ControllerReferences();
+                controllerRef.RemoveReferences(deletedElement as ExplorerElementTrigger);
+            }
         }
 
         public void Undo()
@@ -60,6 +72,7 @@ namespace BetterTriggers.Commands
             controller.SetEnableFileEvents(false);
 
             controller.RecurseCreateElementsWithContent(deletedElement);
+            controller.AddElementToContainer(deletedElement);
             deletedElement.UpdateMetadata(); // this is important because we do a pseudo-undo (create the file from scratch)
             // We may want to do the same 
 

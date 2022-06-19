@@ -25,6 +25,7 @@ namespace GUI
         ParameterConstantControl constantControl;
         ParameterVariableControl variableControl;
         ParameterValueControl valueControl;
+        ParameterTriggerControl triggerRefControl;
         IParameterControl selectedControl;
 
         public ParameterWindow(Function function, Parameter parameter)
@@ -52,10 +53,15 @@ namespace GUI
             grid.Children.Add(valueControl);
             Grid.SetRow(valueControl, 1);
 
+            this.triggerRefControl = new ParameterTriggerControl();
+            grid.Children.Add(triggerRefControl);
+            Grid.SetRow(triggerRefControl, 1);
+
             functionControl.Visibility = Visibility.Hidden;
             constantControl.Visibility = Visibility.Visible;
             variableControl.Visibility = Visibility.Hidden;
             valueControl.Visibility = Visibility.Hidden;
+            triggerRefControl.Visibility = Visibility.Hidden;
 
             radioBtnPreset.IsChecked = true;
 
@@ -65,10 +71,12 @@ namespace GUI
                 constantControl.Visibility = Visibility.Hidden;
                 variableControl.Visibility = Visibility.Visible;
                 valueControl.Visibility = Visibility.Hidden;
+                triggerRefControl.Visibility = Visibility.Hidden;
 
                 radioBtnFunction.Visibility = Visibility.Hidden;
                 radioBtnPreset.Visibility = Visibility.Hidden;
                 radioBtnValue.Visibility = Visibility.Hidden;
+                radioBtnTrigger.Visibility = Visibility.Hidden;
 
                 radioBtnVariable.IsChecked = true;
 
@@ -86,6 +94,7 @@ namespace GUI
             constantControl.Visibility = Visibility.Hidden;
             variableControl.Visibility = Visibility.Hidden;
             valueControl.Visibility = Visibility.Hidden;
+            triggerRefControl.Visibility = Visibility.Hidden;
 
             control.SetVisibility(Visibility.Visible);
             if (control.GetElementCount() > 0)
@@ -111,6 +120,11 @@ namespace GUI
             ShowHideTabs(variableControl);
         }
 
+        private void radioBtnTrigger_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowHideTabs(triggerRefControl);
+        }
+
         private void radioBtnValue_Checked(object sender, RoutedEventArgs e)
         {
             ShowHideTabs(valueControl);
@@ -122,5 +136,6 @@ namespace GUI
             this.isOK = true;
             this.Close();
         }
+
     }
 }

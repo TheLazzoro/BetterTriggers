@@ -18,10 +18,26 @@
         </Grid.RowDefinitions>
 
         <Label Content="Source:" Foreground="White" Grid.Row="0" />
-        <RadioButton x:Name="radioBtnFunction" Content="Function" Foreground="White" VerticalAlignment="Center" Margin="70,0,0,0" Checked="radioBtnFunction_Checked"/>
-        <RadioButton x:Name="radioBtnPreset" Content="Preset" Foreground="White" VerticalAlignment="Center" Margin="150,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnPreset_Checked"/>
-        <RadioButton x:Name="radioBtnVariable" Content="Variable" Foreground="White" VerticalAlignment="Center" Margin="220,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnVariable_Checked"/>
-        <RadioButton x:Name="radioBtnValue" Content="Value" Foreground="White" VerticalAlignment="Center" Margin="300,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnValue_Checked"/>
+        
+        <ItemsControl Grid.Row="0" Grid.ColumnSpan="2" Margin="10,0,0,0" VerticalAlignment="Center" BorderThickness="0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding}" Margin="0,0,5,5" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            
+            <RadioButton x:Name="radioBtnFunction" Content="Function" Foreground="White" VerticalAlignment="Center" Margin="70,0,0,0" Checked="radioBtnFunction_Checked"/>
+            <RadioButton x:Name="radioBtnPreset" Content="Preset" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnPreset_Checked"/>
+            <RadioButton x:Name="radioBtnVariable" Content="Variable" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnVariable_Checked"/>
+            <RadioButton x:Name="radioBtnValue" Content="Value" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnValue_Checked"/>
+            <RadioButton x:Name="radioBtnTrigger" Content="Trigger" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnTrigger_Checked"/>
+
+        </ItemsControl>
 
         <Button x:Name="btnOK" Content="OK" Grid.Row="5" Grid.Column="1" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" IsEnabled="False" Click="btnOK_Click" />
         <Button x:Name="btnCancel" Content="Cancel" Grid.Row="5" Grid.Column="1" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" IsCancel="True" />

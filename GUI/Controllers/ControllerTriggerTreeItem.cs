@@ -132,6 +132,25 @@ namespace GUI.Controllers
                     else if (variable.IsArray && variable.IsTwoDimensions)
                         inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, "[,~Number,][,~Number,]"));
                 }
+                else if (parameters[paramIndex] is TriggerRef)
+                {
+                    var controllerTrig = new ControllerTrigger();
+                    // TODO: This will crash if a referenced trigger is deleted.
+                    var triggerRef = (TriggerRef)parameters[paramIndex];
+                    var trigger = controllerTrig.GetByReference(triggerRef);
+                    var triggerName = controllerTrig.GetTriggerName(trigger.Id);
+
+                    // This exists in case a trigger name has been changed
+                    if (triggerName == null || triggerName == "")
+                    {
+                        parameters[paramIndex] = new Parameter()
+                        {
+                            returnType = triggerRef.returnType,
+                        };
+                        triggerName = "null";
+                    }
+                    inlines.Add(AddHyperlink(treeItem, triggerName, parameters, paramIndex));
+                }
                 else if (parameters[paramIndex] is Value)
                 {
                     // TODO: This will crash if a referenced variable is deleted.

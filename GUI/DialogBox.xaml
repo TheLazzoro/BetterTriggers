@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="DialogBox" Height="175" Width="351" Background="#FF282826" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+        Title="DialogBox" Height="auto" Width="351" SizeToContent="Height" Background="#FF282826" KeyDown="Window_KeyDown" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="textBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Foreground="White" TextWrapping="Wrap" Margin="15,0,15,0" />
-        <Button Content="OK" Click="OKButton_Click" HorizontalAlignment="Right" Margin="0,0,90,0" Grid.Row="3" Width="70" Height="25"/>
-        <Button Content="Cancel" Click="CancelButton_Click" HorizontalAlignment="Right" Margin="0,0,5,0" Grid.Row="3" Width="70" Height="25"/>
+        <Button Content="OK" Click="OKButton_Click" HorizontalAlignment="Right" Margin="0,0,90,10" Grid.Row="3" Width="70" Height="25"/>
+        <Button Content="Cancel" Click="CancelButton_Click" HorizontalAlignment="Right" Margin="0,0,5,10" Grid.Row="3" Width="70" Height="25"/>
     </Grid>
 </Window>

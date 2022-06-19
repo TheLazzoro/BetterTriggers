@@ -443,7 +443,7 @@ namespace GUI.Components
             if (elementsToDelete.Count == 0)
                 return;
 
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(elementsToDelete);
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
             command.Execute();
         }
 
@@ -455,7 +455,7 @@ namespace GUI.Components
             {
                 triggerElements.Add(selectedItems[i].triggerElement);
             }
-            controller.CopyTriggerElements(triggerElements, isCut);
+            controller.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
 
             var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
             ContainerCopiedElementsGUI.copiedElementParent = (INode)selected.Parent;
@@ -482,7 +482,7 @@ namespace GUI.Components
 
 
             ControllerTrigger controller = new ControllerTrigger();
-            var pasted = controller.PasteTriggerElements(attachTarget.GetTriggerElements(), insertIndex);
+            var pasted = controller.PasteTriggerElements(explorerElementTrigger, attachTarget.GetTriggerElements(), insertIndex);
 
             for (int i = 0; i < pasted.Count; i++)
             {

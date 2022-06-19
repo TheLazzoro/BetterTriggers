@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows;
+using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Controllers
 {
@@ -67,7 +68,7 @@ namespace BetterTriggers.Controllers
         }
 
         /// <summary>
-        /// Creates a list of saveable variables
+        /// Creates a list of saveable variable refs
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
@@ -87,7 +88,6 @@ namespace BetterTriggers.Controllers
             {
                 VariableRef varRef = new VariableRef()
                 {
-                    identifier = GetVariableNameById(variables[i].Id),
                     returnType = wasIntegervar == false ? variables[i].Type : "integervar",
                     VariableId = variables[i].Id,
                 };
@@ -103,6 +103,17 @@ namespace BetterTriggers.Controllers
         public string GetVariableNameById(int id)
         {
             return ContainerVariables.GetVariableNameById(id);
+        }
+
+        
+        public Variable GetById(int id)
+        {
+            return ContainerVariables.GetVariableById(id);
+        }
+
+        public Variable GetByReference(VariableRef variableRef)
+        {
+            return GetById(variableRef.VariableId);
         }
 
         public ExplorerElementVariable GetExplorerElementVariableInMemory(string filepath)
@@ -126,74 +137,9 @@ namespace BetterTriggers.Controllers
             return variable;
         }
 
-        public void SetReferenceToVariable(int variableId, int triggerId)
-        {
-            Variable var = ContainerVariables.GetVariableById(variableId);
-            var.TriggersUsing.Add(triggerId);
-        }
-
-        public void RemoveReferenceToVariable(int variableId, int triggerId)
-        {
-            Variable var = ContainerVariables.GetVariableById(variableId);
-            var.TriggersUsing.Remove(triggerId);
-        }
-
-        /// <summary>
-        /// This is used when a parameter with nested chains of parameters get un-done.
-        /// </summary>
-        public void RecurseRemoveVariableRefs(Function function, int triggerId)
-        {
-            for (int i = 0; i < function.parameters.Count; i++)
-            {
-                var param = function.parameters[i];
-                if (param is Function)
-                    RecurseRemoveVariableRefs((Function)param, triggerId);
-                else if (param is VariableRef)
-                {
-                    var variableRef = (VariableRef)param;
-                    ControllerVariable controller = new ControllerVariable();
-                    controller.RemoveReferenceToVariable(variableRef.VariableId, triggerId);
-                }
-            }
-        }
-
-        /// <summary>
-        /// This is used when a parameter with nested chains of parameters gets re-done.
-        /// </summary>
-        public void RecurseAddVariableRefs(Function function, int triggerId)
-        {
-            for (int i = 0; i < function.parameters.Count; i++)
-            {
-                var param = function.parameters[i];
-                if (param is Function)
-                    RecurseAddVariableRefs((Function)param, triggerId);
-                else if (param is VariableRef)
-                {
-                    var variableRef = (VariableRef)param;
-                    ControllerVariable controller = new ControllerVariable();
-                    controller.SetReferenceToVariable(variableRef.VariableId, triggerId);
-                }
-            }
-        }
-
         public void RemoveVariableRefFromTriggers(ExplorerElementVariable explorerElementVariable)
         {
-            for (int i = 0; i < explorerElementVariable.variable.TriggersUsing.Count; i++)
-            {
-                // TODO !!! Right now triggers elements are not saved in ExplorerElementTriggers (in memory)
-                // This is supposed to be called when a variable changes properties, i.e. type, isArray, arrayDimensions etc.
-            }
-            explorerElementVariable.variable.TriggersUsing.Clear();
-        }
-
-        public Variable GetById(int id)
-        {
-            return ContainerVariables.GetVariableById(id);
-        }
-
-        public Variable GetByReference(VariableRef variableRef)
-        {
-            return GetById(variableRef.VariableId);
+            ContainerReferences.ResetVariableReferences(explorerElementVariable);
         }
 
 

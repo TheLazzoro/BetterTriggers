@@ -66,7 +66,7 @@ namespace GUI.Components.TriggerEditor
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(treeViewTriggerElement.triggerElement, treeViewTriggerElement.GetExplorerElementTrigger().GetId(), parameters, index, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(treeViewTriggerElement.triggerElement, treeViewTriggerElement.GetExplorerElementTrigger(), parameters, index, window.selectedParameter);
                 command.Execute();
 
                 ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(treeViewTriggerElement);
@@ -91,7 +91,7 @@ namespace GUI.Components.TriggerEditor
             var parameter = parameters[index];
             if (this.IsFocused)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0));
-            else if (parameter is Constant || parameter is Function || parameter is VariableRef || parameter is Value)
+            else if (parameter is Constant || parameter is Function || parameter is VariableRef || parameter is TriggerRef || parameter is Value)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 255));
             else
                 this.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));

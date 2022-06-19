@@ -19,7 +19,8 @@ namespace BetterTriggers
 {
     public class CustomMapData
     {
-        public static string mapPath = @"D:\Test\TestMap.w3x";
+        public static string mapPath = @"D:\Test\TestMap.w3x"; // 1.32 map
+        //public static string mapPath = @"C:\Users\Lasse Dam\Desktop\Direct Strike Reforged (JASS).w3x"; // 1.33 map
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
 

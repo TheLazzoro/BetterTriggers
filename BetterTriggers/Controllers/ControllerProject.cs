@@ -77,6 +77,8 @@ namespace BetterTriggers.Controllers
                 OnCreateElement(fileCheckList[i], false);
             }
 
+            ControllerReferences controllerRef = new ControllerReferences();
+            controllerRef.UpdateReferencesAll();
             controllerRecentFiles.AddProjectToRecent(filepath);
 
             return project;

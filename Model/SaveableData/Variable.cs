@@ -12,8 +12,6 @@ namespace Model.SaveableData
         public int[] ArraySize = new int[2];
         public string InitialValue;
 
-        public List<int> TriggersUsing = new List<int>(); // trigger Id's using this variable
-
         internal Variable Clone()
         {
             Variable cloned = new Variable();

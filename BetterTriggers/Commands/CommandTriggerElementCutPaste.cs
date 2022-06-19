@@ -6,6 +6,7 @@ using System.Windows;
 using BetterTriggers.Containers;
 using Model.EditorData;
 using Model.SaveableData;
+using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Commands
 {
@@ -14,13 +15,17 @@ namespace BetterTriggers.Commands
         string commandName = "Paste Trigger Element";
         int pastedIndex = 0;
         int cutIndex = 0;
+        ExplorerElementTrigger from;
+        ExplorerElementTrigger to;
         List<TriggerElement> listToCut;
         List<TriggerElement> listToPaste;
         List<TriggerElement> cutParent;
         List<TriggerElement> pasteParent;
 
-        public CommandTriggerElementCutPaste(List<TriggerElement> listToPaste, List<TriggerElement> pasteParent, int pastedIndex)
+        public CommandTriggerElementCutPaste(ExplorerElementTrigger from, ExplorerElementTrigger to, List<TriggerElement> listToPaste, List<TriggerElement> pasteParent, int pastedIndex)
         {
+            this.from = from;
+            this.to = to;
             this.listToCut = ContainerCopiedElements.CutTriggerElements;
             this.cutParent = listToCut[0].Parent;
             this.cutIndex = listToCut[0].Parent.IndexOf(listToCut[0]);
@@ -40,6 +45,11 @@ namespace BetterTriggers.Commands
             {
                 listToPaste[i].SetParent(pasteParent, pastedIndex + i);
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(from);
+            controller.UpdateReferences(to);
+
             CommandManager.AddCommand(this);
         }
 
@@ -55,6 +65,10 @@ namespace BetterTriggers.Commands
                 listToPaste[i].SetParent(pasteParent, pastedIndex + i);
                 listToPaste[i].Created(pastedIndex + i);
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(from);
+            controller.UpdateReferences(to);
         }
 
         public void Undo()
@@ -69,6 +83,10 @@ namespace BetterTriggers.Commands
                 listToPaste[i].RemoveFromParent();
                 listToPaste[i].Deleted();
             }
+
+            ControllerReferences controller = new ControllerReferences();
+            controller.UpdateReferences(from);
+            controller.UpdateReferences(to);
         }
 
         public string GetCommandName()

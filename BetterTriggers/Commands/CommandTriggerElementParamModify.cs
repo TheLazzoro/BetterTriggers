@@ -12,7 +12,7 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Modify Parameter";
         TriggerElement triggerElement;
-        int triggerId;
+        ExplorerElementTrigger explorerElement;
         List<Parameter> paramCollection;
         Parameter paramToAdd;
         Parameter oldParameter;
@@ -22,37 +22,25 @@ namespace BetterTriggers.Commands
         Parameter setVarValueOld;
         Parameter setVarValueNew;
 
-        public CommandTriggerElementParamModify(TriggerElement triggerElement, int triggerId, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(TriggerElement triggerElement, ExplorerElementTrigger explorerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
             this.triggerElement = triggerElement;
             this.paramCollection = paramCollection;
             this.paramIndex = paramIndex;
             this.paramToAdd = paramToAdd;
 
-            this.triggerId = triggerId;
+            this.explorerElement = explorerElement;
             this.oldParameter = paramCollection[this.paramIndex];
         }
 
         public void Execute()
         {
-            ControllerVariable controller = new ControllerVariable();
-
-            if (paramToAdd is VariableRef)
-            {
-                var variableRef = paramToAdd as VariableRef;
-                controller.SetReferenceToVariable(variableRef.VariableId, triggerId);
-            }
-            if (oldParameter is VariableRef)
-            {
-                var variableRef = oldParameter as VariableRef;
-                controller.RemoveReferenceToVariable(variableRef.VariableId, triggerId);
-            }
-            else if (oldParameter is Function)
-            {
-                controller.RecurseAddVariableRefs((Function)oldParameter, triggerId);
-            }
+            ControllerVariable controllerVar = new ControllerVariable();
+            ControllerReferences controllerRef = new ControllerReferences();
 
             paramCollection[paramIndex] = paramToAdd;
+
+            controllerRef.UpdateReferences(explorerElement);
 
             // Special case
             if (triggerElement.function is SetVariable)
@@ -81,59 +69,27 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            ControllerVariable controller = new ControllerVariable();
-
-            if (paramToAdd is VariableRef)
-            {
-                var variableRef = paramToAdd as VariableRef;
-                controller.SetReferenceToVariable(variableRef.VariableId, triggerId);
-            }
-            if (oldParameter is VariableRef)
-            {
-                var variableRef = oldParameter as VariableRef;
-                controller.SetReferenceToVariable(variableRef.VariableId, triggerId);
-            }
-            else if (oldParameter is Function)
-            {
-                controller.RecurseAddVariableRefs((Function)oldParameter, triggerId);
-            }
+            ControllerVariable controllerVar = new ControllerVariable();
+            ControllerReferences controllerRef = new ControllerReferences();
 
             // 'SetVariable' special case
-            if(setVarValueNew != null)
+            if (setVarValueNew != null)
             {
                 paramCollection[paramIndex + 1] = setVarValueNew;
             }
 
             paramCollection[paramIndex] = paramToAdd;
+            controllerRef.UpdateReferences(explorerElement);
             triggerElement.ChangedParams();
         }
 
         public void Undo()
         {
-            ControllerVariable controller = new ControllerVariable();
-
-            if (paramToAdd is VariableRef)
-            {
-                var variableRef = paramToAdd as VariableRef;
-                controller.RemoveReferenceToVariable(variableRef.VariableId, triggerId);
-            }
-            if (oldParameter is VariableRef)
-            {
-                var variableRef = oldParameter as VariableRef;
-                controller.RemoveReferenceToVariable(variableRef.VariableId, triggerId);
-            }
-            else if (oldParameter is Function)
-            {
-                controller.RecurseRemoveVariableRefs((Function)oldParameter, triggerId);
-            }
-
-            // 'SetVariable' special case
-            if (setVarValueNew != null)
-            {
-                paramCollection[paramIndex + 1] = setVarValueOld;
-            }
+            ControllerVariable controllerVar = new ControllerVariable();
+            ControllerReferences controllerRef = new ControllerReferences();
 
             paramCollection[paramIndex] = oldParameter;
+            controllerRef.UpdateReferences(explorerElement);
             triggerElement.ChangedParams();
         }
 
