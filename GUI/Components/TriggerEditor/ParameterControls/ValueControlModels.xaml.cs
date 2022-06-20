@@ -23,7 +23,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             for (int i = 0; i < models.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = $"{models[i].Path} PLACEHOLDER";
+                listItem.Content = $"{models[i].DisplayName}";
                 listItem.Tag = models[i];
                 objects.Add(new Searchable()
                 {
@@ -31,7 +31,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     Category = models[i].Category,
                     Words = new List<string>()
                     {
-                        "PLACEHOLDER",
+                        models[i].DisplayName.ToLower(),
                         models[i].Path.ToLower()
                     },
                 });

@@ -13,14 +13,11 @@ namespace Model.SaveableData
         public List<Parameter> arrayIndexValues = new List<Parameter>();
 
 
-        public VariableRef Clone()
+        public new VariableRef Clone()
         {
             List<Parameter> newArrayIndexValues = new List<Parameter>();
-            throw new Exception("Below will create a 'Parameter' instance and not 'Function', 'Value' or whatever it might be.");
-            Parameter array0 = this.arrayIndexValues[0].Clone();
-            Parameter array1 = this.arrayIndexValues[1].Clone();
-            newArrayIndexValues.Add(array0);
-            newArrayIndexValues.Add(array1);
+            newArrayIndexValues.Add(this.arrayIndexValues[0].Clone());
+            newArrayIndexValues.Add(this.arrayIndexValues[1].Clone());
 
             string identifier = null;
             if (this.identifier != null)

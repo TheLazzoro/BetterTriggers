@@ -7,7 +7,7 @@ namespace Model.SaveableData
         public readonly int ParamType = 14; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();
         
-        public EnumDestructablesInRectAllMultiple Clone()
+        public new EnumDestructablesInRectAllMultiple Clone()
         {
             EnumDestructablesInRectAllMultiple enumDest = new EnumDestructablesInRectAllMultiple();
             enumDest.identifier = new string(identifier);

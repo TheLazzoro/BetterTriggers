@@ -7,7 +7,7 @@ namespace Model.SaveableData
         public readonly int ParamType = 7; // DO NOT CHANGE
         public List<TriggerElement> Or = new List<TriggerElement>();
         
-        public OrMultiple Clone()
+        public new OrMultiple Clone()
         {
             OrMultiple orMultiple = new OrMultiple();
             orMultiple.identifier = new string(identifier);

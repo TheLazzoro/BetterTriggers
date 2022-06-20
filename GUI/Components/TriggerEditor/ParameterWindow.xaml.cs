@@ -68,7 +68,7 @@ namespace GUI
             Grid.SetRow(importControl, 1);
             Grid.SetColumnSpan(importControl, 2);
 
-            // TODO: Fix this mess
+            // TODO: Fix below mess
 
             functionControl.Visibility = Visibility.Hidden;
             constantControl.Visibility = Visibility.Visible;

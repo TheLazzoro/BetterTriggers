@@ -135,7 +135,6 @@ namespace BetterTriggers.WorldEdit
             }
 
             // Custom units
-            // TODO:
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);

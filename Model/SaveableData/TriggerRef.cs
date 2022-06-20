@@ -10,7 +10,7 @@ namespace Model.SaveableData
         public readonly int ParamType = 17; // DO NOT CHANGE
         public int TriggerId;
 
-        internal TriggerRef Clone()
+        internal new TriggerRef Clone()
         {
             TriggerRef cloned = new TriggerRef();
             string identifier = null;

@@ -84,7 +84,6 @@ namespace GUI.Components
             this.selectedItems = controllerTriggerControl.SelectItemsMultiple(selectedElement, selectedElementEnd);
         }
 
-        // TODO: Not finished
         public void Refresh()
         {
             Refresh(categoryEvent);
@@ -301,6 +300,9 @@ namespace GUI.Components
                 return;
             }
 
+            if (IsCircularParent(dragItem, dropTarget))
+                return;
+
             if (dropTarget is TreeViewTriggerElement)
             {
                 if (dragItem.Parent is NodeEvent && !(dropTarget.Parent is NodeEvent))
@@ -333,7 +335,7 @@ namespace GUI.Components
 
                 // We detach the item before inserting, so the index goes one down.
                 if (dropTarget.Parent == dragItem.Parent && insertIndex > currentIndex)
-                    insertIndex--; 
+                    insertIndex--;
             }
             else if (dropTarget is INode)
             {
@@ -356,6 +358,24 @@ namespace GUI.Components
                 parentDropTarget = null;
             }
         }
+
+        private bool IsCircularParent(TreeViewItem dragItem, TreeViewItem dropTarget)
+        {
+            bool IsCircularParent = false;
+            TreeViewItem parent = dropTarget;
+            while (IsCircularParent == false && parent is TreeViewItem)
+            {
+                parent = parent.Parent as TreeViewItem;
+                if (parent == null)
+                    break;
+
+                if (parent == dragItem)
+                    IsCircularParent = true;
+            }
+
+            return IsCircularParent;
+        }
+
 
 
         private void treeViewTriggers_Drop(object sender, DragEventArgs e)
@@ -380,6 +400,7 @@ namespace GUI.Components
             CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, targetParentGUI.GetTriggerElements(), insertIndex);
             command.Execute();
         }
+
 
         private TreeViewItem GetTraversedTargetDropItem(FrameworkElement dropTarget)
         {

@@ -91,40 +91,10 @@ namespace GUI.Components
             isLoading = false;
         }
 
-        public void Hide()
-        {
-            this.Visibility = Visibility.Hidden;
-        }
-
-        public void Show()
-        {
-            this.Visibility = Visibility.Visible;
-        }
-
         public void Rename(string name)
         {
             var newIdentifier = "udg_" + name;
             this.textBlockVariableNameUDG.Text = newIdentifier;
-        }
-
-        public string GetSaveString()
-        {
-            var selectedComboBoxItem = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
-            var isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
-            int[] arraySize = new int[] { int.Parse(textBoxArraySize0.Text), int.Parse(textBoxArraySize1.Text) };
-
-            explorerElementVariable.variable.Type = selectedComboBoxItem.Type;
-            explorerElementVariable.variable.IsArray = (bool)checkBoxIsArray.IsChecked;
-            explorerElementVariable.variable.IsTwoDimensions = isTwoDimensions;
-            explorerElementVariable.variable.ArraySize = arraySize;
-            explorerElementVariable.variable.InitialValue = "???????????"; // TODO
-
-            return JsonConvert.SerializeObject(explorerElementVariable.variable);
-        }
-
-        public UserControl GetControl()
-        {
-            return this;
         }
 
         [Browsable(true)]

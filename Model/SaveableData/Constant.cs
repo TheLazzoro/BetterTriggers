@@ -7,7 +7,7 @@
     {
         public readonly int ParamType = 2; // DO NOT CHANGE
 
-        public Constant Clone()
+        public new Constant Clone()
         {
             string identifier = null;
             if (this.identifier != null)

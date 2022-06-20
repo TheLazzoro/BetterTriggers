@@ -57,22 +57,61 @@ namespace BetterTriggers.WorldEdit
                     var key = enumKeys.Current;
                     if (key.KeyName == "skinType")
                         category = key.Value;
-                    if (key.KeyName == "Targetart" || key.KeyName == "Specialart" || key.KeyName == "Missileart" || key.KeyName == "Casterart" || key.KeyName == "Effectart")
+                    if (key.KeyName == "Targetart" ||
+                        key.KeyName == "Specialart" ||
+                        key.KeyName == "Missileart" ||
+                        key.KeyName == "Casterart" ||
+                        key.KeyName == "Buffart" ||
+                        key.KeyName == "Effectart"
+                        )
                     {
                         if (key.Value != "")
-                            hashset.Add(new AssetModel()
+                        {
+                            string displayName = Locale.Translate(section.SectionName);
+                            if (displayName == null)
+                                displayName = "";
+
+                            switch (key.KeyName)
                             {
-                                Path = key.Value,
-                                Category = category
-                            });
+                                case "Targetart":
+                                    displayName += " <Target>";
+                                    break;
+                                case "Specialart":
+                                    displayName += " <Special>";
+                                    break;
+                                case "Missileart":
+                                    displayName += " <Missile>";
+                                    break;
+                                case "Casterart":
+                                    displayName += " <Caster>";
+                                    break;
+                                case "Effectart":
+                                    displayName += " <Effect>";
+                                    break;
+                                default:
+                                    break;
+                            }
+                            string[] paths = key.Value.Split(',');
+                            foreach (var path in paths)
+                            {
+                                hashset.Add(new AssetModel()
+                                {
+                                    DisplayName = displayName,
+                                    Path = path,
+                                    Category = category
+                                });
+                            }
+                        }
                     }
                 }
             }
 
+            // TODO: wtf
             for (int i = 0; i < unitData.Count; i++)
             {
                 hashset.Add(new AssetModel()
                 {
+                    DisplayName = unitData[i].Name == null ? "" : unitData[i].Name,
                     Path = unitData[i].Model,
                     Category = "Unit"
                 });
@@ -81,6 +120,7 @@ namespace BetterTriggers.WorldEdit
             {
                 hashset.Add(new AssetModel()
                 {
+                    DisplayName = destData[i].DisplayName == null ? "" : destData[i].DisplayName,
                     Path = destData[i].Model,
                     Category = "Destructible"
                 });
@@ -89,6 +129,7 @@ namespace BetterTriggers.WorldEdit
             {
                 hashset.Add(new AssetModel()
                 {
+                    DisplayName = doodData[i].DisplayName == null ? "" : doodData[i].DisplayName,
                     Path = doodData[i].Model,
                     Category = "Doodad"
                 });
@@ -97,13 +138,14 @@ namespace BetterTriggers.WorldEdit
             {
                 hashset.Add(new AssetModel()
                 {
+                    DisplayName = itemData[i].DisplayName == null ? "" : itemData[i].DisplayName,
                     Path = itemData[i].Model,
                     Category = "Items"
                 });
             }
 
 
-            assetModels = hashset.ToList();
+            assetModels = hashset.OrderBy(asset => asset.DisplayName).ToList();
         }
     }
 }

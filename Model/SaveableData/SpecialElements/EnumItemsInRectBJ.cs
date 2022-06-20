@@ -7,7 +7,7 @@ namespace Model.SaveableData
         public readonly int ParamType = 16; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();
         
-        public EnumItemsInRectBJ Clone()
+        public new EnumItemsInRectBJ Clone()
         {
             EnumItemsInRectBJ enumItems = new EnumItemsInRectBJ();
             enumItems.identifier = new string(identifier);

@@ -7,7 +7,7 @@ namespace Model.SaveableData
         public readonly int ParamType = 11; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();
         
-        public ForLoopBMultiple Clone()
+        public new ForLoopBMultiple Clone()
         {
             ForLoopBMultiple forLoopBMultiple = new ForLoopBMultiple();
             forLoopBMultiple.identifier = new string(identifier);

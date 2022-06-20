@@ -4,7 +4,7 @@
     {
         public readonly int ParamType = 4; // DO NOT CHANGE
 
-        public Value Clone()
+        public new Value Clone()
         {
             string identifier = null;
             if (this.identifier != null)

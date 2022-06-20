@@ -4,7 +4,7 @@
     {
         public readonly int ParamType = 13; // DO NOT CHANGE
         
-        public SetVariable Clone()
+        public new SetVariable Clone()
         {
             SetVariable setVariable = new SetVariable();
 

@@ -9,7 +9,7 @@ namespace Model.SaveableData
         public List<TriggerElement> Then = new List<TriggerElement>();
         public List<TriggerElement> Else = new List<TriggerElement>();
         
-        public IfThenElse Clone()
+        public new IfThenElse Clone()
         {
             IfThenElse ifThenElse = new IfThenElse();
             ifThenElse.identifier = new string(identifier);

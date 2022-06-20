@@ -7,7 +7,7 @@ namespace Model.SaveableData
         public readonly int ParamType = 6; // DO NOT CHANGE
         public List<TriggerElement> And = new List<TriggerElement>();
         
-        public AndMultiple Clone()
+        public new AndMultiple Clone()
         {
             AndMultiple andMultiple = new AndMultiple();
             andMultiple.identifier = new string(identifier);

@@ -6,6 +6,7 @@ namespace Model.War3Data
 {
     public class AssetModel
     {
+        public string DisplayName;
         public string Path;
         public string Category;
 

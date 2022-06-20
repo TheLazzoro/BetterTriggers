@@ -77,6 +77,8 @@ namespace BetterTriggers.Controllers
                 OnCreateElement(fileCheckList[i], false);
             }
 
+            CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
+
             ControllerReferences controllerRef = new ControllerReferences();
             controllerRef.UpdateReferencesAll();
             controllerRecentFiles.AddProjectToRecent(filepath);

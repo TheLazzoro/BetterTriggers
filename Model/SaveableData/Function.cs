@@ -10,7 +10,7 @@ namespace Model.SaveableData
         public readonly int ParamType = 1; // DO NOT CHANGE
         public List<Parameter> parameters = new List<Parameter>();
 
-        public Function Clone()
+        public new Function Clone()
         {
             string identifier = null;
             if (this.identifier != null)

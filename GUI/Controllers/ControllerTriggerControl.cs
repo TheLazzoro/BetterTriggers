@@ -181,11 +181,6 @@ namespace GUI.Controllers
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is SetVariable)
-            {
-                // TODO
-                var function = (SetVariable)treeViewTriggerElement.triggerElement.function;
-            }
             else if (treeViewTriggerElement.triggerElement.function is EnumDestructablesInRectAllMultiple)
             {
                 var function = (EnumDestructablesInRectAllMultiple)treeViewTriggerElement.triggerElement.function;
