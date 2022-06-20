@@ -26,22 +26,22 @@ namespace GUI.Controllers
         {
             textBlock.Inlines.Clear();
             var inlines = RecurseGenerateParamText(treeItem.triggerElement.function.parameters, treeItem.paramText);
-            
+
             // First and last inline must be a string.
             // Otherwise hyperlinks get cut from the treeitem header (WPF black magic).
-            textBlock.Inlines.Add(new Run("")); 
+            textBlock.Inlines.Add(new Run(""));
             textBlock.Inlines.AddRange(inlines);
             textBlock.Inlines.Add(new Run(""));
 
             // Specially handled SetVariable
-            if(treeItem.triggerElement.function is SetVariable)
+            if (treeItem.triggerElement.function is SetVariable)
             {
-                SetVariable setVariable = (SetVariable) treeItem.triggerElement.function;
+                SetVariable setVariable = (SetVariable)treeItem.triggerElement.function;
 
                 HyperlinkParameter[] topLayerParams = new HyperlinkParameter[2];
                 int index = 0;
                 int i = 0;
-                while(i < hyperlinkParameters.Count && index < 2)
+                while (i < hyperlinkParameters.Count && index < 2)
                 {
                     var hyperlink = hyperlinkParameters[i];
                     if (hyperlink.parameters[hyperlink.index] == setVariable.parameters[index])
@@ -53,7 +53,7 @@ namespace GUI.Controllers
                 }
 
                 Parameter setVarParam = topLayerParams[0].parameters[topLayerParams[0].index];
-                var isVariableSetEmpty = setVarParam.identifier == null;
+                var isVariableSetEmpty = !(setVarParam is VariableRef);
                 if (isVariableSetEmpty)
                     topLayerParams[1].Disable();
             }
@@ -109,39 +109,39 @@ namespace GUI.Controllers
                 else if (parameters[paramIndex] is VariableRef)
                 {
                     var controllerVariable = new ControllerVariable();
-                    // TODO: This will crash if a referenced variable is deleted.
                     var variableRef = (VariableRef)parameters[paramIndex];
                     var variable = controllerVariable.GetByReference(variableRef);
-                    var varName = ContainerVariables.GetVariableNameById(variable.Id);
+                    string varName = string.Empty;
 
                     var type = variableRef.returnType == "integervar" ? "integer" : variableRef.returnType; // hack
 
                     // This exists in case a variable has been changed
-                    if (varName == null || varName == "" || variable.Type != type)
+                    if (variable == null || variable.Type != type)
                     {
                         parameters[paramIndex] = new Parameter()
                         {
                             returnType = variableRef.returnType,
                         };
                         varName = "null";
-                    }
+                    } else
+                        varName = ContainerVariables.GetVariableNameById(variable.Id);
+
                     inlines.Add(AddHyperlink(treeItem, varName, parameters, paramIndex));
 
-                    if (variable.IsArray && !variable.IsTwoDimensions)
+                    if (variable != null && variable.IsArray && !variable.IsTwoDimensions)
                         inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, "[,~Number,]"));
-                    else if (variable.IsArray && variable.IsTwoDimensions)
+                    else if (variable != null && variable.IsArray && variable.IsTwoDimensions)
                         inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, "[,~Number,][,~Number,]"));
                 }
                 else if (parameters[paramIndex] is TriggerRef)
                 {
                     var controllerTrig = new ControllerTrigger();
-                    // TODO: This will crash if a referenced trigger is deleted.
                     var triggerRef = (TriggerRef)parameters[paramIndex];
                     var trigger = controllerTrig.GetByReference(triggerRef);
-                    var triggerName = controllerTrig.GetTriggerName(trigger.Id);
+                    string triggerName = string.Empty;
 
                     // This exists in case a trigger name has been changed
-                    if (triggerName == null || triggerName == "")
+                    if (trigger == null)
                     {
                         parameters[paramIndex] = new Parameter()
                         {
@@ -149,6 +149,9 @@ namespace GUI.Controllers
                         };
                         triggerName = "null";
                     }
+                    else
+                        triggerName = controllerTrig.GetTriggerName(trigger.Id);
+
                     inlines.Add(AddHyperlink(treeItem, triggerName, parameters, paramIndex));
                 }
                 else if (parameters[paramIndex] is Value)

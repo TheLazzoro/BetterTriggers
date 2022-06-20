@@ -24,6 +24,9 @@ namespace BetterTriggers.Containers
 
         internal static void AddReferrer(ExplorerElementTrigger source, IExplorerElement reference)
         {
+            if (reference == null)
+                return;
+
             HashSet<IExplorerElement> references = null;
             if (!fromTrigger.TryGetValue(source, out references)) {
                 references = new HashSet<IExplorerElement>();

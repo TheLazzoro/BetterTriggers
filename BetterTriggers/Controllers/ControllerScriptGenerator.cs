@@ -171,7 +171,7 @@ namespace BetterTriggers.Controllers
             script.Append(newline);
 
             // Map header
-            var root = (ExplorerElementRoot) ContainerProject.projectFiles[0];
+            var root = (ExplorerElementRoot)ContainerProject.projectFiles[0];
             script.Append(root.project.Header + newline + newline);
 
 
@@ -1037,7 +1037,13 @@ endfunction
 
                 for (int i = 0; i < e.function.parameters.Count; i++)
                 {
-                    string _event = ConvertTriggerElementToJass(e, pre_actions, triggerName, false);
+                    TriggerElement clonedEvent = e.Clone(); // Need to insert trigger variable at index 0.
+                    TriggerRef triggerRef = new TriggerRef() {
+                        identifier = triggerVarName,
+                    };
+                    clonedEvent.function.parameters.Insert(0, triggerRef);
+
+                    string _event = ConvertTriggerElementToJass(clonedEvent, pre_actions, triggerName, false);
                     events.Append($"{_event} {newline}");
                 }
             }
@@ -1440,6 +1446,19 @@ endfunction
                 pre_actions.Append($"function {function_name} takes nothing returns nothing{newline}");
                 pre_actions.Append($"\t{ConvertFunctionToJass(f.parameters[1] as Function, pre_actions, triggerName)}{newline}");
                 pre_actions.Append($"endfunction{newline}{newline}");
+
+                return script.ToString();
+            }
+
+            else if (f.identifier == "AddTriggerEvent")
+            {
+                Function addEvent = f.Clone(); // Need to clone because of insert operation below.
+                // Otherwise it's inserted into the saveable object.
+
+                TriggerRef triggerRef = (TriggerRef) addEvent.parameters[0];
+                Function _event = (Function) addEvent.parameters[1];
+                _event.parameters.Insert(0, triggerRef);
+                script.Append($"{ConvertFunctionToJass(_event, pre_actions, triggerName)}{newline}");
 
                 return script.ToString();
             }

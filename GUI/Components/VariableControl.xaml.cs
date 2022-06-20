@@ -32,7 +32,6 @@ namespace GUI.Components
     {
         private ExplorerElementVariable explorerElementVariable;
         private ComboBoxItemType previousSelected;
-        private string confirmationText = "This variable is still in use. Changing it will reset all references to it and cannot be undone. Continue with change?";
         private bool isLoading = true;
         private int defaultSelected = 0;
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
@@ -227,14 +226,10 @@ namespace GUI.Components
             bool ok = true;
             ControllerReferences controllerRef = new ControllerReferences();
             List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(this.explorerElementVariable);
-            string triggerNames = "\n";
-            foreach (var trig in refs)
-            {
-                triggerNames += "\n<" + trig.GetName() + ">";
-            }
+            
             if (refs.Count > 0)
             {
-                DialogBox dialog = new DialogBox("Confirmation", confirmationText + triggerNames);
+                DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
                 dialog.ShowDialog();
                 ok = dialog.OK;
 

@@ -26,6 +26,7 @@ namespace GUI
         ParameterVariableControl variableControl;
         ParameterValueControl valueControl;
         ParameterTriggerControl triggerRefControl;
+        ParameterImportedControl importControl;
         IParameterControl selectedControl;
 
         public ParameterWindow(Function function, Parameter parameter)
@@ -40,22 +41,34 @@ namespace GUI
             this.functionControl = new ParameterFunctionControl(returnType);
             grid.Children.Add(functionControl);
             Grid.SetRow(functionControl, 1);
+            Grid.SetColumnSpan(functionControl, 2);
 
             this.constantControl = new ParameterConstantControl(returnType);
             grid.Children.Add(constantControl);
             Grid.SetRow(constantControl, 1);
+            Grid.SetColumnSpan(constantControl, 2);
 
             this.variableControl = new ParameterVariableControl(returnType);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
+            Grid.SetColumnSpan(variableControl, 2);
 
             this.valueControl = new ParameterValueControl(returnType);
             grid.Children.Add(valueControl);
             Grid.SetRow(valueControl, 1);
+            Grid.SetColumnSpan(valueControl, 2);
 
             this.triggerRefControl = new ParameterTriggerControl();
             grid.Children.Add(triggerRefControl);
             Grid.SetRow(triggerRefControl, 1);
+            Grid.SetColumnSpan(triggerRefControl, 2);
+
+            this.importControl = new ParameterImportedControl(returnType);
+            grid.Children.Add(importControl);
+            Grid.SetRow(importControl, 1);
+            Grid.SetColumnSpan(importControl, 2);
+
+            // TODO: Fix this mess
 
             functionControl.Visibility = Visibility.Hidden;
             constantControl.Visibility = Visibility.Visible;
@@ -73,18 +86,23 @@ namespace GUI
                 valueControl.Visibility = Visibility.Hidden;
                 triggerRefControl.Visibility = Visibility.Hidden;
 
-                radioBtnFunction.Visibility = Visibility.Hidden;
-                radioBtnPreset.Visibility = Visibility.Hidden;
-                radioBtnValue.Visibility = Visibility.Hidden;
-                radioBtnTrigger.Visibility = Visibility.Hidden;
+                radioButtonList.Items.Remove(radioBtnFunction);
+                radioButtonList.Items.Remove(radioBtnPreset);
+                radioButtonList.Items.Remove(radioBtnValue);
+                radioButtonList.Items.Remove(radioBtnTrigger);
 
                 radioBtnVariable.IsChecked = true;
-
             }
+            else if (returnType == "trigger")
+                radioButtonList.Items.Remove(radioBtnValue);
+            else
+                radioButtonList.Items.Remove(radioBtnTrigger);
+
 
             if (!valueControl.ValueControlExists())
-                radioBtnValue.Visibility = Visibility.Hidden;
-
+                radioButtonList.Items.Remove(radioBtnValue);
+            if (returnType != "modelfile" && returnType != "skymodelstring")
+                radioButtonList.Items.Remove(radioBtnImported);
         }
 
         private void ShowHideTabs(IParameterControl control)
@@ -95,6 +113,7 @@ namespace GUI
             variableControl.Visibility = Visibility.Hidden;
             valueControl.Visibility = Visibility.Hidden;
             triggerRefControl.Visibility = Visibility.Hidden;
+            importControl.Visibility = Visibility.Hidden;
 
             control.SetVisibility(Visibility.Visible);
             if (control.GetElementCount() > 0)
@@ -125,9 +144,15 @@ namespace GUI
             ShowHideTabs(triggerRefControl);
         }
 
+
         private void radioBtnValue_Checked(object sender, RoutedEventArgs e)
         {
             ShowHideTabs(valueControl);
+        }
+
+        private void radioBtnImported_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowHideTabs(importControl);
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)

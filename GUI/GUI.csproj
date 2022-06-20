@@ -246,6 +246,9 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterTriggerControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterImportedControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlModels.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -279,6 +282,9 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="DialogBoxReferences.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -291,6 +297,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ParameterTriggerControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ParameterImportedControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -335,6 +345,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DialogBoxReferences.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

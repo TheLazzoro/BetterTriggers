@@ -46,6 +46,11 @@ namespace Model.SaveableData
                     var varRef = (VariableRef)param;
                     cloned = (VariableRef)varRef.Clone();
                 }
+                else if (param is TriggerRef)
+                {
+                    var triggerRef = (TriggerRef)param;
+                    cloned = (TriggerRef)triggerRef.Clone();
+                }
                 else if (param is Value)
                 {
                     var value = (Value)param;

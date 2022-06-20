@@ -308,7 +308,12 @@ namespace BetterTriggers.Controllers
 
         public Trigger GetByReference(TriggerRef triggerRef)
         {
-            return ContainerTriggers.GetByReference(triggerRef).trigger;
+            var explorerElement = ContainerTriggers.GetByReference(triggerRef);
+            if (explorerElement == null)
+                return null;
+
+            Trigger trig = explorerElement.trigger;
+            return trig;
         }
 
         public int VerifyParameters(List<Parameter> parameters)

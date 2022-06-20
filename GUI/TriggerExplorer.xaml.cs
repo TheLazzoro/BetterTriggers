@@ -229,6 +229,16 @@ namespace GUI
                 if (selectedElement == null || selectedElement == map)
                     return;
 
+                ControllerReferences controllerRef = new ControllerReferences();
+                List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(selectedElement.Ielement);
+                if (refs.Count > 0)
+                {
+                    DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);
+                    dialogBox.ShowDialog();
+                    if (!dialogBox.OK)
+                        return;
+                }
+
                 ControllerFileSystem controller = new ControllerFileSystem();
                 controller.DeleteElement(selectedElement.Ielement.GetPath());
             }

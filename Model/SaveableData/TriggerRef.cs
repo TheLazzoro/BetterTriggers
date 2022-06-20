@@ -18,6 +18,8 @@ namespace Model.SaveableData
                 identifier = new string(this.identifier);
 
             cloned.identifier = identifier;
+            cloned.returnType = returnType;
+            cloned.TriggerId = TriggerId;
 
             return cloned;
         }
