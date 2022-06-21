@@ -1,0 +1,27 @@
+﻿<Window x:Class="GUI.SelectWar3MapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Select Map" Height="175" Width="400" Background="#FF202020" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Label Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom"  >Select Warcraft III map folder</Label>
+        <Button x:Name="btnSelect" Width="50" Height="22" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="170,0,0,0" Click="btnSelect_Click">Select</Button>
+
+        <Label x:Name="lblPath" Foreground="#eee" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top"  >Path: &lt;Empty&gt;</Label>
+        
+        <Label x:Name="lblError" Foreground="#f66" Grid.Column="1" Grid.Row="2" Visibility="Hidden" >Invalid map directory</Label>
+        <Button x:Name="btnOK" Width="50" Height="22" IsEnabled="False" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnOK_Click">OK</Button>
+    </Grid>
+</Window>

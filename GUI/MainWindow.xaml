@@ -417,18 +417,36 @@
 
 
         <Menu Grid.Column="0"  Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="#eee" MouseLeftButtonDown="Menu_MouseLeftButtonDown" >
-            <MenuItem Header="File" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" >
+            <MenuItem x:Name="menuFile" Header="WESTRING_MENU_FILE" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" >
                 <MenuItem Name="menuNewProject" Header="New Project..." Click="menuNewProject_Click"/>
-                <MenuItem Name="menuOpen" Header="Open..." Click="menuOpen_Click"/>
+                <MenuItem Name="menuOpen" Header="WESTRING_MENU_OPEN" Click="menuOpen_Click"/>
                 <MenuItem Name="menuSave" Header="Save All" Click="menuSave_Click"/>
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
             </MenuItem>
-            <MenuItem Header="Edit" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" Foreground="#eee" SubmenuOpened="MenuItem_SubmenuOpened">
+            <MenuItem x:Name="menuEdit" Header="WESTRING_MENU_EDIT" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" Foreground="#eee" SubmenuOpened="MenuItem_SubmenuOpened">
                 <MenuItem Name="menuItemUndo" Header="Undo" Click="menuItemUndo_Click"/>
                 <MenuItem Name="menuItemRedo" Header="Redo" Click="menuItemRedo_Click"/>
             </MenuItem>
-            <MenuItem Header="New" Template="{DynamicResource MenuItemControlTemplate1}" Height="25"/>
-            <MenuItem Header="JassHelper" Template="{DynamicResource MenuItemControlTemplate1}" Height="25"/>
+            <MenuItem x:Name="menuNew" Header="WESTRING_MENU_TE_NEW" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
+                <MenuItem Name="menuNewCategory" Header="WESTRING_DEVAL_DCAT" Click="btnCreateFolder_Click"/>
+                <MenuItem Name="menuNewTrigger" Header="WESTRING_DLGE_TRIGGER" Click="btnCreateTrigger_Click"/>
+                <MenuItem Name="menuNewScript" Header="WESTRING_TRIGCAT_CUSTOM" Click="btnCreateScript_Click"/>
+                <MenuItem Name="menuNewVariable" Header="WESTRING_MENU_GLOBLALVARIABLE"  Click="btnCreateVariable_Click" />
+                <Separator></Separator>
+                <MenuItem Name="menuNewEvent" Header="WESTRING_MENU_EVENT"  Click="btnCreateEvent_Click" />
+                <MenuItem Name="menuNewCondition" Header="WESTRING_MENU_CONDITION"  Click="btnCreateCondition_Click" />
+                <MenuItem Name="menuNewAction" Header="WESTRING_MENU_ACTION"  Click="btnCreateAction_Click" />
+            </MenuItem>
+            <MenuItem x:Name="menuJassHelper" Header="WESTRING_MENU_JASSHELPER" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
+                <MenuItem Name="menuEnableJassHelper" Header="WESTRING_MENU_JASSHELPER_TOGGLE" />
+                <MenuItem Name="menuEnableVJass" Header="WESTRING_MENU_JASSHELPER_TOGGLE_VJASS" />
+                <MenuItem Name="menuEnableDebugMode" Header="WESTRING_MENU_JASSHELPER_TOGGLE_DEBUG" />
+                <MenuItem Name="menuEnableOptimizer" Header="WESTRING_MENU_JASSHELPER_TOGGLE_OPTIMIZER" />
+            </MenuItem>
+            <MenuItem x:Name="menuTools" Header="WESTRING_MENU_TOOLS" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
+                <MenuItem  Name="menuItemOptions" Header="WESTRING_MAPTAB_OPTIONS" Click="menuItemOptions_Click" />
+
+            </MenuItem>
         </Menu>
 
         <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="2" />
@@ -445,17 +463,17 @@
                     <Button Content="{Binding}" Margin="0,0,5,5" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-            <Button x:Name="btnNewMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnNewMap" ToolTip="WESTRING_TOOLBAR_NEW" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnNewMap_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/map.png" Stretch="Fill"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnOpenMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnOpenMap" ToolTip="WESTRING_TOOLBAR_OPEN" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnOpenMap_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_open.png" Stretch="Fill" />
                 </Button.Background>
             </Button>
-            <Button x:Name="btnSaveAll" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnSaveAll" ToolTip="Save All" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveAll_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_save.png" Stretch="Fill" />
                 </Button.Background>
@@ -463,27 +481,27 @@
 
             <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0"  Width="1" Fill="#444" />
 
-            <Button x:Name="btnUndo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnUndo" ToolTip="WESTRING_TOOLBAR_UNDO" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnUndo_Click" >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/undo.png" Stretch="Fill" />
                 </Button.Background>
             </Button>
-            <Button x:Name="btnRedo" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnRedo" ToolTip="WESTRING_TOOLBAR_REDO" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnRedo_Click" >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/redo.png" Stretch="Fill" />
                 </Button.Background>
             </Button>
-            <Button x:Name="btnCut" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnCut" ToolTip="WESTRING_TOOLBAR_CUT" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCut_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_cut.png" Stretch="Fill" />
                 </Button.Background>
             </Button>
-            <Button x:Name="btnCopy" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnCopy" ToolTip="WESTRING_TOOLBAR_COPY" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCopy_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_copy.png" Stretch="Fill" />
                 </Button.Background>
             </Button>
-            <Button x:Name="btnPaste" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnPaste" ToolTip="WESTRING_TOOLBAR_PASTE" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnPaste_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/ui-editoricon-general_paste.png" Stretch="Fill" />
                 </Button.Background>
@@ -492,22 +510,22 @@
 
             <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="#444" />
 
-            <Button x:Name="btnCreateFolder" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
+            <Button x:Name="btnCreateFolder" ToolTip="WESTRING_TOOLBAR_SE_NEWCAT" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFolder_Click" >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_folder.png" Stretch="None"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnCreateTrigger" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
+            <Button x:Name="btnCreateTrigger" ToolTip="WESTRING_TOOLBAR_SE_NEWTRIG" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateTrigger_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/ui-editoricon-triggercategories_element.png" Stretch="None" />
                 </Button.Background>
             </Button>
-            <Button x:Name="btnCreateScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateScript_Click" >
+            <Button x:Name="btnCreateScript" ToolTip="WESTRING_TOOLBAR_SE_NEWCUSSCR" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateScript_Click" >
                 <Button.Background >
                     <ImageBrush ImageSource="Resources/Icons/editor-triggerscript.png" Stretch="None" />
                 </Button.Background>
             </Button>
-            <Button x:Name="btnCreateVariable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateVariable_Click">
+            <Button x:Name="btnCreateVariable" ToolTip="WESTRING_TOOLBAR_SE_NEWGLOVAR" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateVariable_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/actions-setvariables.png" Stretch="None"/>
                 </Button.Background>
@@ -515,22 +533,22 @@
 
             <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="#444" />
 
-            <Button x:Name="btnCreateEvent" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateEvent_Click">
+            <Button x:Name="btnCreateEvent" ToolTip="WESTRING_TOOLBAR_SE_EVENT" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateEvent_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/editor-triggerevent.png" Stretch="None"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnCreateCondition" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateCondition_Click">
+            <Button x:Name="btnCreateCondition" ToolTip="WESTRING_TOOLBAR_SE_COND" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateCondition_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/editor-triggercondition.png" Stretch="None"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnCreateAction" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Click="btnCreateAction_Click">
+            <Button x:Name="btnCreateAction" ToolTip="WESTRING_TOOLBAR_SE_ACTION" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Click="btnCreateAction_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnSaveScript" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
+            <Button x:Name="btnSaveScript" ToolTip="WESTRING_MENU_VALIDATE_MAP_TRIGGERS" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/editor-toolbar-mapvalidation.png" Stretch="None"/>
                 </Button.Background>
@@ -538,12 +556,12 @@
 
             <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="#444" />
 
-            <Button x:Name="btnTestMap" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
+            <Button x:Name="btnTestMap" ToolTip="WESTRING_PREFTAB_TESTMAP" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnTestMap_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/editor-testmap.dds" Stretch="None"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnBuildMap" Style="{DynamicResource ButtonStyle1}" Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
+            <Button x:Name="btnBuildMap" ToolTip="WESTRING_TOOLBAR_CE_EXPORTMAP" Style="{DynamicResource ButtonStyle1}" Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnBuildMap_Click"  >
                 <Button.Background>
                     <ImageBrush ImageSource="Resources/Icons/editor-toolbar-exportmap.dds" Stretch="None"/>
                 </Button.Background>

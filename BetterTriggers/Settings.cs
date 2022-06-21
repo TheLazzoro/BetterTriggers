@@ -8,13 +8,21 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers
 {
-    public class Settings
+    public sealed class Settings
     {
         private static Settings instance;
         private static string filePath = Directory.GetCurrentDirectory() + @"\settings\settings.json";
 
         public string war3root { get; set; }
         public string language { get; set; }
+        public string CopyLocation { get; set; }        = "BetterTriggersTestMap";
+        public int Difficulty { get; set; }             = 0;
+        public bool FixedRandomSeed { get; set; }       = false;
+        public int HD { get; set; }                     = 0;
+        public bool NoWindowsFocusPause { get; set; }   = false;
+        public string PlayerProfile { get; set; }       = "WorldEdit";
+        public int WindowMode { get; set; }             = 0;
+        public int Teen { get; set; }                   = 0;
 
         public static Settings Load()
         {

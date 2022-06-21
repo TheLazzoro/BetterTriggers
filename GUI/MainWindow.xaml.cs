@@ -29,27 +29,63 @@ namespace GUI
 
             BetterTriggers.Init.Initialize();
             CustomMapData.OnSaving += CustomMapData_OnSaving;
+
+            btnNewMap.ToolTip           = Locale.Translate(btnNewMap.ToolTip as string);
+            btnOpenMap.ToolTip          = Locale.Translate(btnOpenMap.ToolTip as string);
+            
+            btnUndo.ToolTip             = Locale.Translate(btnUndo.ToolTip as string);
+            btnRedo.ToolTip             = Locale.Translate(btnRedo.ToolTip as string);
+            btnCut.ToolTip              = Locale.Translate(btnCut.ToolTip as string);
+            btnCopy.ToolTip             = Locale.Translate(btnCopy.ToolTip as string);
+            btnPaste.ToolTip            = Locale.Translate(btnPaste.ToolTip as string);
+
+            btnCreateFolder.ToolTip     = Locale.Translate(btnCreateFolder.ToolTip as string);
+            btnCreateTrigger.ToolTip    = Locale.Translate(btnCreateTrigger.ToolTip as string);
+            btnCreateScript.ToolTip     = Locale.Translate(btnCreateScript.ToolTip as string);
+            btnCreateVariable.ToolTip   = Locale.Translate(btnCreateVariable.ToolTip as string);
+
+            btnCreateEvent.ToolTip      = Locale.Translate(btnCreateEvent.ToolTip as string);
+            btnCreateCondition.ToolTip  = Locale.Translate(btnCreateCondition.ToolTip as string);
+            btnCreateAction.ToolTip     = Locale.Translate(btnCreateAction.ToolTip as string);
+            btnSaveScript.ToolTip       = Locale.Translate(btnSaveScript.ToolTip as string);
+
+            btnTestMap.ToolTip          = Locale.Translate(btnTestMap.ToolTip as string);
+            btnBuildMap.ToolTip         = Locale.Translate(btnBuildMap.ToolTip as string);
+
+
+            menuFile.Header             = Locale.Translate(menuFile.Header as string);
+            menuOpen.Header             = Locale.Translate(menuOpen.Header as string);
+
+
+            menuEdit.Header             = Locale.Translate(menuEdit.Header as string);
+
+
+            menuNew.Header              = Locale.Translate(menuNew.Header as string);
+            menuNewCategory.Header      = Locale.Translate(menuNewCategory.Header as string);
+            menuNewTrigger.Header       = Locale.Translate(menuNewTrigger.Header as string);
+            menuNewScript.Header        = Locale.Translate(menuNewScript.Header as string);
+            menuNewVariable.Header      = Locale.Translate(menuNewVariable.Header as string);
+
+            menuNewEvent.Header         = Locale.Translate(menuNewEvent.Header as string);
+            menuNewCondition.Header     = Locale.Translate(menuNewCondition.Header as string);
+            menuNewAction.Header        = Locale.Translate(menuNewAction.Header as string);
+
+
+            menuJassHelper.Header       = Locale.Translate(menuJassHelper.Header as string);
+            menuEnableJassHelper.Header = Locale.Translate(menuEnableJassHelper.Header as string);
+            menuEnableVJass.Header      = Locale.Translate(menuEnableVJass.Header as string);
+            menuEnableDebugMode.Header  = Locale.Translate(menuEnableDebugMode.Header as string);
+            menuEnableOptimizer.Header  = Locale.Translate(menuEnableOptimizer.Header as string);
+
+
+            menuTools.Header            = Locale.Translate(menuTools.Header as string);
+            menuItemOptions.Header      = Locale.Translate(menuItemOptions.Header as string);
         }
 
 
         private void menuNewProject_Click(object sender, RoutedEventArgs e)
         {
-            NewProjectWindow window = new NewProjectWindow();
-            window.WindowStartupLocation = WindowStartupLocation.Manual;
-            window.Top = this.Top + this.Height / 2 - window.Height / 2;
-            window.Left = this.Left + this.Width / 2 - window.Width / 2;
-            window.ShowDialog();
-
-            if (window.Ok)
-            {
-                var root = ContainerProject.project.Root;
-                TriggerExplorer te = new TriggerExplorer();
-                mainGrid.Children.Add(te);
-                Grid.SetColumn(te, 0);
-                Grid.SetRow(te, 2);
-
-                this.triggerExplorer = te;
-            }
+            NewProject();
         }
 
         private void CustomMapData_OnSaving(object sender, System.IO.FileSystemEventArgs e)
@@ -91,6 +127,50 @@ namespace GUI
             }
 
             e.Handled = true; // prevents event from firing up the parent items
+        }
+
+        private void btnNewMap_Click(object sender, RoutedEventArgs e)
+        {
+            NewProject();
+        }
+
+        private void btnOpenMap_Click(object sender, RoutedEventArgs e)
+        {
+            OpenMap();
+        }
+
+        private void btnSaveAll_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            controller.SaveAll();
+        }
+
+        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            BetterTriggers.Commands.CommandManager.Undo();
+        }
+
+        private void btnRedo_Click(object sender, RoutedEventArgs e)
+        {
+            BetterTriggers.Commands.CommandManager.Redo();
+        }
+
+        private void btnCut_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox messageBox = new MessageBox("Error", "Not yet implemented");
+            messageBox.ShowDialog();
+        }
+
+        private void btnCopy_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox messageBox = new MessageBox("Error", "Not yet implemented");
+            messageBox.ShowDialog();
+        }
+
+        private void btnPaste_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox messageBox = new MessageBox("Error", "Not yet implemented");
+            messageBox.ShowDialog();
         }
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
@@ -138,8 +218,43 @@ namespace GUI
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
             ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
-            scriptGenerator.GenerateScript("C:/Users/Lasse Dam/Desktop/jass.j");
+            scriptGenerator.GenerateScript();
         }
+
+        private void btnTestMap_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            try
+            {
+                controller.TestMap();
+            }
+            catch (Exception ex)
+            {
+                DialogBox dialogBox = new DialogBox("Error", ex.Message);
+            }
+        }
+
+        private void btnBuildMap_Click(object sender, RoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            if(!controller.War3MapDirExists())
+            {
+                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                window.ShowDialog();
+                if (!window.OK)
+                {
+                    return;
+                }
+            }
+            try
+            {
+                controller.BuildMap();
+            } catch (Exception ex)
+            {
+                DialogBox dialogBox = new DialogBox("Error", ex.Message);
+            }
+        }
+
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
         {
@@ -195,6 +310,32 @@ namespace GUI
         }
 
         private void menuOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenMap();
+        }
+
+        private void menuItemOptions_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settings = new SettingsWindow();
+            settings.ShowDialog();
+        }
+
+        private void NewProject()
+        {
+            NewProjectWindow window = new NewProjectWindow();
+            window.WindowStartupLocation = WindowStartupLocation.Manual;
+            window.Top = this.Top + this.Height / 2 - window.Height / 2;
+            window.Left = this.Left + this.Width / 2 - window.Width / 2;
+            window.ShowDialog();
+
+            if (window.Ok)
+            {
+                string projectPath = window.projectFilePath;
+                OpenProject(projectPath);
+            }
+        }
+
+        private void OpenMap()
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.DefaultExt = ".json";
@@ -286,5 +427,7 @@ namespace GUI
                 e.Cancel = true;
 
         }
+
+
     }
 }

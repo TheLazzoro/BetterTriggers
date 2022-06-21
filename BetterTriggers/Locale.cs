@@ -164,7 +164,7 @@ namespace BetterTriggers
                 }
 
                 string key = line.Substring(0, keyLength);
-                string value = line.Substring(keyLength + 1, line.Length - 1 - keyLength).Replace("\"", "");
+                string value = line.Substring(keyLength + 1, line.Length - 1 - keyLength).Replace("\"", "").Replace("&", "");
 
                 WE_Strings.TryAdd(key, value);
             }

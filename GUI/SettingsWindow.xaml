@@ -1,0 +1,71 @@
+﻿<Window x:Class="GUI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="SettingsWindow" Height="381" Width="375" MinWidth="400" Background="#FF202020">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="1" Foreground="#eee">Difficulty Level</Label>
+        <Label Grid.Row="2" Grid.Column="1" Foreground="#eee">Window Mode</Label>
+        <Label Grid.Row="3" Grid.Column="1" Foreground="#eee">Asset Mode</Label>
+        <Label Grid.Row="4" Grid.Column="1" Foreground="#eee">Teen Data</Label>
+        <Label Grid.Row="5" Grid.Column="1" Foreground="#eee">Player Profile</Label>
+        <Label Grid.Row="8" Grid.Column="1" Foreground="#eee">Copied Map File</Label>
+
+
+        <ComboBox x:Name="comboboxDiff" Grid.Row="1" Grid.Column="2" Margin="0,2,0,2">
+            <ComboBoxItem>Easy</ComboBoxItem>
+            <ComboBoxItem>Normal</ComboBoxItem>
+            <ComboBoxItem>Hard</ComboBoxItem>
+        </ComboBox>
+
+        <ComboBox x:Name="comboboxWindowMode" Grid.Row="2" Grid.Column="2" Margin="0,2,0,2">
+            <ComboBoxItem>Windowed</ComboBoxItem>
+            <ComboBoxItem>WindowedFullscreen</ComboBoxItem>
+            <ComboBoxItem>Fullscreen</ComboBoxItem>
+        </ComboBox>
+
+        <ComboBox x:Name="comboboxAssetMode" Grid.Row="3" Grid.Column="2" Margin="0,2,0,2">
+            <ComboBoxItem>SD</ComboBoxItem>
+            <ComboBoxItem>HD</ComboBoxItem>
+        </ComboBox>
+
+        <ComboBox x:Name="comboboxTeenData" Grid.Row="4" Grid.Column="2" Margin="0,2,0,2">
+            <ComboBoxItem>On</ComboBoxItem>
+            <ComboBoxItem>Off</ComboBoxItem>
+        </ComboBox>
+
+        <TextBox x:Name="textBoxPlayerProfile" Grid.Row="5" Grid.Column="2" Margin="0,2,0,2"></TextBox>
+
+        <CheckBox x:Name="checkBoxFixedSeed" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="#eee">Use Fixed Random Seed</CheckBox>
+        <CheckBox x:Name="checkBoxNoWFPause" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="#eee">Use No Window Focus Pause</CheckBox>
+
+        <TextBox x:Name="textBoxCopiedMapFile" Grid.Row="8" Grid.Column="2" Margin="0,2,0,2"></TextBox>
+
+        <Button x:Name="btnOK" Height="22" Width="60" HorizontalAlignment="Left" Grid.Row="10" Grid.Column="3" Margin="20,9,0,9" Click="btnOK_Click">OK</Button>
+        <Button x:Name="btnCancel" Height="22" Width="60" HorizontalAlignment="Left" Grid.Row="10" Grid.Column="3" Margin="90,9,0,9" IsCancel="True" >Cancel</Button>
+
+    </Grid>
+</Window>

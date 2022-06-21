@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GUI"
              StartupUri="LoadingCascWindow.xaml" DispatcherUnhandledException="Application_DispatcherUnhandledException">
+             <!--StartupUri="WelcomeWindow.xaml">-->
     <Application.Resources>
         <ResourceDictionary>
 

@@ -5,37 +5,152 @@ using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using War3Net.Build;
+using War3Net.IO.Mpq;
 
 namespace BetterTriggers.Controllers
 {
     public class ControllerProject
     {
-        public void CreateProject(string language, string name, string destinationFolder)
+        /// <summary>
+        /// </summary>
+        /// <returns>Path to the project file.</returns>
+        public string CreateProject(string language, string name, string destinationFolder)
         {
+            string root = Path.Combine(destinationFolder, name);
+            string src = Path.Combine(root, "src");
+            string map = Path.Combine(root, "map");
+            string dist = Path.Combine(root, "dist");
+            string projectPath = Path.Combine(root, name + ".json");
+
             War3Project project = new War3Project()
             {
                 Name = name,
                 Language = language,
                 Header = "",
-                Root = destinationFolder + @"\" + name,
+                Root = src,
                 Files = new List<War3ProjectFileEntry>()
             };
 
-            string json = JsonConvert.SerializeObject(project);
+            string projectFile = JsonConvert.SerializeObject(project);
 
-            string filepath = destinationFolder + @"\" + name + ".json";
-            File.WriteAllText(filepath, json);
-            Directory.CreateDirectory(destinationFolder + @"\" + name);
+            Directory.CreateDirectory(root);
+            Directory.CreateDirectory(src);
+            Directory.CreateDirectory(map);
+            Directory.CreateDirectory(dist);
+            File.WriteAllText(projectPath, projectFile);
 
             ContainerProject container = new ContainerProject();
-            container.NewProject(project, filepath);
+            container.NewProject(project, projectPath);
+
+            return projectPath;
         }
 
         public int GetUnsavedFileCount()
         {
             return ContainerUnsavedFiles.Count();
+        }
+
+        public bool War3MapDirExists()
+        {
+            bool exists = false;
+            string dir = ContainerProject.project.War3MapDirectory;
+            if (dir != null && dir != "" && Directory.Exists(dir) && File.Exists(Path.Combine(dir, "war3map.w3i")))
+                exists = true;
+
+            return exists;
+        }
+
+        public void SetWar3MapDir(string mapDir)
+        {
+            ContainerProject.project.War3MapDirectory = mapDir;
+        }
+
+        /// <summary>
+        /// Builds an MPQ archive.
+        /// </summary>
+        /// <returns>Full path of the archive.</returns>
+        public string BuildMap(string destinationDir = null)
+        {
+            ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
+            scriptGenerator.GenerateScript();
+
+            string mapDir = ContainerProject.project.War3MapDirectory;
+            var map = Map.Open(mapDir);
+            MapBuilder builder = new MapBuilder(map);
+
+            string rootDir = Path.GetDirectoryName(ContainerProject.project.Root);
+            string fullPath = string.Empty;
+            if (destinationDir == null)
+                fullPath = Path.Combine(rootDir, Path.Combine("dist", Path.GetFileName(mapDir)));
+            else
+            {
+                Settings settings = Settings.Load();
+                fullPath = Path.Combine(destinationDir, settings.CopyLocation + ".w3x");
+            }
+
+            builder.Build(fullPath);
+
+            bool didWrite = false;
+            int exeptions = 0;
+            while (!didWrite && exeptions < 10)
+            {
+                Thread.Sleep(10);
+
+                try
+                {
+                    builder.Build(fullPath);
+                    didWrite = true;
+
+                } catch(Exception ex) { exeptions++; }
+            }
+            if (!didWrite)
+                throw new Exception("Could not write to map.");
+
+            return fullPath;
+        }
+
+        public void TestMap()
+        {
+            string destinationDir = Path.GetTempPath();
+            string fullPath = BuildMap(destinationDir);
+            Settings settings = Settings.Load();
+            string war3Exe = Path.Combine(settings.war3root, "_retail_/x86_64/Warcraft III.exe");
+
+            int difficulty = settings.Difficulty;
+            string windowMode;
+            switch (settings.WindowMode)
+            {
+                case 0:
+                    windowMode = "windowed";
+                    break;
+                case 1:
+                    windowMode = "windowedfullscreen";
+                    break;
+                default:
+                    windowMode = "fullscreen";
+                    break;
+            }
+            int hd = settings.HD;
+            int teen = settings.Teen;
+            string playerProfile = settings.PlayerProfile;
+            int fixedseed = settings.FixedRandomSeed == true ? 1 : 0;
+            string nowfpause = settings.NoWindowsFocusPause == true ? "-nowfpause " : "";
+
+            string launchArgs = $"-launch " +
+                $"-mapdiff {difficulty} " +
+                $"-windowmode {windowMode} " +
+                $"-hd {hd} " +
+                $"-teen {teen} " +
+                $"-testmapprofile {playerProfile} " +
+                $"-fixedseed {fixedseed} " +
+                $"{nowfpause}";
+
+            Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{fullPath}\"");
         }
 
         /// <summary>
@@ -148,7 +263,7 @@ namespace BetterTriggers.Controllers
             var unsaved = ContainerUnsavedFiles.GetAllUnsaved();
             for (int i = 0; i < ContainerUnsavedFiles.Count(); i++)
             {
-                if(unsaved[i] is IExplorerSaveable)
+                if (unsaved[i] is IExplorerSaveable)
                 {
                     var saveable = (IExplorerSaveable)unsaved[i];
                     File.WriteAllText(unsaved[i].GetPath(), saveable.GetSaveableString());
@@ -212,7 +327,7 @@ namespace BetterTriggers.Controllers
 
         public ExplorerElementRoot GetProjectRoot()
         {
-            return (ExplorerElementRoot) ContainerProject.projectFiles[0];
+            return (ExplorerElementRoot)ContainerProject.projectFiles[0];
         }
 
         public void SetElementEnabled(IExplorerElement element, bool isEnabled)
@@ -588,7 +703,7 @@ namespace BetterTriggers.Controllers
                 int i = 0;
                 while (!exists && i < files.Length)
                 {
-                    if(Directory.Exists(files[i]) && files[i] == Path.Combine(parentDir, newName)) 
+                    if (Directory.Exists(files[i]) && files[i] == Path.Combine(parentDir, newName))
                     {
                         exists = true;
                     }

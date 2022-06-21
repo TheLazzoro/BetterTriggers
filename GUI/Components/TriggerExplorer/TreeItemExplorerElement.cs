@@ -127,7 +127,10 @@ namespace GUI.Components.TriggerExplorer
                     controller.RenameElement(this.Ielement, renameText);
                 }
                 else
-                    MessageBox.Show($"An element with name '{renameText}' already exists.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.OK);
+                {
+                    MessageBox messageBox = new MessageBox("Error", $"An element with name '{renameText}' already exists.");
+                    messageBox.ShowDialog();
+                }
             }
             else if (e.Key == Key.Escape)
             {

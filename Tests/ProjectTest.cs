@@ -2,6 +2,7 @@ using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.SaveableData;
+using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -13,6 +14,7 @@ namespace Tests
     {
         static string language = "jass";
         static string name = "TestProject";
+        static string projectPath;
         static War3Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
@@ -27,8 +29,8 @@ namespace Tests
         public void BeforeEach()
         {
             ControllerProject controller = new ControllerProject();
-            controller.CreateProject(language, name, directory);
-            project = controller.LoadProject(directory + @"/" + name + ".json");
+            projectPath = controller.CreateProject(language, name, directory);
+            project = controller.LoadProject(projectPath);
         }
 
         [TestCleanup]
@@ -46,23 +48,25 @@ namespace Tests
             var directory = System.IO.Directory.GetCurrentDirectory();
 
             ControllerProject controller = new ControllerProject();
-            controller.CreateProject(language, name, directory);
-            project = controller.LoadProject(directory + @"\" + name + ".json");
+            projectPath = controller.CreateProject(language, name, directory);
+            project = controller.LoadProject(projectPath);
 
             Assert.AreEqual(language, project.Language);
             Assert.AreEqual(name, project.Name);
-            Assert.AreEqual(project.Root, directory + @"\" + name);
+            Assert.AreEqual(project.Root, directory + @"\" + name + @"\" + "src");
 
             Assert.IsTrue(Directory.Exists(project.Root), "Directory does not exist.");
-            Assert.IsTrue(File.Exists(directory + @"\" + name + ".json"), "Project file does not exist.");
+            Assert.IsTrue(File.Exists(projectPath), "Project file does not exist.");
         }
 
         [TestMethod]
         public void CallingLoadProject_CheckIfExists()
         {
             ControllerProject controller = new ControllerProject();
-            var loadedProject = controller.LoadProject(directory + @"\" + name + ".json");
+            var loadedProject = controller.LoadProject(projectPath);
 
+            Console.WriteLine(project.Root);
+            Console.WriteLine(loadedProject.Root);
             Assert.AreEqual(project.Root, loadedProject.Root);
             Assert.AreEqual(project.Name, loadedProject.Name);
             Assert.AreEqual(project.Language, loadedProject.Language);

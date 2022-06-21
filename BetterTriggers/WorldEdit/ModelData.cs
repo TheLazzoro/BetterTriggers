@@ -144,7 +144,6 @@ namespace BetterTriggers.WorldEdit
                 });
             }
 
-
             assetModels = hashset.OrderBy(asset => asset.DisplayName).ToList();
         }
     }

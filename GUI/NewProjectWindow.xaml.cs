@@ -20,6 +20,7 @@ namespace GUI
     public partial class NewProjectWindow : Window
     {
         public bool Ok = false;
+        public string projectFilePath;
         
         public NewProjectWindow()
         {
@@ -63,15 +64,6 @@ namespace GUI
             }
         }
 
-        private void btnWar3Folder_Click(object sender, RoutedEventArgs e)
-        {
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
-            {
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                lblWar3MapFolder.Content = dialog.SelectedPath;
-            }
-        }
-
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
             string language = string.Empty;
@@ -81,7 +73,7 @@ namespace GUI
                 language = "lua";
 
             ControllerProject controller = new ControllerProject();
-            controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
+            projectFilePath = controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
 
             this.Ok = true;
             this.Close();

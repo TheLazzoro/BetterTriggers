@@ -34,8 +34,9 @@ namespace BetterTriggers.Controllers
         ControllerTrigger controllerTrigger = new ControllerTrigger();
 
 
-        public void GenerateScript(string outputPath)
+        public void GenerateScript()
         {
+            string outputPath = Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j");
             var inMemoryFiles = ContainerProject.projectFiles;
 
             SortTriggerElements(inMemoryFiles[0]); // root node.
@@ -50,6 +51,7 @@ namespace BetterTriggers.Controllers
             string fileOutput = "\"" + System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/output.j\"";
             Process p = Process.Start($"{JassHelper}", $"--scriptonly {CommonJ} {BlizzardJ} \"{scriptFileToInput}\" \"{outputPath}\"");
             p.WaitForExit();
+            p.Kill();
         }
 
         private void SortTriggerElements(IExplorerElement parent)
@@ -1584,7 +1586,7 @@ endfunction
             else if (parameter is Value)
             {
                 Value v = (Value)parameter;
-                if (v.returnType == "StringExt" || v.returnType == "modelfile")
+                if (v.returnType == "StringExt" || v.returnType == "modelfile" || v.returnType == "skymodelstring")
                     output += "\"" + v.identifier.Replace(@"\", @"\\") + "\"";
                 else if (v.returnType == "unitcode" || v.returnType == "buffcode" || v.returnType == "abilcode" || v.returnType == "destructablecode" || v.returnType == "techcode" || v.returnType == "itemcode")
                     output += "'" + v.identifier + "'";
