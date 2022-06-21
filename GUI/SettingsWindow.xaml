@@ -64,8 +64,8 @@
 
         <TextBox x:Name="textBoxCopiedMapFile" Grid.Row="8" Grid.Column="2" Margin="0,2,0,2"></TextBox>
 
-        <Button x:Name="btnOK" Height="22" Width="60" HorizontalAlignment="Left" Grid.Row="10" Grid.Column="3" Margin="20,9,0,9" Click="btnOK_Click">OK</Button>
-        <Button x:Name="btnCancel" Height="22" Width="60" HorizontalAlignment="Left" Grid.Row="10" Grid.Column="3" Margin="90,9,0,9" IsCancel="True" >Cancel</Button>
+        <Button x:Name="btnOK" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="10" Grid.Column="3" Margin="0,9,90,9" Click="btnOK_Click">OK</Button>
+        <Button x:Name="btnCancel" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="10" Grid.Column="3" Margin="0,9,20,9" IsCancel="True" >Cancel</Button>
 
     </Grid>
 </Window>

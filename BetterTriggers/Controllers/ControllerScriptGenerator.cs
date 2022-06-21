@@ -1040,7 +1040,8 @@ endfunction
                 for (int i = 0; i < e.function.parameters.Count; i++)
                 {
                     TriggerElement clonedEvent = e.Clone(); // Need to insert trigger variable at index 0.
-                    TriggerRef triggerRef = new TriggerRef() {
+                    TriggerRef triggerRef = new TriggerRef()
+                    {
                         identifier = triggerVarName,
                     };
                     clonedEvent.function.parameters.Insert(0, triggerRef);
@@ -1457,11 +1458,17 @@ endfunction
                 Function addEvent = f.Clone(); // Need to clone because of insert operation below.
                 // Otherwise it's inserted into the saveable object.
 
-                TriggerRef triggerRef = (TriggerRef) addEvent.parameters[0];
-                Function _event = (Function) addEvent.parameters[1];
+                TriggerRef triggerRef = (TriggerRef)addEvent.parameters[0];
+                Function _event = (Function)addEvent.parameters[1];
                 _event.parameters.Insert(0, triggerRef);
                 script.Append($"{ConvertFunctionToJass(_event, pre_actions, triggerName)}{newline}");
 
+                return script.ToString();
+            }
+
+            else if (f.identifier == "CustomScriptCode")
+            {
+                script.Append(f.parameters[0].identifier);
                 return script.ToString();
             }
 
@@ -1552,7 +1559,11 @@ endfunction
             else if (parameter is Constant)
             {
                 Constant c = (Constant)parameter;
-                output += ContainerTriggerData.GetConstantCodeText(c.identifier);
+                if (c.returnType == "unitorderptarg" || c.returnType == "unitorderutarg" || c.returnType == "unitordernotarg" || c.returnType == "unitorderitarg")
+                    output += "\"" + ContainerTriggerData.GetConstantCodeText(c.identifier) + "\"";
+                else
+                    output += ContainerTriggerData.GetConstantCodeText(c.identifier);
+
             }
             else if (parameter is VariableRef)
             {

@@ -101,18 +101,15 @@ namespace BetterTriggers.Controllers
             }
 
             bool didWrite = false;
-            int exeptions = 0;
-            while (!didWrite && exeptions < 100)
+            Thread.Sleep(10);
+
+            try
             {
-                Thread.Sleep(10);
+                builder.Build(fullPath, archiveCreateOptions);
+                didWrite = true;
 
-                try
-                {
-                    builder.Build(fullPath, archiveCreateOptions);
-                    didWrite = true;
-
-                } catch(Exception ex) { exeptions++; }
             }
+            catch (Exception ex) { }
             if (!didWrite)
                 throw new Exception("Could not write to map.");
 

@@ -918,7 +918,7 @@
     },
     {
         "ParamType": 2,
-        "codeText": "`music`",
+        "codeText": "music",
         "identifier": "MusicFileMusic",
         "name": "WESTRING_TRIGMUSICFILE_MUSIC",
         "returnType": "musicfile"
@@ -10417,14 +10417,14 @@
     },
     {
         "ParamType": 2,
-        "codeText": "`bone_head`",
+        "codeText": "bone_head",
         "identifier": "UnitFacingBoneHead",
         "name": "WESTRING_UNITFACINGBONE_HEAD",
         "returnType": "unitfacingbone"
     },
     {
         "ParamType": 2,
-        "codeText": "`bone_chest`",
+        "codeText": "bone_chest",
         "identifier": "UnitFacingBoneChest",
         "name": "WESTRING_UNITFACINGBONE_CHEST",
         "returnType": "unitfacingbone"
@@ -10536,784 +10536,784 @@
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\AshenvaleSky\\\\AshenvaleSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\AshenvaleSky\\\\AshenvaleSky.mdl",
         "identifier": "SkyModelSky16",
         "name": "WESTRING_SKYMODEL_SKY16",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\BarrensSky\\\\BarrensSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\BarrensSky\\\\BarrensSky.mdl",
         "identifier": "SkyModelSky17",
         "name": "WESTRING_SKYMODEL_SKY17",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\BlizzardSky\\\\BlizzardSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\BlizzardSky\\\\BlizzardSky.mdl",
         "identifier": "SkyModelSky08",
         "name": "WESTRING_SKYMODEL_SKY08",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\DalaranSky\\\\DalaranSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\DalaranSky\\\\DalaranSky.mdl",
         "identifier": "SkyModelSky02",
         "name": "WESTRING_SKYMODEL_SKY02",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\DalaranRuinsSky\\\\DalaranRuinsSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\DalaranRuinsSky\\\\DalaranRuinsSky.mdl",
         "identifier": "SkyModelSky19",
         "name": "WESTRING_SKYMODEL_SKY19",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\FelwoodSky\\\\FelwoodSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\FelwoodSky\\\\FelwoodSky.mdl",
         "identifier": "SkyModelSky06",
         "name": "WESTRING_SKYMODEL_SKY06",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\FoggedSky\\\\FoggedSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\FoggedSky\\\\FoggedSky.mdl",
         "identifier": "SkyModelSky07",
         "name": "WESTRING_SKYMODEL_SKY07",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\Sky\\\\SkyLight.mdl`",
+        "codeText": "Environment\\\\Sky\\\\Sky\\\\SkyLight.mdl",
         "identifier": "SkyModelSky01",
         "name": "WESTRING_SKYMODEL_SKY01",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\IcecrownGlacierSky\\\\IcecrownGlacierSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\IcecrownGlacierSky\\\\IcecrownGlacierSky.mdl",
         "identifier": "SkyModelSky18",
         "name": "WESTRING_SKYMODEL_SKY18",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronFallSky\\\\LordaeronFallSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronFallSky\\\\LordaeronFallSky.mdl",
         "identifier": "SkyModelSky03",
         "name": "WESTRING_SKYMODEL_SKY03",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronSummerSky\\\\LordaeronSummerSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronSummerSky\\\\LordaeronSummerSky.mdl",
         "identifier": "SkyModelSky04",
         "name": "WESTRING_SKYMODEL_SKY04",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronWinterSky\\\\LordaeronWinterSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronWinterSky\\\\LordaeronWinterSky.mdl",
         "identifier": "SkyModelSky05",
         "name": "WESTRING_SKYMODEL_SKY05",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronWinterSkyBrightGreen\\\\LordaeronWinterSkyBrightGreen.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronWinterSkyBrightGreen\\\\LordaeronWinterSkyBrightGreen.mdl",
         "identifier": "SkyModelSky09",
         "name": "WESTRING_SKYMODEL_SKY09",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronWinterSkyPink\\\\LordaeronWinterSkyPink.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronWinterSkyPink\\\\LordaeronWinterSkyPink.mdl",
         "identifier": "SkyModelSky10",
         "name": "WESTRING_SKYMODEL_SKY10",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronWinterSkyPurple\\\\LordaeronWinterSkyPurple.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronWinterSkyPurple\\\\LordaeronWinterSkyPurple.mdl",
         "identifier": "SkyModelSky11",
         "name": "WESTRING_SKYMODEL_SKY11",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronWinterSkyRed\\\\LordaeronWinterSkyRed.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronWinterSkyRed\\\\LordaeronWinterSkyRed.mdl",
         "identifier": "SkyModelSky12",
         "name": "WESTRING_SKYMODEL_SKY12",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\LordaeronWinterSkyYellow\\\\LordaeronWinterSkyYellow.mdl`",
+        "codeText": "Environment\\\\Sky\\\\LordaeronWinterSkyYellow\\\\LordaeronWinterSkyYellow.mdl",
         "identifier": "SkyModelSky13",
         "name": "WESTRING_SKYMODEL_SKY13",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\NorthrendSky\\\\NorthrendSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\NorthrendSky\\\\NorthrendSky.mdl",
         "identifier": "SkyModelSky20",
         "name": "WESTRING_SKYMODEL_SKY20",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\Outland_Sky\\\\Outland_Sky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\Outland_Sky\\\\Outland_Sky.mdl",
         "identifier": "SkyModelSky14",
         "name": "WESTRING_SKYMODEL_SKY14",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\PrologueSky\\\\PrologueSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\PrologueSky\\\\PrologueSky.mdl",
         "identifier": "SkyModelSky15",
         "name": "WESTRING_SKYMODEL_SKY15",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\VillageSky\\\\VillageSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\VillageSky\\\\VillageSky.mdl",
         "identifier": "SkyModelSky22",
         "name": "WESTRING_SKYMODEL_SKY22",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`Environment\\\\Sky\\\\VillageFallSky\\\\VillageFallSky.mdl`",
+        "codeText": "Environment\\\\Sky\\\\VillageFallSky\\\\VillageFallSky.mdl",
         "identifier": "SkyModelSky21",
         "name": "WESTRING_SKYMODEL_SKY21",
         "returnType": "skymodelstring"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\White_mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\White_mask.blp",
         "identifier": "CineFilterTextureWhite",
         "name": "WESTRING_CINEFILTERTEX_WHITE",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\Black_mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\Black_mask.blp",
         "identifier": "CineFilterTextureBlack",
         "name": "WESTRING_CINEFILTERTEX_BLACK",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\HazeFilter_mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\HazeFilter_mask.blp",
         "identifier": "CineFilterTextureHaze",
         "name": "WESTRING_CINEFILTERTEX_HAZE",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\GroundFog_mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\GroundFog_mask.blp",
         "identifier": "CineFilterTextureGroundFog",
         "name": "WESTRING_CINEFILTERTEX_GROUNDFOG",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\HazeAndFogFilter_Mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\HazeAndFogFilter_Mask.blp",
         "identifier": "CineFilterTextureHazeAndFog",
         "name": "WESTRING_CINEFILTERTEX_HAZEANDFOG",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\DiagonalSlash_mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\DiagonalSlash_mask.blp",
         "identifier": "CineFilterTextureDiagonal",
         "name": "WESTRING_CINEFILTERTEX_DIAGONAL",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\DreamFilter_Mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\DreamFilter_Mask.blp",
         "identifier": "CineFilterTextureDream",
         "name": "WESTRING_CINEFILTERTEX_DREAM",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\IceFilter_Mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\IceFilter_Mask.blp",
         "identifier": "CineFilterTextureIce",
         "name": "WESTRING_CINEFILTERTEX_ICE",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\Scope_Mask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\Scope_Mask.blp",
         "identifier": "CineFilterTextureScope",
         "name": "WESTRING_CINEFILTERTEX_SCOPE",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\SpecialPowMask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\SpecialPowMask.blp",
         "identifier": "CineFilterTexturePow",
         "name": "WESTRING_CINEFILTERTEX_POW",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\SpecialSplatMask.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\SpecialSplatMask.blp",
         "identifier": "CineFilterTextureSplat",
         "name": "WESTRING_CINEFILTERTEX_SPLAT",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ReplaceableTextures\\\\CameraMasks\\\\Panda-n-Cub.blp`",
+        "codeText": "ReplaceableTextures\\\\CameraMasks\\\\Panda-n-Cub.blp",
         "identifier": "CineFilterTexturePanda",
         "name": "WESTRING_CINEFILTERTEX_PANDA",
         "returnType": "cinefiltertexture"
     },
     {
         "ParamType": 2,
-        "codeText": "`ArthasTheme`",
+        "codeText": "ArthasTheme",
         "identifier": "MusicThemeArthas",
         "name": "WESTRING_MUSICTHEME_ARTHAS",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`BloodElfTheme`",
+        "codeText": "BloodElfTheme",
         "identifier": "MusicThemeBloodElf",
         "name": "WESTRING_MUSICTHEME_BLOODELF",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Comradeship`",
+        "codeText": "Comradeship",
         "identifier": "MusicThemeComradeship",
         "name": "WESTRING_MUSICTHEME_COMRADESHIP",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Credits`",
+        "codeText": "Credits",
         "identifier": "MusicThemeCredits",
         "name": "WESTRING_MUSICTHEME_CREDITS",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`DarkAgents`",
+        "codeText": "DarkAgents",
         "identifier": "MusicThemeDarkAgents",
         "name": "WESTRING_MUSICTHEME_DARKAGENTS",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`DarkVictory`",
+        "codeText": "DarkVictory",
         "identifier": "MusicThemeDarkVictory",
         "name": "WESTRING_MUSICTHEME_DARKVICTORY",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Doom`",
+        "codeText": "Doom",
         "identifier": "MusicThemeDoom",
         "name": "WESTRING_MUSICTHEME_DOOM",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`HeroicVictory`",
+        "codeText": "HeroicVictory",
         "identifier": "MusicThemeHeroicVictory",
         "name": "WESTRING_MUSICTHEME_HEROIC_VICTORY",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Human1`",
+        "codeText": "Human1",
         "identifier": "MusicThemeHuman1",
         "name": "WESTRING_MUSICTHEME_HUMAN1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Human2`",
+        "codeText": "Human2",
         "identifier": "MusicThemeHuman2",
         "name": "WESTRING_MUSICTHEME_HUMAN2",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Human3`",
+        "codeText": "Human3",
         "identifier": "MusicThemeHuman3",
         "name": "WESTRING_MUSICTHEME_HUMAN3",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`HumanX1`",
+        "codeText": "HumanX1",
         "identifier": "MusicThemeHumanX1",
         "name": "WESTRING_MUSICTHEME_HUMANX1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`HumanDefeat`",
+        "codeText": "HumanDefeat",
         "identifier": "MusicThemeDefeatHuman",
         "name": "WESTRING_MUSICTHEME_DEFEAT_HUMAN",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`HumanVictory`",
+        "codeText": "HumanVictory",
         "identifier": "MusicThemeVictoryHuman",
         "name": "WESTRING_MUSICTHEME_VICTORY_HUMAN",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`IllidansTheme`",
+        "codeText": "IllidansTheme",
         "identifier": "MusicThemeIllidan",
         "name": "WESTRING_MUSICTHEME_ILLIDAN",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`LichKingTheme`",
+        "codeText": "LichKingTheme",
         "identifier": "MusicThemeLichKing",
         "name": "WESTRING_MUSICTHEME_LICHKING",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Sound\\\\Music\\\\mp3Music\\\\MainScreen.mp3`",
+        "codeText": "Sound\\\\Music\\\\mp3Music\\\\MainScreen.mp3",
         "identifier": "MusicThemeMainScreen",
         "name": "WESTRING_MUSICTHEME_MAINSCREEN",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Sound\\\\Music\\\\mp3Music\\\\War3XMainScreen.mp3`",
+        "codeText": "Sound\\\\Music\\\\mp3Music\\\\War3XMainScreen.mp3",
         "identifier": "MusicThemeMainScreenX",
         "name": "WESTRING_MUSICTHEME_MAINSCREENX",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`NagaTheme`",
+        "codeText": "NagaTheme",
         "identifier": "MusicThemeNaga",
         "name": "WESTRING_MUSICTHEME_NAGA",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`NightElf1`",
+        "codeText": "NightElf1",
         "identifier": "MusicThemeNightElf1",
         "name": "WESTRING_MUSICTHEME_NIGHTELF1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`NightElf2`",
+        "codeText": "NightElf2",
         "identifier": "MusicThemeNightElf2",
         "name": "WESTRING_MUSICTHEME_NIGHTELF2",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`NightElf3`",
+        "codeText": "NightElf3",
         "identifier": "MusicThemeNightElf3",
         "name": "WESTRING_MUSICTHEME_NIGHTELF3",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`NightElfX1`",
+        "codeText": "NightElfX1",
         "identifier": "MusicThemeNightElfX1",
         "name": "WESTRING_MUSICTHEME_NIGHTELFX1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`NightElfDefeat`",
+        "codeText": "NightElfDefeat",
         "identifier": "MusicThemeDefeatNightElf",
         "name": "WESTRING_MUSICTHEME_DEFEAT_NIGHTELF",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`NightElfVictory`",
+        "codeText": "NightElfVictory",
         "identifier": "MusicThemeVictoryNightElf",
         "name": "WESTRING_MUSICTHEME_VICTORY_NIGHTELF",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Orc1`",
+        "codeText": "Orc1",
         "identifier": "MusicThemeOrc1",
         "name": "WESTRING_MUSICTHEME_ORC1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Orc2`",
+        "codeText": "Orc2",
         "identifier": "MusicThemeOrc2",
         "name": "WESTRING_MUSICTHEME_ORC2",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Orc3`",
+        "codeText": "Orc3",
         "identifier": "MusicThemeOrc3",
         "name": "WESTRING_MUSICTHEME_ORC3",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`OrcX1`",
+        "codeText": "OrcX1",
         "identifier": "MusicThemeOrcX1",
         "name": "WESTRING_MUSICTHEME_ORCX1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`OrcDefeat`",
+        "codeText": "OrcDefeat",
         "identifier": "MusicThemeDefeatOrc",
         "name": "WESTRING_MUSICTHEME_DEFEAT_ORC",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`OrcTheme`",
+        "codeText": "OrcTheme",
         "identifier": "MusicThemeOrcTheme",
         "name": "WESTRING_MUSICTHEME_ORC_THEME",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`OrcVictory`",
+        "codeText": "OrcVictory",
         "identifier": "MusicThemeVictoryOrc",
         "name": "WESTRING_MUSICTHEME_VICTORY_ORC",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`PursuitTheme`",
+        "codeText": "PursuitTheme",
         "identifier": "MusicThemePersuit",
         "name": "WESTRING_MUSICTHEME_PURSUIT",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`SadMystery`",
+        "codeText": "SadMystery",
         "identifier": "MusicThemeSadMystery",
         "name": "WESTRING_MUSICTHEME_SADMYSTERY",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Tension`",
+        "codeText": "Tension",
         "identifier": "MusicThemeTension",
         "name": "WESTRING_MUSICTHEME_TENSION",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`TragicConfrontation`",
+        "codeText": "TragicConfrontation",
         "identifier": "MusicThemeTragicConfrontation",
         "name": "WESTRING_MUSICTHEME_TRAGICCONFRONTATION",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Undead1`",
+        "codeText": "Undead1",
         "identifier": "MusicThemeUndead1",
         "name": "WESTRING_MUSICTHEME_UNDEAD1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Undead2`",
+        "codeText": "Undead2",
         "identifier": "MusicThemeUndead2",
         "name": "WESTRING_MUSICTHEME_UNDEAD2",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`Undead3`",
+        "codeText": "Undead3",
         "identifier": "MusicThemeUndead3",
         "name": "WESTRING_MUSICTHEME_UNDEAD3",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`UndeadX1`",
+        "codeText": "UndeadX1",
         "identifier": "MusicThemeUndeadX1",
         "name": "WESTRING_MUSICTHEME_UNDEADX1",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`UndeadDefeat`",
+        "codeText": "UndeadDefeat",
         "identifier": "MusicThemeDefeatUndead",
         "name": "WESTRING_MUSICTHEME_DEFEAT_UNDEAD",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`UndeadVictory`",
+        "codeText": "UndeadVictory",
         "identifier": "MusicThemeVictoryUndead",
         "name": "WESTRING_MUSICTHEME_VICTORY_UNDEAD",
         "returnType": "musictheme"
     },
     {
         "ParamType": 2,
-        "codeText": "`AshenvaleDay`",
+        "codeText": "AshenvaleDay",
         "identifier": "AmbientThemeDayA",
         "name": "WESTRING_AMBIENTTHEMEDAY_A",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`BarrensDay`",
+        "codeText": "BarrensDay",
         "identifier": "AmbientThemeDayB",
         "name": "WESTRING_AMBIENTTHEMEDAY_B",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`BlackCitadelDay`",
+        "codeText": "BlackCitadelDay",
         "identifier": "AmbientThemeDayK",
         "name": "WESTRING_AMBIENTTHEMEDAY_K",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`CityScapeDay`",
+        "codeText": "CityScapeDay",
         "identifier": "AmbientThemeDayY",
         "name": "WESTRING_AMBIENTTHEMEDAY_Y",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`DalaranDay`",
+        "codeText": "DalaranDay",
         "identifier": "AmbientThemeDayX",
         "name": "WESTRING_AMBIENTTHEMEDAY_X",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`DalaranRuinsDay`",
+        "codeText": "DalaranRuinsDay",
         "identifier": "AmbientThemeDayJ",
         "name": "WESTRING_AMBIENTTHEMEDAY_J",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`DungeonDay`",
+        "codeText": "DungeonDay",
         "identifier": "AmbientThemeDayD",
         "name": "WESTRING_AMBIENTTHEMEDAY_D",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`FelwoodDay`",
+        "codeText": "FelwoodDay",
         "identifier": "AmbientThemeDayC",
         "name": "WESTRING_AMBIENTTHEMEDAY_C",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`IceCrownDay`",
+        "codeText": "IceCrownDay",
         "identifier": "AmbientThemeDayI",
         "name": "WESTRING_AMBIENTTHEMEDAY_I",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`LordaeronFallDay`",
+        "codeText": "LordaeronFallDay",
         "identifier": "AmbientThemeDayF",
         "name": "WESTRING_AMBIENTTHEMEDAY_F",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`LordaeronSummerDay`",
+        "codeText": "LordaeronSummerDay",
         "identifier": "AmbientThemeDayL",
         "name": "WESTRING_AMBIENTTHEMEDAY_L",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`LordaeronWinterDay`",
+        "codeText": "LordaeronWinterDay",
         "identifier": "AmbientThemeDayW",
         "name": "WESTRING_AMBIENTTHEMEDAY_W",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`NorthrendDay`",
+        "codeText": "NorthrendDay",
         "identifier": "AmbientThemeDayN",
         "name": "WESTRING_AMBIENTTHEMEDAY_N",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`BlackCitadelDay`",
+        "codeText": "BlackCitadelDay",
         "identifier": "AmbientThemeDayO",
         "name": "WESTRING_AMBIENTTHEMEDAY_O",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`SunkenRuinsDay`",
+        "codeText": "SunkenRuinsDay",
         "identifier": "AmbientThemeDayZ",
         "name": "WESTRING_AMBIENTTHEMEDAY_Z",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`VillageDay`",
+        "codeText": "VillageDay",
         "identifier": "AmbientThemeDayV",
         "name": "WESTRING_AMBIENTTHEMEDAY_V",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`VillageFallDay`",
+        "codeText": "VillageFallDay",
         "identifier": "AmbientThemeDayQ",
         "name": "WESTRING_AMBIENTTHEMEDAY_Q",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`DungeonCaveDay`",
+        "codeText": "DungeonCaveDay",
         "identifier": "AmbientThemeDayE",
         "name": "WESTRING_AMBIENTTHEMEDAY_E",
         "returnType": "ambientthemeday"
     },
     {
         "ParamType": 2,
-        "codeText": "`AshenvaleNight`",
+        "codeText": "AshenvaleNight",
         "identifier": "AmbientThemeNightA",
         "name": "WESTRING_AMBIENTTHEMENIGHT_A",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`BarrensNight`",
+        "codeText": "BarrensNight",
         "identifier": "AmbientThemeNightB",
         "name": "WESTRING_AMBIENTTHEMENIGHT_B",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`BlackCitadelNight`",
+        "codeText": "BlackCitadelNight",
         "identifier": "AmbientThemeNightK",
         "name": "WESTRING_AMBIENTTHEMENIGHT_K",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`CityScapeNight`",
+        "codeText": "CityScapeNight",
         "identifier": "AmbientThemeNightY",
         "name": "WESTRING_AMBIENTTHEMENIGHT_Y",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`DalaranNight`",
+        "codeText": "DalaranNight",
         "identifier": "AmbientThemeNightX",
         "name": "WESTRING_AMBIENTTHEMENIGHT_X",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`DalaranRuinsNight`",
+        "codeText": "DalaranRuinsNight",
         "identifier": "AmbientThemeNightJ",
         "name": "WESTRING_AMBIENTTHEMENIGHT_J",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`DungeonNight`",
+        "codeText": "DungeonNight",
         "identifier": "AmbientThemeNightD",
         "name": "WESTRING_AMBIENTTHEMENIGHT_D",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`FelwoodNight`",
+        "codeText": "FelwoodNight",
         "identifier": "AmbientThemeNightC",
         "name": "WESTRING_AMBIENTTHEMENIGHT_C",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`IceCrownNight`",
+        "codeText": "IceCrownNight",
         "identifier": "AmbientThemeNightI",
         "name": "WESTRING_AMBIENTTHEMENIGHT_I",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`LordaeronFallNight`",
+        "codeText": "LordaeronFallNight",
         "identifier": "AmbientThemeNightF",
         "name": "WESTRING_AMBIENTTHEMENIGHT_F",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`LordaeronSummerNight`",
+        "codeText": "LordaeronSummerNight",
         "identifier": "AmbientThemeNightL",
         "name": "WESTRING_AMBIENTTHEMENIGHT_L",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`LordaeronWinterNight`",
+        "codeText": "LordaeronWinterNight",
         "identifier": "AmbientThemeNightW",
         "name": "WESTRING_AMBIENTTHEMENIGHT_W",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`NorthrendNight`",
+        "codeText": "NorthrendNight",
         "identifier": "AmbientThemeNightN",
         "name": "WESTRING_AMBIENTTHEMENIGHT_N",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`BlackCitadelNight`",
+        "codeText": "BlackCitadelNight",
         "identifier": "AmbientThemeNightO",
         "name": "WESTRING_AMBIENTTHEMENIGHT_O",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`SunkenRuinsNight`",
+        "codeText": "SunkenRuinsNight",
         "identifier": "AmbientThemeNightZ",
         "name": "WESTRING_AMBIENTTHEMENIGHT_Z",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`VillageNight`",
+        "codeText": "VillageNight",
         "identifier": "AmbientThemeNightV",
         "name": "WESTRING_AMBIENTTHEMENIGHT_V",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`VillageFallNight`",
+        "codeText": "VillageFallNight",
         "identifier": "AmbientThemeNightQ",
         "name": "WESTRING_AMBIENTTHEMENIGHT_Q",
         "returnType": "ambientthemenight"
     },
     {
         "ParamType": 2,
-        "codeText": "`DungeonCaveNight`",
+        "codeText": "DungeonCaveNight",
         "identifier": "AmbientThemeNightE",
         "name": "WESTRING_AMBIENTTHEMENIGHT_E",
         "returnType": "ambientthemenight"
@@ -12797,3955 +12797,3955 @@
     },
     {
         "ParamType": 2,
-        "codeText": "`attack`",
+        "codeText": "attack",
         "identifier": "UnitOrderAttackUnit",
         "name": "WESTRING_UNITORDERUTARG_ATTACK",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`attackonce`",
+        "codeText": "attackonce",
         "identifier": "UnitOrderAttackUnitOnce",
         "name": "WESTRING_UNITORDERUTARG_ATTACKONCE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`move`",
+        "codeText": "move",
         "identifier": "UnitOrderMoveUnit",
         "name": "WESTRING_UNITORDERUTARG_MOVE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`smart`",
+        "codeText": "smart",
         "identifier": "UnitOrderSmartUnit",
         "name": "WESTRING_UNITORDERUTARG_SMART",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`harvest`",
+        "codeText": "harvest",
         "identifier": "UnitOrderHarvest",
         "name": "WESTRING_UNITORDERUTARG_HARVEST",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`revive`",
+        "codeText": "revive",
         "identifier": "UnitOrderRevive",
         "name": "WESTRING_UNITORDERUTARG_REVIVE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`load`",
+        "codeText": "load",
         "identifier": "UnitOrderLoad",
         "name": "WESTRING_UNITORDERUTARG_LOAD",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unload`",
+        "codeText": "unload",
         "identifier": "UnitOrderUnload",
         "name": "WESTRING_UNITORDERUTARG_UNLOAD",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`board`",
+        "codeText": "board",
         "identifier": "UnitOrderBoard",
         "name": "WESTRING_UNITORDERUTARG_BOARD",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`forceboard`",
+        "codeText": "forceboard",
         "identifier": "UnitOrderForceBoard",
         "name": "WESTRING_UNITORDERUTARG_FORCEBOARD",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`repair`",
+        "codeText": "repair",
         "identifier": "UnitOrderRepair",
         "name": "WESTRING_UNITORDERUTARG_REPAIR",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`innerfire`",
+        "codeText": "innerfire",
         "identifier": "UnitOrderInnerFire",
         "name": "WESTRING_UNITORDERUTARG_INNERFIRE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`dispel`",
+        "codeText": "dispel",
         "identifier": "UnitOrderDispel",
         "name": "WESTRING_UNITORDERUTARG_DISPEL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`heal`",
+        "codeText": "heal",
         "identifier": "UnitOrderHeal",
         "name": "WESTRING_UNITORDERUTARG_HEAL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`slow`",
+        "codeText": "slow",
         "identifier": "UnitOrderSlow",
         "name": "WESTRING_UNITORDERUTARG_SLOW",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`invisibility`",
+        "codeText": "invisibility",
         "identifier": "UnitOrderInvisibility",
         "name": "WESTRING_UNITORDERUTARG_INVISIBILITY",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`polymorph`",
+        "codeText": "polymorph",
         "identifier": "UnitOrderPolymorph",
         "name": "WESTRING_UNITORDERUTARG_POLYMORPH",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`controlmagic`",
+        "codeText": "controlmagic",
         "identifier": "UnitOrderControlMagic",
         "name": "WESTRING_UNITORDERUTARG_CONTROLMAGIC",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`spellsteal`",
+        "codeText": "spellsteal",
         "identifier": "UnitOrderSpellSteal",
         "name": "WESTRING_UNITORDERUTARG_SPELLSTEAL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`magicleash`",
+        "codeText": "magicleash",
         "identifier": "UnitOrderAerialShackles",
         "name": "WESTRING_UNITORDERUTARG_AERIALSHACKLES",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`massteleport`",
+        "codeText": "massteleport",
         "identifier": "UnitOrderMassTeleport",
         "name": "WESTRING_UNITORDERUTARG_MASSTELEPORT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`banish`",
+        "codeText": "banish",
         "identifier": "UnitOrderBanish",
         "name": "WESTRING_UNITORDERUTARG_BANISH",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`drain`",
+        "codeText": "drain",
         "identifier": "UnitOrderSiphonMana",
         "name": "WESTRING_UNITORDERUTARG_SIPHONMANA",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`thunderbolt`",
+        "codeText": "thunderbolt",
         "identifier": "UnitOrderThunderBolt",
         "name": "WESTRING_UNITORDERUTARG_THUNDERBOLT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`holybolt`",
+        "codeText": "holybolt",
         "identifier": "UnitOrderHolyBolt",
         "name": "WESTRING_UNITORDERUTARG_HOLYBOLT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`repair`",
+        "codeText": "repair",
         "identifier": "UnitOrderRepairO",
         "name": "WESTRING_UNITORDERUTARG_REPAIRO",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`ensnare`",
+        "codeText": "ensnare",
         "identifier": "UnitOrderEnsnare",
         "name": "WESTRING_UNITORDERUTARG_ENSNARE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unstableconcoction`",
+        "codeText": "unstableconcoction",
         "identifier": "UnitOrderUnstableConcoction",
         "name": "WESTRING_UNITORDERUTARG_UNSTABLECONCOCTION",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`purge`",
+        "codeText": "purge",
         "identifier": "UnitOrderPurge",
         "name": "WESTRING_UNITORDERUTARG_PURGE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`lightningshield`",
+        "codeText": "lightningshield",
         "identifier": "UnitOrderLightningShield",
         "name": "WESTRING_UNITORDERUTARG_LIGHTNINGSHIELD",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`bloodlust`",
+        "codeText": "bloodlust",
         "identifier": "UnitOrderBloodlust",
         "name": "WESTRING_UNITORDERUTARG_BLOODLUST",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`spiritlink`",
+        "codeText": "spiritlink",
         "identifier": "UnitOrderSpiritLink",
         "name": "WESTRING_UNITORDERUTARG_SPIRITLINK",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`devour`",
+        "codeText": "devour",
         "identifier": "UnitOrderDevour",
         "name": "WESTRING_UNITORDERUTARG_DEVOUR",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`chainlightning`",
+        "codeText": "chainlightning",
         "identifier": "UnitOrderChainLightning",
         "name": "WESTRING_UNITORDERUTARG_CHAINLIGHTNING",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`healingwave`",
+        "codeText": "healingwave",
         "identifier": "UnitOrderHealingWave",
         "name": "WESTRING_UNITORDERUTARG_HEALINGWAVE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`hex`",
+        "codeText": "hex",
         "identifier": "UnitOrderHex",
         "name": "WESTRING_UNITORDERUTARG_HEX",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`ancestralspirittarg`",
+        "codeText": "ancestralspirittarg",
         "identifier": "UnitOrderAncestralSpiritTarg",
         "name": "WESTRING_UNITORDERUTARG_ANCESTRALSPIRIT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`renew`",
+        "codeText": "renew",
         "identifier": "UnitOrderRenew",
         "name": "WESTRING_UNITORDERUTARG_RENEW",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`entangle`",
+        "codeText": "entangle",
         "identifier": "UnitOrderEntangle",
         "name": "WESTRING_UNITORDERUTARG_ENTANGLE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`entangleinstant`",
+        "codeText": "entangleinstant",
         "identifier": "UnitOrderEntangleInstant",
         "name": "WESTRING_UNITORDERUTARG_ENTANGLEINSTANT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`recharge`",
+        "codeText": "recharge",
         "identifier": "UnitOrderReplenish",
         "name": "WESTRING_UNITORDERUTARG_REPLENISH",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`mounthippogryph`",
+        "codeText": "mounthippogryph",
         "identifier": "UnitOrderMountHippogryph",
         "name": "WESTRING_UNITORDERUTARG_MOUNTHIPPOGRYPH",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`loadarcher`",
+        "codeText": "loadarcher",
         "identifier": "UnitOrderLoadArcher",
         "name": "WESTRING_UNITORDERUTARG_LOADARCHER",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`autodispel`",
+        "codeText": "autodispel",
         "identifier": "UnitOrderAutoDispel",
         "name": "WESTRING_UNITORDERUTARG_AUTODISPEL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`faeriefire`",
+        "codeText": "faeriefire",
         "identifier": "UnitOrderFaerieFire",
         "name": "WESTRING_UNITORDERUTARG_FAERIEFIRE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`cyclone`",
+        "codeText": "cyclone",
         "identifier": "UnitOrderCyclone",
         "name": "WESTRING_UNITORDERUTARG_CYCLONE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`rejuvination`",
+        "codeText": "rejuvination",
         "identifier": "UnitOrderRejuvination",
         "name": "WESTRING_UNITORDERUTARG_REJUVINATION",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeance`",
+        "codeText": "vengeance",
         "identifier": "UnitOrderVengeance",
         "name": "WESTRING_UNITORDERUTARG_VENGEANCE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`manaburn`",
+        "codeText": "manaburn",
         "identifier": "UnitOrderManaBurn",
         "name": "WESTRING_UNITORDERUTARG_MANABURN",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`entanglingroots`",
+        "codeText": "entanglingroots",
         "identifier": "UnitOrderEntanglingRoots",
         "name": "WESTRING_UNITORDERUTARG_ENTANGLINGROOTS",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`shadowstrike`",
+        "codeText": "shadowstrike",
         "identifier": "UnitOrderShadowStrike",
         "name": "WESTRING_UNITORDERUTARG_SHADOWSTRIKE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`restoration`",
+        "codeText": "restoration",
         "identifier": "UnitOrderRestoration",
         "name": "WESTRING_UNITORDERUTARG_RESTORE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`sacrifice`",
+        "codeText": "sacrifice",
         "identifier": "UnitOrderSacrificeAcolyte",
         "name": "WESTRING_UNITORDERUTARG_SACRIFICEACOLYTE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`requestsacrifice`",
+        "codeText": "requestsacrifice",
         "identifier": "UnitOrderSacrifice",
         "name": "WESTRING_UNITORDERUTARG_SACRIFICE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unsummon`",
+        "codeText": "unsummon",
         "identifier": "UnitOrderUnsummon",
         "name": "WESTRING_UNITORDERUTARG_UNSUMMON",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`web`",
+        "codeText": "web",
         "identifier": "UnitOrderWeb",
         "name": "WESTRING_UNITORDERUTARG_WEB",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`raisedead`",
+        "codeText": "raisedead",
         "identifier": "UnitOrderRaiseDead",
         "name": "WESTRING_UNITORDERUTARG_RAISEDEAD",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unholyfrenzy`",
+        "codeText": "unholyfrenzy",
         "identifier": "UnitOrderUnholyFrenzy",
         "name": "WESTRING_UNITORDERUTARG_UNHOLYFRENZY",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`cripple`",
+        "codeText": "cripple",
         "identifier": "UnitOrderCripple",
         "name": "WESTRING_UNITORDERUTARG_CRIPPLE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`curse`",
+        "codeText": "curse",
         "identifier": "UnitOrderCurse",
         "name": "WESTRING_UNITORDERUTARG_CURSE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`antimagicshell`",
+        "codeText": "antimagicshell",
         "identifier": "UnitOrderAntiMagicShell",
         "name": "WESTRING_UNITORDERUTARG_ANTIMAGICSHELL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`possession`",
+        "codeText": "possession",
         "identifier": "UnitOrderPossession",
         "name": "WESTRING_UNITORDERUTARG_POSSESSION",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`absorb`",
+        "codeText": "absorb",
         "identifier": "UnitOrderAbsorbMana",
         "name": "WESTRING_UNITORDERUTARG_ABSORBMANA",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamingattacktarg`",
+        "codeText": "flamingattacktarg",
         "identifier": "UnitOrderFlamingAttack",
         "name": "WESTRING_UNITORDERUTARG_FLAMINGATTACK",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`impale`",
+        "codeText": "impale",
         "identifier": "UnitOrderImpale",
         "name": "WESTRING_UNITORDERUTARG_IMPALE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionscarabs`",
+        "codeText": "carrionscarabs",
         "identifier": "UnitOrderCarrionScarabs",
         "name": "WESTRING_UNITORDERUTARG_CARRIONSCARABS",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`deathcoil`",
+        "codeText": "deathcoil",
         "identifier": "UnitOrderDeathCoil",
         "name": "WESTRING_UNITORDERUTARG_DEATHCOIL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`deathpact`",
+        "codeText": "deathpact",
         "identifier": "UnitOrderDeathPact",
         "name": "WESTRING_UNITORDERUTARG_DEATHPACT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`sleep`",
+        "codeText": "sleep",
         "identifier": "UnitOrderSleep",
         "name": "WESTRING_UNITORDERUTARG_SLEEP",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostnova`",
+        "codeText": "frostnova",
         "identifier": "UnitOrderFrostNova",
         "name": "WESTRING_UNITORDERUTARG_FROSTNOVA",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostarmor`",
+        "codeText": "frostarmor",
         "identifier": "UnitOrderFrostArmor",
         "name": "WESTRING_UNITORDERUTARG_FROSTARMOR",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkritual`",
+        "codeText": "darkritual",
         "identifier": "UnitOrderDarkRitual",
         "name": "WESTRING_UNITORDERUTARG_DARKRITUAL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepdevour`",
+        "codeText": "creepdevour",
         "identifier": "UnitOrderCreepDevour",
         "name": "WESTRING_UNITORDERUTARG_CREEPDEVOUR",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`firebolt`",
+        "codeText": "firebolt",
         "identifier": "UnitOrderFirebolt",
         "name": "WESTRING_UNITORDERUTARG_FIREBOLT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepheal`",
+        "codeText": "creepheal",
         "identifier": "UnitOrderCreepHeal",
         "name": "WESTRING_UNITORDERUTARG_CREEPHEAL",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepthunderbolt`",
+        "codeText": "creepthunderbolt",
         "identifier": "UnitOrderCreepThunderBolt",
         "name": "WESTRING_UNITORDERUTARG_CREEPTHUNDERBOLT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`parasite`",
+        "codeText": "parasite",
         "identifier": "UnitOrderParasite",
         "name": "WESTRING_UNITORDERUTARG_PARASITE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`selfdestruct`",
+        "codeText": "selfdestruct",
         "identifier": "UnitOrderSelfDestructUnit",
         "name": "WESTRING_UNITORDERUTARG_SELFDESTRUCT",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`blackarrow`",
+        "codeText": "blackarrow",
         "identifier": "UnitOrderBlackArrow",
         "name": "WESTRING_UNITORDERUTARG_BLACKARROW",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`charm`",
+        "codeText": "charm",
         "identifier": "UnitOrderCharm",
         "name": "WESTRING_UNITORDERUTARG_CHARM",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`drain`",
+        "codeText": "drain",
         "identifier": "UnitOrderLifeDrain",
         "name": "WESTRING_UNITORDERUTARG_LIFEDRAIN",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`coldarrowstarg`",
+        "codeText": "coldarrowstarg",
         "identifier": "UnitOrderColdArrow",
         "name": "WESTRING_UNITORDERUTARG_COLDARROW",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`forkedlightning`",
+        "codeText": "forkedlightning",
         "identifier": "UnitOrderForkedLightning",
         "name": "WESTRING_UNITORDERUTARG_FORKEDLIGHTNING",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`drunkenhaze`",
+        "codeText": "drunkenhaze",
         "identifier": "UnitOrderStrongDrink",
         "name": "WESTRING_UNITORDERUTARG_STRONGDRINK",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`doom`",
+        "codeText": "doom",
         "identifier": "UnitOrderDoom",
         "name": "WESTRING_UNITORDERUTARG_DOOM",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`acidbomb`",
+        "codeText": "acidbomb",
         "identifier": "UnitOrderAcidBomb",
         "name": "WESTRING_UNITORDERUTARG_ACIDBOMB",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`transmute`",
+        "codeText": "transmute",
         "identifier": "UnitOrderTransmute",
         "name": "WESTRING_UNITORDERUTARG_TRANSMUTE",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`soulburn`",
+        "codeText": "soulburn",
         "identifier": "UnitOrderSoulBurn",
         "name": "WESTRING_UNITORDERUTARG_SOULBURN",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`poisonarrowstarg`",
+        "codeText": "poisonarrowstarg",
         "identifier": "UnitOrderPoisonArrow",
         "name": "WESTRING_UNITORDERUTARG_POISONARROW",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`incineratearrow`",
+        "codeText": "incineratearrow",
         "identifier": "UnitOrderIncinerateArrow",
         "name": "WESTRING_UNITORDERUTARG_INCINERATEARROW",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`fingerofdeath`",
+        "codeText": "fingerofdeath",
         "identifier": "UnitOrderFingerOfDeath",
         "name": "WESTRING_UNITORDERUTARG_FINGEROFDEATH",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkconversion`",
+        "codeText": "darkconversion",
         "identifier": "UnitOrderDarkConversion",
         "name": "WESTRING_UNITORDERUTARG_DARKCONVERSION",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`soulpreservation`",
+        "codeText": "soulpreservation",
         "identifier": "UnitOrderSoulPreservation",
         "name": "WESTRING_UNITORDERUTARG_SOULPRESERVATION",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkconversion`",
+        "codeText": "darkconversion",
         "identifier": "UnitOrderDarkConversionFast",
         "name": "WESTRING_UNITORDERUTARG_DARKCONVERSIONFAST",
         "returnType": "unitorderutarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`attack`",
+        "codeText": "attack",
         "identifier": "UnitOrderAttack",
         "name": "WESTRING_UNITORDERPTARG_ATTACK",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`attackground`",
+        "codeText": "attackground",
         "identifier": "UnitOrderAttackGround",
         "name": "WESTRING_UNITORDERPTARG_ATTACKGROUND",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`move`",
+        "codeText": "move",
         "identifier": "UnitOrderMove",
         "name": "WESTRING_UNITORDERPTARG_MOVE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`patrol`",
+        "codeText": "patrol",
         "identifier": "UnitOrderPatrol",
         "name": "WESTRING_UNITORDERPTARG_PATROL",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`smart`",
+        "codeText": "smart",
         "identifier": "UnitOrderSmartPoint",
         "name": "WESTRING_UNITORDERPTARG_SMART",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`setrally`",
+        "codeText": "setrally",
         "identifier": "UnitOrderSetRally",
         "name": "WESTRING_UNITORDERPTARG_SETRALLY",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unloadall`",
+        "codeText": "unloadall",
         "identifier": "UnitOrderUnloadAll",
         "name": "WESTRING_UNITORDERPTARG_UNLOADALL",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`flare`",
+        "codeText": "flare",
         "identifier": "UnitOrderFlare",
         "name": "WESTRING_UNITORDERPTARG_FLARE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`cloudoffog`",
+        "codeText": "cloudoffog",
         "identifier": "UnitOrderCloudOfFog",
         "name": "WESTRING_UNITORDERPTARG_CLOUDOFFOG",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`blizzard`",
+        "codeText": "blizzard",
         "identifier": "UnitOrderBlizzard",
         "name": "WESTRING_UNITORDERPTARG_BLIZZARD",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamestrike`",
+        "codeText": "flamestrike",
         "identifier": "UnitOrderFlameStrike",
         "name": "WESTRING_UNITORDERPTARG_FLAMESTRIKE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`evileye`",
+        "codeText": "evileye",
         "identifier": "UnitOrderSentryWard",
         "name": "WESTRING_UNITORDERPTARG_SENTRYWARD",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`stasistrap`",
+        "codeText": "stasistrap",
         "identifier": "UnitOrderStasisTrap",
         "name": "WESTRING_UNITORDERPTARG_STASISTRAP",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`healingward`",
+        "codeText": "healingward",
         "identifier": "UnitOrderHealingWard",
         "name": "WESTRING_UNITORDERPTARG_HEALINGWARD",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`disenchant`",
+        "codeText": "disenchant",
         "identifier": "UnitOrderDisenchant",
         "name": "WESTRING_UNITORDERPTARG_DISENCHANT",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`farsight`",
+        "codeText": "farsight",
         "identifier": "UnitOrderFarSight",
         "name": "WESTRING_UNITORDERPTARG_FARSIGHT",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`earthquake`",
+        "codeText": "earthquake",
         "identifier": "UnitOrderEarthquake",
         "name": "WESTRING_UNITORDERPTARG_EARTHQUAKE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`ward`",
+        "codeText": "ward",
         "identifier": "UnitOrderSerpentWard",
         "name": "WESTRING_UNITORDERPTARG_SERPENTWARD",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`shockwave`",
+        "codeText": "shockwave",
         "identifier": "UnitOrderShockwave",
         "name": "WESTRING_UNITORDERPTARG_SHOCKWAVE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`root`",
+        "codeText": "root",
         "identifier": "UnitOrderRoot",
         "name": "WESTRING_UNITORDERPTARG_ROOT",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`detonate`",
+        "codeText": "detonate",
         "identifier": "UnitOrderDetonate",
         "name": "WESTRING_UNITORDERPTARG_DETONATE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`forceofnature`",
+        "codeText": "forceofnature",
         "identifier": "UnitOrderForceOfNature",
         "name": "WESTRING_UNITORDERPTARG_FORCEOFNATURE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`obsolete`",
+        "codeText": "obsolete",
         "identifier": "UnitOrderStarfall",
         "name": "WESTRING_UNITORDERPTARG_STARFALL",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`blink`",
+        "codeText": "blink",
         "identifier": "UnitOrderBlink",
         "name": "WESTRING_UNITORDERPTARG_BLINK",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`devourmagic`",
+        "codeText": "devourmagic",
         "identifier": "UnitOrderDevourMagic",
         "name": "WESTRING_UNITORDERPTARG_DEVOURMAGIC",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`impale`",
+        "codeText": "impale",
         "identifier": "UnitOrderImpalePoint",
         "name": "WESTRING_UNITORDERPTARG_IMPALE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionswarm`",
+        "codeText": "carrionswarm",
         "identifier": "UnitOrderCarrionSwarm",
         "name": "WESTRING_UNITORDERPTARG_CARRIONSWARM",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`dreadlordinferno`",
+        "codeText": "dreadlordinferno",
         "identifier": "UnitOrderDarkSummoning",
         "name": "WESTRING_UNITORDERPTARG_DARKSUMMONING",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`deathanddecay`",
+        "codeText": "deathanddecay",
         "identifier": "UnitOrderDeathAndDecay",
         "name": "WESTRING_UNITORDERPTARG_DEATHANDDECAY",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`breathoffrost`",
+        "codeText": "breathoffrost",
         "identifier": "UnitOrderBreathOfFrost",
         "name": "WESTRING_UNITORDERPTARG_BREATHOFFROST",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`monsoon`",
+        "codeText": "monsoon",
         "identifier": "UnitOrderMonsoon",
         "name": "WESTRING_UNITORDERPTARG_MONSOON",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`selfdestruct`",
+        "codeText": "selfdestruct",
         "identifier": "UnitOrderSelfDestruct",
         "name": "WESTRING_UNITORDERPTARG_SELFDESTRUCT",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`stampede`",
+        "codeText": "stampede",
         "identifier": "UnitOrderStampede",
         "name": "WESTRING_UNITORDERPTARG_STAMPEDE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`silence`",
+        "codeText": "silence",
         "identifier": "UnitOrderSilence",
         "name": "WESTRING_UNITORDERPTARG_SILENCE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`tornado`",
+        "codeText": "tornado",
         "identifier": "UnitOrderTornado",
         "name": "WESTRING_UNITORDERPTARG_TORNADO",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`breathoffire`",
+        "codeText": "breathoffire",
         "identifier": "UnitOrderBreathOfFire",
         "name": "WESTRING_UNITORDERPTARG_BREATHOFFIRE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`rainoffire`",
+        "codeText": "rainoffire",
         "identifier": "UnitOrderHeroRainOfFire",
         "name": "WESTRING_UNITORDERPTARG_HERORAINOFFIRE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`healingspray`",
+        "codeText": "healingspray",
         "identifier": "UnitOrderHealingSpray",
         "name": "WESTRING_UNITORDERPTARG_HEALINGSPRAY",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`clusterrockets`",
+        "codeText": "clusterrockets",
         "identifier": "UnitOrderClusterRockets",
         "name": "WESTRING_UNITORDERPTARG_CLUSTERROCKETS",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`summonfactory`",
+        "codeText": "summonfactory",
         "identifier": "UnitOrderSummonFactory",
         "name": "WESTRING_UNITORDERPTARG_SUMMONFACTORY",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`volcano`",
+        "codeText": "volcano",
         "identifier": "UnitOrderVolcano",
         "name": "WESTRING_UNITORDERPTARG_VOLCANO",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkportal`",
+        "codeText": "darkportal",
         "identifier": "UnitOrderDarkPortal",
         "name": "WESTRING_UNITORDERPTARG_DARKPORTAL",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`rainoffire`",
+        "codeText": "rainoffire",
         "identifier": "UnitOrderRainOfChaos",
         "name": "WESTRING_UNITORDERPTARG_RAINOFCHAOS",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`rainoffire`",
+        "codeText": "rainoffire",
         "identifier": "UnitOrderRainOfFire",
         "name": "WESTRING_UNITORDERPTARG_RAINOFFIRE",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`inferno`",
+        "codeText": "inferno",
         "identifier": "UnitOrderInferno",
         "name": "WESTRING_UNITORDERPTARG_INFERNO",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`darksummoning`",
+        "codeText": "darksummoning",
         "identifier": "UnitOrderDarkSummoningOld",
         "name": "WESTRING_UNITORDERPTARG_DARKSUMMONINGOLD",
         "returnType": "unitorderptarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`attack`",
+        "codeText": "attack",
         "identifier": "UnitOrderAttackDestructible",
         "name": "WESTRING_UNITORDERDTARG_ATTACK",
         "returnType": "unitorderdtarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`smart`",
+        "codeText": "smart",
         "identifier": "UnitOrderSmartDestructible",
         "name": "WESTRING_UNITORDERDTARG_SMART",
         "returnType": "unitorderdtarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`harvest`",
+        "codeText": "harvest",
         "identifier": "UnitOrderHarvestDestructible",
         "name": "WESTRING_UNITORDERDTARG_HARVEST",
         "returnType": "unitorderdtarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`eattree`",
+        "codeText": "eattree",
         "identifier": "UnitOrderConsumeTree",
         "name": "WESTRING_UNITORDERDTARG_CONSUMETREE",
         "returnType": "unitorderdtarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`sentinel`",
+        "codeText": "sentinel",
         "identifier": "UnitOrderSentinel",
         "name": "WESTRING_UNITORDERDTARG_SENTINEL",
         "returnType": "unitorderdtarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`grabtree`",
+        "codeText": "grabtree",
         "identifier": "UnitOrderGrabTree",
         "name": "WESTRING_UNITORDERDTARG_GRABTREE",
         "returnType": "unitorderdtarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`attack`",
+        "codeText": "attack",
         "identifier": "UnitOrderAttackItem",
         "name": "WESTRING_UNITORDERITARG_ATTACK",
         "returnType": "unitorderitarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`attackonce`",
+        "codeText": "attackonce",
         "identifier": "UnitOrderAttackItemOnce",
         "name": "WESTRING_UNITORDERITARG_ATTACKONCE",
         "returnType": "unitorderitarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`move`",
+        "codeText": "move",
         "identifier": "UnitOrderMoveItem",
         "name": "WESTRING_UNITORDERITARG_MOVE",
         "returnType": "unitorderitarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`smart`",
+        "codeText": "smart",
         "identifier": "UnitOrderSmartItem",
         "name": "WESTRING_UNITORDERITARG_SMART",
         "returnType": "unitorderitarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`stop`",
+        "codeText": "stop",
         "identifier": "UnitOrderStop",
         "name": "WESTRING_UNITORDERNOTARG_STOP",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`holdposition`",
+        "codeText": "holdposition",
         "identifier": "UnitOrderHoldPosition",
         "name": "WESTRING_UNITORDERNOTARG_HOLDPOSITION",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`autoharvestgold`",
+        "codeText": "autoharvestgold",
         "identifier": "UnitOrderAutoHarvestGold",
         "name": "WESTRING_UNITORDERNOTARG_AUTOHARVESTGOLD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`autoharvestlumber`",
+        "codeText": "autoharvestlumber",
         "identifier": "UnitOrderAutoHarvestLumber",
         "name": "WESTRING_UNITORDERNOTARG_AUTOHARVESTLUMBER",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`returnresources`",
+        "codeText": "returnresources",
         "identifier": "UnitOrderReturnResources",
         "name": "WESTRING_UNITORDERNOTARG_RETURNRESOURCES",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`build`",
+        "codeText": "build",
         "identifier": "UnitOrderBuild",
         "name": "WESTRING_UNITORDERNOTARG_BUILD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`levelup`",
+        "codeText": "levelup",
         "identifier": "UnitOrderLevelup",
         "name": "WESTRING_UNITORDERNOTARG_LEVELUP",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`humanbuild`",
+        "codeText": "humanbuild",
         "identifier": "UnitOrderHumanBuild",
         "name": "WESTRING_UNITORDERNOTARG_HUMANBUILD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`townbellon`",
+        "codeText": "townbellon",
         "identifier": "UnitOrderTownBellOn",
         "name": "WESTRING_UNITORDERNOTARG_TOWNBELLON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`townbelloff`",
+        "codeText": "townbelloff",
         "identifier": "UnitOrderTownBellOff",
         "name": "WESTRING_UNITORDERNOTARG_TOWNBELLOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`militia`",
+        "codeText": "militia",
         "identifier": "UnitOrderMilitia",
         "name": "WESTRING_UNITORDERNOTARG_MILITIA",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`militiaoff`",
+        "codeText": "militiaoff",
         "identifier": "UnitOrderMilitiaOff",
         "name": "WESTRING_UNITORDERNOTARG_MILITIAOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairon`",
+        "codeText": "repairon",
         "identifier": "UnitOrderRepairOn",
         "name": "WESTRING_UNITORDERNOTARG_REPAIRON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairoff`",
+        "codeText": "repairoff",
         "identifier": "UnitOrderRepairOff",
         "name": "WESTRING_UNITORDERNOTARG_REPAIROFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`defend`",
+        "codeText": "defend",
         "identifier": "UnitOrderDefend",
         "name": "WESTRING_UNITORDERNOTARG_DEFEND",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`undefend`",
+        "codeText": "undefend",
         "identifier": "UnitOrderUnDefend",
         "name": "WESTRING_UNITORDERNOTARG_UNDEFEND",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`healon`",
+        "codeText": "healon",
         "identifier": "UnitOrderHealOn",
         "name": "WESTRING_UNITORDERNOTARG_HEALON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`healoff`",
+        "codeText": "healoff",
         "identifier": "UnitOrderHealOff",
         "name": "WESTRING_UNITORDERNOTARG_HEALOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`innerfireon`",
+        "codeText": "innerfireon",
         "identifier": "UnitOrderInnerFireOn",
         "name": "WESTRING_UNITORDERNOTARG_INNERFIREON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`innerfireoff`",
+        "codeText": "innerfireoff",
         "identifier": "UnitOrderInnerFireOff",
         "name": "WESTRING_UNITORDERNOTARG_INNERFIREOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`slowon`",
+        "codeText": "slowon",
         "identifier": "UnitOrderSlowOn",
         "name": "WESTRING_UNITORDERNOTARG_SLOWON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`slowoff`",
+        "codeText": "slowoff",
         "identifier": "UnitOrderSlowOff",
         "name": "WESTRING_UNITORDERNOTARG_SLOWOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`spellstealon`",
+        "codeText": "spellstealon",
         "identifier": "UnitOrderSpellStealOn",
         "name": "WESTRING_UNITORDERNOTARG_SPELLSTEALON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`spellstealoff`",
+        "codeText": "spellstealoff",
         "identifier": "UnitOrderSpellStealOff",
         "name": "WESTRING_UNITORDERNOTARG_SPELLSTEALOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`waterelemental`",
+        "codeText": "waterelemental",
         "identifier": "UnitOrderWaterElemental",
         "name": "WESTRING_UNITORDERNOTARG_WATERELEMENTAL",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`phoenix`",
+        "codeText": "phoenix",
         "identifier": "UnitOrderPhoenix",
         "name": "WESTRING_UNITORDERNOTARG_PHOENIX",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`thunderclap`",
+        "codeText": "thunderclap",
         "identifier": "UnitOrderThunderClap",
         "name": "WESTRING_UNITORDERNOTARG_THUNDERCLAP",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`avatar`",
+        "codeText": "avatar",
         "identifier": "UnitOrderAvatar",
         "name": "WESTRING_UNITORDERNOTARG_AVATAR",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`divineshield`",
+        "codeText": "divineshield",
         "identifier": "UnitOrderDivineShield",
         "name": "WESTRING_UNITORDERNOTARG_DIVINESHIELD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`undivineshield`",
+        "codeText": "undivineshield",
         "identifier": "UnitOrderUnDivineShield",
         "name": "WESTRING_UNITORDERNOTARG_UNDIVINESHIELD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`resurrection`",
+        "codeText": "resurrection",
         "identifier": "UnitOrderResurrection",
         "name": "WESTRING_UNITORDERNOTARG_RESURRECTION",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`orcbuild`",
+        "codeText": "orcbuild",
         "identifier": "UnitOrderOrcBuild",
         "name": "WESTRING_UNITORDERNOTARG_ORCBUILD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`battlestations`",
+        "codeText": "battlestations",
         "identifier": "UnitOrderBattleStations",
         "name": "WESTRING_UNITORDERNOTARG_BATTLESTATIONS",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`standdown`",
+        "codeText": "standdown",
         "identifier": "UnitOrderStandDown",
         "name": "WESTRING_UNITORDERNOTARG_STANDDOWN",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairon`",
+        "codeText": "repairon",
         "identifier": "UnitOrderRepairOOn",
         "name": "WESTRING_UNITORDERNOTARG_REPAIROON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairoff`",
+        "codeText": "repairoff",
         "identifier": "UnitOrderRepairOOff",
         "name": "WESTRING_UNITORDERNOTARG_REPAIROOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`berserk`",
+        "codeText": "berserk",
         "identifier": "UnitOrderBerserk",
         "name": "WESTRING_UNITORDERNOTARG_BERSERK",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`bloodluston`",
+        "codeText": "bloodluston",
         "identifier": "UnitOrderBloodlustOn",
         "name": "WESTRING_UNITORDERNOTARG_BLOODLUSTON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`bloodlustoff`",
+        "codeText": "bloodlustoff",
         "identifier": "UnitOrderBloodlustOff",
         "name": "WESTRING_UNITORDERNOTARG_BLOODLUSTOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`ancestralspirit`",
+        "codeText": "ancestralspirit",
         "identifier": "UnitOrderAncestralSpirit",
         "name": "WESTRING_UNITORDERNOTARG_ANCESTRALSPIRIT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`uncorporealform`",
+        "codeText": "uncorporealform",
         "identifier": "UnitOrderEtherealForm",
         "name": "WESTRING_UNITORDERNOTARG_ETHEREALFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`corporealform`",
+        "codeText": "corporealform",
         "identifier": "UnitOrderCorporealForm",
         "name": "WESTRING_UNITORDERNOTARG_CORPOREALFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`windwalk`",
+        "codeText": "windwalk",
         "identifier": "UnitOrderWindWalk",
         "name": "WESTRING_UNITORDERNOTARG_WINDWALK",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`mirrorimage`",
+        "codeText": "mirrorimage",
         "identifier": "UnitOrderMirrorImage",
         "name": "WESTRING_UNITORDERNOTARG_MIRRORIMAGE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`whirlwind`",
+        "codeText": "whirlwind",
         "identifier": "UnitOrderWhirlWind",
         "name": "WESTRING_UNITORDERNOTARG_BLADESTORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`spiritwolf`",
+        "codeText": "spiritwolf",
         "identifier": "UnitOrderSpiritWolf",
         "name": "WESTRING_UNITORDERNOTARG_FERALSPIRIT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`voodoo`",
+        "codeText": "voodoo",
         "identifier": "UnitOrderVoodoo",
         "name": "WESTRING_UNITORDERNOTARG_VOODOO",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`stomp`",
+        "codeText": "stomp",
         "identifier": "UnitOrderStomp",
         "name": "WESTRING_UNITORDERNOTARG_WARSTOMP",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`nightelfbuild`",
+        "codeText": "nightelfbuild",
         "identifier": "UnitOrderNightElfBuild",
         "name": "WESTRING_UNITORDERNOTARG_NIGHTELFBUILD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unroot`",
+        "codeText": "unroot",
         "identifier": "UnitOrderUnRoot",
         "name": "WESTRING_UNITORDERNOTARG_UNROOT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`autoentangle`",
+        "codeText": "autoentangle",
         "identifier": "UnitOrderAutoEntangle",
         "name": "WESTRING_UNITORDERNOTARG_AUTOENTANGLE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`autoentangleinstant`",
+        "codeText": "autoentangleinstant",
         "identifier": "UnitOrderAutoEntangleInstant",
         "name": "WESTRING_UNITORDERNOTARG_AUTOENTANGLEINSTANT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`rechargeon`",
+        "codeText": "rechargeon",
         "identifier": "UnitOrderReplenishOn",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`rechargeoff`",
+        "codeText": "rechargeoff",
         "identifier": "UnitOrderReplenishOff",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`ambush`",
+        "codeText": "ambush",
         "identifier": "UnitOrderAmbush",
         "name": "WESTRING_UNITORDERNOTARG_HIDE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`renewon`",
+        "codeText": "renewon",
         "identifier": "UnitOrderRenewOn",
         "name": "WESTRING_UNITORDERNOTARG_RENEWON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`renewoff`",
+        "codeText": "renewoff",
         "identifier": "UnitOrderRenewOff",
         "name": "WESTRING_UNITORDERNOTARG_RENEWOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`coupleinstant`",
+        "codeText": "coupleinstant",
         "identifier": "UnitOrderCoupleInstant1",
         "name": "WESTRING_UNITORDERNOTARG_COUPLEINSTANT1",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`coupleinstant`",
+        "codeText": "coupleinstant",
         "identifier": "UnitOrderCoupleInstant2",
         "name": "WESTRING_UNITORDERNOTARG_COUPLEINSTANT2",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`decouple`",
+        "codeText": "decouple",
         "identifier": "UnitOrderDecouple",
         "name": "WESTRING_UNITORDERNOTARG_DECOUPLE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`autodispelon`",
+        "codeText": "autodispelon",
         "identifier": "UnitOrderAutoDispelOn",
         "name": "WESTRING_UNITORDERNOTARG_AUTODISPELON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`autodispeloff`",
+        "codeText": "autodispeloff",
         "identifier": "UnitOrderAutoDispelOff",
         "name": "WESTRING_UNITORDERNOTARG_AUTODISPELOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`faeriefireon`",
+        "codeText": "faeriefireon",
         "identifier": "UnitOrderFaerieFireOn",
         "name": "WESTRING_UNITORDERNOTARG_FAERIEFIREON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`faeriefireoff`",
+        "codeText": "faeriefireoff",
         "identifier": "UnitOrderFaerieFireOff",
         "name": "WESTRING_UNITORDERNOTARG_FAERIEFIREOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`ravenform`",
+        "codeText": "ravenform",
         "identifier": "UnitOrderRavenForm",
         "name": "WESTRING_UNITORDERNOTARG_RAVENFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unravenform`",
+        "codeText": "unravenform",
         "identifier": "UnitOrderUnRavenForm",
         "name": "WESTRING_UNITORDERNOTARG_UNRAVENFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`roar`",
+        "codeText": "roar",
         "identifier": "UnitOrderRoar",
         "name": "WESTRING_UNITORDERNOTARG_ROAR",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`bearform`",
+        "codeText": "bearform",
         "identifier": "UnitOrderBearForm",
         "name": "WESTRING_UNITORDERNOTARG_BEARFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unbearform`",
+        "codeText": "unbearform",
         "identifier": "UnitOrderUnBearForm",
         "name": "WESTRING_UNITORDERNOTARG_UNBEARFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`taunt`",
+        "codeText": "taunt",
         "identifier": "UnitOrderTaunt",
         "name": "WESTRING_UNITORDERNOTARG_TAUNT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`manaflareon`",
+        "codeText": "manaflareon",
         "identifier": "UnitOrderManaFlareOn",
         "name": "WESTRING_UNITORDERNOTARG_MANAFLAREON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`manaflareoff`",
+        "codeText": "manaflareoff",
         "identifier": "UnitOrderManaFlareOff",
         "name": "WESTRING_UNITORDERNOTARG_MANAFLAREOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`phaseshift`",
+        "codeText": "phaseshift",
         "identifier": "UnitOrderPhaseShift",
         "name": "WESTRING_UNITORDERNOTARG_PHASESHIFT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`phaseshifton`",
+        "codeText": "phaseshifton",
         "identifier": "UnitOrderPhaseShiftOn",
         "name": "WESTRING_UNITORDERNOTARG_PHASESHIFTON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`phaseshiftoff`",
+        "codeText": "phaseshiftoff",
         "identifier": "UnitOrderPhaseShiftOff",
         "name": "WESTRING_UNITORDERNOTARG_PHASESHIFTOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeanceinstant`",
+        "codeText": "vengeanceinstant",
         "identifier": "UnitOrderVengeanceInstant",
         "name": "WESTRING_UNITORDERNOTARG_VENGEANCEINSTANT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeanceon`",
+        "codeText": "vengeanceon",
         "identifier": "UnitOrderVengeanceOn",
         "name": "WESTRING_UNITORDERNOTARG_VENGEANCEON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeanceoff`",
+        "codeText": "vengeanceoff",
         "identifier": "UnitOrderVengeanceOff",
         "name": "WESTRING_UNITORDERNOTARG_VENGEANCEOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`immolation`",
+        "codeText": "immolation",
         "identifier": "UnitOrderImmolation",
         "name": "WESTRING_UNITORDERNOTARG_IMMOLATION",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unimmolation`",
+        "codeText": "unimmolation",
         "identifier": "UnitOrderUnImmolation",
         "name": "WESTRING_UNITORDERNOTARG_UNIMMOLATION",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`metamorphosis`",
+        "codeText": "metamorphosis",
         "identifier": "UnitOrderMetamorphosis",
         "name": "WESTRING_UNITORDERNOTARG_METAMORPHOSIS",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`tranquility`",
+        "codeText": "tranquility",
         "identifier": "UnitOrderTranquility",
         "name": "WESTRING_UNITORDERNOTARG_TRANQUILITY",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamingarrows`",
+        "codeText": "flamingarrows",
         "identifier": "UnitOrderSearingArrows",
         "name": "WESTRING_UNITORDERNOTARG_SEARINGARROWS",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unflamingarrows`",
+        "codeText": "unflamingarrows",
         "identifier": "UnitOrderUnSearingArrows",
         "name": "WESTRING_UNITORDERNOTARG_UNSEARINGARROWS",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`scout`",
+        "codeText": "scout",
         "identifier": "UnitOrderScout",
         "name": "WESTRING_UNITORDERNOTARG_SCOUT",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`starfall`",
+        "codeText": "starfall",
         "identifier": "UnitOrderStarfall2",
         "name": "WESTRING_UNITORDERNOTARG_STARFALL",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`fanofknives`",
+        "codeText": "fanofknives",
         "identifier": "UnitOrderFanOfKnives",
         "name": "WESTRING_UNITORDERNOTARG_FANOFKNIVES",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`spiritofvengeance`",
+        "codeText": "spiritofvengeance",
         "identifier": "UnitOrderSpiritOfVengeance",
         "name": "WESTRING_UNITORDERNOTARG_SPIRITOFVENGEANCE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`undeadbuild`",
+        "codeText": "undeadbuild",
         "identifier": "UnitOrderUndeadBuild",
         "name": "WESTRING_UNITORDERNOTARG_UNDEADBUILD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`restorationon`",
+        "codeText": "restorationon",
         "identifier": "UnitOrderRestorationOn",
         "name": "WESTRING_UNITORDERNOTARG_RESTOREON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`restorationoff`",
+        "codeText": "restorationoff",
         "identifier": "UnitOrderRestorationOff",
         "name": "WESTRING_UNITORDERNOTARG_RESTOREOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`cannibalize`",
+        "codeText": "cannibalize",
         "identifier": "UnitOrderCannibalize",
         "name": "WESTRING_UNITORDERNOTARG_CANNIBALIZE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`webon`",
+        "codeText": "webon",
         "identifier": "UnitOrderWebOn",
         "name": "WESTRING_UNITORDERNOTARG_WEBON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`weboff`",
+        "codeText": "weboff",
         "identifier": "UnitOrderWebOff",
         "name": "WESTRING_UNITORDERNOTARG_WEBOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`burrow`",
+        "codeText": "burrow",
         "identifier": "UnitOrderBurrow",
         "name": "WESTRING_UNITORDERNOTARG_BURROW",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unburrow`",
+        "codeText": "unburrow",
         "identifier": "UnitOrderUnBurrow",
         "name": "WESTRING_UNITORDERNOTARG_UNBURROW",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`loadcorpse`",
+        "codeText": "loadcorpse",
         "identifier": "UnitOrderLoadCorpse",
         "name": "WESTRING_UNITORDERNOTARG_LOADCORPSE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unloadallcorpses`",
+        "codeText": "unloadallcorpses",
         "identifier": "UnitOrderUnloadAllCorpses",
         "name": "WESTRING_UNITORDERNOTARG_UNLOADALLCORPSES",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`stoneform`",
+        "codeText": "stoneform",
         "identifier": "UnitOrderStoneForm",
         "name": "WESTRING_UNITORDERNOTARG_STONEFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unstoneform`",
+        "codeText": "unstoneform",
         "identifier": "UnitOrderUnStoneForm",
         "name": "WESTRING_UNITORDERNOTARG_UNSTONEFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`instant`",
+        "codeText": "instant",
         "identifier": "UnitOrderRaiseDeadInstant",
         "name": "WESTRING_UNITORDERNOTARG_RAISEDEAD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`raisedeadon`",
+        "codeText": "raisedeadon",
         "identifier": "UnitOrderRaiseDeadOn",
         "name": "WESTRING_UNITORDERNOTARG_RAISEDEADON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`raisedeadoff`",
+        "codeText": "raisedeadoff",
         "identifier": "UnitOrderRaiseDeadOff",
         "name": "WESTRING_UNITORDERNOTARG_RAISEDEADOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`curseon`",
+        "codeText": "curseon",
         "identifier": "UnitOrderCurseOn",
         "name": "WESTRING_UNITORDERNOTARG_CURSEON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`curseoff`",
+        "codeText": "curseoff",
         "identifier": "UnitOrderCurseOff",
         "name": "WESTRING_UNITORDERNOTARG_CURSEOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamingattack`",
+        "codeText": "flamingattack",
         "identifier": "UnitOrderFlamingAttackOn",
         "name": "WESTRING_UNITORDERNOTARG_FLAMINGATTACKON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unflamingattack`",
+        "codeText": "unflamingattack",
         "identifier": "UnitOrderFlamingAttackOff",
         "name": "WESTRING_UNITORDERNOTARG_FLAMINGATTACKOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`avengerform`",
+        "codeText": "avengerform",
         "identifier": "UnitOrderSphinxForm",
         "name": "WESTRING_UNITORDERNOTARG_SPHINXFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishlife`",
+        "codeText": "replenishlife",
         "identifier": "UnitOrderReplenishLife",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHLIFE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishlifeon`",
+        "codeText": "replenishlifeon",
         "identifier": "UnitOrderReplenishLifeOn",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHLIFEON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishlifeoff`",
+        "codeText": "replenishlifeoff",
         "identifier": "UnitOrderReplenishLifeOff",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHLIFEOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishmana`",
+        "codeText": "replenishmana",
         "identifier": "UnitOrderReplenishMana",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHMANA",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishmanaon`",
+        "codeText": "replenishmanaon",
         "identifier": "UnitOrderReplenishManaOn",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHMANAON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishmanaoff`",
+        "codeText": "replenishmanaoff",
         "identifier": "UnitOrderReplenishManaOff",
         "name": "WESTRING_UNITORDERNOTARG_REPLENISHMANAOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionscarabson`",
+        "codeText": "carrionscarabson",
         "identifier": "UnitOrderCarrionScarabsOn",
         "name": "WESTRING_UNITORDERNOTARG_CARRIONSCARABSON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionscarabsoff`",
+        "codeText": "carrionscarabsoff",
         "identifier": "UnitOrderCarrionScarabsOff",
         "name": "WESTRING_UNITORDERNOTARG_CARRIONSCARABSOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionscarabsinstant`",
+        "codeText": "carrionscarabsinstant",
         "identifier": "UnitOrderCarrionScarabsInstant",
         "name": "WESTRING_UNITORDERNOTARG_CARRIONSCARABS",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`locustswarm`",
+        "codeText": "locustswarm",
         "identifier": "UnitOrderLocustSwarm",
         "name": "WESTRING_UNITORDERNOTARG_LOCUSTSWARM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`animatedead`",
+        "codeText": "animatedead",
         "identifier": "UnitOrderAnimateDead",
         "name": "WESTRING_UNITORDERNOTARG_ANIMATEDEAD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostarmoron`",
+        "codeText": "frostarmoron",
         "identifier": "UnitOrderFrostArmorOn",
         "name": "WESTRING_UNITORDERNOTARG_FROSTARMORON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostarmoroff`",
+        "codeText": "frostarmoroff",
         "identifier": "UnitOrderFrostArmorOff",
         "name": "WESTRING_UNITORDERNOTARG_FROSTARMOROFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`nagabuild`",
+        "codeText": "nagabuild",
         "identifier": "UnitOrderNagaBuild",
         "name": "WESTRING_UNITORDERNOTARG_NAGABUILD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepanimatedead`",
+        "codeText": "creepanimatedead",
         "identifier": "UnitOrderCreepAnimateDead",
         "name": "WESTRING_UNITORDERNOTARG_CREEPANIMATEDEAD",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`creephealon`",
+        "codeText": "creephealon",
         "identifier": "UnitOrderCreepHealOn",
         "name": "WESTRING_UNITORDERNOTARG_CREEPHEALON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`creephealoff`",
+        "codeText": "creephealoff",
         "identifier": "UnitOrderCreepHealOff",
         "name": "WESTRING_UNITORDERNOTARG_CREEPHEALOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`revenge`",
+        "codeText": "revenge",
         "identifier": "UnitOrderRevenge",
         "name": "WESTRING_UNITORDERNOTARG_REVENGE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepthunderclap`",
+        "codeText": "creepthunderclap",
         "identifier": "UnitOrderCreepThunderClap",
         "name": "WESTRING_UNITORDERNOTARG_CREEPTHUNDERCLAP",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`wateryminion`",
+        "codeText": "wateryminion",
         "identifier": "UnitOrderWateryMinion",
         "name": "WESTRING_UNITORDERNOTARG_WATERYMINION",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`selfdestructon`",
+        "codeText": "selfdestructon",
         "identifier": "UnitOrderSelfDestructOn",
         "name": "WESTRING_UNITORDERNOTARG_SELFDESTRUCTON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`selfdestructoff`",
+        "codeText": "selfdestructoff",
         "identifier": "UnitOrderSelfDestructOff",
         "name": "WESTRING_UNITORDERNOTARG_SELFDESTRUCTOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`summongrizzly`",
+        "codeText": "summongrizzly",
         "identifier": "UnitOrderSummonGrizzly",
         "name": "WESTRING_UNITORDERNOTARG_SUMMONGRIZZLY",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`summonquillbeast`",
+        "codeText": "summonquillbeast",
         "identifier": "UnitOrderSummonQuillbeast",
         "name": "WESTRING_UNITORDERNOTARG_SUMMONQUILLBEAST",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`summonwareagle`",
+        "codeText": "summonwareagle",
         "identifier": "UnitOrderSummonWarEagle",
         "name": "WESTRING_UNITORDERNOTARG_SUMMONWAREAGLE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`blackarrowon`",
+        "codeText": "blackarrowon",
         "identifier": "UnitOrderBlackArrowOn",
         "name": "WESTRING_UNITORDERNOTARG_BLACKARROWON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`blackarrowoff`",
+        "codeText": "blackarrowoff",
         "identifier": "UnitOrderBlackArrowOff",
         "name": "WESTRING_UNITORDERNOTARG_BLACKARROWOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`coldarrows`",
+        "codeText": "coldarrows",
         "identifier": "UnitOrderColdArrowOn",
         "name": "WESTRING_UNITORDERNOTARG_COLDARROWON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`uncoldarrows`",
+        "codeText": "uncoldarrows",
         "identifier": "UnitOrderColdArrowOff",
         "name": "WESTRING_UNITORDERNOTARG_COLDARROWOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`manashieldon`",
+        "codeText": "manashieldon",
         "identifier": "UnitOrderManaShieldOn",
         "name": "WESTRING_UNITORDERNOTARG_MANASHIELDON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`manashieldoff`",
+        "codeText": "manashieldoff",
         "identifier": "UnitOrderManaShieldOff",
         "name": "WESTRING_UNITORDERNOTARG_MANASHIELDOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`elementalfury`",
+        "codeText": "elementalfury",
         "identifier": "UnitOrderElementalFury",
         "name": "WESTRING_UNITORDERNOTARG_ELEMENTALFURY",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`howlofterror`",
+        "codeText": "howlofterror",
         "identifier": "UnitOrderHowlOfTerror",
         "name": "WESTRING_UNITORDERNOTARG_HOWLOFTERROR",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`poisonarrows`",
+        "codeText": "poisonarrows",
         "identifier": "UnitOrderPoisonArrows",
         "name": "WESTRING_UNITORDERNOTARG_POISONARROWON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unpoisonarrows`",
+        "codeText": "unpoisonarrows",
         "identifier": "UnitOrderUnPoisonArrows",
         "name": "WESTRING_UNITORDERNOTARG_POISONARROWOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`chemicalrage`",
+        "codeText": "chemicalrage",
         "identifier": "UnitOrderChemicalRage",
         "name": "WESTRING_UNITORDERNOTARG_CHEMICALRAGE",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`robogoblin`",
+        "codeText": "robogoblin",
         "identifier": "UnitOrderRoboGoblin",
         "name": "WESTRING_UNITORDERNOTARG_ROBOGOBLIN",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unrobogoblin`",
+        "codeText": "unrobogoblin",
         "identifier": "UnitOrderUnRoboGoblin",
         "name": "WESTRING_UNITORDERNOTARG_UNROBOGOBLIN",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`lavamonster`",
+        "codeText": "lavamonster",
         "identifier": "UnitOrderLavaMonster",
         "name": "WESTRING_UNITORDERNOTARG_LAVAMONSTER",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`incineratearrowon`",
+        "codeText": "incineratearrowon",
         "identifier": "UnitOrderIncinerateArrowOn",
         "name": "WESTRING_UNITORDERNOTARG_INCINERATEARROWON",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`incineratearrowoff`",
+        "codeText": "incineratearrowoff",
         "identifier": "UnitOrderIncinerateArrowOff",
         "name": "WESTRING_UNITORDERNOTARG_INCINERATEARROWOFF",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`channel`",
+        "codeText": "channel",
         "identifier": "UnitOrderChannel",
         "name": "WESTRING_UNITORDERNOTARG_CHANNEL",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`ravenform`",
+        "codeText": "ravenform",
         "identifier": "UnitOrderMedivhRavenForm",
         "name": "WESTRING_UNITORDERNOTARG_MEDIVHRAVENFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`unravenform`",
+        "codeText": "unravenform",
         "identifier": "UnitOrderMedivhUnRavenForm",
         "name": "WESTRING_UNITORDERNOTARG_MEDIVHUNRAVENFORM",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`battleroar`",
+        "codeText": "battleroar",
         "identifier": "UnitOrderRexxarBattleRoar",
         "name": "WESTRING_UNITORDERNOTARG_REXXARBATTLEROAR",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`coldarrows`",
+        "codeText": "coldarrows",
         "identifier": "UnitOrderColdArrows",
         "name": "WESTRING_UNITORDERNOTARG_COLDARROWS",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`uncoldarrows`",
+        "codeText": "uncoldarrows",
         "identifier": "UnitOrderUnColdArrows",
         "name": "WESTRING_UNITORDERNOTARG_UNCOLDARROWS",
         "returnType": "unitordernotarg"
     },
     {
         "ParamType": 2,
-        "codeText": "`repair`",
+        "codeText": "repair",
         "identifier": "UnitOrderRepairEx",
         "name": "WESTRING_unitorderEx_REPAIR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`innerfire`",
+        "codeText": "innerfire",
         "identifier": "UnitOrderInnerFireEx",
         "name": "WESTRING_unitorderEx_INNERFIRE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`dispel`",
+        "codeText": "dispel",
         "identifier": "UnitOrderDispelEx",
         "name": "WESTRING_unitorderEx_DISPEL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`heal`",
+        "codeText": "heal",
         "identifier": "UnitOrderHealEx",
         "name": "WESTRING_unitorderEx_HEAL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`slow`",
+        "codeText": "slow",
         "identifier": "UnitOrderSlowEx",
         "name": "WESTRING_unitorderEx_SLOW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`invisibility`",
+        "codeText": "invisibility",
         "identifier": "UnitOrderInvisibilityEx",
         "name": "WESTRING_unitorderEx_INVISIBILITY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`polymorph`",
+        "codeText": "polymorph",
         "identifier": "UnitOrderPolymorphEx",
         "name": "WESTRING_unitorderEx_POLYMORPH",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`controlmagic`",
+        "codeText": "controlmagic",
         "identifier": "UnitOrderControlMagicEx",
         "name": "WESTRING_unitorderEx_CONTROLMAGIC",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`spellsteal`",
+        "codeText": "spellsteal",
         "identifier": "UnitOrderSpellStealEx",
         "name": "WESTRING_unitorderEx_SPELLSTEAL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`magicleash`",
+        "codeText": "magicleash",
         "identifier": "UnitOrderAerialShacklesEx",
         "name": "WESTRING_unitorderEx_AERIALSHACKLES",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`massteleport`",
+        "codeText": "massteleport",
         "identifier": "UnitOrderMassTeleportEx",
         "name": "WESTRING_unitorderEx_MASSTELEPORT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`banish`",
+        "codeText": "banish",
         "identifier": "UnitOrderBanishEx",
         "name": "WESTRING_unitorderEx_BANISH",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`drain`",
+        "codeText": "drain",
         "identifier": "UnitOrderSiphonManaEx",
         "name": "WESTRING_unitorderEx_SIPHONMANA",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`thunderbolt`",
+        "codeText": "thunderbolt",
         "identifier": "UnitOrderThunderBoltEx",
         "name": "WESTRING_unitorderEx_THUNDERBOLT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`holybolt`",
+        "codeText": "holybolt",
         "identifier": "UnitOrderHolyBoltEx",
         "name": "WESTRING_unitorderEx_HOLYBOLT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`repair`",
+        "codeText": "repair",
         "identifier": "UnitOrderRepairOEx",
         "name": "WESTRING_unitorderEx_REPAIRO",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`ensnare`",
+        "codeText": "ensnare",
         "identifier": "UnitOrderEnsnareEx",
         "name": "WESTRING_unitorderEx_ENSNARE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unstableconcoction`",
+        "codeText": "unstableconcoction",
         "identifier": "UnitOrderUnstableConcoctionEx",
         "name": "WESTRING_unitorderEx_UNSTABLECONCOCTION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`purge`",
+        "codeText": "purge",
         "identifier": "UnitOrderPurgeEx",
         "name": "WESTRING_unitorderEx_PURGE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`lightningshield`",
+        "codeText": "lightningshield",
         "identifier": "UnitOrderLightningShieldEx",
         "name": "WESTRING_unitorderEx_LIGHTNINGSHIELD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`bloodlust`",
+        "codeText": "bloodlust",
         "identifier": "UnitOrderBloodlustEx",
         "name": "WESTRING_unitorderEx_BLOODLUST",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`spiritlink`",
+        "codeText": "spiritlink",
         "identifier": "UnitOrderSpiritLinkEx",
         "name": "WESTRING_unitorderEx_SPIRITLINK",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`devour`",
+        "codeText": "devour",
         "identifier": "UnitOrderDevourEx",
         "name": "WESTRING_unitorderEx_DEVOUR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`chainlightning`",
+        "codeText": "chainlightning",
         "identifier": "UnitOrderChainLightningEx",
         "name": "WESTRING_unitorderEx_CHAINLIGHTNING",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`healingwave`",
+        "codeText": "healingwave",
         "identifier": "UnitOrderHealingWaveEx",
         "name": "WESTRING_unitorderEx_HEALINGWAVE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`hex`",
+        "codeText": "hex",
         "identifier": "UnitOrderHexEx",
         "name": "WESTRING_unitorderEx_HEX",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`ancestralspirittarg`",
+        "codeText": "ancestralspirittarg",
         "identifier": "UnitOrderAncestralSpiritTargEx",
         "name": "WESTRING_unitorderEx_ANCESTRALSPIRIT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`renew`",
+        "codeText": "renew",
         "identifier": "UnitOrderRenewEx",
         "name": "WESTRING_unitorderEx_RENEW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`entangle`",
+        "codeText": "entangle",
         "identifier": "UnitOrderEntangleEx",
         "name": "WESTRING_unitorderEx_ENTANGLE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`entangleinstant`",
+        "codeText": "entangleinstant",
         "identifier": "UnitOrderEntangleInstantEx",
         "name": "WESTRING_unitorderEx_ENTANGLEINSTANT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`recharge`",
+        "codeText": "recharge",
         "identifier": "UnitOrderReplenishEx",
         "name": "WESTRING_unitorderEx_REPLENISH",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`mounthippogryph`",
+        "codeText": "mounthippogryph",
         "identifier": "UnitOrderMountHippogryphEx",
         "name": "WESTRING_unitorderEx_MOUNTHIPPOGRYPH",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`loadarcher`",
+        "codeText": "loadarcher",
         "identifier": "UnitOrderLoadArcherEx",
         "name": "WESTRING_unitorderEx_LOADARCHER",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`autodispel`",
+        "codeText": "autodispel",
         "identifier": "UnitOrderAutoDispelEx",
         "name": "WESTRING_unitorderEx_AUTODISPEL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`faeriefire`",
+        "codeText": "faeriefire",
         "identifier": "UnitOrderFaerieFireEx",
         "name": "WESTRING_unitorderEx_FAERIEFIRE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`cyclone`",
+        "codeText": "cyclone",
         "identifier": "UnitOrderCycloneEx",
         "name": "WESTRING_unitorderEx_CYCLONE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`rejuvination`",
+        "codeText": "rejuvination",
         "identifier": "UnitOrderRejuvinationEx",
         "name": "WESTRING_unitorderEx_REJUVINATION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeance`",
+        "codeText": "vengeance",
         "identifier": "UnitOrderVengeanceEx",
         "name": "WESTRING_unitorderEx_VENGEANCE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`manaburn`",
+        "codeText": "manaburn",
         "identifier": "UnitOrderManaBurnEx",
         "name": "WESTRING_unitorderEx_MANABURN",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`entanglingroots`",
+        "codeText": "entanglingroots",
         "identifier": "UnitOrderEntanglingRootsEx",
         "name": "WESTRING_unitorderEx_ENTANGLINGROOTS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`shadowstrike`",
+        "codeText": "shadowstrike",
         "identifier": "UnitOrderShadowStrikeEx",
         "name": "WESTRING_unitorderEx_SHADOWSTRIKE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`restoration`",
+        "codeText": "restoration",
         "identifier": "UnitOrderRestorationEx",
         "name": "WESTRING_unitorderEx_RESTORE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`sacrifice`",
+        "codeText": "sacrifice",
         "identifier": "UnitOrderSacrificeAcolyteEx",
         "name": "WESTRING_unitorderEx_SACRIFICEACOLYTE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`requestsacrifice`",
+        "codeText": "requestsacrifice",
         "identifier": "UnitOrderSacrificeEx",
         "name": "WESTRING_unitorderEx_SACRIFICE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unsummon`",
+        "codeText": "unsummon",
         "identifier": "UnitOrderUnsummonEx",
         "name": "WESTRING_unitorderEx_UNSUMMON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`web`",
+        "codeText": "web",
         "identifier": "UnitOrderWebEx",
         "name": "WESTRING_unitorderEx_WEB",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`raisedead`",
+        "codeText": "raisedead",
         "identifier": "UnitOrderRaiseDeadEx",
         "name": "WESTRING_unitorderEx_RAISEDEAD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unholyfrenzy`",
+        "codeText": "unholyfrenzy",
         "identifier": "UnitOrderUnholyFrenzyEx",
         "name": "WESTRING_unitorderEx_UNHOLYFRENZY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`cripple`",
+        "codeText": "cripple",
         "identifier": "UnitOrderCrippleEx",
         "name": "WESTRING_unitorderEx_CRIPPLE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`curse`",
+        "codeText": "curse",
         "identifier": "UnitOrderCurseEx",
         "name": "WESTRING_unitorderEx_CURSE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`antimagicshell`",
+        "codeText": "antimagicshell",
         "identifier": "UnitOrderAntiMagicShellEx",
         "name": "WESTRING_unitorderEx_ANTIMAGICSHELL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`possession`",
+        "codeText": "possession",
         "identifier": "UnitOrderPossessionEx",
         "name": "WESTRING_unitorderEx_POSSESSION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`absorb`",
+        "codeText": "absorb",
         "identifier": "UnitOrderAbsorbManaEx",
         "name": "WESTRING_unitorderEx_ABSORBMANA",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamingattacktarg`",
+        "codeText": "flamingattacktarg",
         "identifier": "UnitOrderFlamingAttackEx",
         "name": "WESTRING_unitorderEx_FLAMINGATTACK",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`impale`",
+        "codeText": "impale",
         "identifier": "UnitOrderImpaleEx",
         "name": "WESTRING_unitorderEx_IMPALE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionscarabs`",
+        "codeText": "carrionscarabs",
         "identifier": "UnitOrderCarrionScarabsEx",
         "name": "WESTRING_unitorderEx_CARRIONSCARABS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`deathcoil`",
+        "codeText": "deathcoil",
         "identifier": "UnitOrderDeathCoilEx",
         "name": "WESTRING_unitorderEx_DEATHCOIL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`deathpact`",
+        "codeText": "deathpact",
         "identifier": "UnitOrderDeathPactEx",
         "name": "WESTRING_unitorderEx_DEATHPACT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`sleep`",
+        "codeText": "sleep",
         "identifier": "UnitOrderSleepEx",
         "name": "WESTRING_unitorderEx_SLEEP",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostnova`",
+        "codeText": "frostnova",
         "identifier": "UnitOrderFrostNovaEx",
         "name": "WESTRING_unitorderEx_FROSTNOVA",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostarmor`",
+        "codeText": "frostarmor",
         "identifier": "UnitOrderFrostArmorEx",
         "name": "WESTRING_unitorderEx_FROSTARMOR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkritual`",
+        "codeText": "darkritual",
         "identifier": "UnitOrderDarkRitualEx",
         "name": "WESTRING_unitorderEx_DARKRITUAL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepdevour`",
+        "codeText": "creepdevour",
         "identifier": "UnitOrderCreepDevourEx",
         "name": "WESTRING_unitorderEx_CREEPDEVOUR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`firebolt`",
+        "codeText": "firebolt",
         "identifier": "UnitOrderFireboltEx",
         "name": "WESTRING_unitorderEx_FIREBOLT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepheal`",
+        "codeText": "creepheal",
         "identifier": "UnitOrderCreepHealEx",
         "name": "WESTRING_unitorderEx_CREEPHEAL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepthunderbolt`",
+        "codeText": "creepthunderbolt",
         "identifier": "UnitOrderCreepThunderBoltEx",
         "name": "WESTRING_unitorderEx_CREEPTHUNDERBOLT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`parasite`",
+        "codeText": "parasite",
         "identifier": "UnitOrderParasiteEx",
         "name": "WESTRING_unitorderEx_PARASITE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`selfdestruct`",
+        "codeText": "selfdestruct",
         "identifier": "UnitOrderSelfDestructUnitEx",
         "name": "WESTRING_unitorderEx_SELFDESTRUCT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`blackarrow`",
+        "codeText": "blackarrow",
         "identifier": "UnitOrderBlackArrowEx",
         "name": "WESTRING_unitorderEx_BLACKARROW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`charm`",
+        "codeText": "charm",
         "identifier": "UnitOrderCharmEx",
         "name": "WESTRING_unitorderEx_CHARM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`drain`",
+        "codeText": "drain",
         "identifier": "UnitOrderLifeDrainEx",
         "name": "WESTRING_unitorderEx_LIFEDRAIN",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`coldarrowstarg`",
+        "codeText": "coldarrowstarg",
         "identifier": "UnitOrderColdArrowEx",
         "name": "WESTRING_unitorderEx_COLDARROW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`forkedlightning`",
+        "codeText": "forkedlightning",
         "identifier": "UnitOrderForkedLightningEx",
         "name": "WESTRING_unitorderEx_FORKEDLIGHTNING",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`drunkenhaze`",
+        "codeText": "drunkenhaze",
         "identifier": "UnitOrderStrongDrinkEx",
         "name": "WESTRING_unitorderEx_STRONGDRINK",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`doom`",
+        "codeText": "doom",
         "identifier": "UnitOrderDoomEx",
         "name": "WESTRING_unitorderEx_DOOM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`acidbomb`",
+        "codeText": "acidbomb",
         "identifier": "UnitOrderAcidBombEx",
         "name": "WESTRING_unitorderEx_ACIDBOMB",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`transmute`",
+        "codeText": "transmute",
         "identifier": "UnitOrderTransmuteEx",
         "name": "WESTRING_unitorderEx_TRANSMUTE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`soulburn`",
+        "codeText": "soulburn",
         "identifier": "UnitOrderSoulBurnEx",
         "name": "WESTRING_unitorderEx_SOULBURN",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`poisonarrowstarg`",
+        "codeText": "poisonarrowstarg",
         "identifier": "UnitOrderPoisonArrowEx",
         "name": "WESTRING_unitorderEx_POISONARROW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`incineratearrow`",
+        "codeText": "incineratearrow",
         "identifier": "UnitOrderIncinerateArrowEx",
         "name": "WESTRING_unitorderEx_INCINERATEARROW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`fingerofdeath`",
+        "codeText": "fingerofdeath",
         "identifier": "UnitOrderFingerOfDeathEx",
         "name": "WESTRING_unitorderEx_FINGEROFDEATH",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkconversion`",
+        "codeText": "darkconversion",
         "identifier": "UnitOrderDarkConversionEx",
         "name": "WESTRING_unitorderEx_DARKCONVERSION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`soulpreservation`",
+        "codeText": "soulpreservation",
         "identifier": "UnitOrderSoulPreservationEx",
         "name": "WESTRING_unitorderEx_SOULPRESERVATION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkconversion`",
+        "codeText": "darkconversion",
         "identifier": "UnitOrderDarkConversionFastEx",
         "name": "WESTRING_unitorderEx_DARKCONVERSIONFAST",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`flare`",
+        "codeText": "flare",
         "identifier": "UnitOrderFlareEx",
         "name": "WESTRING_unitorderEx_FLARE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`cloudoffog`",
+        "codeText": "cloudoffog",
         "identifier": "UnitOrderCloudOfFogEx",
         "name": "WESTRING_unitorderEx_CLOUDOFFOG",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`blizzard`",
+        "codeText": "blizzard",
         "identifier": "UnitOrderBlizzardEx",
         "name": "WESTRING_unitorderEx_BLIZZARD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamestrike`",
+        "codeText": "flamestrike",
         "identifier": "UnitOrderFlameStrikeEx",
         "name": "WESTRING_unitorderEx_FLAMESTRIKE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`evileye`",
+        "codeText": "evileye",
         "identifier": "UnitOrderSentryWardEx",
         "name": "WESTRING_unitorderEx_SENTRYWARD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`stasistrap`",
+        "codeText": "stasistrap",
         "identifier": "UnitOrderStasisTrapEx",
         "name": "WESTRING_unitorderEx_STASISTRAP",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`healingward`",
+        "codeText": "healingward",
         "identifier": "UnitOrderHealingWardEx",
         "name": "WESTRING_unitorderEx_HEALINGWARD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`disenchant`",
+        "codeText": "disenchant",
         "identifier": "UnitOrderDisenchantEx",
         "name": "WESTRING_unitorderEx_DISENCHANT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`farsight`",
+        "codeText": "farsight",
         "identifier": "UnitOrderFarSightEx",
         "name": "WESTRING_unitorderEx_FARSIGHT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`earthquake`",
+        "codeText": "earthquake",
         "identifier": "UnitOrderEarthquakeEx",
         "name": "WESTRING_unitorderEx_EARTHQUAKE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`ward`",
+        "codeText": "ward",
         "identifier": "UnitOrderSerpentWardEx",
         "name": "WESTRING_unitorderEx_SERPENTWARD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`shockwave`",
+        "codeText": "shockwave",
         "identifier": "UnitOrderShockwaveEx",
         "name": "WESTRING_unitorderEx_SHOCKWAVE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`root`",
+        "codeText": "root",
         "identifier": "UnitOrderRootEx",
         "name": "WESTRING_unitorderEx_ROOT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`detonate`",
+        "codeText": "detonate",
         "identifier": "UnitOrderDetonateEx",
         "name": "WESTRING_unitorderEx_DETONATE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`forceofnature`",
+        "codeText": "forceofnature",
         "identifier": "UnitOrderForceOfNatureEx",
         "name": "WESTRING_unitorderEx_FORCEOFNATURE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`obsolete`",
+        "codeText": "obsolete",
         "identifier": "UnitOrderStarfallEx",
         "name": "WESTRING_unitorderEx_STARFALL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`blink`",
+        "codeText": "blink",
         "identifier": "UnitOrderBlinkEx",
         "name": "WESTRING_unitorderEx_BLINK",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`devourmagic`",
+        "codeText": "devourmagic",
         "identifier": "UnitOrderDevourMagicEx",
         "name": "WESTRING_unitorderEx_DEVOURMAGIC",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionswarm`",
+        "codeText": "carrionswarm",
         "identifier": "UnitOrderCarrionSwarmEx",
         "name": "WESTRING_unitorderEx_CARRIONSWARM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`dreadlordinferno`",
+        "codeText": "dreadlordinferno",
         "identifier": "UnitOrderDarkSummoningEx",
         "name": "WESTRING_unitorderEx_DARKSUMMONING",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`deathanddecay`",
+        "codeText": "deathanddecay",
         "identifier": "UnitOrderDeathAndDecayEx",
         "name": "WESTRING_unitorderEx_DEATHANDDECAY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`breathoffrost`",
+        "codeText": "breathoffrost",
         "identifier": "UnitOrderBreathOfFrostEx",
         "name": "WESTRING_unitorderEx_BREATHOFFROST",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`monsoon`",
+        "codeText": "monsoon",
         "identifier": "UnitOrderMonsoonEx",
         "name": "WESTRING_unitorderEx_MONSOON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`stampede`",
+        "codeText": "stampede",
         "identifier": "UnitOrderStampedeEx",
         "name": "WESTRING_unitorderEx_STAMPEDE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`silence`",
+        "codeText": "silence",
         "identifier": "UnitOrderSilenceEx",
         "name": "WESTRING_unitorderEx_SILENCE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`tornado`",
+        "codeText": "tornado",
         "identifier": "UnitOrderTornadoEx",
         "name": "WESTRING_unitorderEx_TORNADO",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`breathoffire`",
+        "codeText": "breathoffire",
         "identifier": "UnitOrderBreathOfFireEx",
         "name": "WESTRING_unitorderEx_BREATHOFFIRE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`rainoffire`",
+        "codeText": "rainoffire",
         "identifier": "UnitOrderHeroRainOfFireEx",
         "name": "WESTRING_unitorderEx_HERORAINOFFIRE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`healingspray`",
+        "codeText": "healingspray",
         "identifier": "UnitOrderHealingSprayEx",
         "name": "WESTRING_unitorderEx_HEALINGSPRAY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`clusterrockets`",
+        "codeText": "clusterrockets",
         "identifier": "UnitOrderClusterRocketsEx",
         "name": "WESTRING_unitorderEx_CLUSTERROCKETS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`summonfactory`",
+        "codeText": "summonfactory",
         "identifier": "UnitOrderSummonFactoryEx",
         "name": "WESTRING_unitorderEx_SUMMONFACTORY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`volcano`",
+        "codeText": "volcano",
         "identifier": "UnitOrderVolcanoEx",
         "name": "WESTRING_unitorderEx_VOLCANO",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`darkportal`",
+        "codeText": "darkportal",
         "identifier": "UnitOrderDarkPortalEx",
         "name": "WESTRING_unitorderEx_DARKPORTAL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`rainoffire`",
+        "codeText": "rainoffire",
         "identifier": "UnitOrderRainOfChaosEx",
         "name": "WESTRING_unitorderEx_RAINOFCHAOS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`rainoffire`",
+        "codeText": "rainoffire",
         "identifier": "UnitOrderRainOfFireEx",
         "name": "WESTRING_unitorderEx_RAINOFFIRE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`inferno`",
+        "codeText": "inferno",
         "identifier": "UnitOrderInfernoEx",
         "name": "WESTRING_unitorderEx_INFERNO",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`darksummoning`",
+        "codeText": "darksummoning",
         "identifier": "UnitOrderDarkSummoningOldEx",
         "name": "WESTRING_unitorderEx_DARKSUMMONINGOLD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`townbellon`",
+        "codeText": "townbellon",
         "identifier": "UnitOrderTownBellOnEx",
         "name": "WESTRING_unitorderEx_TOWNBELLON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`townbelloff`",
+        "codeText": "townbelloff",
         "identifier": "UnitOrderTownBellOffEx",
         "name": "WESTRING_unitorderEx_TOWNBELLOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`militia`",
+        "codeText": "militia",
         "identifier": "UnitOrderMilitiaEx",
         "name": "WESTRING_unitorderEx_MILITIA",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`militiaoff`",
+        "codeText": "militiaoff",
         "identifier": "UnitOrderMilitiaOffEx",
         "name": "WESTRING_unitorderEx_MILITIAOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairon`",
+        "codeText": "repairon",
         "identifier": "UnitOrderRepairOnEx",
         "name": "WESTRING_unitorderEx_REPAIRON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairoff`",
+        "codeText": "repairoff",
         "identifier": "UnitOrderRepairOffEx",
         "name": "WESTRING_unitorderEx_REPAIROFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`defend`",
+        "codeText": "defend",
         "identifier": "UnitOrderDefendEx",
         "name": "WESTRING_unitorderEx_DEFEND",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`undefend`",
+        "codeText": "undefend",
         "identifier": "UnitOrderUnDefendEx",
         "name": "WESTRING_unitorderEx_UNDEFEND",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`healon`",
+        "codeText": "healon",
         "identifier": "UnitOrderHealOnEx",
         "name": "WESTRING_unitorderEx_HEALON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`healoff`",
+        "codeText": "healoff",
         "identifier": "UnitOrderHealOffEx",
         "name": "WESTRING_unitorderEx_HEALOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`innerfireon`",
+        "codeText": "innerfireon",
         "identifier": "UnitOrderInnerFireOnEx",
         "name": "WESTRING_unitorderEx_INNERFIREON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`innerfireoff`",
+        "codeText": "innerfireoff",
         "identifier": "UnitOrderInnerFireOffEx",
         "name": "WESTRING_unitorderEx_INNERFIREOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`slowon`",
+        "codeText": "slowon",
         "identifier": "UnitOrderSlowOnEx",
         "name": "WESTRING_unitorderEx_SLOWON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`slowoff`",
+        "codeText": "slowoff",
         "identifier": "UnitOrderSlowOffEx",
         "name": "WESTRING_unitorderEx_SLOWOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`spellstealon`",
+        "codeText": "spellstealon",
         "identifier": "UnitOrderSpellStealOnEx",
         "name": "WESTRING_unitorderEx_SPELLSTEALON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`spellstealoff`",
+        "codeText": "spellstealoff",
         "identifier": "UnitOrderSpellStealOffEx",
         "name": "WESTRING_unitorderEx_SPELLSTEALOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`waterelemental`",
+        "codeText": "waterelemental",
         "identifier": "UnitOrderWaterElementalEx",
         "name": "WESTRING_unitorderEx_WATERELEMENTAL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`phoenix`",
+        "codeText": "phoenix",
         "identifier": "UnitOrderPhoenixEx",
         "name": "WESTRING_unitorderEx_PHOENIX",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`thunderclap`",
+        "codeText": "thunderclap",
         "identifier": "UnitOrderThunderClapEx",
         "name": "WESTRING_unitorderEx_THUNDERCLAP",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`avatar`",
+        "codeText": "avatar",
         "identifier": "UnitOrderAvatarEx",
         "name": "WESTRING_unitorderEx_AVATAR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`divineshield`",
+        "codeText": "divineshield",
         "identifier": "UnitOrderDivineShieldEx",
         "name": "WESTRING_unitorderEx_DIVINESHIELD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`undivineshield`",
+        "codeText": "undivineshield",
         "identifier": "UnitOrderUnDivineShieldEx",
         "name": "WESTRING_unitorderEx_UNDIVINESHIELD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`resurrection`",
+        "codeText": "resurrection",
         "identifier": "UnitOrderResurrectionEx",
         "name": "WESTRING_unitorderEx_RESURRECTION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`battlestations`",
+        "codeText": "battlestations",
         "identifier": "UnitOrderBattleStationsEx",
         "name": "WESTRING_unitorderEx_BATTLESTATIONS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`standdown`",
+        "codeText": "standdown",
         "identifier": "UnitOrderStandDownEx",
         "name": "WESTRING_unitorderEx_STANDDOWN",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairon`",
+        "codeText": "repairon",
         "identifier": "UnitOrderRepairOOnEx",
         "name": "WESTRING_unitorderEx_REPAIROON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`repairoff`",
+        "codeText": "repairoff",
         "identifier": "UnitOrderRepairOOffEx",
         "name": "WESTRING_unitorderEx_REPAIROOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`berserk`",
+        "codeText": "berserk",
         "identifier": "UnitOrderBerserkEx",
         "name": "WESTRING_unitorderEx_BERSERK",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`bloodluston`",
+        "codeText": "bloodluston",
         "identifier": "UnitOrderBloodlustOnEx",
         "name": "WESTRING_unitorderEx_BLOODLUSTON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`bloodlustoff`",
+        "codeText": "bloodlustoff",
         "identifier": "UnitOrderBloodlustOffEx",
         "name": "WESTRING_unitorderEx_BLOODLUSTOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`uncorporealform`",
+        "codeText": "uncorporealform",
         "identifier": "UnitOrderEtherealFormEx",
         "name": "WESTRING_unitorderEx_ETHEREALFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`corporealform`",
+        "codeText": "corporealform",
         "identifier": "UnitOrderCorporealFormEx",
         "name": "WESTRING_unitorderEx_CORPOREALFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`windwalk`",
+        "codeText": "windwalk",
         "identifier": "UnitOrderWindWalkEx",
         "name": "WESTRING_unitorderEx_WINDWALK",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`mirrorimage`",
+        "codeText": "mirrorimage",
         "identifier": "UnitOrderMirrorImageEx",
         "name": "WESTRING_unitorderEx_MIRRORIMAGE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`whirlwind`",
+        "codeText": "whirlwind",
         "identifier": "UnitOrderWhirlWindEx",
         "name": "WESTRING_unitorderEx_BLADESTORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`spiritwolf`",
+        "codeText": "spiritwolf",
         "identifier": "UnitOrderSpiritWolfEx",
         "name": "WESTRING_unitorderEx_FERALSPIRIT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`voodoo`",
+        "codeText": "voodoo",
         "identifier": "UnitOrderVoodooEx",
         "name": "WESTRING_unitorderEx_VOODOO",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`stomp`",
+        "codeText": "stomp",
         "identifier": "UnitOrderStompEx",
         "name": "WESTRING_unitorderEx_WARSTOMP",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unroot`",
+        "codeText": "unroot",
         "identifier": "UnitOrderUnRootEx",
         "name": "WESTRING_unitorderEx_UNROOT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`autoentangle`",
+        "codeText": "autoentangle",
         "identifier": "UnitOrderAutoEntangleEx",
         "name": "WESTRING_unitorderEx_AUTOENTANGLE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`autoentangleinstant`",
+        "codeText": "autoentangleinstant",
         "identifier": "UnitOrderAutoEntangleInstantEx",
         "name": "WESTRING_unitorderEx_AUTOENTANGLEINSTANT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`rechargeon`",
+        "codeText": "rechargeon",
         "identifier": "UnitOrderReplenishOnEx",
         "name": "WESTRING_unitorderEx_REPLENISHON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`rechargeoff`",
+        "codeText": "rechargeoff",
         "identifier": "UnitOrderReplenishOffEx",
         "name": "WESTRING_unitorderEx_REPLENISHOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`ambush`",
+        "codeText": "ambush",
         "identifier": "UnitOrderAmbushEx",
         "name": "WESTRING_unitorderEx_HIDE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`renewon`",
+        "codeText": "renewon",
         "identifier": "UnitOrderRenewOnEx",
         "name": "WESTRING_unitorderEx_RENEWON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`renewoff`",
+        "codeText": "renewoff",
         "identifier": "UnitOrderRenewOffEx",
         "name": "WESTRING_unitorderEx_RENEWOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`coupleinstant`",
+        "codeText": "coupleinstant",
         "identifier": "UnitOrderCoupleInstant1Ex",
         "name": "WESTRING_unitorderEx_COUPLEINSTANT1",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`coupleinstant`",
+        "codeText": "coupleinstant",
         "identifier": "UnitOrderCoupleInstant2Ex",
         "name": "WESTRING_unitorderEx_COUPLEINSTANT2",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`decouple`",
+        "codeText": "decouple",
         "identifier": "UnitOrderDecoupleEx",
         "name": "WESTRING_unitorderEx_DECOUPLE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`autodispelon`",
+        "codeText": "autodispelon",
         "identifier": "UnitOrderAutoDispelOnEx",
         "name": "WESTRING_unitorderEx_AUTODISPELON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`autodispeloff`",
+        "codeText": "autodispeloff",
         "identifier": "UnitOrderAutoDispelOffEx",
         "name": "WESTRING_unitorderEx_AUTODISPELOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`faeriefireon`",
+        "codeText": "faeriefireon",
         "identifier": "UnitOrderFaerieFireOnEx",
         "name": "WESTRING_unitorderEx_FAERIEFIREON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`faeriefireoff`",
+        "codeText": "faeriefireoff",
         "identifier": "UnitOrderFaerieFireOffEx",
         "name": "WESTRING_unitorderEx_FAERIEFIREOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`ravenform`",
+        "codeText": "ravenform",
         "identifier": "UnitOrderRavenFormEx",
         "name": "WESTRING_unitorderEx_RAVENFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unravenform`",
+        "codeText": "unravenform",
         "identifier": "UnitOrderUnRavenFormEx",
         "name": "WESTRING_unitorderEx_UNRAVENFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`roar`",
+        "codeText": "roar",
         "identifier": "UnitOrderRoarEx",
         "name": "WESTRING_unitorderEx_ROAR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`bearform`",
+        "codeText": "bearform",
         "identifier": "UnitOrderBearFormEx",
         "name": "WESTRING_unitorderEx_BEARFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unbearform`",
+        "codeText": "unbearform",
         "identifier": "UnitOrderUnBearFormEx",
         "name": "WESTRING_unitorderEx_UNBEARFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`taunt`",
+        "codeText": "taunt",
         "identifier": "UnitOrderTauntEx",
         "name": "WESTRING_unitorderEx_TAUNT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`manaflareon`",
+        "codeText": "manaflareon",
         "identifier": "UnitOrderManaFlareOnEx",
         "name": "WESTRING_unitorderEx_MANAFLAREON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`manaflareoff`",
+        "codeText": "manaflareoff",
         "identifier": "UnitOrderManaFlareOffEx",
         "name": "WESTRING_unitorderEx_MANAFLAREOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`phaseshift`",
+        "codeText": "phaseshift",
         "identifier": "UnitOrderPhaseShiftEx",
         "name": "WESTRING_unitorderEx_PHASESHIFT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`phaseshifton`",
+        "codeText": "phaseshifton",
         "identifier": "UnitOrderPhaseShiftOnEx",
         "name": "WESTRING_unitorderEx_PHASESHIFTON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`phaseshiftoff`",
+        "codeText": "phaseshiftoff",
         "identifier": "UnitOrderPhaseShiftOffEx",
         "name": "WESTRING_unitorderEx_PHASESHIFTOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeanceinstant`",
+        "codeText": "vengeanceinstant",
         "identifier": "UnitOrderVengeanceInstantEx",
         "name": "WESTRING_unitorderEx_VENGEANCEINSTANT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeanceon`",
+        "codeText": "vengeanceon",
         "identifier": "UnitOrderVengeanceOnEx",
         "name": "WESTRING_unitorderEx_VENGEANCEON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`vengeanceoff`",
+        "codeText": "vengeanceoff",
         "identifier": "UnitOrderVengeanceOffEx",
         "name": "WESTRING_unitorderEx_VENGEANCEOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`immolation`",
+        "codeText": "immolation",
         "identifier": "UnitOrderImmolationEx",
         "name": "WESTRING_unitorderEx_IMMOLATION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unimmolation`",
+        "codeText": "unimmolation",
         "identifier": "UnitOrderUnImmolationEx",
         "name": "WESTRING_unitorderEx_UNIMMOLATION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`metamorphosis`",
+        "codeText": "metamorphosis",
         "identifier": "UnitOrderMetamorphosisEx",
         "name": "WESTRING_unitorderEx_METAMORPHOSIS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`tranquility`",
+        "codeText": "tranquility",
         "identifier": "UnitOrderTranquilityEx",
         "name": "WESTRING_unitorderEx_TRANQUILITY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamingarrows`",
+        "codeText": "flamingarrows",
         "identifier": "UnitOrderSearingArrowsEx",
         "name": "WESTRING_unitorderEx_SEARINGARROWS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unflamingarrows`",
+        "codeText": "unflamingarrows",
         "identifier": "UnitOrderUnSearingArrowsEx",
         "name": "WESTRING_unitorderEx_UNSEARINGARROWS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`scout`",
+        "codeText": "scout",
         "identifier": "UnitOrderScoutEx",
         "name": "WESTRING_unitorderEx_SCOUT",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`fanofknives`",
+        "codeText": "fanofknives",
         "identifier": "UnitOrderFanOfKnivesEx",
         "name": "WESTRING_unitorderEx_FANOFKNIVES",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`spiritofvengeance`",
+        "codeText": "spiritofvengeance",
         "identifier": "UnitOrderSpiritOfVengeanceEx",
         "name": "WESTRING_unitorderEx_SPIRITOFVENGEANCE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`restorationon`",
+        "codeText": "restorationon",
         "identifier": "UnitOrderRestorationOnEx",
         "name": "WESTRING_unitorderEx_RESTOREON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`restorationoff`",
+        "codeText": "restorationoff",
         "identifier": "UnitOrderRestorationOffEx",
         "name": "WESTRING_unitorderEx_RESTOREOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`cannibalize`",
+        "codeText": "cannibalize",
         "identifier": "UnitOrderCannibalizeEx",
         "name": "WESTRING_unitorderEx_CANNIBALIZE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`webon`",
+        "codeText": "webon",
         "identifier": "UnitOrderWebOnEx",
         "name": "WESTRING_unitorderEx_WEBON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`weboff`",
+        "codeText": "weboff",
         "identifier": "UnitOrderWebOffEx",
         "name": "WESTRING_unitorderEx_WEBOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`burrow`",
+        "codeText": "burrow",
         "identifier": "UnitOrderBurrowEx",
         "name": "WESTRING_unitorderEx_BURROW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unburrow`",
+        "codeText": "unburrow",
         "identifier": "UnitOrderUnBurrowEx",
         "name": "WESTRING_unitorderEx_UNBURROW",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`loadcorpse`",
+        "codeText": "loadcorpse",
         "identifier": "UnitOrderLoadCorpseEx",
         "name": "WESTRING_unitorderEx_LOADCORPSE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unloadallcorpses`",
+        "codeText": "unloadallcorpses",
         "identifier": "UnitOrderUnloadAllCorpsesEx",
         "name": "WESTRING_unitorderEx_UNLOADALLCORPSES",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`stoneform`",
+        "codeText": "stoneform",
         "identifier": "UnitOrderStoneFormEx",
         "name": "WESTRING_unitorderEx_STONEFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unstoneform`",
+        "codeText": "unstoneform",
         "identifier": "UnitOrderUnStoneFormEx",
         "name": "WESTRING_unitorderEx_UNSTONEFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`raisedeadon`",
+        "codeText": "raisedeadon",
         "identifier": "UnitOrderRaiseDeadOnEx",
         "name": "WESTRING_unitorderEx_RAISEDEADON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`raisedeadoff`",
+        "codeText": "raisedeadoff",
         "identifier": "UnitOrderRaiseDeadOffEx",
         "name": "WESTRING_unitorderEx_RAISEDEADOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`curseon`",
+        "codeText": "curseon",
         "identifier": "UnitOrderCurseOnEx",
         "name": "WESTRING_unitorderEx_CURSEON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`curseoff`",
+        "codeText": "curseoff",
         "identifier": "UnitOrderCurseOffEx",
         "name": "WESTRING_unitorderEx_CURSEOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`flamingattack`",
+        "codeText": "flamingattack",
         "identifier": "UnitOrderFlamingAttackOnEx",
         "name": "WESTRING_unitorderEx_FLAMINGATTACKON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unflamingattack`",
+        "codeText": "unflamingattack",
         "identifier": "UnitOrderFlamingAttackOffEx",
         "name": "WESTRING_unitorderEx_FLAMINGATTACKOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`avengerform`",
+        "codeText": "avengerform",
         "identifier": "UnitOrderSphinxFormEx",
         "name": "WESTRING_unitorderEx_SPHINXFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishlife`",
+        "codeText": "replenishlife",
         "identifier": "UnitOrderReplenishLifeEx",
         "name": "WESTRING_unitorderEx_REPLENISHLIFE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishlifeon`",
+        "codeText": "replenishlifeon",
         "identifier": "UnitOrderReplenishLifeOnEx",
         "name": "WESTRING_unitorderEx_REPLENISHLIFEON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishlifeoff`",
+        "codeText": "replenishlifeoff",
         "identifier": "UnitOrderReplenishLifeOffEx",
         "name": "WESTRING_unitorderEx_REPLENISHLIFEOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishmana`",
+        "codeText": "replenishmana",
         "identifier": "UnitOrderReplenishManaEx",
         "name": "WESTRING_unitorderEx_REPLENISHMANA",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishmanaon`",
+        "codeText": "replenishmanaon",
         "identifier": "UnitOrderReplenishManaOnEx",
         "name": "WESTRING_unitorderEx_REPLENISHMANAON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`replenishmanaoff`",
+        "codeText": "replenishmanaoff",
         "identifier": "UnitOrderReplenishManaOffEx",
         "name": "WESTRING_unitorderEx_REPLENISHMANAOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionscarabson`",
+        "codeText": "carrionscarabson",
         "identifier": "UnitOrderCarrionScarabsOnEx",
         "name": "WESTRING_unitorderEx_CARRIONSCARABSON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`carrionscarabsoff`",
+        "codeText": "carrionscarabsoff",
         "identifier": "UnitOrderCarrionScarabsOffEx",
         "name": "WESTRING_unitorderEx_CARRIONSCARABSOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`locustswarm`",
+        "codeText": "locustswarm",
         "identifier": "UnitOrderLocustSwarmEx",
         "name": "WESTRING_unitorderEx_LOCUSTSWARM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`animatedead`",
+        "codeText": "animatedead",
         "identifier": "UnitOrderAnimateDeadEx",
         "name": "WESTRING_unitorderEx_ANIMATEDEAD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostarmoron`",
+        "codeText": "frostarmoron",
         "identifier": "UnitOrderFrostArmorOnEx",
         "name": "WESTRING_unitorderEx_FROSTARMORON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`frostarmoroff`",
+        "codeText": "frostarmoroff",
         "identifier": "UnitOrderFrostArmorOffEx",
         "name": "WESTRING_unitorderEx_FROSTARMOROFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepanimatedead`",
+        "codeText": "creepanimatedead",
         "identifier": "UnitOrderCreepAnimateDeadEx",
         "name": "WESTRING_unitorderEx_CREEPANIMATEDEAD",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`creephealon`",
+        "codeText": "creephealon",
         "identifier": "UnitOrderCreepHealOnEx",
         "name": "WESTRING_unitorderEx_CREEPHEALON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`creephealoff`",
+        "codeText": "creephealoff",
         "identifier": "UnitOrderCreepHealOffEx",
         "name": "WESTRING_unitorderEx_CREEPHEALOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`revenge`",
+        "codeText": "revenge",
         "identifier": "UnitOrderRevengeEx",
         "name": "WESTRING_unitorderEx_REVENGE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`creepthunderclap`",
+        "codeText": "creepthunderclap",
         "identifier": "UnitOrderCreepThunderClapEx",
         "name": "WESTRING_unitorderEx_CREEPTHUNDERCLAP",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`wateryminion`",
+        "codeText": "wateryminion",
         "identifier": "UnitOrderWateryMinionEx",
         "name": "WESTRING_unitorderEx_WATERYMINION",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`selfdestructon`",
+        "codeText": "selfdestructon",
         "identifier": "UnitOrderSelfDestructOnEx",
         "name": "WESTRING_unitorderEx_SELFDESTRUCTON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`selfdestructoff`",
+        "codeText": "selfdestructoff",
         "identifier": "UnitOrderSelfDestructOffEx",
         "name": "WESTRING_unitorderEx_SELFDESTRUCTOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`summongrizzly`",
+        "codeText": "summongrizzly",
         "identifier": "UnitOrderSummonGrizzlyEx",
         "name": "WESTRING_unitorderEx_SUMMONGRIZZLY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`summonquillbeast`",
+        "codeText": "summonquillbeast",
         "identifier": "UnitOrderSummonQuillbeastEx",
         "name": "WESTRING_unitorderEx_SUMMONQUILLBEAST",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`summonwareagle`",
+        "codeText": "summonwareagle",
         "identifier": "UnitOrderSummonWarEagleEx",
         "name": "WESTRING_unitorderEx_SUMMONWAREAGLE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`blackarrowon`",
+        "codeText": "blackarrowon",
         "identifier": "UnitOrderBlackArrowOnEx",
         "name": "WESTRING_unitorderEx_BLACKARROWON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`blackarrowoff`",
+        "codeText": "blackarrowoff",
         "identifier": "UnitOrderBlackArrowOffEx",
         "name": "WESTRING_unitorderEx_BLACKARROWOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`coldarrows`",
+        "codeText": "coldarrows",
         "identifier": "UnitOrderColdArrowOnEx",
         "name": "WESTRING_unitorderEx_COLDARROWON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`uncoldarrows`",
+        "codeText": "uncoldarrows",
         "identifier": "UnitOrderColdArrowOffEx",
         "name": "WESTRING_unitorderEx_COLDARROWOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`manashieldon`",
+        "codeText": "manashieldon",
         "identifier": "UnitOrderManaShieldOnEx",
         "name": "WESTRING_unitorderEx_MANASHIELDON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`manashieldoff`",
+        "codeText": "manashieldoff",
         "identifier": "UnitOrderManaShieldOffEx",
         "name": "WESTRING_unitorderEx_MANASHIELDOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`elementalfury`",
+        "codeText": "elementalfury",
         "identifier": "UnitOrderElementalFuryEx",
         "name": "WESTRING_unitorderEx_ELEMENTALFURY",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`howlofterror`",
+        "codeText": "howlofterror",
         "identifier": "UnitOrderHowlOfTerrorEx",
         "name": "WESTRING_unitorderEx_HOWLOFTERROR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`poisonarrows`",
+        "codeText": "poisonarrows",
         "identifier": "UnitOrderPoisonArrowsEx",
         "name": "WESTRING_unitorderEx_POISONARROWON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unpoisonarrows`",
+        "codeText": "unpoisonarrows",
         "identifier": "UnitOrderUnPoisonArrowsEx",
         "name": "WESTRING_unitorderEx_POISONARROWOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`chemicalrage`",
+        "codeText": "chemicalrage",
         "identifier": "UnitOrderChemicalRageEx",
         "name": "WESTRING_unitorderEx_CHEMICALRAGE",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`robogoblin`",
+        "codeText": "robogoblin",
         "identifier": "UnitOrderRoboGoblinEx",
         "name": "WESTRING_unitorderEx_ROBOGOBLIN",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unrobogoblin`",
+        "codeText": "unrobogoblin",
         "identifier": "UnitOrderUnRoboGoblinEx",
         "name": "WESTRING_unitorderEx_UNROBOGOBLIN",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`lavamonster`",
+        "codeText": "lavamonster",
         "identifier": "UnitOrderLavaMonsterEx",
         "name": "WESTRING_unitorderEx_LAVAMONSTER",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`incineratearrowon`",
+        "codeText": "incineratearrowon",
         "identifier": "UnitOrderIncinerateArrowOnEx",
         "name": "WESTRING_unitorderEx_INCINERATEARROWON",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`incineratearrowoff`",
+        "codeText": "incineratearrowoff",
         "identifier": "UnitOrderIncinerateArrowOffEx",
         "name": "WESTRING_unitorderEx_INCINERATEARROWOFF",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`channel`",
+        "codeText": "channel",
         "identifier": "UnitOrderChannelEx",
         "name": "WESTRING_unitorderEx_CHANNEL",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`ravenform`",
+        "codeText": "ravenform",
         "identifier": "UnitOrderMedivhRavenFormEx",
         "name": "WESTRING_unitorderEx_MEDIVHRAVENFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`unravenform`",
+        "codeText": "unravenform",
         "identifier": "UnitOrderMedivhUnRavenFormEx",
         "name": "WESTRING_unitorderEx_MEDIVHUNRAVENFORM",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`battleroar`",
+        "codeText": "battleroar",
         "identifier": "UnitOrderRexxarBattleRoarEx",
         "name": "WESTRING_unitorderEx_REXXARBATTLEROAR",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`coldarrows`",
+        "codeText": "coldarrows",
         "identifier": "UnitOrderColdArrowsEx",
         "name": "WESTRING_unitorderEx_COLDARROWS",
         "returnType": "unitorderEx"
     },
     {
         "ParamType": 2,
-        "codeText": "`uncoldarrows`",
+        "codeText": "uncoldarrows",
         "identifier": "UnitOrderUnColdArrowsEx",
         "name": "WESTRING_unitorderEx_UNCOLDARROWS",
         "returnType": "unitorderEx"
@@ -19181,98 +19181,98 @@
     },
     {
         "ParamType": 2,
-        "codeText": "`CLPB`",
+        "codeText": "CLPB",
         "identifier": "LightningTypeCLPB",
         "name": "WESTRING_LIGHTNINGTYPE_CLPB",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`CLSB`",
+        "codeText": "CLSB",
         "identifier": "LightningTypeCLSB",
         "name": "WESTRING_LIGHTNINGTYPE_CLSB",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DRAB`",
+        "codeText": "DRAB",
         "identifier": "LightningTypeDRAB",
         "name": "WESTRING_LIGHTNINGTYPE_DRAB",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DRAL`",
+        "codeText": "DRAL",
         "identifier": "LightningTypeDRAL",
         "name": "WESTRING_LIGHTNINGTYPE_DRAL",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DRAM`",
+        "codeText": "DRAM",
         "identifier": "LightningTypeDRAM",
         "name": "WESTRING_LIGHTNINGTYPE_DRAM",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`AFOD`",
+        "codeText": "AFOD",
         "identifier": "LightningTypeAFOD",
         "name": "WESTRING_LIGHTNINGTYPE_AFOD",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`FORK`",
+        "codeText": "FORK",
         "identifier": "LightningTypeFORK",
         "name": "WESTRING_LIGHTNINGTYPE_FORK",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HWPB`",
+        "codeText": "HWPB",
         "identifier": "LightningTypeHWPB",
         "name": "WESTRING_LIGHTNINGTYPE_HWPB",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HWSB`",
+        "codeText": "HWSB",
         "identifier": "LightningTypeHWSB",
         "name": "WESTRING_LIGHTNINGTYPE_HWSB",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`CHIM`",
+        "codeText": "CHIM",
         "identifier": "LightningTypeCHIM",
         "name": "WESTRING_LIGHTNINGTYPE_CHIM",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`LEAS`",
+        "codeText": "LEAS",
         "identifier": "LightningTypeLEAS",
         "name": "WESTRING_LIGHTNINGTYPE_LEAS",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`MBUR`",
+        "codeText": "MBUR",
         "identifier": "LightningTypeMBUR",
         "name": "WESTRING_LIGHTNINGTYPE_MBUR",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`MFPB`",
+        "codeText": "MFPB",
         "identifier": "LightningTypeMFPB",
         "name": "WESTRING_LIGHTNINGTYPE_MFPB",
         "returnType": "lightningtype"
     },
     {
         "ParamType": 2,
-        "codeText": "`SPLK`",
+        "codeText": "SPLK",
         "identifier": "LightningTypeSPLK",
         "name": "WESTRING_LIGHTNINGTYPE_SPLK",
         "returnType": "lightningtype"
@@ -19321,364 +19321,364 @@
     },
     {
         "ParamType": 2,
-        "codeText": "`TEST`",
+        "codeText": "TEST",
         "identifier": "UbersplatTypeTEST",
         "name": "WESTRING_UBERSPLAT_TEST",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`LSDS`",
+        "codeText": "LSDS",
         "identifier": "UbersplatTypeLSDS",
         "name": "WESTRING_UBERSPLAT_LSDS",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`LSDM`",
+        "codeText": "LSDM",
         "identifier": "UbersplatTypeLSDM",
         "name": "WESTRING_UBERSPLAT_LSDM",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`LSDL`",
+        "codeText": "LSDL",
         "identifier": "UbersplatTypeLSDL",
         "name": "WESTRING_UBERSPLAT_LSDL",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HCRT`",
+        "codeText": "HCRT",
         "identifier": "UbersplatTypeHCRT",
         "name": "WESTRING_UBERSPLAT_HCRT",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`UDSU`",
+        "codeText": "UDSU",
         "identifier": "UbersplatTypeUDSU",
         "name": "WESTRING_UBERSPLAT_UDSU",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DNCS`",
+        "codeText": "DNCS",
         "identifier": "UbersplatTypeDNCS",
         "name": "WESTRING_UBERSPLAT_DNCS",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HMTP`",
+        "codeText": "HMTP",
         "identifier": "UbersplatTypeHMTP",
         "name": "WESTRING_UBERSPLAT_HMTP",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`SCTP`",
+        "codeText": "SCTP",
         "identifier": "UbersplatTypeSCTP",
         "name": "WESTRING_UBERSPLAT_SCTP",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`AMRC`",
+        "codeText": "AMRC",
         "identifier": "UbersplatTypeAMRC",
         "name": "WESTRING_UBERSPLAT_AMRC",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DRKC`",
+        "codeText": "DRKC",
         "identifier": "UbersplatTypeDRKC",
         "name": "WESTRING_UBERSPLAT_DRKC",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DOSB`",
+        "codeText": "DOSB",
         "identifier": "UbersplatTypeDOSB",
         "name": "WESTRING_UBERSPLAT_DOSB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DOMB`",
+        "codeText": "DOMB",
         "identifier": "UbersplatTypeDOMB",
         "name": "WESTRING_UBERSPLAT_DOMB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DOLB`",
+        "codeText": "DOLB",
         "identifier": "UbersplatTypeDOLB",
         "name": "WESTRING_UBERSPLAT_DOLB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DHSB`",
+        "codeText": "DHSB",
         "identifier": "UbersplatTypeDHSB",
         "name": "WESTRING_UBERSPLAT_DHSB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DHMB`",
+        "codeText": "DHMB",
         "identifier": "UbersplatTypeDHMB",
         "name": "WESTRING_UBERSPLAT_DHMB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DHLB`",
+        "codeText": "DHLB",
         "identifier": "UbersplatTypeDHLB",
         "name": "WESTRING_UBERSPLAT_DHLB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DUSB`",
+        "codeText": "DUSB",
         "identifier": "UbersplatTypeDUSB",
         "name": "WESTRING_UBERSPLAT_DUSB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DUMB`",
+        "codeText": "DUMB",
         "identifier": "UbersplatTypeDUMB",
         "name": "WESTRING_UBERSPLAT_DUMB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DULB`",
+        "codeText": "DULB",
         "identifier": "UbersplatTypeDULB",
         "name": "WESTRING_UBERSPLAT_DULB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DNSB`",
+        "codeText": "DNSB",
         "identifier": "UbersplatTypeDNSB",
         "name": "WESTRING_UBERSPLAT_DNSB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DNMB`",
+        "codeText": "DNMB",
         "identifier": "UbersplatTypeDNMB",
         "name": "WESTRING_UBERSPLAT_DNMB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DNSA`",
+        "codeText": "DNSA",
         "identifier": "UbersplatTypeDNSA",
         "name": "WESTRING_UBERSPLAT_DNSA",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DNMA`",
+        "codeText": "DNMA",
         "identifier": "UbersplatTypeDNMA",
         "name": "WESTRING_UBERSPLAT_DNMA",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HSMA`",
+        "codeText": "HSMA",
         "identifier": "UbersplatTypeHSMA",
         "name": "WESTRING_UBERSPLAT_HSMA",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HMED`",
+        "codeText": "HMED",
         "identifier": "UbersplatTypeHMED",
         "name": "WESTRING_UBERSPLAT_HMED",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HLAR`",
+        "codeText": "HLAR",
         "identifier": "UbersplatTypeHLAR",
         "name": "WESTRING_UBERSPLAT_HLAR",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`OSMA`",
+        "codeText": "OSMA",
         "identifier": "UbersplatTypeOSMA",
         "name": "WESTRING_UBERSPLAT_OSMA",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`OMED`",
+        "codeText": "OMED",
         "identifier": "UbersplatTypeOMED",
         "name": "WESTRING_UBERSPLAT_OMED",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`OLAR`",
+        "codeText": "OLAR",
         "identifier": "UbersplatTypeOLAR",
         "name": "WESTRING_UBERSPLAT_OLAR",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`USMA`",
+        "codeText": "USMA",
         "identifier": "UbersplatTypeUSMA",
         "name": "WESTRING_UBERSPLAT_USMA",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`UMED`",
+        "codeText": "UMED",
         "identifier": "UbersplatTypeUMED",
         "name": "WESTRING_UBERSPLAT_UMED",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`ULAR`",
+        "codeText": "ULAR",
         "identifier": "UbersplatTypeULAR",
         "name": "WESTRING_UBERSPLAT_ULAR",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`ESMA`",
+        "codeText": "ESMA",
         "identifier": "UbersplatTypeESMA",
         "name": "WESTRING_UBERSPLAT_ESMA",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`EMDA`",
+        "codeText": "EMDA",
         "identifier": "UbersplatTypeEMDA",
         "name": "WESTRING_UBERSPLAT_EMDA",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`ESMB`",
+        "codeText": "ESMB",
         "identifier": "UbersplatTypeESMB",
         "name": "WESTRING_UBERSPLAT_ESMB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`EMDB`",
+        "codeText": "EMDB",
         "identifier": "UbersplatTypeEMDB",
         "name": "WESTRING_UBERSPLAT_EMDB",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HTOW`",
+        "codeText": "HTOW",
         "identifier": "UbersplatTypeHTOW",
         "name": "WESTRING_UBERSPLAT_HTOW",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HCAS`",
+        "codeText": "HCAS",
         "identifier": "UbersplatTypeHCAS",
         "name": "WESTRING_UBERSPLAT_HCAS",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`NGOL`",
+        "codeText": "NGOL",
         "identifier": "UbersplatTypeNGOL",
         "name": "WESTRING_UBERSPLAT_NGOL",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`THND`",
+        "codeText": "THND",
         "identifier": "UbersplatTypeTHND",
         "name": "WESTRING_UBERSPLAT_THND",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`NDGS`",
+        "codeText": "NDGS",
         "identifier": "UbersplatTypeNDGS",
         "name": "WESTRING_UBERSPLAT_NDGS",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`CLTS`",
+        "codeText": "CLTS",
         "identifier": "UbersplatTypeCLTS",
         "name": "WESTRING_UBERSPLAT_CLTS",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HFS1`",
+        "codeText": "HFS1",
         "identifier": "UbersplatTypeHFS1",
         "name": "WESTRING_UBERSPLAT_HFS1",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`HFS2`",
+        "codeText": "HFS2",
         "identifier": "UbersplatTypeHFS2",
         "name": "WESTRING_UBERSPLAT_HFS2",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`USBR`",
+        "codeText": "USBR",
         "identifier": "UbersplatTypeUSBR",
         "name": "WESTRING_UBERSPLAT_USBR",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`NLAR`",
+        "codeText": "NLAR",
         "identifier": "UbersplatTypeNLAR",
         "name": "WESTRING_UBERSPLAT_NLAR",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`NMED`",
+        "codeText": "NMED",
         "identifier": "UbersplatTypeNMED",
         "name": "WESTRING_UBERSPLAT_NMED",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DPSW`",
+        "codeText": "DPSW",
         "identifier": "UbersplatTypeDPSW",
         "name": "WESTRING_UBERSPLAT_DPSW",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`DPSE`",
+        "codeText": "DPSE",
         "identifier": "UbersplatTypeDPSE",
         "name": "WESTRING_UBERSPLAT_DPSE",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`NVOL`",
+        "codeText": "NVOL",
         "identifier": "UbersplatTypeNVOL",
         "name": "WESTRING_UBERSPLAT_NVOL",
         "returnType": "ubersplattype"
     },
     {
         "ParamType": 2,
-        "codeText": "`NVCR`",
+        "codeText": "NVCR",
         "identifier": "UbersplatTypeNVCR",
         "name": "WESTRING_UBERSPLAT_NVCR",
         "returnType": "ubersplattype"

@@ -93,6 +93,9 @@ namespace GUI
             Application.Current.Dispatcher.Invoke(delegate
             {
                 var window = new SavingMapWindow();
+                window.WindowStartupLocation = WindowStartupLocation.Manual;
+                window.Top = this.Top + this.Height / 2 - window.Height / 2;
+                window.Left = this.Left + this.Width / 2 - window.Width / 2;
                 window.ShowDialog();
                 ControllerMapData controllerMapData = new ControllerMapData();
                 var modifiedTriggers = controllerMapData.ReloadMapData();
@@ -100,6 +103,9 @@ namespace GUI
                     return;
 
                 ChangedTriggersWindow changedTriggersWindow = new ChangedTriggersWindow(modifiedTriggers);
+                changedTriggersWindow.WindowStartupLocation = WindowStartupLocation.Manual;
+                changedTriggersWindow.Top = this.Top + this.Height / 2 - changedTriggersWindow.Height / 2;
+                changedTriggersWindow.Left = this.Left + this.Width / 2 - changedTriggersWindow.Width / 2;
                 changedTriggersWindow.Show();
             });
         }
@@ -230,7 +236,8 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                DialogBox dialogBox = new DialogBox("Error", ex.Message);
+                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                dialogBox.ShowDialog();
             }
         }
 
@@ -251,7 +258,8 @@ namespace GUI
                 controller.BuildMap();
             } catch (Exception ex)
             {
-                DialogBox dialogBox = new DialogBox("Error", ex.Message);
+                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                dialogBox.ShowDialog();
             }
         }
 

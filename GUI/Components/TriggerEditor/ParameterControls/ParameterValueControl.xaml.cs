@@ -102,6 +102,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     values = triggers.Select(trig => new Value() { identifier = trig.GetId().ToString(), returnType = returnType }).ToList();
                     this.valueControl = new ValueControlGeneric(values);
                     break;
+                case "scriptcode":
+                    this.valueControl = new ValueControlScript();
+                    break;
                 default:
                     break;
             }
