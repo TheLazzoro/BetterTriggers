@@ -82,6 +82,13 @@ namespace BetterTriggers.Controllers
             string mapDir = ContainerProject.project.War3MapDirectory;
             var map = Map.Open(mapDir);
             MapBuilder builder = new MapBuilder(map);
+            builder.AddFiles(mapDir);
+            var archiveCreateOptions = new MpqArchiveCreateOptions
+            {
+                ListFileCreateMode = MpqFileCreateMode.Overwrite,
+                AttributesCreateMode = MpqFileCreateMode.Prune,
+                BlockSize = 3,
+            };
 
             string rootDir = Path.GetDirectoryName(ContainerProject.project.Root);
             string fullPath = string.Empty;
@@ -93,17 +100,15 @@ namespace BetterTriggers.Controllers
                 fullPath = Path.Combine(destinationDir, settings.CopyLocation + ".w3x");
             }
 
-            builder.Build(fullPath);
-
             bool didWrite = false;
             int exeptions = 0;
-            while (!didWrite && exeptions < 10)
+            while (!didWrite && exeptions < 100)
             {
                 Thread.Sleep(10);
 
                 try
                 {
-                    builder.Build(fullPath);
+                    builder.Build(fullPath, archiveCreateOptions);
                     didWrite = true;
 
                 } catch(Exception ex) { exeptions++; }
