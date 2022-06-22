@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="DialogBox" Height="auto" Width="351" SizeToContent="Height" Background="#FF282826" KeyDown="Window_KeyDown" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="DialogBox" WindowStartupLocation="CenterOwner" Height="auto" Width="351" SizeToContent="Height" Background="#FF282826" KeyDown="Window_KeyDown" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>

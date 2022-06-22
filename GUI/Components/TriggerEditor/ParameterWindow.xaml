@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         UseLayoutRounding="True"
         mc:Ignorable="d"
-        Title="ParameterWindow" Height="450" Width="800" Background="#FF404040">
+        Title="ParameterWindow" WindowStartupLocation="CenterOwner" Height="450" Width="800" Background="#FF404040" >
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>

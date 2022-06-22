@@ -522,6 +522,20 @@
             </Style>
 
 
+            <!-- TEXTBOX -->
+            <Style TargetType="TextBox" >
+                <Setter Property="Background" Value="#282828"/>
+                <Setter Property="Foreground" Value="#eee"/>
+                <Setter Property="BorderBrush" Value="#222"/>
+                <Style.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+
+
             <!-- LISTVIEW HEADER -->
             <!--
             <Style TargetType="{x:Type GridViewColumnHeader}">

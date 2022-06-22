@@ -21,11 +21,13 @@ namespace GUI
     {
         TriggerExplorer triggerExplorer;
         TreeItemExplorerElement selectedExplorerItem;
+        static Window instance;
 
 
         public MainWindow()
         {
             InitializeComponent();
+            instance = this;
 
             BetterTriggers.Init.Initialize();
             CustomMapData.OnSaving += CustomMapData_OnSaving;
@@ -80,6 +82,15 @@ namespace GUI
 
             menuTools.Header            = Locale.Translate(menuTools.Header as string);
             menuItemOptions.Header      = Locale.Translate(menuItemOptions.Header as string);
+        }
+
+        /// <summary>
+        /// This function only exists because of WPF wizardry.
+        /// With a debug build 'Application.Current.MainWindow' works, but not in release.
+        /// </summary>
+        public static Window GetMainWindow()
+        {
+            return instance;
         }
 
 

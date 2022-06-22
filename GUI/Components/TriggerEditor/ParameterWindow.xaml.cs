@@ -32,6 +32,8 @@ namespace GUI
         public ParameterWindow(Function function, Parameter parameter)
         {
             InitializeComponent();
+            this.Owner = MainWindow.GetMainWindow();
+
 
             string returnType = parameter.returnType;
 
@@ -161,6 +163,5 @@ namespace GUI
             this.isOK = true;
             this.Close();
         }
-
     }
 }

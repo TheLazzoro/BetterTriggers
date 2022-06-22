@@ -14,16 +14,10 @@ namespace GUI
         public MessageBox(string caption, string content)
         {
             InitializeComponent();
+            this.Owner = MainWindow.GetMainWindow();
 
             this.Title = caption;
             textBlockMessage.Text = content;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Window parentWindow = Application.Current.MainWindow;
-            this.Top = parentWindow.Top + parentWindow.Height / 2 - this.Height / 2;
-            this.Left = parentWindow.Left + parentWindow.Width / 2 - this.Width / 2;
         }
 
         private void OKButton_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="381" Width="375" MinWidth="400" Background="#FF202020">
+        Title="SettingsWindow" WindowStartupLocation="CenterOwner" Height="380" MinHeight="380" Width="410" MinWidth="410" Background="#FF353535">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -62,7 +62,7 @@
         <CheckBox x:Name="checkBoxFixedSeed" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="#eee">Use Fixed Random Seed</CheckBox>
         <CheckBox x:Name="checkBoxNoWFPause" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Foreground="#eee">Use No Window Focus Pause</CheckBox>
 
-        <TextBox x:Name="textBoxCopiedMapFile" Grid.Row="8" Grid.Column="2" Margin="0,2,0,2"></TextBox>
+        <TextBox x:Name="textBoxCopiedMapFile" Width="200" Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="0,2,0,2"></TextBox>
 
         <Button x:Name="btnOK" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="10" Grid.Column="3" Margin="0,9,90,9" Click="btnOK_Click">OK</Button>
         <Button x:Name="btnCancel" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="10" Grid.Column="3" Margin="0,9,20,9" IsCancel="True" >Cancel</Button>

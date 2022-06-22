@@ -12,10 +12,38 @@ namespace GUI.Components.TriggerEditor
     public partial class TriggerElementMenuWindow : Window
     {
         public TriggerElement createdTriggerElement;
+        TriggerElementType triggerElementType;
 
         public TriggerElementMenuWindow(TriggerElementType triggerElementType)
         {
             InitializeComponent();
+            this.Owner = MainWindow.GetMainWindow();
+
+
+            this.triggerElementType = triggerElementType;
+
+            Window parentWindow = Application.Current.MainWindow;
+            this.Top = parentWindow.Top + parentWindow.Height / 2 - this.Height / 2;
+            this.Left = parentWindow.Left + parentWindow.Width / 2 - this.Width / 2;
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (ListViewItem)listControl.listView.SelectedItem;
+            createdTriggerElement = (TriggerElement)item.Tag;
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Application.Current.MainWindow;
+            this.Top = parentWindow.Top + parentWindow.Height / 2 - this.Height / 2;
+            this.Left = parentWindow.Left + parentWindow.Width / 2 - this.Width / 2;
 
             var controllerTriggerData = new ControllerTriggerData();
             var templates = new List<FunctionTemplate>();
@@ -61,18 +89,6 @@ namespace GUI.Components.TriggerEditor
             grid.Children.Add(categoryControl);
             Grid.SetRow(categoryControl, 1);
             Grid.SetRowSpan(categoryControl, 3);
-        }
-
-        private void btnOK_Click(object sender, RoutedEventArgs e)
-        {
-            var item = (ListViewItem)listControl.listView.SelectedItem;
-            createdTriggerElement = (TriggerElement)item.Tag;
-            this.Close();
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }
