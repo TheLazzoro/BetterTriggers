@@ -29,7 +29,7 @@
         <Label Content="Variable Type:" Grid.Row="2" Grid.Column="0"  Foreground="White"/>
         <ComboBox x:Name="comboBoxVariableType" Grid.Row="2" Grid.Column="1" Margin="5,4,5,4" HorizontalAlignment="Left" Width="200" Background="#FF494949" BorderBrush="#FF575757" SelectionChanged="comboBoxVariableType_SelectionChanged" Loaded="comboBoxVariableType_Loaded" />
 
-        <CheckBox x:Name="checkBoxIsArray" Content="Array" Foreground="White" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0" Click="checkBoxIsArray_Click" Background="#FF282828" BorderBrush="#FF0A0A0A"/>
+        <CheckBox x:Name="checkBoxIsArray" Width="75" Content="Array" Foreground="White" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Click="checkBoxIsArray_Click" Background="#FF282828" BorderBrush="#FF0A0A0A"/>
         
         <Label x:Name="lblDimensions" Content="Dimensions:" Foreground="White" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0"/>
         <ComboBox x:Name="comboBoxArrayDimensions" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="85,0,0,0" Width="50" SelectionChanged="comboBoxArrayDimensions_SelectionChanged">

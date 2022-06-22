@@ -5,6 +5,7 @@ using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
 using GUI.Container;
 using GUI.Controllers;
+using GUI.Utility;
 using Model.EditorData;
 using Model.SaveableData;
 using Newtonsoft.Json;
@@ -263,14 +264,6 @@ namespace GUI.Components
             _IsDragging = false;
         }
 
-        public static bool IsMouseInFirstHalf(FrameworkElement container, Point mousePosition, Orientation orientation)
-        {
-            if (orientation == Orientation.Vertical)
-            {
-                return mousePosition.Y < container.ActualHeight / 2;
-            }
-            return mousePosition.X < container.ActualWidth / 2;
-        }
 
         /// <summary>
         /// Event happens when trigger element is dragged.
@@ -300,7 +293,7 @@ namespace GUI.Components
                 return;
             }
 
-            if (IsCircularParent(dragItem, dropTarget))
+            if (UIUtility.IsCircularParent(dragItem, dropTarget))
                 return;
 
             if (dropTarget is TreeViewTriggerElement)
@@ -313,7 +306,7 @@ namespace GUI.Components
                     return;
 
                 var relativePos = e.GetPosition(dropTarget);
-                bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
+                bool inFirstHalf = UIUtility.IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
                 if (inFirstHalf)
                 {
                     adorner = AdornerLayer.GetAdornerLayer(dropTarget);
@@ -358,24 +351,6 @@ namespace GUI.Components
                 parentDropTarget = null;
             }
         }
-
-        private bool IsCircularParent(TreeViewItem dragItem, TreeViewItem dropTarget)
-        {
-            bool IsCircularParent = false;
-            TreeViewItem parent = dropTarget;
-            while (IsCircularParent == false && parent is TreeViewItem)
-            {
-                parent = parent.Parent as TreeViewItem;
-                if (parent == null)
-                    break;
-
-                if (parent == dragItem)
-                    IsCircularParent = true;
-            }
-
-            return IsCircularParent;
-        }
-
 
 
         private void treeViewTriggers_Drop(object sender, DragEventArgs e)

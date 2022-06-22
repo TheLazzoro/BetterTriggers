@@ -18,9 +18,9 @@ namespace BetterTriggers.WorldEdit
 {
     public class UnitTypes
     {
-        private static Dictionary<string, UnitType> unitTypes { get; set; }
-        private static Dictionary<string, UnitType> unitTypesBase { get; set; }
-        private static Dictionary<string, UnitType> unitTypesCustom { get; set; }
+        private static Dictionary<string, UnitType> unitTypes;
+        private static Dictionary<string, UnitType> unitTypesBase;
+        private static Dictionary<string, UnitType> unitTypesCustom;
 
         internal static List<UnitType> GetAll()
         {

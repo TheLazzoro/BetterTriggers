@@ -60,8 +60,20 @@ namespace GUI
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                lblProjectDestination.Content = dialog.SelectedPath;
+                if(dialog.SelectedPath != "")
+                {
+                    lblProjectDestination.Content = dialog.SelectedPath;
+                    EnableButton();
+                }
             }
+        }
+
+        private void EnableButton()
+        {
+            if(lblProjectDestination.Content != null && textBoxProjectName.Text.Length > 0)
+                btnCreate.IsEnabled = true;
+            else
+                btnCreate.IsEnabled = false;
         }
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
@@ -77,6 +89,11 @@ namespace GUI
 
             this.Ok = true;
             this.Close();
+        }
+
+        private void textBoxProjectName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
         }
     }
 }

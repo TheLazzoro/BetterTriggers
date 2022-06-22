@@ -24,7 +24,7 @@
 
         <Label Content="Create a new project" Grid.Row="0" Foreground="#eee" FontSize="24" />
         <Label Content="Project Name:" Grid.Row="1" Foreground="#eee"/>
-        <TextBox x:Name="textBoxProjectName" Grid.Row="2" Margin="5,0,0,0" Width="250" HorizontalAlignment="Left" Foreground="#eee" Background="#FF202020" BorderBrush="#FF0A0A0A"/>
+        <TextBox x:Name="textBoxProjectName" Grid.Row="2" Margin="5,0,0,0" Width="250" HorizontalAlignment="Left" Foreground="#eee" Background="#FF202020" BorderBrush="#FF0A0A0A" TextChanged="textBoxProjectName_TextChanged"/>
 
         <Label Content="Select scripting language:" Grid.Row="3" Foreground="#eee" VerticalAlignment="Bottom" FontSize="16"/>
         <RadioButton x:Name="radBtnJass" Content="vJass" Grid.Row="4" Foreground="#eee" Margin="5,5,5,5" Checked="radBtnJass_Checked"/>
@@ -36,7 +36,7 @@
 
         <Label x:Name="lblProjectDestination" Content="--- Empty ---" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Foreground="#eee" />
 
-        <Button x:Name="btnCreate" Content="Create Project" Grid.Row="7" Grid.Column="1" Width="100" Margin="5,5,5,5" HorizontalAlignment="Right"  Click="btnCreate_Click"/>
+        <Button x:Name="btnCreate" IsEnabled="False" Content="Create Project" Grid.Row="7" Grid.Column="1" Width="100" Margin="5,5,5,5" HorizontalAlignment="Right"  Click="btnCreate_Click"/>
 
     </Grid>
 </Window>

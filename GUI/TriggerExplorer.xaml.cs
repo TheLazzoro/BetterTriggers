@@ -20,6 +20,7 @@ using BetterTriggers.Containers;
 using GUI.Components;
 using Model.EditorData;
 using GUI.Components.Shared;
+using GUI.Utility;
 
 namespace GUI
 {
@@ -38,6 +39,7 @@ namespace GUI
         Point _startPoint;
         TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
+        TreeViewItem parentDropTarget;
 
         int insertIndex = 0; // used when a file is moved from one location to the other.
                              // We can use it when the user wants to drop a file at a specific index.
@@ -45,6 +47,7 @@ namespace GUI
         // attaches to a treeviewitem
         AdornerLayer adorner;
         TreeItemAdornerLine lineIndicator;
+        TreeItemAdornerSquare squareIndicator;
 
         public TriggerExplorer()
         {
@@ -76,38 +79,24 @@ namespace GUI
             e.Handled = true; // prevents event from firing up the parent items
         }
 
-        public static bool IsMouseInFirstHalf(FrameworkElement container, Point mousePosition, Orientation orientation)
-        {
-            if (orientation == Orientation.Vertical)
-            {
-                return mousePosition.Y < container.ActualHeight / 2;
-            }
-            return mousePosition.X < container.ActualWidth / 2;
-        }
-
         /// <summary>
         /// // It is necessary to traverse the item's parents since drag & drop picks up
         /// things like 'TextBlock' and 'Border' on the drop target when dropping the 
         /// dragged element.
         /// </summary>
         /// <returns></returns>
-        private TreeItemExplorerElement GetTraversedItem(UIElement uiElement)
+        private TreeItemExplorerElement GetTraversedTargetDropItem(FrameworkElement dropTarget)
         {
-            FrameworkElement target = uiElement as FrameworkElement;
-
-            if (target is TreeView)
+            if (dropTarget == null || dropTarget is TreeView)
                 return null;
 
             TreeItemExplorerElement traversedTarget = null;
-            if (target != null && !(target is TreeView))
+            while (traversedTarget == null)
             {
-                while (traversedTarget == null)
+                dropTarget = dropTarget.Parent as FrameworkElement;
+                if (dropTarget is TreeViewItem)
                 {
-                    target = target.Parent as FrameworkElement;
-                    if (target is TreeItemExplorerElement)
-                    {
-                        traversedTarget = (TreeItemExplorerElement)target;
-                    }
+                    traversedTarget = (TreeItemExplorerElement)dropTarget;
                 }
             }
 
@@ -174,51 +163,131 @@ namespace GUI
             //item.AllowDrop = true; // maybe needed?
         }
 
-        private void treeViewItem_PreviewDragEnter(object sender, DragEventArgs e)
+        // This is the actual function we want to use.
+        private void treeViewItem_DragOver(object sender, DragEventArgs e)
         {
-            // Use this event to display feedback to the user when dragging?
+            if (dragItem == null)
+                return;
 
-            // var header = (TreeViewItem)treeViewTriggerExplorer.Items[0];
-            //header.Header = ;
+            TreeViewItem currentParent = (TreeViewItem)dragItem.Parent;
+            TreeItemExplorerElement dropTarget = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+            int currentIndex = currentParent.Items.IndexOf(dragItem);
+            if (dropTarget == null)
+                return;
 
+            dropTarget.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+
+            if (lineIndicator != null)
+                adorner.Remove(lineIndicator);
+            if (squareIndicator != null)
+                adorner.Remove(squareIndicator);
+
+            if (dropTarget == dragItem)
+            {
+                parentDropTarget = null;
+                return;
+            }
+
+            if (UIUtility.IsCircularParent(dragItem, dropTarget))
+                return;
+
+            if (dropTarget is TreeItemExplorerElement && !(dropTarget.Ielement is ExplorerElementRoot))
+            {
+                var relativePos = e.GetPosition(dropTarget);
+                TreeItemLocation location = UIUtility.TreeItemGetMouseLocation(dropTarget, relativePos);
+
+                if (dropTarget.Ielement is ExplorerElementFolder)
+                    DragOverLogic(dropTarget, location, currentIndex);
+                else
+                {
+                    bool InFirstHalf = UIUtility.IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
+                    if (InFirstHalf)
+                        DragOverLogic(dropTarget, TreeItemLocation.Top, currentIndex);
+                    else
+                        DragOverLogic(dropTarget, TreeItemLocation.Bottom, currentIndex);
+                }
+
+            }
+            else
+                parentDropTarget = null;
+        }
+
+        private void DragOverLogic(TreeItemExplorerElement dropTarget, TreeItemLocation location, int currentIndex)
+        {
+            if (location == TreeItemLocation.Top)
+            {
+                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
+                lineIndicator = new TreeItemAdornerLine(dropTarget, true);
+                adorner.Add(lineIndicator);
+
+                parentDropTarget = (TreeViewItem)dropTarget.Parent;
+                insertIndex = parentDropTarget.Items.IndexOf(dropTarget);
+
+                // We detach the item before inserting, so the index goes one down.
+                if (dropTarget.Parent == dragItem.Parent && insertIndex > currentIndex)
+                    insertIndex--;
+            }
+            else if (location == TreeItemLocation.Middle && dropTarget.Ielement is ExplorerElementFolder)
+            {
+                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
+                dropTarget.Background = new SolidColorBrush(Color.FromArgb(100, 255, 255, 255));
+                //squareIndicator = new TreeItemAdornerSquare(dropTarget);
+                //adorner.Add(squareIndicator);
+
+                parentDropTarget = dropTarget;
+                insertIndex = 0;
+            }
+            else if (location == TreeItemLocation.Bottom)
+            {
+                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
+                lineIndicator = new TreeItemAdornerLine(dropTarget, false);
+                adorner.Add(lineIndicator);
+
+                parentDropTarget = (TreeViewItem)dropTarget.Parent;
+                insertIndex = parentDropTarget.Items.IndexOf(dropTarget) + 1;
+
+                // We detach the item before inserting, so the index goes one down.
+                if (dropTarget.Parent == dragItem.Parent && insertIndex > currentIndex)
+                    insertIndex--;
+            }
         }
 
         private void treeViewTriggerExplorer_Drop(object sender, DragEventArgs e)
         {
-            if (_IsDragging && dragItem != null)
+            if (!_IsDragging || dragItem == null)
+                return;
+
+            if (adorner != null)
             {
-                if (adorner != null)
+                if (lineIndicator != null)
                     adorner.Remove(lineIndicator);
-
-                TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
-                if (dragItem == dropTarget || dropTarget == null || dropTarget.Parent is TreeView)
-                    return;
-
-                var targetParent = (TreeItemExplorerElement)dropTarget.Parent;
-
-                var dragItemParent = (TreeItemExplorerElement)dragItem.Parent;
-                dragItemParent.Items.Remove(dragItem); // suspect
-                var relativePos = e.GetPosition(dropTarget);
-                bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
-                if (inFirstHalf)
-                    this.insertIndex = targetParent.Items.IndexOf(dropTarget);
-                else
-                    this.insertIndex = targetParent.Items.IndexOf(dropTarget) + 1;
-
-                // We also insert the item here, in case the file didn't get moved to another location
-                targetParent.Items.Insert(this.insertIndex, dragItem);
-                if (dragItemParent == targetParent)
-                {
-                    ControllerProject controllerProject = new ControllerProject();
-                    controllerProject.RearrangeElement(dragItem.Ielement, insertIndex);
-                }
-
-                ControllerFileSystem controller = new ControllerFileSystem();
-                controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
-
-                // focus select item again
-                dragItem.IsSelected = true;
+                if (squareIndicator != null)
+                    adorner.Remove(squareIndicator);
             }
+
+            if (parentDropTarget == null)
+                return;
+
+            parentDropTarget.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+
+            var dragItemParent = (TreeItemExplorerElement)dragItem.Parent;
+            dragItemParent.Items.Remove(dragItem); // hack ?
+
+            // We also insert the item here, in case the file only moved in the dir and didn't get moved to another location
+            parentDropTarget.Items.Insert(this.insertIndex, dragItem);
+            if (dragItemParent == parentDropTarget)
+            {
+                ControllerProject controllerProject = new ControllerProject();
+                controllerProject.RearrangeElement(dragItem.Ielement, insertIndex);
+                return;
+            }
+
+            var dropTarget = (TreeItemExplorerElement)parentDropTarget;
+            ControllerFileSystem controller = new ControllerFileSystem();
+            controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
+
+            // focus select item again
+            dragItem.IsSelected = true;
         }
 
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
@@ -266,38 +335,9 @@ namespace GUI
             }
         }
 
-
-        private void treeViewTriggerExplorer_DragOver(object sender, DragEventArgs e)
-        {
-            if (dragItem == null)
-                return;
-
-            TreeItemExplorerElement dropTarget = GetTraversedItem(e.Source as FrameworkElement);
-            if (dropTarget == null)
-                return;
-
-            if (lineIndicator != null)
-                adorner.Remove(lineIndicator);
-
-            var relativePos = e.GetPosition(dropTarget);
-            bool inFirstHalf = IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
-            if (inFirstHalf)
-            {
-                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
-                lineIndicator = new TreeItemAdornerLine(dropTarget, true);
-                adorner.Add(lineIndicator);
-            }
-            else
-            {
-                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
-                lineIndicator = new TreeItemAdornerLine(dropTarget, false);
-                adorner.Add(lineIndicator);
-            }
-        }
-
         private void treeViewTriggerExplorer_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            TreeItemExplorerElement rightClickedElement = GetTraversedItem(e.Source as FrameworkElement);
+            TreeItemExplorerElement rightClickedElement = GetTraversedTargetDropItem(e.Source as FrameworkElement);
 
             if (rightClickedElement == null)
                 return;

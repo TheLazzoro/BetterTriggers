@@ -10,7 +10,7 @@ namespace BetterTriggers.WorldEdit
 {
     public class Info
     {
-        internal static MapInfo MapInfo { get; set; }
+        internal static MapInfo MapInfo;
 
 
         internal static void Load()

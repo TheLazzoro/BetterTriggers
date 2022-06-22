@@ -36,6 +36,9 @@ namespace BetterTriggers.Controllers
 
         public void GenerateScript()
         {
+            if (ContainerProject.project == null)
+                return;
+
             string outputPath = Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j");
             var inMemoryFiles = ContainerProject.projectFiles;
 

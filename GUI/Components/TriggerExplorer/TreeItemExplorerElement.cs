@@ -121,14 +121,14 @@ namespace GUI.Components.TriggerExplorer
             ControllerProject controller = new ControllerProject();
             if (e.Key == Key.Enter)
             {
-                if (!controller.DoesNameExist(this.Ielement, renameText))
+                try
                 {
-                    this.treeItemHeader.ShowRenameBox(false);
                     controller.RenameElement(this.Ielement, renameText);
+                    this.treeItemHeader.ShowRenameBox(false);
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox messageBox = new MessageBox("Error", $"An element with name '{renameText}' already exists.");
+                    MessageBox messageBox = new MessageBox("Error", ex.Message);
                     messageBox.ShowDialog();
                 }
             }

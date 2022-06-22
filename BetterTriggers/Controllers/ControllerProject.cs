@@ -76,6 +76,9 @@ namespace BetterTriggers.Controllers
         /// <returns>Full path of the archive.</returns>
         public string BuildMap(string destinationDir = null)
         {
+            if (ContainerProject.project == null)
+                return null;
+
             ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
             scriptGenerator.GenerateScript();
 
@@ -261,6 +264,9 @@ namespace BetterTriggers.Controllers
 
         public void SaveProject()
         {
+            if (ContainerProject.projectFiles == null)
+                return;
+
             // Write to unsaved
             var unsaved = ContainerUnsavedFiles.GetAllUnsaved();
             for (int i = 0; i < ContainerUnsavedFiles.Count(); i++)
@@ -546,20 +552,8 @@ namespace BetterTriggers.Controllers
         /// <param name="index"></param>
         public void RearrangeElement(IExplorerElement element, int insertIndex)
         {
-            var parent = FindExplorerElementFolder(ContainerProject.projectFiles[0], Path.GetDirectoryName(element.GetPath()));
-
-            if (parent is ExplorerElementRoot)
-            {
-                var root = (ExplorerElementRoot)parent;
-                root.RemoveFromList(element);
-                root.InsertIntoList(element, insertIndex);
-            }
-            else if (parent is ExplorerElementFolder)
-            {
-                var folder = (ExplorerElementFolder)parent;
-                folder.RemoveFromList(element);
-                folder.InsertIntoList(element, insertIndex);
-            }
+            CommandExplorerElementMoveEx commandEx = new CommandExplorerElementMoveEx(element, insertIndex);
+            commandEx.Execute();
         }
 
         public void OnElementChanged(string fullPath)
@@ -718,19 +712,31 @@ namespace BetterTriggers.Controllers
 
         public void RenameElement(IExplorerElement explorerElement, string renameText)
         {
+            string oldPath = explorerElement.GetPath();
+
             string formattedName = string.Empty;
             if (explorerElement is ExplorerElementFolder)
                 formattedName = renameText;
             else if (explorerElement is ExplorerElementTrigger)
+            {
+                if (ContainerTriggers.Contains(renameText))
+                    throw new Exception($"Trigger '{renameText}' already exists.");
+
                 formattedName = renameText + ".trg";
+            }
             else if (explorerElement is ExplorerElementScript)
                 formattedName = renameText + ".j";
             else if (explorerElement is ExplorerElementVariable)
+            {
+                if (ContainerVariables.Contains(renameText))
+                    throw new Exception($"Variable '{renameText}' already exists.");
+
                 formattedName = renameText + ".var";
+            }
 
             ContainerProject.insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
             ControllerFileSystem controller = new ControllerFileSystem();
-            controller.RenameElement(explorerElement.GetPath(), formattedName);
+            controller.RenameElement(oldPath, formattedName);
         }
 
         public IExplorerElement GetCopiedElement()
@@ -741,6 +747,9 @@ namespace BetterTriggers.Controllers
         public void CopyExplorerElement(IExplorerElement explorerElement, bool isCut = false)
         {
             IExplorerElement copied = explorerElement.Clone();
+            if (copied == null)
+                return;
+
             ContainerCopiedElements.CopiedExplorerElement = copied;
 
             if (isCut)

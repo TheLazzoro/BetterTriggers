@@ -154,9 +154,10 @@ namespace Model.EditorData
             throw new NotImplementedException();
         }
 
+        // Root cannot be copied.
         public IExplorerElement Clone()
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

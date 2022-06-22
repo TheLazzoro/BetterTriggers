@@ -52,8 +52,20 @@ namespace BetterTriggers.Controllers
         /// <param name="renamedText"></param>
         public void RenameElement(string oldPath, string renamedText)
         {
-            string newPath = Path.GetDirectoryName(oldPath) + @"/" + renamedText;
-            File.Move(oldPath, newPath);
+            string newPath = Path.Combine(Path.GetDirectoryName(oldPath), renamedText);
+
+            if (newPath == oldPath)
+                return;
+
+            if(File.Exists(newPath))
+                throw new Exception($"File with name '{renamedText}' already exists in the directory.");
+            if (Directory.Exists(newPath))
+                throw new Exception($"Folder with name '{renamedText}' already exists in the directory.");
+
+            if (File.Exists(oldPath))
+                File.Move(oldPath, newPath);
+            else if (Directory.Exists(oldPath))
+                Directory.Move(oldPath, newPath);
         }
 
         /// <summary>

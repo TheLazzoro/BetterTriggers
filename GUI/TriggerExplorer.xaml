@@ -77,7 +77,7 @@
 
     <Grid>
 
-        <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" KeyDown="treeViewTriggerExplorer_KeyDown" DragOver="treeViewTriggerExplorer_DragOver" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" >
+        <TreeView x:Name="treeViewTriggerExplorer" Background="#FF282828" Foreground="White" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" KeyDown="treeViewTriggerExplorer_KeyDown" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" >
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                 Color="#357EC7" />
@@ -93,7 +93,7 @@
                 <Style TargetType="{x:Type TreeViewItem}">
                     <!-- We have to select the item which is right-clicked on -->
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
-                    <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_PreviewDragEnter"/>
+                    <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
                     <EventSetter Event="TreeViewItem.Drop" Handler="treeViewItem_PreviewDrop"/>
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
                 </Style>

@@ -13,16 +13,16 @@ namespace BetterTriggers
         private static Settings instance;
         private static string filePath = Directory.GetCurrentDirectory() + @"\settings\settings.json";
 
-        public string war3root { get; set; }
-        public string language { get; set; }
-        public string CopyLocation { get; set; }        = "BetterTriggersTestMap";
-        public int Difficulty { get; set; }             = 0;
-        public bool FixedRandomSeed { get; set; }       = false;
-        public int HD { get; set; }                     = 0;
-        public bool NoWindowsFocusPause { get; set; }   = false;
-        public string PlayerProfile { get; set; }       = "WorldEdit";
-        public int WindowMode { get; set; }             = 0;
-        public int Teen { get; set; }                   = 0;
+        public string war3root;
+        public string language;
+        public string CopyLocation         = "BetterTriggersTestMap";
+        public int Difficulty              = 0;
+        public bool FixedRandomSeed        = false;
+        public int HD                      = 0;
+        public bool NoWindowsFocusPause    = false;
+        public string PlayerProfile        = "WorldEdit";
+        public int WindowMode              = 0;
+        public int Teen                    = 0;
 
         public static Settings Load()
         {

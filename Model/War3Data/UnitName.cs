@@ -6,7 +6,7 @@ namespace Model.War3Data
 {
     public class UnitName
     {
-        public string Name { get; set; }
-        public string Propernames { get; set; }
+        public string Name;
+        public string Propernames;
     }
 }

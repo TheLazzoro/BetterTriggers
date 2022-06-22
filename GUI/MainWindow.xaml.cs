@@ -325,6 +325,9 @@ namespace GUI
         private void menuItemOptions_Click(object sender, RoutedEventArgs e)
         {
             SettingsWindow settings = new SettingsWindow();
+            settings.WindowStartupLocation = WindowStartupLocation.Manual;
+            settings.Top = this.Top + this.Height / 2 - settings.Height / 2;
+            settings.Left = this.Left + this.Width / 2 - settings.Width / 2;
             settings.ShowDialog();
         }
 
@@ -373,6 +376,23 @@ namespace GUI
             }
         }
 
+        private void menuNew_SubmenuOpened(object sender, RoutedEventArgs e)
+        {
+            bool isProjectActive = triggerExplorer != null;
+            menuNewCategory.IsEnabled = isProjectActive;
+            menuNewTrigger.IsEnabled = isProjectActive;
+            menuNewScript.IsEnabled = isProjectActive;
+            menuNewVariable.IsEnabled = isProjectActive;
+
+            bool selectedIsTrigger = false;
+            if (isProjectActive && selectedExplorerItem != null)
+                selectedIsTrigger = selectedExplorerItem.editor as TriggerControl != null;
+
+            menuNewEvent.IsEnabled = selectedIsTrigger;
+            menuNewCondition.IsEnabled = selectedIsTrigger;
+            menuNewAction.IsEnabled = selectedIsTrigger;
+        }
+
         private void OpenProject(string file)
         {
             ControllerProject controllerProject = new ControllerProject();
@@ -402,10 +422,17 @@ namespace GUI
             Grid.SetRowSpan(triggerExplorer, 4);
             Grid.SetColumn(triggerExplorer, 0);
 
+            triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_SelectedItemChanged; // subscribe to item selection changed event
             triggerExplorer.CreateRootItem();
 
-            //triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_ItemSelectionChanged; 
-            triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_SelectedItemChanged; // subscribe to item selection changed event
+            // temporary thing
+            btnCreateFolder.IsEnabled = true;
+            btnCreateTrigger.IsEnabled = true;
+            btnCreateScript.IsEnabled = true;
+            btnCreateVariable.IsEnabled = true;
+            btnSaveScript.IsEnabled = true;
+            btnTestMap.IsEnabled = true;
+            btnBuildMap.IsEnabled = true;
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             controllerTriggerExplorer.Populate(triggerExplorer);
@@ -435,7 +462,6 @@ namespace GUI
                 e.Cancel = true;
 
         }
-
 
     }
 }
