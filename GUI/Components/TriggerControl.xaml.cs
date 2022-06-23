@@ -50,6 +50,9 @@ namespace GUI.Components
         public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
         {
             InitializeComponent();
+            checkBoxIsEnabled.IsChecked = explorerElementTrigger.GetEnabled();
+            checkBoxIsInitiallyOn.IsChecked = explorerElementTrigger.GetInitiallyOn();
+
 
             this.explorerElementTrigger = explorerElementTrigger;
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;

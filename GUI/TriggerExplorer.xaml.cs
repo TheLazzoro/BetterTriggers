@@ -66,19 +66,6 @@ namespace GUI
             });
         }
 
-        /*
-         * I am not sure why this is here.
-         * We have the same function in MainWindow,
-         * but I'm thinking we need it here too at some point.
-         */
-        private void treeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            ControllerProject controller = new ControllerProject();
-            //controller.OnClick_ExplorerElement(treeViewTriggerExplorer.SelectedItem as TreeViewItem, new Grid());
-
-            e.Handled = true; // prevents event from firing up the parent items
-        }
-
         /// <summary>
         /// // It is necessary to traverse the item's parents since drag & drop picks up
         /// things like 'TextBlock' and 'Border' on the drop target when dropping the 

@@ -624,7 +624,7 @@
             
             
             <!-- TABCONTROL -->
-            <Style x:Key="TabItemGlobal" TargetType="TabItem">
+            <!--<Style x:Key="TabItemGlobal" TargetType="TabItem">
                 <Setter Property="Foreground" Value="#EEE" />
                 <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
@@ -634,7 +634,7 @@
                                     <Setter Property="Background" Value="#555" />
                                 </Trigger>
                 </Style.Triggers>
-            </Style>
+            </Style>-->
 
 
 

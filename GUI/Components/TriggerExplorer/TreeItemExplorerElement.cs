@@ -64,9 +64,9 @@ namespace GUI.Components.TriggerExplorer
 
                 if (tabItem != null)
                 {
-                    var tabControl = tabItem.Parent as TabControl;
+                    var tabControl = tabItem.Parent as TabViewModel;
                     if (tabControl != null)
-                        tabControl.Items.Remove(tabItem);
+                        tabControl.Tabs.Remove(tabItem);
                     tabItem = null;
                 }
             });
@@ -80,7 +80,9 @@ namespace GUI.Components.TriggerExplorer
             treeItemHeader.SetIcon(category, Ielement.GetEnabled());
 
             if (this.tabItem != null)
-                tabItem.RefreshHeader(this.Ielement.GetName());
+            {
+                tabItem.Header = this.Ielement.GetName();
+            }
 
             if (this.editor is VariableControl)
             {
@@ -149,7 +151,7 @@ namespace GUI.Components.TriggerExplorer
             treeItemHeader.SetIcon(category, Ielement.GetEnabled());
 
             if (this.tabItem != null)
-                tabItem.RefreshHeader(this.Ielement.GetName() + " *");
+                tabItem.Header = this.Ielement.GetName() + " *";
 
             ControllerExplorerElement controller = new ControllerExplorerElement();
             controller.AddToUnsaved(this.Ielement);

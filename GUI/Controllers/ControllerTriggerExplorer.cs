@@ -51,7 +51,7 @@ namespace GUI.Controllers
             controller.SaveProject();
         }
 
-        public void OnSelectItem(TreeItemExplorerElement selectedItem, TabControl_BT tabControl)
+        public void OnSelectItem(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
         {
             if (selectedItem.editor == null || selectedItem.tabItem == null)
             {
@@ -86,15 +86,15 @@ namespace GUI.Controllers
                     selectedItem.editor = variableControl;
                 }
 
-                TabItemBT tabItem = new TabItemBT(selectedItem.editor, selectedItem.Ielement.GetName());
+                TabItemBT tabItem = new TabItemBT(selectedItem, tabViewModel);
+                tabViewModel.Tabs.Add(tabItem);
                 selectedItem.tabItem = tabItem;
-                tabControl.tabControl.Items.Add(tabItem);
             }
 
             if (selectedItem.editor != null)
                 selectedItem.editor.Refresh();
             if (selectedItem.tabItem != null)
-                tabControl.tabControl.SelectedItem = selectedItem.tabItem;
+                tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
         }
 
 

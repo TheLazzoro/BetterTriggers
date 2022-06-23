@@ -35,6 +35,7 @@ namespace GUI.Components
         public ScriptControl(ExplorerElementScript explorerElementScript)
         {
             InitializeComponent();
+            checkBoxIsEnabled.IsChecked = explorerElementScript.GetEnabled();
 
 
             this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();

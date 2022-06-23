@@ -573,7 +573,54 @@
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
 
-        <gui:TabControl_BT x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020"  />
+        <TabControl x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderThickness="0" Padding="0" >
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Height="21" Width="100" >
+                        <TextBlock Width="80" Text="{Binding Header}" ToolTip="{Binding Header}" />
+                        <Button Style="{DynamicResource ButtonStyle1}" Width="20" Height="20" Click="ButtonTabItem_Click" >
+                            <Button.Content>
+                                <Image Source="Resources/Icons/close-tab.png" Stretch="None"/>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <UserControl Content="{Binding Content}" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="#333" CornerRadius="2,2,0,0" Margin="2,0" >
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#363636" />
+                                        <Setter Property="Foreground" Value="#eee"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="#282828" />
+                                        <Setter Property="Foreground" Value="#999"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            
+        </TabControl>
 
     </Grid>
 

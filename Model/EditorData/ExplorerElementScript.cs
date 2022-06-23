@@ -91,7 +91,7 @@ namespace Model.EditorData
 
         public void SetInitiallyOn(bool isInitiallyOn)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public bool GetEnabled()

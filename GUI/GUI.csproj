@@ -40,6 +40,7 @@
     <None Remove="Resources\Icons\actions-unitselection.png" />
     <None Remove="Resources\Icons\actions-visibility.png" />
     <None Remove="Resources\Icons\actions-wait.png" />
+    <None Remove="Resources\Icons\close-tab.png" />
     <None Remove="Resources\Icons\code.ico" />
     <None Remove="Resources\Icons\editor-testmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-exportmap.dds" />
@@ -63,6 +64,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Icons\close-tab.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\code.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

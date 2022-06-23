@@ -19,15 +19,18 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        static Window instance;
         TriggerExplorer triggerExplorer;
         TreeItemExplorerElement selectedExplorerItem;
-        static Window instance;
-
+        TabViewModel vmd;
 
         public MainWindow()
         {
             InitializeComponent();
             instance = this;
+            
+            vmd = new TabViewModel();
+            tabControl.ItemsSource = vmd.Tabs;
 
             BetterTriggers.Init.Initialize();
             CustomMapData.OnSaving += CustomMapData_OnSaving;
@@ -121,14 +124,30 @@ namespace GUI
             });
         }
 
-        private void TriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void TreeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OpenItem();
+            e.Handled = true; // prevents event from firing up the parent items
+        }
+
+
+        private void TreeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+                OpenItem();
+        }
+
+        private void OpenItem()
         {
             selectedExplorerItem = triggerExplorer.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+            if (selectedExplorerItem == null)
+                return;
+
             triggerExplorer.currentElement = selectedExplorerItem;
             ContainerProject.currentSelectedElement = selectedExplorerItem.Ielement.GetPath();
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectItem(selectedExplorerItem, tabControl);
+            controller.OnSelectItem(selectedExplorerItem, vmd, tabControl);
 
             if (selectedExplorerItem.editor as TriggerControl != null)
             {
@@ -142,8 +161,13 @@ namespace GUI
                 btnCreateCondition.IsEnabled = false;
                 btnCreateAction.IsEnabled = false;
             }
+        }
 
-            e.Handled = true; // prevents event from firing up the parent items
+        private void ButtonTabItem_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button) e.Source;
+            TabItemBT tabItem = (TabItemBT)btn.DataContext;
+            tabItem.Close();
         }
 
         private void btnNewMap_Click(object sender, RoutedEventArgs e)
@@ -433,7 +457,8 @@ namespace GUI
             Grid.SetRowSpan(triggerExplorer, 4);
             Grid.SetColumn(triggerExplorer, 0);
 
-            triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TriggerExplorer_SelectedItemChanged; // subscribe to item selection changed event
+            triggerExplorer.treeViewTriggerExplorer.MouseDoubleClick += TreeViewTriggerExplorer_MouseDoubleClick; ; // subscribe to item selection changed event
+            triggerExplorer.treeViewTriggerExplorer.KeyDown += TreeViewTriggerExplorer_KeyDown;
             triggerExplorer.CreateRootItem();
 
             // temporary thing
@@ -448,6 +473,8 @@ namespace GUI
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             controllerTriggerExplorer.Populate(triggerExplorer);
         }
+
+
 
         private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -468,7 +495,10 @@ namespace GUI
             OnCloseWindow onCloseWindow = new OnCloseWindow();
             onCloseWindow.ShowDialog();
             if (onCloseWindow.Yes)
+            {
+                controller.SetEnableFileEvents(false);
                 controller.SaveProject();
+            }
             else if (!onCloseWindow.Yes && !onCloseWindow.No)
                 e.Cancel = true;
 

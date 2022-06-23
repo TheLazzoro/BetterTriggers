@@ -253,6 +253,8 @@ namespace BetterTriggers.Controllers
                             break;
                     }
 
+                    explorerElementChild.SetEnabled(entryChild.isEnabled);
+                    explorerElementChild.SetInitiallyOn(entryChild.isInitiallyOn);
                     explorerElementChild.SetParent(elementParent, insertIndex);
                     insertIndex++;
                     if (Directory.Exists(explorerElementChild.GetPath()))

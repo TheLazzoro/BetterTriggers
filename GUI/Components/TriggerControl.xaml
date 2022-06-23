@@ -94,7 +94,7 @@
         <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#00F0F0F0" Margin="0,3,0,0" />
         <Label Content="Trigger Functions:" VerticalAlignment="Top" Foreground="White" Margin="0,10,0,0" Grid.Row="2"/>
 
-        <TreeView x:Name="treeViewTriggers" Background="#FF282828" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" AllowDrop="True" SelectedItemChanged="treeViewTriggers_SelectedItemChanged" Drop="treeViewTriggers_Drop" KeyDown="treeViewTriggers_KeyDown" MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp">
+        <TreeView x:Name="treeViewTriggers" Background="#282828" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" AllowDrop="True" SelectedItemChanged="treeViewTriggers_SelectedItemChanged" Drop="treeViewTriggers_Drop" KeyDown="treeViewTriggers_KeyDown" MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp">
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                 Color="#aa357EC7" />
