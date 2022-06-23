@@ -38,8 +38,8 @@
         </ComboBox>
 
         <Label x:Name="lblSize0" Content="Size:" Foreground="White" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
-        <TextBox x:Name="textBoxArraySize0" Text="0" Foreground="White" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A"/>
+        <TextBox x:Name="textBoxArraySize0" Foreground="White" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A" TextChanged="textBoxArraySize0_TextChanged"/>
         <Label x:Name="lblSize1" Content="Size:" Foreground="White" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
-        <TextBox x:Name="textBoxArraySize1" Text="0" Foreground="White" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A"/>
+        <TextBox x:Name="textBoxArraySize1" Foreground="White" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A" TextChanged="textBoxArraySize1_TextChanged"/>
     </Grid>
 </UserControl>

@@ -24,12 +24,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public partial class ValueControlString : UserControl, IValueControl
     {
+        string returnType;
         static string color0 = "FFFFFF";
         static string color1 = "000000";
 
-        public ValueControlString()
+        public ValueControlString(string returnType)
         {
             InitializeComponent();
+
+            this.returnType = returnType;
 
             colorPicker0.ShowAvailableColors = false;
             colorPicker1.ShowAvailableColors = false;
@@ -92,7 +95,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             Value value = new Value()
             {
                 identifier = textBoxString.Text,
-                returnType = "StringExt"
+                returnType = returnType,
             };
 
             return value;

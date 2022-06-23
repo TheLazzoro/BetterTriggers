@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using BetterTriggers.Controllers;
 using Model.EditorData;
 using Model.SaveableData;
 
@@ -13,6 +14,7 @@ namespace BetterTriggers.Commands
         ExplorerElementVariable explorerElement;
         string selectedType;
         string previousType;
+        ControllerTriggerData controllerTriggerData = new ControllerTriggerData();
 
         public CommandVariableModifyType(ExplorerElementVariable explorerElement, string selectedType, string previousType)
         {
@@ -23,6 +25,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
+            explorerElement.variable.InitialValue = controllerTriggerData.GetTypeInitialValue(selectedType);
             explorerElement.variable.Type = selectedType;
             explorerElement.Notify();
 
@@ -31,12 +34,14 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
+            explorerElement.variable.InitialValue = controllerTriggerData.GetTypeInitialValue(selectedType);
             explorerElement.variable.Type = selectedType;
             explorerElement.Notify();
         }
 
         public void Undo()
         {
+            explorerElement.variable.InitialValue = controllerTriggerData.GetTypeInitialValue(previousType);
             explorerElement.variable.Type = previousType;
             explorerElement.Notify();
         }

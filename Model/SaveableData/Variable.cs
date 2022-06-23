@@ -12,7 +12,7 @@ namespace Model.SaveableData
         public int[] ArraySize = new int[2];
         public string InitialValue;
 
-        internal Variable Clone()
+        public Variable Clone()
         {
             Variable cloned = new Variable();
             cloned.Name = new string(Name);

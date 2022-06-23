@@ -303,7 +303,7 @@ namespace BetterTriggers.Controllers
                 }
             }
 
-            var json = JsonConvert.SerializeObject(project);
+            var json = JsonConvert.SerializeObject(project, Formatting.Indented);
             File.WriteAllText(root.GetProjectPath(), json);
         }
 
@@ -811,8 +811,14 @@ namespace BetterTriggers.Controllers
             }
             else if (explorerElement is ExplorerElementVariable)
             {
+                ControllerVariable controllerVariable = new ControllerVariable();
                 var element = (ExplorerElementVariable)explorerElement;
+
+                string folder = Path.GetDirectoryName(element.GetPath());
+                string name = controllerVariable.GenerateName();
+
                 element.variable.Id = ContainerVariables.GenerateId();
+                element.SetPath(Path.Combine(folder, name));
             }
             else if (explorerElement is ExplorerElementFolder)
             {

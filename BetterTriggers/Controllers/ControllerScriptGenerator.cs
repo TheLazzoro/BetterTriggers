@@ -108,12 +108,28 @@ namespace BetterTriggers.Controllers
             // Global variables
             for (int i = 0; i < variables.Count; i++)
             {
-                Variable variable = variables[i].variable;
-                InitGlobals.Add(variable);
+                Variable variable = variables[i].variable.Clone();
+                if (IsSomethingCode(variable.Type))
+                    variable.Type = "integer"; // World Editor conversion stuff.
+                else
+                    InitGlobals.Add(variable);
+
+                string array = string.Empty;
+                string dimensions = string.Empty;
+                if (variable.IsArray)
+                {
+                    array = " array";
+                    dimensions += $"[{variable.ArraySize[0]}]";
+                }
+                if (variable.IsTwoDimensions)
+                    dimensions += $"[{variable.ArraySize[1]}]";
 
                 script.Append("globals" + newline);
                 script.Append(newline);
-                script.Append(variable.Type + " udg_" + variable.Name);
+                if (!variable.IsArray)
+                    script.Append($"{variable.Type} udg_{variable.Name} = {GetGlobalsStartValue(variable.Type)}");
+                else
+                    script.Append($"{variable.Type}{array} udg_{variable.Name}{dimensions}");
                 script.Append(newline);
                 script.Append("endglobals" + newline);
             }
@@ -185,7 +201,25 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
-                script.Append("set udg_" + variable.Name + "=" + variable.InitialValue + newline);
+                if (!variable.IsArray)
+                    script.Append("set udg_" + variable.Name + "=" + variable.InitialValue + newline);
+                else if (variable.IsArray && !variable.IsTwoDimensions)
+                {
+                    for (int j = 0; j < variable.ArraySize[0]; j++)
+                    {
+                        script.Append($"set udg_{variable.Name}[{j}] = {variable.InitialValue}{newline}");
+                    }
+                }
+                else if (variable.IsArray && variable.IsTwoDimensions)
+                {
+                    for (int j = 0; j < variable.ArraySize[0]; j++)
+                    {
+                        for (int k = 0; k < variable.ArraySize[1]; k++)
+                        {
+                            script.Append($"set udg_{variable.Name}[{j}][{k}] = {variable.InitialValue}{newline}");
+                        }
+                    }
+                }
             }
             script.Append("endfunction" + newline);
 
@@ -219,6 +253,33 @@ namespace BetterTriggers.Controllers
             return script;
         }
 
+        private bool IsSomethingCode(string returnType)
+        {
+            if (returnType == "ordercode" ||
+                returnType == "unitcode" ||
+                returnType == "abilcode" ||
+                returnType == "buffcode" ||
+                returnType == "destructablecode" ||
+                returnType == "doodadcode" ||
+                returnType == "itemcode" ||
+                returnType == "techcode"
+            )
+                return true;
+
+            return false;
+        }
+
+        private string GetGlobalsStartValue(string returnType)
+        {
+            string value = "null";
+
+            if (returnType == "boolean")
+                value = "false";
+            else if (returnType == "integer" || returnType == "real")
+                value = "0";
+
+            return value;
+        }
 
         private bool isMapObject(Value value)
         {
@@ -1578,12 +1639,14 @@ endfunction
                 if (isVarAsString_Real)
                     output += "\"";
 
-                output += "udg_" + v.identifier;
+                output += "udg_" + variable.Name;
 
                 if (variable.IsArray)
-                    output += $"[{v.arrayIndexValues[0]}]";
-                else if (variable.IsArray && variable.IsTwoDimensions)
-                    output += $"[{v.arrayIndexValues[1]}]";
+                {
+                    output += $"[{v.arrayIndexValues[0].identifier}]";
+                    if (variable.IsTwoDimensions)
+                        output += $"[{v.arrayIndexValues[1].identifier}]";
+                }
 
                 if (isVarAsString_Real)
                     output += "\"";

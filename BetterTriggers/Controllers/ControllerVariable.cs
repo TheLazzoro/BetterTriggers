@@ -19,6 +19,23 @@ namespace BetterTriggers.Controllers
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
+            string name = GenerateName();
+
+            // Default variable is always an integer on creation.
+            Variable variable = new Variable()
+            {
+                Id = ContainerVariables.GenerateId(),
+                Name = name,
+                Type = "integer",
+                InitialValue = "0",
+            };
+            string json = JsonConvert.SerializeObject(variable);
+
+            File.WriteAllText(directory + @"\" + name + ".var", json);
+        }
+
+        public string GenerateName()
+        {
             string name = "UntitledVariable";
 
             bool ok = false;
@@ -34,18 +51,7 @@ namespace BetterTriggers.Controllers
 
                 i++;
             }
-
-            // Default variable is always an integer on creation.
-            Variable variable = new Variable()
-            {
-                Id = ContainerVariables.GenerateId(),
-                Name = name,
-                Type = "integer",
-                InitialValue = "0",
-            };
-            string json = JsonConvert.SerializeObject(variable);
-
-            File.WriteAllText(directory + @"\" + name + ".var", json);
+            return name;
         }
 
         public List<Variable> GetVariables(string returnType)
