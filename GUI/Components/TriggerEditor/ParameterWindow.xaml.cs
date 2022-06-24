@@ -75,7 +75,9 @@ namespace GUI
             this.variableControl.listControl.listView.SelectionChanged   += delegate { SetSelectedItem(variableControl); };
             this.triggerRefControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(triggerRefControl); };
             this.importControl.listControl.listView.SelectionChanged     += delegate { SetSelectedItem(importControl); };
-            this.valueControl.SelectionChanged                           += delegate { SetSelectedItem(valueControl); }; // TODO
+            this.valueControl.SelectionChanged                           += delegate { 
+                SetSelectedItem(valueControl); 
+            }; // TODO
 
 
             IParameterControl parameterControl = constantControl; // default

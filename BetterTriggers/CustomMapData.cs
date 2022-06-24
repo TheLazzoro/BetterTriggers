@@ -19,8 +19,8 @@ namespace BetterTriggers
 {
     public class CustomMapData
     {
-        // TODO: fix this hardcoded stuff
-        public static string mapPath = @"D:\Test\Another Test Project\map\TestMap.w3x"; // 1.32 map
+        public static string mapPath;
+        //public static string mapPath = @"D:\Test\Another Test Project\map\TestMap.w3x"; // 1.32 map
         //public static string mapPath = @"C:\Users\Lasse Dam\Desktop\Direct Strike Reforged (JASS).w3x"; // 1.33 map
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
@@ -31,8 +31,9 @@ namespace BetterTriggers
                 OnSaving(sender, e);
         }
 
-        internal static void Init()
+        public static void Init(string _mapPath)
         {
+            mapPath = _mapPath;
             watcher = new System.IO.FileSystemWatcher();
             watcher.Path = Path.GetDirectoryName(mapPath);
             watcher.EnableRaisingEvents = true;

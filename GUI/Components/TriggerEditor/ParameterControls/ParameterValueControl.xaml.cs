@@ -13,7 +13,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ParameterValueControl : UserControl, IParameterControl
     {
         public EventHandler SelectionChanged;
-        private ListViewItem selectedItem;
+        private Parameter selected;
         private IValueControl valueControl;
 
         public ParameterValueControl(string returnType)
@@ -132,6 +132,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void ValueControl_SelectionChanged(object sender, EventArgs e)
         {
+            selected = valueControl.GetSelected();
             EventHandler handler = SelectionChanged;
             handler?.Invoke(this, e);
         }
@@ -148,7 +149,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelectedItem()
         {
-            if (selectedItem == null)
+            if (selected == null)
                 return null;
 
             return valueControl.GetSelected();

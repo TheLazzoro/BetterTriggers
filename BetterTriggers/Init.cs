@@ -19,8 +19,6 @@ namespace BetterTriggers
             Locale.Load();
             Natives.Load();
 
-            CustomMapData.Init();
-
             hasLoaded = true;
         }
     }

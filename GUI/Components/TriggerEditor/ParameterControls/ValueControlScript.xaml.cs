@@ -58,5 +58,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             return value;
         }
+
+        private void textBoxString_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
     }
 }

@@ -289,6 +289,9 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="LoadingDataWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MessageBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -359,6 +362,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="LoadingDataWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

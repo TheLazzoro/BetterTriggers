@@ -25,9 +25,11 @@ namespace GUI
 
         private void WorkerVerify_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            /*
             if(e.ProgressPercentage == 0)
                 lblInfo.Content = "Loading CASC data...";
-            
+            */
+
             if(!isCascValid)
             {
                 SetupWindow window = new SetupWindow();

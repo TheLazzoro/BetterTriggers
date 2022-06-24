@@ -457,6 +457,9 @@ namespace GUI
                 return;
             }
 
+            LoadingDataWindow loadingDataWindow = new LoadingDataWindow(project.War3MapDirectory);
+            loadingDataWindow.ShowDialog();
+
             if (triggerExplorer != null)
             {
                 var parent = (Grid)triggerExplorer.Parent;
