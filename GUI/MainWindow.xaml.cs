@@ -126,7 +126,7 @@ namespace GUI
 
         private void TreeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            OpenItem();
+            OpenExplorerElement();
             e.Handled = true; // prevents event from firing up the parent items
         }
 
@@ -134,10 +134,22 @@ namespace GUI
         private void TreeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
-                OpenItem();
+                OpenExplorerElement();
         }
 
-        private void OpenItem()
+        private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tabControl.Items.Count == 0)
+                return;
+
+            TabItemBT tabItem = tabControl.SelectedItem as TabItemBT;
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            controller.OnSelectItem(tabItem.explorerElement, vmd, tabControl);
+            selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
+            EnableTriggerElementButtons();
+        }
+
+        private void OpenExplorerElement()
         {
             selectedExplorerItem = triggerExplorer.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
             if (selectedExplorerItem == null)
@@ -148,7 +160,12 @@ namespace GUI
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
             controller.OnSelectItem(selectedExplorerItem, vmd, tabControl);
+            EnableTriggerElementButtons();
+        }
 
+
+        private void EnableTriggerElementButtons()
+        {
             if (selectedExplorerItem.editor as TriggerControl != null)
             {
                 btnCreateEvent.IsEnabled = true;

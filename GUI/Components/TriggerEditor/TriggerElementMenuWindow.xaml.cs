@@ -86,6 +86,8 @@ namespace GUI.Components.TriggerEditor
             listControl.listView.SelectionChanged += delegate
             {
                 ListViewItem item = (ListViewItem)listControl.listView.SelectedItem;
+                if (item == null)
+                    return;
                 selected = (TriggerElement)item.Tag;
             };
 

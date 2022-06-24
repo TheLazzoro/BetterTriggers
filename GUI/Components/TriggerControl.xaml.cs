@@ -660,5 +660,51 @@ namespace GUI.Components
             explorerElementTrigger.trigger.Comment = textBoxComment.Text;
             OnStateChange();
         }
+
+        private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewTriggerElement doubleClicked = GetTraversedTargetDropItem(e.OriginalSource as FrameworkElement) as TreeViewTriggerElement;
+            ReplaceTriggerElement(doubleClicked);
+        }
+
+        private void treeViewItem_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+                ReplaceTriggerElement(selectedElement);
+        }
+
+        private void ReplaceTriggerElement(TreeViewTriggerElement toReplace)
+        {
+            if (toReplace == null)
+                return;
+
+            TriggerElementType elementType;
+            if (toReplace.Parent is NodeEvent)
+                elementType = TriggerElementType.Event;
+            else if (toReplace.Parent is NodeCondition)
+                elementType = TriggerElementType.Condition;
+            else if (toReplace.Parent is NodeAction)
+                elementType = TriggerElementType.Action;
+            else
+                return;
+
+            TriggerElementMenuWindow window = new TriggerElementMenuWindow(elementType, toReplace.triggerElement);
+            window.ShowDialog();
+            TriggerElement selected = window.createdTriggerElement;
+
+            if (selected == null || selected.function.identifier == toReplace.triggerElement.function.identifier)
+                return;
+
+            TreeViewItem parent = toReplace.Parent as TreeViewItem;
+            int index = parent.Items.IndexOf(toReplace);
+            CommandTriggerElementReplace command = new CommandTriggerElementReplace(toReplace.triggerElement, selected);
+            command.Execute();
+
+            TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(selected);
+            this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
+
+            selected.Attach(treeViewTriggerElement);
+            treeViewTriggerElement.OnCreated(index);
+        }
     }
 }

@@ -1623,7 +1623,7 @@ endfunction
             else if (parameter is Constant)
             {
                 Constant c = (Constant)parameter;
-                if (c.returnType == "unitorderptarg" || c.returnType == "unitorderutarg" || c.returnType == "unitordernotarg" || c.returnType == "unitorderitarg")
+                if (c.returnType == "skymodelstring" || c.returnType == "unitorderptarg" || c.returnType == "unitorderutarg" || c.returnType == "unitordernotarg" || c.returnType == "unitorderitarg")
                     output += "\"" + ContainerTriggerData.GetConstantCodeText(c.identifier) + "\"";
                 else
                     output += ContainerTriggerData.GetConstantCodeText(c.identifier);

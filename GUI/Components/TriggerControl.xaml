@@ -113,6 +113,8 @@
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
                     <!--<EventSetter Event="TreeViewItem.Drop" Handler="treeViewItem_PreviewDrop"/>-->
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
+                    <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
+                    <EventSetter Event="TreeViewItem.KeyDown" Handler="treeViewItem_KeyDown"/>
                 </Style>
             </TreeView.ItemContainerStyle>
 
