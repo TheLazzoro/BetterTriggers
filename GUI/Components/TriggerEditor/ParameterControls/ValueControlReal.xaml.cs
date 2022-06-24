@@ -24,11 +24,26 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private string previousValue;
 
+        public event EventHandler SelectionChanged;
+
         public ValueControlReal()
         {
             InitializeComponent();
             
             textBox.Text = "0.00";
+
+            this.Loaded += ValueControlReal_Loaded;
+        }
+
+        private void ValueControlReal_Loaded(object sender, RoutedEventArgs e)
+        {
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        public void SetDefaultSelection(string identifier)
+        {
+            textBox.Text = identifier;
         }
 
         public int GetElementCount()

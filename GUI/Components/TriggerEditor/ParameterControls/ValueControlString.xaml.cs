@@ -28,6 +28,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         static string color0 = "FFFFFF";
         static string color1 = "000000";
 
+        public event EventHandler SelectionChanged;
+
         public ValueControlString(string returnType)
         {
             InitializeComponent();
@@ -83,6 +85,19 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             colorPicker0.StandardColors = collection;
             colorPicker1.StandardColors = collection;
+
+            this.Loaded += ValueControlString_Loaded;
+        }
+
+        private void ValueControlString_Loaded(object sender, RoutedEventArgs e)
+        {
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        public void SetDefaultSelection(string identifier)
+        {
+            textBoxString.Text = identifier;
         }
 
         public int GetElementCount()

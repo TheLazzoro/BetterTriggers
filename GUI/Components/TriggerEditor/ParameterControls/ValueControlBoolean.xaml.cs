@@ -21,14 +21,29 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public partial class ValueControlBoolean : UserControl, IValueControl
     {
+        public event EventHandler SelectionChanged;
+
         public ValueControlBoolean()
         {
             InitializeComponent();
+
+            checkBox.Click += CheckBox_Click;
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
         }
 
         public int GetElementCount()
         {
             return 1;
+        }
+
+        public void SetDefaultSelection(string identifier)
+        {
+            checkBox.IsChecked = identifier == "true";
         }
 
         public Parameter GetSelected()

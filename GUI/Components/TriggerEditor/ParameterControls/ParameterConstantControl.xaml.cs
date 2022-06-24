@@ -68,6 +68,27 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             }
         }
 
+        public void SetDefaultSelection(string identifier)
+        {
+            int i = 0;
+            bool found = false;
+            while (!found && i < listControl.listView.Items.Count)
+            {
+                var item = listControl.listView.Items[i] as ListViewItem;
+                var constant = item.Tag as ConstantTemplate;
+                if(constant.identifier == identifier)
+                    found = true;
+                else
+                    i++;
+            }
+            if (found == false)
+                return;
+
+            var defaultSelected = listControl.listView.Items[i] as ListViewItem;
+            defaultSelected.IsSelected = true;
+            listControl.listView.ScrollIntoView(defaultSelected);
+        }
+
         public int GetElementCount()
         {
             return listControl.listView.Items.Count;
@@ -75,6 +96,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelectedItem()
         {
+            if (selectedItem == null)
+                return null;
+
             var template = (ConstantTemplate)selectedItem.Tag;
             var parameter = new Constant()
             {

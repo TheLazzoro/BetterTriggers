@@ -4,6 +4,7 @@ using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using Model.SaveableData;
 using Model.War3Data;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public partial class ValueControlModels : UserControl, IValueControl
     {
+        public event EventHandler SelectionChanged;
         public ValueControlModels()
         {
             InitializeComponent();
@@ -48,7 +50,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        
+
+        public void SetDefaultSelection(string identifier)
+        {
+            textBoxAsset.Text = identifier;
+        }
 
         public int GetElementCount()
         {
@@ -77,6 +83,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             var model = (AssetModel)selectedItem.Tag;
             textBoxAsset.Text = model.Path;
+
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
         }
     }
 }

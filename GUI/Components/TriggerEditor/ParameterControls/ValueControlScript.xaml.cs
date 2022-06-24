@@ -24,9 +24,23 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public partial class ValueControlScript : UserControl, IValueControl
     {
+        public event EventHandler SelectionChanged;
         public ValueControlScript()
         {
             InitializeComponent();
+
+            this.Loaded += ValueControlScript_Loaded;
+        }
+
+        private void ValueControlScript_Loaded(object sender, RoutedEventArgs e)
+        {
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        public void SetDefaultSelection(string identifier)
+        {
+            textBoxString.Text = identifier;
         }
 
         public int GetElementCount()

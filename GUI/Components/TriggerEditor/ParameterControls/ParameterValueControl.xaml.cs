@@ -2,6 +2,7 @@
 using BetterTriggers.WorldEdit;
 using Model.SaveableData;
 using Model.War3Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -11,6 +12,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public partial class ParameterValueControl : UserControl, IParameterControl
     {
+        public EventHandler SelectionChanged;
         private ListViewItem selectedItem;
         private IValueControl valueControl;
 
@@ -124,6 +126,19 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             control.VerticalAlignment = VerticalAlignment.Stretch;
             control.VerticalContentAlignment = VerticalAlignment.Stretch;
             control.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+
+            valueControl.SelectionChanged += ValueControl_SelectionChanged;
+        }
+
+        private void ValueControl_SelectionChanged(object sender, EventArgs e)
+        {
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        public void SetDefaultSelection(string identifier)
+        {
+            valueControl.SetDefaultSelection(identifier);
         }
 
         public int GetElementCount()
@@ -133,6 +148,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelectedItem()
         {
+            if (selectedItem == null)
+                return null;
+
             return valueControl.GetSelected();
         }
 

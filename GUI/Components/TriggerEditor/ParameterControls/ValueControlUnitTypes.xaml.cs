@@ -6,6 +6,7 @@ using Model.War3Data;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -41,8 +42,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private Value selectedType;
         private int elementCount;
         private ButtonUnitType selectedButton;
+        private UnitType defaultSelected;
 
         private Searchables searchables;
+
+        public event EventHandler SelectionChanged;
 
         public ValueControlUnitTypes()
         {
@@ -50,7 +54,41 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             var controller = new ControllerMapData();
             unitData = controller.GetUnitTypesAll();
-            comboboxRace.SelectedIndex = 0;
+            //comboboxRace.SelectedIndex = 0;
+        }
+
+        public void SetDefaultSelection(string identifier)
+        {
+            // TODO:
+            int selectedIndex = 0;
+            int i = 0;
+            bool found = false;
+            while (!found && i < unitData.Count)
+            {
+                if (unitData[i].Id == identifier)
+                    found = true;
+                else
+                    i++;
+            }
+            if (!found)
+            {
+                comboboxRace.SelectedIndex = selectedIndex;
+                return;
+            }
+
+            defaultSelected = unitData[i];
+            if (defaultSelected.Race == "human")
+                comboboxRace.SelectedIndex = 0;
+            else if (defaultSelected.Race == "orc")
+                comboboxRace.SelectedIndex = 1;
+            else if (defaultSelected.Race == "undead")
+                comboboxRace.SelectedIndex = 2;
+            else if (defaultSelected.Race == "nightelf")
+                comboboxRace.SelectedIndex = 3;
+            else if (defaultSelected.Race == "naga")
+                comboboxRace.SelectedIndex = 4;
+            else
+                comboboxRace.SelectedIndex = 5;
         }
 
         public Parameter GetSelected()
@@ -147,9 +185,17 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             var btnClicked = (ButtonUnitType)e.Source;
             selectedButton = btnClicked;
+            SetSelectedType(btnClicked.UnitType);
+
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        private void SetSelectedType(string unitcode)
+        {
             this.selectedType = new Value()
             {
-                identifier = btnClicked.UnitType,
+                identifier = unitcode,
                 returnType = "unitcode",
             };
         }
@@ -175,6 +221,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     itemControlBuildings.Items.Add(btn);
                 else
                     itemControlSpecial.Items.Add(btn);
+
+                if(defaultSelected != null && defaultSelected.Id == btn.UnitType) {
+                    selectedButton = btn;
+                    btn.AddSelectedBorder();
+                    SetSelectedType(btn.UnitType);
+                }
             }
         }
 

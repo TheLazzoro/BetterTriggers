@@ -70,15 +70,48 @@ namespace GUI
             Grid.SetRow(importControl, 1);
             Grid.SetColumnSpan(importControl, 2);
 
-            // TODO: Fix below mess
+            this.functionControl.listControl.listView.SelectionChanged   += delegate { SetSelectedItem(functionControl); };
+            this.constantControl.listControl.listView.SelectionChanged   += delegate { SetSelectedItem(constantControl); };
+            this.variableControl.listControl.listView.SelectionChanged   += delegate { SetSelectedItem(variableControl); };
+            this.triggerRefControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(triggerRefControl); };
+            this.importControl.listControl.listView.SelectionChanged     += delegate { SetSelectedItem(importControl); };
+            this.valueControl.SelectionChanged                           += delegate { SetSelectedItem(valueControl); }; // TODO
 
-            functionControl.Visibility = Visibility.Hidden;
-            constantControl.Visibility = Visibility.Visible;
-            variableControl.Visibility = Visibility.Hidden;
-            valueControl.Visibility = Visibility.Hidden;
-            triggerRefControl.Visibility = Visibility.Hidden;
 
-            radioBtnPreset.IsChecked = true;
+            IParameterControl parameterControl = constantControl; // default
+            if (parameter is Function)
+            {
+                radioBtnFunction.IsChecked = true;
+                parameterControl = functionControl;
+            }
+            else if (parameter is Constant)
+            {
+                radioBtnPreset.IsChecked = true;
+                parameterControl = constantControl;
+            }
+            else if (parameter is VariableRef)
+            {
+                radioBtnVariable.IsChecked = true;
+                parameterControl = variableControl;
+            }
+            else if (parameter is Value && parameter.returnType != "skymodelstring")
+            {
+                radioBtnValue.IsChecked = true;
+                parameterControl = valueControl;
+            }
+            else if (parameter is TriggerRef)
+            {
+                radioBtnTrigger.IsChecked = true;
+                parameterControl = triggerRefControl;
+            }
+            else if (parameter is Value && parameter.returnType == "skymodelstring")
+            {
+                radioBtnImported.IsChecked = true;
+                parameterControl = importControl;
+            }
+            ShowHideTabs(parameterControl);
+            parameterControl.SetDefaultSelection(parameter.identifier);
+
 
             if (returnType == "AnyGlobal")
             {
@@ -107,6 +140,7 @@ namespace GUI
                 radioButtonList.Items.Remove(radioBtnImported);
         }
 
+
         private void ShowHideTabs(IParameterControl control)
         {
             this.selectedControl = control;
@@ -118,13 +152,25 @@ namespace GUI
             importControl.Visibility = Visibility.Hidden;
 
             control.SetVisibility(Visibility.Visible);
-            if (control.GetElementCount() > 0)
+            if (control.GetSelectedItem() != null)
             {
                 btnOK.IsEnabled = true;
             }
             else
                 btnOK.IsEnabled = false;
         }
+
+        private void SetSelectedItem(IParameterControl control)
+        {
+            selectedParameter = control.GetSelectedItem();
+            if (selectedParameter != null)
+            {
+                btnOK.IsEnabled = true;
+            }
+            else
+                btnOK.IsEnabled = false;
+        }
+
 
         private void radioBtnFunction_Checked(object sender, RoutedEventArgs e)
         {

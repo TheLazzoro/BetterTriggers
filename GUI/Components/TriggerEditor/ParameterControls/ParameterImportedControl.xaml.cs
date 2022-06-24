@@ -5,6 +5,7 @@ using Model.SaveableData;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -40,6 +41,27 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             }
         }
 
+        public void SetDefaultSelection(string identifier)
+        {
+            int i = 0;
+            bool found = false;
+            while (!found && i < listControl.listView.Items.Count)
+            {
+                ListViewItem item = listControl.listView.Items[i] as ListViewItem;
+                Value value = item.Tag as Value;
+                if (identifier == value.identifier)
+                    found = true;
+                else
+                    i++;
+            }
+            if (!found)
+                return;
+
+            var defaultSelected = listControl.listView.Items[i] as ListViewItem;
+            defaultSelected.IsSelected = true;
+            listControl.listView.ScrollIntoView(defaultSelected);
+        }
+
         public int GetElementCount()
         {
             return listControl.listView.Items.Count;
@@ -47,6 +69,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelectedItem()
         {
+            if (selectedItem == null)
+                return null;
+
             var variables = (Value)selectedItem.Tag;
             return variables;
         }

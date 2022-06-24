@@ -23,6 +23,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private ListViewItem selectedItem;
 
+        public event EventHandler SelectionChanged;
+
         public ValueControlAbilities()
         {
             InitializeComponent();
@@ -45,6 +47,36 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 listViewAbilities.Items.Add(item);
                 this.selectedItem = listViewAbilities.Items.GetItemAt(0) as ListViewItem;
             }
+
+            listViewAbilities.SelectionChanged += ListViewAbilities_SelectionChanged;
+        }
+
+
+        public void SetDefaultSelection(string identifier)
+        {
+            int i = 0;
+            bool found = false;
+            while (!found && i < listViewAbilities.Items.Count)
+            {
+                var item = listViewAbilities.Items[i] as ListViewItem;
+                var value = item.Tag as Value;
+                if(value.identifier == identifier)
+                    found = true;
+                else
+                    i++;
+            }
+            if (found == false)
+                return;
+
+            var defaultSelected = listViewAbilities.Items[i] as ListViewItem;
+            defaultSelected.IsSelected = true;
+            listViewAbilities.ScrollIntoView(defaultSelected);
+        }
+
+        private void ListViewAbilities_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
         }
 
         public int GetElementCount()

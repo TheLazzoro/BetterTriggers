@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Utility;
 using Model.SaveableData;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ValueControlGeneric : UserControl, IValueControl
     {
         private ListViewItem selectedItem;
+
+        public event EventHandler SelectionChanged;
 
         public ValueControlGeneric(List<Value> values)
         {
@@ -41,6 +44,26 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
+        public void SetDefaultSelection(string identifier)
+        {
+            int i = 0;
+            bool found = false;
+            while (!found && i < listControl.listView.Items.Count)
+            {
+                var item = listControl.listView.Items[i] as ListViewItem;
+                var value = item.Tag as Value;
+                if(value.identifier == identifier)
+                    found = true;
+                else
+                    i++;
+            }
+            if (found == false)
+                return;
+
+            var defaultSelected = listControl.listView.Items[i] as ListViewItem;
+            defaultSelected.IsSelected = true;
+            listControl.listView.ScrollIntoView(defaultSelected);
+        }
         
 
         public int GetElementCount()
@@ -50,6 +73,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelected()
         {
+            if (selectedItem == null)
+                return null;
+
             return (Value)this.selectedItem.Tag;
         }
 
@@ -61,6 +87,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedItem = listControl.listView.SelectedItem as ListViewItem;
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
         }
     }
 }

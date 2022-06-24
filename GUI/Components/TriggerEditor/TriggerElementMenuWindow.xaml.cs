@@ -13,30 +13,20 @@ namespace GUI.Components.TriggerEditor
     {
         public TriggerElement createdTriggerElement;
         TriggerElementType triggerElementType;
+        TriggerElement selected;
+        TriggerElement previous;
 
-        public TriggerElementMenuWindow(TriggerElementType triggerElementType)
+        public TriggerElementMenuWindow(TriggerElementType triggerElementType, TriggerElement previous = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
 
-
             this.triggerElementType = triggerElementType;
+            this.previous = previous;
 
             Window parentWindow = Application.Current.MainWindow;
             this.Top = parentWindow.Top + parentWindow.Height / 2 - this.Height / 2;
             this.Left = parentWindow.Left + parentWindow.Width / 2 - this.Width / 2;
-        }
-
-        private void btnOK_Click(object sender, RoutedEventArgs e)
-        {
-            var item = (ListViewItem)listControl.listView.SelectedItem;
-            createdTriggerElement = (TriggerElement)item.Tag;
-            this.Close();
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -76,19 +66,51 @@ namespace GUI.Components.TriggerEditor
                         templates[i].identifier.ToLower()
                     },
                 });
+
+                // default selection
+                if (previous != null && previous.function.identifier == templates[i].identifier)
+                {
+                    selected = (TriggerElement)listItem.Tag;
+                    listItem.IsSelected = true;
+                    listControl.listView.ScrollIntoView(listItem);
+                }
             }
+
+
             var searchables = new Searchables(objects);
             listControl.SetSearchableList(searchables);
             listControl.ListViewChanged += delegate
             {
-                btnOK.IsEnabled = listControl.GetItemsCount() > 0;
+                btnOK.IsEnabled = selected != null && listControl.GetItemsCount() > 0;
             };
+            listControl.listView.SelectionChanged += delegate
+            {
+                ListViewItem item = (ListViewItem)listControl.listView.SelectedItem;
+                selected = (TriggerElement)item.Tag;
+            };
+
+            if (selected == null)
+            {
+                ListViewItem item = (ListViewItem)listControl.listView.Items[0];
+                selected = (TriggerElement)item.Tag;
+            }
 
             var categoryControl = new GenericCategoryControl(searchables);
             categoryControl.Margin = new Thickness(0, 0, 4, 0);
             grid.Children.Add(categoryControl);
             Grid.SetRow(categoryControl, 1);
             Grid.SetRowSpan(categoryControl, 3);
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            createdTriggerElement = selected;
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -47,8 +47,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             this.Click += delegate
             {
-                this.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#00FF00");
+                AddSelectedBorder();
             };
+        }
+
+        public void AddSelectedBorder()
+        {
+            this.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#00FF00");
         }
 
         public void RemoveSelectedBorder()
