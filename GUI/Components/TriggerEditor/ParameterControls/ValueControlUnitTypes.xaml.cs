@@ -1,12 +1,12 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
-using Model.SaveableData;
-using Model.War3Data;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System;
+using BetterTriggers.Models.War3Data;
+using BetterTriggers.Models.SaveableData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {

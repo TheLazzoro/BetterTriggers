@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Model.SaveableData;
 using System.IO;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Controllers
 {

@@ -1,5 +1,5 @@
-﻿using Model.EditorData;
-using Model.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Containers

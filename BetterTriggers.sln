@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterTriggers", "BetterTriggers\BetterTriggers.csproj", "{ED6F38DD-0E3A-47B0-803E-2D9E6D04C83E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{A708DA97-E502-4F4C-A28C-1333A27241C6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TriggerParser", "TriggerParser\TriggerParser.csproj", "{23F107CB-CE33-4348-A068-ABA5C531C107}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,14 +27,6 @@ Global
 		{ED6F38DD-0E3A-47B0-803E-2D9E6D04C83E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED6F38DD-0E3A-47B0-803E-2D9E6D04C83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED6F38DD-0E3A-47B0-803E-2D9E6D04C83E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A708DA97-E502-4F4C-A28C-1333A27241C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A708DA97-E502-4F4C-A28C-1333A27241C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A708DA97-E502-4F4C-A28C-1333A27241C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A708DA97-E502-4F4C-A28C-1333A27241C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23F107CB-CE33-4348-A068-ABA5C531C107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23F107CB-CE33-4348-A068-ABA5C531C107}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23F107CB-CE33-4348-A068-ABA5C531C107}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23F107CB-CE33-4348-A068-ABA5C531C107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI" xmlns:shared="clr-namespace:GUI.Components.Shared"
         mc:Ignorable="d"
-        Title="Trigger Element Menu" WindowStartupLocation="CenterOwner" Height="450" Width="800" Background="#FF404040" Loaded="Window_Loaded">
+        Title="Trigger Element Menu" WindowStartupLocation="CenterOwner" Height="450" Width="800" Background="#FF404040" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="175"/>
@@ -24,7 +24,7 @@
 
         <shared:SearchableListControl x:Name="listControl" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" />
 
-        <TextBlock x:Name="textBoxDescription" Grid.Row="3" Grid.Column="2" Background="#FF282828" Margin="1,0,1,1" />
+        <TextBlock x:Name="textBoxDescription" Grid.Row="3" TextWrapping="Wrap" Grid.Column="2" Background="#FF282828" Margin="1,0,1,1" Foreground="#aaa" />
 
         <Button x:Name="btnOK" Content="OK" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />
         <Button x:Name="btnCancel" Content="Cancel" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" IsCancel="True" Click="btnCancel_Click" />

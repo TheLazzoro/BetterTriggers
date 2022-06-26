@@ -1,4 +1,4 @@
-﻿using Model.EditorData.Enums;
+﻿using BetterTriggers.Models.EditorData.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;

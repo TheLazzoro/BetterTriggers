@@ -1,8 +1,8 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers.Models.War3Data;
+using BetterTriggers.Utility;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
-using Model.War3Data;
 using System;
 using System.Collections.Generic;
 using System.IO;

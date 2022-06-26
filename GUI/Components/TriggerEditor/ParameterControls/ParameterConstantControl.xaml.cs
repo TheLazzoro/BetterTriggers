@@ -1,11 +1,11 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using GUI.Components.Shared;
 using GUI.Controllers;
-using Model.SaveableData;
-using Model.Templates;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -116,6 +116,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedItem = listControl.listView.SelectedItem as ListViewItem;
+            var constant = selectedItem.Tag as ConstantTemplate;
+            textBoxDescription.Text = Locale.Translate(constant.identifier);
         }
     }
 }

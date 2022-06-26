@@ -1,13 +1,14 @@
-﻿using BetterTriggers.Commands;
+﻿using BetterTriggers;
+using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
 using GUI.Container;
 using GUI.Controllers;
 using GUI.Utility;
-using Model.EditorData;
-using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace GUI.Components
             }
         }
 
-        private void LoadTrigger(Model.SaveableData.Trigger trigger)
+        private void LoadTrigger(BetterTriggers.Models.SaveableData.Trigger trigger)
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
             this.textBoxComment.Text = trigger.Comment;
@@ -205,6 +206,7 @@ namespace GUI.Components
             }
         }
 
+        // TODO: There are two 'SelectedItemChanged' functions?
         private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (currentParameterBlock != null && currentParameterBlock.Parent != null) { }
@@ -223,6 +225,7 @@ namespace GUI.Components
             grid.Children.Add(textBlockDescription);
             currentParameterBlock = textBlockParameters;
             currentDescriptionBlock = textBlockDescription;
+            currentDescriptionBlock.Text = Locale.Translate(item.triggerElement.function.identifier);
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)

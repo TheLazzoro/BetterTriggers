@@ -1,9 +1,8 @@
 ﻿using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.Enums;
 using GUI.Components.Shared;
 using GUI.Controllers;
-using Model.Data;
-using Model.EditorData;
-using Model.EditorData.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;

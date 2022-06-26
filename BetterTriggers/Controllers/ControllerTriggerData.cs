@@ -1,9 +1,8 @@
 ﻿using BetterTriggers.Containers;
-using Model.Data;
-using Model.EditorData;
-using Model.EditorData.Enums;
-using Model.SaveableData;
-using Model.Templates;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.Enums;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.Templates;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -276,6 +275,13 @@ namespace BetterTriggers.Controllers
                 }
 
                 i++;
+            }
+
+            if(paramText == null)
+            {
+                paramText = $"{function.identifier}(";
+                function.parameters.ForEach(p => paramText += $",~{p.returnType}, ");
+                paramText += ")";
             }
 
             return paramText;

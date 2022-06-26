@@ -11,11 +11,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Controllers;
-using Model;
-using Model.SaveableData;
-using Model.Templates;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {

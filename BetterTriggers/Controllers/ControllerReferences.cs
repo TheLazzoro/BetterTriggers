@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Model.EditorData;
-using Model.SaveableData;
 using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Controllers
 {

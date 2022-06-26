@@ -1,6 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
-using Model.EditorData;
+using BetterTriggers.Models.EditorData;
 using System.IO;
 
 namespace BetterTriggers.Commands

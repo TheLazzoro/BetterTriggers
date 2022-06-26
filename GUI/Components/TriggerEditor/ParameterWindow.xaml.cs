@@ -1,5 +1,5 @@
-﻿using GUI.Components.TriggerEditor.ParameterControls;
-using Model.SaveableData;
+﻿using BetterTriggers.Models.SaveableData;
+using GUI.Components.TriggerEditor.ParameterControls;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -210,6 +210,16 @@ namespace GUI
             this.selectedParameter = selectedControl.GetSelectedItem();
             this.isOK = true;
             this.Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && selectedControl.GetSelectedItem() != null)
+            {
+                this.selectedParameter = selectedControl.GetSelectedItem();
+                this.isOK = true;
+                this.Close();
+            }
         }
     }
 }

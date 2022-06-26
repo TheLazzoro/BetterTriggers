@@ -14932,6 +14932,34 @@
     },
     {
         "ParamType": 2,
+        "codeText": "attack",
+        "identifier": "UnitOrderAttackUnitEx",
+        "name": "WESTRING_UNITORDERUTARG_ATTACK",
+        "returnType": "unitcommonorderEx"
+    },
+    {
+        "ParamType": 2,
+        "codeText": "move",
+        "identifier": "UnitOrderMoveEx",
+        "name": "WESTRING_UNITORDERPTARG_MOVE",
+        "returnType": "unitcommonorderEx"
+    },
+    {
+        "ParamType": 2,
+        "codeText": "patrol",
+        "identifier": "UnitOrderPatrolEx",
+        "name": "WESTRING_UNITORDERPTARG_PATROL",
+        "returnType": "unitcommonorderEx"
+    },
+    {
+        "ParamType": 2,
+        "codeText": "holdposition",
+        "identifier": "UnitOrderHoldPositionEx",
+        "name": "WESTRING_UNITORDERNOTARG_HOLDPOSITION",
+        "returnType": "unitcommonorderEx"
+    },
+    {
+        "ParamType": 2,
         "codeText": "repair",
         "identifier": "UnitOrderRepairEx",
         "name": "WESTRING_unitorderEx_REPAIR",

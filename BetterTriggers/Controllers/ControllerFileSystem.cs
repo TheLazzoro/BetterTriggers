@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Containers;
 using Microsoft.VisualBasic.FileIO;
-using Model.EditorData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

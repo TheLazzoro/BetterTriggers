@@ -1,13 +1,12 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Components.VariableEditor;
 using GUI.Controllers;
-using Model.Data;
-using Model.EditorData;
-using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

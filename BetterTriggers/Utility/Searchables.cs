@@ -1,4 +1,4 @@
-﻿using Model.SaveableData;
+﻿using BetterTriggers.Models.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Linq;

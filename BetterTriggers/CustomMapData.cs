@@ -1,8 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
-using Model.EditorData;
-using Model.War3Data;
 using System;
 using System.Collections.Generic;
 using System.IO;

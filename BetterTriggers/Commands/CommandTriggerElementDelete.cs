@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
-using Model.EditorData;
-using Model.SaveableData;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
 {

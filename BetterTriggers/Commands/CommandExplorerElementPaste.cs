@@ -6,8 +6,7 @@ using System.Text;
 using System.Windows;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
-using Model.EditorData;
-using Model.SaveableData;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Commands
 {

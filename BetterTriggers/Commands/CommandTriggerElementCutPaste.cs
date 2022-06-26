@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Containers;
-using Model.EditorData;
-using Model.SaveableData;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Commands
 {

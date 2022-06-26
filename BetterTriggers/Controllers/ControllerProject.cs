@@ -1,7 +1,7 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Containers;
-using Model.EditorData;
-using Model.SaveableData;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

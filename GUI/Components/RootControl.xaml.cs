@@ -1,12 +1,11 @@
 ﻿using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using GUI.Components;
 using GUI.Components.TextEditor;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using Model.EditorData;
-using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Model.War3Data;
+﻿using BetterTriggers.Models.War3Data;
 using System;
 using System.Collections.Generic;
 using System.IO;

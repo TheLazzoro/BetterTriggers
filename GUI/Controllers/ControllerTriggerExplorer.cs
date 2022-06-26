@@ -1,9 +1,9 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
-using Model.EditorData;
 using System;
 using System.IO;
 using System.Windows;

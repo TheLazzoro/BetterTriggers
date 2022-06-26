@@ -1,6 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using Model.EditorData;
-using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,6 +6,8 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Controllers
 {

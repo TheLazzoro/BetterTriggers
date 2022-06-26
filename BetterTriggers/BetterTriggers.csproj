@@ -14,7 +14,6 @@
     <None Remove="Resources\JassHelper\sfmpq.dll" />
     <None Remove="Resources\MapTemplate\conversation.json" />
     <None Remove="Resources\MapTemplate\war3map.doo" />
-    <None Remove="Resources\MapTemplate\war3map.j" />
     <None Remove="Resources\MapTemplate\war3map.mmp" />
     <None Remove="Resources\MapTemplate\war3map.shd" />
     <None Remove="Resources\MapTemplate\war3map.w3c" />
@@ -56,6 +55,7 @@
     <None Remove="Resources\WorldEditorData\orcabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\orcunitstrings.txt" />
     <None Remove="Resources\WorldEditorData\orcupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\ui\triggerstrings.txt" />
     <None Remove="Resources\WorldEditorData\undeadabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\undeadunitstrings.txt" />
     <None Remove="Resources\WorldEditorData\undeadupgradestrings.txt" />
@@ -86,9 +86,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\MapTemplate\war3map.doo">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\MapTemplate\war3map.j">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\MapTemplate\war3map.mmp">
@@ -214,6 +211,9 @@
     <Content Include="Resources\WorldEditorData\orcupgradestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\WorldEditorData\ui\triggerstrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\WorldEditorData\undeadabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -248,10 +248,6 @@
     <PackageReference Include="War3Net.Build" Version="5.4.5" />
     <PackageReference Include="War3Net.IO.Mpq" Version="5.4.5" />
     <PackageReference Include="War3Net.IO.Slk" Version="5.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ using IniParser.Model;
 using System.IO;
 using IniParser.Parser;
 using BetterTriggers.Utility;
-using Model.War3Data;
+using BetterTriggers.Models.War3Data;
 
 namespace BetterTriggers.WorldEdit
 {

@@ -1,9 +1,9 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers.Models.War3Data;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
-using Model.War3Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -107,8 +107,31 @@ namespace BetterTriggers
             genericData.ForEach(iniFile => AddGenericStringEntries(IniFileHelper.Parse(IniFileConverter.Convert(iniFile))));
             unitData.ForEach(iniFile => AddUnitStringEntries(IniFileHelper.Parse(IniFileConverter.Convert(iniFile))));
 
+
             AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\worldeditstrings.txt"));
             AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\worldeditgamestrings.txt"));
+
+            AddTriggerHints(IniFileHelper.Parse(IniFileConverter.Convert(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\ui\triggerstrings.txt"))));
+        }
+
+        private static void AddTriggerHints(IniData iniData)
+        {
+            for (int i = 0; i < iniData.Sections.Count; i++)
+            {
+                var enumerator = iniData.Sections.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    var keyEnumerator = enumerator.Current.Keys.GetEnumerator();
+                    while (keyEnumerator.MoveNext())
+                    {
+                        string key = keyEnumerator.Current.KeyName;
+                        if (key.EndsWith("Hint"))
+                        {
+                            WE_Strings.TryAdd(key.Substring(0, key.Length-4), keyEnumerator.Current.Value.Replace("\"", ""));
+                        }
+                    }
+                }
+            }
         }
 
         private static void AddGenericStringEntries(IniData iniData)
@@ -133,7 +156,8 @@ namespace BetterTriggers
                 var enumerator = iniData.Sections.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
-                    var unitName = new UnitName() {
+                    var unitName = new UnitName()
+                    {
                         Name = enumerator.Current.Keys["Name"],
                         Propernames = enumerator.Current.Keys["Propernames"],
                     };

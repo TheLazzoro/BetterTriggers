@@ -1,7 +1,6 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model.SaveableData;
 using System.IO;
 using System.Threading;
 using System.Windows;

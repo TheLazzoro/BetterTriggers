@@ -1,9 +1,7 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
-using Model;
-using Model.Data;
-using Model.EditorData;
-using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -1303,15 +1301,6 @@ endfunction
             {
                 EnumDestructablesInRectAllMultiple enumDest = (EnumDestructablesInRectAllMultiple)f;
 
-                /* TODO: What is this?
-                string script_name = trigger_data.data("TriggerActions", "_" + eca.name + "_ScriptName");
-
-                const std::string function_name = generate_function_name(trigger_name);
-
-                // Remove multiple
-                output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", function " + function_name + "){newline}";
-                */
-
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
@@ -1333,16 +1322,6 @@ endfunction
             {
                 EnumDestructiblesInCircleBJMultiple enumDest = (EnumDestructiblesInCircleBJMultiple)f;
 
-                /* TODO: What is this?
-                string script_name = trigger_data.data("TriggerActions", "_" + eca.name + "_ScriptName");
-
-                const std::string function_name = generate_function_name(trigger_name);
-
-                // Remove multiple
-               output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", " +
-			        resolve_parameter(eca.parameters[1], trigger_name, pre_actions, get_type(eca.name, 1)) + ", function " + function_name + "){newline}";
-                */
-
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
@@ -1363,16 +1342,6 @@ endfunction
             else if (f.identifier == "EnumItemsInRectBJMultiple")
             {
                 EnumItemsInRectBJ enumItem = (EnumItemsInRectBJ)f;
-
-                /* TODO: What is this?
-                string script_name = trigger_data.data("TriggerActions", "_" + eca.name + "_ScriptName");
-
-                const std::string function_name = generate_function_name(trigger_name);
-
-                // Remove multiple
-               output += "call " + script_name + "(" + resolve_parameter(eca.parameters[0], trigger_name, pre_actions, get_type(eca.name, 0)) + ", " +
-			        resolve_parameter(eca.parameters[1], trigger_name, pre_actions, get_type(eca.name, 1)) + ", function " + function_name + "){newline}";
-                */
 
                 string function_name = generate_function_name(triggerName);
 
@@ -1623,7 +1592,13 @@ endfunction
             else if (parameter is Constant)
             {
                 Constant c = (Constant)parameter;
-                if (c.returnType == "skymodelstring" || c.returnType == "unitorderptarg" || c.returnType == "unitorderutarg" || c.returnType == "unitordernotarg" || c.returnType == "unitorderitarg")
+                if (c.returnType == "unitcommonorderEx" ||
+                c.returnType == "skymodelstring" ||
+                c.returnType == "unitorderptarg" ||
+                c.returnType == "unitorderutarg" ||
+                c.returnType == "unitordernotarg" ||
+                c.returnType == "unitorderitarg" 
+                )
                     output += "\"" + ContainerTriggerData.GetConstantCodeText(c.identifier) + "\"";
                 else
                     output += ContainerTriggerData.GetConstantCodeText(c.identifier);

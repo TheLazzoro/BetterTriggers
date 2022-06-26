@@ -1,5 +1,4 @@
-﻿using Model.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -14,13 +13,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
-using Model.EditorData.Enums;
 using BetterTriggers.Controllers;
 using BetterTriggers.Containers;
 using GUI.Components;
-using Model.EditorData;
 using GUI.Components.Shared;
 using GUI.Utility;
+using BetterTriggers.Models.EditorData;
 
 namespace GUI
 {

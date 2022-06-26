@@ -1,6 +1,6 @@
 ﻿using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
-using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Windows;

@@ -1,11 +1,10 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Utility;
-using Model.EditorData;
-using Model.SaveableData;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System;
+using BetterTriggers.Models.SaveableData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {

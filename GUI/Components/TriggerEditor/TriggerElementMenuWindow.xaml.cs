@@ -1,11 +1,13 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers;
+using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using GUI.Components.Shared;
-using Model.SaveableData;
-using Model.Templates;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -15,6 +17,8 @@ namespace GUI.Components.TriggerEditor
         TriggerElementType triggerElementType;
         TriggerElement selected;
         TriggerElement previous;
+
+        ListViewItem defaultSelected;
 
         public TriggerElementMenuWindow(TriggerElementType triggerElementType, TriggerElement previous = null)
         {
@@ -54,7 +58,7 @@ namespace GUI.Components.TriggerEditor
             for (int i = 0; i < templates.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = templates[i].name;
+                listItem.Content = templates[i].name != "" ? templates[i].name : templates[i].identifier;
                 listItem.Tag = templates[i].ToTriggerElement();
                 objects.Add(new Searchable()
                 {
@@ -70,9 +74,9 @@ namespace GUI.Components.TriggerEditor
                 // default selection
                 if (previous != null && previous.function.identifier == templates[i].identifier)
                 {
+                    defaultSelected = listItem;
                     selected = (TriggerElement)listItem.Tag;
                     listItem.IsSelected = true;
-                    listControl.listView.ScrollIntoView(listItem);
                 }
             }
 
@@ -88,14 +92,19 @@ namespace GUI.Components.TriggerEditor
                 ListViewItem item = (ListViewItem)listControl.listView.SelectedItem;
                 if (item == null)
                     return;
+
                 selected = (TriggerElement)item.Tag;
+                textBoxDescription.Text = Locale.Translate(selected.function.identifier);
             };
 
             if (selected == null)
             {
-                ListViewItem item = (ListViewItem)listControl.listView.Items[0];
-                selected = (TriggerElement)item.Tag;
+                defaultSelected = (ListViewItem)listControl.listView.Items[0];
+                selected = (TriggerElement)defaultSelected.Tag;
             }
+
+            listControl.listView.ScrollIntoView(defaultSelected);
+            defaultSelected.Focus();
 
             var categoryControl = new GenericCategoryControl(searchables);
             categoryControl.Margin = new Thickness(0, 0, 4, 0);
@@ -113,6 +122,15 @@ namespace GUI.Components.TriggerEditor
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && selected != null)
+            {
+                createdTriggerElement = selected;
+                this.Close();
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
 using GUI.Controllers;
-using Model.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Linq;

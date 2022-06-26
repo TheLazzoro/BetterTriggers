@@ -1,5 +1,5 @@
-﻿using GUI.Components.TriggerEditor;
-using Model.SaveableData;
+﻿using BetterTriggers.Models.SaveableData;
+using GUI.Components.TriggerEditor;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;

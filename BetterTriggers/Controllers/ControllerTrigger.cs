@@ -1,14 +1,13 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Containers;
-using Model.Data;
-using Model.EditorData;
-using Model.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using BetterTriggers.WorldEdit;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Controllers
 {

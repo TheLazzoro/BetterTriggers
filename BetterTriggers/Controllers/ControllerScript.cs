@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using Model.EditorData;
+using BetterTriggers.Models.EditorData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

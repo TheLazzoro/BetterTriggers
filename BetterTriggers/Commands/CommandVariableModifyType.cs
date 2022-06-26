@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Controllers;
-using Model.EditorData;
-using Model.SaveableData;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Commands
 {

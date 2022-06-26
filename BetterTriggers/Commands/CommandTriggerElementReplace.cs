@@ -1,4 +1,4 @@
-﻿using Model.SaveableData;
+﻿using BetterTriggers.Models.SaveableData;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Commands

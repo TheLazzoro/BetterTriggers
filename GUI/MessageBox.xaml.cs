@@ -1,5 +1,4 @@
-﻿using Model.EditorData;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 

@@ -1,11 +1,10 @@
-﻿using Model.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
-using Model.EditorData.Enums;
-using Model.SaveableData;
 using GUI.Components.Shared;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData.Enums;
 
 namespace GUI.Components.TriggerEditor
 {

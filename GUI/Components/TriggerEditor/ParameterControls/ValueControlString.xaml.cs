@@ -12,12 +12,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Controllers;
 using GUI.Utility;
-using Model;
-using Model.SaveableData;
-using Model.Templates;
 using Xceed.Wpf.Toolkit;
 
 namespace GUI.Components.TriggerEditor.ParameterControls

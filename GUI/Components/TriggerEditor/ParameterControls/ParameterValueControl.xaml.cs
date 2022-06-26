@@ -1,7 +1,6 @@
 ﻿using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
-using Model.SaveableData;
-using Model.War3Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;

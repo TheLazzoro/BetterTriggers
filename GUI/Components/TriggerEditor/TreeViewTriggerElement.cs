@@ -1,10 +1,10 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.Enums;
+using BetterTriggers.Models.SaveableData;
 using GUI.Components.Shared;
 using GUI.Controllers;
-using Model.EditorData;
-using Model.EditorData.Enums;
-using Model.SaveableData;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;

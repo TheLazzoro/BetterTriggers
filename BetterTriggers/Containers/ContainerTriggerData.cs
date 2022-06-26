@@ -1,7 +1,5 @@
-﻿using Model.EditorData;
-using Model.EditorData.Enums;
-using Model.SaveableData;
-using Model.Templates;
+﻿using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.Templates;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

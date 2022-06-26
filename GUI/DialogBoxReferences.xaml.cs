@@ -1,4 +1,4 @@
-﻿using Model.EditorData;
+﻿using BetterTriggers.Models.EditorData;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;

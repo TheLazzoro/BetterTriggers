@@ -1,10 +1,10 @@
 ﻿using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using GUI.Components;
 using GUI.Components.TextEditor;
 using GUI.Components.TriggerExplorer;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using Model.EditorData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -91,6 +91,7 @@ namespace GUI.Components
 
         public void Refresh()
         {
+            // TODO: atm. completely replaces all text every time, even when saving in the editor.
             this.suppressStateChange = true;
             ControllerScript controller = new ControllerScript();
             textEditor.Document.Text = controller.LoadScriptFromFile(explorerElementScript.GetPath());

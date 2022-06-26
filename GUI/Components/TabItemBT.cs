@@ -1,5 +1,4 @@
 ﻿using GUI.Components.TriggerExplorer;
-using Model.EditorData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
