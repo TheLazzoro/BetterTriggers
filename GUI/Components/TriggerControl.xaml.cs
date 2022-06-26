@@ -636,17 +636,17 @@ namespace GUI.Components
 
         private void menuEvent_Click(object sender, RoutedEventArgs e)
         {
-            selectedElementEnd.GetTriggerControl().CreateEvent();
+            CreateEvent();
         }
 
         private void menuCondition_Click(object sender, RoutedEventArgs e)
         {
-            selectedElementEnd.GetTriggerControl().CreateCondition();
+            CreateCondition();
         }
 
         private void menuAction_Click(object sender, RoutedEventArgs e)
         {
-            selectedElementEnd.GetTriggerControl().CreateAction();
+            CreateAction();
         }
 
         private void menuFunctionEnabled_Click(object sender, RoutedEventArgs e)

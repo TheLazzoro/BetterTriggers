@@ -26,6 +26,7 @@ namespace GUI
         public SelectWar3MapWindow()
         {
             InitializeComponent();
+            Owner = MainWindow.GetMainWindow();
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)

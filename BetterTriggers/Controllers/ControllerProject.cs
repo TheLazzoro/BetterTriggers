@@ -26,6 +26,7 @@ namespace BetterTriggers.Controllers
             string map = Path.Combine(root, "map");
             string dist = Path.Combine(root, "dist");
             string projectPath = Path.Combine(root, name + ".json");
+            string mapFolder = Path.Combine(map, "Map.w3x");
 
             War3Project project = new War3Project()
             {
@@ -33,7 +34,8 @@ namespace BetterTriggers.Controllers
                 Language = language,
                 Header = "",
                 Root = src,
-                Files = new List<War3ProjectFileEntry>()
+                Files = new List<War3ProjectFileEntry>(),
+                War3MapDirectory = mapFolder
             };
 
             string projectFile = JsonConvert.SerializeObject(project);
@@ -43,6 +45,17 @@ namespace BetterTriggers.Controllers
             Directory.CreateDirectory(map);
             Directory.CreateDirectory(dist);
             File.WriteAllText(projectPath, projectFile);
+
+            // template map
+            Directory.CreateDirectory(mapFolder);
+            string templateFolder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Resources/MapTemplate");
+            string[] files = Directory.GetFiles(templateFolder);
+            foreach (var file in files)
+            {
+                byte[] content = File.ReadAllBytes(file);
+                string filename = Path.GetFileName(file);
+                File.WriteAllBytes(Path.Combine(mapFolder, filename), content);
+            }
 
             ContainerProject container = new ContainerProject();
             container.NewProject(project, projectPath);
@@ -104,7 +117,7 @@ namespace BetterTriggers.Controllers
             }
 
             bool didWrite = false;
-            Thread.Sleep(10);
+            //Thread.Sleep(10);
 
             try
             {

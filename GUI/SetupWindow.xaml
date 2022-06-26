@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Setup" ResizeMode="NoResize" Height="525" Width="375" Background="#FF202020">
+        Title="Setup" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Height="450" Width="375" Background="#FF202020">
+        <!--Title="Setup" ResizeMode="NoResize" Height="525" Width="375" Background="#FF202020">-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -14,10 +15,6 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="22"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="22"/>
-            <RowDefinition Height="60"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -40,7 +37,7 @@
         <Button x:Name="btnSelectWar3Dir" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right" Width="60" Content="Select..." Click="btnSelectWar3Dir_Click" />
         <Label x:Name="lblError" Content="Invalid directory" Visibility="Hidden" Grid.Column="1" Grid.Row="6" VerticalAlignment="Top" Foreground="#FFFF6262" />
 
-        <Label Content="Select language:" Grid.Column="1" Grid.Row="7" Foreground="White" />
+        <!--<Label Content="Select language:" Grid.Column="1" Grid.Row="7" Foreground="White" />
         <ComboBox x:Name="comboBoxLanguage" Grid.Column="1" Grid.Row="8" Width="125" HorizontalAlignment="Left" Foreground="White" Background="#FF323232" BorderBrush="#FF9B0707">
             <ComboBoxItem Content="English"></ComboBoxItem>
             <ComboBoxItem Content="Deutsch"></ComboBoxItem>
@@ -53,7 +50,7 @@
             <ComboBoxItem Content="Russian"></ComboBoxItem>
             <ComboBoxItem Content="Chinese (China)"></ComboBoxItem>
             <ComboBoxItem Content="Chinese (Taiwan)"></ComboBoxItem>
-        </ComboBox>
+        </ComboBox>-->
 
         <Button x:Name="btnContinue" Content="Continue"  Grid.Column="1" Grid.Row="10" Click="btnContinue_Click" />
     </Grid>

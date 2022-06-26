@@ -329,6 +329,7 @@ namespace GUI
             if (rightClickedElement == null)
                 return;
 
+            currentElement = rightClickedElement;
             rightClickedElement.IsSelected = true;
             rightClickedElement.ContextMenu = contextMenu;
 
@@ -354,7 +355,11 @@ namespace GUI
         private void menuPaste_Click(object sender, RoutedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
-            controller.PasteExplorerElement(currentElement.Ielement);
+            IExplorerElement pasted =  controller.PasteExplorerElement(currentElement.Ielement);
+
+            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
+            var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
+            controllerTriggerExplorer.RecursePopulate(controllerTriggerExplorer.GetCurrentExplorer(), parent, pasted);
         }
 
         private void menuDelete_Click(object sender, RoutedEventArgs e)

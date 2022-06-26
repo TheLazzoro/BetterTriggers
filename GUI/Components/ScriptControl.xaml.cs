@@ -46,7 +46,7 @@ namespace GUI.Components
             this.textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
             this.textEditor.FontFamily = new FontFamily("Consolas");
             this.textEditor.ShowLineNumbers = true;
-            new AutoComplete(this.textEditor);
+            //new AutoComplete(this.textEditor); TODO:
 
 
             // Sets syntax highlighting in the comment field

@@ -75,12 +75,12 @@ namespace GUI
             menuNewCondition.Header     = Locale.Translate(menuNewCondition.Header as string);
             menuNewAction.Header        = Locale.Translate(menuNewAction.Header as string);
 
-
-            menuJassHelper.Header       = Locale.Translate(menuJassHelper.Header as string);
-            menuEnableJassHelper.Header = Locale.Translate(menuEnableJassHelper.Header as string);
-            menuEnableVJass.Header      = Locale.Translate(menuEnableVJass.Header as string);
-            menuEnableDebugMode.Header  = Locale.Translate(menuEnableDebugMode.Header as string);
-            menuEnableOptimizer.Header  = Locale.Translate(menuEnableOptimizer.Header as string);
+            // TODO:
+            //menuJassHelper.Header       = Locale.Translate(menuJassHelper.Header as string);
+            //menuEnableJassHelper.Header = Locale.Translate(menuEnableJassHelper.Header as string);
+            //menuEnableVJass.Header      = Locale.Translate(menuEnableVJass.Header as string);
+            //menuEnableDebugMode.Header  = Locale.Translate(menuEnableDebugMode.Header as string);
+            //menuEnableOptimizer.Header  = Locale.Translate(menuEnableOptimizer.Header as string);
 
 
             menuTools.Header            = Locale.Translate(menuTools.Header as string);
@@ -143,6 +143,9 @@ namespace GUI
                 return;
 
             TabItemBT tabItem = tabControl.SelectedItem as TabItemBT;
+            if (tabItem == null) // it crashes when we don't do this?
+                return;
+
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
             controller.OnSelectItem(tabItem.explorerElement, vmd, tabControl);
             selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
@@ -282,6 +285,15 @@ namespace GUI
         private void btnTestMap_Click(object sender, RoutedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
+            if (!controller.War3MapDirExists())
+            {
+                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                window.ShowDialog();
+                if (!window.OK)
+                {
+                    return;
+                }
+            }
             try
             {
                 controller.TestMap();
@@ -452,11 +464,21 @@ namespace GUI
 
             if (project == null)
             {
-                DialogBox dialog = new DialogBox("Error", $"File '{file}' does not exist.");
+                MessageBox dialog = new MessageBox("Error", $"File '{file}' does not exist.");
                 dialog.ShowDialog();
                 return;
             }
+            if (!controllerProject.War3MapDirExists())
+            {
+                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                window.ShowDialog();
+                if (!window.OK)
+                {
+                    return;
+                }
+            }
 
+            vmd.Tabs.Clear();
             LoadingDataWindow loadingDataWindow = new LoadingDataWindow(project.War3MapDirectory);
             loadingDataWindow.ShowDialog();
 

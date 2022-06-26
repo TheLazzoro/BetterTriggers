@@ -30,19 +30,20 @@ namespace BetterTriggers.Containers
             projectFiles.Add(new ExplorerElementRoot(project, path)); // add root folder for safety measures :))
             currentSelectedElement = project.Root; // defaults to here when nothing has been selected yet.
 
-            if (fileSystemWatcher != null)
-                fileSystemWatcher.Dispose();
+            if (fileSystemWatcher == null)
+            {
+                fileSystemWatcher = new FileSystemWatcher();
+                fileSystemWatcher.Created += FileSystemWatcher_Created;
+                fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
+                fileSystemWatcher.Changed += FileSystemWatcher_Changed;
+                fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
+                fileSystemWatcher.Error += FileSystemWatcher_Error;
+            }
 
-            fileSystemWatcher = new FileSystemWatcher();
             fileSystemWatcher.Path = project.Root;
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
             fileSystemWatcher.InternalBufferSize = 32768; // 32 KB. 64 KB is the limit according to Microsoft.
-            fileSystemWatcher.Created += FileSystemWatcher_Created;
-            fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
-            fileSystemWatcher.Changed += FileSystemWatcher_Changed;
-            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
-            fileSystemWatcher.Error += FileSystemWatcher_Error;
         }
 
         private void InvokeCreate(object sender, FileSystemEventArgs e)
@@ -74,6 +75,7 @@ namespace BetterTriggers.Containers
             {
                 controller.OnMoveElement(deletedPath, createdPath, insertIndex);
                 insertIndex = 0; // reset
+                wasMoved = false;
             }
             else
             {
