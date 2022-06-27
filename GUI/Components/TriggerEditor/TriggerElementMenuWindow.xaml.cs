@@ -57,8 +57,13 @@ namespace GUI.Components.TriggerEditor
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < templates.Count; i++)
             {
+                string category = controllerTriggerData.GetNativeCategory(templates[i].category);
+                if(category != "")
+                    category += " - ";
+                string name = templates[i].name != "" ? templates[i].name : templates[i].identifier;
+                string content = category + name;
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = templates[i].name != "" ? templates[i].name : templates[i].identifier;
+                listItem.Content = content;
                 listItem.Tag = templates[i].ToTriggerElement();
                 objects.Add(new Searchable()
                 {
@@ -66,7 +71,7 @@ namespace GUI.Components.TriggerEditor
                     Category = templates[i].category.ToString(),
                     Words = new List<string>()
                     {
-                        templates[i].name.ToLower(),
+                        content.ToLower(),
                         templates[i].identifier.ToLower()
                     },
                 });

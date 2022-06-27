@@ -97,6 +97,7 @@ namespace BetterTriggers.Controllers
 
             string mapDir = ContainerProject.project.War3MapDirectory;
             var map = Map.Open(mapDir);
+            //map.Info.ScriptLanguage = War3Net.Build.Info.ScriptLanguage.Jass;
             MapBuilder builder = new MapBuilder(map);
             builder.AddFiles(mapDir);
             var archiveCreateOptions = new MpqArchiveCreateOptions

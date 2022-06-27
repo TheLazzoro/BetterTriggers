@@ -14,7 +14,7 @@ namespace GUI.Components.TriggerEditor
         
         public NodeAction(string text)
         {
-            TreeItemHeader header = new TreeItemHeader(text, Category.Action);
+            TreeItemHeader header = new TreeItemHeader(text, Category.Action, false);
             this.Header = header;
         }
 

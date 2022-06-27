@@ -35,8 +35,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void ValueControlReal_Loaded(object sender, RoutedEventArgs e)
         {
-            EventHandler handler = SelectionChanged;
-            handler?.Invoke(this, e);
+            //EventHandler handler = SelectionChanged;
+            //handler?.Invoke(this, e);
         }
 
         public void SetDefaultSelection(string identifier)

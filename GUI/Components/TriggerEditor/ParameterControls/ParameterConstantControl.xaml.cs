@@ -116,6 +116,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedItem = listControl.listView.SelectedItem as ListViewItem;
+            if (selectedItem == null)
+                return;
+
             var constant = selectedItem.Tag as ConstantTemplate;
             textBoxDescription.Text = Locale.Translate(constant.identifier);
         }

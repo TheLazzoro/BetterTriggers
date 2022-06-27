@@ -109,24 +109,5 @@ namespace BetterTriggers.WorldEdit
             fileStream.Close();
         } 
 
-
-        public void test()
-        {
-            /*
-            var replaceableTextures = (CASCFolder)war3_w3mod.Entries["replaceabletextures"];
-            var commandButtons = (CASCFolder)replaceableTextures.Entries["commandbuttons"];
-            files = CASCFolder.GetFiles(commandButtons.Entries.Select(kv => kv.Value)).ToList();
-
-            foreach (var entry in files)
-            {
-                var file = casc.OpenFile(entry.FullName);
-                //casc.SaveFileTo(entry.FullName, @"C:\Users\Lasse Dam\Desktop\Ny mappe (2)\");
-                //file.read
-            }
-            */
-
-
-            GC.Collect();
-        }
     }
 }

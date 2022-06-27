@@ -34,9 +34,9 @@ namespace GUI
             string hint = string.Empty;
             if ((bool)radBtnJass.IsChecked)
             {
-                hint += "vJass benefits:\n";
-                hint += "- Type checking\n";
-                hint += "- Compatibility with 2 decades of Jass resources\n";
+                //hint += "vJass benefits:\n";
+                //hint += "- Type checking\n";
+                //hint += "- Compatibility with 2 decades of Jass resources\n";
             }
 
             lblLanguageHint.Text = hint;

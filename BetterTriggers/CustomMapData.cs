@@ -20,7 +20,7 @@ namespace BetterTriggers
     {
         public static string mapPath;
         //public static string mapPath = @"D:\Test\Another Test Project\map\TestMap.w3x"; // 1.32 map
-        //public static string mapPath = @"C:\Users\Lasse Dam\Desktop\Direct Strike Reforged (JASS).w3x"; // 1.33 map
+        //public static string mapPath = @"...\Desktop\Direct Strike Reforged (JASS).w3x"; // 1.33 map
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
 

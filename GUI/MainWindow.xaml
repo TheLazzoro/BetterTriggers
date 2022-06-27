@@ -421,7 +421,8 @@
         <Menu Grid.Column="0"  Grid.Row="0" Grid.ColumnSpan="2" Background="#FF282828" Foreground="#eee" MouseLeftButtonDown="Menu_MouseLeftButtonDown" >
             <MenuItem x:Name="menuFile" Header="WESTRING_MENU_FILE" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" >
                 <MenuItem Name="menuNewProject" Header="New Project..." Click="menuNewProject_Click"/>
-                <MenuItem Name="menuOpen" Header="WESTRING_MENU_OPEN" Click="menuOpen_Click"/>
+                <!--<MenuItem Name="menuOpen" Header="WESTRING_MENU_OPEN" Click="menuOpen_Click"/>-->
+                <MenuItem Name="menuOpen" Header="Open Project..." Click="menuOpen_Click"/>
                 <MenuItem Name="menuSave" Header="Save All" Click="menuSave_Click"/>
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
             </MenuItem>
@@ -470,7 +471,8 @@
                     <Image Source="Resources/Icons/map.png" Stretch="Fill"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnOpenMap" ToolTip="WESTRING_TOOLBAR_OPEN" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnOpenMap_Click"  >
+            <!--<Button x:Name="btnOpenMap" ToolTip="WESTRING_TOOLBAR_OPEN" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnOpenMap_Click"  >-->
+            <Button x:Name="btnOpenMap" ToolTip="Open Project..." Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnOpenMap_Click"  >
                 <Button.Content>
                     <Image Source="Resources/Icons/ui-editoricon-general_open.png" Stretch="Fill" />
                 </Button.Content>
@@ -493,7 +495,7 @@
                     <Image Source="Resources/Icons/redo.png" Stretch="Fill" />
                 </Button.Content>
             </Button>
-            <Button x:Name="btnCut" ToolTip="WESTRING_TOOLBAR_CUT" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCut_Click"  >
+            <!--<Button x:Name="btnCut" ToolTip="WESTRING_TOOLBAR_CUT" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCut_Click"  >
                 <Button.Content>
                     <Image Source="Resources/Icons/ui-editoricon-general_cut.png" Stretch="Fill" />
                 </Button.Content>
@@ -507,7 +509,7 @@
                 <Button.Content>
                     <Image Source="Resources/Icons/ui-editoricon-general_paste.png" Stretch="Fill" />
                 </Button.Content>
-            </Button>
+            </Button>-->
 
 
             <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="#444" />

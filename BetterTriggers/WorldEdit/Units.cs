@@ -60,7 +60,7 @@ namespace BetterTriggers.WorldEdit
         public void ParseUnits()
         {
             /*
-            Stream s = new FileStream(@"C:\Users\Lasse Dam\Desktop\test2.w3x\war3mapUnits.doo", FileMode.Open);
+            Stream s = new FileStream(@"...\war3mapUnits.doo", FileMode.Open);
             BinaryReader reader = new BinaryReader(s);
 
             var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);

@@ -47,8 +47,6 @@ namespace GUI.Components.TriggerEditor
             this.descriptionTextBlock.Text = controller.GetDescription(triggerElement.function);
             this.category = controller.GetCategoryTriggerElement(triggerElement.function);
 
-            ControllerTriggerTreeItem controllerTriggerElement = new ControllerTriggerTreeItem(this);
-            controllerTriggerElement.GenerateParamText();
             this.UpdateTreeItem();
 
             ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
@@ -93,6 +91,7 @@ namespace GUI.Components.TriggerEditor
             return GetTriggerControl().explorerElementTrigger;
         }
 
+        // TODO: Clean up.
         public void UpdateTreeItem()
         {
             ControllerTrigger controllerTrigger = new ControllerTrigger();
@@ -116,7 +115,7 @@ namespace GUI.Components.TriggerEditor
             string text = string.Empty;
             textRanges.ForEach(element => text += element.Text);
 
-            TreeItemHeader header = new TreeItemHeader(text, category, areParametersValid, isEnabled);
+            TreeItemHeader header = new TreeItemHeader(text, category, true, areParametersValid, isEnabled);
             this.Header = header;
         }
 

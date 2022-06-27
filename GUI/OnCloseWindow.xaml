@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="OnCloseWindow" Height="145" Width="300" Background="#FF202020" ResizeMode="NoResize">
+        Title="OnCloseWindow" WindowStartupLocation="CenterOwner" Height="145" Width="300" Background="#FF202020" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -13,7 +13,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Save changes to [INSERT NAME]?" Foreground="#EEE" Grid.Row="1" HorizontalAlignment="Center" />
+        <Label x:Name="lblMessage" Content="Save changes to [INSERT NAME]?" Foreground="#EEE" Grid.Row="1" HorizontalAlignment="Center" />
 
         <Button x:Name="btnYes" Content="Yes" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,175,0" Click="btnYes_Click" />
         <Button x:Name="btnOK" Content="No" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />
