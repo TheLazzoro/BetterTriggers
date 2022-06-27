@@ -37,7 +37,6 @@ namespace GUI.Components
             InitializeComponent();
             checkBoxIsEnabled.IsChecked = explorerElementScript.GetEnabled();
 
-
             this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
@@ -48,9 +47,12 @@ namespace GUI.Components
             this.textEditor.ShowLineNumbers = true;
             //new AutoComplete(this.textEditor); TODO:
 
+            string uri = System.IO.Path.GetExtension(explorerElementScript.GetPath()) == ".j" ?
+                "Resources/SyntaxHighlighting/JassHighlighting.xml" :
+                "Resources/SyntaxHighlighting/LuaHighlighting.xml";
 
             // Sets syntax highlighting in the comment field
-            using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
+            using (Stream s = Application.GetResourceStream(new Uri(uri, UriKind.Relative)).Stream)
             {
                 using (XmlTextReader reader = new XmlTextReader(s))
                 {
@@ -79,22 +81,15 @@ namespace GUI.Components
             throw new NotImplementedException();
         }
 
-        public void OnElementRename(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public void OnRemoteChange()
         {
             throw new NotImplementedException();
         }
 
-        public void Refresh()
+        public void Reload()
         {
-            // TODO: atm. completely replaces all text every time, even when saving in the editor.
             this.suppressStateChange = true;
-            ControllerScript controller = new ControllerScript();
-            textEditor.Document.Text = controller.LoadScriptFromFile(explorerElementScript.GetPath());
+            textEditor.Document.Text = explorerElementScript.script;
         }
 
         public void SetElementEnabled(bool isEnabled)

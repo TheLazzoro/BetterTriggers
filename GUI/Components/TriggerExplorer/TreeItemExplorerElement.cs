@@ -45,7 +45,7 @@ namespace GUI.Components.TriggerExplorer
             this.KeyDown += TreeItemExplorerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
 
-            RefreshElement();
+            ReloadElement();
         }
 
 
@@ -71,7 +71,7 @@ namespace GUI.Components.TriggerExplorer
             });
         }
 
-        public void RefreshElement()
+        public void ReloadElement()
         {
             if (this.Ielement == null)
                 return;
@@ -88,16 +88,18 @@ namespace GUI.Components.TriggerExplorer
                 var control = this.editor as VariableControl;
                 control.Rename(Ielement.GetName());
             }
-
-            if (this.editor != null)
-                this.editor.Refresh();
+            else if(this.editor is ScriptControl)
+            {
+                var control = this.editor as ScriptControl;
+                control.Reload();
+            }
         }
 
-        public void Update(IExplorerElement subject)
+        public void Reload(IExplorerElement subject)
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                RefreshElement();
+                ReloadElement();
             });
         }
 
@@ -156,6 +158,14 @@ namespace GUI.Components.TriggerExplorer
             controller.AddToUnsaved(this.Ielement);
         }
 
+        public void OnSaved()
+        {
+            treeItemHeader.SetIcon(category, Ielement.GetEnabled());
+
+            if (this.tabItem != null)
+                tabItem.Header = this.Ielement.GetName();
+        }
+
         public void UpdatePosition()
         {
             Application.Current.Dispatcher.Invoke(delegate
@@ -180,5 +190,7 @@ namespace GUI.Components.TriggerExplorer
             this.IsSelected = true;
             this.Focus();
         }
+
+        
     }
 }

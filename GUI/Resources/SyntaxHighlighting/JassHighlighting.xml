@@ -24,12 +24,15 @@
             <Word>=</Word>
             <Word>!</Word>
             <Word>+</Word>
-            <Word>-</Word>
+			<Word>-</Word>
+			<Word>*</Word>
             <Word>/</Word>
             <Word>(</Word>
             <Word>)</Word>
             <Word>{</Word>
             <Word>}</Word>
+			<Word>[</Word>
+			<Word>]</Word>
             <!-- ... -->
         </Keywords>
 

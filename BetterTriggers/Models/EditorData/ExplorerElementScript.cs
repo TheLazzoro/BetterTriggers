@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -21,19 +22,8 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElementScript(string path)
         {
             this.path = path;
-            bool isReadyForRead = false;
-            while (!isReadyForRead)
-            {
-                try
-                {
-                    this.script = File.ReadAllText(path);
-                    isReadyForRead = true;
-                }
-                catch (Exception)
-                {
-                    Thread.Sleep(100);
-                }
-            }
+            ControllerScript controller = new ControllerScript();
+            this.script = controller.LoadScriptFromFile(GetPath());
             UpdateMetadata();
         }
 
@@ -64,10 +54,11 @@ namespace BetterTriggers.Models.EditorData
 
         public void Notify()
         {
-            //foreach (var observer in observers)
+            ControllerScript controller = new ControllerScript();
+            this.script = controller.LoadScriptFromFile(GetPath());
             for (int i = 0; i < observers.Count; i++)
             {
-                observers[i].Update(this);
+                observers[i].Reload(this);
             }
         }
 
@@ -181,6 +172,14 @@ namespace BetterTriggers.Models.EditorData
             newScript.script = new string(this.script);
 
             return newScript;
+        }
+
+        public void OnSaved()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].OnSaved();
+            }
         }
     }
 }

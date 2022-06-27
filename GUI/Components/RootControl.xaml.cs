@@ -24,9 +24,6 @@ using System.Xml;
 
 namespace GUI.Components
 {
-    /// <summary>
-    /// Interaction logic for TriggerControl.xaml
-    /// </summary>
     public partial class RootControl : UserControl, IEditor
     {
         public ICSharpCode.AvalonEdit.TextEditor textEditor;
@@ -62,23 +59,6 @@ namespace GUI.Components
             textEditor.Text = explorerElementRoot.project.Header;
 
             textEditor.TextChanged += TextEditor_TextChanged;
-        }
-
-
-        public void Refresh()
-        {
-            
-        }
-
-        public UserControl GetControl()
-        {
-            return this;
-        }
-
-
-        public void OnElementRename(string name)
-        {
-            throw new NotImplementedException();
         }
 
         public void OnRemoteChange()

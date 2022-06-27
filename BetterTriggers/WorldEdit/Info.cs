@@ -12,6 +12,10 @@ namespace BetterTriggers.WorldEdit
     {
         internal static MapInfo MapInfo;
 
+        public static ScriptLanguage ScriptLanguage()
+        {
+            return MapInfo.ScriptLanguage;
+        }
 
         internal static void Load()
         {

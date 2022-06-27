@@ -254,7 +254,7 @@ namespace BetterTriggers.Controllers
                             explorerElementChild = new ExplorerElementTrigger(entryChild.path);
                             ContainerTriggers.AddTrigger(explorerElementChild as ExplorerElementTrigger);
                             break;
-                        case ".j":
+                        case ".j": case ".lua":
                             explorerElementChild = new ExplorerElementScript(entryChild.path);
                             ContainerScripts.AddScript(explorerElementChild as ExplorerElementScript);
                             break;
@@ -282,6 +282,8 @@ namespace BetterTriggers.Controllers
             if (ContainerProject.projectFiles == null)
                 return;
 
+            SetEnableFileEvents(false);
+
             // Write to unsaved
             var unsaved = ContainerUnsavedFiles.GetAllUnsaved();
             for (int i = 0; i < ContainerUnsavedFiles.Count(); i++)
@@ -290,6 +292,7 @@ namespace BetterTriggers.Controllers
                 {
                     var saveable = (IExplorerSaveable)unsaved[i];
                     File.WriteAllText(unsaved[i].GetPath(), saveable.GetSaveableString());
+                    saveable.OnSaved();
                 }
             }
             ContainerUnsavedFiles.Clear();
@@ -315,6 +318,8 @@ namespace BetterTriggers.Controllers
                     RecurseSaveFileEntries((ExplorerElementFolder)element, fileEntry);
                 }
             }
+
+            SetEnableFileEvents(true);
 
             var json = JsonConvert.SerializeObject(project, Formatting.Indented);
             File.WriteAllText(root.GetProjectPath(), json);
@@ -427,7 +432,7 @@ namespace BetterTriggers.Controllers
                 case ".trg":
                     explorerElement = new ExplorerElementTrigger(fullPath);
                     break;
-                case ".j":
+                case ".j": case ".lua":
                     explorerElement = new ExplorerElementScript(fullPath);
                     break;
                 case ".var":

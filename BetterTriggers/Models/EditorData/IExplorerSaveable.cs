@@ -7,5 +7,6 @@ namespace BetterTriggers.Models.EditorData
     public interface IExplorerSaveable
     {
         string GetSaveableString();
+        void OnSaved();
     }
 }

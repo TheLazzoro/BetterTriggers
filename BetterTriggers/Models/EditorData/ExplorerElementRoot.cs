@@ -64,10 +64,9 @@ namespace BetterTriggers.Models.EditorData
 
         public void Notify()
         {
-            //foreach (var observer in observers)
             for (int i = 0; i < observers.Count; i++)
             {
-                observers[i].Update(this);
+                observers[i].Reload(this);
             }
         }
 

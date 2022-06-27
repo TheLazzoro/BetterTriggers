@@ -4,7 +4,6 @@ namespace GUI.Components
 {
     public interface IEditor
     {
-        void Refresh();
         void OnRemoteChange();
         void SetElementEnabled(bool isEnabled);
         void SetElementInitiallyOn(bool isInitiallyOn);

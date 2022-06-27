@@ -72,6 +72,8 @@ namespace GUI.Controllers
                     var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
                     triggerControl.Attach(selectedItem);
                     selectedItem.editor = triggerControl;
+                    if (triggerControl != null)
+                        triggerControl.Refresh();
                 }
                 else if (selectedItem.Ielement is ExplorerElementScript)
                 {
@@ -91,8 +93,6 @@ namespace GUI.Controllers
                 selectedItem.tabItem = tabItem;
             }
 
-            if (selectedItem.editor != null)
-                selectedItem.editor.Refresh();
             if (selectedItem.tabItem != null)
                 tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
         }

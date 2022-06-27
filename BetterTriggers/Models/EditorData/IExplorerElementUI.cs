@@ -3,8 +3,9 @@
     public interface IExplorerElementUI
     {
         void UpdatePosition();
-        void Update(IExplorerElement subject);
+        void Reload(IExplorerElement subject);
         void OnCreated(int insertIndex);
+        void OnSaved();
         void Delete();
     }
 }

@@ -1,0 +1,104 @@
+<SyntaxDefinition name="Lua"
+        xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="#6A9955" />
+    <Color name="String" foreground="#CE9178" />
+
+    <!-- This is the main ruleset. -->
+    <RuleSet>
+        <Span color="Comment" begin="--" />
+        <Span color="Comment" multiline="true" begin="/\*" end="\*/" />
+
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+            <RuleSet>
+                <!-- nested span for escape sequences -->
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>
+
+        <!-- TOKENS -->
+        <Keywords fontWeight="bold" foreground="#D4D4D4">
+            <Word>&lt;</Word>
+            <Word>></Word>
+            <Word>=</Word>
+            <Word>!</Word>
+            <Word>+</Word>
+            <Word>-</Word>
+            <Word>/</Word>
+            <Word>(</Word>
+            <Word>)</Word>
+            <Word>{</Word>
+			<Word>}</Word>
+			<Word>[</Word>
+			<Word>]</Word>
+
+			<Word>%</Word>
+			<Word>^</Word>
+			<Word>#</Word>
+			<Word>&amp;</Word>
+			<Word>~</Word>
+			<Word>|</Word>
+			<Word>..</Word>
+			<Word>...</Word>
+			<Word>:</Word>
+			<Word>;</Word>
+            <!-- ... -->
+        </Keywords>
+
+        <!-- BLOCKS -->
+        <Keywords foreground="#C586C0">
+			<Word>function</Word>
+			<Word>do</Word>
+			<Word>for</Word>
+			<Word>if</Word>
+            <Word>then</Word>
+			<Word>else</Word>
+			<Word>elseif</Word>
+            <Word>end</Word>
+            <Word>loop</Word>
+            <Word>exitwhen</Word>
+			<Word>endloop</Word>
+			<Word>break</Word>
+			<Word>repeat</Word>
+			<Word>return</Word>
+			<Word>goto</Word>
+			<Word>in</Word>
+			<Word>until</Word>
+			<Word>while</Word>
+			<!-- ... -->
+        </Keywords>
+
+        <!-- KEYWORDS -->
+        <Keywords foreground="#569CD6">
+			<Word>nil</Word>
+            <Word>local</Word>
+            <Word>true</Word>
+            <Word>false</Word>
+			<Word>and</Word>
+			<Word>or</Word>
+			<Word>not</Word>
+			<Word>not</Word>
+        </Keywords>
+
+        <!-- FUNCTION NAMES (uses regex lookbehind) -->
+        <Rule foreground="#DCDCAA">
+            (?&lt;=\bfunction\s)(\w+)
+        </Rule>
+
+        <!-- FUNCTION NAMES (uses regex lookahead) -->
+        <Rule foreground="#DCDCAA">
+          (\w+)(?=\()
+        </Rule>
+
+        <!-- Digits -->
+        <Rule foreground="#B5CEA8">
+            \b0[xX][0-9a-fA-F]+  # hex number
+        |    \b
+            (    \d+(\.[0-9]+)?   #number with optional floating point
+            |    \.[0-9]+         #or just starting with floating point
+            )
+            ([eE][+-]?[0-9]+)? # optional exponent
+        </Rule>
+    </RuleSet>
+</SyntaxDefinition>

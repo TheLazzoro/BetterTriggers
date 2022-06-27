@@ -58,6 +58,7 @@
     <None Remove="Resources\Icons\Warcraft_III_World_Editor.png" />
     <None Remove="Resources\map.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
+    <None Remove="Resources\SyntaxHighlighting\LuaHighlighting.xml" />
     <None Remove="Resources\ui-editoricon-triggercategories_element.png" />
     <None Remove="Resources\ui-editoricon-triggercategories_folder.png" />
     <None Remove="Resources\ui-editoricon-triggercategories_folderopen.png" />
@@ -236,6 +237,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\SyntaxHighlighting\LuaHighlighting.xml" />
     <Resource Include="Resources\SyntaxHighlighting\JassHighlighting.xml" />
   </ItemGroup>
 

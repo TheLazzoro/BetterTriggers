@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.WorldEdit;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,9 @@ namespace BetterTriggers.Controllers
                 i++;
             }
 
-            File.WriteAllText(directory + @"\" + name + ".j", "");
+            string extension = Info.ScriptLanguage() == War3Net.Build.Info.ScriptLanguage.Jass ? ".j" : ".lua";
+
+            File.WriteAllText(directory + @"\" + name + extension, "");
         }
 
         public string LoadScriptFromFile(string filePath)
@@ -62,7 +65,7 @@ namespace BetterTriggers.Controllers
                         Console.WriteLine(e.StackTrace);
                     } finally
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(10);
                     }
                 }
             }
@@ -86,27 +89,5 @@ namespace BetterTriggers.Controllers
 
             return explorerElement;
         }
-
-        /*
-        public ScriptControl CreateScriptControlWithScript(TabControl tabControl, string filePath)
-        {
-            var scriptControl = CreateScriptControl(tabControl);
-            scriptControl.textEditor.Text = LoadScriptFromFile(filePath);
-
-            return scriptControl;
-        }
-
-        private ScriptControl CreateScriptControl(TabControl tabControl)
-        {
-            var scriptControl = new ScriptControl();
-
-            // Position editor
-            Grid.SetColumn(scriptControl, 1);
-            Grid.SetRow(scriptControl, 2);
-            Grid.SetRowSpan(scriptControl, 3);
-
-            return scriptControl;
-        }
-        */
     }
 }

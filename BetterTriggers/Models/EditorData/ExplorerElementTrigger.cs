@@ -76,7 +76,7 @@ namespace BetterTriggers.Models.EditorData
         {
             for (int i = 0; i < observers.Count; i++)
             {
-                observers[i].Update(this);
+                observers[i].Reload(this);
             }
         }
 
@@ -192,6 +192,14 @@ namespace BetterTriggers.Models.EditorData
             newTrigger.trigger = this.trigger.Clone();
 
             return newTrigger;
+        }
+
+        public void OnSaved()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].OnSaved();
+            }
         }
     }
 }

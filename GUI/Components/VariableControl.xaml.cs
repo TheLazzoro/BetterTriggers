@@ -24,9 +24,6 @@ using System.Windows.Shapes;
 
 namespace GUI.Components
 {
-    /// <summary>
-    /// Interaction logic for VariableControl.xaml
-    /// </summary>
     public partial class VariableControl : UserControl, IEditor
     {
         private ExplorerElementVariable explorerElementVariable;
@@ -212,35 +209,6 @@ namespace GUI.Components
             }
 
             return ok;
-        }
-
-        public void Refresh()
-        {
-            isLoading = true;
-            Variable variable = explorerElementVariable.variable;
-
-            checkBoxIsArray.IsChecked = variable.IsArray;
-            textBoxArraySize0.IsEnabled = variable.IsArray;
-            comboBoxArrayDimensions.IsEnabled = variable.IsArray;
-            textBoxArraySize0.Text = variable.ArraySize[0].ToString();
-            textBoxArraySize1.Text = variable.ArraySize[1].ToString();
-            if (!variable.IsTwoDimensions)
-                comboBoxArrayDimensions.SelectedIndex = 0;
-            else
-            {
-                comboBoxArrayDimensions.SelectedIndex = 1;
-                textBoxArraySize1.IsEnabled = variable.IsArray;
-            }
-
-            for (int i = 0; i < comboBoxVariableType.Items.Count; i++)
-            {
-                var item = (ComboBoxItemType)comboBoxVariableType.Items[i];
-
-                if (variable.Type == item.Type)
-                    comboBoxVariableType.SelectedIndex = i;
-            }
-
-            isLoading = false;
         }
 
         public void SetElementEnabled(bool isEnabled)
