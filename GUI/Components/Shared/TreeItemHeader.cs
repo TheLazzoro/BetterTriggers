@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData.Enums;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,11 +16,12 @@ namespace GUI.Components.Shared
 {
     public class TreeItemHeader : StackPanel
     {
+        internal TextBox RenameBox;
         private Rectangle Icon;
         private TextBlock DisplayText;
-        internal TextBox RenameBox;
+        private string category = string.Empty;
 
-        public TreeItemHeader(string text, Category iconCategory, bool isValid = true, bool isInitiallyOn = true)
+        public TreeItemHeader(string text, Category iconCategory, bool includeCategoryPrefix, bool isValid = true, bool isInitiallyOn = true)
         {
             this.Orientation = Orientation.Horizontal;
             this.Height = 18;
@@ -34,6 +36,14 @@ namespace GUI.Components.Shared
 
             RenameBox = new TextBox();
             RenameBox.Margin = new Thickness(5, 0, 0, 0);
+
+            if (includeCategoryPrefix)
+            {
+                ControllerTriggerData controllerTriggerData = new ControllerTriggerData();
+                this.category = controllerTriggerData.GetNativeCategory(iconCategory);
+                if (category != "")
+                    category += " - ";
+            }
 
             SetIcon(iconCategory, isValid);
             SetDisplayText(text);
@@ -59,7 +69,7 @@ namespace GUI.Components.Shared
 
         public void SetDisplayText(string text)
         {
-            DisplayText.Text = text;
+            DisplayText.Text = category + text;
             RenameBox.Text = text;
         }
 

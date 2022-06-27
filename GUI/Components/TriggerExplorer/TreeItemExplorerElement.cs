@@ -40,7 +40,7 @@ namespace GUI.Components.TriggerExplorer
             else
                 category = Category.Wait;
 
-            this.treeItemHeader = new TreeItemHeader(explorerElement.GetName(), category, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
+            this.treeItemHeader = new TreeItemHeader(explorerElement.GetName(), category, false, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
             this.Header = treeItemHeader;
             this.KeyDown += TreeItemExplorerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;

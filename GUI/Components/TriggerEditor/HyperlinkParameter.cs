@@ -61,7 +61,6 @@ namespace GUI.Components.TriggerEditor
         {
             var parameter = parameters[index];
             var window = new ParameterWindow(treeViewTriggerElement.triggerElement.function, parameter);
-            window.Title = parameter.returnType;
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.

@@ -94,6 +94,9 @@
                                     <Setter Property="BorderBrush" Value="#333" />
                                     <Setter Property="Background" Value="#0000" />
                                 </Trigger>
+                                <Trigger Property="IsPressed" Value="True" >
+                                    <Setter Property="Background" Value="#333" />
+                                </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>

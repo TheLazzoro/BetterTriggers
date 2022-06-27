@@ -154,7 +154,10 @@ namespace GUI
             if (dragItem == null)
                 return;
 
-            TreeViewItem currentParent = (TreeViewItem)dragItem.Parent;
+            TreeViewItem currentParent = dragItem.Parent as TreeViewItem;
+            if (currentParent == null)
+                return;
+
             TreeItemExplorerElement dropTarget = GetTraversedTargetDropItem(e.Source as FrameworkElement);
             int currentIndex = currentParent.Items.IndexOf(dragItem);
             if (dropTarget == null)

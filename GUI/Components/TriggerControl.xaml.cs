@@ -624,7 +624,8 @@ namespace GUI.Components
 
         private void menuCopyAsText_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            MessageBox dialog = new MessageBox("Error", "Not implemented.");
+            dialog.ShowDialog();
         }
 
         private void menuPaste_Click(object sender, RoutedEventArgs e)

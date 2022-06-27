@@ -14,7 +14,7 @@ namespace GUI.Components.TriggerEditor
 
         public NodeCondition(string text)
         {
-            TreeItemHeader header = new TreeItemHeader(text, Category.Condition);
+            TreeItemHeader header = new TreeItemHeader(text, Category.Condition, false);
             this.Header = header;
         }
 

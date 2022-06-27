@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTriggers.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,10 @@ namespace GUI
         public OnCloseWindow()
         {
             InitializeComponent();
+            this.Owner = MainWindow.GetMainWindow();
+
+            ControllerProject controller = new ControllerProject();
+            lblMessage.Content = $"Save changes to '{controller.GetProjectRoot().GetName()}'?";
         }
 
         private void btnYes_Click(object sender, RoutedEventArgs e)

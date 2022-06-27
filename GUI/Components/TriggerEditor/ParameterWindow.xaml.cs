@@ -33,7 +33,7 @@ namespace GUI
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
-
+            this.Title = parameter.returnType;
 
             string returnType = parameter.returnType;
 
@@ -70,14 +70,12 @@ namespace GUI
             Grid.SetRow(importControl, 1);
             Grid.SetColumnSpan(importControl, 2);
 
-            this.functionControl.listControl.listView.SelectionChanged   += delegate { SetSelectedItem(functionControl); };
-            this.constantControl.listControl.listView.SelectionChanged   += delegate { SetSelectedItem(constantControl); };
-            this.variableControl.listControl.listView.SelectionChanged   += delegate { SetSelectedItem(variableControl); };
+            this.functionControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(functionControl); };
+            this.constantControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(constantControl); };
+            this.variableControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(variableControl); };
             this.triggerRefControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(triggerRefControl); };
-            this.importControl.listControl.listView.SelectionChanged     += delegate { SetSelectedItem(importControl); };
-            this.valueControl.SelectionChanged                           += delegate { 
-                SetSelectedItem(valueControl); 
-            }; // TODO
+            this.importControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(importControl); };
+            this.valueControl.SelectionChanged += delegate { SetSelectedItem(valueControl); };
 
 
             IParameterControl parameterControl = constantControl; // default
@@ -155,9 +153,7 @@ namespace GUI
 
             control.SetVisibility(Visibility.Visible);
             if (control.GetSelectedItem() != null)
-            {
                 btnOK.IsEnabled = true;
-            }
             else
                 btnOK.IsEnabled = false;
         }

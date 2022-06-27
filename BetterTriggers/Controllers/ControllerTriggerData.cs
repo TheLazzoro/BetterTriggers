@@ -42,6 +42,111 @@ namespace BetterTriggers.Controllers
             return value;
         }
 
+        // TODO: Needs to accept an identifier instead of enum.
+        // Some icons are used for multiple categories.
+        public string GetNativeCategory(Category category)
+        {
+            string name = string.Empty;
+            switch (category)
+            {
+                case Category.LocalVariable:
+                    name = "??";
+                    break;
+                case Category.Action:
+                    name = "Action";
+                    break;
+                case Category.Ability:
+                    name = "Ability";
+                    break;
+                case Category.AI:
+                    name = "AI";
+                    break;
+                case Category.Animation:
+                    name = "Animation";
+                    break;
+                case Category.Camera:
+                    name = "Camera";
+                    break;
+                case Category.Comment:
+                    name = "Comment";
+                    break;
+                case Category.Destructible:
+                    name = "Destructible";
+                    break;
+                case Category.Dialog:
+                    name = "Dialog";
+                    break;
+                case Category.Environment:
+                    name = "Environment";
+                    break;
+                case Category.Frame:
+                    name = "Frame";
+                    break;
+                case Category.Game:
+                    name = "Game";
+                    break;
+                case Category.Goldmine:
+                    name = "Neutral Building";
+                    break;
+                case Category.Hero:
+                    name = "Hero";
+                    break;
+                case Category.Item:
+                    name = "Item";
+                    break;
+                case Category.Logical:
+                    name = "";
+                    break;
+                case Category.Melee:
+                    name = "Melee Game";
+                    break;
+                case Category.Nothing:
+                    name = "";
+                    break;
+                case Category.Player:
+                    name = "Player";
+                    break;
+                case Category.PlayerGroup:
+                    name = "Player Group";
+                    break;
+                case Category.Quest:
+                    name = "Quest";
+                    break;
+                case Category.Region:
+                    name = "Region";
+                    break;
+                case Category.SetVariable:
+                    name = "";
+                    break;
+                case Category.Sound:
+                    name = "Sound";
+                    break;
+                case Category.Timer:
+                    name = "Countdown Timer";
+                    break;
+                case Category.Unit:
+                    name = "Unit";
+                    break;
+                case Category.UnitGroup:
+                    name = "Unit Group";
+                    break;
+                case Category.UnitSelection:
+                    name = "Unit Selection";
+                    break;
+                case Category.Visibility:
+                    name = "Unit Visibility";
+                    break;
+                case Category.Wait:
+                    name = "";
+                    break;
+                default:
+                    break;
+            }
+
+
+            return name;
+        }
+
         public List<FunctionTemplate> LoadAllEvents()
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();

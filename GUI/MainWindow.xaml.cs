@@ -36,13 +36,14 @@ namespace GUI
             CustomMapData.OnSaving += CustomMapData_OnSaving;
 
             btnNewMap.ToolTip           = Locale.Translate(btnNewMap.ToolTip as string);
-            btnOpenMap.ToolTip          = Locale.Translate(btnOpenMap.ToolTip as string);
+            //btnOpenMap.ToolTip          = Locale.Translate(btnOpenMap.ToolTip as string);
             
             btnUndo.ToolTip             = Locale.Translate(btnUndo.ToolTip as string);
             btnRedo.ToolTip             = Locale.Translate(btnRedo.ToolTip as string);
-            btnCut.ToolTip              = Locale.Translate(btnCut.ToolTip as string);
-            btnCopy.ToolTip             = Locale.Translate(btnCopy.ToolTip as string);
-            btnPaste.ToolTip            = Locale.Translate(btnPaste.ToolTip as string);
+            // TODO:
+            //btnCut.ToolTip              = Locale.Translate(btnCut.ToolTip as string);
+            //btnCopy.ToolTip             = Locale.Translate(btnCopy.ToolTip as string);
+            //btnPaste.ToolTip            = Locale.Translate(btnPaste.ToolTip as string);
 
             btnCreateFolder.ToolTip     = Locale.Translate(btnCreateFolder.ToolTip as string);
             btnCreateTrigger.ToolTip    = Locale.Translate(btnCreateTrigger.ToolTip as string);
@@ -59,7 +60,7 @@ namespace GUI
 
 
             menuFile.Header             = Locale.Translate(menuFile.Header as string);
-            menuOpen.Header             = Locale.Translate(menuOpen.Header as string);
+            //menuOpen.Header             = Locale.Translate(menuOpen.Header as string);
 
 
             menuEdit.Header             = Locale.Translate(menuEdit.Header as string);
