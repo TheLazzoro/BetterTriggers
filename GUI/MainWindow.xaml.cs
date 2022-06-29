@@ -279,8 +279,8 @@ namespace GUI
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
-            ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
-            scriptGenerator.GenerateScript();
+            ControllerProject controller = new ControllerProject();
+            controller.GenerateScript();
         }
 
         private void btnTestMap_Click(object sender, RoutedEventArgs e)

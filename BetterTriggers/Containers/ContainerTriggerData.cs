@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using War3Net.Build.Info;
 
 namespace BetterTriggers.Containers
 {
@@ -34,10 +35,18 @@ namespace BetterTriggers.Containers
             return ConstantCodeText;
         }
 
-        internal static string GetConstantCodeText(string identifier)
+        internal static string GetConstantCodeText(string identifier, ScriptLanguage language)
         {
             string codeText;
             GetCodeTextDictionaryInstance().TryGetValue(identifier, out codeText);
+            if(language == ScriptLanguage.Lua)
+            {
+                if (codeText == "!=")
+                    codeText = "~=";
+                else if (codeText == "null")
+                    codeText = "nil";
+            }
+
             return codeText;
         }
     }

@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using War3Net.Build;
+using War3Net.Build.Info;
 using War3Net.IO.Mpq;
 
 namespace BetterTriggers.Controllers
@@ -83,21 +84,35 @@ namespace BetterTriggers.Controllers
             ContainerProject.project.War3MapDirectory = mapDir;
         }
 
+        public bool GenerateScript()
+        {
+            War3Project project = ContainerProject.project;
+            if (project == null)
+                return false;
+
+            ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
+
+            ScriptGenerator scriptGenerator = new ScriptGenerator(language);
+            scriptGenerator.GenerateScript();
+            // TODO: Figure out how to return 
+
+            return true;
+        }
+
         /// <summary>
         /// Builds an MPQ archive.
         /// </summary>
         /// <returns>Full path of the archive.</returns>
         public string BuildMap(string destinationDir = null)
         {
-            if (ContainerProject.project == null)
-                return null;
+            bool wasVerified = GenerateScript();
+            War3Project project = ContainerProject.project;
+            ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
 
-            ControllerScriptGenerator scriptGenerator = new ControllerScriptGenerator();
-            scriptGenerator.GenerateScript();
-
-            string mapDir = ContainerProject.project.War3MapDirectory;
+            string mapDir = project.War3MapDirectory;
             var map = Map.Open(mapDir);
-            //map.Info.ScriptLanguage = War3Net.Build.Info.ScriptLanguage.Jass;
+            map.Info.ScriptLanguage = language;
+
             MapBuilder builder = new MapBuilder(map);
             builder.AddFiles(mapDir);
             var archiveCreateOptions = new MpqArchiveCreateOptions
@@ -107,7 +122,7 @@ namespace BetterTriggers.Controllers
                 BlockSize = 3,
             };
 
-            string rootDir = Path.GetDirectoryName(ContainerProject.project.Root);
+            string rootDir = Path.GetDirectoryName(project.Root);
             string fullPath = string.Empty;
             if (destinationDir == null)
                 fullPath = Path.Combine(rootDir, Path.Combine("dist", Path.GetFileName(mapDir)));
@@ -118,15 +133,20 @@ namespace BetterTriggers.Controllers
             }
 
             bool didWrite = false;
-            //Thread.Sleep(10);
-
-            try
+            int attemptLimit = 1000;
+            while (attemptLimit > 0 && !didWrite)
             {
-                builder.Build(fullPath, archiveCreateOptions);
-                didWrite = true;
-
+                try
+                {
+                    builder.Build(fullPath, archiveCreateOptions);
+                    didWrite = true;
+                }
+                catch (Exception ex)
+                {
+                    Thread.Sleep(5);
+                    attemptLimit--;
+                }
             }
-            catch (Exception ex) { }
             if (!didWrite)
                 throw new Exception("Could not write to map.");
 
@@ -255,7 +275,8 @@ namespace BetterTriggers.Controllers
                             explorerElementChild = new ExplorerElementTrigger(entryChild.path);
                             ContainerTriggers.AddTrigger(explorerElementChild as ExplorerElementTrigger);
                             break;
-                        case ".j": case ".lua":
+                        case ".j":
+                        case ".lua":
                             explorerElementChild = new ExplorerElementScript(entryChild.path);
                             ContainerScripts.AddScript(explorerElementChild as ExplorerElementScript);
                             break;
@@ -433,7 +454,8 @@ namespace BetterTriggers.Controllers
                 case ".trg":
                     explorerElement = new ExplorerElementTrigger(fullPath);
                     break;
-                case ".j": case ".lua":
+                case ".j":
+                case ".lua":
                     explorerElement = new ExplorerElementScript(fullPath);
                     break;
                 case ".var":

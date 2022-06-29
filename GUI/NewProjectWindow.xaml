@@ -28,7 +28,7 @@
 
         <Label Content="Select scripting language:" Grid.Row="3" Foreground="#eee" VerticalAlignment="Bottom" FontSize="16"/>
         <RadioButton x:Name="radBtnJass" Content="Jass" Grid.Row="4" Foreground="#eee" Margin="5,5,5,5" Checked="radBtnJass_Checked"/>
-        <RadioButton x:Name="radBtnLua" IsEnabled="False" Content="Lua (Not implemented)" Grid.Row="4" Foreground="#eee" Margin="75,5,5,5" Checked="radBtnLua_Checked"/>
+        <RadioButton x:Name="radBtnLua" Content="Lua" Grid.Row="4" Foreground="#eee" Margin="75,5,5,5" Checked="radBtnLua_Checked"/>
         <TextBlock x:Name="lblLanguageHint" Text="placeholder" Grid.Row="4" Margin="5,25,5,5" Foreground="#eee" TextWrapping="Wrap" />
 
         <Label Content="Select project destination folder:" Grid.Row="5" Foreground="#eee" VerticalAlignment="Center"/>

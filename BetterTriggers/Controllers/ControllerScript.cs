@@ -36,7 +36,7 @@ namespace BetterTriggers.Controllers
                 i++;
             }
 
-            string extension = Info.ScriptLanguage() == War3Net.Build.Info.ScriptLanguage.Jass ? ".j" : ".lua";
+            string extension = ContainerProject.project.Language == "lua" ? ".lua" : ".j";
 
             File.WriteAllText(directory + @"\" + name + extension, "");
         }
