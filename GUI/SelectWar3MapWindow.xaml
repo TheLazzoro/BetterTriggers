@@ -16,8 +16,8 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <Label Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom"  >Select Warcraft III map folder</Label>
-        <Button x:Name="btnSelect" Width="50" Height="22" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="170,0,0,0" Click="btnSelect_Click">Select</Button>
+        <Label Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom"  >Select Warcraft III map (folder mode)</Label>
+        <Button x:Name="btnSelect" Width="50" Height="22" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="210,0,0,0" Click="btnSelect_Click">Select</Button>
 
         <Label x:Name="lblPath" Foreground="#eee" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top"  >Path: &lt;Empty&gt;</Label>
         

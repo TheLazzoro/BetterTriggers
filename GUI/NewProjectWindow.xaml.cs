@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using War3Net.Build.Info;
 
 namespace GUI
 {
@@ -78,11 +79,11 @@ namespace GUI
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            string language = string.Empty;
+            ScriptLanguage language = ScriptLanguage.Jass;
             if ((bool)radBtnJass.IsChecked)
-                language = "jass";
+                language = ScriptLanguage.Jass;
             else if ((bool)radBtnLua.IsChecked)
-                language = "lua";
+                language = ScriptLanguage.Lua;
 
             ControllerProject controller = new ControllerProject();
             projectFilePath = controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());

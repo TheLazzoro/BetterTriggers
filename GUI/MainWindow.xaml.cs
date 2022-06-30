@@ -529,6 +529,12 @@ namespace GUI
             DragMove();
         }
 
+        private void menuItemTriggerConverter_Click(object sender, RoutedEventArgs e)
+        {
+            ConvertTriggersWindow window = new ConvertTriggersWindow();
+            window.ShowDialog();
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ControllerProject controller = new ControllerProject();

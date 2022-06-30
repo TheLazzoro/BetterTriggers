@@ -448,7 +448,7 @@
             </MenuItem>-->
             <MenuItem x:Name="menuTools" Header="WESTRING_MENU_TOOLS" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
                 <MenuItem  Name="menuItemOptions" Header="WESTRING_MAPTAB_OPTIONS" Click="menuItemOptions_Click" />
-
+                <MenuItem  Name="menuItemTriggerConverter" Header="Trigger Converter" Click="menuItemTriggerConverter_Click" />
             </MenuItem>
         </Menu>
 

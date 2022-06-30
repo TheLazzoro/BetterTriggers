@@ -6,13 +6,14 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using War3Net.Build.Info;
 
 namespace Tests
 {
     [TestClass]
     public class ProjectTest
     {
-        static string language = "jass";
+        static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
         static string projectPath;
         static War3Project project;
@@ -43,7 +44,7 @@ namespace Tests
         [TestMethod]
         public void CallingCreateProject_WhenCreate_CheckIfExists()
         {
-            var language = "jass";
+            var language = ScriptLanguage.Jass;
             var name = "TestProject2";
             var directory = System.IO.Directory.GetCurrentDirectory();
 

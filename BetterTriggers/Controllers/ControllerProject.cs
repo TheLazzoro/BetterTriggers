@@ -20,7 +20,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// </summary>
         /// <returns>Path to the project file.</returns>
-        public string CreateProject(string language, string name, string destinationFolder)
+        public string CreateProject(ScriptLanguage language, string name, string destinationFolder, bool doCreateMap = true)
         {
             string root = Path.Combine(destinationFolder, name);
             string src = Path.Combine(root, "src");
@@ -32,7 +32,7 @@ namespace BetterTriggers.Controllers
             War3Project project = new War3Project()
             {
                 Name = name,
-                Language = language,
+                Language = language == ScriptLanguage.Jass ? "jass" : "lua",
                 Header = "",
                 Root = src,
                 Files = new List<War3ProjectFileEntry>(),
@@ -48,14 +48,17 @@ namespace BetterTriggers.Controllers
             File.WriteAllText(projectPath, projectFile);
 
             // template map
-            Directory.CreateDirectory(mapFolder);
-            string templateFolder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Resources/MapTemplate");
-            string[] files = Directory.GetFiles(templateFolder);
-            foreach (var file in files)
+            if (doCreateMap)
             {
-                byte[] content = File.ReadAllBytes(file);
-                string filename = Path.GetFileName(file);
-                File.WriteAllBytes(Path.Combine(mapFolder, filename), content);
+                Directory.CreateDirectory(mapFolder);
+                string templateFolder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Resources/MapTemplate");
+                string[] files = Directory.GetFiles(templateFolder);
+                foreach (var file in files)
+                {
+                    byte[] content = File.ReadAllBytes(file);
+                    string filename = Path.GetFileName(file);
+                    File.WriteAllBytes(Path.Combine(mapFolder, filename), content);
+                }
             }
 
             ContainerProject container = new ContainerProject();

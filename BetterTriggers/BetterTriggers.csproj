@@ -245,6 +245,7 @@
     <PackageReference Include="ini-parser" Version="2.5.2" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="War3Net.Build" Version="5.4.5" />
     <PackageReference Include="War3Net.IO.Mpq" Version="5.4.5" />
     <PackageReference Include="War3Net.IO.Slk" Version="5.4.0" />

@@ -13,7 +13,7 @@ namespace BetterTriggers.Containers
         public static War3Project project;
         public static List<IExplorerElement> projectFiles;
         public static string currentSelectedElement;
-        public static FileSystemWatcher fileSystemWatcher;
+        public static BufferingFileSystemWatcher fileSystemWatcher;
 
         public static event FileSystemEventHandler OnCreated;
         public static event FileSystemEventHandler OnMoved;
@@ -32,7 +32,7 @@ namespace BetterTriggers.Containers
 
             if (fileSystemWatcher == null)
             {
-                fileSystemWatcher = new FileSystemWatcher();
+                fileSystemWatcher = new BufferingFileSystemWatcher();
                 fileSystemWatcher.Created += FileSystemWatcher_Created;
                 fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
                 fileSystemWatcher.Changed += FileSystemWatcher_Changed;

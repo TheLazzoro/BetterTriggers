@@ -1,0 +1,36 @@
+﻿<Window x:Class="GUI.ConvertTriggersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="ConvertTriggersWindow" WindowStartupLocation="CenterOwner" Height="225" Width="430" Background="#FF202020" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="25"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="1" Grid.Row="1" Foreground="#eee" VerticalAlignment="Top" >Select map:</Label>
+        <Button x:Name="btnSelectMap" Width="80" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="btnSelectMap_Click">Select...</Button>
+        <TextBlock x:Name="lblMap" Grid.Column="1" Grid.Row="1" Foreground="#eee" VerticalAlignment="Bottom" Margin="100,0,0,0" TextTrimming="WordEllipsis" >N/A</TextBlock>
+
+        <Label Grid.Column="1" Grid.Row="3" Foreground="#eee" VerticalAlignment="Top" >Select project destination:</Label>
+        <Button x:Name="btnDestination" Width="80" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="btnDestination_Click">Select...</Button>
+        <TextBlock x:Name="lblDestination" Grid.Column="1" Grid.Row="3" Foreground="#eee" VerticalAlignment="Bottom" Margin="100,0,0,0" TextTrimming="WordEllipsis" >N/A</TextBlock>
+
+        <Button x:Name="btnConvert" IsEnabled="False" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" Click="btnConvert_Click" >Convert</Button>
+        <Button x:Name="btnCancel" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" Margin="0,0,80,0" IsCancel="True">Cancel</Button>
+
+    </Grid>
+</Window>
