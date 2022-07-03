@@ -52,7 +52,7 @@ namespace Tests
             projectPath = controller.CreateProject(language, name, directory);
             project = controller.LoadProject(projectPath);
 
-            Assert.AreEqual(language, project.Language);
+            Assert.AreEqual("jass", project.Language);
             Assert.AreEqual(name, project.Name);
             Assert.AreEqual(project.Root, directory + @"\" + name + @"\" + "src");
 
