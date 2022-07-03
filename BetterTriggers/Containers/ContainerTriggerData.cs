@@ -19,6 +19,38 @@ namespace BetterTriggers.Containers
         internal static List<VariableType> VariableTypes = JsonConvert.DeserializeObject<List<VariableType>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\types.json"));
 
         private static Dictionary<string, string> ConstantCodeText;
+        private static Dictionary<string, ConstantTemplate> Constants;
+        private static Dictionary<string, FunctionTemplate> Functions;
+
+
+        internal static string GetConstantCodeText(string identifier, ScriptLanguage language)
+        {
+            string codeText;
+            GetCodeTextDictionaryInstance().TryGetValue(identifier, out codeText);
+            if(language == ScriptLanguage.Lua)
+            {
+                if (codeText == "!=")
+                    codeText = "~=";
+                else if (codeText == "null")
+                    codeText = "nil";
+            }
+
+            return codeText;
+        }
+
+        internal static ConstantTemplate GetContant(string identifier)
+        {
+            ConstantTemplate constantTemplate;
+            GetConstantDictionaryInstance().TryGetValue(identifier, out constantTemplate);
+            return constantTemplate;
+        }
+
+        internal static FunctionTemplate GetFunction(string identifier)
+        {
+            FunctionTemplate functionTemplate;
+            GetFunctionDictionaryInstance().TryGetValue(identifier, out functionTemplate);
+            return functionTemplate;
+        }
 
         private static Dictionary<string, string> GetCodeTextDictionaryInstance()
         {
@@ -35,19 +67,49 @@ namespace BetterTriggers.Containers
             return ConstantCodeText;
         }
 
-        internal static string GetConstantCodeText(string identifier, ScriptLanguage language)
+        private static Dictionary<string, ConstantTemplate> GetConstantDictionaryInstance()
         {
-            string codeText;
-            GetCodeTextDictionaryInstance().TryGetValue(identifier, out codeText);
-            if(language == ScriptLanguage.Lua)
+            if (Constants == null)
             {
-                if (codeText == "!=")
-                    codeText = "~=";
-                else if (codeText == "null")
-                    codeText = "nil";
+                Constants = new Dictionary<string, ConstantTemplate>();
+                for (int i = 0; i < ConstantTemplates.Count; i++)
+                {
+                    var constant = ConstantTemplates[i];
+                    Constants.Add(constant.identifier, constant);
+                }
             }
 
-            return codeText;
+            return Constants;
+        }
+
+        private static Dictionary<string, FunctionTemplate> GetFunctionDictionaryInstance()
+        {
+            if (Functions == null)
+            {
+                Functions = new Dictionary<string, FunctionTemplate>();
+                for (int i = 0; i < EventTemplates.Count; i++)
+                {
+                    var function = EventTemplates[i];
+                    Functions.Add(function.identifier, function);
+                }
+                for (int i = 0; i < ConditionTemplates.Count; i++)
+                {
+                    var function = ConditionTemplates[i];
+                    Functions.Add(function.identifier, function);
+                }
+                for (int i = 0; i < ActionTemplates.Count; i++)
+                {
+                    var function = ActionTemplates[i];
+                    Functions.Add(function.identifier, function);
+                }
+                for (int i = 0; i < CallTemplates.Count; i++)
+                {
+                    var function = CallTemplates[i];
+                    Functions.Add(function.identifier, function);
+                }
+            }
+
+            return Functions;
         }
     }
 }

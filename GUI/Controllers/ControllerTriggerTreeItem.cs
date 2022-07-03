@@ -67,6 +67,10 @@ namespace GUI.Controllers
         /// <returns></returns>
         private List<Inline> RecurseGenerateParamText(List<Parameter> parameters, string paramText)
         {
+            // TODO: parameters with no commas at the end of a param crashes this function.
+            // 'SetPlayerTechResearchedSwap' as an example.
+
+
             List<Inline> inlines = new List<Inline>();
             ControllerTriggerData controller = new ControllerTriggerData();
 

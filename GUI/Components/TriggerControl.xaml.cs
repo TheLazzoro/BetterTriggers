@@ -710,5 +710,13 @@ namespace GUI.Components
             selected.Attach(treeViewTriggerElement);
             treeViewTriggerElement.OnCreated(index);
         }
+
+        /// <summary>
+        /// Prevents horizontal scroll when selecting a long TreeViewItem.
+        /// </summary>
+        private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

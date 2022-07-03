@@ -1816,7 +1816,7 @@ end
 
                 if (variable.IsArray)
                 {
-                    output += $"[{v.arrayIndexValues[0].identifier}]";
+                    output += $"[{v.arrayIndexValues[0].identifier}]"; // TODO: should we not go deeper into the parameters?
                     if (variable.IsTwoDimensions)
                         output += $"[{v.arrayIndexValues[1].identifier}]";
                 }
