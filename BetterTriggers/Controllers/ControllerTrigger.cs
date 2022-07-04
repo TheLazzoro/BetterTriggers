@@ -194,61 +194,61 @@ namespace BetterTriggers.Controllers
                 removeCount += VerifyParametersAndRemove(triggerElement.function.parameters);
 
 
-                if (triggerElement.function is IfThenElse)
+                if (triggerElement is IfThenElse)
                 {
-                    var special = (IfThenElse)triggerElement.function;
+                    var special = (IfThenElse)triggerElement;
                     removeCount += RemoveInvalidReferences(special.If);
                     removeCount += RemoveInvalidReferences(special.Then);
                     removeCount += RemoveInvalidReferences(special.Else);
                 }
-                else if (triggerElement.function is AndMultiple)
+                else if (triggerElement is AndMultiple)
                 {
-                    var special = (AndMultiple)triggerElement.function;
+                    var special = (AndMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.And);
                 }
-                else if (triggerElement.function is ForForceMultiple)
+                else if (triggerElement is ForForceMultiple)
                 {
-                    var special = (ForForceMultiple)triggerElement.function;
+                    var special = (ForForceMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
-                else if (triggerElement.function is ForGroupMultiple)
+                else if (triggerElement is ForGroupMultiple)
                 {
-                    var special = (ForGroupMultiple)triggerElement.function;
+                    var special = (ForGroupMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
-                else if (triggerElement.function is ForLoopAMultiple)
+                else if (triggerElement is ForLoopAMultiple)
                 {
-                    var special = (ForLoopAMultiple)triggerElement.function;
+                    var special = (ForLoopAMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
-                else if (triggerElement.function is ForLoopBMultiple)
+                else if (triggerElement is ForLoopBMultiple)
                 {
-                    var special = (ForLoopBMultiple)triggerElement.function;
+                    var special = (ForLoopBMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
-                else if (triggerElement.function is ForLoopVarMultiple)
+                else if (triggerElement is ForLoopVarMultiple)
                 {
-                    var special = (ForLoopVarMultiple)triggerElement.function;
+                    var special = (ForLoopVarMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
-                else if (triggerElement.function is OrMultiple)
+                else if (triggerElement is OrMultiple)
                 {
-                    var special = (OrMultiple)triggerElement.function;
+                    var special = (OrMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Or);
                 }
-                else if (triggerElement.function is EnumDestructablesInRectAllMultiple)
+                else if (triggerElement is EnumDestructablesInRectAllMultiple)
                 {
-                    var special = (EnumDestructablesInRectAllMultiple)triggerElement.function;
+                    var special = (EnumDestructablesInRectAllMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
-                else if (triggerElement.function is EnumDestructiblesInCircleBJMultiple)
+                else if (triggerElement is EnumDestructiblesInCircleBJMultiple)
                 {
-                    var special = (EnumDestructiblesInCircleBJMultiple)triggerElement.function;
+                    var special = (EnumDestructiblesInCircleBJMultiple)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
-                else if (triggerElement.function is EnumItemsInRectBJ)
+                else if (triggerElement is EnumItemsInRectBJ)
                 {
-                    var special = (EnumItemsInRectBJ)triggerElement.function;
+                    var special = (EnumItemsInRectBJ)triggerElement;
                     removeCount += RemoveInvalidReferences(special.Actions);
                 }
             }
@@ -373,61 +373,61 @@ namespace BetterTriggers.Controllers
                 parameters.AddRange(controller.GetElementParametersAll(triggerElement));
 
 
-                if (triggerElement.function is IfThenElse)
+                if (triggerElement is IfThenElse)
                 {
-                    var special = (IfThenElse)triggerElement.function;
+                    var special = (IfThenElse)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.If));
                     parameters.AddRange(GatherTriggerParameters(special.Then));
                     parameters.AddRange(GatherTriggerParameters(special.Else));
                 }
-                else if (triggerElement.function is AndMultiple)
+                else if (triggerElement is AndMultiple)
                 {
-                    var special = (AndMultiple)triggerElement.function;
+                    var special = (AndMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.And));
                 }
-                else if (triggerElement.function is ForForceMultiple)
+                else if (triggerElement is ForForceMultiple)
                 {
-                    var special = (ForForceMultiple)triggerElement.function;
+                    var special = (ForForceMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
-                else if (triggerElement.function is ForGroupMultiple)
+                else if (triggerElement is ForGroupMultiple)
                 {
-                    var special = (ForGroupMultiple)triggerElement.function;
+                    var special = (ForGroupMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
-                else if (triggerElement.function is ForLoopAMultiple)
+                else if (triggerElement is ForLoopAMultiple)
                 {
-                    var special = (ForLoopAMultiple)triggerElement.function;
+                    var special = (ForLoopAMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
-                else if (triggerElement.function is ForLoopBMultiple)
+                else if (triggerElement is ForLoopBMultiple)
                 {
-                    var special = (ForLoopBMultiple)triggerElement.function;
+                    var special = (ForLoopBMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
-                else if (triggerElement.function is ForLoopVarMultiple)
+                else if (triggerElement is ForLoopVarMultiple)
                 {
-                    var special = (ForLoopVarMultiple)triggerElement.function;
+                    var special = (ForLoopVarMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
-                else if (triggerElement.function is OrMultiple)
+                else if (triggerElement is OrMultiple)
                 {
-                    var special = (OrMultiple)triggerElement.function;
+                    var special = (OrMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Or));
                 }
-                else if (triggerElement.function is EnumDestructablesInRectAllMultiple)
+                else if (triggerElement is EnumDestructablesInRectAllMultiple)
                 {
-                    var special = (EnumDestructablesInRectAllMultiple)triggerElement.function;
+                    var special = (EnumDestructablesInRectAllMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
-                else if (triggerElement.function is EnumDestructiblesInCircleBJMultiple)
+                else if (triggerElement is EnumDestructiblesInCircleBJMultiple)
                 {
-                    var special = (EnumDestructiblesInCircleBJMultiple)triggerElement.function;
+                    var special = (EnumDestructiblesInCircleBJMultiple)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
-                else if (triggerElement.function is EnumItemsInRectBJ)
+                else if (triggerElement is EnumItemsInRectBJ)
                 {
-                    var special = (EnumItemsInRectBJ)triggerElement.function;
+                    var special = (EnumItemsInRectBJ)triggerElement;
                     parameters.AddRange(GatherTriggerParameters(special.Actions));
                 }
             }

@@ -2,21 +2,23 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class EnumDestructablesInRectAllMultiple : Function
+    public class EnumDestructablesInRectAllMultiple : TriggerElement
     {
-        public readonly int ParamType = 14; // DO NOT CHANGE
+        public readonly int ElementType = 10; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();
-        
+
+        public EnumDestructablesInRectAllMultiple()
+        {
+            function.identifier = "EnumDestructablesInRectAllMultiple";
+            function.returnType = "nothing";
+        }
+
         public new EnumDestructablesInRectAllMultiple Clone()
         {
             EnumDestructablesInRectAllMultiple enumDest = new EnumDestructablesInRectAllMultiple();
-            enumDest.identifier = new string(identifier);
-            enumDest.returnType = new string(returnType);
+            enumDest.function = this.function.Clone();
             enumDest.Actions = new List<TriggerElement>();
             Actions.ForEach(element => enumDest.Actions.Add(element.Clone()));
-
-            Function f = base.Clone();
-            enumDest.parameters = f.parameters;
 
             return enumDest;
         }

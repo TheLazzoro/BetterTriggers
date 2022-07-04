@@ -7,7 +7,7 @@ namespace BetterTriggers.Models.SaveableData
     [JsonConverter(typeof(BaseConverter))]
     public class TriggerRef : Parameter
     {
-        public readonly int ParamType = 17; // DO NOT CHANGE
+        public readonly int ParamType = 4; // DO NOT CHANGE
         public int TriggerId;
 
         internal new TriggerRef Clone()

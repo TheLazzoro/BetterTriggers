@@ -34,9 +34,9 @@ namespace GUI.Controllers
             textBlock.Inlines.Add(new Run(""));
 
             // Specially handled SetVariable
-            if (treeItem.triggerElement.function is SetVariable)
+            if (treeItem.triggerElement is SetVariable)
             {
-                SetVariable setVariable = (SetVariable)treeItem.triggerElement.function;
+                SetVariable setVariable = (SetVariable)treeItem.triggerElement;
 
                 HyperlinkParameter[] topLayerParams = new HyperlinkParameter[2];
                 int index = 0;
@@ -44,7 +44,7 @@ namespace GUI.Controllers
                 while (i < hyperlinkParameters.Count && index < 2)
                 {
                     var hyperlink = hyperlinkParameters[i];
-                    if (hyperlink.parameters[hyperlink.index] == setVariable.parameters[index])
+                    if (hyperlink.parameters[hyperlink.index] == setVariable.function.parameters[index])
                     {
                         topLayerParams[index] = hyperlinkParameters[index];
                         index++;

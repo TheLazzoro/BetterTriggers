@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using BetterTriggers.JsonBaseConverter;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
+    [JsonConverter(typeof(BaseConverterTriggerElement))]
     public class TriggerElement : ITriggerElement
     {
         public bool isEnabled = true;
-        public Function function;
+        public Function function = new Function();
 
         /// <summary>
         /// Only directly set this field when the trigger loads the first time.
@@ -21,63 +23,7 @@ namespace BetterTriggers.Models.SaveableData
         {
             TriggerElement clone = new TriggerElement();
             clone.isEnabled = isEnabled;
-            Function fClone;
-            if (function is IfThenElse)
-            {
-                var ifThenElse = (IfThenElse)function;
-                fClone = ifThenElse.Clone();
-            }
-            else if (function is ForLoopAMultiple)
-            {
-                var forLoopA = (ForLoopAMultiple)function;
-                fClone = forLoopA.Clone();
-            }
-            else if (function is ForLoopBMultiple)
-            {
-                var forLoopB = (ForLoopBMultiple)function;
-                fClone = forLoopB.Clone();
-            }
-            else if (function is ForLoopVarMultiple)
-            {
-                var forLoopVar = (ForLoopVarMultiple)function;
-                fClone = forLoopVar.Clone();
-            }
-            else if (function is AndMultiple)
-            {
-                var AndMultiple = (AndMultiple)function;
-                fClone = AndMultiple.Clone();
-            }
-            else if (function is OrMultiple)
-            {
-                var OrMultiple = (OrMultiple)function;
-                fClone = OrMultiple.Clone();
-            }
-            else if (function is SetVariable)
-            {
-                var setVariable = (SetVariable)function;
-                fClone = setVariable.Clone();
-            }
-            else if (function is EnumDestructablesInRectAllMultiple)
-            {
-                var enumDest = (EnumDestructablesInRectAllMultiple)function;
-                fClone = enumDest.Clone();
-            }
-            else if (function is EnumDestructiblesInCircleBJMultiple)
-            {
-                var enumDest = (EnumDestructiblesInCircleBJMultiple)function;
-                fClone = enumDest.Clone();
-            }
-            else if (function is EnumItemsInRectBJ)
-            {
-                var enumItems = (EnumItemsInRectBJ)function;
-                fClone = enumItems.Clone();
-            }
-            else
-            {
-                fClone = function.Clone();
-            }
-
-            clone.function = fClone;
+            clone.function = function.Clone();
 
             return clone;
         }

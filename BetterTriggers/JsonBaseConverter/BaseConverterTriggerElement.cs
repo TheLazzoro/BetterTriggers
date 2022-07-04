@@ -9,40 +9,55 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.JsonBaseConverter
 {
-    public class BaseConverter : JsonConverter
+    public class BaseConverterTriggerElement : JsonConverter
     {
         static JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings() { ContractResolver = new ParameterConverter() };
 
         public override bool CanConvert(System.Type objectType)
         {
-            return (objectType == typeof(Parameter));
+            return (objectType == typeof(TriggerElement));
         }
 
         public object Create(Type objectType, JObject jObject)
         {
-            if (jObject.ContainsKey("ParamType"))
+            
+            if (jObject.ContainsKey("ElementType"))
             {
-                var type = (int)jObject.Property("ParamType");
+                var type = (int)jObject.Property("ElementType");
                 switch (type)
                 {
                     case 1:
-                        return new Function();
+                        return new IfThenElse();
                     case 2:
-                        return new Constant();
+                        return new AndMultiple();
                     case 3:
-                        return new VariableRef();
+                        return new OrMultiple();
                     case 4:
-                        return new TriggerRef();
+                        return new ForGroupMultiple();
                     case 5:
-                        return new Value();
+                        return new ForForceMultiple();
+                    case 6:
+                        return new ForLoopAMultiple();
+                    case 7:
+                        return new ForLoopBMultiple();
+                    case 8:
+                        return new ForLoopVarMultiple();
+                    case 9:
+                        return new SetVariable();
+                    case 10:
+                        return new EnumDestructablesInRectAllMultiple();
+                    case 11:
+                        return new EnumDestructiblesInCircleBJMultiple();
+                    case 12:
+                        return new EnumItemsInRectBJ();
                     default:
-                        return new Parameter();
+                        return new TriggerElement();
                 }
 
-                throw new ApplicationException(String.Format("The given parameter type {0} is not supported!", type));
+                throw new ApplicationException(String.Format("The given trigger element type {0} is not supported!", type));
             }
             else
-                return new Parameter();
+                return new TriggerElement();
 
         }
 

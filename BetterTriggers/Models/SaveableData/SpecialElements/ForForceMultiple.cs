@@ -2,23 +2,25 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class ForForceMultiple : Function
+    public class ForForceMultiple : TriggerElement
     {
-        public readonly int ParamType = 9; // DO NOT CHANGE
+        public readonly int ElementType = 5; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();
-        
+
+        public ForForceMultiple()
+        {
+            function.identifier = "ForForceMultiple";
+            function.returnType = "nothing";
+        }
+
         public new ForForceMultiple Clone()
         {
-            ForForceMultiple forForceMultiple = new ForForceMultiple();
-            forForceMultiple.identifier = new string(identifier);
-            forForceMultiple.returnType = new string(returnType);
-            forForceMultiple.Actions = new List<TriggerElement>();
-            Actions.ForEach(element => forForceMultiple.Actions.Add(element.Clone()));
+            ForForceMultiple forForce = new ForForceMultiple();
+            forForce.function = this.function.Clone();
+            forForce.Actions = new List<TriggerElement>();
+            Actions.ForEach(element => forForce.Actions.Add(element.Clone()));
 
-            Function f = base.Clone();
-            forForceMultiple.parameters = f.parameters;
-
-            return forForceMultiple;
+            return forForce;
         }
     }
 }

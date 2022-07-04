@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Models.EditorData.Enums;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -32,50 +33,7 @@ namespace BetterTriggers.Models.Templates
 
         public TriggerElement ToTriggerElement()
         {
-            TriggerElement te = new TriggerElement();
-            te.function = new Function();
-
-            switch (identifier)
-            {
-                case "IfThenElseMultiple":
-                    te.function = new IfThenElse();
-                    break;
-                case "AndMultiple":
-                    te.function = new AndMultiple();
-                    break;
-                case "OrMultiple":
-                    te.function = new OrMultiple();
-                    break;
-                case "ForGroupMultiple":
-                    te.function = new ForGroupMultiple();
-                    break;
-                case "ForForceMultiple":
-                    te.function = new ForForceMultiple();
-                    break;
-                case "ForLoopAMultiple":
-                    te.function = new ForLoopAMultiple();
-                    break;
-                case "ForLoopBMultiple":
-                    te.function = new ForLoopBMultiple();
-                    break;
-                case "ForLoopVarMultiple":
-                    te.function = new ForLoopVarMultiple();
-                    break;
-                case "SetVariable":
-                    te.function = new SetVariable();
-                    break;
-                case "EnumDestructablesInRectAllMultiple":
-                    te.function = new EnumDestructablesInRectAllMultiple();
-                    break;
-                case "EnumDestructiblesInCircleBJMultiple":
-                    te.function = new EnumDestructiblesInCircleBJMultiple();
-                    break;
-                case "EnumItemsInRectBJMultiple":
-                    te.function = new EnumItemsInRectBJ();
-                    break;
-                default:
-                    break;
-            }
+            TriggerElement te = TriggerElementFactory.Create(identifier);
 
             te.function.identifier = identifier;
             te.function.parameters = parameters;

@@ -2,18 +2,23 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class IfThenElse : Function
+    public class IfThenElse : TriggerElement
     {
-        public readonly int ParamType = 5; // DO NOT CHANGE
+        public readonly int ElementType = 1; // DO NOT CHANGE
         public List<TriggerElement> If = new List<TriggerElement>();
         public List<TriggerElement> Then = new List<TriggerElement>();
         public List<TriggerElement> Else = new List<TriggerElement>();
         
+        public IfThenElse()
+        {
+            function.identifier = "IfThenElseMultiple";
+            function.returnType = "nothing";
+        }
+
         public new IfThenElse Clone()
         {
             IfThenElse ifThenElse = new IfThenElse();
-            ifThenElse.identifier = new string(identifier);
-            ifThenElse.returnType = new string(returnType);
+            ifThenElse.function = this.function.Clone();
             ifThenElse.If = new List<TriggerElement>();
             ifThenElse.Then = new List<TriggerElement>();
             ifThenElse.Else = new List<TriggerElement>();

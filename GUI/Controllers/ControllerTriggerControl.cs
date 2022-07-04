@@ -100,9 +100,9 @@ namespace GUI.Controllers
 
         internal void CreateSpecialTriggerElement(TreeViewTriggerElement treeViewTriggerElement)
         {
-            if (treeViewTriggerElement.triggerElement.function is IfThenElse)
+            if (treeViewTriggerElement.triggerElement is IfThenElse)
             {
-                var function = (IfThenElse)treeViewTriggerElement.triggerElement.function;
+                var function = (IfThenElse)treeViewTriggerElement.triggerElement;
 
                 var If = new NodeCondition("If - Conditions");
                 var Then = new NodeAction("Then - Actions");
@@ -118,90 +118,90 @@ namespace GUI.Controllers
                 RecurseLoadTrigger(Then.GetTriggerElements(), Then);
                 RecurseLoadTrigger(Else.GetTriggerElements(), Else);
             }
-            else if (treeViewTriggerElement.triggerElement.function is AndMultiple)
+            else if (treeViewTriggerElement.triggerElement is AndMultiple)
             {
-                var function = (AndMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (AndMultiple)treeViewTriggerElement.triggerElement;
                 var And = new NodeCondition("Conditions");
                 And.SetTriggerElements(function.And);
                 treeViewTriggerElement.Items.Add(And);
 
                 RecurseLoadTrigger(And.GetTriggerElements(), And);
             }
-            else if (treeViewTriggerElement.triggerElement.function is OrMultiple)
+            else if (treeViewTriggerElement.triggerElement is OrMultiple)
             {
-                var function = (OrMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (OrMultiple)treeViewTriggerElement.triggerElement;
                 var Or = new NodeCondition("Conditions");
                 Or.SetTriggerElements(function.Or);
                 treeViewTriggerElement.Items.Add(Or);
 
                 RecurseLoadTrigger(Or.GetTriggerElements(), Or);
             }
-            else if (treeViewTriggerElement.triggerElement.function is ForGroupMultiple)
+            else if (treeViewTriggerElement.triggerElement is ForGroupMultiple)
             {
-                var function = (ForGroupMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (ForGroupMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is ForForceMultiple)
+            else if (treeViewTriggerElement.triggerElement is ForForceMultiple)
             {
-                var function = (ForForceMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (ForForceMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is ForLoopAMultiple)
+            else if (treeViewTriggerElement.triggerElement is ForLoopAMultiple)
             {
-                var function = (ForLoopAMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (ForLoopAMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is ForLoopBMultiple)
+            else if (treeViewTriggerElement.triggerElement is ForLoopBMultiple)
             {
-                var function = (ForLoopBMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (ForLoopBMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is ForLoopVarMultiple)
+            else if (treeViewTriggerElement.triggerElement is ForLoopVarMultiple)
             {
-                var function = (ForLoopVarMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (ForLoopVarMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is EnumDestructablesInRectAllMultiple)
+            else if (treeViewTriggerElement.triggerElement is EnumDestructablesInRectAllMultiple)
             {
-                var function = (EnumDestructablesInRectAllMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (EnumDestructablesInRectAllMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is EnumDestructiblesInCircleBJMultiple)
+            else if (treeViewTriggerElement.triggerElement is EnumDestructiblesInCircleBJMultiple)
             {
-                var function = (EnumDestructiblesInCircleBJMultiple)treeViewTriggerElement.triggerElement.function;
+                var function = (EnumDestructiblesInCircleBJMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
-            else if (treeViewTriggerElement.triggerElement.function is EnumItemsInRectBJ)
+            else if (treeViewTriggerElement.triggerElement is EnumItemsInRectBJ)
             {
-                var function = (EnumItemsInRectBJ)treeViewTriggerElement.triggerElement.function;
+                var function = (EnumItemsInRectBJ)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);

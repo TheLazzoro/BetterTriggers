@@ -31,7 +31,7 @@ namespace BetterTriggers.WorldEdit
         Dictionary<string, string> variableTypes = new Dictionary<string, string>(); // [name, type]
         Dictionary<string, int> variableIds = new Dictionary<string, int>(); // [name, variableId]
         Dictionary<string, int> triggerIds = new Dictionary<string, int>(); // [name, triggerId]
-        
+
         Dictionary<int, ExplorerElementVariable> explorerVariables = new Dictionary<int, ExplorerElementVariable>(); // [id, variable]
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
@@ -68,7 +68,8 @@ namespace BetterTriggers.WorldEdit
                 rootHeader = customTextTriggers.GlobalCustomScriptCode.Code;
                 customTextTriggers.CustomTextTriggers.ForEach(item =>
                 {
-                    if (item.Code != string.Empty) wctStrings.Add(item.Code);
+                    if (item.Code != string.Empty)
+                        wctStrings.Add(item.Code.Substring(0, item.Code.Length - 1)); // trim last byte
                 });
             }
             using (Stream s = new FileStream(Path.Combine(mapPath, pathInfo), FileMode.Open, FileAccess.Read))
@@ -145,7 +146,7 @@ namespace BetterTriggers.WorldEdit
                 projectFilesEntries.TryAdd(triggerItem.Id, entry);
             }
 
-            File.WriteAllText(projectPath, JsonConvert.SerializeObject(project));
+            File.WriteAllText(projectPath, JsonConvert.SerializeObject(project, Formatting.Indented));
         }
 
         private IExplorerElement CreateExplorerElement(TriggerItem triggerItem)
@@ -295,16 +296,15 @@ namespace BetterTriggers.WorldEdit
         {
             triggerFunctions.ForEach(function =>
             {
-                TriggerElement te = new TriggerElement();
+                TriggerElement te = TriggerElementFactory.Create(function.Name);
                 te.isEnabled = function.IsEnabled;
-                te.function = FunctionFactory.Create(function.Name);
                 te.function.parameters = CreateParameters(function.Parameters);
 
                 triggerElements.Add(te);
 
-                if(te.function is IfThenElse)
+                if (te is IfThenElse)
                 {
-                    IfThenElse special = (IfThenElse)te.function;
+                    IfThenElse special = (IfThenElse)te;
 
                     List<TriggerFunction> If = function.ChildFunctions.Where(f => f.Branch == 0).ToList();
                     List<TriggerFunction> Then = function.ChildFunctions.Where(f => f.Branch == 1).ToList();
@@ -313,54 +313,54 @@ namespace BetterTriggers.WorldEdit
                     CreateSubElements(special.Then, Then);
                     CreateSubElements(special.Else, Else);
                 }
-                else if(te.function is AndMultiple)
+                else if (te is AndMultiple)
                 {
-                    AndMultiple special = (AndMultiple)te.function;
+                    AndMultiple special = (AndMultiple)te;
                     CreateSubElements(special.And, function.ChildFunctions);
                 }
-                else if (te.function is OrMultiple)
+                else if (te is OrMultiple)
                 {
-                    OrMultiple special = (OrMultiple)te.function;
+                    OrMultiple special = (OrMultiple)te;
                     CreateSubElements(special.Or, function.ChildFunctions);
                 }
-                else if (te.function is ForGroupMultiple)
+                else if (te is ForGroupMultiple)
                 {
-                    ForGroupMultiple special = (ForGroupMultiple)te.function;
+                    ForGroupMultiple special = (ForGroupMultiple)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
-                else if (te.function is ForForceMultiple)
+                else if (te is ForForceMultiple)
                 {
-                    ForForceMultiple special = (ForForceMultiple)te.function;
+                    ForForceMultiple special = (ForForceMultiple)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
-                else if (te.function is ForLoopAMultiple)
+                else if (te is ForLoopAMultiple)
                 {
-                    ForLoopAMultiple special = (ForLoopAMultiple)te.function;
+                    ForLoopAMultiple special = (ForLoopAMultiple)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
-                else if (te.function is ForLoopBMultiple)
+                else if (te is ForLoopBMultiple)
                 {
-                    ForLoopBMultiple special = (ForLoopBMultiple)te.function;
+                    ForLoopBMultiple special = (ForLoopBMultiple)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
-                else if (te.function is ForLoopVarMultiple)
+                else if (te is ForLoopVarMultiple)
                 {
-                    ForLoopVarMultiple special = (ForLoopVarMultiple)te.function;
+                    ForLoopVarMultiple special = (ForLoopVarMultiple)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
-                else if (te.function is EnumDestructablesInRectAllMultiple)
+                else if (te is EnumDestructablesInRectAllMultiple)
                 {
-                    EnumDestructablesInRectAllMultiple special = (EnumDestructablesInRectAllMultiple)te.function;
+                    EnumDestructablesInRectAllMultiple special = (EnumDestructablesInRectAllMultiple)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
-                else if (te.function is EnumDestructiblesInCircleBJMultiple)
+                else if (te is EnumDestructiblesInCircleBJMultiple)
                 {
-                    EnumDestructiblesInCircleBJMultiple special = (EnumDestructiblesInCircleBJMultiple)te.function;
+                    EnumDestructiblesInCircleBJMultiple special = (EnumDestructiblesInCircleBJMultiple)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
-                else if (te.function is EnumItemsInRectBJ)
+                else if (te is EnumItemsInRectBJ)
                 {
-                    EnumItemsInRectBJ special = (EnumItemsInRectBJ)te.function;
+                    EnumItemsInRectBJ special = (EnumItemsInRectBJ)te;
                     CreateSubElements(special.Actions, function.ChildFunctions);
                 }
             });
@@ -405,6 +405,22 @@ namespace BetterTriggers.WorldEdit
                             arrayIndex = CreateParameters(list);
                             arrayIndex.Add(new Value() { identifier = "0", returnType = "integer" });
                         }
+
+                        // In our editor regions, cameras, units etc. are considered values, not variables.
+                        if (foreignParam.Value.StartsWith("gg_unit_"))
+                            parameter = new Value() { identifier = foreignParam.Value, returnType = "unit" };
+                        else if (foreignParam.Value.StartsWith("gg_item_"))
+                            parameter = new Value() { identifier = foreignParam.Value, returnType = "item" };
+                        else if (foreignParam.Value.StartsWith("gg_dest_"))
+                            parameter = new Value() { identifier = foreignParam.Value, returnType = "destructable" };
+                        else if (foreignParam.Value.StartsWith("gg_rct_"))
+                            parameter = new Value() { identifier = foreignParam.Value, returnType = "rect" };
+                        else if (foreignParam.Value.StartsWith("gg_cam_"))
+                            parameter = new Value() { identifier = foreignParam.Value, returnType = "camerasetup" };
+
+                        if (parameter != null)
+                            break;
+
                         int id = 0;
                         string type = string.Empty;
                         variableIds.TryGetValue(foreignParam.Value, out id);

@@ -2,20 +2,25 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class OrMultiple : Function
+    public class OrMultiple : TriggerElement
     {
-        public readonly int ParamType = 7; // DO NOT CHANGE
+        public readonly int ElementType = 3; // DO NOT CHANGE
         public List<TriggerElement> Or = new List<TriggerElement>();
-        
+
+        public OrMultiple()
+        {
+            function.identifier = "OrMultiple";
+            function.returnType = "nothing";
+        }
+
         public new OrMultiple Clone()
         {
-            OrMultiple orMultiple = new OrMultiple();
-            orMultiple.identifier = new string(identifier);
-            orMultiple.returnType = new string(returnType);
-            orMultiple.Or = new List<TriggerElement>();
-            Or.ForEach(element => orMultiple.Or.Add(element.Clone()));
+            OrMultiple andMultiple = new OrMultiple();
+            andMultiple.function = this.function.Clone();
+            andMultiple.Or = new List<TriggerElement>();
+            Or.ForEach(element => andMultiple.Or.Add(element.Clone()));
 
-            return orMultiple;
+            return andMultiple;
         }
     }
 }

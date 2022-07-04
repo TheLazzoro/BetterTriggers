@@ -1352,40 +1352,10 @@ end
             if (!t.isEnabled)
                 return "";
 
-            Function f = t.function;
-            return ConvertFunctionToJass(f, pre_actions, triggerName);
-        }
-
-
-        private string ConvertFunctionToJass(Function f, StringBuilder pre_actions, string triggerName)
-        {
             StringBuilder script = new StringBuilder();
+            Function f = t.function;
 
-            int invalidParams = controllerTrigger.VerifyParameters(f.parameters);
-            if (invalidParams > 0)
-                return "";
-
-
-            // ------------------------- //
-            // --- SPECIALLY HANDLED --- //
-            // ------------------------- //
-
-            if (f.identifier == "SetVariable")
-            {
-                script.Append($"{set} {ConvertParametersToJass(f.parameters[0], pre_actions)} = {ConvertParametersToJass(f.parameters[1], pre_actions)}");
-                return script.ToString();
-            }
-
-            else if (f.identifier == "WaitForCondition")
-            {
-                script.Append($"loop{newline}");
-                script.Append($"exitwhen({ConvertParametersToJass(f.parameters[0], pre_actions)}{newline})");
-                script.Append($"{call} TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1], pre_actions)})){newline})");
-                script.Append("endloop");
-                return script.ToString();
-            }
-
-            else if (f.identifier == "ForLoopAMultiple" || f.identifier == "ForLoopBMultiple")
+            if (f.identifier == "ForLoopAMultiple" || f.identifier == "ForLoopBMultiple")
             {
                 string loopIndex = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
                 string loopIndexEnd = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
@@ -1397,7 +1367,7 @@ end
 
                 if (f.identifier == "ForLoopAMultiple")
                 {
-                    ForLoopAMultiple loopA = (ForLoopAMultiple)f;
+                    ForLoopAMultiple loopA = (ForLoopAMultiple)t;
                     foreach (var action in loopA.Actions)
                     {
                         script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
@@ -1405,7 +1375,7 @@ end
                 }
                 else
                 {
-                    ForLoopBMultiple loopB = (ForLoopBMultiple)f;
+                    ForLoopBMultiple loopB = (ForLoopBMultiple)t;
                     foreach (var action in loopB.Actions)
                     {
                         script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
@@ -1418,13 +1388,13 @@ end
 
             else if (f.identifier == "ForLoopVarMultiple")
             {
-                ForLoopVarMultiple loopVar = (ForLoopVarMultiple)f;
-                string variable = loopVar.parameters[0].identifier;
+                ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
+                string variable = loopVar.function.parameters[0].identifier;
 
                 script.Append($"{set} {variable} = ");
-                script.Append(ConvertParametersToJass(loopVar.parameters[1], pre_actions) + $"{newline}");
+                script.Append(ConvertParametersToJass(loopVar.function.parameters[1], pre_actions) + $"{newline}");
                 script.Append("loop{newline}");
-                script.Append($"exitwhen {variable} > {ConvertParametersToJass(loopVar.parameters[2], pre_actions)}{newline}");
+                script.Append($"exitwhen {variable} > {ConvertParametersToJass(loopVar.function.parameters[2], pre_actions)}{newline}");
                 foreach (var action in loopVar.Actions)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
@@ -1436,7 +1406,7 @@ end
 
             else if (f.identifier == "IfThenElseMultiple")
             {
-                IfThenElse ifThenElse = (IfThenElse)f;
+                IfThenElse ifThenElse = (IfThenElse)t;
 
                 script.Append("if (");
                 foreach (var condition in ifThenElse.If)
@@ -1474,7 +1444,7 @@ end
                 string pre = string.Empty;
                 if (f.identifier == "ForForceMultiple")
                 {
-                    ForForceMultiple forForce = (ForForceMultiple)f;
+                    ForForceMultiple forForce = (ForForceMultiple)t;
                     foreach (var action in forForce.Actions)
                     {
                         pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
@@ -1482,7 +1452,7 @@ end
                 }
                 else
                 {
-                    ForGroupMultiple forGroup = (ForGroupMultiple)f;
+                    ForGroupMultiple forGroup = (ForGroupMultiple)t;
                     foreach (var action in forGroup.Actions)
                     {
                         pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
@@ -1497,7 +1467,7 @@ end
 
             else if (f.identifier == "EnumDestructablesInRectAllMultiple")
             {
-                EnumDestructablesInRectAllMultiple enumDest = (EnumDestructablesInRectAllMultiple)f;
+                EnumDestructablesInRectAllMultiple enumDest = (EnumDestructablesInRectAllMultiple)t;
 
                 string function_name = generate_function_name(triggerName);
 
@@ -1518,7 +1488,7 @@ end
 
             else if (f.identifier == "EnumDestructablesInCircleBJMultiple")
             {
-                EnumDestructiblesInCircleBJMultiple enumDest = (EnumDestructiblesInCircleBJMultiple)f;
+                EnumDestructiblesInCircleBJMultiple enumDest = (EnumDestructiblesInCircleBJMultiple)t;
 
                 string function_name = generate_function_name(triggerName);
 
@@ -1539,7 +1509,7 @@ end
 
             else if (f.identifier == "EnumItemsInRectBJMultiple")
             {
-                EnumItemsInRectBJ enumItem = (EnumItemsInRectBJ)f;
+                EnumItemsInRectBJ enumItem = (EnumItemsInRectBJ)t;
 
                 string function_name = generate_function_name(triggerName);
 
@@ -1560,7 +1530,7 @@ end
 
             else if (f.identifier == "AndMultiple")
             {
-                AndMultiple andMultiple = (AndMultiple)f;
+                AndMultiple andMultiple = (AndMultiple)t;
                 var verifiedTriggerElements = new List<TriggerElement>();
                 foreach (var element in andMultiple.And)
                 {
@@ -1590,7 +1560,7 @@ end
 
             else if (f.identifier == "OrMultiple")
             {
-                OrMultiple orMultiple = (OrMultiple)f;
+                OrMultiple orMultiple = (OrMultiple)t;
                 var verifiedTriggerElements = new List<TriggerElement>();
                 foreach (var element in orMultiple.Or)
                 {
@@ -1615,6 +1585,39 @@ end
                 }
                 script.Append(")");
 
+                return script.ToString();
+            }
+            else
+
+                return ConvertFunctionToJass(f, pre_actions, triggerName);
+        }
+
+
+        private string ConvertFunctionToJass(Function f, StringBuilder pre_actions, string triggerName)
+        {
+            StringBuilder script = new StringBuilder();
+
+            int invalidParams = controllerTrigger.VerifyParameters(f.parameters);
+            if (invalidParams > 0)
+                return "";
+
+
+            // ------------------------- //
+            // --- SPECIALLY HANDLED --- //
+            // ------------------------- //
+
+            if (f.identifier == "SetVariable")
+            {
+                script.Append($"{set} {ConvertParametersToJass(f.parameters[0], pre_actions)} = {ConvertParametersToJass(f.parameters[1], pre_actions)}");
+                return script.ToString();
+            }
+
+            else if (f.identifier == "WaitForCondition")
+            {
+                script.Append($"loop{newline}");
+                script.Append($"exitwhen({ConvertParametersToJass(f.parameters[0], pre_actions)}{newline})");
+                script.Append($"{call} TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1], pre_actions)})){newline})");
+                script.Append("endloop");
                 return script.ToString();
             }
 

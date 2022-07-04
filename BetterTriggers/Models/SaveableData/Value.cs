@@ -2,7 +2,7 @@
 {
     public class Value : Parameter
     {
-        public readonly int ParamType = 4; // DO NOT CHANGE
+        public readonly int ParamType = 5; // DO NOT CHANGE
 
         public new Value Clone()
         {

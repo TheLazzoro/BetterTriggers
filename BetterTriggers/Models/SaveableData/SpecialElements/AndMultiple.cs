@@ -2,21 +2,23 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class AndMultiple : Function
+    public class AndMultiple : TriggerElement
     {
-        public readonly int ParamType = 6; // DO NOT CHANGE
+        public readonly int ElementType = 2; // DO NOT CHANGE
         public List<TriggerElement> And = new List<TriggerElement>();
-        
+
+        public AndMultiple()
+        {
+            function.identifier = "AndMultiple";
+            function.returnType = "nothing";
+        }
+
         public new AndMultiple Clone()
         {
             AndMultiple andMultiple = new AndMultiple();
-            andMultiple.identifier = new string(identifier);
-            andMultiple.returnType = new string(returnType);
+            andMultiple.function = this.function.Clone();
             andMultiple.And = new List<TriggerElement>();
             And.ForEach(element => andMultiple.And.Add(element.Clone()));
-
-            Function f = base.Clone();
-            andMultiple.parameters = f.parameters;
 
             return andMultiple;
         }
