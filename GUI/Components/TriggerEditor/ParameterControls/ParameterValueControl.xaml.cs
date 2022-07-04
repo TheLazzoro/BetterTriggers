@@ -33,8 +33,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     this.valueControl = new ValueControlReal();
                     break;
                 case "StringExt":
-                    this.valueControl = new ValueControlString(returnType);
-                    break;
                 case "string":
                     this.valueControl = new ValueControlString(returnType);
                     break;

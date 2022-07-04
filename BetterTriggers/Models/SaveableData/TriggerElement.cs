@@ -19,6 +19,12 @@ namespace BetterTriggers.Models.SaveableData
         [JsonIgnore]
         private List<ITriggerElementUI> triggerElementUIs = new List<ITriggerElementUI>();
 
+        public TriggerElement() { }
+        public TriggerElement(string identifier)
+        {
+            this.function.identifier = identifier;
+        }
+
         public TriggerElement Clone()
         {
             TriggerElement clone = new TriggerElement();

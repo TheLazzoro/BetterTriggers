@@ -2,7 +2,7 @@
 {
     public class SetVariable : TriggerElement
     {
-        public readonly int ElementType = 10; // DO NOT CHANGE
+        public readonly int ElementType = 9; // DO NOT CHANGE
 
         public SetVariable()
         {

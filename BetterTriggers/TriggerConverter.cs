@@ -64,7 +64,7 @@ namespace BetterTriggers.WorldEdit
             {
                 BinaryReader reader = new BinaryReader(s);
                 var customTextTriggers = BinaryReaderExtensions.ReadMapCustomTextTriggers(reader, System.Text.Encoding.UTF8);
-                rootComment = customTextTriggers.GlobalCustomScriptComment;
+                rootComment = customTextTriggers.GlobalCustomScriptComment.Substring(0, customTextTriggers.GlobalCustomScriptComment.Length - 1); // trim last byte;
                 rootHeader = customTextTriggers.GlobalCustomScriptCode.Code;
                 customTextTriggers.CustomTextTriggers.ForEach(item =>
                 {
@@ -417,6 +417,8 @@ namespace BetterTriggers.WorldEdit
                             parameter = new Value() { identifier = foreignParam.Value, returnType = "rect" };
                         else if (foreignParam.Value.StartsWith("gg_cam_"))
                             parameter = new Value() { identifier = foreignParam.Value, returnType = "camerasetup" };
+                        else if (foreignParam.Value.StartsWith("gg_snd_"))
+                            parameter = new Value() { identifier = foreignParam.Value, returnType = "sound" };
 
                         if (parameter != null)
                             break;

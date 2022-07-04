@@ -35,10 +35,10 @@ namespace BetterTriggers.Utility
                     return new EnumDestructablesInRectAllMultiple();
                 case "EnumDestructiblesInCircleBJMultiple":
                     return new EnumDestructiblesInCircleBJMultiple();
-                case "EnumItemsInRectBJ":
+                case "EnumItemsInRectBJMultiple":
                     return new EnumItemsInRectBJ();
                 default:
-                    return new TriggerElement();
+                    return new TriggerElement(identifier);
             }
         }
     }

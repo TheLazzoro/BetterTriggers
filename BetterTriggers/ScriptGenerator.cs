@@ -32,7 +32,7 @@ namespace BetterTriggers
 
 
         // --- LANGUAGE SPECIFIC STRINGS --- //
-        string separator = $"/****************************************************************************{System.Environment.NewLine}";
+        string separator = $"//****************************************************************************{System.Environment.NewLine}";
         string comment = "//* ";
         string globals = "globals";
         string endglobals = "endglobals";
@@ -266,13 +266,17 @@ namespace BetterTriggers
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
-                if (!variable.IsArray)
-                    script.Append($"{set} udg_" + variable.Name + "=" + variable.InitialValue + newline);
-                else if (variable.IsArray && !variable.IsTwoDimensions)
+                string initialValue = variable.InitialValue;
+                if (variable.Type == "string")
+                    initialValue = $"\"{initialValue}\"";
+
+                if (!variable.IsArray && !string.IsNullOrEmpty(variable.InitialValue))
+                    script.Append($"{set} udg_" + variable.Name + "=" + initialValue + newline);
+                else if (variable.IsArray && !variable.IsTwoDimensions && !string.IsNullOrEmpty(initialValue))
                 {
                     for (int j = 0; j < variable.ArraySize[0]; j++)
                     {
-                        script.Append($"{set} udg_{variable.Name}[{j}] = {variable.InitialValue}{newline}");
+                        script.Append($"{set} udg_{variable.Name}[{j}] = {initialValue}{newline}");
                     }
                 }
                 else if (variable.IsArray && variable.IsTwoDimensions)
@@ -281,7 +285,7 @@ namespace BetterTriggers
                     {
                         for (int k = 0; k < variable.ArraySize[1]; k++)
                         {
-                            script.Append($"{set} udg_{variable.Name}[{j}][{k}] = {variable.InitialValue}{newline}");
+                            script.Append($"{set} udg_{variable.Name}[{j}][{k}] = {initialValue}{newline}");
                         }
                     }
                 }
@@ -1302,6 +1306,7 @@ end
                     TriggerElement clonedEvent = e.Clone(); // Need to insert trigger variable at index 0.
                     TriggerRef triggerRef = new TriggerRef()
                     {
+                        TriggerId = t.trigger.Id,
                         identifier = triggerVarName,
                     };
                     clonedEvent.function.parameters.Insert(0, triggerRef);
@@ -1514,7 +1519,7 @@ end
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0], pre_actions)}, {ConvertParametersToJass(f.parameters[0], pre_actions)}), function {function_name}){newline}");
+                script.Append($"{call} {f.identifier.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], pre_actions)}, {ConvertParametersToJass(f.parameters[0], pre_actions)}), function {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumItem.Actions)
@@ -1839,7 +1844,8 @@ end
             else if (parameter is Value)
             {
                 Value v = (Value)parameter;
-                if (v.returnType == "StringExt" || v.returnType == "modelfile" || v.returnType == "skymodelstring")
+
+                if (v.returnType == "StringExt" || v.returnType == "string" || v.returnType == "modelfile" || v.returnType == "skymodelstring")
                     output += "\"" + v.identifier.Replace(@"\", @"\\") + "\"";
                 else if (v.returnType == "unitcode" || v.returnType == "buffcode" || v.returnType == "abilcode" || v.returnType == "destructablecode" || v.returnType == "techcode" || v.returnType == "itemcode")
                     output += $"{fourCCStart}'{v.identifier}'{fourCCEnd}";

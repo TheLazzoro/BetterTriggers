@@ -43,7 +43,7 @@ namespace BetterTriggers.Commands
             controllerRef.UpdateReferences(explorerElement);
 
             // Special case
-            if (triggerElement.function is SetVariable)
+            if (triggerElement is SetVariable)
             {
                 Parameter setVarParam = triggerElement.function.parameters[0];
                 Parameter value = triggerElement.function.parameters[1];

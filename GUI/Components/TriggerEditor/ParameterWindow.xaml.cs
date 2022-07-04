@@ -37,7 +37,7 @@ namespace GUI
 
             string returnType = parameter.returnType;
 
-            if (function is SetVariable && parameter == function.parameters[0])
+            if (function.identifier == "SetVariable" && parameter == function.parameters[0])
                 returnType = "AnyGlobal";
 
             this.functionControl = new ParameterFunctionControl(returnType);
