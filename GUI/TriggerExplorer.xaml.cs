@@ -395,6 +395,7 @@ namespace GUI
 
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: Crashes when right-click enable/disabling a trigger element that isn't in the TabControl.
             currentElement.editor.SetElementEnabled(!currentElement.Ielement.GetEnabled());
         }
 

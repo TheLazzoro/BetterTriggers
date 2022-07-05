@@ -14,7 +14,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public event EventHandler SelectionChanged;
 
-        public ValueControlGeneric(List<Value> values)
+        public ValueControlGeneric(List<Value> values, string returnType)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             for (int i = 0; i < values.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = $"{controller.GetFourCCDisplay(values[i].identifier, values[i].returnType)}{controller.GetValueName(values[i].identifier, values[i].returnType)}";
+                listItem.Content = $"{controller.GetFourCCDisplay(values[i].identifier, returnType)}{controller.GetValueName(values[i].identifier, returnType)}";
                 listItem.Tag = values[i];
                 objects.Add(new Searchable()
                 {

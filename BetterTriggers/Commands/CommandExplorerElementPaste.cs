@@ -22,7 +22,7 @@ namespace BetterTriggers.Commands
 
         public CommandExplorerElementPaste(IExplorerElement elementToPaste, IExplorerElement pasteParent, int pastedIndex)
         {
-            this.toCut = ContainerCopiedElements.CutExplorerElement;
+            this.toCut = CopiedElements.CutExplorerElement;
             if (toCut != null)
             {
                 this.cutParent = toCut.GetParent();
@@ -44,7 +44,7 @@ namespace BetterTriggers.Commands
 
             if (toCut != null)
             {
-                ContainerCopiedElements.CutExplorerElement = null;
+                CopiedElements.CutExplorerElement = null;
                 controllerFileSystem.DeleteElement(toCut.GetPath());
                 toCut.RemoveFromParent();
                 toCut.Deleted();

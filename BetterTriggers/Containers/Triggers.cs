@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BetterTriggers.Containers
 {
-    public static class ContainerTriggers
+    public static class Triggers
     {
         private static List<ExplorerElementTrigger> triggerElementContainer = new List<ExplorerElementTrigger>();
 

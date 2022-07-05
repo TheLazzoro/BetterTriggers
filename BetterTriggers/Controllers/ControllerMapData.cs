@@ -88,7 +88,7 @@ namespace BetterTriggers.Controllers
         /// <returns></returns>
         internal bool ReferencedDataExists(Value value)
         {
-            if (value.returnType == "unitcode")
+            if (TriggerData.GetReturnType(value.identifier) == "unitcode")
             {
                 List<UnitType> unitTypes = UnitTypes.GetAll();
                 for (int i = 0; i < unitTypes.Count; i++)
@@ -99,7 +99,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "unit")
+            else if (TriggerData.GetReturnType(value.identifier) == "unit")
             {
                 var units = Units.GetAll();
                 for (int i = 0; i < units.Count; i++)
@@ -111,7 +111,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "destructablecode")
+            else if (TriggerData.GetReturnType(value.identifier) == "destructablecode")
             {
                 List<DestructibleType> destTypes = DestructibleTypes.GetAll();
                 for (int i = 0; i < destTypes.Count; i++)
@@ -122,7 +122,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "destructable")
+            else if (TriggerData.GetReturnType(value.identifier) == "destructable")
             {
                 var dests = Destructibles.GetAll();
                 for (int i = 0; i < dests.Count; i++)
@@ -133,7 +133,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "itemcode")
+            else if (TriggerData.GetReturnType(value.identifier) == "itemcode")
             {
                 List<ItemType> itemTypes = ItemTypes.GetAll();
                 for (int i = 0; i < itemTypes.Count; i++)
@@ -144,7 +144,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "item")
+            else if (TriggerData.GetReturnType(value.identifier) == "item")
             {
                 List<UnitData> itemTypes = Units.GetMapItemsAll();
                 for (int i = 0; i < itemTypes.Count; i++)
@@ -155,7 +155,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "doodadcode")
+            else if (TriggerData.GetReturnType(value.identifier) == "doodadcode")
             {
                 List<DoodadType> doodadTypes = DoodadTypes.GetAll();
                 for (int i = 0; i < doodadTypes.Count; i++)
@@ -166,7 +166,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "abilcode")
+            else if (TriggerData.GetReturnType(value.identifier) == "abilcode")
             {
                 var abilities = AbilityTypes.GetAll();
                 for (int i = 0; i < abilities.Count; i++)
@@ -177,7 +177,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "buffcode")
+            else if (TriggerData.GetReturnType(value.identifier) == "buffcode")
             {
                 var buffs = BuffTypes.GetAll();
                 for (int i = 0; i < buffs.Count; i++)
@@ -188,7 +188,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "techcode")
+            else if (TriggerData.GetReturnType(value.identifier) == "techcode")
             {
                 var tech = UpgradeTypes.GetAll();
                 for (int i = 0; i < tech.Count; i++)
@@ -199,7 +199,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "rect")
+            else if (TriggerData.GetReturnType(value.identifier) == "rect")
             {
                 var regions = Regions.GetAll();
                 for (int i = 0; i < regions.Count; i++)
@@ -210,7 +210,7 @@ namespace BetterTriggers.Controllers
                     }
                 }
             }
-            else if (value.returnType == "camerasetup")
+            else if (TriggerData.GetReturnType(value.identifier) == "camerasetup")
             {
                 var cameras = Cameras.GetAll();
                 for (int i = 0; i < cameras.Count; i++)
@@ -232,7 +232,7 @@ namespace BetterTriggers.Controllers
             Commands.CommandManager.Reset();
             CustomMapData.Load();
             var changedTriggers = CustomMapData.RemoveInvalidReferences();
-            changedTriggers.ForEach(trig => ContainerUnsavedFiles.AddToUnsaved(trig));
+            changedTriggers.ForEach(trig => UnsavedFiles.AddToUnsaved(trig));
 
             return changedTriggers;
         }

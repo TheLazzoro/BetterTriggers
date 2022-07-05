@@ -8,17 +8,17 @@ namespace BetterTriggers.Controllers
     {
         public void AddToUnsaved(IExplorerElement explorerElement)
         {
-            ContainerUnsavedFiles.AddToUnsaved(explorerElement);
+            UnsavedFiles.AddToUnsaved(explorerElement);
         }
 
         public void RemoveFromUnsaved(IExplorerElement explorerElement)
         {
-            ContainerUnsavedFiles.RemoveFromUnsaved(explorerElement);
+            UnsavedFiles.RemoveFromUnsaved(explorerElement);
         }
 
         public void ClearUnsaved()
         {
-            ContainerUnsavedFiles.Clear();
+            UnsavedFiles.Clear();
         }
     }
 }

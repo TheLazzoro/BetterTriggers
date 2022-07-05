@@ -7,7 +7,6 @@ namespace BetterTriggers.Models.SaveableData
     public class Parameter
     {
         public string identifier; // For convenience, values also use this field.
-        public string returnType;
 
         public Parameter Clone()
         {
@@ -18,7 +17,6 @@ namespace BetterTriggers.Models.SaveableData
             return new Parameter()
             {
                 identifier = identifier,
-                returnType = new string(returnType),
             };
         }
     }

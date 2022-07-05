@@ -298,7 +298,9 @@ namespace BetterTriggers.WorldEdit
             {
                 TriggerElement te = TriggerElementFactory.Create(function.Name);
                 te.isEnabled = function.IsEnabled;
-                te.function.parameters = CreateParameters(function.Parameters);
+                List<string> returnTypes = new List<string>();
+                function.Parameters.ForEach(p => returnTypes.Add(BetterTriggers.Containers.TriggerData.GetReturnType(p.Value)));
+                te.function.parameters = CreateParameters(function.Parameters, returnTypes);
 
                 triggerElements.Add(te);
 
@@ -366,15 +368,16 @@ namespace BetterTriggers.WorldEdit
             });
         }
 
-        private List<Parameter> CreateParameters(List<TriggerFunctionParameter> foreignParameters)
+        private List<Parameter> CreateParameters(List<TriggerFunctionParameter> foreignParameters, List<string> returnTypes)
         {
             List<Parameter> parameters = new List<Parameter>();
-            foreach (var foreignParam in foreignParameters)
+            for (int i = 0; i < foreignParameters.Count; i++)
             {
-
+                var foreignParam = foreignParameters[i];
 
                 Parameter parameter = null;
                 string identifier = foreignParam.Value;
+                string returnType = returnTypes[i];
 
                 // War3Net thingy:
                 // Some functions (boolexpr) have an empty name? Dunno how many more
@@ -384,41 +387,44 @@ namespace BetterTriggers.WorldEdit
                 switch (foreignParam.Type)
                 {
                     case TriggerFunctionParameterType.Preset:
-                        string returnType = ContainerTriggerData.GetContant(identifier).returnType;
+                        //string returnType = Containers.TriggerData.GetContant(identifier).returnType;
                         parameter = new Constant()
                         {
                             identifier = foreignParam.Value,
-                            returnType = returnType
                         };
                         break;
                     case TriggerFunctionParameterType.Variable:
                         List<Parameter> arrayIndex = new List<Parameter>();
                         if (foreignParam.ArrayIndexer == null)
                         {
-                            arrayIndex.Add(new Value() { identifier = "0", returnType = "integer" });
-                            arrayIndex.Add(new Value() { identifier = "0", returnType = "integer" });
+                            arrayIndex.Add(new Value() { identifier = "0" });
+                            arrayIndex.Add(new Value() { identifier = "0" });
                         }
                         else
                         {
+                            var _returnTypes = new List<string>();
+                            _returnTypes.Add("integer");
+
                             var list = new List<TriggerFunctionParameter>();
                             list.Add(foreignParam.ArrayIndexer);
-                            arrayIndex = CreateParameters(list);
-                            arrayIndex.Add(new Value() { identifier = "0", returnType = "integer" });
+
+                            arrayIndex = CreateParameters(list, _returnTypes);
+                            arrayIndex.Add(new Value() { identifier = "0" });
                         }
 
                         // In our editor regions, cameras, units etc. are considered values, not variables.
                         if (foreignParam.Value.StartsWith("gg_unit_"))
-                            parameter = new Value() { identifier = foreignParam.Value, returnType = "unit" };
+                            parameter = new Value() { identifier = foreignParam.Value };
                         else if (foreignParam.Value.StartsWith("gg_item_"))
-                            parameter = new Value() { identifier = foreignParam.Value, returnType = "item" };
+                            parameter = new Value() { identifier = foreignParam.Value };
                         else if (foreignParam.Value.StartsWith("gg_dest_"))
-                            parameter = new Value() { identifier = foreignParam.Value, returnType = "destructable" };
+                            parameter = new Value() { identifier = foreignParam.Value };
                         else if (foreignParam.Value.StartsWith("gg_rct_"))
-                            parameter = new Value() { identifier = foreignParam.Value, returnType = "rect" };
+                            parameter = new Value() { identifier = foreignParam.Value };
                         else if (foreignParam.Value.StartsWith("gg_cam_"))
-                            parameter = new Value() { identifier = foreignParam.Value, returnType = "camerasetup" };
+                            parameter = new Value() { identifier = foreignParam.Value };
                         else if (foreignParam.Value.StartsWith("gg_snd_"))
-                            parameter = new Value() { identifier = foreignParam.Value, returnType = "sound" };
+                            parameter = new Value() { identifier = foreignParam.Value };
 
                         if (parameter != null)
                             break;
@@ -429,29 +435,23 @@ namespace BetterTriggers.WorldEdit
                         variableTypes.TryGetValue(foreignParam.Value, out type);
                         if (id != 0)
                         {
-                            parameter = new VariableRef() { arrayIndexValues = arrayIndex, VariableId = id, returnType = type };
+                            parameter = new VariableRef() { arrayIndexValues = arrayIndex, VariableId = id };
                             break;
                         }
                         triggerIds.TryGetValue(foreignParam.Value, out id);
                         type = "trigger";
-                        parameter = new TriggerRef() { TriggerId = id, returnType = type };
+                        parameter = new TriggerRef() { TriggerId = id };
 
                         break;
                     case TriggerFunctionParameterType.Function:
-                        List<Parameter> functionParams = CreateParameters(foreignParam.Function.Parameters);
-                        parameter = new Function()
-                        {
-                            identifier = identifier,
-                            parameters = functionParams,
-                            returnType = ContainerTriggerData.GetFunction(identifier).returnType
-                        };
+                        Function f = new Function();
+                        f.identifier = identifier;
+                        List<string> _returnTypess = BetterTriggers.Containers.TriggerData.GetParameterReturnTypes(f);
+                        f.parameters = CreateParameters(foreignParam.Function.Parameters, _returnTypess);
+                        parameter = f;
                         break;
                     case TriggerFunctionParameterType.String:
-                        parameter = new Value()
-                        {
-                            identifier = identifier,
-                            returnType = "TODO: UNKNOWN"
-                        };
+                        parameter = new Value() { identifier = identifier };
                         break;
                     case TriggerFunctionParameterType.Undefined:
                         break;

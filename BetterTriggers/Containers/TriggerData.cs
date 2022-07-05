@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +10,7 @@ using War3Net.Build.Info;
 
 namespace BetterTriggers.Containers
 {
-    public class ContainerTriggerData
+    public class TriggerData
     {
         internal static List<ConstantTemplate> ConstantTemplates = JsonConvert.DeserializeObject<List<ConstantTemplate>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\constants.json"));
         internal static List<FunctionTemplate> EventTemplates = JsonConvert.DeserializeObject<List<FunctionTemplate>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\events.json"));
@@ -18,10 +19,57 @@ namespace BetterTriggers.Containers
         internal static List<FunctionTemplate> CallTemplates = JsonConvert.DeserializeObject<List<FunctionTemplate>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\calls.json"));
         internal static List<VariableType> VariableTypes = JsonConvert.DeserializeObject<List<VariableType>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\types.json"));
 
+        private static Dictionary<string, string> ReturnTypes;
         private static Dictionary<string, string> ConstantCodeText;
         private static Dictionary<string, ConstantTemplate> Constants;
         private static Dictionary<string, FunctionTemplate> Functions;
 
+        public static string GetReturnType(string identifier)
+        {
+            if (identifier == null)
+                return null;
+
+            string returnType;
+            GetReturnTypeInstance().TryGetValue(identifier, out returnType);
+            return returnType;
+        }
+
+        public static List<string> GetParameterReturnTypes(Function f)
+        {
+            List<string> list = new List<string>();
+            FunctionTemplate function = GetFunction(f.identifier);
+            function.parameters.ForEach(p => list.Add(p.returnType));
+            return list;
+        }
+
+        private static Dictionary<string, string> GetReturnTypeInstance()
+        {
+            if (ReturnTypes == null)
+            {
+                ReturnTypes = new Dictionary<string, string>();
+
+
+                ConstantTemplates.ForEach(el => ReturnTypes.Add(el.identifier, el.returnType));
+                EventTemplates.ForEach(el => {
+                    ReturnTypes.Add(el.identifier, el.returnType);
+                    el.parameters.ForEach(p => { if (p.identifier != null) ReturnTypes.Add(p.identifier, p.identifier); });
+                });
+                ConditionTemplates.ForEach(el => {
+                    ReturnTypes.Add(el.identifier, el.returnType);
+                    el.parameters.ForEach(p => { if (p.identifier != null) ReturnTypes.Add(p.identifier, p.identifier); });
+                });
+                ActionTemplates.ForEach(el => {
+                    ReturnTypes.Add(el.identifier, el.returnType);
+                    el.parameters.ForEach(p => { if (p.identifier != null) ReturnTypes.Add(p.identifier, p.identifier); });
+                });
+                CallTemplates.ForEach(el => {
+                    ReturnTypes.Add(el.identifier, el.returnType);
+                    el.parameters.ForEach(p => { if (p.identifier != null) ReturnTypes.Add(p.identifier, p.identifier); });
+                });
+            }
+
+            return ReturnTypes;
+        }
 
         internal static string GetConstantCodeText(string identifier, ScriptLanguage language)
         {

@@ -10,7 +10,6 @@ namespace BetterTriggers.Models.SaveableData
         public AndMultiple()
         {
             function.identifier = "AndMultiple";
-            function.returnType = "nothing";
         }
 
         public new AndMultiple Clone()

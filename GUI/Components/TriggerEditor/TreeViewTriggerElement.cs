@@ -101,7 +101,7 @@ namespace GUI.Components.TriggerEditor
             List<Parameter> parameters = this.triggerElement.function.parameters;
 
             bool areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
-            if (parameters.Count == 1 && parameters[0].returnType == "nothing") // hack
+            if (parameters.Count == 1 && TriggerData.GetReturnType(parameters[0].identifier) == "nothing") // hack
                 areParametersValid = true;
             bool isEnabled = triggerElement.isEnabled;
 

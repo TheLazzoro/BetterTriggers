@@ -34,11 +34,10 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                         varName.ToLower()
                     },
                 });
-                var searchables = new Searchables(objects);
-                listControl.SetSearchableList(searchables);
-
-                listControl.listView.SelectionChanged += ListView_SelectionChanged;
             }
+            var searchables = new Searchables(objects);
+            listControl.SetSearchableList(searchables);
+            listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
         public void SetDefaultSelection(string identifier)
@@ -49,7 +48,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var variableRef = item.Tag as VariableRef;
-                if(variableRef.identifier == identifier)
+                if (variableRef.identifier == identifier)
                     found = true;
                 else
                     i++;

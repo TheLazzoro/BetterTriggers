@@ -2,6 +2,7 @@
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using GUI.Components.TriggerEditor;
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -9,6 +10,7 @@ using System.Windows.Media;
 
 namespace GUI.Controllers
 {
+
     public class ControllerTriggerTreeItem
     {
         TreeViewTriggerElement treeItem;
@@ -25,7 +27,9 @@ namespace GUI.Controllers
         public void GenerateParamText()
         {
             textBlock.Inlines.Clear();
-            var inlines = RecurseGenerateParamText(treeItem.triggerElement.function.parameters, treeItem.paramText);
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(treeItem.triggerElement.function);
+            
+            var inlines = RecurseGenerateParamText(treeItem.triggerElement.function.parameters, returnTypes, treeItem.paramText);
 
             // First and last inline must be a string.
             // Otherwise hyperlinks get cut from the treeitem header (WPF black magic).
@@ -62,14 +66,13 @@ namespace GUI.Controllers
         /// <summary>
         /// Draws the parameter text with selectable hyperlinks for TriggerElements.
         /// </summary>
-        /// <param name="parameters"></param>
+        /// <param name="parameters">List<Tuple<Parameter, returnType>></param>
         /// <param name="paramText"></param>
         /// <returns></returns>
-        private List<Inline> RecurseGenerateParamText(List<Parameter> parameters, string paramText)
+        private List<Inline> RecurseGenerateParamText(List<Parameter> parameters, List<string> returnTypes, string paramText)
         {
             // TODO: parameters with no commas at the end of a param crashes this function.
             // 'SetPlayerTechResearchedSwap' as an example.
-
 
             List<Inline> inlines = new List<Inline>();
             ControllerTriggerData controller = new ControllerTriggerData();
@@ -92,15 +95,16 @@ namespace GUI.Controllers
                     var function = (Function)parameters[paramIndex];
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
-                        inlines.Add(AddHyperlink(treeItem, "(", parameters, paramIndex));
-                        inlines.AddRange(RecurseGenerateParamText(function.parameters, controller.GetParamText(function))); // recurse
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
+                        inlines.Add(AddHyperlink(treeItem, "(", parameters, paramIndex, returnTypes[paramIndex]));
+                        inlines.AddRange(RecurseGenerateParamText(function.parameters, _returnTypes, controller.GetParamText(function))); // recurse
                     }
                     else // whole displayname gets hyperlinked
                     {
                         Run runFirstBracket = new Run("(");
                         runFirstBracket.FontFamily = new FontFamily("Verdana");
                         inlines.Add(runFirstBracket);
-                        inlines.Add(AddHyperlink(treeItem, controller.GetParamDisplayName(function), parameters, paramIndex));
+                        inlines.Add(AddHyperlink(treeItem, controller.GetParamDisplayName(function), parameters, paramIndex, returnTypes[paramIndex]));
                     }
                     Run run = new Run(")");
                     run.FontFamily = new FontFamily("Verdana");
@@ -108,7 +112,7 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is Constant)
                 {
-                    inlines.Add(AddHyperlink(treeItem, controller.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, controller.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is VariableRef)
                 {
@@ -117,25 +121,31 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
-                    var type = variableRef.returnType == "integervar" ? "integer" : variableRef.returnType; // hack
+                    var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
 
                     // This exists in case a variable has been changed
                     if (variable == null || variable.Type != type)
                     {
-                        parameters[paramIndex] = new Parameter()
-                        {
-                            returnType = variableRef.returnType,
-                        };
+                        parameters[paramIndex] = new Parameter();
                         varName = "null";
                     } else
-                        varName = ContainerVariables.GetVariableNameById(variable.Id);
+                        varName = Variables.GetVariableNameById(variable.Id);
 
-                    inlines.Add(AddHyperlink(treeItem, varName, parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, varName, parameters, paramIndex, returnTypes[paramIndex]));
 
                     if (variable != null && variable.IsArray && !variable.IsTwoDimensions)
-                        inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, "[,~Number,]"));
+                    {
+                        List<string> _returnTypes = new List<string>();
+                        _returnTypes.Add("integer");
+                        inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, _returnTypes, "[,~Number,]"));
+                    }
                     else if (variable != null && variable.IsArray && variable.IsTwoDimensions)
-                        inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, "[,~Number,][,~Number,]"));
+                    {
+                        List<string> _returnTypes = new List<string>();
+                        _returnTypes.Add("integer");
+                        _returnTypes.Add("integer");
+                        inlines.AddRange(RecurseGenerateParamText(variableRef.arrayIndexValues, _returnTypes, "[,~Number,][,~Number,]"));
+                    }
                 }
                 else if (parameters[paramIndex] is TriggerRef)
                 {
@@ -147,35 +157,29 @@ namespace GUI.Controllers
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
                     {
-                        parameters[paramIndex] = new Parameter()
-                        {
-                            returnType = triggerRef.returnType,
-                        };
+                        parameters[paramIndex] = new Parameter();
                         triggerName = "null";
                     }
                     else
                         triggerName = controllerTrig.GetTriggerName(trigger.Id);
 
-                    inlines.Add(AddHyperlink(treeItem, triggerName, parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, triggerName, parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is Value)
                 {
                     // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
-                    var name = controllerTrigger.GetValueName(value.identifier, value.returnType);
+                    var name = controllerTrigger.GetValueName(value.identifier, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
-                    if (name == null || name == "" || value.returnType != parameters[paramIndex].returnType)
+                    if (name == null || name == "")
                     {
-                        parameters[paramIndex] = new Parameter()
-                        {
-                            returnType = value.returnType,
-                        };
+                        parameters[paramIndex] = new Parameter();
                         name = "null";
                     }
-                    inlines.Add(AddHyperlink(treeItem, name, parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, name, parameters, paramIndex, returnTypes[paramIndex]));
                 }
-                else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set. Redundant?
+                else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.
                 {
                     i++; // avoids the '~' in the name
                     int startIndex = i; // store current letter index
@@ -192,7 +196,7 @@ namespace GUI.Controllers
                         }
                     }
                     string paramName = paramText.Substring(startIndex, length);
-                    inlines.Add(AddHyperlink(treeItem, paramName, parameters, paramIndex));
+                    inlines.Add(AddHyperlink(treeItem, paramName, parameters, paramIndex, returnTypes[paramIndex]));
                 }
 
                 while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
@@ -205,9 +209,9 @@ namespace GUI.Controllers
             return inlines;
         }
 
-        private HyperlinkParameter AddHyperlink(TreeViewTriggerElement treeViewTriggerElement, string text, List<Parameter> parameters, int index)
+        private HyperlinkParameter AddHyperlink(TreeViewTriggerElement treeViewTriggerElement, string text, List<Parameter> parameters, int index, string returnType)
         {
-            HyperlinkParameter hyperlink = new HyperlinkParameter(treeViewTriggerElement, text, parameters, index);
+            HyperlinkParameter hyperlink = new HyperlinkParameter(treeViewTriggerElement, text, parameters, index, returnType);
             hyperlinkParameters.Add(hyperlink);
 
             return hyperlink;

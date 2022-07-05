@@ -15,8 +15,9 @@ namespace BetterTriggers.Controllers
     {
         public List<VariableType> LoadAllVariableTypes()
         {
-            return ContainerTriggerData.VariableTypes;
+            return TriggerData.VariableTypes;
         }
+
 
         /// <summary>
         /// TODO: We need to work more on initial variable values.
@@ -150,9 +151,9 @@ namespace BetterTriggers.Controllers
         public List<FunctionTemplate> LoadAllEvents()
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
-            for (int i = 0; i < ContainerTriggerData.EventTemplates.Count; i++)
+            for (int i = 0; i < TriggerData.EventTemplates.Count; i++)
             {
-                var template = ContainerTriggerData.EventTemplates[i];
+                var template = TriggerData.EventTemplates[i];
                 list.Add(template.Clone());
             }
             return list;
@@ -173,9 +174,9 @@ namespace BetterTriggers.Controllers
             // Special case for GUI "Action" parameter
             else if (returnType == "code")
             {
-                for (int i = 0; i < ContainerTriggerData.ActionTemplates.Count; i++)
+                for (int i = 0; i < TriggerData.ActionTemplates.Count; i++)
                 {
-                    var template = ContainerTriggerData.ActionTemplates[i];
+                    var template = TriggerData.ActionTemplates[i];
                     if (!template.identifier.Contains("Multiple"))
                         list.Add(template.Clone());
                 }
@@ -187,9 +188,9 @@ namespace BetterTriggers.Controllers
             // Special case for GUI 'eventcall' parameter
             else if (returnType == "eventcall")
             {
-                for (int i = 0; i < ContainerTriggerData.EventTemplates.Count; i++)
+                for (int i = 0; i < TriggerData.EventTemplates.Count; i++)
                 {
-                    var template = ContainerTriggerData.EventTemplates[i];
+                    var template = TriggerData.EventTemplates[i];
                     list.Add(template.Clone());
                 }
                 list.ForEach(call => call.returnType = "eventcall");
@@ -197,15 +198,15 @@ namespace BetterTriggers.Controllers
                 return list;
             }
 
-            for (int i = 0; i < ContainerTriggerData.CallTemplates.Count; i++)
+            for (int i = 0; i < TriggerData.CallTemplates.Count; i++)
             {
-                var template = ContainerTriggerData.CallTemplates[i];
+                var template = TriggerData.CallTemplates[i];
                 if (returnType == template.returnType)
                     list.Add(template.Clone());
             }
-            for (int i = 0; i < ContainerTriggerData.ConditionTemplates.Count; i++)
+            for (int i = 0; i < TriggerData.ConditionTemplates.Count; i++)
             {
-                var template = ContainerTriggerData.ConditionTemplates[i];
+                var template = TriggerData.ConditionTemplates[i];
                 if (returnType == template.returnType)
                     list.Add(template.Clone());
             }
@@ -220,9 +221,9 @@ namespace BetterTriggers.Controllers
         public List<ConstantTemplate> LoadAllConstants()
         {
             List<ConstantTemplate> list = new List<ConstantTemplate>();
-            for (int i = 0; i < ContainerTriggerData.ConstantTemplates.Count; i++)
+            for (int i = 0; i < TriggerData.ConstantTemplates.Count; i++)
             {
-                var template = ContainerTriggerData.ConstantTemplates[i];
+                var template = TriggerData.ConstantTemplates[i];
                 list.Add(template.Clone());
             }
             return list;
@@ -231,9 +232,9 @@ namespace BetterTriggers.Controllers
         public List<FunctionTemplate> LoadAllConditions()
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
-            for (int i = 0; i < ContainerTriggerData.ConditionTemplates.Count; i++)
+            for (int i = 0; i < TriggerData.ConditionTemplates.Count; i++)
             {
-                var template = ContainerTriggerData.ConditionTemplates[i];
+                var template = TriggerData.ConditionTemplates[i];
                 list.Add(template.Clone());
             }
             return list;
@@ -242,9 +243,9 @@ namespace BetterTriggers.Controllers
         public List<FunctionTemplate> LoadAllActions()
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
-            for (int i = 0; i < ContainerTriggerData.ActionTemplates.Count; i++)
+            for (int i = 0; i < TriggerData.ActionTemplates.Count; i++)
             {
-                var template = ContainerTriggerData.ActionTemplates[i];
+                var template = TriggerData.ActionTemplates[i];
                 list.Add(template.Clone());
             }
             return list;
@@ -261,12 +262,12 @@ namespace BetterTriggers.Controllers
 
             if (parameter is Constant)
             {
-                while (!found && i < ContainerTriggerData.ConstantTemplates.Count)
+                while (!found && i < TriggerData.ConstantTemplates.Count)
                 {
-                    if (ContainerTriggerData.ConstantTemplates[i].identifier == parameter.identifier)
+                    if (TriggerData.ConstantTemplates[i].identifier == parameter.identifier)
                     {
                         found = true;
-                        displayName = Locale.Translate(ContainerTriggerData.ConstantTemplates[i].name);
+                        displayName = Locale.Translate(TriggerData.ConstantTemplates[i].name);
                     }
 
                     i++;
@@ -276,48 +277,48 @@ namespace BetterTriggers.Controllers
             else if (parameter is Function)
             {
                 i = 0;
-                while (!found && i < ContainerTriggerData.EventTemplates.Count)
+                while (!found && i < TriggerData.EventTemplates.Count)
                 {
-                    if (ContainerTriggerData.EventTemplates[i].identifier == parameter.identifier)
+                    if (TriggerData.EventTemplates[i].identifier == parameter.identifier)
                     {
                         found = true;
-                        displayName = ContainerTriggerData.EventTemplates[i].name;
+                        displayName = TriggerData.EventTemplates[i].name;
                     }
 
                     i++;
                 }
 
                 i = 0;
-                while (!found && i < ContainerTriggerData.ConditionTemplates.Count)
+                while (!found && i < TriggerData.ConditionTemplates.Count)
                 {
-                    if (ContainerTriggerData.ConditionTemplates[i].identifier == parameter.identifier)
+                    if (TriggerData.ConditionTemplates[i].identifier == parameter.identifier)
                     {
                         found = true;
-                        displayName = ContainerTriggerData.ConditionTemplates[i].name;
+                        displayName = TriggerData.ConditionTemplates[i].name;
                     }
 
                     i++;
                 }
 
                 i = 0;
-                while (!found && i < ContainerTriggerData.ActionTemplates.Count)
+                while (!found && i < TriggerData.ActionTemplates.Count)
                 {
-                    if (ContainerTriggerData.ActionTemplates[i].identifier == parameter.identifier)
+                    if (TriggerData.ActionTemplates[i].identifier == parameter.identifier)
                     {
                         found = true;
-                        displayName = ContainerTriggerData.ActionTemplates[i].name;
+                        displayName = TriggerData.ActionTemplates[i].name;
                     }
 
                     i++;
                 }
 
                 i = 0;
-                while (!found && i < ContainerTriggerData.CallTemplates.Count)
+                while (!found && i < TriggerData.CallTemplates.Count)
                 {
-                    if (ContainerTriggerData.CallTemplates[i].identifier == parameter.identifier)
+                    if (TriggerData.CallTemplates[i].identifier == parameter.identifier)
                     {
                         found = true;
-                        displayName = ContainerTriggerData.CallTemplates[i].name;
+                        displayName = TriggerData.CallTemplates[i].name;
                     }
 
                     i++;
@@ -335,48 +336,48 @@ namespace BetterTriggers.Controllers
             int i = 0;
 
             i = 0;
-            while (!found && i < ContainerTriggerData.EventTemplates.Count)
+            while (!found && i < TriggerData.EventTemplates.Count)
             {
-                if (ContainerTriggerData.EventTemplates[i].identifier == function.identifier)
+                if (TriggerData.EventTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    paramText = ContainerTriggerData.EventTemplates[i].paramText;
+                    paramText = TriggerData.EventTemplates[i].paramText;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.ConditionTemplates.Count)
+            while (!found && i < TriggerData.ConditionTemplates.Count)
             {
-                if (ContainerTriggerData.ConditionTemplates[i].identifier == function.identifier)
+                if (TriggerData.ConditionTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    paramText = ContainerTriggerData.ConditionTemplates[i].paramText;
+                    paramText = TriggerData.ConditionTemplates[i].paramText;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.ActionTemplates.Count)
+            while (!found && i < TriggerData.ActionTemplates.Count)
             {
-                if (ContainerTriggerData.ActionTemplates[i].identifier == function.identifier)
+                if (TriggerData.ActionTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    paramText = ContainerTriggerData.ActionTemplates[i].paramText;
+                    paramText = TriggerData.ActionTemplates[i].paramText;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.CallTemplates.Count)
+            while (!found && i < TriggerData.CallTemplates.Count)
             {
-                if (ContainerTriggerData.CallTemplates[i].identifier == function.identifier)
+                if (TriggerData.CallTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    paramText = ContainerTriggerData.CallTemplates[i].paramText;
+                    paramText = TriggerData.CallTemplates[i].paramText;
                 }
 
                 i++;
@@ -385,7 +386,7 @@ namespace BetterTriggers.Controllers
             if(paramText == null)
             {
                 paramText = $"{function.identifier}(";
-                function.parameters.ForEach(p => paramText += $",~{p.returnType}, ");
+                function.parameters.ForEach(p => paramText += $",~{TriggerData.GetReturnType(p.identifier)}, ");
                 paramText += ")";
             }
 
@@ -399,48 +400,48 @@ namespace BetterTriggers.Controllers
             int i = 0;
 
             i = 0;
-            while (!found && i < ContainerTriggerData.EventTemplates.Count)
+            while (!found && i < TriggerData.EventTemplates.Count)
             {
-                if (ContainerTriggerData.EventTemplates[i].identifier == function.identifier)
+                if (TriggerData.EventTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    description = ContainerTriggerData.EventTemplates[i].description;
+                    description = TriggerData.EventTemplates[i].description;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.ConditionTemplates.Count)
+            while (!found && i < TriggerData.ConditionTemplates.Count)
             {
-                if (ContainerTriggerData.ConditionTemplates[i].identifier == function.identifier)
+                if (TriggerData.ConditionTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    description = ContainerTriggerData.ConditionTemplates[i].description;
+                    description = TriggerData.ConditionTemplates[i].description;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.ActionTemplates.Count)
+            while (!found && i < TriggerData.ActionTemplates.Count)
             {
-                if (ContainerTriggerData.ActionTemplates[i].identifier == function.identifier)
+                if (TriggerData.ActionTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    description = ContainerTriggerData.ActionTemplates[i].description;
+                    description = TriggerData.ActionTemplates[i].description;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.CallTemplates.Count)
+            while (!found && i < TriggerData.CallTemplates.Count)
             {
-                if (ContainerTriggerData.CallTemplates[i].identifier == function.identifier)
+                if (TriggerData.CallTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    description = ContainerTriggerData.CallTemplates[i].description;
+                    description = TriggerData.CallTemplates[i].description;
                 }
 
                 i++;
@@ -456,48 +457,48 @@ namespace BetterTriggers.Controllers
             int i = 0;
 
             i = 0;
-            while (!found && i < ContainerTriggerData.EventTemplates.Count)
+            while (!found && i < TriggerData.EventTemplates.Count)
             {
-                if (ContainerTriggerData.EventTemplates[i].identifier == function.identifier)
+                if (TriggerData.EventTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    category = ContainerTriggerData.EventTemplates[i].category;
+                    category = TriggerData.EventTemplates[i].category;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.ConditionTemplates.Count)
+            while (!found && i < TriggerData.ConditionTemplates.Count)
             {
-                if (ContainerTriggerData.ConditionTemplates[i].identifier == function.identifier)
+                if (TriggerData.ConditionTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    category = ContainerTriggerData.ConditionTemplates[i].category;
+                    category = TriggerData.ConditionTemplates[i].category;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.ActionTemplates.Count)
+            while (!found && i < TriggerData.ActionTemplates.Count)
             {
-                if (ContainerTriggerData.ActionTemplates[i].identifier == function.identifier)
+                if (TriggerData.ActionTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    category = ContainerTriggerData.ActionTemplates[i].category;
+                    category = TriggerData.ActionTemplates[i].category;
                 }
 
                 i++;
             }
 
             i = 0;
-            while (!found && i < ContainerTriggerData.CallTemplates.Count)
+            while (!found && i < TriggerData.CallTemplates.Count)
             {
-                if (ContainerTriggerData.CallTemplates[i].identifier == function.identifier)
+                if (TriggerData.CallTemplates[i].identifier == function.identifier)
                 {
                     found = true;
-                    category = ContainerTriggerData.CallTemplates[i].category;
+                    category = TriggerData.CallTemplates[i].category;
                 }
 
                 i++;

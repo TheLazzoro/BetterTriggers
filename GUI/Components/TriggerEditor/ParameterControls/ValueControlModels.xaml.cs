@@ -66,7 +66,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return  new Value()
             {
                 identifier = textBoxAsset.Text,
-                returnType = "modelfile"
             };
         }
 

@@ -26,7 +26,7 @@ namespace BetterTriggers.Controllers
             int i = 0;
             while (!ok)
             {
-                if (!ContainerScripts.Contains(name))
+                if (!Scripts.Contains(name))
                     ok = true;
                 else
                 {
@@ -77,9 +77,9 @@ namespace BetterTriggers.Controllers
         {
             ExplorerElementScript explorerElement = null;
 
-            for (int i = 0; i < ContainerScripts.Count(); i++)
+            for (int i = 0; i < Scripts.Count(); i++)
             {
-                var element = ContainerScripts.Get(i);
+                var element = Scripts.Get(i);
                 if (element.GetPath() == filePath)
                 {
                     explorerElement = element;

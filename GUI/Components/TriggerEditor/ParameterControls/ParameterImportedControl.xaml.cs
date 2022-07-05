@@ -12,11 +12,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private ListViewItem selectedItem;
 
-        public ParameterImportedControl(string returnType)
+        public ParameterImportedControl()
         {
             InitializeComponent();
 
-            var imports = ControllerImports.GetImportsAll(returnType);
+            var imports = ControllerImports.GetImportsAll();
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < imports.Count; i++)
@@ -33,11 +33,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                         imports[i].identifier.ToLower()
                     },
                 });
-                var searchables = new Searchables(objects);
-                listControl.SetSearchableList(searchables);
-
-                listControl.listView.SelectionChanged += ListView_SelectionChanged;
             }
+            var searchables = new Searchables(objects);
+            listControl.SetSearchableList(searchables);
+
+            listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
         public void SetDefaultSelection(string identifier)

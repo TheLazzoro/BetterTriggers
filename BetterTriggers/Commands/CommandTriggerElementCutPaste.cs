@@ -26,7 +26,7 @@ namespace BetterTriggers.Commands
         {
             this.from = from;
             this.to = to;
-            this.listToCut = ContainerCopiedElements.CutTriggerElements;
+            this.listToCut = CopiedElements.CutTriggerElements;
             this.cutParent = listToCut[0].Parent;
             this.cutIndex = listToCut[0].Parent.IndexOf(listToCut[0]);
             this.listToPaste = listToPaste;

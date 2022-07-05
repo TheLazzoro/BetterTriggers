@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.SaveableData;
 using GUI.Components.TriggerEditor.ParameterControls;
 using System;
 using System.Collections.Generic;
@@ -29,13 +30,12 @@ namespace GUI
         ParameterImportedControl importControl;
         IParameterControl selectedControl;
 
-        public ParameterWindow(Function function, Parameter parameter)
+        public ParameterWindow(Function function, Parameter parameter, string returnType)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
-            this.Title = parameter.returnType;
+            this.Title = returnType;
 
-            string returnType = parameter.returnType;
 
             if (function.identifier == "SetVariable" && parameter == function.parameters[0])
                 returnType = "AnyGlobal";
@@ -65,7 +65,7 @@ namespace GUI
             Grid.SetRow(triggerRefControl, 1);
             Grid.SetColumnSpan(triggerRefControl, 2);
 
-            this.importControl = new ParameterImportedControl(returnType);
+            this.importControl = new ParameterImportedControl();
             grid.Children.Add(importControl);
             Grid.SetRow(importControl, 1);
             Grid.SetColumnSpan(importControl, 2);
@@ -94,7 +94,7 @@ namespace GUI
                 radioBtnVariable.IsChecked = true;
                 parameterControl = variableControl;
             }
-            else if (parameter is Value && parameter.returnType != "skymodelstring")
+            else if (parameter is Value && returnType != "skymodelstring")
             {
                 radioBtnValue.IsChecked = true;
                 parameterControl = valueControl;
@@ -104,7 +104,7 @@ namespace GUI
                 radioBtnTrigger.IsChecked = true;
                 parameterControl = triggerRefControl;
             }
-            else if (parameter is Value && parameter.returnType == "skymodelstring")
+            else if (parameter is Value && returnType == "skymodelstring")
             {
                 radioBtnImported.IsChecked = true;
                 parameterControl = importControl;

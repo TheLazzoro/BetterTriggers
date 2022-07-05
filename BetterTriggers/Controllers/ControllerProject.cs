@@ -69,7 +69,7 @@ namespace BetterTriggers.Controllers
 
         public int GetUnsavedFileCount()
         {
-            return ContainerUnsavedFiles.Count();
+            return UnsavedFiles.Count();
         }
 
         public bool War3MapDirExists()
@@ -272,20 +272,20 @@ namespace BetterTriggers.Controllers
                     {
                         case "":
                             explorerElementChild = new ExplorerElementFolder(entryChild.path);
-                            ContainerFolders.AddFolder(explorerElementChild as ExplorerElementFolder);
+                            Folders.AddFolder(explorerElementChild as ExplorerElementFolder);
                             break;
                         case ".trg":
                             explorerElementChild = new ExplorerElementTrigger(entryChild.path);
-                            ContainerTriggers.AddTrigger(explorerElementChild as ExplorerElementTrigger);
+                            Triggers.AddTrigger(explorerElementChild as ExplorerElementTrigger);
                             break;
                         case ".j":
                         case ".lua":
                             explorerElementChild = new ExplorerElementScript(entryChild.path);
-                            ContainerScripts.AddScript(explorerElementChild as ExplorerElementScript);
+                            Scripts.AddScript(explorerElementChild as ExplorerElementScript);
                             break;
                         case ".var":
                             explorerElementChild = new ExplorerElementVariable(entryChild.path);
-                            ContainerVariables.AddVariable(explorerElementChild as ExplorerElementVariable);
+                            Variables.AddVariable(explorerElementChild as ExplorerElementVariable);
                             break;
                         default:
                             break;
@@ -310,8 +310,8 @@ namespace BetterTriggers.Controllers
             SetEnableFileEvents(false);
 
             // Write to unsaved
-            var unsaved = ContainerUnsavedFiles.GetAllUnsaved();
-            for (int i = 0; i < ContainerUnsavedFiles.Count(); i++)
+            var unsaved = UnsavedFiles.GetAllUnsaved();
+            for (int i = 0; i < UnsavedFiles.Count(); i++)
             {
                 if (unsaved[i] is IExplorerSaveable)
                 {
@@ -320,7 +320,7 @@ namespace BetterTriggers.Controllers
                     saveable.OnSaved();
                 }
             }
-            ContainerUnsavedFiles.Clear();
+            UnsavedFiles.Clear();
 
             // Write to project file
             var root = (ExplorerElementRoot)ContainerProject.projectFiles[0];
@@ -409,13 +409,13 @@ namespace BetterTriggers.Controllers
         public void AddElementToContainer(IExplorerElement element)
         {
             if (element is ExplorerElementFolder)
-                ContainerFolders.AddFolder(element as ExplorerElementFolder);
+                Folders.AddFolder(element as ExplorerElementFolder);
             else if (element is ExplorerElementTrigger)
-                ContainerTriggers.AddTrigger(element as ExplorerElementTrigger);
+                Triggers.AddTrigger(element as ExplorerElementTrigger);
             else if (element is ExplorerElementScript)
-                ContainerScripts.AddScript(element as ExplorerElementScript);
+                Scripts.AddScript(element as ExplorerElementScript);
             else if (element is ExplorerElementVariable)
-                ContainerVariables.AddVariable(element as ExplorerElementVariable);
+                Variables.AddVariable(element as ExplorerElementVariable);
 
         }
 
@@ -426,13 +426,13 @@ namespace BetterTriggers.Controllers
         public void RemoveElementFromContainer(IExplorerElement element)
         {
             if (element is ExplorerElementFolder)
-                ContainerFolders.Remove(element as ExplorerElementFolder);
+                Folders.Remove(element as ExplorerElementFolder);
             else if (element is ExplorerElementTrigger)
-                ContainerTriggers.Remove(element as ExplorerElementTrigger);
+                Triggers.Remove(element as ExplorerElementTrigger);
             else if (element is ExplorerElementScript)
-                ContainerScripts.Remove(element as ExplorerElementScript);
+                Scripts.Remove(element as ExplorerElementScript);
             else if (element is ExplorerElementVariable)
-                ContainerVariables.Remove(element as ExplorerElementVariable);
+                Variables.Remove(element as ExplorerElementVariable);
         }
 
         public void OnCreateElement(string fullPath, bool doRecurse = true)
@@ -733,11 +733,11 @@ namespace BetterTriggers.Controllers
             bool exists = false;
 
             if (explorerElement is ExplorerElementTrigger)
-                exists = ContainerTriggers.Contains(newName);
+                exists = Triggers.Contains(newName);
             else if (explorerElement is ExplorerElementScript)
-                exists = ContainerScripts.Contains(newName);
+                exists = Scripts.Contains(newName);
             else if (explorerElement is ExplorerElementVariable)
-                exists = ContainerVariables.Contains(newName);
+                exists = Variables.Contains(newName);
             else if (explorerElement is ExplorerElementFolder)
             {
                 string parentDir = explorerElement.GetParent().GetPath();
@@ -765,7 +765,7 @@ namespace BetterTriggers.Controllers
                 formattedName = renameText;
             else if (explorerElement is ExplorerElementTrigger)
             {
-                if (ContainerTriggers.Contains(renameText))
+                if (Triggers.Contains(renameText))
                     throw new Exception($"Trigger '{renameText}' already exists.");
 
                 formattedName = renameText + ".trg";
@@ -774,7 +774,7 @@ namespace BetterTriggers.Controllers
                 formattedName = renameText + ".j";
             else if (explorerElement is ExplorerElementVariable)
             {
-                if (ContainerVariables.Contains(renameText))
+                if (Variables.Contains(renameText))
                     throw new Exception($"Variable '{renameText}' already exists.");
 
                 formattedName = renameText + ".var";
@@ -787,7 +787,7 @@ namespace BetterTriggers.Controllers
 
         public IExplorerElement GetCopiedElement()
         {
-            return ContainerCopiedElements.CopiedExplorerElement;
+            return CopiedElements.CopiedExplorerElement;
         }
 
         public void CopyExplorerElement(IExplorerElement explorerElement, bool isCut = false)
@@ -796,12 +796,12 @@ namespace BetterTriggers.Controllers
             if (copied == null)
                 return;
 
-            ContainerCopiedElements.CopiedExplorerElement = copied;
+            CopiedElements.CopiedExplorerElement = copied;
 
             if (isCut)
-                ContainerCopiedElements.CutExplorerElement = explorerElement;
+                CopiedElements.CutExplorerElement = explorerElement;
             else
-                ContainerCopiedElements.CutExplorerElement = null;
+                CopiedElements.CutExplorerElement = null;
         }
 
         /// <summary>
@@ -825,8 +825,8 @@ namespace BetterTriggers.Controllers
                 insertIndex = parent.GetExplorerElements().IndexOf(pasteTarget);
             }
 
-            var pasted = ContainerCopiedElements.CopiedExplorerElement.Clone();
-            if (ContainerCopiedElements.CutExplorerElement == null)
+            var pasted = CopiedElements.CopiedExplorerElement.Clone();
+            if (CopiedElements.CutExplorerElement == null)
                 PrepareExplorerElement(pasted);
 
             CommandExplorerElementPaste command = new CommandExplorerElementPaste(pasted, parent, insertIndex);
@@ -850,7 +850,7 @@ namespace BetterTriggers.Controllers
                 string folder = Path.GetDirectoryName(element.GetPath());
                 string name = controllerTrigger.GenerateTriggerName();
 
-                element.trigger.Id = ContainerTriggers.GenerateId();
+                element.trigger.Id = Triggers.GenerateId();
                 element.SetPath(Path.Combine(folder, name));
             }
             else if (explorerElement is ExplorerElementVariable)
@@ -861,7 +861,7 @@ namespace BetterTriggers.Controllers
                 string folder = Path.GetDirectoryName(element.GetPath());
                 string name = controllerVariable.GenerateName();
 
-                element.variable.Id = ContainerVariables.GenerateId();
+                element.variable.Id = Variables.GenerateId();
                 element.SetPath(Path.Combine(folder, name));
             }
             else if (explorerElement is ExplorerElementFolder)

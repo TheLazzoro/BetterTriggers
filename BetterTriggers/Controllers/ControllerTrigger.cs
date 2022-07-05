@@ -23,7 +23,7 @@ namespace BetterTriggers.Controllers
 
             Trigger trigger = new Trigger()
             {
-                Id = ContainerTriggers.GenerateId(),
+                Id = Triggers.GenerateId(),
             };
             string json = JsonConvert.SerializeObject(trigger);
 
@@ -47,7 +47,6 @@ namespace BetterTriggers.Controllers
                 TriggerRef trigRef = new TriggerRef()
                 {
                     TriggerId = elements[i].trigger.Id,
-                    returnType = "trigger",
                 };
 
                 list.Add(trigRef);
@@ -63,7 +62,7 @@ namespace BetterTriggers.Controllers
             int i = 0;
             while (!ok)
             {
-                if (!ContainerTriggers.Contains(name))
+                if (!Triggers.Contains(name))
                     ok = true;
                 else
                 {
@@ -86,19 +85,19 @@ namespace BetterTriggers.Controllers
 
         public string GetTriggerName(int triggerId)
         {
-            return ContainerTriggers.GetName(triggerId);
+            return Triggers.GetName(triggerId);
         }
 
         public Trigger GetById(int id)
         {
-            return ContainerTriggers.FindById(id).trigger;
+            return Triggers.FindById(id).trigger;
         }
 
         
 
         public List<ExplorerElementTrigger> GetTriggersAll()
         {
-            return ContainerTriggers.GetAll();
+            return Triggers.GetAll();
         }
 
         /// <summary>
@@ -135,14 +134,14 @@ namespace BetterTriggers.Controllers
             {
                 copiedItems.Add((TriggerElement)list[i].Clone());
             }
-            ContainerCopiedElements.CopiedTriggerElements = copiedItems;
+            CopiedElements.CopiedTriggerElements = copiedItems;
 
             if (isCut) {
-                ContainerCopiedElements.CutTriggerElements = list;
-                ContainerCopiedElements.CopiedFromTrigger = copiedFrom;
+                CopiedElements.CutTriggerElements = list;
+                CopiedElements.CopiedFromTrigger = copiedFrom;
             }
             else
-                ContainerCopiedElements.CutTriggerElements = null;
+                CopiedElements.CutTriggerElements = null;
         }
 
         /// <summary>
@@ -153,21 +152,21 @@ namespace BetterTriggers.Controllers
         /// <returns>A list of pasted elements.</returns>
         public List<TriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<TriggerElement> parentList, int insertIndex)
         {
-            var copied = ContainerCopiedElements.CopiedTriggerElements;
+            var copied = CopiedElements.CopiedTriggerElements;
             var pasted = new List<TriggerElement>();
             for (int i = 0; i < copied.Count; i++)
             {
                 pasted.Add((TriggerElement)copied[i].Clone());
             }
 
-            if (ContainerCopiedElements.CutTriggerElements == null)
+            if (CopiedElements.CutTriggerElements == null)
             {
                 CommandTriggerElementPaste command = new CommandTriggerElementPaste(destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
             }
             else
             {
-                CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(ContainerCopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
+                CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
             }
 
@@ -271,7 +270,7 @@ namespace BetterTriggers.Controllers
                     if (variable == null)
                     {
                         removeCount++;
-                        parameters[i] = new Parameter() { returnType = parameter.returnType };
+                        parameters[i] = new Parameter();
                     }
                 }
                 else if (parameter is TriggerRef)
@@ -281,7 +280,7 @@ namespace BetterTriggers.Controllers
                     if (trigger == null)
                     {
                         removeCount++;
-                        parameters[i] = new Parameter() { returnType = parameter.returnType };
+                        parameters[i] = new Parameter();
                     }
                 }
                 else if (parameter is Value)
@@ -290,7 +289,7 @@ namespace BetterTriggers.Controllers
                     if (!exists)
                     {
                         removeCount++;
-                        parameters[i] = new Parameter() { returnType = parameter.returnType };
+                        parameters[i] = new Parameter();
                     }
 
                 }
@@ -307,7 +306,7 @@ namespace BetterTriggers.Controllers
 
         public Trigger GetByReference(TriggerRef triggerRef)
         {
-            var explorerElement = ContainerTriggers.GetByReference(triggerRef);
+            var explorerElement = Triggers.GetByReference(triggerRef);
             if (explorerElement == null)
                 return null;
 
@@ -323,7 +322,7 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                if (parameter.identifier == null && parameter.returnType != "nothing" && !(parameter is VariableRef) && !(parameter is TriggerRef))
+                if (parameter.identifier == null && TriggerData.GetReturnType(parameter.identifier) != "nothing" && !(parameter is VariableRef) && !(parameter is TriggerRef))
                     invalidCount++;
 
                 if (parameter is Function)
@@ -342,7 +341,7 @@ namespace BetterTriggers.Controllers
         /// <returns>A list of every parameter in every trigger.</returns>
         public List<Parameter> GetParametersAll()
         {
-            var triggers = ContainerTriggers.GetAll();
+            var triggers = Triggers.GetAll();
             List<Parameter> parameters = new List<Parameter>();
             triggers.ForEach(trig => parameters.AddRange(GetParametersFromTrigger(trig)));
 

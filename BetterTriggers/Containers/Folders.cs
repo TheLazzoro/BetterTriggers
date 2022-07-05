@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BetterTriggers.Containers
 {
-    public static class ContainerFolders
+    public static class Folders
     {
         private static List<ExplorerElementFolder> folderContainer = new List<ExplorerElementFolder>();
 

@@ -12,7 +12,7 @@ namespace BetterTriggers.Utility
             bool isValid = false;
             while (!isValid)
             {
-                if (ContainerFolders.Contains(name))
+                if (Folders.Contains(name))
                 {
                     name = nameTemplate + " " + i;
                 }
@@ -35,7 +35,7 @@ namespace BetterTriggers.Utility
             bool isValid = false;
             while (!isValid)
             {
-                if (ContainerTriggers.Contains(name))
+                if (Triggers.Contains(name))
                 {
                     name = nameTemplate + " " + i;
                 }
@@ -58,7 +58,7 @@ namespace BetterTriggers.Utility
             bool isValid = false;
             while (!isValid)
             {
-                if (ContainerScripts.Contains(name))
+                if (Scripts.Contains(name))
                 {
                     name = nameTemplate + " " + i;
                 }
@@ -81,7 +81,7 @@ namespace BetterTriggers.Utility
             bool isValid = false;
             while (!isValid)
             {
-                if (ContainerVariables.Contains(name))
+                if (Variables.Contains(name))
                 {
                     name = nameTemplate + i;
                 }

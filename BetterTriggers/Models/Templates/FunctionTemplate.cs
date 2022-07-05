@@ -10,7 +10,7 @@ namespace BetterTriggers.Models.Templates
     {
         public readonly int ParamType = 1; // DO NOT CHANGE
 
-        public List<Parameter> parameters = new List<Parameter>();
+        public List<ParameterTemplate> parameters = new List<ParameterTemplate>();
         public string paramText;
         public string description;
         public Category category;
@@ -18,7 +18,7 @@ namespace BetterTriggers.Models.Templates
         public FunctionTemplate Clone()
         {
             FunctionTemplate clone = (FunctionTemplate)this.MemberwiseClone();
-            clone.parameters = new List<Parameter>(parameters);
+            clone.parameters = new List<ParameterTemplate>(parameters);
             if (paramText != null) // some are null
                 clone.paramText = new string(paramText);
             if (description != null) // some are null
@@ -34,12 +34,20 @@ namespace BetterTriggers.Models.Templates
         public TriggerElement ToTriggerElement()
         {
             TriggerElement te = TriggerElementFactory.Create(identifier);
+            List<Parameter> parameters = new List<Parameter>();
+            this.parameters.ForEach(p => parameters.Add(new Parameter() { identifier = p.identifier }));
 
             te.function.identifier = identifier;
             te.function.parameters = parameters;
-            te.function.returnType = returnType;
 
             return te;
+        }
+
+        public List<Parameter> ConvertParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            this.parameters.ForEach(p => parameters.Add(new Parameter() { identifier = p.identifier }));
+            return parameters;
         }
     }
 }

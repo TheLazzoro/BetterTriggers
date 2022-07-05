@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BetterTriggers.Containers
 {
-    internal static class ContainerCopiedElements
+    internal static class CopiedElements
     {
         internal static List<TriggerElement> CopiedTriggerElements = new List<TriggerElement>();
         internal static List<TriggerElement> CutTriggerElements = new List<TriggerElement>();

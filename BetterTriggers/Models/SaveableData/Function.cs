@@ -18,7 +18,6 @@ namespace BetterTriggers.Models.SaveableData
 
             Function f = new Function();
             f.identifier = identifier;
-            f.returnType = new string(returnType);
             List<Parameter> parameters = new List<Parameter>();
             
             for (int i = 0; i < this.parameters.Count; i++)
@@ -64,16 +63,6 @@ namespace BetterTriggers.Models.SaveableData
             f.parameters = parameters;
 
             return f;
-        }
-
-        public string GetIdentifier()
-        {
-            return identifier;
-        }
-
-        public string GetReturnType()
-        {
-            return returnType;
         }
     }
 }

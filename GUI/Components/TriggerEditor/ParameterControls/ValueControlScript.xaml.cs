@@ -51,7 +51,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             Value value = new Value()
             {
                 identifier = textBoxString.Text,
-                returnType = "scriptcode"
             };
 
             return value;

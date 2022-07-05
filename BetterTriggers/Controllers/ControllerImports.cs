@@ -9,7 +9,7 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerImports
     {
-        public static List<Value> GetImportsAll(string returnType)
+        public static List<Value> GetImportsAll()
         {
             List<Value> models = new List<Value>();
             string mapDir = CustomMapData.mapPath + "/";
@@ -20,7 +20,6 @@ namespace BetterTriggers.Controllers
                 if(file.EndsWith(".mdx") || file.EndsWith(".mdl"))
                 models.Add(new Value() {
                     identifier = file.Substring(mapDir.Length, file.Length - mapDir.Length),
-                    returnType = returnType,
                 });
             }
 

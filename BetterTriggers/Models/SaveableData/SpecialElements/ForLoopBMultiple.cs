@@ -10,7 +10,6 @@ namespace BetterTriggers.Models.SaveableData
         public ForLoopBMultiple()
         {
             function.identifier = "ForLoopBMultiple";
-            function.returnType = "nothing";
         }
 
         public new ForLoopBMultiple Clone()

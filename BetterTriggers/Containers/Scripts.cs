@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BetterTriggers.Containers
 {
-    public static class ContainerScripts
+    public static class Scripts
     {
         private static List<ExplorerElementScript> scriptContainer = new List<ExplorerElementScript>();
 

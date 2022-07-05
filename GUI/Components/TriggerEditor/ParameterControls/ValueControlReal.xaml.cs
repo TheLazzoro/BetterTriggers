@@ -54,7 +54,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             Value value = new Value()
             {
                 identifier = textBox.Text,
-                returnType = "real"
             };
 
             return value;

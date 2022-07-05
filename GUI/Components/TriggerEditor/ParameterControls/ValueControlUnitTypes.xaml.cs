@@ -196,7 +196,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             this.selectedType = new Value()
             {
                 identifier = unitcode,
-                returnType = "unitcode",
             };
         }
 

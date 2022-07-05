@@ -16,7 +16,6 @@
             return new Constant()
             {
                 identifier = identifier,
-                returnType = new string(returnType),
             };
         }
     }

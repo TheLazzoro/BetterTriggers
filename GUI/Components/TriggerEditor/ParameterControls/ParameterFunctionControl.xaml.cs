@@ -87,8 +87,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             var parameter = new Function()
             {
                 identifier = template.identifier,
-                parameters = template.parameters,
-                returnType = template.returnType,
+                parameters = template.ConvertParameters(),
             };
             return parameter;
         }

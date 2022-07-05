@@ -25,7 +25,6 @@ namespace BetterTriggers.Models.SaveableData
             return new VariableRef()
             {
                 identifier = identifier,
-                returnType = new string(returnType),
                 VariableId = VariableId,
                 arrayIndexValues = newArrayIndexValues,
             };

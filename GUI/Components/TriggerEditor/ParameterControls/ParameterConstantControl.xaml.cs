@@ -55,17 +55,17 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                         constant.identifier.ToLower()
                     },
                 });
-
-                var searchables = new Searchables(objects);
-                listControl.SetSearchableList(searchables);
-
-                var categoryControl = new GenericCategoryControl(searchables);
-                grid.Children.Add(categoryControl);
-                Grid.SetRow(categoryControl, 1);
-                Grid.SetRowSpan(categoryControl, 3);
-
-                listControl.listView.SelectionChanged += ListView_SelectionChanged;
             }
+
+            var searchables = new Searchables(objects);
+            listControl.SetSearchableList(searchables);
+
+            var categoryControl = new GenericCategoryControl(searchables);
+            grid.Children.Add(categoryControl);
+            Grid.SetRow(categoryControl, 1);
+            Grid.SetRowSpan(categoryControl, 3);
+
+            listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
         public void SetDefaultSelection(string identifier)
@@ -76,7 +76,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var constant = item.Tag as ConstantTemplate;
-                if(constant.identifier == identifier)
+                if (constant.identifier == identifier)
                     found = true;
                 else
                     i++;
@@ -103,7 +103,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             var parameter = new Constant()
             {
                 identifier = template.identifier,
-                returnType = template.returnType,
             };
             return parameter;
         }

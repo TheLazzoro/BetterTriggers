@@ -12,7 +12,6 @@ namespace BetterTriggers.Models.SaveableData
         public IfThenElse()
         {
             function.identifier = "IfThenElseMultiple";
-            function.returnType = "nothing";
         }
 
         public new IfThenElse Clone()

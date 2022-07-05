@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BetterTriggers.Containers
 {
-    public static class ContainerVariables
+    public static class Variables
     {
         public static List<ExplorerElementVariable> variableContainer = new List<ExplorerElementVariable>();
 

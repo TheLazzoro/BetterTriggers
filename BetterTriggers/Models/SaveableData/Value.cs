@@ -12,7 +12,6 @@
             return new Value()
             {
                 identifier = identifier,
-                returnType = new string(returnType),
             };
         }
     }

@@ -55,7 +55,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             Value value = new Value()
             {
                 identifier = str,
-                returnType = "boolean"
             };
 
             return value;

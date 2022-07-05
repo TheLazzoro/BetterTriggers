@@ -108,7 +108,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             Value value = new Value()
             {
                 identifier = textBoxString.Text,
-                returnType = returnType,
             };
 
             return value;

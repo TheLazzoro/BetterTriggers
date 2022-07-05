@@ -33,11 +33,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             for (int i = 0; i < abilities.Count; i++)
             {
                 var ability = abilities[i];
-                Value value = new Value()
-                {
-                    identifier = ability.AbilCode,
-                    returnType = "abilcode",
-                };
+                Value value = new Value() { identifier = ability.AbilCode };
                 ListViewItem item = new ListViewItem();
                 item.Content = $"[{ability.AbilCode}] {ability.DisplayName}";
                 item.Tag = value;

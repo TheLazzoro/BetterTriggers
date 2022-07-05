@@ -203,11 +203,11 @@ namespace BetterTriggers
                 {
                     Value value = (Value)parameters[i];
 
-                    if (value.returnType == "unit")
+                    if (TriggerData.GetReturnType(value.identifier) == "unit")
                         generatedVarNames.TryAdd("gg_unit_" + value.identifier, value);
-                    else if (value.returnType == "destructable")
+                    else if (TriggerData.GetReturnType(value.identifier) == "destructable")
                         generatedVarNames.TryAdd("gg_dest_" + value.identifier, value);
-                    else if (value.returnType == "item")
+                    else if (TriggerData.GetReturnType(value.identifier) == "item")
                         generatedVarNames.TryAdd("gg_item_" + value.identifier, value);
                 }
             }
@@ -217,7 +217,7 @@ namespace BetterTriggers
             foreach (KeyValuePair<string, Value> kvp in generatedVarNames)
             {
                 string varName = kvp.Key;
-                string type = language == ScriptLanguage.Jass ? kvp.Value.returnType : "";
+                string type = language == ScriptLanguage.Jass ? TriggerData.GetReturnType(kvp.Value.identifier) : "";
                 script.Append($"{type} {varName} = {_null} {newline}");
             }
 
@@ -353,11 +353,11 @@ namespace BetterTriggers
         private bool isMapObject(Value value)
         {
             if (
-                    value.returnType == "unit" ||
-                    value.returnType == "destructable" ||
-                    value.returnType == "item" ||
-                    value.returnType == "rect" ||
-                    value.returnType == "camerasetup"
+                    TriggerData.GetReturnType(value.identifier) == "unit" ||
+                    TriggerData.GetReturnType(value.identifier) == "destructable" ||
+                    TriggerData.GetReturnType(value.identifier) == "item" ||
+                    TriggerData.GetReturnType(value.identifier) == "rect" ||
+                    TriggerData.GetReturnType(value.identifier) == "camerasetup"
                     )
                 return true;
             else return false;
@@ -1711,7 +1711,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.returnType == "boolexpr")
+            else if (TriggerData.GetReturnType(f.identifier) == "boolexpr")
             {
                 return $"{ConvertParametersToJass(f, pre_actions, true)}";
             }
@@ -1748,7 +1748,7 @@ end
                     return $"({ConvertParametersToJass(f.parameters[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], pre_actions, boolexprIsOn)})";
                 }
 
-                else if (f.returnType == "boolexpr" && !boolexprIsOn)
+                else if (TriggerData.GetReturnType(f.identifier) == "boolexpr" && !boolexprIsOn)
                 {
                     nameNumber++;
                     string functionName = "BoolExpr_" + nameNumber;
@@ -1798,16 +1798,16 @@ end
             else if (parameter is Constant)
             {
                 Constant c = (Constant)parameter;
-                if (c.returnType == "unitcommonorderEx" ||
-                c.returnType == "skymodelstring" ||
-                c.returnType == "unitorderptarg" ||
-                c.returnType == "unitorderutarg" ||
-                c.returnType == "unitordernotarg" ||
-                c.returnType == "unitorderitarg"
+                if (TriggerData.GetReturnType(c.identifier) == "unitcommonorderEx" ||
+                TriggerData.GetReturnType(c.identifier) == "skymodelstring" ||
+                TriggerData.GetReturnType(c.identifier) == "unitorderptarg" ||
+                TriggerData.GetReturnType(c.identifier) == "unitorderutarg" ||
+                TriggerData.GetReturnType(c.identifier) == "unitordernotarg" ||
+                TriggerData.GetReturnType(c.identifier) == "unitorderitarg"
                 )
-                    output += "\"" + ContainerTriggerData.GetConstantCodeText(c.identifier, language) + "\"";
+                    output += "\"" + TriggerData.GetConstantCodeText(c.identifier, language) + "\"";
                 else
-                    output += ContainerTriggerData.GetConstantCodeText(c.identifier, language);
+                    output += TriggerData.GetConstantCodeText(c.identifier, language);
 
             }
             else if (parameter is VariableRef)
@@ -1816,7 +1816,7 @@ end
                 ControllerVariable controller = new ControllerVariable();
                 Variable variable = controller.GetByReference(v);
 
-                bool isVarAsString_Real = v.returnType == "VarAsString_Real";
+                bool isVarAsString_Real = TriggerData.GetReturnType(v.identifier) == "VarAsString_Real";
                 if (isVarAsString_Real)
                     output += "\"";
 
@@ -1845,19 +1845,24 @@ end
             {
                 Value v = (Value)parameter;
 
-                if (v.returnType == "StringExt" || v.returnType == "string" || v.returnType == "modelfile" || v.returnType == "skymodelstring")
+                if(v.identifier == "Night Elf") 
+                {
+                    
+                }
+
+                if (TriggerData.GetReturnType(v.identifier) == "StringExt" || TriggerData.GetReturnType(v.identifier) == "string" || TriggerData.GetReturnType(v.identifier) == "modelfile" || TriggerData.GetReturnType(v.identifier) == "skymodelstring")
                     output += "\"" + v.identifier.Replace(@"\", @"\\") + "\"";
-                else if (v.returnType == "unitcode" || v.returnType == "buffcode" || v.returnType == "abilcode" || v.returnType == "destructablecode" || v.returnType == "techcode" || v.returnType == "itemcode")
+                else if (TriggerData.GetReturnType(v.identifier) == "unitcode" || TriggerData.GetReturnType(v.identifier) == "buffcode" || TriggerData.GetReturnType(v.identifier) == "abilcode" || TriggerData.GetReturnType(v.identifier) == "destructablecode" || TriggerData.GetReturnType(v.identifier) == "techcode" || TriggerData.GetReturnType(v.identifier) == "itemcode")
                     output += $"{fourCCStart}'{v.identifier}'{fourCCEnd}";
-                else if (v.returnType == "unit")
+                else if (TriggerData.GetReturnType(v.identifier) == "unit")
                     output += $"gg_unit_{v.identifier.Replace(" ", "_")}";
-                else if (v.returnType == "destructable")
+                else if (TriggerData.GetReturnType(v.identifier) == "destructable")
                     output += $"gg_dest_{v.identifier.Replace(" ", "_")}";
-                else if (v.returnType == "item")
+                else if (TriggerData.GetReturnType(v.identifier) == "item")
                     output += $"gg_item_{v.identifier.Replace(" ", "_")}";
-                else if (v.returnType == "rect")
+                else if (TriggerData.GetReturnType(v.identifier) == "rect")
                     output += $"gg_rect_{v.identifier.Replace(" ", "_")}";
-                else if (v.returnType == "camerasetup")
+                else if (TriggerData.GetReturnType(v.identifier) == "camerasetup")
                     output += $"gg_cam_{v.identifier.Replace(" ", "_")}";
                 else
                     output += v.identifier;

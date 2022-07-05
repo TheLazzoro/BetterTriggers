@@ -24,7 +24,7 @@ namespace BetterTriggers.Controllers
             // Default variable is always an integer on creation.
             Variable variable = new Variable()
             {
-                Id = ContainerVariables.GenerateId(),
+                Id = Variables.GenerateId(),
                 Name = name,
                 Type = "integer",
                 InitialValue = "0",
@@ -43,7 +43,7 @@ namespace BetterTriggers.Controllers
             int i = 0;
             while (!ok)
             {
-                if (!ContainerVariables.Contains(name))
+                if (!Variables.Contains(name))
                     ok = true;
                 else
                 {
@@ -59,12 +59,12 @@ namespace BetterTriggers.Controllers
         {
             List<Variable> list = new List<Variable>();
 
-            for (int i = 0; i < ContainerVariables.variableContainer.Count; i++)
+            for (int i = 0; i < Variables.variableContainer.Count; i++)
             {
-                if (returnType != "AnyGlobal" && ContainerVariables.variableContainer[i].variable.Type != returnType)
+                if (returnType != "AnyGlobal" && Variables.variableContainer[i].variable.Type != returnType)
                     continue;
 
-                var explorerElement = ContainerVariables.variableContainer[i];
+                var explorerElement = Variables.variableContainer[i];
                 string name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.GetPath());
                 Variable variable = explorerElement.variable;
                 variable.Name = name;
@@ -95,11 +95,10 @@ namespace BetterTriggers.Controllers
             {
                 VariableRef varRef = new VariableRef()
                 {
-                    returnType = wasIntegervar == false ? variables[i].Type : "integervar",
                     VariableId = variables[i].Id,
                 };
-                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
-                varRef.arrayIndexValues.Add(new Value() { returnType = "integer", identifier = "0" });
+                varRef.arrayIndexValues.Add(new Value());
+                varRef.arrayIndexValues.Add(new Value());
 
                 list.Add(varRef);
             }
@@ -109,13 +108,13 @@ namespace BetterTriggers.Controllers
 
         public string GetVariableNameById(int id)
         {
-            return ContainerVariables.GetVariableNameById(id);
+            return Variables.GetVariableNameById(id);
         }
 
         
         public Variable GetById(int id)
         {
-            return ContainerVariables.GetVariableById(id);
+            return Variables.GetVariableById(id);
         }
 
         public Variable GetByReference(VariableRef variableRef)
@@ -131,10 +130,10 @@ namespace BetterTriggers.Controllers
 
             while (!found)
             {
-                if (ContainerVariables.variableContainer[i].GetPath() == filepath)
+                if (Variables.variableContainer[i].GetPath() == filepath)
                 {
                     found = true;
-                    variable = ContainerVariables.variableContainer[i];
+                    variable = Variables.variableContainer[i];
                 }
 
                 i++;
@@ -146,7 +145,7 @@ namespace BetterTriggers.Controllers
 
         public void RemoveVariableRefFromTriggers(ExplorerElementVariable explorerElementVariable)
         {
-            ContainerReferences.ResetVariableReferences(explorerElementVariable);
+            References.ResetVariableReferences(explorerElementVariable);
         }
 
 

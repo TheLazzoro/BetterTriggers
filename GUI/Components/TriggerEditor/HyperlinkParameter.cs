@@ -16,15 +16,17 @@ namespace GUI.Components.TriggerEditor
 {
     public class HyperlinkParameter : Hyperlink
     {
-        private TreeViewTriggerElement treeViewTriggerElement;
         internal readonly List<Parameter> parameters;
         internal readonly int index;
+        private TreeViewTriggerElement treeViewTriggerElement;
+        private readonly string returnType;
 
-        public HyperlinkParameter(TreeViewTriggerElement treeViewTriggerElement, string text, List<Parameter> parameters, int index)
+        public HyperlinkParameter(TreeViewTriggerElement treeViewTriggerElement, string text, List<Parameter> parameters, int index, string returnType)
         {
             this.treeViewTriggerElement = treeViewTriggerElement;
             this.parameters = parameters;
             this.index = index;
+            this.returnType = returnType;
 
             this.GotFocus += HyperlinkParameter_GotFocus;
             this.LostFocus += HyperlinkParameter_LostFocus;
@@ -60,7 +62,7 @@ namespace GUI.Components.TriggerEditor
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var window = new ParameterWindow(treeViewTriggerElement.triggerElement.function, parameter);
+            var window = new ParameterWindow(treeViewTriggerElement.triggerElement.function, parameter, returnType);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.

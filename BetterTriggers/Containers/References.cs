@@ -6,7 +6,7 @@ using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Containers
 {
-    public class ContainerReferences
+    public class References
     {
         private static Dictionary<ExplorerElementTrigger, HashSet<IExplorerElement>> fromTrigger = new Dictionary<ExplorerElementTrigger, HashSet<IExplorerElement>>();
         private static Dictionary<IExplorerElement, HashSet<ExplorerElementTrigger>> fromReference = new Dictionary<IExplorerElement, HashSet<ExplorerElementTrigger>>();

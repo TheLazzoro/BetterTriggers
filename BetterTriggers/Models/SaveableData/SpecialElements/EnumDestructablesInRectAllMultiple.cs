@@ -10,7 +10,6 @@ namespace BetterTriggers.Models.SaveableData
         public EnumDestructablesInRectAllMultiple()
         {
             function.identifier = "EnumDestructablesInRectAllMultiple";
-            function.returnType = "nothing";
         }
 
         public new EnumDestructablesInRectAllMultiple Clone()
