@@ -1,8 +1,8 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.EditorData.Enums;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using GUI.Controllers;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace GUI.Components.TriggerEditor
         public TextBlock paramTextBlock;
         public TextBlock descriptionTextBlock;
         internal string paramText;
-        protected Category category;
+        protected string category;
         private TriggerControl triggerControl;
 
         public TreeViewTriggerElement(TriggerElement triggerElement)
@@ -44,7 +44,6 @@ namespace GUI.Components.TriggerEditor
 
             ControllerTriggerData controller = new ControllerTriggerData();
             this.paramText = controller.GetParamText(triggerElement.function);
-            this.descriptionTextBlock.Text = controller.GetDescription(triggerElement.function);
             this.category = controller.GetCategoryTriggerElement(triggerElement.function);
 
             this.UpdateTreeItem();
@@ -101,7 +100,7 @@ namespace GUI.Components.TriggerEditor
             List<Parameter> parameters = this.triggerElement.function.parameters;
 
             bool areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
-            if (parameters.Count == 1 && TriggerData.GetReturnType(parameters[0].identifier) == "nothing") // hack
+            if (parameters.Count == 1 && TriggerData.GetParameterReturnTypes(this.triggerElement.function)[0] == "nothing") // hack
                 areParametersValid = true;
             bool isEnabled = triggerElement.isEnabled;
 
@@ -115,7 +114,7 @@ namespace GUI.Components.TriggerEditor
             string text = string.Empty;
             textRanges.ForEach(element => text += element.Text);
 
-            TreeItemHeader header = new TreeItemHeader(text, category, true, areParametersValid, isEnabled);
+            TreeItemHeader header = new TreeItemHeader(text, category, areParametersValid, isEnabled);
             this.Header = header;
         }
 

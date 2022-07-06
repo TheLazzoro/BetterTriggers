@@ -53,8 +53,8 @@ namespace GUI.Components
             for (int i = 0; i < types.Count; i++)
             {
                 ComboBoxItemType item = new ComboBoxItemType();
-                item.Content = Locale.Translate(types[i].displayname);
-                item.Type = types[i].key;
+                item.Content = Locale.Translate(types[i].DisplayName);
+                item.Type = types[i].Key;
 
                 comboBoxVariableType.Items.Add(item);
 

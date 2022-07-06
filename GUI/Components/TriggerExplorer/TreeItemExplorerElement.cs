@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.EditorData.Enums;
 using GUI.Components.Shared;
 using GUI.Controllers;
 using System;
@@ -21,26 +20,26 @@ namespace GUI.Components.TriggerExplorer
         public IExplorerElement Ielement;
         public IEditor editor;
         private TreeItemHeader treeItemHeader;
-        private Category category;
+        private string categoryName;
 
         public TreeItemExplorerElement(IExplorerElement explorerElement)
         {
             this.Ielement = explorerElement;
 
             if (Ielement is ExplorerElementRoot)
-                category = Category.Map;
+                categoryName = "TC_MAP";
             else if (Ielement is ExplorerElementFolder)
-                category = Category.Folder;
+                categoryName = "TC_DIRECTORY";
             else if (Ielement is ExplorerElementTrigger)
-                category = Category.Trigger;
+                categoryName = "TC_TRIGGER_NEW";
             else if (Ielement is ExplorerElementScript)
-                category = Category.AI;
+                categoryName = "TC_SCRIPT";
             else if (Ielement is ExplorerElementVariable)
-                category = Category.SetVariable;
+                categoryName = "TC_SETVARIABLE";
             else
-                category = Category.Wait;
+                categoryName = "TC_WTF";
 
-            this.treeItemHeader = new TreeItemHeader(explorerElement.GetName(), category, false, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
+            this.treeItemHeader = new TreeItemHeader(explorerElement.GetName(), categoryName, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
             this.Header = treeItemHeader;
             this.KeyDown += TreeItemExplorerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
@@ -76,7 +75,7 @@ namespace GUI.Components.TriggerExplorer
             if (this.Ielement == null)
                 return;
 
-            treeItemHeader.SetIcon(category, Ielement.GetEnabled());
+            treeItemHeader.SetIcon(categoryName, Ielement.GetEnabled());
 
             if (this.tabItem != null)
             {
@@ -149,7 +148,7 @@ namespace GUI.Components.TriggerExplorer
         /// </summary>
         public void OnStateChange()
         {
-            treeItemHeader.SetIcon(category, Ielement.GetEnabled());
+            treeItemHeader.SetIcon(categoryName, Ielement.GetEnabled());
 
             if (this.tabItem != null)
                 tabItem.Header = this.Ielement.GetName() + " *";
@@ -160,7 +159,7 @@ namespace GUI.Components.TriggerExplorer
 
         public void OnSaved()
         {
-            treeItemHeader.SetIcon(category, Ielement.GetEnabled());
+            treeItemHeader.SetIcon(categoryName, Ielement.GetEnabled());
 
             if (this.tabItem != null)
                 tabItem.Header = this.Ielement.GetName();

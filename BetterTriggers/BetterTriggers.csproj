@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\_editor-triggeraction.png" />
+    <None Remove="Resources\Icons\_editor-triggercondition.png" />
+    <None Remove="Resources\Icons\_editor-triggerevent.png" />
+    <None Remove="Resources\Icons\_editor-triggerscript.png" />
+    <None Remove="Resources\Icons\_map.png" />
+    <None Remove="Resources\Icons\_trigger-error.png" />
+    <None Remove="Resources\Icons\_ui-editoricon-triggercategories_element.png" />
+    <None Remove="Resources\Icons\_ui-editoricon-triggercategories_folder.png" />
     <None Remove="Resources\JassHelper\clijasshelper.exe" />
     <None Remove="Resources\JassHelper\jasshelper.conf" />
     <None Remove="Resources\JassHelper\jasshelper.exe" />
@@ -67,6 +75,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Icons\_editor-triggeraction.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\_editor-triggercondition.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\_editor-triggerevent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\_editor-triggerscript.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\_map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\_trigger-error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\_ui-editoricon-triggercategories_element.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\_ui-editoricon-triggercategories_folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\JassHelper\clijasshelper.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

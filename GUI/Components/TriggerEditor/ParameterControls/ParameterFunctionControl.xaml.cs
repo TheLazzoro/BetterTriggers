@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
@@ -27,13 +28,16 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 if (functions[i].returnType != returnType)
                     continue;
 
+                Category category = Category.Get(functions[i].category);
+                string categoryStr = Locale.Translate(category.Name) + " - ";
+
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = functions[i].name;
+                listItem.Content = categoryStr + functions[i].name;
                 listItem.Tag = functions[i];
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
-                    Category = functions[i].category.ToString(),
+                    Category = Locale.Translate(category.Name),
                     Words = new List<string>()
                     {
                         functions[i].name.ToLower(),

@@ -8,12 +8,35 @@ namespace BetterTriggers.Models.EditorData
 {
     public class VariableType
     {
-        public string displayname { get; }
-        public string key { get; }
-        public VariableType(string displayname, string key)
+        private static List<VariableType> variableTypes = new List<VariableType>();
+        
+        public string Key { get; }
+        public bool CanBeGlobal { get; }
+        public bool CanBeCompared { get; }
+        public string DisplayName { get; }
+        public string BaseType { get; }
+
+        public VariableType(string key, bool canBeGlobal, bool canBeCompared, string displayName, string baseType)
         {
-            this.displayname = displayname;
-            this.key = key;
+            this.Key = key;
+            this.CanBeGlobal = canBeGlobal;
+            this.CanBeCompared = canBeCompared;
+            this.DisplayName = displayName;
+            this.BaseType = baseType;
+        }
+
+        public static void Create(string key, bool canBeGlobal, bool canBeCompared, string displayName, string baseType)
+        {
+            if (!canBeGlobal)
+                return;
+
+            VariableType variableType = new VariableType(key, canBeGlobal, canBeCompared, displayName, baseType);
+            variableTypes.Add(variableType);
+        }
+
+        public static List<VariableType> GetAll()
+        {
+            return variableTypes;
         }
     }
 }

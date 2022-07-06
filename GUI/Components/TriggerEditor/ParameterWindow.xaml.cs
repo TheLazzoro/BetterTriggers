@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using GUI.Components.TriggerEditor.ParameterControls;
 using System;
@@ -37,8 +38,18 @@ namespace GUI
             this.Title = returnType;
 
 
-            if (function.identifier == "SetVariable" && parameter == function.parameters[0])
-                returnType = "AnyGlobal";
+            if (function.identifier == "SetVariable")
+            {
+                ControllerVariable controller = new ControllerVariable();
+                VariableRef variableRef = function.parameters[0] as VariableRef;
+                if (variableRef != null)
+                {
+                    if (parameter == function.parameters[0])
+                        returnType = "AnyGlobal";
+                    else if (parameter == function.parameters[1])
+                        returnType = controller.GetById(variableRef.VariableId).Type;
+                }
+            }
 
             this.functionControl = new ParameterFunctionControl(returnType);
             grid.Children.Add(functionControl);

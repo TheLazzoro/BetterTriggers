@@ -1,5 +1,4 @@
-﻿using BetterTriggers.Models.EditorData.Enums;
-using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
@@ -8,12 +7,12 @@ namespace BetterTriggers.Models.Templates
 {
     public class FunctionTemplate : ParameterTemplate
     {
-        public readonly int ParamType = 1; // DO NOT CHANGE
-
         public List<ParameterTemplate> parameters = new List<ParameterTemplate>();
-        public string paramText;
+        public string identifier;
+        public string name;
         public string description;
-        public Category category;
+        public string paramText;
+        public string category;
 
         public FunctionTemplate Clone()
         {
@@ -35,7 +34,7 @@ namespace BetterTriggers.Models.Templates
         {
             TriggerElement te = TriggerElementFactory.Create(identifier);
             List<Parameter> parameters = new List<Parameter>();
-            this.parameters.ForEach(p => parameters.Add(new Parameter() { identifier = p.identifier }));
+            this.parameters.ForEach(p => parameters.Add(new Parameter()));
 
             te.function.identifier = identifier;
             te.function.parameters = parameters;
@@ -46,7 +45,7 @@ namespace BetterTriggers.Models.Templates
         public List<Parameter> ConvertParameters()
         {
             List<Parameter> parameters = new List<Parameter>();
-            this.parameters.ForEach(p => parameters.Add(new Parameter() { identifier = p.identifier }));
+            this.parameters.ForEach(p => parameters.Add(new Parameter()));
             return parameters;
         }
     }

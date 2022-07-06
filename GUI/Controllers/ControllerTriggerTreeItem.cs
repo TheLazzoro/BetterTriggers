@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using GUI.Components.TriggerEditor;
 using System;
 using System.Collections.Generic;
@@ -124,7 +125,7 @@ namespace GUI.Controllers
                     var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
 
                     // This exists in case a variable has been changed
-                    if (variable == null || variable.Type != type)
+                    if (variable == null || (variable.Type != type && type != "AnyGlobal"))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";

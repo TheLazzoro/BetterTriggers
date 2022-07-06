@@ -4,7 +4,8 @@ namespace BetterTriggers.Models.Templates
 {
     public class ConstantTemplate : ParameterTemplate
     {
-        public readonly int ParamType = 2; // DO NOT CHANGE
+        public string identifier;
+        public string name;
         public string codeText;
 
         public ConstantTemplate Clone()

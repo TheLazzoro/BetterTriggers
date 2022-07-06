@@ -299,7 +299,7 @@ namespace BetterTriggers.WorldEdit
                 TriggerElement te = TriggerElementFactory.Create(function.Name);
                 te.isEnabled = function.IsEnabled;
                 List<string> returnTypes = new List<string>();
-                function.Parameters.ForEach(p => returnTypes.Add(BetterTriggers.Containers.TriggerData.GetReturnType(p.Value)));
+                function.Parameters.ForEach(p => returnTypes.Add(BetterTriggers.WorldEdit.TriggerData.GetReturnType(p.Value)));
                 te.function.parameters = CreateParameters(function.Parameters, returnTypes);
 
                 triggerElements.Add(te);
@@ -446,7 +446,7 @@ namespace BetterTriggers.WorldEdit
                     case TriggerFunctionParameterType.Function:
                         Function f = new Function();
                         f.identifier = identifier;
-                        List<string> _returnTypess = BetterTriggers.Containers.TriggerData.GetParameterReturnTypes(f);
+                        List<string> _returnTypess = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(f);
                         f.parameters = CreateParameters(foreignParam.Function.Parameters, _returnTypess);
                         parameter = f;
                         break;

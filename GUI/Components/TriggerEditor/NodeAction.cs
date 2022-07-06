@@ -4,7 +4,6 @@ using System.Text;
 using System.Windows.Controls;
 using GUI.Components.Shared;
 using BetterTriggers.Models.SaveableData;
-using BetterTriggers.Models.EditorData.Enums;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -14,7 +13,7 @@ namespace GUI.Components.TriggerEditor
         
         public NodeAction(string text)
         {
-            TreeItemHeader header = new TreeItemHeader(text, Category.Action, false);
+            TreeItemHeader header = new TreeItemHeader(text, "TC_ACTION");
             this.Header = header;
         }
 

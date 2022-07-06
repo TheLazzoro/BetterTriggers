@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
@@ -57,18 +58,19 @@ namespace GUI.Components.TriggerEditor
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < templates.Count; i++)
             {
-                string category = controllerTriggerData.GetNativeCategory(templates[i].category);
-                if(category != "")
-                    category += " - ";
+                Category category = Category.Get(templates[i].category);
+                string categoryStr = Locale.Translate(category.Name);
+                if(categoryStr != "")
+                    categoryStr += " - ";
                 string name = templates[i].name != "" ? templates[i].name : templates[i].identifier;
-                string content = category + name;
+                string content = categoryStr + name;
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = content;
                 listItem.Tag = templates[i].ToTriggerElement();
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
-                    Category = templates[i].category.ToString(),
+                    Category = Locale.Translate(category.Name),
                     Words = new List<string>()
                     {
                         content.ToLower(),

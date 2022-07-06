@@ -1,5 +1,6 @@
-﻿using BetterTriggers.Controllers;
-using BetterTriggers.Models.EditorData.Enums;
+﻿using BetterTriggers;
+using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,9 +20,9 @@ namespace GUI.Components.Shared
         internal TextBox RenameBox;
         private Rectangle Icon;
         private TextBlock DisplayText;
-        private string category = string.Empty;
+        private string categoryName = string.Empty;
 
-        public TreeItemHeader(string text, Category iconCategory, bool includeCategoryPrefix, bool isValid = true, bool isInitiallyOn = true)
+        public TreeItemHeader(string text, string categoryName, bool isValid = true, bool isInitiallyOn = true)
         {
             this.Orientation = Orientation.Horizontal;
             this.Height = 18;
@@ -37,15 +38,15 @@ namespace GUI.Components.Shared
             RenameBox = new TextBox();
             RenameBox.Margin = new Thickness(5, 0, 0, 0);
 
-            if (includeCategoryPrefix)
+            Category category = Category.Get(categoryName);
+
+            if (category.ShouldDisplay)
             {
                 ControllerTriggerData controllerTriggerData = new ControllerTriggerData();
-                this.category = controllerTriggerData.GetNativeCategory(iconCategory);
-                if (category != "")
-                    category += " - ";
+                this.categoryName = Locale.Translate(Category.Get(categoryName).Name) + " - ";
             }
 
-            SetIcon(iconCategory, isValid);
+            SetIcon(categoryName, isValid);
             SetDisplayText(text);
             SetTextEnabled(isInitiallyOn);
 
@@ -56,12 +57,12 @@ namespace GUI.Components.Shared
         }
 
 
-        public void SetIcon(Category iconCategory, bool isValid)
+        public void SetIcon(string category, bool isValid)
         {
-            BitmapImage img = GetIconImage(iconCategory);
+            BitmapImage img = GetIconImage(category);
 
-            if (!isValid) // red cross over image
-                img = OverlapImage(img, GetIconImage(Category.Error));
+            //if (!isValid) // red cross over image
+            //    img = OverlapImage(img, GetIconImage(Category.Error));
 
             ImageBrush brush = new ImageBrush(img);
             Icon.Fill = brush;
@@ -69,7 +70,7 @@ namespace GUI.Components.Shared
 
         public void SetDisplayText(string text)
         {
-            DisplayText.Text = category + text;
+            DisplayText.Text = categoryName + text;
             RenameBox.Text = text;
         }
 
@@ -179,124 +180,19 @@ namespace GUI.Components.Shared
             return bmImage;
         }
 
-        private static BitmapImage GetIconImage(Category iconCategory)
+        private static BitmapImage GetIconImage(string category)
         {
             BitmapImage image = null;
             string path = string.Empty;
 
-            switch (iconCategory)
-            {
-                case Category.Map:
-                    path += "map.png";
-                    break;
-                case Category.Folder:
-                    path += "ui-editoricon-triggercategories_folder.png";
-                    break;
-                case Category.Trigger:
-                    path += "ui-editoricon-triggercategories_element.png";
-                    break;
-                case Category.Event:
-                    path += "editor-triggerevent.png";
-                    break;
-                case Category.Condition:
-                    path += "editor-triggercondition.png";
-                    break;
-                case Category.LocalVariable:
-                    path += "actions-setvariables.png";
-                    break;
-                case Category.Action:
-                    path += "editor-triggeraction.png";
-                    break;
-                case Category.Ability:
-                    path += "actions-ability.png";
-                    break;
-                case Category.AI:
-                    path += "actions-ai.png";
-                    break;
-                case Category.Animation:
-                    path += "actions-animation.png";
-                    break;
-                case Category.Camera:
-                    path += "actions-camera.png";
-                    break;
-                case Category.Comment:
-                    path += "actions-comment.png";
-                    break;
-                case Category.Destructible:
-                    path += "actions-destructibles.png";
-                    break;
-                case Category.Dialog:
-                    path += "actions-dialog.png";
-                    break;
-                case Category.Environment:
-                    path += "actions-environment.png";
-                    break;
-                case Category.Game:
-                    path += "actions-game.png";
-                    break;
-                case Category.Goldmine:
-                    path += "actions-goldmine.png";
-                    break;
-                case Category.Hero:
-                    path += "actions-hero.png";
-                    break;
-                case Category.Item:
-                    path += "actions-item.png";
-                    break;
-                case Category.Logical:
-                    path += "actions-logical.png";
-                    break;
-                case Category.Melee:
-                    path += "actions-melee.png";
-                    break;
-                case Category.Nothing:
-                    path += "actions-nothing.png";
-                    break;
-                case Category.Player:
-                    path += "actions-player.png";
-                    break;
-                case Category.PlayerGroup:
-                    path += "actions-playergroup.png";
-                    break;
-                case Category.Quest:
-                    path += "actions-quest.png";
-                    break;
-                case Category.Region:
-                    path += "actions-region.png";
-                    break;
-                case Category.SetVariable:
-                    path += "actions-setvariables.png";
-                    break;
-                case Category.Sound:
-                    path += "actions-sound.png";
-                    break;
-                case Category.Timer:
-                    path += "events-time.png";
-                    break;
-                case Category.Unit:
-                    path += "actions-unit.png";
-                    break;
-                case Category.UnitGroup:
-                    path += "actions-unitgroup.png";
-                    break;
-                case Category.UnitSelection:
-                    path += "actions-unitselection.png";
-                    break;
-                case Category.Visibility:
-                    path += "actions-visibility.png";
-                    break;
-                case Category.Wait:
-                    path += "actions-wait.png";
-                    break;
-                case Category.Error:
-                    path += "trigger-error.png";
-                    break;
-                default:
-                    break;
-
-            }
-
-            image = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Resources/Icons/" + path));
+            //image = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Resources/Icons/" + path));
+            image = new BitmapImage();
+            image.BeginInit();
+            image.StreamSource = Category.Get(category).Icon;
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.EndInit();
+            image.Freeze();
+            image.StreamSource.Position = 0;
 
             return image;
         }
