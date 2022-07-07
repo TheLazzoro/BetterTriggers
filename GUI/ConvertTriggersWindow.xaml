@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
+        
         Title="ConvertTriggersWindow" WindowStartupLocation="CenterOwner" Height="225" Width="430" Background="#FF202020" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>

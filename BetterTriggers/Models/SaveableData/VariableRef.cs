@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
-    [JsonConverter(typeof(BaseConverter))]
     public class VariableRef : Parameter
     {
         public readonly int ParamType = 3; // DO NOT CHANGE
@@ -13,11 +12,11 @@ namespace BetterTriggers.Models.SaveableData
         public List<Parameter> arrayIndexValues = new List<Parameter>();
 
 
-        public new VariableRef Clone()
+        public override VariableRef Clone()
         {
             List<Parameter> newArrayIndexValues = new List<Parameter>();
-            newArrayIndexValues.Add(this.arrayIndexValues[0].Clone());
-            newArrayIndexValues.Add(this.arrayIndexValues[1].Clone());
+            newArrayIndexValues.Add(arrayIndexValues[0].Clone());
+            newArrayIndexValues.Add(arrayIndexValues[1].Clone());
 
             string identifier = null;
             if (this.identifier != null)

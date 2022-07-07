@@ -28,9 +28,6 @@ namespace GUI.Components
         public NodeCondition categoryCondition;
         public NodeAction categoryAction;
 
-        TextBlock currentParameterBlock;
-        TextBlock currentDescriptionBlock;
-
         Point _startPoint;
         TreeViewItem dragItem;
         bool _IsDragging = false;
@@ -209,23 +206,17 @@ namespace GUI.Components
         // TODO: There are two 'SelectedItemChanged' functions?
         private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (currentParameterBlock != null && currentParameterBlock.Parent != null) { }
-            grid.Children.Remove(currentParameterBlock); // remove current active parameter text block so the new one can be added.
-            if (currentDescriptionBlock != null && currentDescriptionBlock.Parent != null) { }
-            grid.Children.Remove(currentDescriptionBlock);
-
             var item = treeViewTriggers.SelectedItem as TreeViewTriggerElement;
+            textblockParams.Inlines.Clear();
+            textblockDescription.Text = string.Empty;
             if (item == null)
                 return;
 
-            var textBlockParameters = item.paramTextBlock;
-            var textBlockDescription = item.descriptionTextBlock;
-            // Display appropriate textblock
-            grid.Children.Add(textBlockParameters);
-            grid.Children.Add(textBlockDescription);
-            currentParameterBlock = textBlockParameters;
-            currentDescriptionBlock = textBlockDescription;
-            currentDescriptionBlock.Text = Locale.Translate(item.triggerElement.function.identifier);
+            ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(item);
+            var inlines = controllerTriggerTreeItem.GenerateParamText();
+
+            textblockParams.Inlines.AddRange(inlines);
+            textblockDescription.Text = Locale.Translate(item.triggerElement.function.identifier);
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)

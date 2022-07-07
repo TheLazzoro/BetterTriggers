@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
         Title="Welcome" Height="450" Width="800" Background="#FF202020">
     <Grid>
         <Grid.RowDefinitions>

@@ -71,7 +71,9 @@ namespace GUI.Components.TriggerEditor
                 command.Execute();
 
                 ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(treeViewTriggerElement);
-                controllerTriggerTreeItem.GenerateParamText();
+                var inlines = controllerTriggerTreeItem.GenerateParamText();
+                this.treeViewTriggerElement.GetTriggerControl().textblockParams.Inlines.Clear();
+                this.treeViewTriggerElement.GetTriggerControl().textblockParams.Inlines.AddRange(inlines);
                 treeViewTriggerElement.UpdateTreeItem();
             }
 

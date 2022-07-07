@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI" xmlns:shared="clr-namespace:GUI.Components.Shared"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
         Title="Trigger Element Menu" WindowStartupLocation="CenterOwner" Height="450" Width="800" Background="#FF404040" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>

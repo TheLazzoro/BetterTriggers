@@ -34,6 +34,7 @@ namespace GUI.Components.Shared
 
             DisplayText = new TextBlock();
             DisplayText.Margin = new Thickness(5, 0, 0, 0);
+            DisplayText.FontFamily = new FontFamily("Segoe UI");
 
             RenameBox = new TextBox();
             RenameBox.Margin = new Thickness(5, 0, 0, 0);
@@ -93,9 +94,9 @@ namespace GUI.Components.Shared
         public void SetTextEnabled(bool isEnabled)
         {
             if (isEnabled)
-                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#EEE");
+                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
             else
-                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#AAAAAA");
+                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#888");
         }
 
         public string GetRenameText()

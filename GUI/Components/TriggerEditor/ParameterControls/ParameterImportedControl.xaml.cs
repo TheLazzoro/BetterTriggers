@@ -12,11 +12,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private ListViewItem selectedItem;
 
-        public ParameterImportedControl()
+        public ParameterImportedControl(string returnType)
         {
             InitializeComponent();
 
-            var imports = ControllerImports.GetImportsAll();
+            var imports = ControllerImports.GetImportsByReturnType(returnType);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < imports.Count; i++)

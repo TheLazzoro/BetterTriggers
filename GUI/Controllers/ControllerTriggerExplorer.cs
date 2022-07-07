@@ -72,8 +72,8 @@ namespace GUI.Controllers
                     var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
                     triggerControl.Attach(selectedItem);
                     selectedItem.editor = triggerControl;
-                    if (triggerControl != null)
-                        triggerControl.Refresh();
+                    //if (triggerControl != null)
+                    //    triggerControl.Refresh();
                 }
                 else if (selectedItem.Ielement is ExplorerElementScript)
                 {
@@ -103,8 +103,6 @@ namespace GUI.Controllers
             ControllerProject controllerProject = new ControllerProject();
             var explorerElement = controllerProject.FindExplorerElement(controllerProject.GetProjectRoot(), fullPath);
             int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
-
-
 
             TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);
             explorerElement.Attach(treeItemExplorerElement);

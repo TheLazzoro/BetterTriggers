@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:gui="clr-namespace:GUI"
         UseLayoutRounding="True"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
         Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" WindowStartupLocation="CenterScreen" WindowState="Normal" Closing="Window_Closing" >
     <!--Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" ResizeMode="CanResize" WindowStyle="None" WindowStartupLocation="Manual" WindowState="Normal" AllowsTransparency="True" > -->
     <Window.Resources>

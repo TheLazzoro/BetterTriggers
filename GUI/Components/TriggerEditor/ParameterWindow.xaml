@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         UseLayoutRounding="True"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
         Title="ParameterWindow" WindowStartupLocation="CenterOwner" Height="450" Width="800" Background="#FF404040" KeyDown="Window_KeyDown" >
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>

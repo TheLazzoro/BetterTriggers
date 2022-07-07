@@ -5,6 +5,7 @@ using BetterTriggers.WorldEdit;
 using GUI.Components.TriggerEditor;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -15,28 +16,171 @@ namespace GUI.Controllers
     public class ControllerTriggerTreeItem
     {
         TreeViewTriggerElement treeItem;
-        TextBlock textBlock;
         List<HyperlinkParameter> hyperlinkParameters = new List<HyperlinkParameter>();
         ControllerTrigger controllerTrigger = new ControllerTrigger();
+
+        StringBuilder stringBuilder = new StringBuilder();
 
         public ControllerTriggerTreeItem(TreeViewTriggerElement treeViewTriggerElement)
         {
             this.treeItem = treeViewTriggerElement;
-            this.textBlock = treeViewTriggerElement.paramTextBlock;
         }
 
-        public void GenerateParamText()
+        public string GenerateTreeItemText()
         {
-            textBlock.Inlines.Clear();
+            StringBuilder sb = new StringBuilder();
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(treeItem.triggerElement.function);
+            GenerateTreeItemText(sb, treeItem.triggerElement.function.parameters, returnTypes, treeItem.paramText);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// TODO: Probably fix copy-paste?
+        /// 
+        /// This is copy-pasted from 'RecurseGenerateParamText' and uses strings instead of UI components.
+        /// It is slow to pull text out of 'Inline' UI components, so this serves as an optimized way
+        /// to generate the header text for TreeViewItems when loading in large quantities.
+        /// </summary>
+        private void GenerateTreeItemText(StringBuilder sb, List<Parameter> parameters, List<string> returnTypes, string paramText)
+        {
+            ControllerTriggerData controller = new ControllerTriggerData();
+
+            int paramIndex = 0;
+            for (int i = 0; i < paramText.Length; i++)
+            {
+                if (paramText[i] != '~')
+                {
+                    sb.Append(paramText[i]);
+                    continue;
+                }
+
+                if (sb.Length > 0 && sb[sb.Length - 1] == ',')
+                    sb.Remove(sb.Length - 1, 1); // Removes comma before param
+
+                if (parameters[paramIndex] is Function)
+                {
+                    var function = (Function)parameters[paramIndex];
+                    if (function.parameters.Count > 0) // first bracket gets hyperlinked
+                    {
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
+                        sb.Append("(");
+                        GenerateTreeItemText(sb, function.parameters, _returnTypes, controller.GetParamText(function)); // recurse
+                    }
+                    else // whole displayname gets hyperlinked
+                        sb.Append($"({controller.GetParamDisplayName(function)}");
+
+                    sb.Append(")");
+                }
+                else if (parameters[paramIndex] is Constant)
+                    sb.Append(controller.GetParamDisplayName(parameters[paramIndex]));
+                
+                else if (parameters[paramIndex] is VariableRef)
+                {
+                    var controllerVariable = new ControllerVariable();
+                    var variableRef = (VariableRef)parameters[paramIndex];
+                    var variable = controllerVariable.GetByReference(variableRef);
+                    string varName = string.Empty;
+
+                    var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
+
+                    // This exists in case a variable has been changed
+                    if (variable == null || (variable.Type != type && type != "AnyGlobal"))
+                    {
+                        parameters[paramIndex] = new Parameter();
+                        varName = "null";
+                    }
+                    else
+                        varName = Variables.GetVariableNameById(variable.Id);
+
+                    sb.Append(varName);
+
+                    if (variable != null && variable.IsArray && !variable.IsTwoDimensions)
+                    {
+                        List<string> _returnTypes = new List<string>();
+                        _returnTypes.Add("integer");
+                        GenerateTreeItemText(sb, variableRef.arrayIndexValues, _returnTypes, "[,~Number,]");
+                    }
+                    else if (variable != null && variable.IsArray && variable.IsTwoDimensions)
+                    {
+                        List<string> _returnTypes = new List<string>();
+                        _returnTypes.Add("integer");
+                        _returnTypes.Add("integer");
+                        GenerateTreeItemText(sb, variableRef.arrayIndexValues, _returnTypes, "[,~Number,][,~Number,]");
+                    }
+                }
+                else if (parameters[paramIndex] is TriggerRef)
+                {
+                    var controllerTrig = new ControllerTrigger();
+                    var triggerRef = (TriggerRef)parameters[paramIndex];
+                    var trigger = controllerTrig.GetByReference(triggerRef);
+                    string triggerName = string.Empty;
+
+                    // This exists in case a trigger name has been changed
+                    if (trigger == null)
+                    {
+                        parameters[paramIndex] = new Parameter();
+                        triggerName = "null";
+                    }
+                    else
+                        triggerName = controllerTrig.GetTriggerName(trigger.Id);
+
+                    sb.Append(triggerName);
+                }
+                else if (parameters[paramIndex] is Value)
+                {
+                    // TODO: This will crash if a referenced variable is deleted.
+                    var value = (Value)parameters[paramIndex];
+                    var name = controllerTrigger.GetValueName(value.identifier, returnTypes[paramIndex]);
+
+                    // This exists in case a variable has been changed
+                    if (name == null || name == "")
+                    {
+                        parameters[paramIndex] = new Parameter();
+                        name = "null";
+                    }
+                    sb.Append(name);
+                }
+                else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.
+                {
+                    i++; // avoids the '~' in the name
+                    int startIndex = i; // store current letter index
+                    int length = 0;
+                    bool isParamNameSet = false;
+                    while (!isParamNameSet && i < paramText.Length) // scan parameter display name
+                    {
+                        if (paramText[i] == ',')
+                            isParamNameSet = true;
+                        else
+                        {
+                            length++;
+                            i++;
+                        }
+                    }
+                    string paramName = paramText.Substring(startIndex, length);
+                    sb.Append(paramName);
+                }
+
+                while (i < paramText.Length && paramText[i] != ',') // erases placeholder param name
+                {
+                    i++;
+                }
+                paramIndex++;
+            }
+        }
+
+        public List<Inline> GenerateParamText()
+        {
+            List<Inline> Inlines = new List<Inline>();
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(treeItem.triggerElement.function);
             
-            var inlines = RecurseGenerateParamText(treeItem.triggerElement.function.parameters, returnTypes, treeItem.paramText);
+            var generated = RecurseGenerateParamText(treeItem.triggerElement.function.parameters, returnTypes, treeItem.paramText);
 
             // First and last inline must be a string.
             // Otherwise hyperlinks get cut from the treeitem header (WPF black magic).
-            textBlock.Inlines.Add(new Run(""));
-            textBlock.Inlines.AddRange(inlines);
-            textBlock.Inlines.Add(new Run(""));
+            Inlines.Add(new Run(""));
+            Inlines.AddRange(generated);
+            Inlines.Add(new Run(""));
 
             // Specially handled SetVariable
             if (treeItem.triggerElement is SetVariable)
@@ -62,6 +206,8 @@ namespace GUI.Controllers
                 if (isVariableSetEmpty)
                     topLayerParams[1].Disable();
             }
+
+            return Inlines;
         }
 
         /// <summary>
@@ -83,14 +229,21 @@ namespace GUI.Controllers
             {
                 if (paramText[i] != '~')
                 {
-                    inlines.Add(new Run(paramText[i].ToString())
-                    {
-                        FontFamily = new FontFamily("Verdana")
-                    });
+                    stringBuilder.Append(paramText[i]);
                     continue;
                 }
 
-                RemoveCommaBeforeParamIndicator(inlines);
+                if (stringBuilder.Length > 0 && stringBuilder[stringBuilder.Length - 1] == ',')
+                    stringBuilder.Remove(stringBuilder.Length - 1, 1); // Removes comma before param
+
+                inlines.Add(new Run(stringBuilder.ToString())
+                {
+                    FontFamily = new FontFamily("Verdana")
+                });
+                stringBuilder.Clear();
+
+                
+
                 if (parameters[paramIndex] is Function)
                 {
                     var function = (Function)parameters[paramIndex];
@@ -216,17 +369,6 @@ namespace GUI.Controllers
             hyperlinkParameters.Add(hyperlink);
 
             return hyperlink;
-        }
-
-        private void RemoveCommaBeforeParamIndicator(List<Inline> inlines)
-        {
-            if (inlines.Count > 0 && inlines[inlines.Count - 1] != null) // apparently this is dangerous and crashes if not checked.
-            {
-                // gets the last inserted text range. In this case we check if in fact it's a commma.
-                var textrange = new TextRange(inlines[inlines.Count - 1].ContentStart, inlines[inlines.Count - 1].ContentEnd);
-                if (textrange.Text == ",")
-                    inlines.Remove(inlines[inlines.Count - 1]); // removes the comma before the '~' indicator
-            }
         }
     }
 }

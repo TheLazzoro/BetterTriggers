@@ -76,7 +76,7 @@ namespace GUI
             Grid.SetRow(triggerRefControl, 1);
             Grid.SetColumnSpan(triggerRefControl, 2);
 
-            this.importControl = new ParameterImportedControl();
+            this.importControl = new ParameterImportedControl(returnType);
             grid.Children.Add(importControl);
             Grid.SetRow(importControl, 1);
             Grid.SetColumnSpan(importControl, 2);
@@ -105,7 +105,7 @@ namespace GUI
                 radioBtnVariable.IsChecked = true;
                 parameterControl = variableControl;
             }
-            else if (parameter is Value && returnType != "skymodelstring")
+            else if (parameter is Value && returnType != "skymodelstring" && returnType != "musictheme")
             {
                 radioBtnValue.IsChecked = true;
                 parameterControl = valueControl;
@@ -115,7 +115,7 @@ namespace GUI
                 radioBtnTrigger.IsChecked = true;
                 parameterControl = triggerRefControl;
             }
-            else if (parameter is Value && returnType == "skymodelstring")
+            else if (parameter is Value && (returnType == "skymodelstring" || returnType == "musictheme"))
             {
                 radioBtnImported.IsChecked = true;
                 parameterControl = importControl;
@@ -147,7 +147,7 @@ namespace GUI
 
             if (!valueControl.ValueControlExists())
                 radioButtonList.Items.Remove(radioBtnValue);
-            if (returnType != "modelfile" && returnType != "skymodelstring")
+            if (returnType != "modelfile" && returnType != "skymodelstring" && returnType != "musictheme")
                 radioButtonList.Items.Remove(radioBtnImported);
         }
 

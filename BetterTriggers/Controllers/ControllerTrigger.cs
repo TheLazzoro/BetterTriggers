@@ -335,6 +335,97 @@ namespace BetterTriggers.Controllers
             return invalidCount;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns>A list of every function in every trigger. This also includes inner functions in parameters.</returns>
+        public List<Function> GetFunctionsAll()
+        {
+            var triggers = Triggers.GetAll();
+            List<Function> functions = new List<Function>();
+            triggers.ForEach(trig => functions.AddRange(GetFunctionsFromTrigger(trig)));
+
+            return functions;
+        }
+
+        public List<Function> GetFunctionsFromTrigger(ExplorerElementTrigger explorerElement)
+        {
+            List<Function> list = new List<Function>();
+            list.AddRange(GatherFunctions(explorerElement.trigger.Events));
+            list.AddRange(GatherFunctions(explorerElement.trigger.Conditions));
+            list.AddRange(GatherFunctions(explorerElement.trigger.Actions));
+
+            return list;
+        }
+
+        private List<Function> GatherFunctions(List<TriggerElement> triggerElements)
+        {
+            List<Function> list = new List<Function>();
+            triggerElements.ForEach(t =>
+            {
+                list.Add(t.function);
+
+                if (t is IfThenElse)
+                {
+                    var special = (IfThenElse)t;
+                    list.AddRange(GatherFunctions(special.If));
+                    list.AddRange(GatherFunctions(special.Then));
+                    list.AddRange(GatherFunctions(special.Else));
+                }
+                else if (t is AndMultiple)
+                {
+                    var special = (AndMultiple)t;
+                    list.AddRange(GatherFunctions(special.And));
+                }
+                else if (t is ForForceMultiple)
+                {
+                    var special = (ForForceMultiple)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+                else if (t is ForGroupMultiple)
+                {
+                    var special = (ForGroupMultiple)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+                else if (t is ForLoopAMultiple)
+                {
+                    var special = (ForLoopAMultiple)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+                else if (t is ForLoopBMultiple)
+                {
+                    var special = (ForLoopBMultiple)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+                else if (t is ForLoopVarMultiple)
+                {
+                    var special = (ForLoopVarMultiple)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+                else if (t is OrMultiple)
+                {
+                    var special = (OrMultiple)t;
+                    list.AddRange(GatherFunctions(special.Or));
+                }
+                else if (t is EnumDestructablesInRectAllMultiple)
+                {
+                    var special = (EnumDestructablesInRectAllMultiple)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+                else if (t is EnumDestructiblesInCircleBJMultiple)
+                {
+                    var special = (EnumDestructiblesInCircleBJMultiple)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+                else if (t is EnumItemsInRectBJ)
+                {
+                    var special = (EnumItemsInRectBJ)t;
+                    list.AddRange(GatherFunctions(special.Actions));
+                }
+            });
+
+            return list;
+        }
+
 
         /// <summary>
         /// </summary>

@@ -44,7 +44,7 @@
         <Button x:Name="btnNewLine" Content="New Line" Grid.Row="3" Grid.ColumnSpan="3" Height="22" Click="btnNewLine_Click" ></Button>
 
         <ScrollViewer Grid.ColumnSpan="3" Grid.Row="4" VerticalScrollBarVisibility="Auto">
-            <TextBlock x:Name="textBlockPreview" FontSize="20" TextWrapping="Wrap" Foreground="White" Background="#FF182231"></TextBlock>
+            <TextBlock x:Name="textBlockPreview" TextOptions.TextFormattingMode="Ideal" FontSize="20" TextWrapping="Wrap" Foreground="White" Background="#FF182231"></TextBlock>
         </ScrollViewer>
     </Grid>
 </UserControl>

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
         Title="NewProjectWindow" Height="350" Width="544" Background="#FF303030" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>

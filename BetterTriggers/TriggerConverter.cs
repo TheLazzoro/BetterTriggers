@@ -64,8 +64,8 @@ namespace BetterTriggers.WorldEdit
             {
                 BinaryReader reader = new BinaryReader(s);
                 var customTextTriggers = BinaryReaderExtensions.ReadMapCustomTextTriggers(reader, System.Text.Encoding.UTF8);
-                rootComment = customTextTriggers.GlobalCustomScriptComment.Substring(0, customTextTriggers.GlobalCustomScriptComment.Length - 1); // trim last byte;
-                rootHeader = customTextTriggers.GlobalCustomScriptCode.Code;
+                rootComment = customTextTriggers.GlobalCustomScriptComment;
+                rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Substring(0, customTextTriggers.GlobalCustomScriptCode.Code.Length - 1); // trim last byte
                 customTextTriggers.CustomTextTriggers.ForEach(item =>
                 {
                     if (item.Code != string.Empty)
@@ -298,9 +298,7 @@ namespace BetterTriggers.WorldEdit
             {
                 TriggerElement te = TriggerElementFactory.Create(function.Name);
                 te.isEnabled = function.IsEnabled;
-                List<string> returnTypes = new List<string>();
-                function.Parameters.ForEach(p => returnTypes.Add(BetterTriggers.WorldEdit.TriggerData.GetReturnType(p.Value)));
-                te.function.parameters = CreateParameters(function.Parameters, returnTypes);
+                te.function.parameters = CreateParameters(function.Parameters);
 
                 triggerElements.Add(te);
 
@@ -368,7 +366,7 @@ namespace BetterTriggers.WorldEdit
             });
         }
 
-        private List<Parameter> CreateParameters(List<TriggerFunctionParameter> foreignParameters, List<string> returnTypes)
+        private List<Parameter> CreateParameters(List<TriggerFunctionParameter> foreignParameters)
         {
             List<Parameter> parameters = new List<Parameter>();
             for (int i = 0; i < foreignParameters.Count; i++)
@@ -377,7 +375,6 @@ namespace BetterTriggers.WorldEdit
 
                 Parameter parameter = null;
                 string identifier = foreignParam.Value;
-                string returnType = returnTypes[i];
 
                 // War3Net thingy:
                 // Some functions (boolexpr) have an empty name? Dunno how many more
@@ -387,7 +384,6 @@ namespace BetterTriggers.WorldEdit
                 switch (foreignParam.Type)
                 {
                     case TriggerFunctionParameterType.Preset:
-                        //string returnType = Containers.TriggerData.GetContant(identifier).returnType;
                         parameter = new Constant()
                         {
                             identifier = foreignParam.Value,
@@ -402,29 +398,26 @@ namespace BetterTriggers.WorldEdit
                         }
                         else
                         {
-                            var _returnTypes = new List<string>();
-                            _returnTypes.Add("integer");
-
                             var list = new List<TriggerFunctionParameter>();
                             list.Add(foreignParam.ArrayIndexer);
 
-                            arrayIndex = CreateParameters(list, _returnTypes);
+                            arrayIndex = CreateParameters(list);
                             arrayIndex.Add(new Value() { identifier = "0" });
                         }
 
                         // In our editor regions, cameras, units etc. are considered values, not variables.
                         if (foreignParam.Value.StartsWith("gg_unit_"))
-                            parameter = new Value() { identifier = foreignParam.Value };
+                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_unit_", "") };
                         else if (foreignParam.Value.StartsWith("gg_item_"))
-                            parameter = new Value() { identifier = foreignParam.Value };
+                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_item_", "") };
                         else if (foreignParam.Value.StartsWith("gg_dest_"))
-                            parameter = new Value() { identifier = foreignParam.Value };
+                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_dest_", "") };
                         else if (foreignParam.Value.StartsWith("gg_rct_"))
-                            parameter = new Value() { identifier = foreignParam.Value };
+                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_rct_", "") };
                         else if (foreignParam.Value.StartsWith("gg_cam_"))
-                            parameter = new Value() { identifier = foreignParam.Value };
+                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_cam_", "") };
                         else if (foreignParam.Value.StartsWith("gg_snd_"))
-                            parameter = new Value() { identifier = foreignParam.Value };
+                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_snd_", "") };
 
                         if (parameter != null)
                             break;
@@ -446,14 +439,14 @@ namespace BetterTriggers.WorldEdit
                     case TriggerFunctionParameterType.Function:
                         Function f = new Function();
                         f.identifier = identifier;
-                        List<string> _returnTypess = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(f);
-                        f.parameters = CreateParameters(foreignParam.Function.Parameters, _returnTypess);
+                        f.parameters = CreateParameters(foreignParam.Function.Parameters);
                         parameter = f;
                         break;
                     case TriggerFunctionParameterType.String:
                         parameter = new Value() { identifier = identifier };
                         break;
                     case TriggerFunctionParameterType.Undefined:
+                        parameter = new Parameter() { identifier = identifier };
                         break;
                     default:
                         break;

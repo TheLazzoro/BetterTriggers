@@ -8,7 +8,7 @@ namespace BetterTriggers.Models.SaveableData
     {
         public string identifier; // For convenience, values also use this field.
 
-        public Parameter Clone()
+        public virtual Parameter Clone()
         {
             string identifier = null;
             if (this.identifier != null)

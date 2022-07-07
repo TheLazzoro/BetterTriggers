@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
         Title="Loading" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Height="150" Width="350" Background="#FF202020" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>

@@ -17,30 +17,26 @@ namespace GUI.Components.TriggerEditor
     public class TreeViewTriggerElement : TreeViewItem, ITriggerElementUI
     {
         internal TriggerElement triggerElement;
-        public TextBlock paramTextBlock;
-        public TextBlock descriptionTextBlock;
         internal string paramText;
         protected string category;
         private TriggerControl triggerControl;
 
+        public class ParameterText
+        {
+            public string Text { get; set; }
+            public TextType TextType { get; set; }
+        }
+
+        public enum TextType
+        {
+            Normal,
+            Hyperlink,
+        }
+
+
         public TreeViewTriggerElement(TriggerElement triggerElement)
         {
             this.triggerElement = triggerElement;
-
-            this.paramTextBlock = new TextBlock();
-            this.paramTextBlock.Margin = new Thickness(5, 0, 5, 0);
-            this.paramTextBlock.FontSize = 18;
-            this.paramTextBlock.TextWrapping = TextWrapping.Wrap;
-            this.paramTextBlock.Foreground = (SolidColorBrush)new BrushConverter().ConvertFrom("#EEE");
-            Grid.SetRow(this.paramTextBlock, 3);
-
-            this.descriptionTextBlock = new TextBlock();
-            this.descriptionTextBlock.FontSize = 12;
-            this.descriptionTextBlock.TextWrapping = TextWrapping.Wrap;
-            this.descriptionTextBlock.Margin = new Thickness(5, 0, 5, 5);
-            this.descriptionTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(200, 200, 200));
-            this.descriptionTextBlock.Background = new SolidColorBrush(Color.FromRgb(40, 40, 40));
-            Grid.SetRow(this.descriptionTextBlock, 4);
 
             ControllerTriggerData controller = new ControllerTriggerData();
             this.paramText = controller.GetParamText(triggerElement.function);
@@ -95,7 +91,7 @@ namespace GUI.Components.TriggerEditor
         {
             ControllerTrigger controllerTrigger = new ControllerTrigger();
             ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(this);
-            controllerTriggerTreeItem.GenerateParamText();
+            string text = controllerTriggerTreeItem.GenerateTreeItemText();
 
             List<Parameter> parameters = this.triggerElement.function.parameters;
 
@@ -103,16 +99,6 @@ namespace GUI.Components.TriggerEditor
             if (parameters.Count == 1 && TriggerData.GetParameterReturnTypes(this.triggerElement.function)[0] == "nothing") // hack
                 areParametersValid = true;
             bool isEnabled = triggerElement.isEnabled;
-
-            Inline[] inlines = new Inline[paramTextBlock.Inlines.Count];
-            paramTextBlock.Inlines.CopyTo(inlines, 0);
-            List<TextRange> textRanges = new List<TextRange>();
-            for (int i = 0; i < inlines.Length; i++)
-            {
-                textRanges.Add(new TextRange(inlines[i].ContentStart, inlines[i].ContentEnd));
-            }
-            string text = string.Empty;
-            textRanges.ForEach(element => text += element.Text);
 
             TreeItemHeader header = new TreeItemHeader(text, category, areParametersValid, isEnabled);
             this.Header = header;

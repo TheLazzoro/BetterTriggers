@@ -3,6 +3,7 @@ using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
+using BetterTriggers.Controllers;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
@@ -107,7 +108,7 @@ namespace BetterTriggers.WorldEdit
             Category.Create("TC_DIRECTORY", s, "???", false);
             s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png", FileMode.Open);
             Category.Create("TC_SCRIPT", s, "???", false);
-            
+
 
 
 
@@ -176,31 +177,38 @@ namespace BetterTriggers.WorldEdit
                 if (key.ToLower().StartsWith(string.Concat("_", identifier).ToLower())) // ToLower here because Blizzard typo.
                 {
                     if (key.EndsWith("DisplayName"))
+                    {
                         functionTemplate.name = _event.Value.Replace("\"", "");
+                        ParamDisplayNames.Add(identifier, functionTemplate.name);
+                    }
                     else if (key.EndsWith("Parameters"))
+                    {
                         functionTemplate.paramText = _event.Value.Replace("\"", "");
+                        ParamCodeText.Add(identifier, functionTemplate.paramText);
+                    }
                     else if (key.EndsWith("Category"))
+                    {
                         functionTemplate.category = _event.Value;
+                        FunctionCategories.Add(identifier, functionTemplate.category);
+                    }
 
-                }
-                else
-                {
-                    if (functionTemplate != null)
+                    FunctionTemplate controlValue;
+                    if (!dictionary.TryGetValue(identifier, out controlValue))
                     {
                         dictionary.Add(identifier, functionTemplate);
                         FunctionsAll.Add(identifier, functionTemplate);
-                        ParamDisplayNames.Add(identifier, functionTemplate.name);
-                        ParamCodeText.Add(identifier, functionTemplate.paramText);
-                        FunctionCategories.Add(identifier, functionTemplate.category);
                     }
+                }
+                else
+                {
 
                     string returnType = string.Empty;
                     string[] _params = _event.Value.Split(",");
                     List<ParameterTemplate> parameters = new List<ParameterTemplate>();
 
-                    if (sectionName == "TriggerEvents" || sectionName == "TriggerActions")
+                    if (sectionName == "TriggerEvents")
                     {
-                        returnType = "nothing";
+                        returnType = "event";
 
                         for (int i = 1; i < _params.Length; i++)
                         {
@@ -210,6 +218,15 @@ namespace BetterTriggers.WorldEdit
                     else if (sectionName == "TriggerConditions")
                     {
                         returnType = "boolean";
+
+                        for (int i = 1; i < _params.Length; i++)
+                        {
+                            parameters.Add(new ParameterTemplate() { returnType = _params[i] });
+                        }
+                    }
+                    else if (sectionName == "TriggerActions")
+                    {
+                        returnType = "nothing";
 
                         for (int i = 1; i < _params.Length; i++)
                         {
@@ -244,7 +261,7 @@ namespace BetterTriggers.WorldEdit
 
             FunctionTemplate function;
             FunctionsAll.TryGetValue(identifier, out function);
-            if(function != null)
+            if (function != null)
                 return function.returnType;
 
             ConstantTemplate constant;
@@ -255,6 +272,26 @@ namespace BetterTriggers.WorldEdit
         public static List<string> GetParameterReturnTypes(Function f)
         {
             List<string> list = new List<string>();
+
+            if (f.identifier == "SetVariable")
+            {
+                ControllerVariable controller = new ControllerVariable();
+                VariableRef varRef = f.parameters[0] as VariableRef;
+                if (varRef != null)
+                {
+                    Variable variable = controller.GetByReference(f.parameters[0] as VariableRef);
+                    list.Add(variable.Type);
+                    list.Add(variable.Type);
+                    return list;
+                }
+                else
+                {
+                    list.Add("null");
+                    list.Add("null");
+                    return list;
+                }
+            }
+
             FunctionTemplate functionTemplate;
             FunctionsAll.TryGetValue(f.identifier, out functionTemplate);
             functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
@@ -266,6 +303,7 @@ namespace BetterTriggers.WorldEdit
             string codeText = string.Empty;
             ConstantTemplate constant;
             ConstantTemplates.TryGetValue(identifier, out constant);
+            codeText = constant.codeText;
             if (language == ScriptLanguage.Lua)
             {
                 if (constant.codeText == "!=")

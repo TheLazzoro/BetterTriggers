@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using War3Net.Build.Audio;
 using War3Net.Build.Environment;
 using War3Net.Build.Widget;
 
@@ -73,6 +74,16 @@ namespace BetterTriggers.Controllers
         public List<Camera> GetMapCameras()
         {
             return Cameras.GetAll();
+        }
+
+        public List<Sound> GetMapSounds()
+        {
+            return Sounds.GetSoundsAll();
+        }
+
+        public List<Sound> GetMapMusic()
+        {
+            return Sounds.GetMusicAll();
         }
 
         public List<AssetModel> GetModelData()

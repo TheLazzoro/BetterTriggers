@@ -34,6 +34,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     break;
                 case "StringExt":
                 case "string":
+                case "animationname":
+                case "attachpoint":
+                case "stringnoformat":
+                case "aiscript":
+                case "anyfile":
+                case "preloadfile":
+                case "imagefile":
                     this.valueControl = new ValueControlString(returnType);
                     break;
                 case "unitcode":
@@ -94,7 +101,17 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     values = cameras.Select(c => new Value() { identifier = c.ToString() }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "camerasetup");
                     break;
-                case "modelfile": // TODO
+                case "sound":
+                    var sound = controllerMapData.GetMapSounds();
+                    values = sound.Select(s => new Value() { identifier = s.Name }).ToList();
+                    this.valueControl = new ValueControlGeneric(values, "sound");
+                    break;
+                case "musicfile":
+                    var music = controllerMapData.GetMapMusic();
+                    values = music.Select(m => new Value() { identifier = m.Name }).ToList();
+                    this.valueControl = new ValueControlGeneric(values, "musicfile");
+                    break;
+                case "modelfile": // TODO:
                     this.valueControl = new ValueControlModels();
                     break;
                 case "trigger":

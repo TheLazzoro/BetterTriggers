@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
         Title="OnCloseWindow" WindowStartupLocation="CenterOwner" Height="145" Width="300" Background="#FF202020" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
