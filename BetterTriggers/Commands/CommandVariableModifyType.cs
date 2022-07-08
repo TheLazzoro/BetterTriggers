@@ -13,18 +13,21 @@ namespace BetterTriggers.Commands
         ExplorerElementVariable explorerElement;
         string selectedType;
         string previousType;
-        ControllerTriggerData controllerTriggerData = new ControllerTriggerData();
+        string newInitialValue;
+        string previousInitialValue;
 
         public CommandVariableModifyType(ExplorerElementVariable explorerElement, string selectedType, string previousType)
         {
             this.explorerElement = explorerElement;
             this.selectedType = selectedType;
             this.previousType = previousType;
+            this.previousInitialValue = explorerElement.variable.InitialValue;
+            this.newInitialValue = string.Empty;
         }
 
         public void Execute()
         {
-            explorerElement.variable.InitialValue = controllerTriggerData.GetTypeInitialValue(selectedType);
+            explorerElement.variable.InitialValue = newInitialValue;
             explorerElement.variable.Type = selectedType;
             explorerElement.Notify();
 
@@ -33,14 +36,14 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            explorerElement.variable.InitialValue = controllerTriggerData.GetTypeInitialValue(selectedType);
+            explorerElement.variable.InitialValue = newInitialValue;
             explorerElement.variable.Type = selectedType;
             explorerElement.Notify();
         }
 
         public void Undo()
         {
-            explorerElement.variable.InitialValue = controllerTriggerData.GetTypeInitialValue(previousType);
+            explorerElement.variable.InitialValue = previousInitialValue;
             explorerElement.variable.Type = previousType;
             explorerElement.Notify();
         }

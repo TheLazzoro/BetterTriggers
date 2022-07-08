@@ -142,7 +142,7 @@ namespace BetterTriggers.WorldEdit
 
                 string variableType = values[1];
                 string codeText = values[2].Replace("\"", "").Replace("`", "");
-                string displayText = values[3];
+                string displayText = Locale.Translate(values[3]);
 
                 ConstantTemplate constant = new ConstantTemplate()
                 {

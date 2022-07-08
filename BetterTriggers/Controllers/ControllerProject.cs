@@ -117,12 +117,12 @@ namespace BetterTriggers.Controllers
             map.Info.ScriptLanguage = language;
 
             MapBuilder builder = new MapBuilder(map);
-            builder.AddFiles(mapDir);
+            builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
             var archiveCreateOptions = new MpqArchiveCreateOptions
             {
                 ListFileCreateMode = MpqFileCreateMode.Overwrite,
                 AttributesCreateMode = MpqFileCreateMode.Prune,
-                BlockSize = 3,
+                //BlockSize = 3,
             };
 
             string rootDir = Path.GetDirectoryName(project.Root);

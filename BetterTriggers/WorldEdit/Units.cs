@@ -13,6 +13,7 @@ namespace BetterTriggers.WorldEdit
     {
         internal static List<UnitData> units = new List<UnitData>();
         internal static List<UnitData> items = new List<UnitData>();
+        internal static List<UnitData> startLocations = new List<UnitData>();
 
         internal static List<UnitData> GetAll()
         {
@@ -22,6 +23,11 @@ namespace BetterTriggers.WorldEdit
         internal static List<UnitData> GetMapItemsAll()
         {
             return items;
+        }
+
+        internal static List<UnitData> GetMapStartLocations()
+        {
+            return startLocations;
         }
 
         internal static void Load()
@@ -46,7 +52,10 @@ namespace BetterTriggers.WorldEdit
                 for (int i = 0; i < mapUnits.Units.Count; i++)
                 {
                     if (mapUnits.Units[i].ToString() == "sloc")
+                    {
+                        startLocations.Add(mapUnits.Units[i]);
                         continue;
+                    }
 
                     if (mapUnits.Units[i].IsItem())
                         items.Add(mapUnits.Units[i]);

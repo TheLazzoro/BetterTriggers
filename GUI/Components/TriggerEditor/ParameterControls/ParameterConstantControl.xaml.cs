@@ -44,7 +44,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     continue;
 
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = Locale.Translate(constant.name);
+                listItem.Content = constant.name;
                 listItem.Tag = constant;
                 objects.Add(new Searchable()
                 {

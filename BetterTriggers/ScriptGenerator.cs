@@ -44,7 +44,6 @@ namespace BetterTriggers
         string call = "call";
         string set = "set";
         string _null = "null";
-        string notEquals = "!=";
         string function = "function";
         string fourCCStart = "";
         string fourCCEnd = "";
@@ -70,7 +69,6 @@ namespace BetterTriggers
             call = "";
             set = "";
             _null = "nil";
-            notEquals = "~=";
             function = "";
             fourCCStart = "FourCC(";
             fourCCEnd = ")";
@@ -168,6 +166,8 @@ namespace BetterTriggers
                 Variable variable = variables[i].variable.Clone();
                 if (IsSomethingCode(variable.Type))
                     variable.Type = "integer"; // World Editor conversion stuff.
+                else if (IsBaseTypeString(variable.Type))
+                    variable.Type = "string"; // World Editor conversion stuff.
                 else
                     InitGlobals.Add(variable);
 
@@ -195,6 +195,10 @@ namespace BetterTriggers
             }
 
             // Generated variables
+
+            /*
+             * TODO: questionable
+             * 
             ControllerTrigger controllerTrigger = new ControllerTrigger();
             var functions = controllerTrigger.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
@@ -204,7 +208,7 @@ namespace BetterTriggers
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(function);
                 for (int j = 0; j < parameters.Count; j++)
                 {
-                    if (isMapObject(returnTypes[j]))
+                    if (isMapObject(returnTypes[j]) && parameters[j] is VariableRef)
                     {
                         Parameter value = parameters[j];
 
@@ -217,6 +221,7 @@ namespace BetterTriggers
                     }
                 }
             }
+            */
             script.Append(globals + newline);
 
             // Generated map object globals 
@@ -268,15 +273,20 @@ namespace BetterTriggers
 
 
             // Init global variables
+            ControllerTriggerData controllerTriggerData = new ControllerTriggerData();
             script.Append($"function InitGlobals {functionReturnsNothing}" + newline);
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
+
                 string initialValue = variable.InitialValue;
                 if (variable.Type == "string")
                     initialValue = $"\"{initialValue}\"";
+                
+                if(string.IsNullOrEmpty(initialValue))
+                    initialValue = controllerTriggerData.GetTypeInitialValue(variable.Type);
 
-                if (!variable.IsArray && !string.IsNullOrEmpty(variable.InitialValue))
+                if (!variable.IsArray && !string.IsNullOrEmpty(initialValue))
                     script.Append($"{set} udg_" + variable.Name + "=" + initialValue + newline);
                 else if (variable.IsArray && !variable.IsTwoDimensions && !string.IsNullOrEmpty(initialValue))
                 {
@@ -338,6 +348,19 @@ namespace BetterTriggers
                 returnType == "doodadcode" ||
                 returnType == "itemcode" ||
                 returnType == "techcode"
+            )
+                return true;
+
+            return false;
+        }
+
+        private bool IsBaseTypeString(string returnType)
+        {
+            if (returnType == "aiscript" ||
+                returnType == "modelfile" ||
+                returnType == "anyfile" ||
+                returnType == "preloadfile" ||
+                returnType == "imagefile"
             )
                 return true;
 
@@ -973,7 +996,7 @@ end
 
             script.Append($"function InitCustomPlayerSlots {functionReturnsNothing}{newline}");
 
-            string[] playerType = new string[] { "MAP_CONTROL_USER", "MAP_CONTROL_COMPUTER", "MAP_CONTROL_NEUTRAL", "MAP_CONTROL_RESCUABLE" };
+            string[] playerType = new string[] { "MAP_CONTROL_NONE", "MAP_CONTROL_USER", "MAP_CONTROL_COMPUTER", "MAP_CONTROL_NEUTRAL", "MAP_CONTROL_RESCUABLE" };
             string[] races = new string[] { "RACE_PREF_RANDOM", "RACE_PREF_HUMAN", "RACE_PREF_ORC", "RACE_PREF_UNDEAD", "RACE_PREF_NIGHTELF" };
 
             int index = 0;
@@ -987,7 +1010,8 @@ end
 
                 script.Append($"\t{call} SetPlayerColor({player} ConvertPlayerColor({index.ToString()})){newline}");
                 script.Append($"\t{call} SetPlayerRacePreference({player} {races[(int)p.Race]} ){newline}");
-                script.Append($"\t{call} SetPlayerRaceSelectable({player} true){newline}");
+                string raceIsSelectable = p.Flags.HasFlag(PlayerFlags.RaceSelectable) ? "true" : "false";
+                script.Append($"\t{call} SetPlayerRaceSelectable({player} {raceIsSelectable}){newline}");
                 script.Append($"\t{call} SetPlayerController({player} {playerType[(int)p.Controller]} ){newline}");
 
                 if (p.Controller == PlayerController.Rescuable)
@@ -1022,11 +1046,30 @@ end
             var forces = Info.MapInfo.Forces;
             foreach (var f in forces)
             {
+                List<PlayerData> forcePlayers = new List<PlayerData>();
+                for (int p = 0; p < 32; p++)
+                {
+                    if (f.Players[p] == true)
+                    {
+                        int i = 0;
+                        while (Info.MapInfo.Players.Count > i)
+                        {
+                            if (Info.MapInfo.Players[i].Id == p)
+                            {
+                                forcePlayers.Add(Info.MapInfo.Players[i]);
+                                break;
+                            }
+
+                            i++;
+                        }
+                    }
+                }
+
                 script.Append($"{newline}");
                 script.Append($"\t{comment} Force: {f.Name}{newline}");
 
                 string post_state = string.Empty;
-                foreach (var p in Info.MapInfo.Players)
+                foreach (var p in forcePlayers)
                 {
                     // something about player masks here? (HiveWE)
                     script.Append($"\t{call} SetPlayerTeam(Player({p.Id}), {current_force}){newline}");
@@ -1036,7 +1079,7 @@ end
                         script.Append($"\t{call} SetPlayerState(Player({p.Id}), PLAYER_STATE_ALLIED_VICTORY, 1){newline}");
                     }
 
-                    foreach (var k in Info.MapInfo.Players)
+                    foreach (var k in forcePlayers)
                     {
                         // something about player masks here? (HiveWE)
                         if (p.Id != k.Id)
@@ -1145,6 +1188,8 @@ end
 
             script.Append($"\t{call} SetDayNightModels(\"" + terrain_lights.Replace(@"\", @"\\") + "\", \"" + unit_lights.Replace(@"\", @"\\") + $"\"){newline}");
 
+
+            script.Append($"\t{call} SetTerrainFogEx({(int)Info.MapInfo.FogStyle}, {Info.MapInfo.FogStartZ.ToString(enUS)}, {Info.MapInfo.FogEndZ.ToString(enUS)}, {Info.MapInfo.FogDensity.ToString(enUS)}, {Info.MapInfo.FogColor.R.ToString(enUS)}, {Info.MapInfo.FogColor.G.ToString(enUS)}, {Info.MapInfo.FogColor.B.ToString(enUS)}){newline}");
             string sound_environment = Info.MapInfo.SoundEnvironment; // TODO: Not working
             script.Append($"\t{call} NewSoundEnvironment(\"" + sound_environment + $"\"){newline}");
 
@@ -1190,11 +1235,11 @@ end
 
             script.Append($"{newline}");
 
-            var units = Units.GetAll();
+            var units = Units.GetMapStartLocations();
             foreach (var u in units)
             {
-                if (u.ToString() == "sloc")
-                    script.Append($"\t{call} DefineStartLocation({u.OwnerId}, {u.Position.X * 128f + Info.MapInfo.PlayableMapAreaWidth}, {u.Position.Y * 128f + Info.MapInfo.PlayableMapAreaHeight}){newline}");
+                //script.Append($"\t{call} DefineStartLocation({u.OwnerId}, {u.Position.X * 128f + Info.MapInfo.PlayableMapAreaWidth}, {u.Position.Y * 128f + Info.MapInfo.PlayableMapAreaHeight}){newline}");
+                script.Append($"\t{call} DefineStartLocation({u.OwnerId}, {u.Position.X}, {u.Position.Y}){newline}");
             }
 
             script.Append($"{newline}");
@@ -1397,7 +1442,7 @@ end
                     }
                 }
                 script.Append($"\t{set} {loopIndex}={loopIndex}+1{newline}");
-                script.Append($"endloop");
+                script.Append($"{endloop}");
                 return script.ToString();
             }
 
@@ -1415,7 +1460,7 @@ end
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                 }
                 script.Append($"{set} {variable} = {variable} + 1{newline}");
-                script.Append($"endloop{newline}");
+                script.Append($"{endloop}{newline}");
                 return script.ToString();
             }
 
@@ -1642,7 +1687,7 @@ end
                 script.Append($"loop{newline}");
                 script.Append($"exitwhen({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}{newline})");
                 script.Append($"{call} TriggerSleepAction(RMaxBJ(bj_WAIT_FOR_COND_MIN_INTERVAL, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)})){newline})");
-                script.Append("endloop");
+                script.Append("{endloop}");
                 return script.ToString();
             }
 
@@ -1651,7 +1696,7 @@ end
                 return $"return {newline}";
             }
 
-            else if (f.identifier.Length >= 15 && f.identifier.Substring(0, 15) == "OperatorCompare")
+            else if (f.identifier.StartsWith("OperatorCompare"))
             {
                 return $"{ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}";
             }
@@ -1678,7 +1723,7 @@ end
                 script.Append($"\texitwhen {loopIndex} > {loopIndexEnd}{newline}");
                 script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[2], pre_actions, triggerName)} {newline}");
                 script.Append($"\t{set} {loopIndex}={loopIndex}+1{newline}");
-                script.Append($"endloop {newline}");
+                script.Append($"{endloop} {newline}");
 
                 return script.ToString();
             }
@@ -1693,7 +1738,7 @@ end
                 script.Append($"exitwhen udg_{variable} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{newline}");
                 script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[3], pre_actions, triggerName)} {newline}");
                 script.Append($"{set} udg_{variable} = udg_{variable} + 1{newline}");
-                script.Append($"endloop{newline}");
+                script.Append($"{endloop}{newline}");
 
                 return script.ToString();
             }
@@ -1733,7 +1778,7 @@ end
 
             else if (TriggerData.GetReturnType(f.identifier) == "boolexpr")
             {
-                return $"{ConvertParametersToJass(f, returnTypes[0], pre_actions, true)}"; // TODO: questionable null return type.
+                return $"{ConvertParametersToJass(f, TriggerData.GetReturnType(f.identifier), pre_actions, true)}";
             }
 
             else if (f.identifier == "CommentString")
@@ -1746,7 +1791,7 @@ end
             // --- REGULAR CALLS --- //
             // --------------------- //
 
-            script.Append($"{call} {ConvertParametersToJass(f, null, pre_actions)}"); // TODO: questionable null return type.
+            script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.identifier), pre_actions)}");
 
             return script.ToString();
         }
@@ -1761,8 +1806,8 @@ end
             {
                 Function f = (Function)parameter;
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
-                
-                if(TriggerData.GetReturnType(f.identifier) == "event")
+
+                if (returnType == "event")
                     returnTypes.Insert(0, "trigger");
 
 
@@ -1770,12 +1815,19 @@ end
                 // --- SPECIAL CALLS --- //
                 // --------------------- //
 
+
+
                 if (f.identifier == "OperatorInt" || f.identifier == "OperatorReal")
                 {
-                    return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], returnTypes[1], pre_actions, boolexprIsOn)})";
+                    return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions, boolexprIsOn)})";
                 }
 
-                else if (TriggerData.GetReturnType(f.identifier) == "boolexpr" && !boolexprIsOn)
+                else if (f.identifier == "OperatorString")
+                {
+                    return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} + {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)})";
+                }
+
+                else if (returnType == "boolexpr" && !boolexprIsOn)
                 {
                     nameNumber++;
                     string functionName = "BoolExpr_" + nameNumber;
@@ -1827,12 +1879,16 @@ end
             else if (parameter is Constant)
             {
                 Constant c = (Constant)parameter;
-                if (TriggerData.GetReturnType(c.identifier) == "unitcommonorderEx" ||
-                TriggerData.GetReturnType(c.identifier) == "skymodelstring" ||
-                TriggerData.GetReturnType(c.identifier) == "unitorderptarg" ||
-                TriggerData.GetReturnType(c.identifier) == "unitorderutarg" ||
-                TriggerData.GetReturnType(c.identifier) == "unitordernotarg" ||
-                TriggerData.GetReturnType(c.identifier) == "unitorderitarg"
+                if (returnType == "unitcommonorderEx" ||
+                returnType == "unitorderEx" ||
+                returnType == "skymodelstring" ||
+                returnType == "unitorderptarg" ||
+                returnType == "unitorderutarg" ||
+                returnType == "unitorderdtarg" ||
+                returnType == "unitordernotarg" ||
+                returnType == "unitorderitarg" ||
+                returnType == "ambientthemeday" ||
+                returnType == "ambientthemenight"
                 )
                     output += "\"" + TriggerData.GetConstantCodeText(c.identifier, language) + "\"";
                 else
@@ -1845,7 +1901,7 @@ end
                 ControllerVariable controller = new ControllerVariable();
                 Variable variable = controller.GetByReference(v);
 
-                bool isVarAsString_Real = TriggerData.GetReturnType(v.identifier) == "VarAsString_Real";
+                bool isVarAsString_Real = returnType == "VarAsString_Real";
                 if (isVarAsString_Real)
                     output += "\"";
 
@@ -1881,6 +1937,8 @@ end
                     returnType == "skymodelstring" ||
                     returnType == "musictheme" ||
                     returnType == "animationname" ||
+                    returnType == "attachpoint" ||
+                    returnType == "stringnoformat" ||
                     returnType == "aiscript" ||
                     returnType == "modelfile" ||
                     returnType == "anyfile" ||
@@ -1892,6 +1950,7 @@ end
                     returnType == "unitcode" ||
                     returnType == "buffcode" ||
                     returnType == "abilcode" ||
+                    returnType == "heroskillcode" ||
                     returnType == "destructablecode" ||
                     returnType == "techcode" ||
                     returnType == "itemcode"
@@ -1907,6 +1966,8 @@ end
                     output += $"gg_rct_{v.identifier.Replace(" ", "_")}";
                 else if (returnType == "camerasetup")
                     output += $"gg_cam_{v.identifier.Replace(" ", "_")}";
+                else if (returnType == "sound")
+                    output += $"gg_snd_{v.identifier.Replace(" ", "_")}";
                 else
                     output += v.identifier;
             }

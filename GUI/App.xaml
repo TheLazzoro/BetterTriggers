@@ -18,7 +18,7 @@
             <SolidColorBrush x:Key="NormalBorderBrush" Color="#404040" />
             <SolidColorBrush x:Key="HorizontalNormalBrush" Color="#404040" />
             <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#404040" />
-            <SolidColorBrush x:Key="ScrollbarBackground" Color="#151515" />
+            <SolidColorBrush x:Key="ScrollbarBackground" Color="#191919" />
             <LinearGradientBrush x:Key="ListBoxBackgroundBrush"
             StartPoint="0,0" EndPoint="1,0.001">
                 <GradientBrush.GradientStops>

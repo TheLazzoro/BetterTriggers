@@ -47,9 +47,10 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     this.valueControl = new ValueControlUnitTypes();
                     break;
                 case "abilcode":
+                case "heroskillcode":
                     var abilities = controllerMapData.GetAbilitiesAll();
                     values = abilities.Select(a => new Value() { identifier = a.AbilCode }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "abilcode");
+                    this.valueControl = new ValueControlGeneric(values, returnType);
                     break;
                 case "buffcode":
                     var buffs = controllerMapData.GetBuffsAll();
