@@ -21,6 +21,7 @@ namespace BetterTriggers.WorldEdit
         private MapTriggers triggers;
         private MapInfo mapInfo;
         private ScriptLanguage language;
+        private Dictionary<uint, string> triggerStrings = new Dictionary<uint, string>(); // [wts key, trigger string]
 
         private string rootComment = string.Empty;
         private string rootHeader = string.Empty;
@@ -47,6 +48,7 @@ namespace BetterTriggers.WorldEdit
             string pathTriggers = "war3map.wtg";
             string pathCustomText = "war3map.wct";
             string pathInfo = "war3map.w3i";
+            string pathTriggerStrings = "war3map.wts";
             if (!File.Exists(Path.Combine(mapPath, pathTriggers)))
                 return;
 
@@ -77,6 +79,12 @@ namespace BetterTriggers.WorldEdit
                 BinaryReader reader = new BinaryReader(s);
                 mapInfo = BinaryReaderExtensions.ReadMapInfo(reader);
                 language = mapInfo.ScriptLanguage;
+            }
+            using (Stream s = new FileStream(Path.Combine(mapPath, pathTriggerStrings), FileMode.Open, FileAccess.Read))
+            {
+                StreamReader sr = new StreamReader(s);
+                var wts = StreamReaderExtensions.ReadMapTriggerStrings(sr);
+                wts.Strings.ForEach(trigStr => triggerStrings.Add(trigStr.Key, trigStr.Value));
             }
         }
 
@@ -443,6 +451,12 @@ namespace BetterTriggers.WorldEdit
                         parameter = f;
                         break;
                     case TriggerFunctionParameterType.String:
+                        if(identifier.StartsWith("TRIGSTR"))
+                        {
+                            string[] split = identifier.Split("_");
+                            string key = split[1];
+                            triggerStrings.TryGetValue(uint.Parse(key), out identifier);
+                        }
                         parameter = new Value() { identifier = identifier };
                         break;
                     case TriggerFunctionParameterType.Undefined:

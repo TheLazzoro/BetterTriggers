@@ -15,6 +15,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            if (returnType == "VarAsString_Real")
+                returnType = "real";
+
             ControllerVariable controllerVariable = new ControllerVariable();
             List<VariableRef> variables = controllerVariable.GetVariableRefs(returnType);
             List<Searchable> objects = new List<Searchable>();

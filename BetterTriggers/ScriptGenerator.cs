@@ -282,8 +282,8 @@ namespace BetterTriggers
                 string initialValue = variable.InitialValue;
                 if (variable.Type == "string")
                     initialValue = $"\"{initialValue}\"";
-                
-                if(string.IsNullOrEmpty(initialValue))
+
+                if (string.IsNullOrEmpty(initialValue))
                     initialValue = controllerTriggerData.GetTypeInitialValue(variable.Type);
 
                 if (!variable.IsArray && !string.IsNullOrEmpty(initialValue))
@@ -1178,8 +1178,6 @@ end
 
             string terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(Info.MapInfo.LightEnvironment);
             string unit_lights = LightEnvironmentProvider.GetUnitLightEnvironmentModel(Info.MapInfo.LightEnvironment);
-            //string terrain_lights = Info.MapInfo.LightEnvironment.ToString(); // TODO:
-            //string unit_lights = Info.MapInfo.LightEnvironment.ToString();
             if (terrain_lights == "")
                 terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(War3Net.Build.Common.Tileset.LordaeronSummer);
             if (unit_lights == "")
@@ -1189,14 +1187,93 @@ end
             script.Append($"\t{call} SetDayNightModels(\"" + terrain_lights.Replace(@"\", @"\\") + "\", \"" + unit_lights.Replace(@"\", @"\\") + $"\"){newline}");
 
 
-            script.Append($"\t{call} SetTerrainFogEx({(int)Info.MapInfo.FogStyle}, {Info.MapInfo.FogStartZ.ToString(enUS)}, {Info.MapInfo.FogEndZ.ToString(enUS)}, {Info.MapInfo.FogDensity.ToString(enUS)}, {Info.MapInfo.FogColor.R.ToString(enUS)}, {Info.MapInfo.FogColor.G.ToString(enUS)}, {Info.MapInfo.FogColor.B.ToString(enUS)}){newline}");
-            string sound_environment = Info.MapInfo.SoundEnvironment; // TODO: Not working
+            script.Append($"\t{call} SetTerrainFogEx({(int)Info.MapInfo.FogStyle}, {Info.MapInfo.FogStartZ.ToString(enUS)}, {Info.MapInfo.FogEndZ.ToString(enUS)}, {Info.MapInfo.FogDensity.ToString(enUS)}, {((float)Info.MapInfo.FogColor.R / 256).ToString(enUS)}, {((float)Info.MapInfo.FogColor.G / 256).ToString(enUS)}, {((float)Info.MapInfo.FogColor.B / 256).ToString(enUS)}){newline}");
+            string sound_environment = Info.MapInfo.SoundEnvironment;
             script.Append($"\t{call} NewSoundEnvironment(\"" + sound_environment + $"\"){newline}");
 
-            string ambient_day = "LordaeronSummerDay"; // TODO: Hardcoded
-            script.Append($"\t{call} SetAmbientDaySound(\"" + ambient_day + $"\"){newline}");
 
-            string ambient_night = "LordaeronSummerNight"; // TODO: Hardcoded
+            War3Net.Build.Common.Tileset tileset = Info.MapInfo.Tileset;
+            string ambient_day = "LordaeronSummerDay";
+            string ambient_night = "LordaeronSummerNight";
+            switch (tileset)
+            {
+                case War3Net.Build.Common.Tileset.Ashenvale:
+                    ambient_day = "AshenvaleDay";
+                    ambient_night = "AshenvaleNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Barrens:
+                    ambient_day = "BarrensDay";
+                    ambient_night = "BarrensNight";
+                    break;
+                case War3Net.Build.Common.Tileset.BlackCitadel:
+                    ambient_day = "BlackCitadelDay";
+                    ambient_night = "BlackCitadelNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Cityscape:
+                    ambient_day = "CityScapeDay";
+                    ambient_night = "CityScapeNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Dalaran:
+                    ambient_day = "DalaranDay";
+                    ambient_night = "DalaranNight";
+                    break;
+                case War3Net.Build.Common.Tileset.DalaranRuins:
+                    ambient_day = "DalaranRuinsDay";
+                    ambient_night = "DalaranRuinsNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Dungeon:
+                    ambient_day = "DungeonDay";
+                    ambient_night = "DungeonNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Felwood:
+                    ambient_day = "FelwoodDay";
+                    ambient_night = "FelwoodNight";
+                    break;
+                case War3Net.Build.Common.Tileset.IcecrownGlacier:
+                    ambient_day = "IceCrownDay";
+                    ambient_night = "IceCrownNight";
+                    break;
+                case War3Net.Build.Common.Tileset.LordaeronFall:
+                    ambient_day = "LordaeronFallDay";
+                    ambient_night = "LordaeronFallNight";
+                    break;
+                case War3Net.Build.Common.Tileset.LordaeronSummer:
+                    ambient_day = "LordaeronSummerDay";
+                    ambient_night = "LordaeronSummerNight";
+                    break;
+                case War3Net.Build.Common.Tileset.LordaeronWinter:
+                    ambient_day = "LordaeronWinterDay";
+                    ambient_night = "LordaeronWinterNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Northrend:
+                    ambient_day = "NorthrendDay";
+                    ambient_night = "NorthrendNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Outland:
+                    ambient_day = "BlackCitadelDay";
+                    ambient_night = "BlackCitadelNight";
+                    break;
+                case War3Net.Build.Common.Tileset.SunkenRuins:
+                    ambient_day = "SunkenRuinsDay";
+                    ambient_night = "SunkenRuinsNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Underground:
+                    ambient_day = "DungeonCaveDay";
+                    ambient_night = "DungeonCaveNight";
+                    break;
+                case War3Net.Build.Common.Tileset.Village:
+                    ambient_day = "VillageDay";
+                    ambient_night = "VillageNight";
+                    break;
+                case War3Net.Build.Common.Tileset.VillageFall:
+                    ambient_day = "VillageFallDay";
+                    ambient_night = "VillageFallNight";
+                    break;
+                default:
+                    break;
+            }
+
+            script.Append($"\t{call} SetAmbientDaySound(\"" + ambient_day + $"\"){newline}");
             script.Append($"\t{call} SetAmbientNightSound(\"" + ambient_night + $"\"){newline}");
 
             script.Append($"\t{call} SetMapMusic(\"Music\", true, 0){newline}");
@@ -1879,7 +1956,7 @@ end
             else if (parameter is Constant)
             {
                 Constant c = (Constant)parameter;
-                if (returnType == "unitcommonorderEx" ||
+                if (returnType == "unitcommonorderEx" || // TODO: do trigger Non-variable type stuff instead of this hack.
                 returnType == "unitorderEx" ||
                 returnType == "skymodelstring" ||
                 returnType == "unitorderptarg" ||
@@ -1909,7 +1986,7 @@ end
 
                 if (variable.IsArray)
                 {
-                    output += $"[{ConvertParametersToJass(v.arrayIndexValues[0], "integer", pre_actions, boolexprIsOn)}]"; // TODO: should we not go deeper into the parameters?
+                    output += $"[{ConvertParametersToJass(v.arrayIndexValues[0], "integer", pre_actions, boolexprIsOn)}]";
                     if (variable.IsTwoDimensions)
                         output += $"[{ConvertParametersToJass(v.arrayIndexValues[1], "integer", pre_actions, boolexprIsOn)}]";
                 }
@@ -1945,7 +2022,7 @@ end
                     returnType == "preloadfile" ||
                     returnType == "imagefile"
                 )
-                    output += "\"" + v.identifier.Replace(@"\", @"\\") + "\"";
+                    output += "\"" + v.identifier.Replace(@"\", @"\\").Replace("\"", "\\\"") + "\"";
                 else if (
                     returnType == "unitcode" ||
                     returnType == "buffcode" ||

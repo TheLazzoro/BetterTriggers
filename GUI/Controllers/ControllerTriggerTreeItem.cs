@@ -85,7 +85,7 @@ namespace GUI.Controllers
                     var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
 
                     // This exists in case a variable has been changed
-                    if (variable == null || (variable.Type != type && type != "AnyGlobal"))
+                    if (variable == null || (variable.Type != type && type != "AnyGlobal" && type != "VarAsString_Real"))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";
@@ -278,7 +278,7 @@ namespace GUI.Controllers
                     var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
 
                     // This exists in case a variable has been changed
-                    if (variable == null || (variable.Type != type && type != "AnyGlobal"))
+                    if (variable == null || (variable.Type != type && type != "AnyGlobal" && type != "VarAsString_Real"))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";

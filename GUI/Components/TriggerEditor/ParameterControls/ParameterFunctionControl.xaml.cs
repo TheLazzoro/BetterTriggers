@@ -29,7 +29,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     continue;
 
                 Category category = Category.Get(functions[i].category);
-                string categoryStr = Locale.Translate(category.Name) + " - ";
+                string categoryStr = Locale.Translate(category.Name) ;
+                if (categoryStr == "Nothing")
+                    categoryStr = "";
+                else
+                    categoryStr += " - ";
 
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = categoryStr + functions[i].name;
