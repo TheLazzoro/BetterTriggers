@@ -11,6 +11,7 @@ namespace GUI
         public DialogBox(string caption, string message)
         {
             InitializeComponent();
+            Owner = MainWindow.GetMainWindow();
 
             this.Title = caption;
             textBlockMessage.Text = message;

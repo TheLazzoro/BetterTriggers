@@ -6,6 +6,9 @@ namespace BetterTriggers.Models.SaveableData
     {
         public int Id;
         public string Comment;
+        public bool IsScript;
+        public bool RunOnMapInit;
+        public string Script;
         public List<TriggerElement> Events = new List<TriggerElement>();
         public List<TriggerElement> Conditions = new List<TriggerElement>();
         public List<TriggerElement> Actions = new List<TriggerElement>();

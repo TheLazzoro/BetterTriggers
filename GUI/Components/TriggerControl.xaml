@@ -83,8 +83,26 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" Margin="5,5,0,0" Click="checkBoxIsEnabled_Click" />
-        <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="White" Margin="100,5,0,0" Click="checkBoxIsInitiallyOn_Click"/>
+
+        <ItemsControl x:Name="checkBoxList" Grid.ColumnSpan="2" Grid.Column="0" Margin="0,5,0,0" VerticalAlignment="Top" BorderThickness="0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding}" Margin="0,0,5,5" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            
+            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
+            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="White" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
+            <CheckBox x:Name="checkBoxIsCustomScript" Content="Custom Script" IsChecked="false" Foreground="White" Margin="10,0,0,0" Click="checkBoxIsCustomScript_Click"/>
+            <CheckBox x:Name="checkBoxRunOnMapInit" Content="Run on Map Initialization" Foreground="White" Margin="10,0,0,0" Click="checkBoxRunOnMapInit_Click"/>
+
+        </ItemsControl>
+
         <Label Content="Trigger Comment:" VerticalAlignment="Top" Foreground="White" Margin="0,24,0,0"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">

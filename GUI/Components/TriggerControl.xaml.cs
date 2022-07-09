@@ -3,6 +3,7 @@ using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
 using GUI.Components.TriggerExplorer;
@@ -22,6 +23,7 @@ namespace GUI.Components
 {
     public partial class TriggerControl : UserControl, IEditor
     {
+        public TextEditor TextEditor;
         public ExplorerElementTrigger explorerElementTrigger; // needed to get file references to variables in TriggerElements
 
         public NodeEvent categoryEvent;
@@ -48,9 +50,15 @@ namespace GUI.Components
         public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
         {
             InitializeComponent();
+
+            TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
+            TextEditor.avalonEditor.TextChanged += delegate { explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text; };
+
             checkBoxIsEnabled.IsChecked = explorerElementTrigger.GetEnabled();
             checkBoxIsInitiallyOn.IsChecked = explorerElementTrigger.GetInitiallyOn();
-
+            checkBoxIsCustomScript.IsChecked = explorerElementTrigger.trigger.IsScript;
+            checkBoxRunOnMapInit.IsChecked = explorerElementTrigger.trigger.RunOnMapInit;
+            ShowTextEditor(explorerElementTrigger.trigger.IsScript);
 
             this.explorerElementTrigger = explorerElementTrigger;
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
@@ -546,6 +554,72 @@ namespace GUI.Components
             OnStateChange();
         }
 
+        private void checkBoxRunOnMapInit_Click(object sender, RoutedEventArgs e)
+        {
+            explorerElementTrigger.trigger.RunOnMapInit = (bool)checkBoxRunOnMapInit.IsChecked;
+        }
+
+        private void checkBoxIsCustomScript_Click(object sender, RoutedEventArgs e)
+        {
+            bool isScript = (bool)checkBoxIsCustomScript.IsChecked;
+            if(!isScript)
+            {
+                DialogBox dialog = new DialogBox("Confirmation", "All changes made in the custom script will be lost when you switch. This cannot be undone.\n\nDo you wish to continue?");
+                dialog.ShowDialog();
+                if(!dialog.OK)
+                {
+                    explorerElementTrigger.trigger.Script = "";
+                    checkBoxIsCustomScript.IsChecked = true;
+                    e.Handled = true;
+                    return;
+                }
+            }
+
+            explorerElementTrigger.trigger.IsScript = isScript;
+            ShowTextEditor(isScript);
+        }
+
+        private void ShowTextEditor(bool doShow)
+        {
+            if(doShow)
+            {
+                if (!grid.Children.Contains(TextEditor))
+                    grid.Children.Add(TextEditor);
+                Grid.SetRow(TextEditor, 2);
+                Grid.SetRowSpan(TextEditor, 3);
+                checkBoxList.Items.Remove(checkBoxIsInitiallyOn);
+                checkBoxList.Items.Remove(checkBoxRunOnMapInit);
+                checkBoxList.Items.Add(checkBoxRunOnMapInit);
+
+                ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
+                string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
+                TextEditor.avalonEditor.Text = script;
+                explorerElementTrigger.trigger.Script = script;
+
+                explorerElementTrigger.trigger.RunOnMapInit = false;
+                for (int i = 0; i < explorerElementTrigger.trigger.Events.Count; i++)
+                {
+                    var _event = explorerElementTrigger.trigger.Events[i];
+                    if(_event.function.identifier == "MapInitializationEvent")
+                    {
+                        explorerElementTrigger.trigger.RunOnMapInit = true;
+                        checkBoxRunOnMapInit.IsChecked = true;
+                        break;
+                    }
+                }
+            } else
+            {
+                if(grid.Children.Contains(TextEditor))
+                    grid.Children.Remove(TextEditor);
+
+                checkBoxList.Items.Remove(checkBoxIsCustomScript);
+                checkBoxList.Items.Remove(checkBoxIsInitiallyOn);
+                checkBoxList.Items.Remove(checkBoxRunOnMapInit);
+                checkBoxList.Items.Add(checkBoxIsInitiallyOn);
+                checkBoxList.Items.Add(checkBoxIsCustomScript);
+            }
+        } 
+
         private void treeViewTriggers_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             // It is necessary to traverse the item's parents since drag & drop picks up
@@ -709,5 +783,6 @@ namespace GUI.Components
         {
             e.Handled = true;
         }
+
     }
 }

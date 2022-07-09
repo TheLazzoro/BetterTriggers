@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace GUI.Components.TextEditor
+namespace GUI.Components.TextEditorExtensions
 {
     public class AutoComplete
     {

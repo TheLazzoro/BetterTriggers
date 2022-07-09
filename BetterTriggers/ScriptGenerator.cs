@@ -17,7 +17,7 @@ using War3Net.Common.Extensions;
 
 namespace BetterTriggers
 {
-    internal class ScriptGenerator
+    public class ScriptGenerator
     {
         ScriptLanguage language;
         List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
@@ -51,7 +51,7 @@ namespace BetterTriggers
 
         ControllerTrigger controllerTrigger = new ControllerTrigger();
 
-        internal ScriptGenerator(ScriptLanguage language)
+        public ScriptGenerator(ScriptLanguage language)
         {
             this.language = language;
             if (language == ScriptLanguage.Jass)
@@ -1188,7 +1188,7 @@ end
 
 
             script.Append($"\t{call} SetTerrainFogEx({(int)Info.MapInfo.FogStyle}, {Info.MapInfo.FogStartZ.ToString(enUS)}, {Info.MapInfo.FogEndZ.ToString(enUS)}, {Info.MapInfo.FogDensity.ToString(enUS)}, {((float)Info.MapInfo.FogColor.R / 256).ToString(enUS)}, {((float)Info.MapInfo.FogColor.G / 256).ToString(enUS)}, {((float)Info.MapInfo.FogColor.B / 256).ToString(enUS)}){newline}");
-            string sound_environment = Info.MapInfo.SoundEnvironment;
+            string sound_environment = Info.MapInfo.SoundEnvironment; // TODO: Not working
             script.Append($"\t{call} NewSoundEnvironment(\"" + sound_environment + $"\"){newline}");
 
 
@@ -1371,16 +1371,15 @@ end
                 if (!i.isEnabled)
                     continue;
 
-                /* TODO: support trigger to script conversion in editor.
-                if (!i.custom_text.empty())
-                {
-                    trigger_script += i.custom_text + "{newline}";
+                if (i.trigger.IsScript) {
+                    script.Append($"{i.trigger.Script}{newline}");
+                    if(i.trigger.RunOnMapInit) {
+                        string triggerVarName = "gg_trg_" + i.GetName().Replace(" ", "_");
+                        initialization_triggers.Add(triggerVarName);
+                    }
                 }
                 else
-                */
-                //{
-                script.Append(ConvertGUIToJass(i, initialization_triggers));
-                //}
+                    script.Append(ConvertGUIToJass(i, initialization_triggers));
             }
 
 
@@ -1405,7 +1404,7 @@ end
             */
         }
 
-        private string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
+        public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
         {
             string triggerName = t.GetName().Replace(" ", "_");
             string triggerVarName = "gg_trg_" + triggerName;

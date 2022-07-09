@@ -1,7 +1,7 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components;
-using GUI.Components.TextEditor;
+using GUI.Components.TextEditorExtensions;
 using GUI.Components.TriggerExplorer;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
@@ -19,15 +19,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using War3Net.Build.Info;
 
 namespace GUI.Components
 {
-    /// <summary>
-    /// Interaction logic for ScriptControl.xaml
-    /// </summary>
     public partial class ScriptControl : UserControl, IEditor
     {
-        public ICSharpCode.AvalonEdit.TextEditor textEditor;
+        private TextEditor textEditor;
         private ExplorerElementScript explorerElementScript;
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
         private bool suppressStateChange = false;
@@ -35,37 +33,18 @@ namespace GUI.Components
         public ScriptControl(ExplorerElementScript explorerElementScript)
         {
             InitializeComponent();
-            checkBoxIsEnabled.IsChecked = explorerElementScript.GetEnabled();
 
-            this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();
+            string extension = System.IO.Path.GetExtension(explorerElementScript.GetPath());
+            textEditor = new TextEditor(explorerElementScript.script, extension == ".j" ? ScriptLanguage.Jass : ScriptLanguage.Lua);
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
-            this.textEditor.Margin = new Thickness(0, 0, 0, 0);
-            this.textEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
-            this.textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
-            this.textEditor.FontFamily = new FontFamily("Consolas");
-            this.textEditor.ShowLineNumbers = true;
-            //new AutoComplete(this.textEditor); TODO:
 
-            string uri = System.IO.Path.GetExtension(explorerElementScript.GetPath()) == ".j" ?
-                "Resources/SyntaxHighlighting/JassHighlighting.xml" :
-                "Resources/SyntaxHighlighting/LuaHighlighting.xml";
-
-            // Sets syntax highlighting in the comment field
-            using (Stream s = Application.GetResourceStream(new Uri(uri, UriKind.Relative)).Stream)
-            {
-                using (XmlTextReader reader = new XmlTextReader(s))
-                {
-                    this.textEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                }
-            }
-
+            checkBoxIsEnabled.IsChecked = explorerElementScript.GetEnabled();
             this.explorerElementScript = explorerElementScript;
-            textEditor.Text = explorerElementScript.script;
 
-            textEditor.TextChanged += delegate
+            textEditor.avalonEditor.TextChanged += delegate
             {
-                explorerElementScript.script = textEditor.Text;
+                explorerElementScript.script = textEditor.avalonEditor.Text;
                 if (this.suppressStateChange)
                 {
                     this.suppressStateChange = false;
@@ -89,7 +68,7 @@ namespace GUI.Components
         public void Reload()
         {
             this.suppressStateChange = true;
-            textEditor.Document.Text = explorerElementScript.script;
+            textEditor.avalonEditor.Document.Text = explorerElementScript.script;
         }
 
         public void SetElementEnabled(bool isEnabled)

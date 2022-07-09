@@ -268,6 +268,14 @@ namespace BetterTriggers.WorldEdit
 
             trigger.Id = triggerDefinition.Id;
             trigger.Comment = triggerDefinition.Description;
+            if(triggerDefinition.IsCustomTextTrigger)
+            {
+                trigger.RunOnMapInit = triggerDefinition.RunOnMapInit;
+                trigger.Script = wctStrings[wctIndex];
+                wctIndex++;
+                return explorerElementTrigger;
+            }
+
 
             List<TriggerFunction> Events = new List<TriggerFunction>();
             List<TriggerFunction> Conditions = new List<TriggerFunction>();
