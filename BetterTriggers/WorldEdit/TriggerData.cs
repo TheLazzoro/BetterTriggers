@@ -29,7 +29,7 @@ namespace BetterTriggers.WorldEdit
         internal static Dictionary<string, string> ParamCodeText = new Dictionary<string, string>();
         internal static Dictionary<string, string> FunctionCategories = new Dictionary<string, string>();
 
-        internal static List<VariableType> VariableTypes = JsonConvert.DeserializeObject<List<VariableType>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\types.json"));
+        internal static List<Types> VariableTypes = JsonConvert.DeserializeObject<List<Types>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\types.json"));
 
 
 
@@ -123,10 +123,10 @@ namespace BetterTriggers.WorldEdit
                 bool canBeCompared = values[2] == "1" ? true : false;
                 string displayName = values[3];
                 string baseType = null;
-                if (values.Length == 5)
+                if (values.Length >= 5)
                     baseType = values[4];
 
-                VariableType.Create(key, canBeGlobal, canBeCompared, displayName, baseType);
+                Types.Create(key, canBeGlobal, canBeCompared, displayName, baseType);
             }
 
 
@@ -190,6 +190,10 @@ namespace BetterTriggers.WorldEdit
                     {
                         functionTemplate.category = _event.Value;
                         FunctionCategories.Add(identifier, functionTemplate.category);
+                    }
+                    else if (key.EndsWith("ScriptName"))
+                    {
+                        functionTemplate.identifier = _event.Value;
                     }
 
                     FunctionTemplate controlValue;
@@ -313,6 +317,13 @@ namespace BetterTriggers.WorldEdit
             }
 
             return codeText;
+        }
+
+        internal static bool ConstantExists(string identifier)
+        {
+            ConstantTemplate temp;
+            bool exists = ConstantTemplates.TryGetValue(identifier, out temp);
+            return exists;
         }
     }
 }

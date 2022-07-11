@@ -10,7 +10,7 @@ namespace BetterTriggers.Models.SaveableData
         public bool IsArray;
         public bool IsTwoDimensions;
         public int[] ArraySize = new int[2];
-        public string InitialValue;
+        public Parameter InitialValue;
 
         public Variable Clone()
         {
@@ -20,7 +20,7 @@ namespace BetterTriggers.Models.SaveableData
             cloned.IsArray = IsArray;
             cloned.IsTwoDimensions = IsTwoDimensions;
             cloned.ArraySize = new int[2] { ArraySize[0], ArraySize[1] };
-            cloned.InitialValue = new string(InitialValue);
+            cloned.InitialValue = this.InitialValue.Clone();
 
             return cloned;
         }

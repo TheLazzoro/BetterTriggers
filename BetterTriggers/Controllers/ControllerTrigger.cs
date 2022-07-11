@@ -93,7 +93,7 @@ namespace BetterTriggers.Controllers
             return Triggers.FindById(id).trigger;
         }
 
-        
+
 
         public List<ExplorerElementTrigger> GetTriggersAll()
         {
@@ -136,7 +136,8 @@ namespace BetterTriggers.Controllers
             }
             CopiedElements.CopiedTriggerElements = copiedItems;
 
-            if (isCut) {
+            if (isCut)
+            {
                 CopiedElements.CutTriggerElements = list;
                 CopiedElements.CopiedFromTrigger = copiedFrom;
             }
@@ -364,7 +365,7 @@ namespace BetterTriggers.Controllers
             List<Function> list = new List<Function>();
             triggerElements.ForEach(t =>
             {
-                list.Add(t.function);
+                list.AddRange(GetFunctionsFromParameters(t.function));
 
                 if (t is IfThenElse)
                 {
@@ -423,6 +424,36 @@ namespace BetterTriggers.Controllers
                     var special = (EnumItemsInRectBJ)t;
                     list.AddRange(GatherFunctions(special.Actions));
                 }
+            });
+
+            return list;
+        }
+
+        private List<Function> GetFunctionsFromParameters(Function function)
+        {
+            List<Function> list = new List<Function>();
+            list.Add(function);
+            function.parameters.ForEach(p =>
+            {
+                if (p is VariableRef)
+                {
+                    ControllerVariable controller = new ControllerVariable();
+                    VariableRef variableRef = p as VariableRef;
+                    Variable variable = controller.GetByReference(variableRef);
+                    if (variable.IsArray)
+                    {
+                        if (variableRef.arrayIndexValues[0] is Function)
+                            list.AddRange(GetFunctionsFromParameters(variableRef.arrayIndexValues[0] as Function));
+                    }
+                    if (variable.IsTwoDimensions)
+                    {
+                        if (variableRef.arrayIndexValues[1] is Function)
+                            list.AddRange(GetFunctionsFromParameters(variableRef.arrayIndexValues[1] as Function));
+                    }
+                }
+
+                if (p is Function)
+                    list.AddRange(GetFunctionsFromParameters(p as Function));
             });
 
             return list;

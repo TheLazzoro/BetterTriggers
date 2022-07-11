@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
 {
@@ -13,8 +14,8 @@ namespace BetterTriggers.Commands
         ExplorerElementVariable explorerElement;
         string selectedType;
         string previousType;
-        string newInitialValue;
-        string previousInitialValue;
+        Parameter newInitialValue;
+        Parameter previousInitialValue;
 
         public CommandVariableModifyType(ExplorerElementVariable explorerElement, string selectedType, string previousType)
         {
@@ -22,7 +23,7 @@ namespace BetterTriggers.Commands
             this.selectedType = selectedType;
             this.previousType = previousType;
             this.previousInitialValue = explorerElement.variable.InitialValue;
-            this.newInitialValue = string.Empty;
+            this.newInitialValue = new Parameter();
         }
 
         public void Execute()

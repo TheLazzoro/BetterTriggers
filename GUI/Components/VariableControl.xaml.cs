@@ -3,6 +3,7 @@ using BetterTriggers.Commands;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Components.VariableEditor;
@@ -48,7 +49,7 @@ namespace GUI.Components
             InitializeComponent();
 
             ControllerTriggerData controller = new ControllerTriggerData();
-            List<VariableType> types = controller.LoadAllVariableTypes();
+            List<Types> types = controller.LoadAllVariableTypes();
 
             for (int i = 0; i < types.Count; i++)
             {

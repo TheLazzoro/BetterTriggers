@@ -67,7 +67,8 @@ namespace BetterTriggers.WorldEdit
                 BinaryReader reader = new BinaryReader(s);
                 var customTextTriggers = BinaryReaderExtensions.ReadMapCustomTextTriggers(reader, System.Text.Encoding.UTF8);
                 rootComment = customTextTriggers.GlobalCustomScriptComment;
-                rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Substring(0, customTextTriggers.GlobalCustomScriptCode.Code.Length - 1); // trim last byte
+                if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
+                    rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Substring(0, customTextTriggers.GlobalCustomScriptCode.Code.Length - 1); // trim last byte
                 customTextTriggers.CustomTextTriggers.ForEach(item =>
                 {
                     if (item.Code != string.Empty)
@@ -84,7 +85,7 @@ namespace BetterTriggers.WorldEdit
             {
                 StreamReader sr = new StreamReader(s);
                 var wts = StreamReaderExtensions.ReadMapTriggerStrings(sr);
-                wts.Strings.ForEach(trigStr => triggerStrings.Add(trigStr.Key, trigStr.Value));
+                wts.Strings.ForEach(trigStr => triggerStrings.TryAdd(trigStr.Key, trigStr.Value));
             }
         }
 
@@ -102,6 +103,7 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < triggers.Variables.Count; i++)
             {
                 var variable = triggers.Variables[i];
+
                 variableIds.Add(variable.Name, variable.Id);
                 variableTypes.Add(variable.Name, variable.Type);
 
@@ -201,19 +203,32 @@ namespace BetterTriggers.WorldEdit
             triggerPaths.TryGetValue(triggerItem.ParentId, out parentPath);
 
             string name = triggerItem.Name;
-            string suffix = string.Empty;
+            List<char> invalidPathChars = Path.GetInvalidPathChars().ToList();
+            invalidPathChars.AddRange(Path.GetInvalidFileNameChars());
+
             int i = 0;
+            while (i < invalidPathChars.Count)
+            {
+                name = name.Replace(invalidPathChars[i].ToString(), "");
+                i++;
+            }
+            name = name.TrimStart().TrimEnd();
+            string suffix = string.Empty;
             bool ok = false;
+            i = 0;
+            string finalName = string.Empty;
             while (!ok)
             {
-                name = triggerItem.Name + suffix;
-                if (!File.Exists(name) || Directory.Exists(name))
+                finalName = name + suffix;
+                if (explorerElement is IExplorerSaveable && !File.Exists(Path.Combine(parentPath, finalName + extension)))
+                    ok = true;
+                else if (explorerElement is ExplorerElementFolder && !Directory.Exists(Path.Combine(parentPath, finalName + extension)))
                     ok = true;
 
                 suffix = i.ToString();
                 i++;
             }
-            explorerElement.SetPath(Path.Combine(parentPath, name + extension));
+            explorerElement.SetPath(Path.Combine(parentPath, finalName + extension));
 
             return explorerElement;
         }
@@ -230,14 +245,21 @@ namespace BetterTriggers.WorldEdit
 
         private ExplorerElementVariable CreateVariable(VariableDefinition variableDefinition)
         {
+            int arrSize = variableDefinition.ArraySize == 0 ? 1 : variableDefinition.ArraySize;
+            Parameter initialValue = new Parameter();
+            if (TriggerData.ConstantExists(variableDefinition.InitialValue))
+                initialValue = new Constant { identifier = variableDefinition.InitialValue };
+            else if(variableDefinition.InitialValue != "")
+                initialValue = new Value { identifier = variableDefinition.InitialValue };
+
             ExplorerElementVariable variable = new ExplorerElementVariable()
             {
                 variable = new Variable()
                 {
                     Id = variableDefinition.Id,
                     Name = variableDefinition.Name,
-                    ArraySize = new int[] { variableDefinition.ArraySize, 1 },
-                    InitialValue = variableDefinition.InitialValue,
+                    ArraySize = new int[] { arrSize, 1 },
+                    InitialValue = initialValue,
                     IsArray = variableDefinition.IsArray,
                     IsTwoDimensions = false,
                     Type = variableDefinition.Type
@@ -268,14 +290,14 @@ namespace BetterTriggers.WorldEdit
 
             trigger.Id = triggerDefinition.Id;
             trigger.Comment = triggerDefinition.Description;
-            if(triggerDefinition.IsCustomTextTrigger)
+            if (triggerDefinition.IsCustomTextTrigger)
             {
+                trigger.IsScript = triggerDefinition.IsCustomTextTrigger;
                 trigger.RunOnMapInit = triggerDefinition.RunOnMapInit;
                 trigger.Script = wctStrings[wctIndex];
                 wctIndex++;
                 return explorerElementTrigger;
             }
-
 
             List<TriggerFunction> Events = new List<TriggerFunction>();
             List<TriggerFunction> Conditions = new List<TriggerFunction>();
@@ -454,12 +476,20 @@ namespace BetterTriggers.WorldEdit
                         break;
                     case TriggerFunctionParameterType.Function:
                         Function f = new Function();
+                        if (identifier == "DoNothing" && foreignParam.Function != null) // special case for 'ForGroup' single action
+                        {
+                            f.identifier = foreignParam.Function.Name;
+                            f.parameters = CreateParameters(foreignParam.Function.Parameters);
+                            parameter = f;
+                            break;
+                        }
+
                         f.identifier = identifier;
                         f.parameters = CreateParameters(foreignParam.Function.Parameters);
                         parameter = f;
                         break;
                     case TriggerFunctionParameterType.String:
-                        if(identifier.StartsWith("TRIGSTR"))
+                        if (identifier.StartsWith("TRIGSTR"))
                         {
                             string[] split = identifier.Split("_");
                             string key = split[1];

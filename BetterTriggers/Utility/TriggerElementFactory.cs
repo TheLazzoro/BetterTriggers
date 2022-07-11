@@ -33,7 +33,7 @@ namespace BetterTriggers.Utility
                     return new SetVariable();
                 case "EnumDestructablesInRectAllMultiple":
                     return new EnumDestructablesInRectAllMultiple();
-                case "EnumDestructiblesInCircleBJMultiple":
+                case "EnumDestructablesInCircleBJMultiple":
                     return new EnumDestructiblesInCircleBJMultiple();
                 case "EnumItemsInRectBJMultiple":
                     return new EnumItemsInRectBJ();

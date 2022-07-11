@@ -16,13 +16,11 @@ using System.Windows.Shapes;
 
 namespace GUI
 {
-    /// <summary>
-    /// Interaction logic for ParameterWindow.xaml
-    /// </summary>
     public partial class ParameterWindow : Window
     {
         public bool isOK = false;
         public Parameter selectedParameter;
+
         ParameterFunctionControl functionControl;
         ParameterConstantControl constantControl;
         ParameterVariableControl variableControl;
@@ -42,13 +40,10 @@ namespace GUI
             {
                 ControllerVariable controller = new ControllerVariable();
                 VariableRef variableRef = function.parameters[0] as VariableRef;
-                if (variableRef != null)
-                {
-                    if (parameter == function.parameters[0])
-                        returnType = "AnyGlobal";
-                    else if (parameter == function.parameters[1])
-                        returnType = controller.GetById(variableRef.VariableId).Type;
-                }
+                if (parameter == function.parameters[0])
+                    returnType = "AnyGlobal";
+                else if (parameter == function.parameters[1])
+                    returnType = controller.GetById(variableRef.VariableId).Type;
             }
 
             this.functionControl = new ParameterFunctionControl(returnType);

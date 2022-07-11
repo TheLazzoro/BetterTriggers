@@ -27,7 +27,7 @@ namespace BetterTriggers.Controllers
                 Id = Variables.GenerateId(),
                 Name = name,
                 Type = "integer",
-                InitialValue = "0",
+                InitialValue = new Value() { identifier = "0" },
                 ArraySize = new int[] { 1, 1 },
             };
             string json = JsonConvert.SerializeObject(variable);

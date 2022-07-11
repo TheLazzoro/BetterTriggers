@@ -115,10 +115,9 @@ namespace BetterTriggers.Controllers
                 var units = Units.GetAll();
                 for (int i = 0; i < units.Count; i++)
                 {
-                    if (value.identifier == $"{units[i].ToString()}_{units[i].CreationNumber}")
+                    if (value.identifier == $"{units[i].ToString()}_{units[i].CreationNumber.ToString("D4")}")
                     {
                         return true;
-
                     }
                 }
             }
@@ -138,7 +137,7 @@ namespace BetterTriggers.Controllers
                 var dests = Destructibles.GetAll();
                 for (int i = 0; i < dests.Count; i++)
                 {
-                    if (value.identifier == $"{dests[i].ToString()}_{dests[i].CreationNumber}")
+                    if (value.identifier == $"{dests[i].ToString()}_{dests[i].CreationNumber.ToString("D4")}")
                     {
                         return true;
                     }
@@ -160,7 +159,7 @@ namespace BetterTriggers.Controllers
                 List<UnitData> itemTypes = Units.GetMapItemsAll();
                 for (int i = 0; i < itemTypes.Count; i++)
                 {
-                    if (value.identifier == $"{itemTypes[i].ToString()}_{itemTypes[i].CreationNumber}")
+                    if (value.identifier == $"{itemTypes[i].ToString()}_{itemTypes[i].CreationNumber.ToString("D4")}")
                     {
                         return true;
                     }
@@ -215,7 +214,11 @@ namespace BetterTriggers.Controllers
                 var regions = Regions.GetAll();
                 for (int i = 0; i < regions.Count; i++)
                 {
-                    if (value.identifier == regions[i].ToString())
+                    /* The string Replace exists because values converted with 'TriggerConverter' from a map
+                     * have '_' in variable references, but War3Net values have spaces ' ' in them.
+                     * Same goes for 'camerasetup' below.
+                     */
+                    if (value.identifier.Replace(" ", "_") == regions[i].ToString().Replace(" ", "_"))
                     {
                         return true;
                     }
@@ -226,7 +229,7 @@ namespace BetterTriggers.Controllers
                 var cameras = Cameras.GetAll();
                 for (int i = 0; i < cameras.Count; i++)
                 {
-                    if (value.identifier == cameras[i].ToString())
+                    if (value.identifier.Replace(" ", "_") == cameras[i].ToString().Replace(" ", "_"))
                     {
                         return true;
                     }

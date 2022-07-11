@@ -41,11 +41,6 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public static ExplorerElementVariable Get(int index)
-        {
-            return variableContainer[index];
-        }
-
         public static int GenerateId()
         {
             int generatedId = 0;

@@ -9,7 +9,7 @@ namespace BetterTriggers.Models.SaveableData
 
         public EnumDestructiblesInCircleBJMultiple()
         {
-            function.identifier = "EnumDestructiblesInCircleBJMultiple";
+            function.identifier = "EnumDestructablesInCircleBJMultiple";
         }
 
         public new EnumDestructiblesInCircleBJMultiple Clone()

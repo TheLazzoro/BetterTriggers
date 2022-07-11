@@ -360,6 +360,11 @@ namespace GUI.Controllers
                 paramIndex++;
             }
 
+            inlines.Add(new Run(stringBuilder.ToString())
+            {
+                FontFamily = new FontFamily("Verdana")
+            });
+
             return inlines;
         }
 

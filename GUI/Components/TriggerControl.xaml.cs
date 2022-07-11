@@ -51,8 +51,12 @@ namespace GUI.Components
         {
             InitializeComponent();
 
+            this.explorerElementTrigger = explorerElementTrigger;
             TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
-            TextEditor.avalonEditor.TextChanged += delegate { explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text; };
+            TextEditor.avalonEditor.TextChanged += delegate {
+                explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text;
+                OnStateChange();
+            };
 
             checkBoxIsEnabled.IsChecked = explorerElementTrigger.GetEnabled();
             checkBoxIsInitiallyOn.IsChecked = explorerElementTrigger.GetInitiallyOn();
@@ -60,7 +64,6 @@ namespace GUI.Components
             checkBoxRunOnMapInit.IsChecked = explorerElementTrigger.trigger.RunOnMapInit;
             ShowTextEditor(explorerElementTrigger.trigger.IsScript);
 
-            this.explorerElementTrigger = explorerElementTrigger;
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
 
             categoryEvent = new NodeEvent("Events");
@@ -395,6 +398,9 @@ namespace GUI.Components
                 {
                     traversedTarget = (TreeViewItem)dropTarget;
                 }
+
+                if (dropTarget == null)
+                    return null;
             }
 
             return traversedTarget;
@@ -575,8 +581,13 @@ namespace GUI.Components
                 }
             }
 
+            ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
+            string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
+            TextEditor.avalonEditor.Text = script;
+            explorerElementTrigger.trigger.Script = script;
             explorerElementTrigger.trigger.IsScript = isScript;
             ShowTextEditor(isScript);
+            OnStateChange();
         }
 
         private void ShowTextEditor(bool doShow)
@@ -590,11 +601,6 @@ namespace GUI.Components
                 checkBoxList.Items.Remove(checkBoxIsInitiallyOn);
                 checkBoxList.Items.Remove(checkBoxRunOnMapInit);
                 checkBoxList.Items.Add(checkBoxRunOnMapInit);
-
-                ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
-                string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
-                TextEditor.avalonEditor.Text = script;
-                explorerElementTrigger.trigger.Script = script;
 
                 explorerElementTrigger.trigger.RunOnMapInit = false;
                 for (int i = 0; i < explorerElementTrigger.trigger.Events.Count; i++)
@@ -733,6 +739,9 @@ namespace GUI.Components
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TreeViewTriggerElement doubleClicked = GetTraversedTargetDropItem(e.OriginalSource as FrameworkElement) as TreeViewTriggerElement;
+            if (doubleClicked == null)
+                return;
+
             ReplaceTriggerElement(doubleClicked);
         }
 

@@ -70,6 +70,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelectedItem()
         {
+            if (selectedItem == null)
+                return null;
+
             var trigger = (TriggerRef)selectedItem.Tag;
             return trigger;
         }

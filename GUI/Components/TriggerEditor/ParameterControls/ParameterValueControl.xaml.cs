@@ -79,17 +79,17 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     break;
                 case "item":
                     var items = controllerMapData.GetMapItems();
-                    values = items.Select(i => new Value() { identifier = $"{i.ToString()}_{i.CreationNumber}" }).ToList();
+                    values = items.Select(i => new Value() { identifier = $"{i.ToString()}_{i.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "item");
                     break;
                 case "unit":
                     var units = controllerMapData.GetMapUnits();
-                    values = units.Select(u => new Value() { identifier = $"{u.ToString()}_{u.CreationNumber}" }).ToList();
+                    values = units.Select(u => new Value() { identifier = $"{u.ToString()}_{u.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "unit");
                     break;
                 case "destructable":
                     var mapDestructibles = controllerMapData.GetMapDests();
-                    values = mapDestructibles.Select(dest => new Value() { identifier = $"{dest.ToString()}_{dest.CreationNumber}" }).ToList();
+                    values = mapDestructibles.Select(dest => new Value() { identifier = $"{dest.ToString()}_{dest.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "destructable");
                     break;
                 case "rect":
