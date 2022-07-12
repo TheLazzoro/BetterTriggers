@@ -29,9 +29,6 @@ namespace BetterTriggers.WorldEdit
         internal static Dictionary<string, string> ParamCodeText = new Dictionary<string, string>();
         internal static Dictionary<string, string> FunctionCategories = new Dictionary<string, string>();
 
-        internal static List<Types> VariableTypes = JsonConvert.DeserializeObject<List<Types>>(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\TriggerData\types.json"));
-
-
 
         internal static void Load()
         {

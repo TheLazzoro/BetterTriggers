@@ -90,7 +90,7 @@ namespace GUI.Components.TriggerExplorer
             else if(this.editor is ScriptControl)
             {
                 var control = this.editor as ScriptControl;
-                control.Reload();
+                control.OnRemoteChange();
             }
         }
 
@@ -190,6 +190,9 @@ namespace GUI.Components.TriggerExplorer
             this.Focus();
         }
 
-        
+        public void OnRemoteChange()
+        {
+            editor.OnRemoteChange();
+        }
     }
 }

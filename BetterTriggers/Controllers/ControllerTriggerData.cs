@@ -15,7 +15,7 @@ namespace BetterTriggers.Controllers
     {
         public List<Types> LoadAllVariableTypes()
         {
-            return TriggerData.VariableTypes;
+            return Types.GetGlobalTypes();
         }
 
 

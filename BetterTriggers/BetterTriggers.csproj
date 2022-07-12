@@ -34,12 +34,6 @@
     <None Remove="Resources\MapTemplate\war3map.wts" />
     <None Remove="Resources\MapTemplate\war3mapMap.blp" />
     <None Remove="Resources\MapTemplate\war3mapUnits.doo" />
-    <None Remove="Resources\TriggerData\actions.json" />
-    <None Remove="Resources\TriggerData\calls.json" />
-    <None Remove="Resources\TriggerData\conditions.json" />
-    <None Remove="Resources\TriggerData\constants.json" />
-    <None Remove="Resources\TriggerData\events.json" />
-    <None Remove="Resources\TriggerData\types.json" />
     <None Remove="Resources\WorldEditorData\abilityskinstrings.txt" />
     <None Remove="Resources\WorldEditorData\campaignabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\campaignunitstrings.txt" />
@@ -154,24 +148,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\MapTemplate\war3mapUnits.doo">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\TriggerData\actions.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\TriggerData\calls.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\TriggerData\conditions.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\TriggerData\constants.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\TriggerData\events.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\TriggerData\types.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\abilityskinstrings.txt">

@@ -56,7 +56,7 @@ namespace BetterTriggers.Containers
 
             foreach (var item in triggerElementContainer)
             {
-                if(item.GetName() == name)
+                if(item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }

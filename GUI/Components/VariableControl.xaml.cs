@@ -68,6 +68,7 @@ namespace GUI.Components
 
             ControllerVariable controllerVariable = new ControllerVariable();
             Rename(controllerVariable.GetVariableNameById(variable.Id));
+            OnRemoteChange();
             checkBoxIsArray.IsChecked = variable.IsArray;
             textBoxArraySize0.IsEnabled = variable.IsArray;
             comboBoxArrayDimensions.IsEnabled = variable.IsArray;
@@ -185,11 +186,6 @@ namespace GUI.Components
                 textBoxArraySize1.IsEnabled = true;
         }
 
-        public void OnRemoteChange()
-        {
-            throw new NotImplementedException();
-        }
-
         private bool ResetVarRefs()
         {
             bool ok = true;
@@ -240,6 +236,15 @@ namespace GUI.Components
             }
         }
 
+        public void OnRemoteChange()
+        {
+            ControllerParamText controllerParamText = new ControllerParamText();
+            this.textblockInitialValue.Inlines.Clear();
+            var inlines = controllerParamText.GenerateParamText(explorerElementVariable);
+            this.textblockInitialValue.Inlines.AddRange(inlines);
+            OnStateChange();
+        }
+
         private void textBoxArraySize0_TextChanged(object sender, TextChangedEventArgs e)
         {
             ArraySizeTextChanged(e);
@@ -281,5 +286,6 @@ namespace GUI.Components
 
             //e.Handled = true;
         }
+
     }
 }

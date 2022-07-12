@@ -29,14 +29,18 @@ namespace GUI
         ParameterImportedControl importControl;
         IParameterControl selectedControl;
 
-        public ParameterWindow(Function function, Parameter parameter, string returnType)
+
+        /// <summary>
+        /// </summary>
+        /// <param name="function">null indicates we're editing a variable initial value.</param>
+        public ParameterWindow(Parameter parameter, string returnType, Function function = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
             this.Title = returnType;
 
 
-            if (function.identifier == "SetVariable")
+            if (function != null && function.identifier == "SetVariable")
             {
                 ControllerVariable controller = new ControllerVariable();
                 VariableRef variableRef = function.parameters[0] as VariableRef;

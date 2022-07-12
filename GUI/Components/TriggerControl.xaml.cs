@@ -214,8 +214,7 @@ namespace GUI.Components
             }
         }
 
-        // TODO: There are two 'SelectedItemChanged' functions?
-        private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        public void RefreshParameterBlock()
         {
             var item = treeViewTriggers.SelectedItem as TreeViewTriggerElement;
             textblockParams.Inlines.Clear();
@@ -223,11 +222,17 @@ namespace GUI.Components
             if (item == null)
                 return;
 
-            ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(item);
-            var inlines = controllerTriggerTreeItem.GenerateParamText();
+            ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
+            var inlines = controllerTriggerTreeItem.GenerateParamText(item);
 
             textblockParams.Inlines.AddRange(inlines);
             textblockDescription.Text = Locale.Translate(item.triggerElement.function.identifier);
+        }
+
+        // TODO: There are two 'SelectedItemChanged' functions?
+        private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            RefreshParameterBlock();
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -501,16 +506,6 @@ namespace GUI.Components
             }
         }
 
-        public void OnElementRename(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnRemoteChange()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Attach(TreeItemExplorerElement explorerElement)
         {
             this.observers.Add(explorerElement);
@@ -529,6 +524,7 @@ namespace GUI.Components
                 observer.OnStateChange();
             }
         }
+
 
         public void SetElementEnabled(bool isEnabled)
         {
@@ -793,5 +789,9 @@ namespace GUI.Components
             e.Handled = true;
         }
 
+        public void OnRemoteChange()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

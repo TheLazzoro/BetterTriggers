@@ -37,7 +37,7 @@ namespace BetterTriggers.WorldEdit
             types.Add(key, variableType);
         }
 
-        public static List<Types> GetAll()
+        public static List<Types> GetGlobalTypes()
         {
             return types.
                 Where(varType => varType.Value.CanBeGlobal).

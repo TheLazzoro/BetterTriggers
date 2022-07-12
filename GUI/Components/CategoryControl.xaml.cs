@@ -38,31 +38,10 @@ namespace GUI.Components
 
             this.explorerElementFolder = explorerElementFolder;
         }
-
-        public void Refresh()
-        {
-            
-        }
         
         public string GetSaveString()
         {
             return string.Empty;
-        }
-
-        public UserControl GetControl()
-        {
-            return this;
-        }
-
-
-        public void OnElementRename(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnRemoteChange()
-        {
-            throw new NotImplementedException();
         }
 
         public void SetElementEnabled(bool isEnabled)
@@ -91,6 +70,11 @@ namespace GUI.Components
             {
                 observer.OnStateChange();
             }
+        }
+
+        public void OnRemoteChange()
+        {
+            throw new NotImplementedException();
         }
     }
 }

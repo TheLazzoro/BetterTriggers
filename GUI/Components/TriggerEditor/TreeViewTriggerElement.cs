@@ -21,19 +21,6 @@ namespace GUI.Components.TriggerEditor
         protected string category;
         private TriggerControl triggerControl;
 
-        public class ParameterText
-        {
-            public string Text { get; set; }
-            public TextType TextType { get; set; }
-        }
-
-        public enum TextType
-        {
-            Normal,
-            Hyperlink,
-        }
-
-
         public TreeViewTriggerElement(TriggerElement triggerElement)
         {
             this.triggerElement = triggerElement;
@@ -90,8 +77,8 @@ namespace GUI.Components.TriggerEditor
         public void UpdateTreeItem()
         {
             ControllerTrigger controllerTrigger = new ControllerTrigger();
-            ControllerTriggerTreeItem controllerTriggerTreeItem = new ControllerTriggerTreeItem(this);
-            string text = controllerTriggerTreeItem.GenerateTreeItemText();
+            ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
+            string text = controllerTriggerTreeItem.GenerateTreeItemText(this);
 
             List<Parameter> parameters = this.triggerElement.function.parameters;
 
@@ -116,9 +103,10 @@ namespace GUI.Components.TriggerEditor
 
         public void UpdateParams()
         {
-            ControllerTriggerTreeItem controllerTriggerElement = new ControllerTriggerTreeItem(this);
-            controllerTriggerElement.GenerateParamText();
+            ControllerParamText controllerTriggerElement = new ControllerParamText();
+            controllerTriggerElement.GenerateParamText(this);
             UpdateTreeItem();
+            GetTriggerControl().RefreshParameterBlock();
             GetTriggerControl().OnStateChange();
         }
 

@@ -61,11 +61,6 @@ namespace GUI.Components
             textEditor.TextChanged += TextEditor_TextChanged;
         }
 
-        public void OnRemoteChange()
-        {
-            throw new NotImplementedException();
-        }
-
         public void SetElementEnabled(bool isEnabled)
         {
             throw new NotImplementedException();
@@ -104,6 +99,11 @@ namespace GUI.Components
         {
             explorerElementRoot.project.Header = textEditor.Text;
             OnStateChange();
+        }
+
+        public void OnRemoteChange()
+        {
+            throw new NotImplementedException();
         }
     }
 }

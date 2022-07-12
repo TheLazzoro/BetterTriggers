@@ -55,17 +55,7 @@ namespace GUI.Components
             };
         }
 
-        public UserControl GetControl()
-        {
-            throw new NotImplementedException();
-        }
-
         public void OnRemoteChange()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Reload()
         {
             this.suppressStateChange = true;
             textEditor.avalonEditor.Document.Text = explorerElementScript.script;
@@ -108,5 +98,6 @@ namespace GUI.Components
             controller.SetElementEnabled(explorerElementScript, (bool)checkBoxIsEnabled.IsChecked);
             OnStateChange();
         }
+
     }
 }

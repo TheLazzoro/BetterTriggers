@@ -6,6 +6,7 @@
         void Reload(IExplorerElement subject);
         void OnCreated(int insertIndex);
         void OnSaved();
+        void OnRemoteChange();
         void Delete();
     }
 }

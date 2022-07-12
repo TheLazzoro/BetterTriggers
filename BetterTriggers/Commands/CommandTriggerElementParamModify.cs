@@ -19,7 +19,7 @@ namespace BetterTriggers.Commands
         int paramIndex = 0;
 
         // special case 'SetVariable'
-        Parameter setVarValueOld;
+        Parameter setVarValueOld; // TODO: Why is this not used?
         Parameter setVarValueNew;
 
         public CommandTriggerElementParamModify(TriggerElement triggerElement, ExplorerElementTrigger explorerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
