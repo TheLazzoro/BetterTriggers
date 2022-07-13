@@ -19,6 +19,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            if (returnType == "StringExt")
+                returnType = "string";
+
             ControllerTriggerData controller = new ControllerTriggerData();
             List<FunctionTemplate> functions = controller.LoadAllCalls(returnType);
             List<Searchable> objects = new List<Searchable>();

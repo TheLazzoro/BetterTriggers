@@ -157,8 +157,8 @@ namespace BetterTriggers.WorldEdit
                         Id = customUnit.ToString().Substring(0, 4),
                         Name = name,
                         Sort = sort,
-                        Race = baseUnit.Race, // TODO
-                        Image = baseUnit.Image, // TODO
+                        Race = baseUnit.Race, // TODO:
+                        Image = baseUnit.Image, // TODO:
                     };
                     unitTypes.TryAdd(unitType.Id, unitType);
                     unitTypesCustom.TryAdd(unitType.Id, unitType);

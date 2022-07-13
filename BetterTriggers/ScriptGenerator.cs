@@ -43,6 +43,8 @@ namespace BetterTriggers
         string functionReturnsBoolean = "takes nothing returns boolean";
         string endfunction = "endfunction";
         string endif = "endif";
+        string startLoop = $"loop{System.Environment.NewLine}\texitwhen ";
+        string breakLoop = "";
         string endloop = "endloop";
         string call = "call";
         string set = "set";
@@ -50,6 +52,8 @@ namespace BetterTriggers
         string function = "function";
         string fourCCStart = "";
         string fourCCEnd = "";
+        string strConcat = "+";
+        string array2DLuaDefinition = "";
 
 
         ControllerTrigger controllerTrigger = new ControllerTrigger();
@@ -68,6 +72,8 @@ namespace BetterTriggers
             functionReturnsBoolean = "()";
             endfunction = "end";
             endif = "end";
+            startLoop = $"while (true) do{newline}\tif(";
+            breakLoop = $") then break end{newline}";
             endloop = "end";
             call = "";
             set = "";
@@ -75,6 +81,21 @@ namespace BetterTriggers
             function = "";
             fourCCStart = "FourCC(";
             fourCCEnd = ")";
+            strConcat = "..";
+
+            array2DLuaDefinition = @"
+function array2DLua(size1, size2, initialValue)
+    local array2D = {}
+    for i = 0, size1 do
+        array2D[i] = {}
+
+        for j = 0, size2 do
+            array2D[i][j] = initialValue
+        end
+    end
+    return array2D
+end
+            ";
         }
 
 
@@ -170,18 +191,31 @@ namespace BetterTriggers
 
                 InitGlobals.Add(variable);
                 string varType = Types.GetBaseType(variable.Type);
-                if (language == ScriptLanguage.Lua)
-                    varType = "";
-
                 string array = string.Empty;
                 string dimensions = string.Empty;
-                if (variable.IsArray)
+                if (language == ScriptLanguage.Jass)
                 {
-                    array = " array";
-                    dimensions += $"[{variable.ArraySize[0]}]";
+                    if (variable.IsArray)
+                    {
+                        array = " array";
+                        dimensions += $"[{variable.ArraySize[0]}]";
+                    }
+                    if (variable.IsTwoDimensions)
+                        dimensions += $"[{variable.ArraySize[1]}]";
                 }
-                if (variable.IsTwoDimensions)
-                    dimensions += $"[{variable.ArraySize[1]}]";
+                else if (language == ScriptLanguage.Lua)
+                {
+                    varType = "";
+                    if (variable.IsArray && !variable.IsTwoDimensions)
+                    {
+                        dimensions += " = {}";
+                    }
+                    else if (variable.IsArray && variable.IsTwoDimensions)
+                    {
+                        // Maybe we should init this step in 'InitGlobal' because of desync risk?
+                        dimensions += " = nil";
+                    }
+                }
 
                 script.Append(globals + newline);
                 script.Append(newline);
@@ -285,26 +319,35 @@ namespace BetterTriggers
 
 
                 if (!variable.IsArray && !string.IsNullOrEmpty(initialValue))
-                    script.Append($"{set} udg_" + variable.Name + "=" + initialValue + newline);
+                    script.Append($"\t{set} udg_" + variable.Name + "=" + initialValue + newline);
                 else if (variable.IsArray && !variable.IsTwoDimensions && !string.IsNullOrEmpty(initialValue))
                 {
-                    for (int j = 0; j < variable.ArraySize[0]; j++)
+                    for (int j = 0; j <= variable.ArraySize[0]; j++)
                     {
-                        script.Append($"{set} udg_{variable.Name}[{j}] = {initialValue}{newline}");
+                        script.Append($"\t{set} udg_{variable.Name}[{j}] = {initialValue}{newline}");
                     }
                 }
                 else if (variable.IsArray && variable.IsTwoDimensions)
                 {
-                    for (int j = 0; j < variable.ArraySize[0]; j++)
+                    if (language == ScriptLanguage.Lua)
                     {
-                        for (int k = 0; k < variable.ArraySize[1]; k++)
+                        script.Append($"\tudg_{variable.Name} = array2DLua({variable.ArraySize[0]}, {variable.ArraySize[1]}, {initialValue}){newline}");
+                        continue;
+                    }
+
+                    for (int j = 0; j <= variable.ArraySize[0]; j++)
+                    {
+                        for (int k = 0; k <= variable.ArraySize[1]; k++)
                         {
-                            script.Append($"{set} udg_{variable.Name}[{j}][{k}] = {initialValue}{newline}");
+                            script.Append($"\t{set} udg_{variable.Name}[{j}][{k}] = {initialValue}{newline}");
                         }
                     }
                 }
             }
             script.Append(endfunction + newline);
+
+
+            script.Append(array2DLuaDefinition);
 
 
             CreateItemTables(script);
@@ -485,7 +528,7 @@ namespace BetterTriggers
                     script.Append($"\t{set} t = CreateTrigger(){newline}");
                     script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_DEATH){newline}");
                     script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_CHANGE_OWNER){newline}");
-                    script.Append($"\t{call} TriggerAddAction(t, function UnitItemDrops_{u.CreationNumber.ToString("D4")}){newline}");
+                    script.Append($"\t{call} TriggerAddAction(t, {function} UnitItemDrops_{u.CreationNumber.ToString("D4")}){newline}");
                 }
             }
 
@@ -1551,8 +1594,7 @@ end
 
                 script.Append($"{set} {loopIndex}={ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {newline}");
                 script.Append($"{set} {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {newline}");
-                script.Append($"loop{newline}");
-                script.Append($"\texitwhen {loopIndex} > {loopIndexEnd}{newline}");
+                script.Append($"\t{startLoop}{loopIndex} > {loopIndexEnd}{breakLoop}");
 
                 if (f.value == "ForLoopAMultiple")
                 {
@@ -1591,13 +1633,12 @@ end
 
                 script.Append($"{set} udg_{variable}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(loopVar.function.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"loop{newline}");
-                script.Append($"exitwhen udg_{variable}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{newline}");
+                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}");
                 foreach (var action in loopVar.Actions)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
                 }
-                script.Append($"{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
+                script.Append($"\t{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
                 script.Append($"{endloop}{newline}");
                 return script.ToString();
             }
@@ -1651,7 +1692,7 @@ end
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
                 if (f.value == "ForForceMultiple")
@@ -1705,7 +1746,7 @@ end
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.value.Substring(0, 27)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value.Substring(0, 27)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumDest.Actions)
@@ -1726,7 +1767,7 @@ end
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.value.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumItem.Actions)
@@ -1863,8 +1904,7 @@ end
 
                 script.Append($"{set} {loopIndex}={ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {newline}");
                 script.Append($"{set} {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {newline}");
-                script.Append($"loop{newline}");
-                script.Append($"\texitwhen {loopIndex} > {loopIndexEnd}{newline}");
+                script.Append($"\t{startLoop}{loopIndex} > {loopIndexEnd}{breakLoop}");
                 script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[2], pre_actions, triggerName)} {newline}");
                 script.Append($"\t{set} {loopIndex}={loopIndex}+1{newline}");
                 script.Append($"{endloop} {newline}");
@@ -1887,11 +1927,10 @@ end
 
                 script.Append($"{set} udg_{variable}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"loop{newline}");
-                script.Append($"exitwhen udg_{variable}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{newline}");
+                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{breakLoop}");
                 script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[3], pre_actions, triggerName)} {newline}");
-                script.Append($"{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
-                script.Append($"{endloop}{newline}");
+                script.Append($"\t{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
+                script.Append($"\t{endloop}{newline}");
 
                 return script.ToString();
             }
@@ -1900,7 +1939,7 @@ end
             {
                 string function_name = generate_function_name(triggerName);
 
-                script.Append($"{call} {f.value}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
                 pre_actions.Append($"function {function_name} {functionReturnsNothing}{newline}");
@@ -1935,7 +1974,7 @@ end
 
             else if (f.value == "CommentString")
             {
-                return $"{newline}// {f.parameters[0].value}";
+                return $"{newline}{comment} {f.parameters[0].value}";
             }
 
 
@@ -1980,16 +2019,16 @@ end
 
                 else if (f.value == "OperatorString")
                 {
-                    return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} + {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)})";
+                    return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {strConcat} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)})";
                 }
 
                 else if (returnType == "boolexpr" && !boolexprIsOn)
                 {
                     nameNumber++;
                     string functionName = "BoolExpr_" + nameNumber;
-                    output += $"Condition(function {functionName})";
+                    output += $"Condition({function} {functionName})";
 
-                    pre_actions.Append($"function {functionName} takes nothing returns boolean {newline}");
+                    pre_actions.Append($"function {functionName} {functionReturnsBoolean} {newline}");
                     pre_actions.Append($"\tif( ");
                     pre_actions.Append(ConvertParametersToJass(f, returnTypes[0], pre_actions, true));
                     pre_actions.Append($") then {newline}");
@@ -2092,7 +2131,7 @@ end
                     {
                         if (i % 1024 == 0)
                         {
-                            output += sb.ToString() + "\" + \"";
+                            output += sb.ToString() + $"\" {strConcat} \"";
                             sb.Clear();
                         }
                         sb.Append(value[i]);

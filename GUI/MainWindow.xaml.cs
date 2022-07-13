@@ -125,12 +125,20 @@ namespace GUI
             });
         }
 
+        private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            TreeItemExplorerElement selected = e.NewValue as TreeItemExplorerElement;
+            if (selected == null)
+                return;
+
+            ContainerProject.currentSelectedElement = selected.Ielement.GetPath();
+        }
+
         private void TreeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             OpenExplorerElement();
             e.Handled = true; // prevents event from firing up the parent items
         }
-
 
         private void TreeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
@@ -160,7 +168,6 @@ namespace GUI
                 return;
 
             triggerExplorer.currentElement = selectedExplorerItem;
-            ContainerProject.currentSelectedElement = selectedExplorerItem.Ielement.GetPath();
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
             controller.OnSelectItem(selectedExplorerItem, vmd, tabControl);
@@ -501,6 +508,7 @@ namespace GUI
             Grid.SetColumn(triggerExplorer, 0);
 
             triggerExplorer.treeViewTriggerExplorer.MouseDoubleClick += TreeViewTriggerExplorer_MouseDoubleClick; ; // subscribe to item selection changed event
+            triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TreeViewTriggerExplorer_SelectedItemChanged;
             triggerExplorer.treeViewTriggerExplorer.KeyDown += TreeViewTriggerExplorer_KeyDown;
             triggerExplorer.CreateRootItem();
 
@@ -516,7 +524,6 @@ namespace GUI
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             controllerTriggerExplorer.Populate(triggerExplorer);
         }
-
 
 
         private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

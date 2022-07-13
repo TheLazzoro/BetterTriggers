@@ -68,11 +68,11 @@ namespace BetterTriggers.WorldEdit
                 var customTextTriggers = BinaryReaderExtensions.ReadMapCustomTextTriggers(reader, System.Text.Encoding.UTF8);
                 rootComment = customTextTriggers.GlobalCustomScriptComment;
                 if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
-                    rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Substring(0, customTextTriggers.GlobalCustomScriptCode.Code.Length - 1); // trim last byte
+                    rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
                 customTextTriggers.CustomTextTriggers.ForEach(item =>
                 {
                     if (item.Code != string.Empty)
-                        wctStrings.Add(item.Code.Substring(0, item.Code.Length - 1)); // trim last byte
+                        wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
                 });
             }
             using (Stream s = new FileStream(Path.Combine(mapPath, pathInfo), FileMode.Open, FileAccess.Read))
@@ -444,6 +444,7 @@ namespace BetterTriggers.WorldEdit
                         }
 
                         // In our editor regions, cameras, units etc. are considered values, not variables.
+                        // Also, War3Net does not include 'gg' prefixes in variable names.
                         if (foreignParam.Value.StartsWith("gg_unit_"))
                             parameter = new Value() { value = foreignParam.Value.Replace("gg_unit_", "") };
                         else if (foreignParam.Value.StartsWith("gg_item_"))
