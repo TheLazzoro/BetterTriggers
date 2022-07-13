@@ -122,12 +122,23 @@ namespace GUI
             ShowHideTabs(parameterControl);
             parameterControl.SetDefaultSelection(parameter.identifier);
 
+            if(function == null)
+            {
+                if(parameter is not Constant && parameter is not Value)
+                {
+                    ShowHideTabs(constantControl);
+                    radioBtnPreset.IsChecked = true;
+                }
 
-            if (returnType == "AnyGlobal")
+                radioButtonList.Items.Remove(radioBtnFunction);
+                radioButtonList.Items.Remove(radioBtnVariable);
+                radioButtonList.Items.Remove(radioBtnTrigger);
+            }
+            else if (returnType == "AnyGlobal")
             {
                 functionControl.Visibility = Visibility.Hidden;
-                constantControl.Visibility = Visibility.Hidden;
-                variableControl.Visibility = Visibility.Visible;
+                constantControl.Visibility = Visibility.Visible;
+                variableControl.Visibility = Visibility.Hidden;
                 valueControl.Visibility = Visibility.Hidden;
                 triggerRefControl.Visibility = Visibility.Hidden;
 
@@ -150,7 +161,9 @@ namespace GUI
                 radioButtonList.Items.Remove(radioBtnImported);
         }
 
-
+        /// <summary>
+        /// </summary>
+        /// <param name="control">Control to show.</param>
         private void ShowHideTabs(IParameterControl control)
         {
             this.selectedControl = control;

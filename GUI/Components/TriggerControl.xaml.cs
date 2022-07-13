@@ -411,27 +411,6 @@ namespace GUI.Components
             return traversedTarget;
         }
 
-        /// <summary>
-        /// Gets either an 'Event', 'Condition' or 'Action' node
-        /// based on the parent of the drop target.
-        /// </summary>
-        /// <param name="dropTarget"></param>
-        /// <returns></returns>
-        private INode GetCategoryTarget(FrameworkElement dropTarget)
-        {
-            if (dropTarget is NodeEvent || dropTarget is NodeCondition || dropTarget is NodeAction)
-                return (INode)dropTarget;
-
-            TreeViewItem traversedTarget = GetTraversedTargetDropItem(dropTarget);
-            if (traversedTarget is NodeEvent || traversedTarget is NodeCondition || traversedTarget is NodeAction)
-                return (INode)traversedTarget;
-            else
-                traversedTarget = GetTraversedTargetDropItem(traversedTarget); // traverse one more time to get the action node
-
-            return (INode)traversedTarget;
-        }
-
-
         private void treeViewTriggers_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
@@ -544,16 +523,12 @@ namespace GUI.Components
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementEnabled(explorerElementTrigger, (bool)checkBoxIsEnabled.IsChecked);
-            OnStateChange();
+            SetElementEnabled((bool)checkBoxIsEnabled.IsChecked);
         }
 
         private void checkBoxIsInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementInitiallyOn(explorerElementTrigger, (bool)checkBoxIsInitiallyOn.IsChecked);
-            OnStateChange();
+            SetElementInitiallyOn((bool)checkBoxIsInitiallyOn.IsChecked);
         }
 
         private void checkBoxRunOnMapInit_Click(object sender, RoutedEventArgs e)

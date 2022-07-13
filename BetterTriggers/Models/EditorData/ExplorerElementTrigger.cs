@@ -76,7 +76,7 @@ namespace BetterTriggers.Models.EditorData
         {
             for (int i = 0; i < observers.Count; i++)
             {
-                observers[i].Reload(this);
+                observers[i].Reload();
             }
         }
 
@@ -96,11 +96,19 @@ namespace BetterTriggers.Models.EditorData
         public void SetEnabled(bool isEnabled)
         {
             this.isEnabled = isEnabled;
+            foreach (var observer in observers)
+            {
+                observer.RefreshHeader();
+            }
         }
 
         public void SetInitiallyOn(bool isInitiallyOn)
         {
             this.isInitiallyOn = isInitiallyOn;
+            foreach (var observer in observers)
+            {
+                observer.RefreshHeader();
+            }
         }
 
         public bool GetEnabled()

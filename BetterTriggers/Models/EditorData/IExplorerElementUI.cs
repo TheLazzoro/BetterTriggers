@@ -3,10 +3,11 @@
     public interface IExplorerElementUI
     {
         void UpdatePosition();
-        void Reload(IExplorerElement subject);
+        void Reload();
         void OnCreated(int insertIndex);
         void OnSaved();
         void OnRemoteChange();
         void Delete();
+        void RefreshHeader();
     }
 }

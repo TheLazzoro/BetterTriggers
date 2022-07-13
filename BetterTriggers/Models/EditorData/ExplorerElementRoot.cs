@@ -66,7 +66,7 @@ namespace BetterTriggers.Models.EditorData
         {
             for (int i = 0; i < observers.Count; i++)
             {
-                observers[i].Reload(this);
+                observers[i].Reload();
             }
         }
 

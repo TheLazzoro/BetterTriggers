@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\trigger-error.png" />
+    <None Remove="Resources\Icons\trigger-invalid.png" />
     <None Remove="Resources\Icons\_editor-triggeraction.png" />
     <None Remove="Resources\Icons\_editor-triggercondition.png" />
     <None Remove="Resources\Icons\_editor-triggerevent.png" />
@@ -69,6 +71,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Icons\trigger-error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\trigger-invalid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\_editor-triggeraction.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -49,7 +49,6 @@
     <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\Icons\green-check.png" />
     <None Remove="Resources\Icons\redo.png" />
-    <None Remove="Resources\Icons\trigger-error.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_copy.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_cut.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_open.png" />
@@ -184,9 +183,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\redo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\trigger-error.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\ui-editoricon-general_copy.png">

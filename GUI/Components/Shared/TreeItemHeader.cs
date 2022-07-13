@@ -22,7 +22,16 @@ namespace GUI.Components.Shared
         private TextBlock DisplayText;
         private string categoryName = string.Empty;
 
-        public TreeItemHeader(string text, string categoryName, bool isValid = true, bool isInitiallyOn = true)
+        public enum TreeItemState
+        {
+            Normal,
+            Disabled,
+            HasErrors,
+            HasErrorsNoTextColor
+        }
+
+
+        public TreeItemHeader(string text, string categoryName, TreeItemState state = TreeItemState.Normal, bool isInitiallyOn = true)
         {
             this.Orientation = Orientation.Horizontal;
             this.Height = 18;
@@ -47,9 +56,9 @@ namespace GUI.Components.Shared
                 this.categoryName = Locale.Translate(Category.Get(categoryName).Name) + " - ";
             }
 
-            SetIcon(categoryName, isValid);
+            SetIcon(categoryName, state);
             SetDisplayText(text);
-            SetTextEnabled(isInitiallyOn);
+            SetTextEnabled(state, isInitiallyOn);
 
             this.Children.Add(Icon);
             this.Children.Add(DisplayText);
@@ -57,17 +66,6 @@ namespace GUI.Components.Shared
             this.RenameBox.LostFocus += RenameBox_LostFocus;
         }
 
-
-        public void SetIcon(string category, bool isValid)
-        {
-            BitmapImage img = GetIconImage(category);
-
-            //if (!isValid) // red cross over image
-            //    img = OverlapImage(img, GetIconImage(Category.Error));
-
-            ImageBrush brush = new ImageBrush(img);
-            Icon.Fill = brush;
-        }
 
         public void SetDisplayText(string text)
         {
@@ -91,9 +89,13 @@ namespace GUI.Components.Shared
             }
         }
 
-        public void SetTextEnabled(bool isEnabled)
+        public void SetTextEnabled(TreeItemState state, bool isEnabled)
         {
-            if (isEnabled)
+            if (state == TreeItemState.HasErrors)
+                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#C66");
+            else if (isEnabled && state == TreeItemState.Normal)
+                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+            else if (isEnabled && state != TreeItemState.Normal)
                 DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
             else
                 DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#888");
@@ -112,6 +114,29 @@ namespace GUI.Components.Shared
                 ShowRenameBox(false);
                 SetDisplayText(DisplayText.Text);
             }
+        }
+
+        public void SetIcon(string category, TreeItemState state)
+        {
+            var group = new DrawingGroup();
+            group.Children.Add(new ImageDrawing(DrawIconImage(Category.Get(category).Icon), new Rect(0, 0, 16, 16)));
+            if(state == TreeItemState.Disabled || state == TreeItemState.HasErrors)
+                group.Children.Add(new ImageDrawing(DrawIconImage(Category.Get("TC_ERROR").Icon), new Rect(0, 0, 16, 16)));
+            else if (state == TreeItemState.HasErrorsNoTextColor)
+                group.Children.Add(new ImageDrawing(DrawIconImage(Category.Get("TC_INVALID").Icon), new Rect(0, 0, 16, 16)));
+
+            var drawingImage = new DrawingImage(group);
+
+            DrawingVisual drawingVisual = new DrawingVisual();
+            DrawingContext drawingContext = drawingVisual.RenderOpen();
+            drawingContext.DrawImage(drawingImage, new Rect(new Point(0, 0), new Size(drawingImage.Width, drawingImage.Height)));
+            drawingContext.Close();
+
+            RenderTargetBitmap bmp = new RenderTargetBitmap((int)drawingImage.Width, (int)drawingImage.Height, 96, 96, PixelFormats.Pbgra32);
+            bmp.Render(drawingVisual);
+
+            ImageBrush brush = new ImageBrush(bmp);
+            Icon.Fill = brush;
         }
 
         private static BitmapImage OverlapImage(BitmapImage source, BitmapImage toOverlap)
@@ -181,7 +206,7 @@ namespace GUI.Components.Shared
             return bmImage;
         }
 
-        private static BitmapImage GetIconImage(string category)
+        private static BitmapImage DrawIconImage(Stream stream)
         {
             BitmapImage image = null;
             string path = string.Empty;
@@ -189,7 +214,7 @@ namespace GUI.Components.Shared
             //image = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Resources/Icons/" + path));
             image = new BitmapImage();
             image.BeginInit();
-            image.StreamSource = Category.Get(category).Icon;
+            image.StreamSource = stream;
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.EndInit();
             image.Freeze();

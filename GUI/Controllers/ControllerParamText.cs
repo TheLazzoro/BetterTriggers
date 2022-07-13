@@ -182,7 +182,8 @@ namespace GUI.Controllers
         {
             this.treeItem = treeItem;
             List<Inline> Inlines = new List<Inline>();
-            var generated = RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, treeItem.paramText));
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(treeItem.triggerElement.function);
+            var generated = RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, treeItem.triggerElement.function.parameters, returnTypes, treeItem.paramText));
 
             // First and last inline must be a string.
             // Otherwise hyperlinks get cut from the treeitem header (WPF black magic).
@@ -243,8 +244,9 @@ namespace GUI.Controllers
                     var function = (Function)parameters[paramIndex];
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
                         inlines.Add(AddHyperlink(parameterFacade, "(", parameters, paramIndex, returnTypes[paramIndex]));
-                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, controller.GetParamText(function)))); // recurse
+                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, function.parameters, _returnTypes, controller.GetParamText(function)))); // recurse
                     }
                     else // whole displayname gets hyperlinked
                     {
@@ -279,11 +281,13 @@ namespace GUI.Controllers
                         varName = Variables.GetVariableNameById(variable.Id);
 
                     inlines.Add(AddHyperlink(parameterFacade, varName, parameters, paramIndex, returnTypes[paramIndex]));
-
+                    List<string> _returnTypes = new List<string>();
+                    _returnTypes.Add("integer");
+                    _returnTypes.Add("integer");
                     if (variable != null && variable.IsArray && !variable.IsTwoDimensions)
-                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeArray(variableRef.arrayIndexValues, "[,~Number,]")));
+                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, variableRef.arrayIndexValues, _returnTypes, "[,~Number,]")));
                     else if (variable != null && variable.IsArray && variable.IsTwoDimensions)
-                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeArray(variableRef.arrayIndexValues, "[,~Number,][,~Number,]")));
+                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, variableRef.arrayIndexValues, _returnTypes, "[,~Number,][,~Number,]")));
                 }
                 else if (parameters[paramIndex] is TriggerRef)
                 {
@@ -348,6 +352,7 @@ namespace GUI.Controllers
             {
                 FontFamily = new FontFamily("Verdana")
             });
+            stringBuilder.Clear();
 
             return inlines;
         }

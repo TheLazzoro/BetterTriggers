@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using static GUI.Components.Shared.TreeItemHeader;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -83,11 +84,11 @@ namespace GUI.Components.TriggerEditor
             List<Parameter> parameters = this.triggerElement.function.parameters;
 
             bool areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
-            if (parameters.Count == 1 && TriggerData.GetParameterReturnTypes(this.triggerElement.function)[0] == "nothing") // hack
-                areParametersValid = true;
             bool isEnabled = triggerElement.isEnabled;
 
-            TreeItemHeader header = new TreeItemHeader(text, category, areParametersValid, isEnabled);
+            TreeItemState state = areParametersValid == true ? TreeItemState.Normal : TreeItemState.HasErrors;
+
+            TreeItemHeader header = new TreeItemHeader(text, category, state, isEnabled);
             this.Header = header;
         }
 

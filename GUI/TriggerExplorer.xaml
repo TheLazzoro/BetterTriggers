@@ -77,7 +77,7 @@
 
     <Grid>
 
-        <TreeView x:Name="treeViewTriggerExplorer" Background="#282828" Foreground="White" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" KeyDown="treeViewTriggerExplorer_KeyDown" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" >
+        <TreeView x:Name="treeViewTriggerExplorer" Background="#282828" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" KeyDown="treeViewTriggerExplorer_KeyDown" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" >
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                 Color="#357EC7" />

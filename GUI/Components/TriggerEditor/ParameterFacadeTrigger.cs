@@ -13,12 +13,14 @@ namespace GUI.Components.TriggerEditor
         private TreeViewTriggerElement treeItem;
         private List<Parameter> parameters;
         private string paramText;
+        List<string> returnTypes;
 
-        public ParameterFacadeTrigger(TreeViewTriggerElement treeItem, string paramText)
+        public ParameterFacadeTrigger(TreeViewTriggerElement treeItem, List<Parameter> parameters, List<string> returnTypes, string paramText)
         {
             this.treeItem = treeItem;
-            this.parameters = treeItem.triggerElement.function.parameters;
+            this.parameters = parameters;
             this.paramText = paramText;
+            this.returnTypes = returnTypes;
         }
 
         public TreeViewTriggerElement GetTreeItem()
@@ -38,7 +40,7 @@ namespace GUI.Components.TriggerEditor
 
         public List<string> GetReturnTypes()
         {
-            return TriggerData.GetParameterReturnTypes(treeItem.triggerElement.function);
+            return returnTypes;
         }
 
         public void SetParameterAtIndex(Parameter parameter, int index)

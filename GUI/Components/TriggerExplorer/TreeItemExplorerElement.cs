@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using static GUI.Components.Shared.TreeItemHeader;
 
 namespace GUI.Components.TriggerExplorer
 {
@@ -39,7 +40,8 @@ namespace GUI.Components.TriggerExplorer
             else
                 categoryName = "TC_WTF";
 
-            this.treeItemHeader = new TreeItemHeader(explorerElement.GetName(), categoryName, Ielement.GetEnabled(), Ielement.GetInitiallyOn());
+            TreeItemState state = Ielement.GetEnabled() == true ? TreeItemState.Normal : TreeItemState.Disabled;
+            this.treeItemHeader = new TreeItemHeader(Ielement.GetName(), categoryName, state, Ielement.GetInitiallyOn());
             this.Header = treeItemHeader;
             this.KeyDown += TreeItemExplorerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
@@ -75,8 +77,6 @@ namespace GUI.Components.TriggerExplorer
             if (this.Ielement == null)
                 return;
 
-            treeItemHeader.SetIcon(categoryName, Ielement.GetEnabled());
-
             if (this.tabItem != null)
             {
                 tabItem.Header = this.Ielement.GetName();
@@ -94,7 +94,7 @@ namespace GUI.Components.TriggerExplorer
             }
         }
 
-        public void Reload(IExplorerElement subject)
+        public void Reload()
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
@@ -148,7 +148,7 @@ namespace GUI.Components.TriggerExplorer
         /// </summary>
         public void OnStateChange()
         {
-            treeItemHeader.SetIcon(categoryName, Ielement.GetEnabled());
+            RefreshHeader();
 
             if (this.tabItem != null)
                 tabItem.Header = this.Ielement.GetName() + " *";
@@ -159,8 +159,6 @@ namespace GUI.Components.TriggerExplorer
 
         public void OnSaved()
         {
-            treeItemHeader.SetIcon(categoryName, Ielement.GetEnabled());
-
             if (this.tabItem != null)
                 tabItem.Header = this.Ielement.GetName();
         }
@@ -193,6 +191,25 @@ namespace GUI.Components.TriggerExplorer
         public void OnRemoteChange()
         {
             editor.OnRemoteChange();
+        }
+
+        public void RefreshHeader()
+        {
+            TreeItemState state = Ielement.GetEnabled() == true ? TreeItemState.Normal : TreeItemState.Disabled;
+            if (Ielement is ExplorerElementTrigger)
+            {
+                ControllerTrigger controllerTrigger = new ControllerTrigger();
+                int invalidCount = controllerTrigger.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
+                if (state != TreeItemState.Disabled && invalidCount > 0)
+                    state = TreeItemState.HasErrorsNoTextColor;
+            }
+            else
+                treeItemHeader.SetIcon(categoryName, state);
+
+
+            treeItemHeader.SetTextEnabled(state, Ielement.GetInitiallyOn());
+            treeItemHeader.SetIcon(categoryName, state);
+            treeItemHeader.SetDisplayText(Ielement.GetName());
         }
     }
 }

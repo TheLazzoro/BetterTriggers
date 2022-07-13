@@ -274,6 +274,8 @@ namespace BetterTriggers
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
+                if(variable.InitialValue is not Constant && variable.InitialValue is not Value)
+                    continue;
 
                 string initialValue = ConvertParametersToJass(variable.InitialValue, variable.Type, new StringBuilder() /* hack */ );
 

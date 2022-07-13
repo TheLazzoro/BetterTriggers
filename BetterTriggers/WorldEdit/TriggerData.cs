@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using War3Net.Build.Info;
+using System.Linq;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -97,8 +98,10 @@ namespace BetterTriggers.WorldEdit
             Category.Create("TC_CONDITION_NEW", s, "???", false);
             s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png", FileMode.Open);
             Category.Create("TC_EVENT", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_trigger-error.png", FileMode.Open);
+            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png", FileMode.Open);
             Category.Create("TC_ERROR", s, "???", false);
+            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png", FileMode.Open);
+            Category.Create("TC_INVALID", s, "???", false);
             s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png", FileMode.Open);
             Category.Create("TC_TRIGGER_NEW", s, "???", false);
             s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png", FileMode.Open);
@@ -242,6 +245,8 @@ namespace BetterTriggers.WorldEdit
                             parameters.Add(new ParameterTemplate() { returnType = _params[i] });
                         }
                     }
+                    // Some actions have 'nothing' as a parameter type. We don't want that.
+                    parameters = parameters.Where(p => p.returnType != "nothing").ToList();
                     identifier = key;
                     functionTemplate = new FunctionTemplate();
                     functionTemplate.identifier = key;

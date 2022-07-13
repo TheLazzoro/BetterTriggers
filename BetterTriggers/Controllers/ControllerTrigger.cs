@@ -320,12 +320,11 @@ namespace BetterTriggers.Controllers
         public int VerifyParameters(List<Parameter> parameters)
         {
             int invalidCount = 0;
-            ControllerMapData controllerMapData = new ControllerMapData();
 
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                if (parameter.identifier == null && TriggerData.GetReturnType(parameter.identifier) != "nothing" && !(parameter is VariableRef) && !(parameter is TriggerRef))
+                if (parameter.identifier == null && !(parameter is VariableRef) && !(parameter is TriggerRef))
                     invalidCount++;
 
                 if (parameter is Function)
@@ -335,6 +334,13 @@ namespace BetterTriggers.Controllers
                 }
             }
 
+            return invalidCount;
+        }
+
+        public int VerifyParametersInTrigger(ExplorerElementTrigger explorerTrigger)
+        {
+            List<Parameter> list = GetParametersFromTrigger(explorerTrigger);
+            int invalidCount = VerifyParameters(list);
             return invalidCount;
         }
 
