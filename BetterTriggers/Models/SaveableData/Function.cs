@@ -12,12 +12,12 @@ namespace BetterTriggers.Models.SaveableData
 
         public override Function Clone()
         {
-            string identifier = null;
-            if (this.identifier != null)
-                identifier = new string(this.identifier);
+            string value = null;
+            if (this.value != null)
+                value = new string(this.value);
 
             Function f = new Function();
-            f.identifier = identifier;
+            f.value = value;
             List<Parameter> parameters = new List<Parameter>();
             
             for (int i = 0; i < this.parameters.Count; i++)
@@ -52,8 +52,8 @@ namespace BetterTriggers.Models.SaveableData
                 }
                 else if (param is Value)
                 {
-                    var value = (Value)param;
-                    cloned = (Value)value.Clone();
+                    var val = (Value)param;
+                    cloned = (Value)val.Clone();
                 }
                 else
                     cloned = (Parameter)param.Clone();

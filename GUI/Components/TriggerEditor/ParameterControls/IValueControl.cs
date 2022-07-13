@@ -10,6 +10,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         Parameter GetSelected();
         event EventHandler SelectionChanged;
         int GetElementCount();
-        void SetDefaultSelection(string identifier);
+        void SetDefaultSelection(string value);
     }
 }

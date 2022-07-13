@@ -20,12 +20,12 @@ namespace BetterTriggers.Controllers
                 if (returnType == "skymodelstring" && (file.ToLower().EndsWith(".mdx") || file.ToLower().EndsWith(".mdl")))
                     imports.Add(new Value()
                     {
-                        identifier = file.Substring(mapDir.Length, file.Length - mapDir.Length),
+                        value = file.Substring(mapDir.Length, file.Length - mapDir.Length),
                     });
                 else if(returnType == "musictheme" && (file.ToLower().EndsWith(".mp3") || file.ToLower().EndsWith(".wav") || file.ToLower().EndsWith(".flac")))
                     imports.Add(new Value()
                     {
-                        identifier = file.Substring(mapDir.Length, file.Length - mapDir.Length),
+                        value = file.Substring(mapDir.Length, file.Length - mapDir.Length),
                     });
             }
 

@@ -226,7 +226,7 @@ namespace GUI.Components
             var inlines = controllerTriggerTreeItem.GenerateParamText(item);
 
             textblockParams.Inlines.AddRange(inlines);
-            textblockDescription.Text = Locale.Translate(item.triggerElement.function.identifier);
+            textblockDescription.Text = Locale.Translate(item.triggerElement.function.value);
         }
 
         // TODO: There are two 'SelectedItemChanged' functions?
@@ -577,7 +577,7 @@ namespace GUI.Components
                 for (int i = 0; i < explorerElementTrigger.trigger.Events.Count; i++)
                 {
                     var _event = explorerElementTrigger.trigger.Events[i];
-                    if(_event.function.identifier == "MapInitializationEvent")
+                    if(_event.function.value == "MapInitializationEvent")
                     {
                         explorerElementTrigger.trigger.RunOnMapInit = true;
                         checkBoxRunOnMapInit.IsChecked = true;
@@ -741,7 +741,7 @@ namespace GUI.Components
             window.ShowDialog();
             TriggerElement selected = window.createdTriggerElement;
 
-            if (selected == null || selected.function.identifier == toReplace.triggerElement.function.identifier)
+            if (selected == null || selected.function.value == toReplace.triggerElement.function.value)
                 return;
 
             TreeViewItem parent = toReplace.Parent as TreeViewItem;

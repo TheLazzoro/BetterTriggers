@@ -248,9 +248,9 @@ namespace BetterTriggers.WorldEdit
             int arrSize = variableDefinition.ArraySize == 0 ? 1 : variableDefinition.ArraySize;
             Parameter initialValue = new Parameter();
             if (TriggerData.ConstantExists(variableDefinition.InitialValue))
-                initialValue = new Constant { identifier = variableDefinition.InitialValue };
+                initialValue = new Constant { value = variableDefinition.InitialValue };
             else if(variableDefinition.InitialValue != "")
-                initialValue = new Value { identifier = variableDefinition.InitialValue };
+                initialValue = new Value { value = variableDefinition.InitialValue };
 
             ExplorerElementVariable variable = new ExplorerElementVariable()
             {
@@ -412,27 +412,27 @@ namespace BetterTriggers.WorldEdit
                 var foreignParam = foreignParameters[i];
 
                 Parameter parameter = null;
-                string identifier = foreignParam.Value;
+                string value = foreignParam.Value;
 
                 // War3Net thingy:
                 // Some functions (boolexpr) have an empty name? Dunno how many more
-                if (string.IsNullOrEmpty(identifier) && foreignParam.Type == TriggerFunctionParameterType.Function)
-                    identifier = foreignParam.Function.Name;
+                if (string.IsNullOrEmpty(value) && foreignParam.Type == TriggerFunctionParameterType.Function)
+                    value = foreignParam.Function.Name;
 
                 switch (foreignParam.Type)
                 {
                     case TriggerFunctionParameterType.Preset:
                         parameter = new Constant()
                         {
-                            identifier = foreignParam.Value,
+                            value = foreignParam.Value,
                         };
                         break;
                     case TriggerFunctionParameterType.Variable:
                         List<Parameter> arrayIndex = new List<Parameter>();
                         if (foreignParam.ArrayIndexer == null)
                         {
-                            arrayIndex.Add(new Value() { identifier = "0" });
-                            arrayIndex.Add(new Value() { identifier = "0" });
+                            arrayIndex.Add(new Value() { value = "0" });
+                            arrayIndex.Add(new Value() { value = "0" });
                         }
                         else
                         {
@@ -440,22 +440,22 @@ namespace BetterTriggers.WorldEdit
                             list.Add(foreignParam.ArrayIndexer);
 
                             arrayIndex = CreateParameters(list);
-                            arrayIndex.Add(new Value() { identifier = "0" });
+                            arrayIndex.Add(new Value() { value = "0" });
                         }
 
                         // In our editor regions, cameras, units etc. are considered values, not variables.
                         if (foreignParam.Value.StartsWith("gg_unit_"))
-                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_unit_", "") };
+                            parameter = new Value() { value = foreignParam.Value.Replace("gg_unit_", "") };
                         else if (foreignParam.Value.StartsWith("gg_item_"))
-                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_item_", "") };
+                            parameter = new Value() { value = foreignParam.Value.Replace("gg_item_", "") };
                         else if (foreignParam.Value.StartsWith("gg_dest_"))
-                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_dest_", "") };
+                            parameter = new Value() { value = foreignParam.Value.Replace("gg_dest_", "") };
                         else if (foreignParam.Value.StartsWith("gg_rct_"))
-                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_rct_", "") };
+                            parameter = new Value() { value = foreignParam.Value.Replace("gg_rct_", "") };
                         else if (foreignParam.Value.StartsWith("gg_cam_"))
-                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_cam_", "") };
+                            parameter = new Value() { value = foreignParam.Value.Replace("gg_cam_", "") };
                         else if (foreignParam.Value.StartsWith("gg_snd_"))
-                            parameter = new Value() { identifier = foreignParam.Value.Replace("gg_snd_", "") };
+                            parameter = new Value() { value = foreignParam.Value.Replace("gg_snd_", "") };
 
                         if (parameter != null)
                             break;
@@ -476,29 +476,29 @@ namespace BetterTriggers.WorldEdit
                         break;
                     case TriggerFunctionParameterType.Function:
                         Function f = new Function();
-                        if (identifier == "DoNothing" && foreignParam.Function != null) // special case for 'ForGroup' single action
+                        if (value == "DoNothing" && foreignParam.Function != null) // special case for 'ForGroup' single action
                         {
-                            f.identifier = foreignParam.Function.Name;
+                            f.value = foreignParam.Function.Name;
                             f.parameters = CreateParameters(foreignParam.Function.Parameters);
                             parameter = f;
                             break;
                         }
 
-                        f.identifier = identifier;
+                        f.value = value;
                         f.parameters = CreateParameters(foreignParam.Function.Parameters);
                         parameter = f;
                         break;
                     case TriggerFunctionParameterType.String:
-                        if (identifier.StartsWith("TRIGSTR"))
+                        if (value.StartsWith("TRIGSTR"))
                         {
-                            string[] split = identifier.Split("_");
+                            string[] split = value.Split("_");
                             string key = split[1];
-                            triggerStrings.TryGetValue(uint.Parse(key), out identifier);
+                            triggerStrings.TryGetValue(uint.Parse(key), out value);
                         }
-                        parameter = new Value() { identifier = identifier };
+                        parameter = new Value() { value = value };
                         break;
                     case TriggerFunctionParameterType.Undefined:
-                        parameter = new Parameter() { identifier = identifier };
+                        parameter = new Parameter() { value = value };
                         break;
                     default:
                         break;

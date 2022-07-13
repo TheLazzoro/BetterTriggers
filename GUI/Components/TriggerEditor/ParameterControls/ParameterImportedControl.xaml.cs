@@ -22,7 +22,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             for (int i = 0; i < imports.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = imports[i].identifier;
+                listItem.Content = imports[i].value;
                 listItem.Tag = imports[i];
 
                 objects.Add(new Searchable()
@@ -30,7 +30,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     Object = listItem,
                     Words = new List<string>()
                     {
-                        imports[i].identifier.ToLower()
+                        imports[i].value.ToLower()
                     },
                 });
             }
@@ -40,15 +40,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listControl.listView.Items.Count)
             {
                 ListViewItem item = listControl.listView.Items[i] as ListViewItem;
-                Value value = item.Tag as Value;
-                if (identifier == value.identifier)
+                Value val = item.Tag as Value;
+                if (value == val.value)
                     found = true;
                 else
                     i++;

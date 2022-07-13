@@ -25,7 +25,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             for (int i = 0; i < values.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = $"{controller.GetFourCCDisplay(values[i].identifier, returnType)}{controller.GetValueName(values[i].identifier, returnType)}";
+                listItem.Content = $"{controller.GetFourCCDisplay(values[i].value, returnType)}{controller.GetValueName(values[i].value, returnType)}";
                 listItem.Tag = values[i];
                 objects.Add(new Searchable()
                 {
@@ -33,7 +33,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     Words = new List<string>()
                     {
                         "PLACEHOLDER",
-                        values[i].identifier.ToLower()
+                        values[i].value.ToLower()
                     },
                 });
             }
@@ -44,15 +44,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listControl.listView.Items.Count)
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
-                var value = item.Tag as Value;
-                if(value.identifier == identifier)
+                var val = item.Tag as Value;
+                if(val.value == value)
                     found = true;
                 else
                     i++;

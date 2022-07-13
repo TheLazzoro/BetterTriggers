@@ -45,7 +45,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     Words = new List<string>()
                     {
                         functions[i].name.ToLower(),
-                        functions[i].identifier.ToLower()
+                        functions[i].value.ToLower()
                     },
                 });
             }
@@ -60,7 +60,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
             int i = 0;
             bool found = false;
@@ -68,7 +68,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var function = item.Tag as FunctionTemplate;
-                if(function.identifier == identifier)
+                if(function.value == value)
                     found = true;
                 else
                     i++;
@@ -94,7 +94,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             var template = (FunctionTemplate)selectedItem.Tag;
             var parameter = new Function()
             {
-                identifier = template.identifier,
+                value = template.value,
                 parameters = template.ConvertParameters(),
             };
             return parameter;
@@ -112,7 +112,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 return;
 
             var function = selectedItem.Tag as FunctionTemplate;
-            textBoxDescription.Text = Locale.Translate(function.identifier);
+            textBoxDescription.Text = Locale.Translate(function.value);
         }
     }
 }

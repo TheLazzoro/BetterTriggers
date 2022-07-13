@@ -6,17 +6,17 @@ namespace BetterTriggers.Models.SaveableData
     [JsonConverter(typeof(BaseConverter))]
     public class Parameter
     {
-        public string identifier; // For convenience, values also use this field.
+        public string value;
 
         public virtual Parameter Clone()
         {
-            string identifier = null;
-            if (this.identifier != null)
-                identifier = new string(this.identifier);
+            string value = null;
+            if (this.value != null)
+                value = new string(this.value);
 
             return new Parameter()
             {
-                identifier = identifier,
+                value = value,
             };
         }
     }

@@ -104,7 +104,7 @@ namespace BetterTriggers.Controllers
                 List<UnitType> unitTypes = UnitTypes.GetAll();
                 for (int i = 0; i < unitTypes.Count; i++)
                 {
-                    if (value.identifier == unitTypes[i].Id)
+                    if (value.value == unitTypes[i].Id)
                     {
                         return true;
                     }
@@ -115,7 +115,7 @@ namespace BetterTriggers.Controllers
                 var units = Units.GetAll();
                 for (int i = 0; i < units.Count; i++)
                 {
-                    if (value.identifier == $"{units[i].ToString()}_{units[i].CreationNumber.ToString("D4")}")
+                    if (value.value == $"{units[i].ToString()}_{units[i].CreationNumber.ToString("D4")}")
                     {
                         return true;
                     }
@@ -126,7 +126,7 @@ namespace BetterTriggers.Controllers
                 List<DestructibleType> destTypes = DestructibleTypes.GetAll();
                 for (int i = 0; i < destTypes.Count; i++)
                 {
-                    if (value.identifier == destTypes[i].DestCode)
+                    if (value.value == destTypes[i].DestCode)
                     {
                         return true;
                     }
@@ -137,7 +137,7 @@ namespace BetterTriggers.Controllers
                 var dests = Destructibles.GetAll();
                 for (int i = 0; i < dests.Count; i++)
                 {
-                    if (value.identifier == $"{dests[i].ToString()}_{dests[i].CreationNumber.ToString("D4")}")
+                    if (value.value == $"{dests[i].ToString()}_{dests[i].CreationNumber.ToString("D4")}")
                     {
                         return true;
                     }
@@ -148,7 +148,7 @@ namespace BetterTriggers.Controllers
                 List<ItemType> itemTypes = ItemTypes.GetAll();
                 for (int i = 0; i < itemTypes.Count; i++)
                 {
-                    if (value.identifier == itemTypes[i].ItemCode)
+                    if (value.value == itemTypes[i].ItemCode)
                     {
                         return true;
                     }
@@ -159,7 +159,7 @@ namespace BetterTriggers.Controllers
                 List<UnitData> itemTypes = Units.GetMapItemsAll();
                 for (int i = 0; i < itemTypes.Count; i++)
                 {
-                    if (value.identifier == $"{itemTypes[i].ToString()}_{itemTypes[i].CreationNumber.ToString("D4")}")
+                    if (value.value == $"{itemTypes[i].ToString()}_{itemTypes[i].CreationNumber.ToString("D4")}")
                     {
                         return true;
                     }
@@ -170,7 +170,7 @@ namespace BetterTriggers.Controllers
                 List<DoodadType> doodadTypes = DoodadTypes.GetAll();
                 for (int i = 0; i < doodadTypes.Count; i++)
                 {
-                    if (value.identifier == doodadTypes[i].DoodCode)
+                    if (value.value == doodadTypes[i].DoodCode)
                     {
                         return true;
                     }
@@ -181,7 +181,7 @@ namespace BetterTriggers.Controllers
                 var abilities = AbilityTypes.GetAll();
                 for (int i = 0; i < abilities.Count; i++)
                 {
-                    if (value.identifier == abilities[i].AbilCode)
+                    if (value.value == abilities[i].AbilCode)
                     {
                         return true;
                     }
@@ -192,7 +192,7 @@ namespace BetterTriggers.Controllers
                 var buffs = BuffTypes.GetAll();
                 for (int i = 0; i < buffs.Count; i++)
                 {
-                    if (value.identifier == buffs[i].BuffCode)
+                    if (value.value == buffs[i].BuffCode)
                     {
                         return true;
                     }
@@ -203,7 +203,7 @@ namespace BetterTriggers.Controllers
                 var tech = UpgradeTypes.GetAll();
                 for (int i = 0; i < tech.Count; i++)
                 {
-                    if (value.identifier == tech[i].UpgradeCode)
+                    if (value.value == tech[i].UpgradeCode)
                     {
                         return true;
                     }
@@ -218,7 +218,7 @@ namespace BetterTriggers.Controllers
                      * have '_' in variable references, but War3Net values have spaces ' ' in them.
                      * Same goes for 'camerasetup' below.
                      */
-                    if (value.identifier.Replace(" ", "_") == regions[i].ToString().Replace(" ", "_"))
+                    if (value.value.Replace(" ", "_") == regions[i].ToString().Replace(" ", "_"))
                     {
                         return true;
                     }
@@ -229,7 +229,7 @@ namespace BetterTriggers.Controllers
                 var cameras = Cameras.GetAll();
                 for (int i = 0; i < cameras.Count; i++)
                 {
-                    if (value.identifier.Replace(" ", "_") == cameras[i].ToString().Replace(" ", "_"))
+                    if (value.value.Replace(" ", "_") == cameras[i].ToString().Replace(" ", "_"))
                     {
                         return true;
                     }

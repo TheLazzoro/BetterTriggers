@@ -40,7 +40,7 @@ namespace GUI
             this.Title = returnType;
 
 
-            if (function != null && function.identifier == "SetVariable")
+            if (function != null && function.value == "SetVariable")
             {
                 ControllerVariable controller = new ControllerVariable();
                 VariableRef variableRef = function.parameters[0] as VariableRef;
@@ -120,7 +120,7 @@ namespace GUI
                 parameterControl = importControl;
             }
             ShowHideTabs(parameterControl);
-            parameterControl.SetDefaultSelection(parameter.identifier);
+            parameterControl.SetDefaultSelection(parameter.value);
 
             if(function == null)
             {

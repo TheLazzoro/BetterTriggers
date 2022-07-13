@@ -4,7 +4,7 @@ namespace BetterTriggers.Models.Templates
 {
     public class ConstantTemplate : ParameterTemplate
     {
-        public string identifier;
+        public string value;
         public string name;
         public string codeText;
 
@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.Templates
         {
             ConstantTemplate clone = (ConstantTemplate)this.MemberwiseClone();
             clone.codeText = new string(codeText);
-            clone.identifier = new string(identifier);
+            clone.value = new string(value);
             clone.name = new string(name);
             clone.returnType = new string(returnType);
 

@@ -61,19 +61,11 @@ namespace GUI.Controllers
                     rootControl.Attach(selectedItem);
                     selectedItem.editor = rootControl;
                 }
-                else if(selectedItem.Ielement is ExplorerElementFolder)
-                {
-                    var categoryControl = new CategoryControl((ExplorerElementFolder)selectedItem.Ielement);
-                    categoryControl.Attach(selectedItem);
-                    selectedItem.editor = categoryControl;
-                }
                 else if (selectedItem.Ielement is ExplorerElementTrigger)
                 {
                     var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
                     triggerControl.Attach(selectedItem);
                     selectedItem.editor = triggerControl;
-                    //if (triggerControl != null)
-                    //    triggerControl.Refresh();
                 }
                 else if (selectedItem.Ielement is ExplorerElementScript)
                 {
@@ -87,6 +79,9 @@ namespace GUI.Controllers
                     variableControl.Attach(selectedItem);
                     selectedItem.editor = variableControl;
                 }
+
+                if (selectedItem.editor == null)
+                    return;
 
                 TabItemBT tabItem = new TabItemBT(selectedItem, tabViewModel);
                 tabViewModel.Tabs.Add(tabItem);

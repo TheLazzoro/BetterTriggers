@@ -39,9 +39,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return 1;
         }
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
-            checkBox.IsChecked = identifier == "true";
+            checkBox.IsChecked = value == "true";
         }
 
         public Parameter GetSelected()
@@ -54,7 +54,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             Value value = new Value()
             {
-                identifier = str,
+                value = str,
             };
 
             return value;

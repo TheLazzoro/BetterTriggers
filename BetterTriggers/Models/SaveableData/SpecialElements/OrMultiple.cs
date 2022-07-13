@@ -9,7 +9,7 @@ namespace BetterTriggers.Models.SaveableData
 
         public OrMultiple()
         {
-            function.identifier = "OrMultiple";
+            function.value = "OrMultiple";
         }
 
         public new OrMultiple Clone()

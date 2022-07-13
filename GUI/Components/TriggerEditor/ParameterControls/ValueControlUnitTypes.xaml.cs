@@ -57,7 +57,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             //comboboxRace.SelectedIndex = 0;
         }
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
             // TODO:
             int selectedIndex = 0;
@@ -65,7 +65,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             bool found = false;
             while (!found && i < unitData.Count)
             {
-                if (unitData[i].Id == identifier)
+                if (unitData[i].Id == value)
                     found = true;
                 else
                     i++;
@@ -195,7 +195,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             this.selectedType = new Value()
             {
-                identifier = unitcode,
+                value = unitcode,
             };
         }
 

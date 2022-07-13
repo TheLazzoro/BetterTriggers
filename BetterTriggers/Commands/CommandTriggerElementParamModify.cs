@@ -49,12 +49,12 @@ namespace BetterTriggers.Commands
                 Parameter value = triggerElement.function.parameters[1];
 
                 // Reset if value type doesn't match variable type
-                if (paramCollection[paramIndex] == setVarParam && paramToAdd.identifier != value.identifier)
+                if (paramCollection[paramIndex] == setVarParam && paramToAdd.value != value.value)
                 {
                     setVarValueOld = value;
                     setVarValueNew = new Parameter()
                     {
-                        identifier = null,
+                        value = null,
                     };
 
                     paramCollection[paramIndex + 1] = setVarValueNew;

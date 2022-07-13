@@ -12,11 +12,11 @@ namespace BetterTriggers.Models.SaveableData
         public override TriggerRef Clone()
         {
             TriggerRef cloned = new TriggerRef();
-            string identifier = null;
-            if (this.identifier != null)
-                identifier = new string(this.identifier);
+            string value = null;
+            if (this.value != null)
+                value = new string(this.value);
 
-            cloned.identifier = identifier;
+            cloned.value = value;
             cloned.TriggerId = TriggerId;
 
             return cloned;

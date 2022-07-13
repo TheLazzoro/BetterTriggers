@@ -206,15 +206,15 @@ namespace BetterTriggers
                     if (parameters[j] is Value)
                     {
                         Value value = parameters[j] as Value;
-                        if (value.identifier == "")
+                        if (value.value == "")
                             continue;
 
                         if (returnTypes[j] == "unit")
-                            generatedVarNames.TryAdd("gg_unit_" + value.identifier, new Tuple<Parameter, string>(value, returnTypes[j]));
+                            generatedVarNames.TryAdd("gg_unit_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
                         else if (returnTypes[j] == "destructable")
-                            generatedVarNames.TryAdd("gg_dest_" + value.identifier, new Tuple<Parameter, string>(value, returnTypes[j]));
+                            generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
                         else if (returnTypes[j] == "item")
-                            generatedVarNames.TryAdd("gg_item_" + value.identifier, new Tuple<Parameter, string>(value, returnTypes[j]));
+                            generatedVarNames.TryAdd("gg_item_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
                     }
                 }
             }
@@ -1397,7 +1397,7 @@ end
                 if (!e.isEnabled)
                     continue;
 
-                if (e.function.identifier == "MapInitializationEvent")
+                if (e.function.value == "MapInitializationEvent")
                 {
                     initialization_triggers.Add(triggerVarName);
                     continue;
@@ -1409,7 +1409,7 @@ end
                     TriggerRef triggerRef = new TriggerRef()
                     {
                         TriggerId = t.trigger.Id,
-                        identifier = triggerVarName,
+                        value = triggerVarName,
                     };
                     clonedEvent.function.parameters.Insert(0, triggerRef);
 
@@ -1463,17 +1463,17 @@ end
             Function f = t.function;
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
 
-            if (f.identifier == "ForLoopAMultiple" || f.identifier == "ForLoopBMultiple")
+            if (f.value == "ForLoopAMultiple" || f.value == "ForLoopBMultiple")
             {
-                string loopIndex = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
-                string loopIndexEnd = f.identifier == "ForLoopAMultiple" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
+                string loopIndex = f.value == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
+                string loopIndexEnd = f.value == "ForLoopAMultiple" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
 
                 script.Append($"{set} {loopIndex}={ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {newline}");
                 script.Append($"{set} {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {newline}");
                 script.Append($"loop{newline}");
                 script.Append($"\texitwhen {loopIndex} > {loopIndexEnd}{newline}");
 
-                if (f.identifier == "ForLoopAMultiple")
+                if (f.value == "ForLoopAMultiple")
                 {
                     ForLoopAMultiple loopA = (ForLoopAMultiple)t;
                     foreach (var action in loopA.Actions)
@@ -1494,7 +1494,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "ForLoopVarMultiple")
+            else if (f.value == "ForLoopVarMultiple")
             {
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
                 VariableRef varRef = (VariableRef)loopVar.function.parameters[0];
@@ -1521,7 +1521,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "IfThenElseMultiple")
+            else if (f.value == "IfThenElseMultiple")
             {
                 IfThenElse ifThenElse = (IfThenElse)t;
 
@@ -1565,15 +1565,15 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "ForForceMultiple" || f.identifier == "ForGroupMultiple")
+            else if (f.value == "ForForceMultiple" || f.value == "ForGroupMultiple")
             {
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.identifier.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
 
                 string pre = string.Empty;
-                if (f.identifier == "ForForceMultiple")
+                if (f.value == "ForForceMultiple")
                 {
                     ForForceMultiple forForce = (ForForceMultiple)t;
                     foreach (var action in forForce.Actions)
@@ -1596,14 +1596,14 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "EnumDestructablesInRectAllMultiple")
+            else if (f.value == "EnumDestructablesInRectAllMultiple")
             {
                 EnumDestructablesInRectAllMultiple enumDest = (EnumDestructablesInRectAllMultiple)t;
 
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.identifier.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumDest.Actions)
@@ -1617,14 +1617,14 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "EnumDestructablesInCircleBJMultiple")
+            else if (f.value == "EnumDestructablesInCircleBJMultiple")
             {
                 EnumDestructiblesInCircleBJMultiple enumDest = (EnumDestructiblesInCircleBJMultiple)t;
 
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.identifier.Substring(0, 27)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value.Substring(0, 27)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, function {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumDest.Actions)
@@ -1638,14 +1638,14 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "EnumItemsInRectBJMultiple")
+            else if (f.value == "EnumItemsInRectBJMultiple")
             {
                 EnumItemsInRectBJ enumItem = (EnumItemsInRectBJ)t;
 
                 string function_name = generate_function_name(triggerName);
 
                 // Remove multiple
-                script.Append($"{call} {f.identifier.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
 
                 string pre = string.Empty;
                 foreach (var action in enumItem.Actions)
@@ -1659,7 +1659,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "AndMultiple")
+            else if (f.value == "AndMultiple")
             {
                 AndMultiple andMultiple = (AndMultiple)t;
                 var verifiedTriggerElements = new List<TriggerElement>();
@@ -1689,7 +1689,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "OrMultiple")
+            else if (f.value == "OrMultiple")
             {
                 OrMultiple orMultiple = (OrMultiple)t;
                 var verifiedTriggerElements = new List<TriggerElement>();
@@ -1739,13 +1739,13 @@ end
             // --- SPECIALLY HANDLED --- //
             // ------------------------- //
 
-            if (f.identifier == "SetVariable")
+            if (f.value == "SetVariable")
             {
                 script.Append($"{set} {ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} = {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}");
                 return script.ToString();
             }
 
-            else if (f.identifier == "WaitForCondition")
+            else if (f.value == "WaitForCondition")
             {
                 script.Append($"loop{newline}");
                 script.Append($"exitwhen({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, true)}){newline}");
@@ -1754,17 +1754,17 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "ReturnAction")
+            else if (f.value == "ReturnAction")
             {
                 return $"return {newline}";
             }
 
-            else if (f.identifier.StartsWith("OperatorCompare"))
+            else if (f.value.StartsWith("OperatorCompare"))
             {
                 return $"{ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}";
             }
 
-            else if (f.identifier == "IfThenElse")
+            else if (f.value == "IfThenElse")
             {
                 script.Append($"if({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, true)}) then {newline}");
                 script.Append($"\t\t{ConvertFunctionToJass((Function)f.parameters[1], pre_actions, triggerName)} {newline}");
@@ -1775,10 +1775,10 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "ForLoopA" || f.identifier == "ForLoopB")
+            else if (f.value == "ForLoopA" || f.value == "ForLoopB")
             {
-                string loopIndex = f.identifier == "ForLoopA" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
-                string loopIndexEnd = f.identifier == "ForLoopA" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
+                string loopIndex = f.value == "ForLoopA" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
+                string loopIndexEnd = f.value == "ForLoopA" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
 
                 script.Append($"{set} {loopIndex}={ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {newline}");
                 script.Append($"{set} {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {newline}");
@@ -1791,7 +1791,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "ForLoopVar")
+            else if (f.value == "ForLoopVar")
             {
                 VariableRef varRef = (VariableRef)f.parameters[0];
                 var explorerVariable = Variables.FindExplorerVariableById(varRef.VariableId);
@@ -1815,11 +1815,11 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "ForForce" || f.identifier == "ForGroup")
+            else if (f.value == "ForForce" || f.value == "ForGroup")
             {
                 string function_name = generate_function_name(triggerName);
 
-                script.Append($"{call} {f.identifier}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
+                script.Append($"{call} {f.value}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
 
                 string pre = string.Empty;
                 pre_actions.Append($"function {function_name} {functionReturnsNothing}{newline}");
@@ -1829,7 +1829,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "AddTriggerEvent")
+            else if (f.value == "AddTriggerEvent")
             {
                 Function addEvent = f.Clone(); // Need to clone because of insert operation below.
                 // Otherwise it's inserted into the saveable object.
@@ -1841,20 +1841,20 @@ end
                 return script.ToString();
             }
 
-            else if (f.identifier == "CustomScriptCode")
+            else if (f.value == "CustomScriptCode")
             {
-                script.Append(f.parameters[0].identifier);
+                script.Append(f.parameters[0].value);
                 return script.ToString();
             }
 
-            else if (TriggerData.GetReturnType(f.identifier) == "boolexpr")
+            else if (TriggerData.GetReturnType(f.value) == "boolexpr")
             {
-                return $"{ConvertParametersToJass(f, TriggerData.GetReturnType(f.identifier), pre_actions, true)}";
+                return $"{ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions, true)}";
             }
 
-            else if (f.identifier == "CommentString")
+            else if (f.value == "CommentString")
             {
-                return $"{newline}// {f.parameters[0].identifier}";
+                return $"{newline}// {f.parameters[0].value}";
             }
 
 
@@ -1862,7 +1862,7 @@ end
             // --- REGULAR CALLS --- //
             // --------------------- //
 
-            script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.identifier), pre_actions)}");
+            script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
 
             return script.ToString();
         }
@@ -1878,9 +1878,9 @@ end
                 Function f = (Function)parameter;
                 f = f.Clone();
                 FunctionTemplate template;
-                TriggerData.FunctionsAll.TryGetValue(f.identifier, out template);
+                TriggerData.FunctionsAll.TryGetValue(f.value, out template);
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
-                f.identifier = template.identifier; // This exists because of triggerdata.txt 'ScriptName' key.
+                f.value = template.value; // This exists because of triggerdata.txt 'ScriptName' key.
 
                 if (returnType == "event")
                     returnTypes.Insert(0, "trigger");
@@ -1892,12 +1892,12 @@ end
 
 
 
-                if (f.identifier == "OperatorInt" || f.identifier == "OperatorReal")
+                if (f.value == "OperatorInt" || f.value == "OperatorReal")
                 {
                     return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions, boolexprIsOn)})";
                 }
 
-                else if (f.identifier == "OperatorString")
+                else if (f.value == "OperatorString")
                 {
                     return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} + {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)})";
                 }
@@ -1919,17 +1919,17 @@ end
 
                     return output;
                 }
-                else if (f.identifier == "GetBooleanAnd")
+                else if (f.value == "GetBooleanAnd")
                 {
                     return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} and {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)})";
                 }
-                else if (f.identifier == "GetBooleanOr")
+                else if (f.value == "GetBooleanOr")
                 {
                     return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} or {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)})";
                 }
 
                 // TODO: COPIED CODE
-                else if (f.identifier.Length >= 15 && f.identifier.Substring(0, 15) == "OperatorCompare")
+                else if (f.value.Length >= 15 && f.value.Substring(0, 15) == "OperatorCompare")
                 {
                     return $"{ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions, boolexprIsOn)}";
                 }
@@ -1939,7 +1939,7 @@ end
                 // --- REGULAR CALLS --- //
                 // --------------------- //
 
-                output += f.identifier + "(";
+                output += f.value + "(";
                 for (int i = 0; i < f.parameters.Count; i++)
                 {
                     Parameter p = f.parameters[i];
@@ -1955,9 +1955,9 @@ end
             {
                 Constant c = (Constant)parameter;
                 if (Types.GetBaseType(returnType) == "string")
-                    output += "\"" + TriggerData.GetConstantCodeText(c.identifier, language) + "\"";
+                    output += "\"" + TriggerData.GetConstantCodeText(c.value, language) + "\"";
                 else
-                    output += TriggerData.GetConstantCodeText(c.identifier, language);
+                    output += TriggerData.GetConstantCodeText(c.value, language);
 
             }
             else if (parameter is VariableRef)
@@ -1997,7 +1997,7 @@ end
 
                 if (Types.GetBaseType(returnType) == "string")
                 {
-                    string value = v.identifier.Replace(@"\", @"\\").Replace("\"", "\\\"").Replace("\r\n", "\\r\\n");
+                    string value = v.value.Replace(@"\", @"\\").Replace("\"", "\\\"").Replace("\r\n", "\\r\\n");
                     if (value.Length < 1024)
                     {
                         output += "\"" + value + "\"";
@@ -2019,21 +2019,21 @@ end
                     output += sb.ToString() + "\"";
                 }
                 else if (IsSomethingCode(returnType))
-                    output += $"{fourCCStart}'{v.identifier}'{fourCCEnd}";
+                    output += $"{fourCCStart}'{v.value}'{fourCCEnd}";
                 else if (returnType == "unit")
-                    output += $"gg_unit_{v.identifier.Replace(" ", "_")}";
+                    output += $"gg_unit_{v.value.Replace(" ", "_")}";
                 else if (returnType == "destructable")
-                    output += $"gg_dest_{v.identifier.Replace(" ", "_")}";
+                    output += $"gg_dest_{v.value.Replace(" ", "_")}";
                 else if (returnType == "item")
-                    output += $"gg_item_{v.identifier.Replace(" ", "_")}";
+                    output += $"gg_item_{v.value.Replace(" ", "_")}";
                 else if (returnType == "rect")
-                    output += $"gg_rct_{v.identifier.Replace(" ", "_")}";
+                    output += $"gg_rct_{v.value.Replace(" ", "_")}";
                 else if (returnType == "camerasetup")
-                    output += $"gg_cam_{v.identifier.Replace(" ", "_")}";
+                    output += $"gg_cam_{v.value.Replace(" ", "_")}";
                 else if (returnType == "sound")
-                    output += $"gg_snd_{v.identifier.Replace(" ", "_")}";
+                    output += $"gg_snd_{v.value.Replace(" ", "_")}";
                 else
-                    output += v.identifier;
+                    output += v.value;
             }
 
             return output;

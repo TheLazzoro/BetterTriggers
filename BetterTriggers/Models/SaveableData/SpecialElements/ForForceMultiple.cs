@@ -9,7 +9,7 @@ namespace BetterTriggers.Models.SaveableData
 
         public ForForceMultiple()
         {
-            function.identifier = "ForForceMultiple";
+            function.value = "ForForceMultiple";
         }
 
         public new ForForceMultiple Clone()

@@ -6,12 +6,12 @@
 
         public override Value Clone()
         {
-            string identifier = null;
-            if (this.identifier != null)
-                identifier = new string(this.identifier);
+            string value = null;
+            if (this.value != null)
+                value = new string(this.value);
             return new Value()
             {
-                identifier = identifier,
+                value = value,
             };
         }
     }

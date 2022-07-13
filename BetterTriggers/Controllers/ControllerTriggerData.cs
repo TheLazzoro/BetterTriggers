@@ -75,7 +75,7 @@ namespace BetterTriggers.Controllers
                 while (enumerator.MoveNext())
                 {
                     var template = enumerator.Current.Value;
-                    if (!template.identifier.Contains("Multiple"))
+                    if (!template.value.Contains("Multiple"))
                         list.Add(template.Clone());
                 }
                 list.ForEach(call => call.returnType = "code");
@@ -158,17 +158,17 @@ namespace BetterTriggers.Controllers
         public string GetParamDisplayName(Parameter parameter)
         {
             if (parameter is Value)
-                return parameter.identifier;
+                return parameter.value;
 
             string displayName;
-            TriggerData.ParamDisplayNames.TryGetValue(parameter.identifier, out displayName);
+            TriggerData.ParamDisplayNames.TryGetValue(parameter.value, out displayName);
             return displayName;
         }
 
         public string GetParamText(Function function)
         {
             string paramText = string.Empty;
-            TriggerData.ParamCodeText.TryGetValue(function.identifier, out paramText);
+            TriggerData.ParamCodeText.TryGetValue(function.value, out paramText);
             return paramText;
         }
 
@@ -176,7 +176,7 @@ namespace BetterTriggers.Controllers
         public string GetCategoryTriggerElement(Function function)
         {
             string category;
-            TriggerData.FunctionCategories.TryGetValue(function.identifier, out category);
+            TriggerData.FunctionCategories.TryGetValue(function.value, out category);
             return category;
         }
     }

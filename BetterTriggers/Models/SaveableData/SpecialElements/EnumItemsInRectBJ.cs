@@ -9,7 +9,7 @@ namespace BetterTriggers.Models.SaveableData
 
         public EnumItemsInRectBJ()
         {
-            function.identifier = "EnumItemsInRectBJMultiple";
+            function.value = "EnumItemsInRectBJMultiple";
         }
 
         public new EnumItemsInRectBJ Clone()

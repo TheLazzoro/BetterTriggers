@@ -39,9 +39,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             handler?.Invoke(this, e);
         }
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
-            textBox.Text = identifier;
+            textBox.Text = value;
         }
 
         public int GetElementCount()
@@ -53,7 +53,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             Value value = new Value()
             {
-                identifier = textBox.Text,
+                value = textBox.Text,
             };
 
             return value;

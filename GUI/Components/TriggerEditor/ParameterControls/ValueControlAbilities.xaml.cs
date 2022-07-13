@@ -33,7 +33,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             for (int i = 0; i < abilities.Count; i++)
             {
                 var ability = abilities[i];
-                Value value = new Value() { identifier = ability.AbilCode };
+                Value value = new Value() { value = ability.AbilCode };
                 ListViewItem item = new ListViewItem();
                 item.Content = $"[{ability.AbilCode}] {ability.DisplayName}";
                 item.Tag = value;
@@ -46,15 +46,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listViewAbilities.Items.Count)
             {
                 var item = listViewAbilities.Items[i] as ListViewItem;
-                var value = item.Tag as Value;
-                if(value.identifier == identifier)
+                var val = item.Tag as Value;
+                if(val.value == value)
                     found = true;
                 else
                     i++;

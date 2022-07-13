@@ -9,13 +9,13 @@
 
         public override Constant Clone()
         {
-            string identifier = null;
-            if (this.identifier != null)
-                identifier = new string(this.identifier);
+            string value = null;
+            if (this.value != null)
+                value = new string(this.value);
 
             return new Constant()
             {
-                identifier = identifier,
+                value = value,
             };
         }
     }

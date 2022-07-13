@@ -126,7 +126,7 @@ namespace GUI.Controllers
                 {
                     // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
-                    var name = controllerTrigger.GetValueName(value.identifier, returnTypes[paramIndex]);
+                    var name = controllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     if (name == null || name == "")
@@ -311,7 +311,7 @@ namespace GUI.Controllers
                 {
                     // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
-                    var name = controllerTrigger.GetValueName(value.identifier, returnTypes[paramIndex]);
+                    var name = controllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     if (name == null || name == "")

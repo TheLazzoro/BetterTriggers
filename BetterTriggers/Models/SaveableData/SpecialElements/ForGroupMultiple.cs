@@ -9,7 +9,7 @@ namespace BetterTriggers.Models.SaveableData
 
         public ForGroupMultiple()
         {
-            function.identifier = "ForGroupMultiple";
+            function.value = "ForGroupMultiple";
         }
 
         public new ForGroupMultiple Clone()

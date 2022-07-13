@@ -9,9 +9,9 @@ namespace BetterTriggers.Utility
 {
     public static class TriggerElementFactory
     {
-        public static TriggerElement Create(string identifier)
+        public static TriggerElement Create(string name)
         {
-            switch (identifier)
+            switch (name)
             {
                 case "IfThenElseMultiple":
                     return new IfThenElse();
@@ -38,7 +38,7 @@ namespace BetterTriggers.Utility
                 case "EnumItemsInRectBJMultiple":
                     return new EnumItemsInRectBJ();
                 default:
-                    return new TriggerElement(identifier);
+                    return new TriggerElement(name);
             }
         }
     }

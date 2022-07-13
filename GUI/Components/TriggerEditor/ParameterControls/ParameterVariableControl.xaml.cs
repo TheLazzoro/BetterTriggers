@@ -43,7 +43,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
             int i = 0;
             bool found = false;
@@ -51,7 +51,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var variableRef = item.Tag as VariableRef;
-                if (variableRef.identifier == identifier)
+                if (variableRef.value == value)
                     found = true;
                 else
                     i++;

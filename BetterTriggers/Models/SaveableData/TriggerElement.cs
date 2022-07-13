@@ -20,9 +20,9 @@ namespace BetterTriggers.Models.SaveableData
         private List<ITriggerElementUI> triggerElementUIs = new List<ITriggerElementUI>();
 
         public TriggerElement() { }
-        public TriggerElement(string identifier)
+        public TriggerElement(string value)
         {
-            this.function.identifier = identifier;
+            this.function.value = value;
         }
 
         public TriggerElement Clone()

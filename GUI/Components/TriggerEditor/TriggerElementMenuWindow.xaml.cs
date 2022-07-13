@@ -62,7 +62,7 @@ namespace GUI.Components.TriggerEditor
                 string categoryStr = Locale.Translate(category.Name);
                 if(categoryStr != "")
                     categoryStr += " - ";
-                string name = templates[i].name != "" ? templates[i].name : templates[i].identifier;
+                string name = templates[i].name != "" ? templates[i].name : templates[i].value;
                 string content = categoryStr + name;
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = content;
@@ -74,12 +74,12 @@ namespace GUI.Components.TriggerEditor
                     Words = new List<string>()
                     {
                         content.ToLower(),
-                        templates[i].identifier.ToLower()
+                        templates[i].value.ToLower()
                     },
                 });
 
                 // default selection
-                if (previous != null && previous.function.identifier == templates[i].identifier)
+                if (previous != null && previous.function.value == templates[i].value)
                 {
                     defaultSelected = listItem;
                     selected = (TriggerElement)listItem.Tag;
@@ -101,7 +101,7 @@ namespace GUI.Components.TriggerEditor
                     return;
 
                 selected = (TriggerElement)item.Tag;
-                textBoxDescription.Text = Locale.Translate(selected.function.identifier);
+                textBoxDescription.Text = Locale.Translate(selected.function.value);
             };
 
             if (selected == null)

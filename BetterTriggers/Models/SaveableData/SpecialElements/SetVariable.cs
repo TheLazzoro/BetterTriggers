@@ -6,7 +6,7 @@
 
         public SetVariable()
         {
-            function.identifier = "SetVariable";
+            function.value = "SetVariable";
         }
 
         public new SetVariable Clone()

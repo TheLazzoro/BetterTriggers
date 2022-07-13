@@ -146,7 +146,7 @@ namespace BetterTriggers.WorldEdit
 
                 ConstantTemplate constant = new ConstantTemplate()
                 {
-                    identifier = key,
+                    value = key,
                     returnType = variableType,
                     name = displayText,
                     codeText = codeText
@@ -168,39 +168,39 @@ namespace BetterTriggers.WorldEdit
         private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary)
         {
             var triggerEvents = data.Sections[sectionName];
-            string identifier = string.Empty;
+            string name = string.Empty;
             FunctionTemplate functionTemplate = null;
             foreach (var _event in triggerEvents)
             {
                 string key = _event.KeyName;
 
-                if (key.ToLower().StartsWith(string.Concat("_", identifier).ToLower())) // ToLower here because Blizzard typo.
+                if (key.ToLower().StartsWith(string.Concat("_", name).ToLower())) // ToLower here because Blizzard typo.
                 {
                     if (key.EndsWith("DisplayName"))
                     {
                         functionTemplate.name = _event.Value.Replace("\"", "");
-                        ParamDisplayNames.Add(identifier, functionTemplate.name);
+                        ParamDisplayNames.Add(name, functionTemplate.name);
                     }
                     else if (key.EndsWith("Parameters"))
                     {
                         functionTemplate.paramText = _event.Value.Replace("\"", "");
-                        ParamCodeText.Add(identifier, functionTemplate.paramText);
+                        ParamCodeText.Add(name, functionTemplate.paramText);
                     }
                     else if (key.EndsWith("Category"))
                     {
                         functionTemplate.category = _event.Value;
-                        FunctionCategories.Add(identifier, functionTemplate.category);
+                        FunctionCategories.Add(name, functionTemplate.category);
                     }
                     else if (key.EndsWith("ScriptName"))
                     {
-                        functionTemplate.identifier = _event.Value;
+                        functionTemplate.value = _event.Value;
                     }
 
                     FunctionTemplate controlValue;
-                    if (!dictionary.TryGetValue(identifier, out controlValue))
+                    if (!dictionary.TryGetValue(name, out controlValue))
                     {
-                        dictionary.Add(identifier, functionTemplate);
-                        FunctionsAll.Add(identifier, functionTemplate);
+                        dictionary.Add(name, functionTemplate);
+                        FunctionsAll.Add(name, functionTemplate);
                     }
                 }
                 else
@@ -247,9 +247,9 @@ namespace BetterTriggers.WorldEdit
                     }
                     // Some actions have 'nothing' as a parameter type. We don't want that.
                     parameters = parameters.Where(p => p.returnType != "nothing").ToList();
-                    identifier = key;
+                    name = key;
                     functionTemplate = new FunctionTemplate();
-                    functionTemplate.identifier = key;
+                    functionTemplate.value = key;
                     functionTemplate.parameters = parameters;
                     functionTemplate.returnType = returnType;
                 }
@@ -260,18 +260,18 @@ namespace BetterTriggers.WorldEdit
 
 
 
-        public static string GetReturnType(string identifier)
+        public static string GetReturnType(string value)
         {
-            if (identifier == null)
+            if (value == null)
                 return null;
 
             FunctionTemplate function;
-            FunctionsAll.TryGetValue(identifier, out function);
+            FunctionsAll.TryGetValue(value, out function);
             if (function != null)
                 return function.returnType;
 
             ConstantTemplate constant;
-            ConstantTemplates.TryGetValue(identifier, out constant);
+            ConstantTemplates.TryGetValue(value, out constant);
             return constant.returnType;
         }
 
@@ -279,7 +279,7 @@ namespace BetterTriggers.WorldEdit
         {
             List<string> list = new List<string>();
 
-            if (f.identifier == "SetVariable")
+            if (f.value == "SetVariable")
             {
                 ControllerVariable controller = new ControllerVariable();
                 VariableRef varRef = f.parameters[0] as VariableRef;
@@ -299,7 +299,7 @@ namespace BetterTriggers.WorldEdit
             }
 
             FunctionTemplate functionTemplate;
-            FunctionsAll.TryGetValue(f.identifier, out functionTemplate);
+            FunctionsAll.TryGetValue(f.value, out functionTemplate);
             functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
             return list;
         }
@@ -321,10 +321,10 @@ namespace BetterTriggers.WorldEdit
             return codeText;
         }
 
-        internal static bool ConstantExists(string identifier)
+        internal static bool ConstantExists(string value)
         {
             ConstantTemplate temp;
-            bool exists = ConstantTemplates.TryGetValue(identifier, out temp);
+            bool exists = ConstantTemplates.TryGetValue(value, out temp);
             return exists;
         }
     }

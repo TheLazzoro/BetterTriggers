@@ -324,7 +324,7 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                if (parameter.identifier == null && !(parameter is VariableRef) && !(parameter is TriggerRef))
+                if (parameter.value == null && !(parameter is VariableRef) && !(parameter is TriggerRef))
                     invalidCount++;
 
                 if (parameter is Function)

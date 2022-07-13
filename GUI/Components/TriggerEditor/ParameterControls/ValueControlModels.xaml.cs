@@ -51,9 +51,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(string identifier)
+        public void SetDefaultSelection(string value)
         {
-            textBoxAsset.Text = identifier;
+            textBoxAsset.Text = value;
         }
 
         public int GetElementCount()
@@ -65,7 +65,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             return  new Value()
             {
-                identifier = textBoxAsset.Text,
+                value = textBoxAsset.Text,
             };
         }
 

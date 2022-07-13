@@ -18,12 +18,12 @@ namespace BetterTriggers.Models.SaveableData
             newArrayIndexValues.Add(arrayIndexValues[0].Clone());
             newArrayIndexValues.Add(arrayIndexValues[1].Clone());
 
-            string identifier = null;
-            if (this.identifier != null)
-                identifier = new string(this.identifier);
+            string value = null;
+            if (this.value != null)
+                value = new string(this.value);
             return new VariableRef()
             {
-                identifier = identifier,
+                value = value,
                 VariableId = VariableId,
                 arrayIndexValues = newArrayIndexValues,
             };
