@@ -15,6 +15,8 @@ using War3Net.Build.Audio;
 using War3Net.Build.Info;
 using War3Net.Build.Providers;
 using War3Net.Common.Extensions;
+using War3Net.Build.Extensions;
+using System.Linq;
 
 namespace BetterTriggers
 {
@@ -274,13 +276,13 @@ namespace BetterTriggers
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
-                if(variable.InitialValue is not Constant && variable.InitialValue is not Value)
-                    continue;
-
                 string initialValue = ConvertParametersToJass(variable.InitialValue, variable.Type, new StringBuilder() /* hack */ );
-
                 if (string.IsNullOrEmpty(initialValue))
                     initialValue = controllerTriggerData.GetTypeInitialValue(variable.Type);
+
+                if (initialValue == "null")
+                    continue;
+
 
                 if (!variable.IsArray && !string.IsNullOrEmpty(initialValue))
                     script.Append($"{set} udg_" + variable.Name + "=" + initialValue + newline);
@@ -345,7 +347,7 @@ namespace BetterTriggers
 
             return value;
         }
-        
+
         private bool IsSomethingCode(string returnType)
         {
             if (
@@ -403,10 +405,88 @@ namespace BetterTriggers
                 var varName = $"gg_unit_{u.ToString()}_{u.CreationNumber.ToString("D4")}";
 
                 Tuple<Parameter, string> value;
-                if (generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
-                    script.Append($"{set} {varName} = BlzCreateUnitWithSkin(Player({owner}), {fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
-                else
-                    script.Append($"{call} BlzCreateUnitWithSkin(Player({owner}), {fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
+                if (!generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
+                    varName = "u";
+
+                script.Append($"\t{set} {varName} = BlzCreateUnitWithSkin(Player({owner}), {fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
+
+                if (u.IsGoldMine())
+                    script.Append($"\t{call} SetResourceAmount({varName}, {u.GoldAmount}){newline}");
+
+                if (u.WaygateDestinationRegionId != -1)
+                {
+                    var destinationRect = Regions.GetAll().Where(region => region.CreationNumber == u.WaygateDestinationRegionId).SingleOrDefault();
+                    if (destinationRect is not null)
+                    {
+                        string regionVar = $"gg_rct_{destinationRect.ToString().Replace(" ", "_")}";
+                        script.Append($"\t{call} WaygateSetDestination({varName}, GetRectCenterX({regionVar}), GetRectCenterY({regionVar})){newline}");
+                        script.Append($"\t{call} WaygateActivate({varName}, true){newline}");
+                    }
+                }
+
+                if (u.CustomPlayerColorId != -1)
+                    script.Append($"\t{call} SetUnitColor({varName}, ConvertPlayerColor({u.CustomPlayerColorId})){newline}");
+
+                if (u.HP != -1)
+                {
+                    script.Append($"\t{set} life = GetUnitState({varName}, UNIT_STATE_LIFE)");
+                    script.Append($"\t{call} SetUnitState({varName}, UNIT_STATE_LIFE, {u.HP}* life){newline}");
+                }
+
+                if (u.MP != -1)
+                    script.Append($"\t{call} SetUnitState({varName}, UNIT_STATE_MANA, {u.MP}){newline}");
+
+                if (u.HeroLevel != 1)
+                    script.Append($"\t{call} SetHeroLevel({varName}, {u.HeroLevel}, false){newline}");
+
+                if (u.HeroStrength != 0)
+                    script.Append($"\t{call} SetHeroStr({varName}, {u.HeroStrength}, true){newline}");
+
+                if (u.HeroAgility != 0)
+                    script.Append($"\t{call} SetHeroAgi({varName}, {u.HeroAgility}, true){newline}");
+
+                if (u.HeroIntelligence != 0)
+                    script.Append($"\t{call} SetHeroInt({varName}, {u.HeroIntelligence}, true){newline}");
+
+                float range;
+                if (u.TargetAcquisition != -1f)
+                {
+                    if (u.TargetAcquisition == -2f)
+                        range = 200f;
+                    else
+                        range = u.TargetAcquisition;
+
+                    script.Append($"\t{call} SetUnitAcquireRange({varName}, {range}){newline}");
+                }
+
+                foreach (var j in u.AbilityData)
+                {
+                    for (uint k = 0; k < j.HeroAbilityLevel; k++)
+                    {
+                        script.Append($"\t{call} SelectHeroSkill({varName}, '{j.ToString()}'){newline}");
+                    }
+
+                    ModifiedAbilityDataExtensions.TryGetOrderOffString(j, out string orderOffString);
+                    //if (j.IsAutocastActive)
+                    if (orderOffString != null)
+                    {
+                        script.Append($"\t{call} IssueImmediateOrder({varName}, \"{orderOffString}\"){newline}");
+                    }
+
+                }
+
+                foreach (var j in u.InventoryData)
+                {
+                    script.Append($"\t{call} UnitAddItemToSlotById({varName}, {fourCCStart}'{Int32Extensions.ToRawcode(j.ItemId)}'{fourCCEnd}, {j.Slot}){newline}");
+                }
+
+                if (u.HasItemTableSets())
+                {
+                    script.Append($"\t{set} t = CreateTrigger(){newline}");
+                    script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_DEATH){newline}");
+                    script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_CHANGE_OWNER){newline}");
+                    script.Append($"\t{call} TriggerAddAction(t, function UnitItemDrops_{u.CreationNumber.ToString("D4")}){newline}");
+                }
             }
 
             script.Append($"{endfunction}{newline}{newline}");
@@ -606,7 +686,8 @@ namespace BetterTriggers
             foreach (var s in music)
             {
                 var id = s.Name;
-                script.Append($"{set} {id} = \"{s.SoundName}\"{newline}");
+                var path = s.FilePath;
+                script.Append($"{set} {id} = \"{path.Replace(@"\", @"\\")}\"{newline}");
             }
 
             script.Append($"{endfunction}{newline}{newline}");
