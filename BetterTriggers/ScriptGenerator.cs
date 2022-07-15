@@ -24,8 +24,6 @@ namespace BetterTriggers
     {
         private List<string> preActions = new List<string>();
 
-        public PreActions() { }
-
         public void Add(string script)
         {
             preActions.Add(script);

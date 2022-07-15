@@ -224,24 +224,6 @@ namespace GUI
             BetterTriggers.Commands.CommandManager.Redo();
         }
 
-        private void btnCut_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox messageBox = new MessageBox("Error", "Not yet implemented");
-            messageBox.ShowDialog();
-        }
-
-        private void btnCopy_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox messageBox = new MessageBox("Error", "Not yet implemented");
-            messageBox.ShowDialog();
-        }
-
-        private void btnPaste_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox messageBox = new MessageBox("Error", "Not yet implemented");
-            messageBox.ShowDialog();
-        }
-
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
             var controller = new ControllerFolder();
@@ -356,16 +338,6 @@ namespace GUI
                 menuItemRedo.Header = "Redo";
         }
 
-        private void menuItemUndo_Click(object sender, RoutedEventArgs e)
-        {
-            BetterTriggers.Commands.CommandManager.Undo();
-        }
-
-        private void menuItemRedo_Click(object sender, RoutedEventArgs e)
-        {
-            BetterTriggers.Commands.CommandManager.Redo();
-        }
-
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Z && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
@@ -381,17 +353,6 @@ namespace GUI
                 ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
                 controller.SaveAll();
             }
-        }
-
-        private void menuSave_Click(object sender, RoutedEventArgs e)
-        {
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.SaveAll();
-        }
-
-        private void menuOpen_Click(object sender, RoutedEventArgs e)
-        {
-            OpenMap();
         }
 
         private void menuItemOptions_Click(object sender, RoutedEventArgs e)
@@ -448,21 +409,9 @@ namespace GUI
             }
         }
 
-        private void menuNew_SubmenuOpened(object sender, RoutedEventArgs e)
+        private bool IsProjectActive()
         {
-            bool isProjectActive = triggerExplorer != null;
-            menuNewCategory.IsEnabled = isProjectActive;
-            menuNewTrigger.IsEnabled = isProjectActive;
-            menuNewScript.IsEnabled = isProjectActive;
-            menuNewVariable.IsEnabled = isProjectActive;
-
-            bool selectedIsTrigger = false;
-            if (isProjectActive && selectedExplorerItem != null)
-                selectedIsTrigger = selectedExplorerItem.editor as TriggerControl != null;
-
-            menuNewEvent.IsEnabled = selectedIsTrigger;
-            menuNewCondition.IsEnabled = selectedIsTrigger;
-            menuNewAction.IsEnabled = selectedIsTrigger;
+            return triggerExplorer != null;
         }
 
         private void OpenProject(string file)
@@ -560,5 +509,159 @@ namespace GUI
 
         }
 
+
+        private void CommandBinding_CanExecute_NewProject(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CommandBinding_Executed_NewProject(object sender, ExecutedRoutedEventArgs e)
+        {
+            NewProject();
+        }
+
+        private void CommandBinding_CanExecute_OpenProject(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CommandBinding_Executed_OpenProject(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenMap();
+        }
+
+        private void CommandBinding_CanExecute_Save(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsProjectActive();
+        }
+
+        private void CommandBinding_Executed_Save(object sender, ExecutedRoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.SaveProject();
+        }
+
+        private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BetterTriggers.Commands.CommandManager.CanUndo();
+
+        }
+
+        private void CommandBinding_Executed_Undo(object sender, ExecutedRoutedEventArgs e)
+        {
+            BetterTriggers.Commands.CommandManager.Undo();
+        }
+
+        private void CommandBinding_CanExecute_Redo(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BetterTriggers.Commands.CommandManager.CanRedo();
+
+        }
+
+        private void CommandBinding_Executed_Redo(object sender, ExecutedRoutedEventArgs e)
+        {
+            BetterTriggers.Commands.CommandManager.Redo();
+        }
+
+        private void CommandBinding_CanExecute_NewCategory(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsProjectActive();
+        }
+
+        private void CommandBinding_Executed_NewCategory(object sender, ExecutedRoutedEventArgs e)
+        {
+            var controller = new ControllerFolder();
+            controller.CreateFolder();
+        }
+
+        private void CommandBinding_CanExecute_NewTrigger(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsProjectActive();
+
+        }
+
+        private void CommandBinding_Executed_NewTrigger(object sender, ExecutedRoutedEventArgs e)
+        {
+            var controller = new ControllerTrigger();
+            controller.CreateTrigger();
+        }
+
+        private void CommandBinding_CanExecute_NewScript(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsProjectActive();
+        }
+
+        private void CommandBinding_Executed_NewScript(object sender, ExecutedRoutedEventArgs e)
+        {
+            var controller = new ControllerScript();
+            controller.CreateScript();
+        }
+
+        private void CommandBinding_CanExecute_NewGlobalVariable(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsProjectActive();
+
+        }
+
+        private void CommandBinding_Executed_NewGlobalVariable(object sender, ExecutedRoutedEventArgs e)
+        {
+            var controller = new ControllerVariable();
+            controller.CreateVariable();
+        }
+
+        private void CommandBinding_CanExecute_NewEvent(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(selectedExplorerItem != null)
+            {
+                var triggerControl = selectedExplorerItem.editor as TriggerControl;
+                e.CanExecute = triggerControl != null;
+            }
+        }
+
+        private void CommandBinding_Executed_NewEvent(object sender, ExecutedRoutedEventArgs e)
+        {
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            triggerControl.CreateEvent();
+        }
+
+        private void CommandBinding_CanExecute_NewCondition(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (selectedExplorerItem != null)
+            {
+                var triggerControl = selectedExplorerItem.editor as TriggerControl;
+                e.CanExecute = triggerControl != null;
+            }
+        }
+
+        private void CommandBinding_Executed_NewCondition(object sender, ExecutedRoutedEventArgs e)
+        {
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            triggerControl.CreateCondition();
+        }
+
+        private void CommandBinding_CanExecute_NewAction(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (selectedExplorerItem != null)
+            {
+                var triggerControl = selectedExplorerItem.editor as TriggerControl;
+                e.CanExecute = triggerControl != null;
+            }
+        }
+
+        private void CommandBinding_Executed_NewAction(object sender, ExecutedRoutedEventArgs e)
+        {
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            triggerControl.CreateAction();
+        }
+
+        private void CommandBinding_CanExecute_CloseProject(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsProjectActive();
+        }
+
+        private void CommandBinding_Executed_CloseProject(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
     }
 }
