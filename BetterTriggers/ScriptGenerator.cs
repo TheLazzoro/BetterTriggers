@@ -20,6 +20,25 @@ using System.Linq;
 
 namespace BetterTriggers
 {
+    class PreActions
+    {
+        private List<string> preActions = new List<string>();
+
+        public PreActions() { }
+
+        public void Add(string script)
+        {
+            preActions.Add(script);
+        }
+
+        public string GetGeneratedActions()
+        {
+            string script = string.Empty;
+            preActions.ForEach(pa => script += pa);
+            return script;
+        }
+    }
+
     public class ScriptGenerator
     {
         ScriptLanguage language;
@@ -29,6 +48,7 @@ namespace BetterTriggers
         Dictionary<string, Tuple<Parameter, string>> generatedVarNames = new Dictionary<string, Tuple<Parameter, string>>(); // [value, [parameter, returnType] ]
         CultureInfo enUS = new CultureInfo("en-US");
 
+        string triggerName = string.Empty;
         List<string> initialization_triggers = new List<string>();
         int nameNumber = 0;
         string newline = System.Environment.NewLine;
@@ -310,7 +330,7 @@ end
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
-                string initialValue = ConvertParametersToJass(variable.InitialValue, variable.Type, new StringBuilder() /* hack */ );
+                string initialValue = ConvertParametersToJass(variable.InitialValue, variable.Type, new PreActions() /* hack */ );
                 if (string.IsNullOrEmpty(initialValue))
                     initialValue = controllerTriggerData.GetTypeInitialValue(variable.Type);
 
@@ -472,7 +492,7 @@ end
 
                 if (u.HP != -1)
                 {
-                    script.Append($"\t{set} life = GetUnitState({varName}, UNIT_STATE_LIFE)");
+                    script.Append($"\t{set} life = GetUnitState({varName}, UNIT_STATE_LIFE){newline}");
                     script.Append($"\t{call} SetUnitState({varName}, UNIT_STATE_LIFE, {u.HP}* life){newline}");
                 }
 
@@ -1477,38 +1497,17 @@ end
                 else
                     script.Append(ConvertGUIToJass(i, initialization_triggers));
             }
-
-
-            // TODO:
-            // Search the trigger script for global unit/destructible definitons
-            /*
-            size_t pos = trigger_script.find("gg_unit", 0);
-            while (pos != std::string::npos) {
-                std::string type = trigger_script.substr(pos + 8, 4);
-                std::string creation_number = trigger_script.substr(pos + 13, 4);
-                unit_variables[creation_number] = type;
-                pos = trigger_script.find("gg_unit", pos + 17);
-            }
-
-            pos = trigger_script.find("gg_dest", 0);
-            while (pos != std::string::npos) {
-                std::string type = trigger_script.substr(pos + 8, 4);
-                std::string creation_number = trigger_script.substr(pos + 13, trigger_script.find_first_not_of("0123456789", pos + 13) - pos - 13);
-                destructable_variables[creation_number] = type;
-                pos = trigger_script.find("gg_dest", pos + 17);
-            }
-            */
         }
 
         public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
         {
-            string triggerName = t.GetName().Replace(" ", "_");
+            triggerName = t.GetName().Replace(" ", "_");
             string triggerVarName = "gg_trg_" + triggerName;
             string triggerActionName = "Trig_" + triggerName + "_Actions";
 
             StringBuilder events = new StringBuilder();
             StringBuilder conditions = new StringBuilder();
-            StringBuilder pre_actions = new StringBuilder();
+            PreActions pre_actions = new PreActions();
             StringBuilder actions = new StringBuilder();
 
             events.Append($"function InitTrig_{triggerName} {functionReturnsNothing}{newline}");
@@ -1527,23 +1526,20 @@ end
                     continue;
                 }
 
-                for (int i = 0; i < e.function.parameters.Count; i++)
+                TriggerElement clonedEvent = e.Clone(); // Need to insert trigger variable at index 0.
+                TriggerRef triggerRef = new TriggerRef()
                 {
-                    TriggerElement clonedEvent = e.Clone(); // Need to insert trigger variable at index 0.
-                    TriggerRef triggerRef = new TriggerRef()
-                    {
-                        TriggerId = t.trigger.Id,
-                        value = triggerVarName,
-                    };
-                    clonedEvent.function.parameters.Insert(0, triggerRef);
+                    TriggerId = t.trigger.Id,
+                    value = triggerVarName,
+                };
+                clonedEvent.function.parameters.Insert(0, triggerRef);
 
-                    string _event = ConvertTriggerElementToJass(clonedEvent, pre_actions, triggerName, false);
-                    events.Append($"{_event} {newline}");
-                }
+                string _event = ConvertTriggerElementToJass(clonedEvent, pre_actions, false);
+                events.Append($"{_event} {newline}");
             }
             foreach (var c in t.trigger.Conditions)
             {
-                string condition = ConvertTriggerElementToJass(c, pre_actions, triggerName, true);
+                string condition = ConvertTriggerElementToJass(c, pre_actions, true);
                 if (condition == "")
                     continue;
 
@@ -1553,7 +1549,7 @@ end
             }
             foreach (var a in t.trigger.Actions)
             {
-                actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, triggerName, false)}{newline}");
+                actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, false)}{newline}");
             }
             actions.Append($"{endfunction}{newline}{newline}{newline}");
 
@@ -1572,13 +1568,13 @@ end
             events.Append($"\t{call} TriggerAddAction({triggerVarName}, {function} {triggerActionName}){newline}");
             events.Append($"{endfunction}{newline}{newline}");
 
-            string finalTrigger = $"{comment} Trigger {triggerName}{newline}{separator}{pre_actions.ToString()}{conditions.ToString()}{actions.ToString()}{separator}{events.ToString()}";
+            string finalTrigger = $"{comment} Trigger {triggerName}{newline}{separator}{pre_actions.GetGeneratedActions()}{conditions.ToString()}{actions.ToString()}{separator}{events.ToString()}";
 
             return finalTrigger;
         }
 
 
-        private string ConvertTriggerElementToJass(TriggerElement t, StringBuilder pre_actions, string triggerName, bool nested)
+        private string ConvertTriggerElementToJass(TriggerElement t, PreActions pre_actions, bool nested)
         {
             if (!t.isEnabled)
                 return "";
@@ -1594,14 +1590,14 @@ end
 
                 script.Append($"{set} {loopIndex}={ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {newline}");
                 script.Append($"{set} {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {newline}");
-                script.Append($"\t{startLoop}{loopIndex} > {loopIndexEnd}{breakLoop}");
+                script.Append($"\t{startLoop}{loopIndex} > {loopIndexEnd}{breakLoop}{newline}");
 
                 if (f.value == "ForLoopAMultiple")
                 {
                     ForLoopAMultiple loopA = (ForLoopAMultiple)t;
                     foreach (var action in loopA.Actions)
                     {
-                        script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
+                        script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                     }
                 }
                 else
@@ -1609,7 +1605,7 @@ end
                     ForLoopBMultiple loopB = (ForLoopBMultiple)t;
                     foreach (var action in loopB.Actions)
                     {
-                        script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
+                        script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                     }
                 }
                 script.Append($"\t{set} {loopIndex}={loopIndex}+1{newline}");
@@ -1633,13 +1629,15 @@ end
 
                 script.Append($"{set} udg_{variable}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(loopVar.function.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}");
+                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
+
                 foreach (var action in loopVar.Actions)
                 {
-                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
+                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
                 script.Append($"\t{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
                 script.Append($"{endloop}{newline}");
+
                 return script.ToString();
             }
 
@@ -1651,7 +1649,8 @@ end
                 List<TriggerElement> conditions = new List<TriggerElement>();
                 ifThenElse.If.ForEach(cond =>
                 {
-                    if (cond.isEnabled)
+                    int emptyParams = controllerTrigger.VerifyParameters(cond.function.parameters);
+                    if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
                 foreach (var condition in conditions)
@@ -1659,7 +1658,7 @@ end
                     if (!condition.isEnabled)
                         continue;
 
-                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
+                    script.Append($"{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
                     if (conditions.IndexOf(condition) != conditions.Count - 1)
                         script.Append("and ");
                 }
@@ -1672,7 +1671,7 @@ end
                     if (!action.isEnabled)
                         continue;
 
-                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
+                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
                 script.Append($"\telse{newline}");
                 foreach (var action in ifThenElse.Else)
@@ -1680,7 +1679,7 @@ end
                     if (!action.isEnabled)
                         continue;
 
-                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}");
+                    script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
                 script.Append($"\t{endif}{newline}");
 
@@ -1695,12 +1694,13 @@ end
                 script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
+                string pre_content = string.Empty;
                 if (f.value == "ForForceMultiple")
                 {
                     ForForceMultiple forForce = (ForForceMultiple)t;
                     foreach (var action in forForce.Actions)
                     {
-                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                        pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                     }
                 }
                 else
@@ -1708,12 +1708,13 @@ end
                     ForGroupMultiple forGroup = (ForGroupMultiple)t;
                     foreach (var action in forGroup.Actions)
                     {
-                        pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                        pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                     }
                 }
-                pre_actions.Append($"function {function_name} {functionReturnsNothing}{newline}");
-                pre_actions.Append(pre);
-                pre_actions.Append($"{newline}{endfunction}{newline}{newline}");
+                pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += pre_content;
+                pre += $"{newline}{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
 
                 return script.ToString();
             }
@@ -1728,13 +1729,15 @@ end
                 script.Append($"{call} {f.value.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
 
                 string pre = string.Empty;
+                string pre_content = string.Empty;
                 foreach (var action in enumDest.Actions)
                 {
-                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                    pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
-                pre_actions.Append($"function {function_name} {functionReturnsNothing}{newline}");
-                pre_actions.Append(pre);
-                pre_actions.Append($"{newline}{endfunction}{newline}{newline}");
+                pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += pre_content;
+                pre += $"{newline}{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
 
                 return script.ToString();
             }
@@ -1749,13 +1752,15 @@ end
                 script.Append($"{call} {f.value.Substring(0, 27)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
+                string pre_content = string.Empty;
                 foreach (var action in enumDest.Actions)
                 {
-                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                    pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
-                pre_actions.Append($"function {function_name} {functionReturnsNothing}{newline}");
-                pre_actions.Append(pre);
-                pre_actions.Append($"{newline}{endfunction}{newline}{newline}");
+                pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += pre_content;
+                pre += $"{newline}{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
 
                 return script.ToString();
             }
@@ -1770,13 +1775,15 @@ end
                 script.Append($"{call} {f.value.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
+                string pre_content = string.Empty;
                 foreach (var action in enumItem.Actions)
                 {
-                    pre += $"\t{ConvertTriggerElementToJass(action, pre_actions, triggerName, false)}{newline}";
+                    pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
-                pre_actions.Append($"function {function_name} {functionReturnsNothing}{newline}");
-                pre_actions.Append(pre);
-                pre_actions.Append($"{newline}{endfunction}{newline}{newline}");
+                pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += pre_content;
+                pre += $"{newline}{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
 
                 return script.ToString();
             }
@@ -1801,7 +1808,7 @@ end
                 script.Append("(");
                 foreach (var condition in verifiedTriggerElements)
                 {
-                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
+                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
 
                     if (verifiedTriggerElements.IndexOf(condition) != verifiedTriggerElements.Count - 1)
                         script.Append("and ");
@@ -1831,7 +1838,7 @@ end
                 script.Append("(");
                 foreach (var condition in verifiedTriggerElements)
                 {
-                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, triggerName, true)} ");
+                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
 
                     if (verifiedTriggerElements.IndexOf(condition) != verifiedTriggerElements.Count - 1)
                         script.Append("or ");
@@ -1842,11 +1849,11 @@ end
             }
             else
 
-                return ConvertFunctionToJass(f, pre_actions, triggerName);
+                return ConvertFunctionToJass(f, pre_actions, nested);
         }
 
 
-        private string ConvertFunctionToJass(Function f, StringBuilder pre_actions, string triggerName)
+        private string ConvertFunctionToJass(Function f, PreActions pre_actions, bool nested)
         {
             StringBuilder script = new StringBuilder();
 
@@ -1889,9 +1896,9 @@ end
             else if (f.value == "IfThenElse")
             {
                 script.Append($"if({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, true)}) then {newline}");
-                script.Append($"\t\t{ConvertFunctionToJass((Function)f.parameters[1], pre_actions, triggerName)} {newline}");
+                script.Append($"\t\t{ConvertFunctionToJass((Function)f.parameters[1], pre_actions, nested)} {newline}");
                 script.Append($"\telse {newline}");
-                script.Append($"\t\t{ConvertFunctionToJass((Function)f.parameters[2], pre_actions, triggerName)} {newline}");
+                script.Append($"\t\t{ConvertFunctionToJass((Function)f.parameters[2], pre_actions, nested)} {newline}");
                 script.Append($"\t{endif} {newline}");
 
                 return script.ToString();
@@ -1904,8 +1911,8 @@ end
 
                 script.Append($"{set} {loopIndex}={ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)} {newline}");
                 script.Append($"{set} {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {newline}");
-                script.Append($"\t{startLoop}{loopIndex} > {loopIndexEnd}{breakLoop}");
-                script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[2], pre_actions, triggerName)} {newline}");
+                script.Append($"\t{startLoop}{loopIndex} > {loopIndexEnd}{breakLoop}{newline}");
+                script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[2], pre_actions, nested)} {newline}");
                 script.Append($"\t{set} {loopIndex}={loopIndex}+1{newline}");
                 script.Append($"{endloop} {newline}");
 
@@ -1927,24 +1934,25 @@ end
 
                 script.Append($"{set} udg_{variable}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{breakLoop}");
-                script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[3], pre_actions, triggerName)} {newline}");
+                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
+                script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[3], pre_actions, nested)} {newline}");
                 script.Append($"\t{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
                 script.Append($"\t{endloop}{newline}");
 
                 return script.ToString();
             }
 
-            else if (f.value == "ForForce" || f.value == "ForGroup")
+            else if (f.value == "ForForce" || f.value == "ForGroup" || f.value == "EnumDestructablesInRectAll" || f.value == "EnumDestructablesInCircleBJ" || f.value == "EnumItemsInRectBJ")
             {
                 string function_name = generate_function_name(triggerName);
 
                 script.Append($"{call} {f.value}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
-                pre_actions.Append($"function {function_name} {functionReturnsNothing}{newline}");
-                pre_actions.Append($"\t{ConvertFunctionToJass(f.parameters[1] as Function, pre_actions, triggerName)}{newline}");
-                pre_actions.Append($"{endfunction}{newline}{newline}");
+                pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += $"\t{ConvertFunctionToJass(f.parameters[1] as Function, pre_actions, nested)}{newline}";
+                pre += $"{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
 
                 return script.ToString();
             }
@@ -1956,7 +1964,7 @@ end
 
                 Function _event = (Function)addEvent.parameters[1];
                 _event.parameters.Insert(0, addEvent.parameters[0]);
-                script.Append($"{ConvertFunctionToJass(_event, pre_actions, triggerName)}{newline}");
+                script.Append($"{ConvertFunctionToJass(_event, pre_actions, nested)}{newline}");
 
                 return script.ToString();
             }
@@ -1981,15 +1989,18 @@ end
             // --------------------- //
             // --- REGULAR CALLS --- //
             // --------------------- //
+            if (!nested)
+                script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
+            else
+                script.Append($"{ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
 
-            script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
 
             return script.ToString();
         }
 
 
 
-        private string ConvertParametersToJass(Parameter parameter, string returnType, StringBuilder pre_actions, bool boolexprIsOn = false)
+        private string ConvertParametersToJass(Parameter parameter, string returnType, PreActions pre_actions, bool boolexprIsOn = false)
         {
             string output = string.Empty;
 
@@ -2010,9 +2021,19 @@ end
                 // --- SPECIAL CALLS --- //
                 // --------------------- //
 
+                if (f.value == "IfThenElse")
+                {
+                    string functionName = generate_function_name(triggerName);
+                    string pre = string.Empty;
+                    pre += $"function {functionName} {functionReturnsNothing} {newline}";
+                    pre += $"{ConvertFunctionToJass(f, pre_actions, true)}";
+                    pre += $"{endfunction}{newline}{newline}";
+                    pre_actions.Add(pre);
 
+                    return $"{function} {functionName}";
+                }
 
-                if (f.value == "OperatorInt" || f.value == "OperatorReal")
+                else if (f.value == "OperatorInt" || f.value == "OperatorReal")
                 {
                     return $"({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions, boolexprIsOn)})";
                 }
@@ -2026,18 +2047,19 @@ end
                 {
                     nameNumber++;
                     string functionName = "BoolExpr_" + nameNumber;
-                    output += $"Condition({function} {functionName})";
+                    string pre = string.Empty;
 
-                    pre_actions.Append($"function {functionName} {functionReturnsBoolean} {newline}");
-                    pre_actions.Append($"\tif( ");
-                    pre_actions.Append(ConvertParametersToJass(f, returnTypes[0], pre_actions, true));
-                    pre_actions.Append($") then {newline}");
-                    pre_actions.Append($"\t\treturn true {newline}");
-                    pre_actions.Append($"\t{endif} {newline}");
-                    pre_actions.Append($"\treturn false {newline}");
-                    pre_actions.Append($"{endfunction}{newline}{newline}");
+                    pre += $"function {functionName} {functionReturnsBoolean} {newline}";
+                    pre += $"\tif( ";
+                    pre += ConvertParametersToJass(f, returnTypes[0], pre_actions, true);
+                    pre += $") then {newline}";
+                    pre += $"\t\treturn true {newline}";
+                    pre += $"\t{endif} {newline}";
+                    pre += $"\treturn false {newline}";
+                    pre += $"{endfunction}{newline}{newline}";
+                    pre_actions.Add(pre);
 
-                    return output;
+                    return $"Condition({function} {functionName})";
                 }
                 else if (f.value == "GetBooleanAnd")
                 {
@@ -2166,10 +2188,6 @@ end
             nameNumber++;
 
             return name;
-            /*
-            auto time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-	        return "Trig_" + trigger_name + "_" + std::to_string(time & 0xFFFFFFFF);
-            */
         }
     }
 }

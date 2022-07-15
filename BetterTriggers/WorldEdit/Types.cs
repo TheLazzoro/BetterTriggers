@@ -44,7 +44,7 @@ namespace BetterTriggers.WorldEdit
                 Select(varType => varType.Value).ToList();
         }
 
-        internal static string GetBaseType(string type)
+        public static string GetBaseType(string type)
         {
             Types varType;
             types.TryGetValue(type, out varType);

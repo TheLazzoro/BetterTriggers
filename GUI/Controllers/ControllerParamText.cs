@@ -77,7 +77,8 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
-                    var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
+                    //var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
+                    var type = Types.GetBaseType(returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     if (variable == null || (variable.Type != type && type != "AnyGlobal" && type != "VarAsString_Real"))
@@ -270,7 +271,8 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
-                    var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
+                    //var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
+                    var type = Types.GetBaseType(returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     if (variable == null || (variable.Type != type && type != "AnyGlobal" && type != "VarAsString_Real"))
