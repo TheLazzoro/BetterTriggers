@@ -26,7 +26,7 @@ namespace GUI
     /// Interaction logic for TriggerExplorer.xaml
     /// </summary>
     /// 
-    public partial class TriggerExplorer : UserControl
+    public partial class TriggerExplorer : UserControl, IDisposable
     {
         internal static TriggerExplorer Current;
 
@@ -54,8 +54,13 @@ namespace GUI
             ContainerProject.OnCreated += ContainerProject_OnElementCreated;
         }
 
+        public void Dispose()
+        {
+            ContainerProject.OnCreated -= ContainerProject_OnElementCreated;
+        }
+
         // This function is invoked by a method in the container when a new file is created.
-        private void ContainerProject_OnElementCreated(object sender, FileSystemEventArgs e)
+        internal void ContainerProject_OnElementCreated(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate
             {

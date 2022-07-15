@@ -27,7 +27,7 @@ namespace BetterTriggers.Containers
         {
             ContainerProject.project = project;
             projectFiles = new List<IExplorerElement>();
-            projectFiles.Add(new ExplorerElementRoot(project, path)); // add root folder for safety measures :))
+            projectFiles.Add(new ExplorerElementRoot(project, path));
             currentSelectedElement = project.Root; // defaults to here when nothing has been selected yet.
 
             if (fileSystemWatcher == null)

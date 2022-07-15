@@ -373,10 +373,18 @@ namespace BetterTriggers.Controllers
             }
         }
 
-        public War3Project GetCurrentProject()
+        public void CloseProject()
         {
-            return ContainerProject.project;
+            SetEnableFileEvents(false);
+            ContainerProject.project = null;
+            ContainerProject.projectFiles = null;
+            ContainerProject.currentSelectedElement = null;
+
+            CustomMapData.mapPath = null;
+
+            CommandManager.Reset();
         }
+
 
         public ExplorerElementRoot GetProjectRoot()
         {

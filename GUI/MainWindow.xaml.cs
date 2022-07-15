@@ -98,11 +98,6 @@ namespace GUI
         }
 
 
-        private void menuNewProject_Click(object sender, RoutedEventArgs e)
-        {
-            NewProject();
-        }
-
         private void CustomMapData_OnSaving(object sender, System.IO.FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate
@@ -156,7 +151,7 @@ namespace GUI
                 return;
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectItem(tabItem.explorerElement, vmd, tabControl);
+            controller.OnSelectTab(tabItem.explorerElement, vmd, tabControl);
             selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
             EnableTriggerElementButtons();
         }
@@ -170,7 +165,7 @@ namespace GUI
             triggerExplorer.currentElement = selectedExplorerItem;
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectItem(selectedExplorerItem, vmd, tabControl);
+            controller.OnSelectTab(selectedExplorerItem, vmd, tabControl);
             EnableTriggerElementButtons();
         }
 
@@ -178,17 +173,9 @@ namespace GUI
         private void EnableTriggerElementButtons()
         {
             if (selectedExplorerItem.editor as TriggerControl != null)
-            {
-                btnCreateEvent.IsEnabled = true;
-                btnCreateCondition.IsEnabled = true;
-                btnCreateAction.IsEnabled = true;
-            }
+                EnableECAButtons(true);
             else
-            {
-                btnCreateEvent.IsEnabled = false;
-                btnCreateCondition.IsEnabled = false;
-                btnCreateAction.IsEnabled = false;
-            }
+                EnableECAButtons(false);
         }
 
         private void ButtonTabItem_Click(object sender, RoutedEventArgs e)
@@ -456,22 +443,33 @@ namespace GUI
             Grid.SetRowSpan(triggerExplorer, 4);
             Grid.SetColumn(triggerExplorer, 0);
 
-            triggerExplorer.treeViewTriggerExplorer.MouseDoubleClick += TreeViewTriggerExplorer_MouseDoubleClick; ; // subscribe to item selection changed event
+            triggerExplorer.treeViewTriggerExplorer.MouseDoubleClick += TreeViewTriggerExplorer_MouseDoubleClick; // subscribe to item selection changed event
             triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TreeViewTriggerExplorer_SelectedItemChanged;
             triggerExplorer.treeViewTriggerExplorer.KeyDown += TreeViewTriggerExplorer_KeyDown;
             triggerExplorer.CreateRootItem();
 
-            // temporary thing
-            btnCreateFolder.IsEnabled = true;
-            btnCreateTrigger.IsEnabled = true;
-            btnCreateScript.IsEnabled = true;
-            btnCreateVariable.IsEnabled = true;
-            btnSaveScript.IsEnabled = true;
-            btnTestMap.IsEnabled = true;
-            btnBuildMap.IsEnabled = true;
+            EnableToolbar(true);
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             controllerTriggerExplorer.Populate(triggerExplorer);
+        }
+
+        private void EnableToolbar(bool enable)
+        {
+            btnCreateFolder.IsEnabled = enable;
+            btnCreateTrigger.IsEnabled = enable;
+            btnCreateScript.IsEnabled = enable;
+            btnCreateVariable.IsEnabled = enable;
+            btnSaveScript.IsEnabled = enable;
+            btnTestMap.IsEnabled = enable;
+            btnBuildMap.IsEnabled = enable;
+        }
+
+        private void EnableECAButtons(bool enable)
+        {
+            btnCreateEvent.IsEnabled = enable;
+            btnCreateCondition.IsEnabled = enable;
+            btnCreateAction.IsEnabled = enable;
         }
 
 
@@ -493,9 +491,15 @@ namespace GUI
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            bool doClose = DoCloseProject();
+            e.Cancel = !doClose;
+        }
+
+        private bool DoCloseProject()
+        {
             ControllerProject controller = new ControllerProject();
             if (controller.GetUnsavedFileCount() == 0)
-                return;
+                return true;
 
             OnCloseWindow onCloseWindow = new OnCloseWindow();
             onCloseWindow.ShowDialog();
@@ -503,10 +507,12 @@ namespace GUI
             {
                 controller.SetEnableFileEvents(false);
                 controller.SaveProject();
+                return true;
             }
             else if (!onCloseWindow.Yes && !onCloseWindow.No)
-                e.Cancel = true;
+                return false;
 
+            return true;
         }
 
 
@@ -539,6 +545,28 @@ namespace GUI
         {
             ControllerProject controller = new ControllerProject();
             controller.SaveProject();
+        }
+
+
+        private void CommandBinding_CanExecute_CloseProject(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = IsProjectActive();
+        }
+
+        private void CommandBinding_Executed_CloseProject(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!DoCloseProject())
+                return;
+
+            vmd.Tabs.Clear();
+            mainGrid.Children.Remove(triggerExplorer);
+            triggerExplorer.Dispose();
+            triggerExplorer = null;
+            EnableToolbar(false);
+            EnableECAButtons(false);
+
+            ControllerProject controller = new ControllerProject();
+            controller.CloseProject();
         }
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
@@ -654,14 +682,5 @@ namespace GUI
             triggerControl.CreateAction();
         }
 
-        private void CommandBinding_CanExecute_CloseProject(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = IsProjectActive();
-        }
-
-        private void CommandBinding_Executed_CloseProject(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
     }
 }

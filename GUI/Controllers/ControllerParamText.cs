@@ -77,11 +77,11 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
-                    //var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
-                    var type = Types.GetBaseType(returnTypes[paramIndex]);
+                    var expectedType = Types.GetBaseType(returnTypes[paramIndex]);
+                    var actualType = Types.GetBaseType(variable.Type);
 
                     // This exists in case a variable has been changed
-                    if (variable == null || (variable.Type != type && type != "AnyGlobal" && type != "VarAsString_Real"))
+                    if (variable == null || (expectedType != actualType && actualType != "AnyGlobal" && actualType != "VarAsString_Real"))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";
@@ -271,11 +271,11 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
-                    //var type = returnTypes[paramIndex] == "integervar" ? "integer" : returnTypes[paramIndex]; // hack
-                    var type = Types.GetBaseType(returnTypes[paramIndex]);
+                    var expectedType = Types.GetBaseType(returnTypes[paramIndex]);
+                    var actualType = Types.GetBaseType(variable.Type);
 
                     // This exists in case a variable has been changed
-                    if (variable == null || (variable.Type != type && type != "AnyGlobal" && type != "VarAsString_Real"))
+                    if (variable == null || (expectedType != actualType && actualType != "AnyGlobal" && actualType != "VarAsString_Real"))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";

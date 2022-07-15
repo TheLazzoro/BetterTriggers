@@ -51,7 +51,7 @@ namespace GUI.Controllers
             controller.SaveProject();
         }
 
-        public void OnSelectItem(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
+        public void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
         {
             if (selectedItem.editor == null || selectedItem.tabItem == null)
             {
