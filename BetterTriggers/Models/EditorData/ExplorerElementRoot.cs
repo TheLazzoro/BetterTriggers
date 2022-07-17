@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace BetterTriggers.Models.EditorData
 {
     public class ExplorerElementRoot : IExplorerElement
     {
-        public War3Project project;
+        public War3Project project { get; }
         public List<IExplorerElement> explorerElements = new List<IExplorerElement>();
         public List<IExplorerElementUI> observers = new List<IExplorerElementUI>();
         private string path;
@@ -29,7 +30,12 @@ namespace BetterTriggers.Models.EditorData
 
         public string GetPath()
         {
-            return project.Root;
+            return ContainerProject.src;
+        }
+
+        public string GetSaveablePath()
+        {
+            throw new NotImplementedException();
         }
 
         public string GetProjectPath()
@@ -158,5 +164,6 @@ namespace BetterTriggers.Models.EditorData
         {
             return null;
         }
+
     }
 }

@@ -95,22 +95,22 @@
                     <Button Content="{Binding}" Margin="0,0,5,5" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-            
-            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
-            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="White" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
-            <CheckBox x:Name="checkBoxIsCustomScript" Content="Custom Script" IsChecked="false" Foreground="White" Margin="10,0,0,0" Click="checkBoxIsCustomScript_Click"/>
-            <CheckBox x:Name="checkBoxRunOnMapInit" Content="Run on Map Initialization" Foreground="White" Margin="10,0,0,0" Click="checkBoxRunOnMapInit_Click"/>
+
+            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
+            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
+            <CheckBox x:Name="checkBoxIsCustomScript" Content="Custom Script" IsChecked="false" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxIsCustomScript_Click"/>
+            <CheckBox x:Name="checkBoxRunOnMapInit" Content="Run on Map Initialization" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxRunOnMapInit_Click"/>
 
         </ItemsControl>
 
-        <Label Content="Trigger Comment:" VerticalAlignment="Top" Foreground="White" Margin="0,24,0,0"/>
+        <Label Content="Trigger Comment:" VerticalAlignment="Top" Foreground="#ccc" Margin="0,24,0,0"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
         <TextBox x:Name="textBoxComment" Background="#FF282828" Foreground="#6A9955" BorderBrush="#00828790" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="textBoxComment_TextChanged"/>
         </ScrollViewer>
         
         <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#00F0F0F0" Margin="0,3,0,0" />
-        <Label Content="Trigger Functions:" VerticalAlignment="Top" Foreground="White" Margin="0,10,0,0" Grid.Row="2"/>
+        <Label Content="Trigger Functions:" VerticalAlignment="Top" Foreground="#ccc" Margin="0,10,0,0" Grid.Row="2"/>
 
         <TreeView x:Name="treeViewTriggers" Background="#282828" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" AllowDrop="True" SelectedItemChanged="treeViewTriggers_SelectedItemChanged" Drop="treeViewTriggers_Drop" KeyDown="treeViewTriggers_KeyDown" MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp">
             <TreeView.Resources>

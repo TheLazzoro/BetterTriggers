@@ -94,10 +94,11 @@ namespace BetterTriggers.WorldEdit
             ControllerProject controller = new ControllerProject();
             string projectPath = controller.CreateProject(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(File.ReadAllText(projectPath));
+            string src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
 
             project.Comment = rootComment;
             project.Header = rootHeader;
-            triggerPaths.Add(0, project.Root);
+            triggerPaths.Add(0, src);
 
             // First, gather all variables names and ids
             for (int i = 0; i < triggers.Variables.Count; i++)
@@ -143,7 +144,7 @@ namespace BetterTriggers.WorldEdit
                 {
                     isEnabled = explorerElement.GetEnabled(),
                     isInitiallyOn = explorerElement.GetInitiallyOn(),
-                    path = explorerElement.GetPath(),
+                    path = explorerElement.GetSaveablePath(),
                 };
 
                 War3ProjectFileEntry parentEnty;

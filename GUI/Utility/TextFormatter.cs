@@ -11,7 +11,6 @@ namespace GUI.Utility
 {
     public static class TextFormatter
     {
-        static string currentColor = string.Empty;
         static string pattern = @"(^[0-9A-F]{8}$)";
         static string colorCode;
 

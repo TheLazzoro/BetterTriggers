@@ -1,6 +1,7 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.SaveableData;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
@@ -28,53 +29,53 @@ namespace GUI
         {
             InitializeComponent();
             instance = this;
-            
+
             vmd = new TabViewModel();
             tabControl.ItemsSource = vmd.Tabs;
 
             BetterTriggers.Init.Initialize();
             CustomMapData.OnSaving += CustomMapData_OnSaving;
 
-            btnNewMap.ToolTip           = Locale.Translate(btnNewMap.ToolTip as string);
+            btnNewMap.ToolTip = Locale.Translate(btnNewMap.ToolTip as string);
             //btnOpenMap.ToolTip          = Locale.Translate(btnOpenMap.ToolTip as string);
-            
-            btnUndo.ToolTip             = Locale.Translate(btnUndo.ToolTip as string);
-            btnRedo.ToolTip             = Locale.Translate(btnRedo.ToolTip as string);
+
+            btnUndo.ToolTip = Locale.Translate(btnUndo.ToolTip as string);
+            btnRedo.ToolTip = Locale.Translate(btnRedo.ToolTip as string);
             // TODO:
             //btnCut.ToolTip              = Locale.Translate(btnCut.ToolTip as string);
             //btnCopy.ToolTip             = Locale.Translate(btnCopy.ToolTip as string);
             //btnPaste.ToolTip            = Locale.Translate(btnPaste.ToolTip as string);
 
-            btnCreateFolder.ToolTip     = Locale.Translate(btnCreateFolder.ToolTip as string);
-            btnCreateTrigger.ToolTip    = Locale.Translate(btnCreateTrigger.ToolTip as string);
-            btnCreateScript.ToolTip     = Locale.Translate(btnCreateScript.ToolTip as string);
-            btnCreateVariable.ToolTip   = Locale.Translate(btnCreateVariable.ToolTip as string);
+            btnCreateFolder.ToolTip = Locale.Translate(btnCreateFolder.ToolTip as string);
+            btnCreateTrigger.ToolTip = Locale.Translate(btnCreateTrigger.ToolTip as string);
+            btnCreateScript.ToolTip = Locale.Translate(btnCreateScript.ToolTip as string);
+            btnCreateVariable.ToolTip = Locale.Translate(btnCreateVariable.ToolTip as string);
 
-            btnCreateEvent.ToolTip      = Locale.Translate(btnCreateEvent.ToolTip as string);
-            btnCreateCondition.ToolTip  = Locale.Translate(btnCreateCondition.ToolTip as string);
-            btnCreateAction.ToolTip     = Locale.Translate(btnCreateAction.ToolTip as string);
-            btnSaveScript.ToolTip       = Locale.Translate(btnSaveScript.ToolTip as string);
+            btnCreateEvent.ToolTip = Locale.Translate(btnCreateEvent.ToolTip as string);
+            btnCreateCondition.ToolTip = Locale.Translate(btnCreateCondition.ToolTip as string);
+            btnCreateAction.ToolTip = Locale.Translate(btnCreateAction.ToolTip as string);
+            btnSaveScript.ToolTip = Locale.Translate(btnSaveScript.ToolTip as string);
 
-            btnTestMap.ToolTip          = Locale.Translate(btnTestMap.ToolTip as string);
-            btnBuildMap.ToolTip         = Locale.Translate(btnBuildMap.ToolTip as string);
+            btnTestMap.ToolTip = Locale.Translate(btnTestMap.ToolTip as string);
+            btnBuildMap.ToolTip = Locale.Translate(btnBuildMap.ToolTip as string);
 
 
-            menuFile.Header             = Locale.Translate(menuFile.Header as string);
+            menuFile.Header = Locale.Translate(menuFile.Header as string);
             //menuOpen.Header             = Locale.Translate(menuOpen.Header as string);
 
 
-            menuEdit.Header             = Locale.Translate(menuEdit.Header as string);
+            menuEdit.Header = Locale.Translate(menuEdit.Header as string);
 
 
-            menuNew.Header              = Locale.Translate(menuNew.Header as string);
-            menuNewCategory.Header      = Locale.Translate(menuNewCategory.Header as string);
-            menuNewTrigger.Header       = Locale.Translate(menuNewTrigger.Header as string);
-            menuNewScript.Header        = Locale.Translate(menuNewScript.Header as string);
-            menuNewVariable.Header      = Locale.Translate(menuNewVariable.Header as string);
+            menuNew.Header = Locale.Translate(menuNew.Header as string);
+            menuNewCategory.Header = Locale.Translate(menuNewCategory.Header as string);
+            menuNewTrigger.Header = Locale.Translate(menuNewTrigger.Header as string);
+            menuNewScript.Header = Locale.Translate(menuNewScript.Header as string);
+            menuNewVariable.Header = Locale.Translate(menuNewVariable.Header as string);
 
-            menuNewEvent.Header         = Locale.Translate(menuNewEvent.Header as string);
-            menuNewCondition.Header     = Locale.Translate(menuNewCondition.Header as string);
-            menuNewAction.Header        = Locale.Translate(menuNewAction.Header as string);
+            menuNewEvent.Header = Locale.Translate(menuNewEvent.Header as string);
+            menuNewCondition.Header = Locale.Translate(menuNewCondition.Header as string);
+            menuNewAction.Header = Locale.Translate(menuNewAction.Header as string);
 
             // TODO:
             //menuJassHelper.Header       = Locale.Translate(menuJassHelper.Header as string);
@@ -84,8 +85,8 @@ namespace GUI
             //menuEnableOptimizer.Header  = Locale.Translate(menuEnableOptimizer.Header as string);
 
 
-            menuTools.Header            = Locale.Translate(menuTools.Header as string);
-            menuItemOptions.Header      = Locale.Translate(menuItemOptions.Header as string);
+            menuTools.Header = Locale.Translate(menuTools.Header as string);
+            menuItemOptions.Header = Locale.Translate(menuItemOptions.Header as string);
         }
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace GUI
 
         private void TreeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
                 OpenExplorerElement();
         }
 
@@ -180,9 +181,12 @@ namespace GUI
 
         private void ButtonTabItem_Click(object sender, RoutedEventArgs e)
         {
-            var btn = (Button) e.Source;
+            var btn = (Button)e.Source;
             TabItemBT tabItem = (TabItemBT)btn.DataContext;
             tabItem.Close();
+
+            if (tabControl.Items.Count == 0)
+                EnableECAButtons(false);
         }
 
         private void btnNewMap_Click(object sender, RoutedEventArgs e)
@@ -285,7 +289,7 @@ namespace GUI
         private void btnBuildMap_Click(object sender, RoutedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
-            if(!controller.War3MapDirExists())
+            if (!controller.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
                 window.ShowDialog();
@@ -297,7 +301,8 @@ namespace GUI
             try
             {
                 controller.BuildMap();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox dialogBox = new MessageBox("Error", ex.Message);
                 dialogBox.ShowDialog();
@@ -404,14 +409,18 @@ namespace GUI
         private void OpenProject(string file)
         {
             ControllerProject controllerProject = new ControllerProject();
-            var project = controllerProject.LoadProject(file);
-
-            if (project == null)
+            War3Project project = null;
+            try
             {
-                MessageBox dialog = new MessageBox("Error", $"File '{file}' does not exist.");
+                project = controllerProject.LoadProject(file);
+            }
+            catch (Exception ex)
+            {
+                MessageBox dialog = new MessageBox("Error", ex.Message);
                 dialog.ShowDialog();
                 return;
             }
+
             if (!controllerProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
@@ -430,6 +439,7 @@ namespace GUI
             {
                 var parent = (Grid)triggerExplorer.Parent;
                 parent.Children.Remove(triggerExplorer);
+                triggerExplorer.Dispose();
             }
             triggerExplorer = new TriggerExplorer();
             TriggerExplorer.Current = triggerExplorer;
@@ -639,7 +649,7 @@ namespace GUI
 
         private void CommandBinding_CanExecute_NewEvent(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(selectedExplorerItem != null)
+            if (selectedExplorerItem != null)
             {
                 var triggerControl = selectedExplorerItem.editor as TriggerControl;
                 e.CanExecute = triggerControl != null;

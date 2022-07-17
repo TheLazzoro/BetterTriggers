@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="White" Margin="5,5,0,0" Click="checkBoxIsEnabled_Click" />
+        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="#ccc" Margin="5,5,0,0" Click="checkBoxIsEnabled_Click" />
 
     </Grid>
 </UserControl>

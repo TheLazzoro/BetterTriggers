@@ -669,8 +669,8 @@
 
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Height="21" Width="100" >
-                        <TextBlock Width="80" Text="{Binding Header}" ToolTip="{Binding Header}" />
+                    <StackPanel Orientation="Horizontal" Height="21" >
+                        <TextBlock Width="auto" Text="{Binding Header}" ToolTip="{Binding Header}" />
                         <Button Style="{DynamicResource ButtonStyle1}" Width="20" Height="20" Click="ButtonTabItem_Click" >
                             <Button.Content>
                                 <Image Source="Resources/Icons/close-tab.png" Stretch="None"/>
@@ -690,10 +690,10 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TabItem">
-                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="#333" CornerRadius="2,2,0,0" Margin="2,0" >
+                                <Border Name="Border" BorderThickness="1,1,1,0" HorizontalAlignment="Stretch" Width="auto" BorderBrush="#333" CornerRadius="2,2,0,0" Margin="2,0" >
                                     <ContentPresenter x:Name="ContentSite"
                                         VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
+                                        HorizontalAlignment="Stretch"
                                         ContentSource="Header"
                                         Margin="10,2"/>
                                 </Border>

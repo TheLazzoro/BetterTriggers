@@ -22,10 +22,6 @@ using BetterTriggers.Models.EditorData;
 
 namespace GUI
 {
-    /// <summary>
-    /// Interaction logic for TriggerExplorer.xaml
-    /// </summary>
-    /// 
     public partial class TriggerExplorer : UserControl, IDisposable
     {
         internal static TriggerExplorer Current;
@@ -42,7 +38,7 @@ namespace GUI
         int insertIndex = 0; // used when a file is moved from one location to the other.
                              // We can use it when the user wants to drop a file at a specific index.
 
-        // attaches to a treeviewitem
+        // Visual indicators for TreeViewItem
         AdornerLayer adorner;
         TreeItemAdornerLine lineIndicator;
         TreeItemAdornerSquare squareIndicator;

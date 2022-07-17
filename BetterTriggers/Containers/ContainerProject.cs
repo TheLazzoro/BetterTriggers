@@ -10,6 +10,7 @@ namespace BetterTriggers.Containers
 {
     public class ContainerProject
     {
+        public static string src;
         public static War3Project project;
         public static List<IExplorerElement> projectFiles;
         public static string currentSelectedElement;
@@ -23,12 +24,13 @@ namespace BetterTriggers.Containers
         public static string deletedPath = string.Empty;
         public static int insertIndex = 0;
 
-        public void NewProject(War3Project project, string path)
+        public void LoadProject(War3Project project, string projectPath, string src)
         {
+            ContainerProject.src = src;
             ContainerProject.project = project;
             projectFiles = new List<IExplorerElement>();
-            projectFiles.Add(new ExplorerElementRoot(project, path));
-            currentSelectedElement = project.Root; // defaults to here when nothing has been selected yet.
+            projectFiles.Add(new ExplorerElementRoot(project, projectPath));
+            currentSelectedElement = src; // defaults to here when nothing has been selected yet.
 
             if (fileSystemWatcher == null)
             {
@@ -40,7 +42,7 @@ namespace BetterTriggers.Containers
                 fileSystemWatcher.Error += FileSystemWatcher_Error;
             }
 
-            fileSystemWatcher.Path = project.Root;
+            fileSystemWatcher.Path = src;
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
             fileSystemWatcher.InternalBufferSize = 32768; // 32 KB. 64 KB is the limit according to Microsoft.

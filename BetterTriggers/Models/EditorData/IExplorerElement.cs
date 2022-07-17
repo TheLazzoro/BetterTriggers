@@ -10,6 +10,7 @@ namespace BetterTriggers.Models.EditorData
     {
         int GetId();
         string GetPath();
+        string GetSaveablePath(); // Used in the project file.
         void SetPath(string newPath);
         string GetName();
         long GetSize();

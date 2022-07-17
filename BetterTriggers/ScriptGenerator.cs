@@ -318,8 +318,7 @@ end
             script.Append(newline);
 
             // Map header
-            var root = (ExplorerElementRoot)ContainerProject.projectFiles[0];
-            script.Append(root.project.Header + newline + newline);
+            script.Append(ContainerProject.project.Header + newline + newline);
 
 
             // Init global variables

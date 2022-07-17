@@ -48,9 +48,9 @@ namespace GUI
             string hint = string.Empty;
             if ((bool)radBtnLua.IsChecked)
             {
-                hint += "Lua benefits:\n";
-                hint += "- General-purpose language\n";
-                hint += "- More advanced features\n";
+                //hint += "Lua benefits:\n";
+                //hint += "- General-purpose language\n";
+                //hint += "- More advanced features\n";
             }
 
             lblLanguageHint.Text = hint;

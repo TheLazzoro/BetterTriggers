@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,21 +17,27 @@ using System.Windows.Shapes;
 
 namespace GUI
 {
-    /// <summary>
-    /// Interaction logic for ConvertTriggersWindow.xaml
-    /// </summary>
     public partial class ConvertTriggersWindow : Window
     {
         bool MapExists;
         bool DestinationDirectoryExists;
         bool FinalPathAlreadyExists;
         string FinalPath = string.Empty;
+        string mapPath;
+
+        BackgroundWorker worker;
 
         public ConvertTriggersWindow()
         {
             InitializeComponent();
             Owner = MainWindow.GetMainWindow();
+
+            worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += WorkerVerify_DoWork;
+            worker.ProgressChanged += WorkerVerify_ProgressChanged;
         }
+
 
         private void btnSelectMap_Click(object sender, RoutedEventArgs e)
         {
@@ -75,8 +82,28 @@ namespace GUI
             if (!VerifyPaths())
                 return;
 
+            mapPath = lblMap.Text;
+            btnCancel.IsEnabled = false;
+            btnConvert.Visibility = Visibility.Hidden;
+            progressBar.Visibility = Visibility.Visible;
+            lblConverting.Visibility = Visibility.Visible;
+            worker.RunWorkerAsync();
+        }
+
+        private void WorkerVerify_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            btnCancel.IsEnabled = true;
+            btnCancel.Content = "OK";
+            lblConverting.Content = "Conversion Complete!";
+            progressBar.IsIndeterminate = false;
+            progressBar.Value = 100;
+        }
+
+        private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
+        {
             TriggerConverter converter = new TriggerConverter();
-            converter.Convert(lblMap.Text, FinalPath);
+            converter.Convert(mapPath, FinalPath);
+            (sender as BackgroundWorker).ReportProgress(100);
         }
     }
 }

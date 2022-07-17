@@ -34,7 +34,6 @@ namespace BetterTriggers.Controllers
                 Name = name,
                 Language = language == ScriptLanguage.Jass ? "jass" : "lua",
                 Header = "",
-                Root = src,
                 Files = new List<War3ProjectFileEntry>(),
                 War3MapDirectory = mapFolder
             };
@@ -60,9 +59,6 @@ namespace BetterTriggers.Controllers
                     File.WriteAllBytes(Path.Combine(mapFolder, filename), content);
                 }
             }
-
-            ContainerProject container = new ContainerProject();
-            container.NewProject(project, projectPath);
 
             return projectPath;
         }
@@ -125,10 +121,10 @@ namespace BetterTriggers.Controllers
                 //BlockSize = 3,
             };
 
-            string rootDir = Path.GetDirectoryName(project.Root);
+            string src = Path.GetDirectoryName(ContainerProject.src);
             string fullPath = string.Empty;
             if (destinationDir == null)
-                fullPath = Path.Combine(rootDir, Path.Combine("dist", Path.GetFileName(mapDir)));
+                fullPath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
             else
             {
                 Settings settings = Settings.Load();
@@ -195,6 +191,8 @@ namespace BetterTriggers.Controllers
             Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{fullPath}\"");
         }
 
+
+        private string src;
         /// <summary>
         /// Loads all files from a given project into the container
         /// </summary>
@@ -203,25 +201,29 @@ namespace BetterTriggers.Controllers
             ControllerRecentFiles controllerRecentFiles = new ControllerRecentFiles();
 
             if (!File.Exists(filepath))
-            {
-                controllerRecentFiles.RemoveRecentByPath(filepath);
-                return null;
-            }
+                throw new Exception($"File '{filepath}' does not exist.");
 
             string json = File.ReadAllText(filepath);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(json);
+            if (project == null)
+                throw new Exception($"File '{filepath}' does not exist.");
+
+            if (project.Name == null)
+                throw new Exception("Not a valid project file.");
+
+            src = Path.Combine(Path.GetDirectoryName(filepath), "src");
             ContainerProject container = new ContainerProject();
-            container.NewProject(project, filepath);
+            container.LoadProject(project, filepath, src);
             var projectRootEntry = new War3ProjectFileEntry()
             {
                 isEnabled = true,
                 isInitiallyOn = true,
-                path = project.Root,
+                path = "",
                 Files = project.Files,
             };
 
             // get all files
-            string[] files = Directory.GetFileSystemEntries(project.Root, "*", SearchOption.AllDirectories);
+            string[] files = Directory.GetFileSystemEntries(src, "*", SearchOption.AllDirectories);
             List<string> fileCheckList = new List<string>();
             fileCheckList.AddRange(files);
 
@@ -261,30 +263,31 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < entryParent.Files.Count; i++)
             {
                 var entryChild = entryParent.Files[i];
+                string path = Path.Combine(src, entryChild.path);
                 IExplorerElement explorerElementChild = null;
 
-                if (File.Exists(entryChild.path) || Directory.Exists(entryChild.path))
+                if (File.Exists(path) || Directory.Exists(path))
                 {
-                    fileCheckList.Remove(entryChild.path);
+                    fileCheckList.Remove(path);
 
                     // Add item to appropriate container
                     switch (Path.GetExtension(entryChild.path))
                     {
                         case "":
-                            explorerElementChild = new ExplorerElementFolder(entryChild.path);
+                            explorerElementChild = new ExplorerElementFolder(path);
                             Folders.AddFolder(explorerElementChild as ExplorerElementFolder);
                             break;
                         case ".trg":
-                            explorerElementChild = new ExplorerElementTrigger(entryChild.path);
+                            explorerElementChild = new ExplorerElementTrigger(path);
                             Triggers.AddTrigger(explorerElementChild as ExplorerElementTrigger);
                             break;
                         case ".j":
                         case ".lua":
-                            explorerElementChild = new ExplorerElementScript(entryChild.path);
+                            explorerElementChild = new ExplorerElementScript(path);
                             Scripts.AddScript(explorerElementChild as ExplorerElementScript);
                             break;
                         case ".var":
-                            explorerElementChild = new ExplorerElementVariable(entryChild.path);
+                            explorerElementChild = new ExplorerElementVariable(path);
                             Variables.AddVariable(explorerElementChild as ExplorerElementVariable);
                             break;
                         default:
@@ -332,7 +335,7 @@ namespace BetterTriggers.Controllers
                 var element = root.explorerElements[i];
 
                 var fileEntry = new War3ProjectFileEntry();
-                fileEntry.path = element.GetPath();
+                fileEntry.path = element.GetSaveablePath();
                 fileEntry.isEnabled = element.GetEnabled();
                 fileEntry.isInitiallyOn = element.GetInitiallyOn();
 
@@ -360,7 +363,7 @@ namespace BetterTriggers.Controllers
 
                 // TODO: DUPLICATE CODE!!
                 var fileEntryChild = new War3ProjectFileEntry();
-                fileEntryChild.path = element.GetPath();
+                fileEntryChild.path = element.GetSaveablePath();
                 fileEntryChild.isEnabled = element.GetEnabled();
                 fileEntryChild.isInitiallyOn = element.GetInitiallyOn();
 

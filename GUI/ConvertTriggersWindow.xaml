@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
         
-        Title="ConvertTriggersWindow" WindowStartupLocation="CenterOwner" Height="225" Width="430" Background="#FF202020" ResizeMode="NoResize">
+        Title="ConvertTriggersWindow" WindowStartupLocation="CenterOwner" Height="270" Width="430" Background="#FF202020" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
@@ -20,6 +20,8 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
@@ -31,8 +33,11 @@
         <Button x:Name="btnDestination" Width="80" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="btnDestination_Click">Select...</Button>
         <TextBlock x:Name="lblDestination" Grid.Column="1" Grid.Row="3" Foreground="#eee" VerticalAlignment="Bottom" Margin="100,0,0,0" TextTrimming="WordEllipsis" >N/A</TextBlock>
 
-        <Button x:Name="btnConvert" IsEnabled="False" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" Click="btnConvert_Click" >Convert</Button>
-        <Button x:Name="btnCancel" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" Margin="0,0,80,0" IsCancel="True">Cancel</Button>
+        <Label x:Name="lblConverting" Visibility="Hidden" Grid.Row="4" Grid.Column="1" Foreground="#ccc" VerticalContentAlignment="Bottom">Converting...</Label>
+        <ProgressBar x:Name="progressBar" Visibility="Hidden" Grid.Row="5" Grid.Column="1" IsIndeterminate="True" />
+
+        <Button x:Name="btnCancel" Grid.Column="1" Grid.Row="7" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" IsCancel="True">Cancel</Button>
+        <Button x:Name="btnConvert" IsEnabled="False" Grid.Column="1" Grid.Row="7" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" Click="btnConvert_Click" Margin="0,0,85,0" >Convert</Button>
 
     </Grid>
 </Window>

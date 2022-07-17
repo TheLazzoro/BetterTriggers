@@ -36,6 +36,22 @@ namespace BetterTriggers.Models.EditorData
             return path;
         }
 
+        public string GetSaveablePath()
+        {
+            string path = this.path;
+            while (true)
+            {
+                path = Path.GetDirectoryName(path);
+                if (Path.GetFileName(path) == "src")
+                {
+                    path = path + "\\";
+                    path = this.path.Replace(path, "");
+                    break;
+                }
+            }
+            return path;
+        }
+
         public void SetPath(string newPath)
         {
             this.path = newPath;
