@@ -54,9 +54,7 @@ namespace Tests
 
             Assert.AreEqual("jass", project.Language);
             Assert.AreEqual(name, project.Name);
-            Assert.AreEqual(project.Root, directory + @"\" + name + @"\" + "src");
 
-            Assert.IsTrue(Directory.Exists(project.Root), "Directory does not exist.");
             Assert.IsTrue(File.Exists(projectPath), "Project file does not exist.");
         }
 
@@ -66,9 +64,6 @@ namespace Tests
             ControllerProject controller = new ControllerProject();
             var loadedProject = controller.LoadProject(projectPath);
 
-            Console.WriteLine(project.Root);
-            Console.WriteLine(loadedProject.Root);
-            Assert.AreEqual(project.Root, loadedProject.Root);
             Assert.AreEqual(project.Name, loadedProject.Name);
             Assert.AreEqual(project.Language, loadedProject.Language);
         }
