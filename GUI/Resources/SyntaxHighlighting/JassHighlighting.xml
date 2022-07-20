@@ -1,7 +1,8 @@
 <SyntaxDefinition name="vJass"
         xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
     <Color name="Comment" foreground="#6A9955" />
-    <Color name="String" foreground="#CE9178" />
+  <Color name="String" foreground="#CE9178" />
+  <Color name="Numbers" foreground="#B5CEA8" />
 
     <!-- This is the main ruleset. -->
     <RuleSet>
@@ -15,6 +16,15 @@
                 <!-- nested span for escape sequences -->
                 <Span begin="\\" end="." />
             </RuleSet>
+        </Span>
+
+        <Span color="Numbers">
+          <Begin>'</Begin>
+          <End>'</End>
+          <RuleSet>
+            <!-- nested span for escape sequences -->
+            <Span begin="\\" end="." />
+          </RuleSet>
         </Span>
 
         <!-- OPERATORS -->

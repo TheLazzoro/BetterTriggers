@@ -119,7 +119,7 @@
                 </Style.Resources>
             </Style>
 
-
+            
             <!-- SCROLLBAR -->
             <!-- SrollViewer ScrollBar Repeat Buttons (at each end) -->
             <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">

@@ -41,7 +41,11 @@ namespace BetterTriggers.WorldEdit
 
         internal static string GetName(string abilcode)
         {
-            return GetAbilityType(abilcode).DisplayName;
+            AbilityType abilityType = GetAbilityType(abilcode);
+            if (abilityType == null)
+                return null;
+
+            return abilityType.DisplayName;
         }
 
         internal static void Load()

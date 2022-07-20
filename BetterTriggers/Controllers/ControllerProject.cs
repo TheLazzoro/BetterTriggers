@@ -222,6 +222,12 @@ namespace BetterTriggers.Controllers
                 Files = project.Files,
             };
 
+            // Clear containers.
+            Folders.Clear();
+            Triggers.Clear();
+            Scripts.Clear();
+            Variables.Clear();
+
             // get all files
             string[] files = Directory.GetFileSystemEntries(src, "*", SearchOption.AllDirectories);
             List<string> fileCheckList = new List<string>();
@@ -319,8 +325,11 @@ namespace BetterTriggers.Controllers
                 if (unsaved[i] is IExplorerSaveable)
                 {
                     var saveable = (IExplorerSaveable)unsaved[i];
-                    File.WriteAllText(unsaved[i].GetPath(), saveable.GetSaveableString());
-                    saveable.OnSaved();
+                    if (File.Exists(unsaved[i].GetPath())) // Edge case when a folder containing the file was deleted.
+                    {
+                        File.WriteAllText(unsaved[i].GetPath(), saveable.GetSaveableString());
+                        saveable.OnSaved();
+                    }
                 }
             }
             UnsavedFiles.Clear();

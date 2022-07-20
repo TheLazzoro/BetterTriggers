@@ -43,7 +43,11 @@ namespace BetterTriggers.WorldEdit
 
         internal static string GetName(string upgradecode)
         {
-            return GetUpgradeType(upgradecode).DisplayName;
+            UpgradeType upgradeType = GetUpgradeType(upgradecode);
+            if (upgradeType == null)
+                return null;
+
+            return upgradeType.DisplayName;
         }
 
         internal static void Load()

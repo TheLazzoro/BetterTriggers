@@ -43,7 +43,11 @@ namespace BetterTriggers.WorldEdit
 
         internal static string GetName(string buffcode)
         {
-            return GetBuffType(buffcode).DisplayName;
+            BuffType buffType = GetBuffType(buffcode);
+            if (buffType == null)
+                return null;
+
+            return buffType.DisplayName;
         }
 
         internal static void Load()

@@ -340,6 +340,8 @@ namespace GUI
             menuPaste.IsEnabled = controller.GetCopiedElement() != null;
             menuElementEnabled.IsChecked = rightClickedElement.Ielement.GetEnabled();
             menuElementInitiallyOn.IsChecked = rightClickedElement.Ielement.GetInitiallyOn();
+            menuElementEnabled.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger || rightClickedElement.Ielement is ExplorerElementScript;
+            menuElementInitiallyOn.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger;
         }
 
         private void menuCut_Click(object sender, RoutedEventArgs e)

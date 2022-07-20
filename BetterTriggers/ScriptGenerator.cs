@@ -454,7 +454,7 @@ end
                 var owner = u.OwnerId.ToString();
                 var x = u.Position.X.ToString(enUS);
                 var y = u.Position.Y.ToString(enUS);
-                var angle = u.Rotation.ToString(enUS);
+                var angle = ((180 / Math.PI) * u.Rotation).ToString(enUS); // radians to degrees
                 var skinId = Int32Extensions.ToRawcode(u.SkinId);
 
                 if (owner == "24")
@@ -571,7 +571,7 @@ end
                 var id = d.ToString();
                 var x = d.Position.X.ToString(enUS);
                 var y = d.Position.Y.ToString(enUS);
-                var angle = d.Rotation.ToString(enUS);
+                var angle = ((180 / Math.PI) * d.Rotation).ToString(enUS); // radians to degrees
                 var scale = d.Scale.X.ToString(enUS);
                 var variation = d.Variation;
                 var skin = Int32Extensions.ToRawcode(d.SkinId);

@@ -60,5 +60,10 @@ namespace BetterTriggers.Containers
                 }
             }
         }
+
+        internal static void Clear()
+        {
+            scriptContainer.Clear();
+        }
     }
 }

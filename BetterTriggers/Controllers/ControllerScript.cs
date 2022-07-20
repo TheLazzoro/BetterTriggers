@@ -51,8 +51,21 @@ namespace BetterTriggers.Controllers
                 {
                     try
                     {
-                        script = File.ReadAllText(filePath);
-                        didLoad = true;
+                        Thread.Sleep(10);
+                        //script = File.ReadAllText(filePath);
+                        //didLoad = true;
+                        using (FileStream stream = new FileStream(filePath, FileMode.Open))
+                        {
+                            using (var sr = new StreamReader(stream))
+                            {
+                                script = sr.ReadToEnd();
+                                didLoad = true;
+                            }
+                        }
+                        if (script == "") // TODO: obscure bug where script is empty on save
+                        {
+
+                        }
                     }
                     catch (IOException e)
                     {
@@ -63,9 +76,6 @@ namespace BetterTriggers.Controllers
                     {
                         Console.WriteLine(e.Message);
                         Console.WriteLine(e.StackTrace);
-                    } finally
-                    {
-                        Thread.Sleep(10);
                     }
                 }
             }

@@ -47,7 +47,11 @@ namespace BetterTriggers.WorldEdit
         // TODO: Doesn't return comments with the name (e.g. 'Diagonal 1' or 'Vertical')
         internal static string GetName(string destcode)
         {
-            return GetDestType(destcode).DisplayName;
+            DestructibleType destType = GetDestType(destcode);
+            if (destType == null)
+                return null;
+
+            return destType.DisplayName;
         }
 
         internal static void Load()

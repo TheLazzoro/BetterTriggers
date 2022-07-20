@@ -112,5 +112,10 @@ namespace BetterTriggers.Containers
         {
             return FindById(triggerRef.TriggerId);
         }
+
+        internal static void Clear()
+        {
+            triggerElementContainer.Clear();
+        }
     }
 }

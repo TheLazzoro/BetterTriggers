@@ -47,6 +47,7 @@ namespace GUI.Components.TriggerExplorer
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
 
             ReloadElement();
+            RefreshHeader();
         }
 
 
@@ -203,9 +204,6 @@ namespace GUI.Components.TriggerExplorer
                 if (state != TreeItemState.Disabled && invalidCount > 0)
                     state = TreeItemState.HasErrorsNoTextColor;
             }
-            else
-                treeItemHeader.SetIcon(categoryName, state);
-
 
             treeItemHeader.SetTextEnabled(state, Ielement.GetInitiallyOn());
             treeItemHeader.SetIcon(categoryName, state);

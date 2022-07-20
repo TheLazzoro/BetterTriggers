@@ -41,7 +41,11 @@ namespace BetterTriggers.WorldEdit
 
         internal static string GetName(string itemcode)
         {
-            return GetItemType(itemcode).DisplayName;
+            ItemType itemType = GetItemType(itemcode);
+            if (itemType == null)
+                return null;
+
+            return itemType.DisplayName;
         }
 
         internal static void Load()

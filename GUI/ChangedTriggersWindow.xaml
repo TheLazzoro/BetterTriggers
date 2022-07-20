@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="ChangedTriggersWindow" Height="450" Width="800" Background="#FF202020">
+        Title="Changed Triggers" Height="450" Width="800" Background="#FF202020">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
