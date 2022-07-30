@@ -13,7 +13,10 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerTrigger
     {
-        public void CreateTrigger()
+        /// <summary>
+        /// </summary>
+        /// <returns>Full file path.</returns>
+        public string CreateTrigger()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))
@@ -27,7 +30,10 @@ namespace BetterTriggers.Controllers
             };
             string json = JsonConvert.SerializeObject(trigger);
 
-            File.WriteAllText(directory + @"\" + name, json);
+            string fullPath = Path.Combine(directory, name);
+            File.WriteAllText(fullPath, json);
+
+            return fullPath;
         }
 
 
@@ -73,14 +79,6 @@ namespace BetterTriggers.Controllers
             }
 
             return name + ".trg";
-        }
-
-        public Trigger LoadTriggerFromFile(string filename)
-        {
-            var file = File.ReadAllText(filename);
-            Trigger trigger = JsonConvert.DeserializeObject<Trigger>(file);
-
-            return trigger;
         }
 
         public string GetTriggerName(int triggerId)
@@ -132,7 +130,7 @@ namespace BetterTriggers.Controllers
             List<TriggerElement> copiedItems = new List<TriggerElement>();
             for (int i = 0; i < list.Count; i++)
             {
-                copiedItems.Add((TriggerElement)list[i].Clone());
+                copiedItems.Add(list[i].Clone());
             }
             CopiedElements.CopiedTriggerElements = copiedItems;
 
@@ -157,7 +155,7 @@ namespace BetterTriggers.Controllers
             var pasted = new List<TriggerElement>();
             for (int i = 0; i < copied.Count; i++)
             {
-                pasted.Add((TriggerElement)copied[i].Clone());
+                pasted.Add(copied[i].Clone());
             }
 
             if (CopiedElements.CutTriggerElements == null)
@@ -317,6 +315,9 @@ namespace BetterTriggers.Controllers
             return trig;
         }
 
+        /// <summary>
+        /// Returns amount of invalid parameters.
+        /// </summary>
         public int VerifyParameters(List<Parameter> parameters)
         {
             int invalidCount = 0;
@@ -331,6 +332,13 @@ namespace BetterTriggers.Controllers
                 {
                     var function = (Function)parameter;
                     invalidCount += VerifyParameters(function.parameters);
+                }
+                else if(parameter is VariableRef)
+                {
+                    ControllerVariable controller = new ControllerVariable();
+                    var variable = controller.GetByReference(parameter as VariableRef);
+                    if (variable == null)
+                        invalidCount++;
                 }
             }
 
@@ -446,6 +454,9 @@ namespace BetterTriggers.Controllers
                     ControllerVariable controller = new ControllerVariable();
                     VariableRef variableRef = p as VariableRef;
                     Variable variable = controller.GetByReference(variableRef);
+                    if (variable == null)
+                        return;
+
                     if (variable.IsArray)
                     {
                         if (variableRef.arrayIndexValues[0] is Function)

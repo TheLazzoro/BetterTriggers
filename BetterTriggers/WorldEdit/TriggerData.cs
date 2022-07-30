@@ -286,8 +286,15 @@ namespace BetterTriggers.WorldEdit
                 if (varRef != null)
                 {
                     Variable variable = controller.GetByReference(f.parameters[0] as VariableRef);
-                    list.Add(variable.Type);
-                    list.Add(variable.Type);
+                    if (variable != null)
+                    {
+                        list.Add(variable.Type);
+                        list.Add(variable.Type);
+                    } else
+                    {
+                        list.Add("null");
+                        list.Add("null");
+                    }
                     return list;
                 }
                 else

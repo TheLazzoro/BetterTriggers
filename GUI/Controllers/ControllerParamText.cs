@@ -69,7 +69,7 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is Constant)
                     sb.Append(controller.GetParamDisplayName(parameters[paramIndex]));
-                
+
                 else if (parameters[paramIndex] is VariableRef)
                 {
                     var controllerVariable = new ControllerVariable();
@@ -77,8 +77,13 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
-                    var expectedType = Types.GetBaseType(returnTypes[paramIndex]);
-                    var actualType = Types.GetBaseType(variable.Type);
+                    string expectedType = null;
+                    string actualType = null;
+                    if (variable != null)
+                    {
+                        expectedType = Types.GetBaseType(returnTypes[paramIndex]);
+                        actualType = Types.GetBaseType(variable.Type);
+                    }
 
                     // This exists in case a variable has been changed
                     if (variable == null || (expectedType != actualType && actualType != "AnyGlobal" && actualType != "VarAsString_Real"))
@@ -238,7 +243,7 @@ namespace GUI.Controllers
                 });
                 stringBuilder.Clear();
 
-                
+
 
                 if (parameters[paramIndex] is Function)
                 {
@@ -271,15 +276,21 @@ namespace GUI.Controllers
                     var variable = controllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
-                    var expectedType = Types.GetBaseType(returnTypes[paramIndex]);
-                    var actualType = Types.GetBaseType(variable.Type);
+                    string expectedType = null;
+                    string actualType = null;
+                    if (variable != null)
+                    {
+                        expectedType = Types.GetBaseType(returnTypes[paramIndex]);
+                        actualType = Types.GetBaseType(variable.Type);
+                    }
 
                     // This exists in case a variable has been changed
                     if (variable == null || (expectedType != actualType && actualType != "AnyGlobal" && actualType != "VarAsString_Real"))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";
-                    } else
+                    }
+                    else
                         varName = Variables.GetVariableNameById(variable.Id);
 
                     inlines.Add(AddHyperlink(parameterFacade, varName, parameters, paramIndex, returnTypes[paramIndex]));
@@ -362,9 +373,9 @@ namespace GUI.Controllers
         private HyperlinkBT AddHyperlink(IParameterFacade parameterFacade, string text, List<Parameter> parameters, int index, string returnType)
         {
             HyperlinkBT hyperlinkBT = null;
-            if(parameterFacade is ParameterFacadeTrigger)
+            if (parameterFacade is ParameterFacadeTrigger)
                 hyperlinkBT = new HyperlinkParameterTrigger(parameterFacade as ParameterFacadeTrigger, text, parameters, index, returnType);
-            else if(parameterFacade is ParameterFacadeVariable)
+            else if (parameterFacade is ParameterFacadeVariable)
                 hyperlinkBT = new HyperlinkParameterVariable(parameterFacade as ParameterFacadeVariable, text, returnType);
 
             hyperlinkParameters.Add(hyperlinkBT);

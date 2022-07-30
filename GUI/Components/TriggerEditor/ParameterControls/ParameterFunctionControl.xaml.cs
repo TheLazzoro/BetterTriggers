@@ -28,9 +28,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             for (int i = 0; i < functions.Count; i++)
             {
-                if (functions[i].returnType != returnType)
-                    continue;
-
                 Category category = Category.Get(functions[i].category);
                 string categoryStr = Locale.Translate(category.Name) ;
                 if (categoryStr == "Nothing")

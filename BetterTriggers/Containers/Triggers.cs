@@ -86,6 +86,11 @@ namespace BetterTriggers.Containers
             return trigger;
         }
 
+        public static ExplorerElementTrigger GetLastCreated()
+        {
+            return triggerElementContainer[triggerElementContainer.Count - 1];
+        }
+
         internal static List<ExplorerElementTrigger> GetAll()
         {
             return triggerElementContainer;

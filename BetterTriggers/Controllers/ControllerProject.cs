@@ -92,19 +92,22 @@ namespace BetterTriggers.Controllers
             ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
 
             ScriptGenerator scriptGenerator = new ScriptGenerator(language);
-            scriptGenerator.GenerateScript();
-            // TODO: Figure out how to return 
+            bool success = scriptGenerator.GenerateScript();
 
-            return true;
+            return success;
         }
 
+        string archivePath;
         /// <summary>
         /// Builds an MPQ archive.
         /// </summary>
         /// <returns>Full path of the archive.</returns>
-        public string BuildMap(string destinationDir = null)
+        public bool BuildMap(string destinationDir = null)
         {
             bool wasVerified = GenerateScript();
+            if (!wasVerified)
+                return false;
+
             War3Project project = ContainerProject.project;
             ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
 
@@ -122,13 +125,12 @@ namespace BetterTriggers.Controllers
             };
 
             string src = Path.GetDirectoryName(ContainerProject.src);
-            string fullPath = string.Empty;
             if (destinationDir == null)
-                fullPath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
+                archivePath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
             else
             {
                 Settings settings = Settings.Load();
-                fullPath = Path.Combine(destinationDir, settings.CopyLocation + ".w3x");
+                archivePath = Path.Combine(destinationDir, settings.CopyLocation + ".w3x");
             }
 
             bool didWrite = false;
@@ -137,7 +139,7 @@ namespace BetterTriggers.Controllers
             {
                 try
                 {
-                    builder.Build(fullPath, archiveCreateOptions);
+                    builder.Build(archivePath, archiveCreateOptions);
                     didWrite = true;
                 }
                 catch (Exception ex)
@@ -149,13 +151,17 @@ namespace BetterTriggers.Controllers
             if (!didWrite)
                 throw new Exception("Could not write to map.");
 
-            return fullPath;
+
+            return true;
         }
 
         public void TestMap()
         {
             string destinationDir = Path.GetTempPath();
-            string fullPath = BuildMap(destinationDir);
+            bool success = BuildMap(destinationDir);
+            if (!success)
+                return;
+
             Settings settings = Settings.Load();
             string war3Exe = Path.Combine(settings.war3root, "_retail_/x86_64/Warcraft III.exe");
 
@@ -188,7 +194,7 @@ namespace BetterTriggers.Controllers
                 $"-fixedseed {fixedseed} " +
                 $"{nowfpause}";
 
-            Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{fullPath}\"");
+            Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{archivePath}\"");
         }
 
 
@@ -446,7 +452,15 @@ namespace BetterTriggers.Controllers
         public void RemoveElementFromContainer(IExplorerElement element)
         {
             if (element is ExplorerElementFolder)
+            {
+                var folder = element as ExplorerElementFolder;
+                for(int i = 0; i < element.GetExplorerElements().Count; i++)
+                {
+                    var subElement = element.GetExplorerElements()[i];
+                    RemoveElementFromContainer(subElement);
+                }
                 Folders.Remove(element as ExplorerElementFolder);
+            }
             else if (element is ExplorerElementTrigger)
                 Triggers.Remove(element as ExplorerElementTrigger);
             else if (element is ExplorerElementScript)
@@ -536,13 +550,15 @@ namespace BetterTriggers.Controllers
             }
         }
 
-        public void OnRenameElement(string oldFullPath, string newFullPath)
+        public IExplorerElement OnRenameElement(string oldFullPath, string newFullPath)
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
 
             CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
             command.Execute();
+
+            return elementToRename;
         }
 
         /// <summary>
@@ -742,40 +758,6 @@ namespace BetterTriggers.Controllers
             return wasMoved;
         }
 
-        /// <summary>
-        /// Determines whether an ExplorerElement with the given name exists or not.
-        /// </summary>
-        /// <param name="explorerElement"></param>
-        /// <param name="newName"></param>
-        /// <returns></returns>
-        public bool DoesNameExist(IExplorerElement explorerElement, string newName)
-        {
-            bool exists = false;
-
-            if (explorerElement is ExplorerElementTrigger)
-                exists = Triggers.Contains(newName);
-            else if (explorerElement is ExplorerElementScript)
-                exists = Scripts.Contains(newName);
-            else if (explorerElement is ExplorerElementVariable)
-                exists = Variables.Contains(newName);
-            else if (explorerElement is ExplorerElementFolder)
-            {
-                string parentDir = explorerElement.GetParent().GetPath();
-                string[] files = Directory.GetFileSystemEntries(parentDir, "*", SearchOption.TopDirectoryOnly);
-                int i = 0;
-                while (!exists && i < files.Length)
-                {
-                    if (Directory.Exists(files[i]) && files[i] == Path.Combine(parentDir, newName))
-                    {
-                        exists = true;
-                    }
-                    i++;
-                }
-            }
-
-            return exists;
-        }
-
         public void RenameElement(IExplorerElement explorerElement, string renameText)
         {
             string oldPath = explorerElement.GetPath();
@@ -827,8 +809,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="pasteTarget"></param>
-        /// <param name="insertIndex"></param>
+        /// <param name="pasteTarget">Currently selected element when pasting.</param>
         /// <returns>The pasted ExplorerElement.</returns>
         public IExplorerElement PasteExplorerElement(IExplorerElement pasteTarget)
         {

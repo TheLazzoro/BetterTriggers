@@ -1,5 +1,6 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -19,26 +20,32 @@ namespace Tests
         static War3Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
+        static IExplorerElement element1, element2, element3;
+
 
         //[AssemblyInitialize]
         //public static void Init()
         //{
-            
+
         //}
 
         [TestInitialize]
         public void BeforeEach()
         {
-            ControllerProject controller = new ControllerProject();
-            projectPath = controller.CreateProject(language, name, directory);
-            project = controller.LoadProject(projectPath);
+            if (Directory.Exists(directory + @"/" + name))
+                Directory.Delete(directory + @"/" + name, true);
+            if (File.Exists(directory + @"/" + name + ".json"))
+                File.Delete(directory + @"/" + name + ".json");
+
+            ControllerProject controllerProject = new ControllerProject();
+            projectPath = controllerProject.CreateProject(language, name, directory);
+            project = controllerProject.LoadProject(projectPath);
+            
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            Directory.Delete(directory + @"/" + name, true);
-            File.Delete(directory + @"/" + name + ".json");
         }
 
         [TestMethod]
@@ -66,6 +73,27 @@ namespace Tests
 
             Assert.AreEqual(project.Name, loadedProject.Name);
             Assert.AreEqual(project.Language, loadedProject.Language);
+        }
+
+        [TestMethod]
+        public void OnRenameElement()
+        {
+            ControllerProject controllerProject = new ControllerProject();
+            ControllerTrigger controllerTrigger = new ControllerTrigger();
+            string fullPath = controllerTrigger.CreateTrigger();
+            controllerProject.OnCreateElement(fullPath);
+            var element = Triggers.GetLastCreated();
+
+            string newName = "MyTrigger";
+            string newFullPath = Path.Combine(Path.GetDirectoryName(element.GetPath()), newName + ".j");
+
+            controllerProject.RenameElement(element, "newName");
+            controllerProject.OnRenameElement(element.GetPath(), newFullPath);
+
+            string expectedPath = newFullPath;
+            string actualPath = element.GetPath();
+
+            Assert.AreEqual(expectedPath, actualPath);
         }
     }
 }

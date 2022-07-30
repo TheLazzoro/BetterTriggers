@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="" ResizeMode="NoResize" Height="150" Width="350" WindowStyle="ToolWindow" Background="#FF202020" Loaded="Window_Loaded">
+        Title="" ResizeMode="NoResize" Height="150" Width="350" Background="#FF202020" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>

@@ -117,10 +117,11 @@ end
         }
 
 
-        internal void GenerateScript()
+        internal bool GenerateScript()
         {
+            bool success = true;
             if (ContainerProject.project == null)
-                return;
+                return false;
 
             if (File.Exists(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j")))
                 File.Delete(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j"));
@@ -146,12 +147,15 @@ end
                 string fileOutput = "\"" + System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/output.j\"";
                 Process p = Process.Start($"{JassHelper}", $"--scriptonly {CommonJ} {BlizzardJ} \"{scriptFileToInput}\" \"{outputPath}\"");
                 p.WaitForExit();
+                success = p.ExitCode == 0;
                 p.Kill();
             }
             else
             {
                 File.WriteAllText(outputPath, script.ToString());
             }
+
+            return success;
         }
 
         private void SortTriggerElements(IExplorerElement parent)
@@ -254,6 +258,13 @@ end
             {
                 var function = functions[i];
                 List<Parameter> parameters = function.parameters;
+                int errors = controllerTrigger.VerifyParameters(parameters);
+                if (errors > 0)
+                {
+                    functions.Remove(function);
+                    continue;
+                }
+
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(function);
                 for (int j = 0; j < parameters.Count; j++)
                 {
@@ -1573,7 +1584,8 @@ end
 
         private string ConvertTriggerElementToJass(TriggerElement t, PreActions pre_actions, bool nested)
         {
-            if (!t.isEnabled)
+            ControllerTrigger controller = new ControllerTrigger();
+            if (!t.isEnabled || controller.VerifyParameters(t.function.parameters) > 0)
                 return "";
 
             StringBuilder script = new StringBuilder();
@@ -1800,7 +1812,7 @@ end
                 }
 
                 if (verifiedTriggerElements.Count == 0)
-                    return "";
+                    return "(true)";
 
                 script.Append("(");
                 foreach (var condition in verifiedTriggerElements)
@@ -1830,7 +1842,7 @@ end
                 }
 
                 if (verifiedTriggerElements.Count == 0)
-                    return "";
+                    return "(true)";
 
                 script.Append("(");
                 foreach (var condition in verifiedTriggerElements)

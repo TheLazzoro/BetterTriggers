@@ -17,6 +17,15 @@
             </RuleSet>
         </Span>
 
+      <Span color="String">
+        <Begin>'</Begin>
+        <End>'</End>
+        <RuleSet>
+          <!-- nested span for escape sequences -->
+          <Span begin="\\" end="." />
+        </RuleSet>
+      </Span>
+
         <!-- TOKENS -->
         <Keywords fontWeight="bold" foreground="#D4D4D4">
             <Word>&lt;</Word>

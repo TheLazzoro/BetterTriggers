@@ -108,7 +108,7 @@ namespace BetterTriggers.Controllers
             while (enumConditions.MoveNext())
             {
                 var template = enumConditions.Current.Value;
-                if (returnType == template.returnType)
+                if (returnType == template.returnType || (returnType == "boolexpr" && !template.value.EndsWith("Multiple")))
                     list.Add(template.Clone());
             }
             if (wasBoolCall)

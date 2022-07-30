@@ -13,7 +13,10 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerVariable
     {
-        public void CreateVariable()
+        /// <summary>
+        /// </summary>
+        /// <returns>Full path.</returns>
+        public string CreateVariable()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))
@@ -31,8 +34,11 @@ namespace BetterTriggers.Controllers
                 ArraySize = new int[] { 1, 1 },
             };
             string json = JsonConvert.SerializeObject(variable);
+            string fullPath = Path.Combine(directory, name + ".var");
 
-            File.WriteAllText(directory + @"\" + name + ".var", json);
+            File.WriteAllText(fullPath, json);
+
+            return fullPath;
         }
 
         public string GenerateName()

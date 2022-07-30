@@ -28,7 +28,8 @@
         </Span>
 
         <!-- OPERATORS -->
-        <Keywords fontWeight="bold" foreground="#D4D4D4">
+        <!--<Keywords fontWeight="bold" foreground="#D4D4D4">-->
+        <Keywords foreground="#D4D4D4">
             <Word>&lt;</Word>
             <Word>></Word>
             <Word>=</Word>
@@ -42,19 +43,23 @@
             <Word>{</Word>
             <Word>}</Word>
 			<Word>[</Word>
-			<Word>]</Word>
+          <Word>]</Word>
+          <Word>,</Word>
             <!-- ... -->
         </Keywords>
 
         <!-- BLOCKS -->
-        <Keywords fontWeight="bold" foreground="#C586C0">
+        <!--<Keywords fontWeight="bold" foreground="#C586C0"> -->
+        <Keywords foreground="#C586C0">
             <Word>if</Word>
             <Word>then</Word>
             <Word>else</Word>
+            <Word>elseif</Word>
             <Word>endif</Word>
             <Word>loop</Word>
             <Word>exitwhen</Word>
             <Word>endloop</Word>
+            <Word>return</Word>
             <!-- ... -->
         </Keywords>
 

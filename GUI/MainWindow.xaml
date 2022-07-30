@@ -670,7 +670,7 @@
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="21" >
-                        <TextBlock Width="auto" Text="{Binding Header}" ToolTip="{Binding Header}" />
+                        <TextBlock Width="auto" Text="{Binding Header}" ToolTip="{Binding Header}" VerticalAlignment="Center" />
                         <Button Style="{DynamicResource ButtonStyle1}" Width="20" Height="20" Click="ButtonTabItem_Click" >
                             <Button.Content>
                                 <Image Source="Resources/Icons/close-tab.png" Stretch="None"/>

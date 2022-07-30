@@ -137,8 +137,8 @@ namespace GUI
             else if (returnType == "AnyGlobal")
             {
                 functionControl.Visibility = Visibility.Hidden;
-                constantControl.Visibility = Visibility.Visible;
-                variableControl.Visibility = Visibility.Hidden;
+                constantControl.Visibility = Visibility.Hidden;
+                variableControl.Visibility = Visibility.Visible;
                 valueControl.Visibility = Visibility.Hidden;
                 triggerRefControl.Visibility = Visibility.Hidden;
 

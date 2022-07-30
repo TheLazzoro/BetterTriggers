@@ -66,6 +66,11 @@ namespace BetterTriggers.Containers
             return generatedId;
         }
 
+        public static ExplorerElementVariable GetLastCreated()
+        {
+            return variableContainer[variableContainer.Count - 1];
+        }
+
         internal static ExplorerElementVariable FindExplorerVariableById(int Id)
         {
             ExplorerElementVariable var = null;
