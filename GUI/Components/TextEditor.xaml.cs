@@ -23,15 +23,10 @@ namespace GUI.Components
 {
     public partial class TextEditor : UserControl
     {
-        public ICSharpCode.AvalonEdit.TextEditor avalonEditor;
-
         public TextEditor(string content, ScriptLanguage language)
         {
             InitializeComponent();
 
-            this.avalonEditor = new ICSharpCode.AvalonEdit.TextEditor();
-            this.grid.Children.Add(avalonEditor);
-            Grid.SetRow(avalonEditor, 0);
             this.avalonEditor.Margin = new Thickness(0, 0, 0, 0);
             this.avalonEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             this.avalonEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");

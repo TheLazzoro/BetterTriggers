@@ -25,21 +25,19 @@ namespace GUI.Components.TriggerEditor
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
+            
+            Settings settings = Settings.Load();
+            this.Width = settings.triggerWindowWidth;
+            this.Height = settings.triggerWindowHeight;
+            this.Left = settings.triggerWindowX;
+            this.Top = settings.triggerWindowY;
 
             this.triggerElementType = triggerElementType;
             this.previous = previous;
-
-            Window parentWindow = Application.Current.MainWindow;
-            this.Top = parentWindow.Top + parentWindow.Height / 2 - this.Height / 2;
-            this.Left = parentWindow.Left + parentWindow.Width / 2 - this.Width / 2;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Window parentWindow = Application.Current.MainWindow;
-            this.Top = parentWindow.Top + parentWindow.Height / 2 - this.Height / 2;
-            this.Left = parentWindow.Left + parentWindow.Width / 2 - this.Width / 2;
-
             var controllerTriggerData = new ControllerTriggerData();
             var templates = new List<FunctionTemplate>();
             if (triggerElementType == TriggerElementType.Event)
@@ -138,6 +136,20 @@ namespace GUI.Components.TriggerEditor
                 createdTriggerElement = selected;
                 this.Close();
             }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.triggerWindowWidth = (int)this.Width;
+            settings.triggerWindowHeight = (int)this.Height;
+        }
+
+        private void Window_LocationChanged(object sender, System.EventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.triggerWindowX = (int)this.Left;
+            settings.triggerWindowY = (int)this.Top;
         }
     }
 }

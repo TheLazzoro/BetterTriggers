@@ -3,11 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GUI.Components"
+             xmlns:local="clr-namespace:GUI.Components" xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              mc:Ignorable="d"
              TextOptions.TextFormattingMode="Ideal"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid x:Name="grid">
+
+        <avalonedit:TextEditor x:Name="avalonEditor"
+                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                               ScrollViewer.VerticalScrollBarVisibility="Auto"
+                               ></avalonedit:TextEditor>
             
     </Grid>
 </UserControl>

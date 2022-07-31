@@ -50,12 +50,12 @@ namespace BetterTriggers
         {
             Settings settings = Settings.Load();
 
+            /*
             if (settings.language == "en") // placeholder for now
             {
 
             }
 
-            /*
             var locales = (CASCFolder)Casc.GetWar3ModFolder().Entries["_locales"];
             // cannot locate _locales.
             // we just have to bundle the translated .txt files with the project.

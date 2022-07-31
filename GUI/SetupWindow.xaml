@@ -31,7 +31,7 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Label Content="Better Triggers" Grid.Column="1" Grid.Row="2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontFamily="Bahnschrift" Height="34" Width="144" />
+        <Label Content="Better Triggers" Grid.Column="1" Grid.Row="2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontFamily="Bahnschrift" Height="34" />
 
         <Label Content="Select Warcraft III installation directory:" Grid.Column="1" Grid.Row="4" Foreground="White" />
         <TextBox x:Name="textBoxRoot" Grid.Column="1" Grid.Row="5" Margin="0,0,70,0" Background="#FF323232" Foreground="White"/>

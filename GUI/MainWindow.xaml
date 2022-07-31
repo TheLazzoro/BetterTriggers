@@ -6,7 +6,7 @@
         UseLayoutRounding="True"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" WindowStartupLocation="CenterScreen" WindowState="Normal" Closing="Window_Closing" >
+        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" WindowState="Normal" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
     <!--Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" ResizeMode="CanResize" WindowStyle="None" WindowStartupLocation="Manual" WindowState="Normal" AllowsTransparency="True" > -->
 
 
@@ -472,7 +472,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" MinWidth="100"/>
+            <ColumnDefinition x:Name="rowTriggerExplorer" Width="250" MinWidth="100"/>
             <ColumnDefinition Width="*" MinWidth="200"/>
         </Grid.ColumnDefinitions>
 
@@ -638,7 +638,7 @@
         </ItemsControl>
 
 
-        <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0"/>
+        <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0" DragCompleted="GridSplitter_DragCompleted"/>
 
         <TabControl x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderThickness="0" Padding="0" SelectionChanged="tabControl_SelectionChanged" >
 

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using GUI.Components.TriggerEditor.ParameterControls;
@@ -37,6 +38,13 @@ namespace GUI
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
+
+            Settings settings = Settings.Load();
+            this.Width = settings.parameterWindowWidth;
+            this.Height = settings.parameterWindowHeight;
+            this.Left = settings.parameterWindowX;
+            this.Top = settings.parameterWindowY;
+
             this.Title = returnType;
 
 
@@ -240,5 +248,20 @@ namespace GUI
                 this.Close();
             }
         }
+        
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.parameterWindowWidth = (int)this.Width;
+            settings.parameterWindowHeight = (int)this.Height;
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.parameterWindowX = (int)this.Left;
+            settings.parameterWindowY = (int)this.Top;
+        }
+
     }
 }

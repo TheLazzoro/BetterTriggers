@@ -110,7 +110,7 @@ namespace BetterTriggers.Models.EditorData
 
         public string GetSaveableString()
         {
-            return JsonConvert.SerializeObject(variable);
+            return JsonConvert.SerializeObject(variable, Formatting.Indented);
         }
 
         public long GetSize()

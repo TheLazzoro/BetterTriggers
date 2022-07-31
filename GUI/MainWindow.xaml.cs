@@ -30,6 +30,14 @@ namespace GUI
             InitializeComponent();
             instance = this;
 
+            Settings settings = Settings.Load();
+            this.Width = settings.windowWidth;
+            this.Height = settings.windowHeight;
+            this.Left = settings.windowX;
+            this.Top = settings.windowY;
+            this.WindowState = settings.windowFullscreen ? WindowState.Maximized : WindowState.Normal;
+            rowTriggerExplorer.Width = new GridLength(settings.triggerExplorerWidth);
+
             vmd = new TabViewModel();
             tabControl.ItemsSource = vmd.Tabs;
 
@@ -502,6 +510,7 @@ namespace GUI
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             bool doClose = DoCloseProject();
+            Settings.Save(Settings.Load());
             e.Cancel = !doClose;
         }
 
@@ -692,5 +701,30 @@ namespace GUI
             triggerControl.CreateAction();
         }
 
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.windowWidth = (int)this.Width;
+            settings.windowHeight = (int)this.Height;
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.windowX = (int)this.Left;
+            settings.windowY = (int)this.Top;
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.windowFullscreen = this.WindowState.HasFlag(WindowState.Maximized);
+        }
+
+        private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.triggerExplorerWidth = (int)rowTriggerExplorer.Width.Value;
+        }
     }
 }

@@ -36,6 +36,7 @@
         <Label x:Name="lblConverting" Visibility="Hidden" Grid.Row="4" Grid.Column="1" Foreground="#ccc" VerticalContentAlignment="Bottom">Converting...</Label>
         <ProgressBar x:Name="progressBar" Visibility="Hidden" Grid.Row="5" Grid.Column="1" IsIndeterminate="True" />
 
+        <Label x:Name="lblError" Visibility="Hidden" Grid.Row="7" Grid.Column="1" Foreground="#FFFF5454" VerticalContentAlignment="Center" HorizontalAlignment="Right" Margin="0,0,175,0"></Label>
         <Button x:Name="btnCancel" Grid.Column="1" Grid.Row="7" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" IsCancel="True">Cancel</Button>
         <Button x:Name="btnConvert" IsEnabled="False" Grid.Column="1" Grid.Row="7" VerticalAlignment="Center" Width="70" HorizontalAlignment="Right" Click="btnConvert_Click" Margin="0,0,85,0" >Convert</Button>
 

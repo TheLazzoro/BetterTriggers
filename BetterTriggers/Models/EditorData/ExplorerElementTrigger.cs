@@ -140,7 +140,7 @@ namespace BetterTriggers.Models.EditorData
 
         public string GetSaveableString()
         {
-            return JsonConvert.SerializeObject(trigger);
+            return JsonConvert.SerializeObject(trigger, Formatting.Indented);
         }
 
         public long GetSize()

@@ -71,6 +71,20 @@ namespace GUI
             DestinationDirectoryExists = Directory.Exists(lblDestination.Text);
             FinalPathAlreadyExists = Directory.Exists(FinalPath);
 
+            if (!MapExists)
+            {
+                lblError.Visibility = Visibility.Visible;
+                lblError.Content = "Invalid map directory";
+            }
+            else if (FinalPathAlreadyExists)
+            {
+                lblError.Visibility = Visibility.Visible;
+                lblError.Content = "Project directory already exists";
+            }
+            else
+                lblError.Visibility = Visibility.Hidden;
+
+
             ok = MapExists && DestinationDirectoryExists && !FinalPathAlreadyExists;
             btnConvert.IsEnabled = ok;
 

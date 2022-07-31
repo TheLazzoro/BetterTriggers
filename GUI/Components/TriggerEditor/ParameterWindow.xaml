@@ -7,7 +7,7 @@
         UseLayoutRounding="True"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="ParameterWindow" WindowStartupLocation="CenterOwner" Height="450" Width="800" Background="#FF404040" KeyDown="Window_KeyDown" >
+        Title="ParameterWindow" Height="450" Width="800" Background="#FF404040" KeyDown="Window_KeyDown" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" >
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
