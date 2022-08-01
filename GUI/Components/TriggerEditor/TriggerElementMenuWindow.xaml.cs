@@ -101,6 +101,11 @@ namespace GUI.Components.TriggerEditor
                 selected = (TriggerElement)item.Tag;
                 textBoxDescription.Text = Locale.Translate(selected.function.value);
             };
+            listControl.listView.MouseDoubleClick += delegate
+            {
+                createdTriggerElement = selected;
+                this.Close();
+            };
 
             if (selected == null)
             {

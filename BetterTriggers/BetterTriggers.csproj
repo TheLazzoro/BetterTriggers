@@ -43,6 +43,9 @@
     <None Remove="Resources\WorldEditorData\commandskinstrings.txt" />
     <None Remove="Resources\WorldEditorData\commandstrings.txt" />
     <None Remove="Resources\WorldEditorData\commonabilitystrings.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\BlizzardJ_custom.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\worldeditstrings_custom.txt" />
     <None Remove="Resources\WorldEditorData\destructableskinstrings.txt" />
     <None Remove="Resources\WorldEditorData\humanabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\humanunitstrings.txt" />
@@ -59,6 +62,7 @@
     <None Remove="Resources\WorldEditorData\orcabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\orcunitstrings.txt" />
     <None Remove="Resources\WorldEditorData\orcupgradestrings.txt" />
+    <None Remove="Resources\WorldEditorData\ui\triggerstrings - Copy.txt" />
     <None Remove="Resources\WorldEditorData\ui\triggerstrings.txt" />
     <None Remove="Resources\WorldEditorData\undeadabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\undeadunitstrings.txt" />
@@ -179,6 +183,15 @@
     <Content Include="Resources\WorldEditorData\commonabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\WorldEditorData\Custom\BlizzardJ_custom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\Custom\worldeditstrings_custom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\WorldEditorData\destructableskinstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -225,6 +238,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\orcupgradestrings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\Custom\triggerstrings_custom.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\ui\triggerstrings.txt">

@@ -1,0 +1,128 @@
+﻿[TriggerTypes]
+// Defines all trigger variable types to be used by the Script Editor
+// Key: type name
+// Value 0: first game version in which this type is valid
+// Value 1: flag (0 or 1) indicating if this type can be a global variable
+// Value 2: flag (0 or 1) indicating if this type can be used with comparison operators
+// Value 3: string to display in the editor
+// Value 4: base type, used only for custom types
+// Value 5: import type, for strings which represent files (optional)
+// Value 6: flag (0 or 1) indicating to treat this type as the base type in the editor
+
+// Trigger Variable Types
+// These are sorted so that they appear as such in the Variables dialog.
+framehandle=2,1,1,WESTRING_TRIGTYPE_framehandle
+
+
+//***************************************************************************
+[TriggerParams]
+// Defines possible values for variable types
+// Key: arbitrary text
+// Value 0: first game version in which this parameter is valid
+// Value 1: variable type
+// Value 2: code text (used in script)
+// Value 3: display text
+//
+// Note: If the code text is a literal string, surround it with backward single quotes (`),
+//       and they will be converted to double quotes in the script.
+//
+
+FrameEventClick=2,frameeventtype,FRAMEEVENT_CONTROL_CLICK,WE_STRING_FRAMEEVENT_CONTROL_CLICK
+FrameEventMouseEnter=2,frameeventtype,FRAMEEVENT_MOUSE_ENTER,WE_STRING_FRAMEEVENT_MOUSE_ENTER
+FrameEventMouseLeave=2,frameeventtype,FRAMEEVENT_MOUSE_LEAVE,WE_STRING_FRAMEEVENT_MOUSE_LEAVE
+FrameEventMouseUp=2,frameeventtype,FRAMEEVENT_MOUSE_UP,WE_STRING_FRAMEEVENT_MOUSE_UP
+FrameEventMouseDown=2,frameeventtype,FRAMEEVENT_MOUSE_DOWN,WE_STRING_FRAMEEVENT_MOUSE_DOWN
+FrameEventMouseWheel=2,frameeventtype,FRAMEEVENT_MOUSE_WHEEL,WE_STRING_FRAMEEVENT_MOUSE_WHEEL
+FrameEventCheckboxChecked=2,frameeventtype,FRAMEEVENT_CHECKBOX_CHECKED,WE_STRING_FRAMEEVENT_CHECKBOX_CHECKED
+FrameEventCheckboxUnchecked=2,frameeventtype,FRAMEEVENT_CHECKBOX_UNCHECKED,WE_STRING_FRAMEEVENT_CHECKBOX_UNCHECKED
+FrameEventEditboxTextChanged=2,frameeventtype,FRAMEEVENT_EDITBOX_TEXT_CHANGED,WE_STRING_FRAMEEVENT_EDITBOX_TEXT_CHANGED
+FrameEventPopupMenuItemChanged=2,frameeventtype,FRAMEEVENT_POPUPMENU_ITEM_CHANGED,WE_STRING_FRAMEEVENT_POPUPMENU_ITEM_CHANGED
+FrameEventMouseDoubleClick=2,frameeventtype,FRAMEEVENT_MOUSE_DOUBLECLICK,WE_STRING_FRAMEEVENT_MOUSE_DOUBLECLICK
+FrameEventSpriteAnimUpdate=2,frameeventtype,FRAMEEVENT_SPRITE_ANIM_UPDATE,WE_STRING_FRAMEEVENT_SPRITE_ANIM_UPDATE
+FrameEventSliderValueChanged=2,frameeventtype,FRAMEEVENT_SLIDER_VALUE_CHANGED,WE_STRING_FRAMEEVENT_SLIDER_VALUE_CHANGED
+FrameEventDialogCancel=2,frameeventtype,FRAMEEVENT_DIALOG_CANCEL,WE_STRING_FRAMEEVENT_DIALOG_CANCEL
+FrameEventDialogAccept=2,frameeventtype,FRAMEEVENT_DIALOG_ACCEPT,WE_STRING_FRAMEEVENT_DIALOG_ACCEPT
+FrameEventEditboxEnter=2,frameeventtype,FRAMEEVENT_EDITBOX_ENTER,WE_STRING_FRAMEEVENT_EDITBOX_ENTER
+
+OriginFrameGameUI=2,originframetype,ORIGIN_FRAME_GAME_UI,WE_STRING_ORIGIN_FRAME_GAME_UI
+OriginFrameCommandButton=2,originframetype,ORIGIN_FRAME_COMMAND_BUTTON,WE_STRING_ORIGIN_FRAME_COMMAND_BUTTON
+OriginFrameHeroBar=2,originframetype,ORIGIN_FRAME_HERO_BAR,WE_STRING_ORIGIN_FRAME_HERO_BAR
+OriginFrameHeroButton=2,originframetype,ORIGIN_FRAME_HERO_BUTTON,WE_STRING_ORIGIN_FRAME_HERO_BUTTON
+OriginFrameHeroHPBar=2,originframetype,ORIGIN_FRAME_HERO_HP_BAR,WE_STRING_ORIGIN_FRAME_HERO_HP_BAR
+OriginFrameHeroManaBar=2,originframetype,ORIGIN_FRAME_HERO_MANA_BAR,WE_STRING_ORIGIN_FRAME_HERO_MANA_BAR
+OriginFrameHeroButtonIndicator=2,originframetype,ORIGIN_FRAME_HERO_BUTTON_INDICATOR,WE_STRING_ORIGIN_FRAME_HERO_BUTTON_INDICATOR
+OriginFrameHeroButton=2,originframetype,ORIGIN_FRAME_ITEM_BUTTON,WE_STRING_ORIGIN_FRAME_ITEM_BUTTON
+OriginFrameMinimap=2,originframetype,ORIGIN_FRAME_MINIMAP,WE_STRING_ORIGIN_FRAME_MINIMAP
+OriginFrameMinimapButton=2,originframetype,ORIGIN_FRAME_MINIMAP_BUTTON,WE_STRING_ORIGIN_FRAME_MINIMAP_BUTTON
+OriginFrameSystemButton=2,originframetype,ORIGIN_FRAME_SYSTEM_BUTTON,WE_STRING_ORIGIN_FRAME_SYSTEM_BUTTON
+OriginFrameTooltip=2,originframetype,ORIGIN_FRAME_TOOLTIP,WE_STRING_ORIGIN_FRAME_TOOLTIP
+OriginFrameUberTooltip=2,originframetype,ORIGIN_FRAME_UBERTOOLTIP,WE_STRING_ORIGIN_FRAME_UBERTOOLTIP
+OriginFrameChatMsg=2,originframetype,ORIGIN_FRAME_CHAT_MSG,WE_STRING_ORIGIN_FRAME_CHAT_MSG
+OriginFrameUnitMsg=2,originframetype,ORIGIN_FRAME_UNIT_MSG,WE_STRING_ORIGIN_FRAME_UNIT_MSG
+OriginFrameTopMsg=2,originframetype,ORIGIN_FRAME_TOP_MSG,WE_STRING_ORIGIN_FRAME_TOP_MSG
+OriginFramePortrait=2,originframetype,ORIGIN_FRAME_PORTRAIT,WE_STRING_ORIGIN_FRAME_PORTRAIT
+OriginFrameWorldFrame=2,originframetype,ORIGIN_FRAME_WORLD_FRAME,WE_STRING_ORIGIN_FRAME_WORLD_FRAME
+OriginFrameSimpleUIParent=2,originframetype,ORIGIN_FRAME_SIMPLE_UI_PARENT,WE_STRING_ORIGIN_FRAME_SIMPLE_UI_PARENT
+OriginFramePortraitHPText=2,originframetype,ORIGIN_FRAME_PORTRAIT_HP_TEXT,WE_STRING_ORIGIN_FRAME_PORTRAIT_HP_TEXT
+OriginFramePortraitManaText=2,originframetype,ORIGIN_FRAME_PORTRAIT_MANA_TEXT,WE_STRING_ORIGIN_FRAME_PORTRAIT_MANA_TEXT
+OriginFrameUnitPanelBuffBar=2,originframetype,ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR,WE_STRING_ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR
+OriginFrameUnitPanelBuffBarLabel=2,originframetype,ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL,WE_STRING_ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL
+
+FramePointTopLeft=2,originframetype,FRAMEPOINT_TOPLEFT,WE_STRING_FRAMEPOINT_TOPLEFT
+FramePointTop=2,originframetype,FRAMEPOINT_TOP,WE_STRING_FRAMEPOINT_TOP
+FramePointTopRight=2,originframetype,FRAMEPOINT_TOPRIGHT,WE_STRING_FRAMEPOINT_TOPRIGHT
+FramePointLeft=2,originframetype,FRAMEPOINT_LEFT,WE_STRING_FRAMEPOINT_LEFT
+FramePointCenter=2,originframetype,FRAMEPOINT_CENTER,WE_STRING_FRAMEPOINT_CENTER
+FramePointRight=2,originframetype,FRAMEPOINT_RIGHT,WE_STRING_FRAMEPOINT_RIGHT
+FramePointBottomLeft=2,originframetype,FRAMEPOINT_BOTTOMLEFT,WE_STRING_FRAMEPOINT_BOTTOMLEFT
+FramePointBottom=2,originframetype,FRAMEPOINT_BOTTOM,WE_STRING_FRAMEPOINT_BOTTOM
+FramePointBottomRight=2,originframetype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPOINT_BOTTOMRIGHT
+
+
+
+//***************************************************************************
+[TriggerEvents]
+// Defines events available in the editor
+// Key: script event function
+// Value 0: first game version in which this function is valid
+// Value 1+: argument types
+// Note that the first argument is always a `trigger`, and is excluded here
+
+BlzTriggerRegisterFrameEvent=2,framehandle,frameeventtype
+_BlzTriggerRegisterFrameEvent_DisplayName="Generic frame event"
+_BlzTriggerRegisterFrameEvent_Category=TC_CUSTOM
+
+//***************************************************************************
+[TriggerActions]
+// Defines action functions
+// Key: action function name
+// Value 0: first game version in which this function is valid
+// Value 1+: argument types
+
+RemoveLocation=2,location
+_RemoveLocation_DisplayName="Remove Point"
+_RemoveLocation_Parameters="Remove ,~Location,"
+_RemoveLocation_Category=TC_NOTHING
+
+DestroyGroup=2,group
+_DestroyGroup_DisplayName="Destroy Unit Group"
+_DestroyGroup_Parameters="Destroy ,~Unit Group,"
+_DestroyGroup_Category=TC_UNITGROUP
+
+
+
+//***************************************************************************
+[TriggerCalls]
+// Defines function calls which may be used as parameter values
+// Key: Function name
+// Value 0: first game version in which this function is valid
+// Value 1: flag (0 or 1) indicating if the call can be used in events
+// Value 2: return type
+// Value 3+: argument types
+//
+// Note: Operators are specially handled by the editor
+
+GetLocalPlayer=2,0,player
+_GetLocalPlayer_DisplayName="Local Player"
+_GetLocalPlayer_Parameters="Local player"
+_GetLocalPlayer_Category=TC_NOTHING

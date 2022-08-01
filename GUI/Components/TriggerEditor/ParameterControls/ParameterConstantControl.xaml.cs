@@ -119,7 +119,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 return;
 
             var constant = selectedItem.Tag as ConstantTemplate;
-            textBoxDescription.Text = Locale.Translate(constant.value);
+
+            textBoxDescription.Inlines.Clear();
+            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.Format(Locale.Translate(constant.value)));
         }
     }
 }

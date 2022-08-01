@@ -10,6 +10,7 @@ namespace BetterTriggers.Models.Templates
         public List<ParameterTemplate> parameters = new List<ParameterTemplate>();
         public string value;
         public string name;
+        public string scriptName;
         public string description;
         public string paramText;
         public string category;

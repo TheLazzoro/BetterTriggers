@@ -60,6 +60,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
+
         public void SetDefaultSelection(string value)
         {
             int i = 0;
@@ -112,7 +113,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 return;
 
             var function = selectedItem.Tag as FunctionTemplate;
-            textBoxDescription.Text = Locale.Translate(function.value);
+            textBoxDescription.Inlines.Clear();
+            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.Format(Locale.Translate(function.value)));
         }
+
     }
 }

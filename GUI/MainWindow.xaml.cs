@@ -31,11 +31,11 @@ namespace GUI
             instance = this;
 
             Settings settings = Settings.Load();
-            this.Width = settings.windowWidth;
-            this.Height = settings.windowHeight;
-            this.Left = settings.windowX;
-            this.Top = settings.windowY;
-            this.WindowState = settings.windowFullscreen ? WindowState.Maximized : WindowState.Normal;
+            this.Width = settings.mainWindowWidth;
+            this.Height = settings.mainWindowHeight;
+            this.Left = settings.mainWindowX;
+            this.Top = settings.mainWindowY;
+            this.WindowState = settings.mainWindowFullscreen ? WindowState.Maximized : WindowState.Normal;
             rowTriggerExplorer.Width = new GridLength(settings.triggerExplorerWidth);
 
             vmd = new TabViewModel();
@@ -490,7 +490,6 @@ namespace GUI
             btnCreateAction.IsEnabled = enable;
         }
 
-
         private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
@@ -704,21 +703,21 @@ namespace GUI
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Settings settings = Settings.Load();
-            settings.windowWidth = (int)this.Width;
-            settings.windowHeight = (int)this.Height;
+            settings.mainWindowWidth = (int)this.Width;
+            settings.mainWindowHeight = (int)this.Height;
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
             Settings settings = Settings.Load();
-            settings.windowX = (int)this.Left;
-            settings.windowY = (int)this.Top;
+            settings.mainWindowX = (int)this.Left;
+            settings.mainWindowY = (int)this.Top;
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
             Settings settings = Settings.Load();
-            settings.windowFullscreen = this.WindowState.HasFlag(WindowState.Maximized);
+            settings.mainWindowFullscreen = this.WindowState.HasFlag(WindowState.Maximized);
         }
 
         private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

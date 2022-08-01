@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IniParser.Model;
+using IniParser.Parser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,18 @@ namespace BetterTriggers.Utility
 {
     public static class IniFileConverter
     {
-        public static string Convert(string data)
+        public static IniData GetIniData(string fileContent, bool allowDuplicateSections = true, bool allowDuplicateKeys = true)
+        {
+            var iniFile = Convert(fileContent);
+            IniDataParser parser = new IniDataParser();
+            parser.Configuration.AllowDuplicateSections = allowDuplicateSections;
+            parser.Configuration.AllowDuplicateKeys = allowDuplicateKeys;
+            IniData data = parser.Parse(iniFile);
+
+            return data;
+        }
+
+        private static string Convert(string data)
         {
             // fix blizzard ini file
             string[] textArr = data.Split("\r\n");

@@ -95,6 +95,12 @@ namespace GUI
             this.importControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(importControl); };
             this.valueControl.SelectionChanged += delegate { SetSelectedItem(valueControl); };
 
+            functionControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            constantControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            variableControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            triggerRefControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            importControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+
 
             IParameterControl parameterControl = constantControl; // default
             if (parameter is Function)
@@ -167,7 +173,9 @@ namespace GUI
                 radioButtonList.Items.Remove(radioBtnValue);
             if (returnType != "modelfile" && returnType != "skymodelstring" && returnType != "musictheme")
                 radioButtonList.Items.Remove(radioBtnImported);
+
         }
+
 
         /// <summary>
         /// </summary>

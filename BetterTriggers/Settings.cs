@@ -23,11 +23,11 @@ namespace BetterTriggers
         public int WindowMode              = 0;
         public int Teen                    = 0;
 
-        public bool windowFullscreen       = false;
-        public int windowX                 = 100;
-        public int windowY                 = 100;
-        public int windowWidth             = 900;
-        public int windowHeight            = 600;
+        public bool mainWindowFullscreen   = false;
+        public int mainWindowX             = 100;
+        public int mainWindowY             = 100;
+        public int mainWindowWidth         = 900;
+        public int mainWindowHeight        = 600;
 
         public int triggerExplorerWidth    = 250;
 

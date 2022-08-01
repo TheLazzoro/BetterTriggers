@@ -206,6 +206,20 @@ end
 
             List<Variable> InitGlobals = new List<Variable>();
 
+            // Better Trigger custom constants
+            var constants = TriggerData.customConstants;
+            script.Append(globals + newline);
+            for (int i = 0; i < constants.Count; i++)
+            {
+                var constant = constants[i];
+                string varType = Types.GetBaseType(constant.Type);
+                if (language == ScriptLanguage.Lua)
+                    varType = "";
+                script.Append($"{varType} {constant.Name} = {constant.InitialValue.value} {newline}");
+            }
+            script.Append(endglobals + newline);
+
+
             // Global variables
             for (int i = 0; i < variables.Count; i++)
             {
@@ -376,7 +390,7 @@ end
 
 
             script.Append(array2DLuaDefinition);
-
+            GenerateBetterTriggersFunctions(script);
 
             CreateItemTables(script);
             GenerateUnitItemTables(script);
@@ -400,11 +414,24 @@ end
             GenerateMapConfiguration(script);
 
 
-            // TODO: Feed to jasshelper here?
-
-
-
             return script;
+        }
+
+        /// <summary> TODO:
+        /// Functions for frame natives etc.
+        /// </summary>
+        /// <param name="script"></param>
+        private void GenerateBetterTriggersFunctions(StringBuilder script)
+        {
+            /*
+            script.Append(separator);
+            script.Append($"{comment}{newline}");
+            script.Append($"{comment}  Better Triggers Functions{newline}");
+            script.Append($"{comment}{newline}");
+            script.Append(separator);
+            */
+
+            //script.Append($"function BlzLoadTOCFile {functionReturnsNothing}");
         }
 
         private string GetGlobalsStartValue(string returnType)

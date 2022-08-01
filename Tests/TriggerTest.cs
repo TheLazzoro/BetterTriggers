@@ -2,6 +2,7 @@ using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -23,11 +24,15 @@ namespace Tests
         static ExplorerElementTrigger element1, element2, element3;
 
 
-        //[AssemblyInitialize]
-        //public static void Init()
-        //{
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+        }
 
-        //}
+        [ClassCleanup]
+        public static void TestClassCleanup()
+        {
+        }
 
         [TestInitialize]
         public void BeforeEach()

@@ -30,6 +30,8 @@ namespace BetterTriggers.WorldEdit
         internal static Dictionary<string, string> ParamCodeText = new Dictionary<string, string>();
         internal static Dictionary<string, string> FunctionCategories = new Dictionary<string, string>();
 
+        internal static List<Variable> customConstants = new List<Variable>();
+
 
         internal static void Load()
         {
@@ -59,11 +61,7 @@ namespace BetterTriggers.WorldEdit
             var reader = new StreamReader(file);
             var text = reader.ReadToEnd();
 
-            var iniFile = IniFileConverter.Convert(text);
-            IniDataParser parser = new IniDataParser();
-            parser.Configuration.AllowDuplicateSections = true;
-            parser.Configuration.AllowDuplicateKeys = true;
-            IniData data = parser.Parse(iniFile);
+            var data = IniFileConverter.GetIniData(text);
 
             // --- TRIGGER CATEGORIES --- //
 
@@ -109,8 +107,23 @@ namespace BetterTriggers.WorldEdit
             s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png", FileMode.Open);
             Category.Create("TC_SCRIPT", s, "???", false);
 
+            LoadTriggerDataFromIni(data);
 
 
+            // --- LOAD CUSTOM DATA --- //
+
+            var textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom.txt"));
+
+            var dataCustom = IniFileConverter.GetIniData(textCustom);
+            LoadTriggerDataFromIni(dataCustom);
+
+            textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom.txt"));
+            dataCustom = IniFileConverter.GetIniData(textCustom);
+            LoadCustomBlizzardJ(dataCustom);
+        }
+
+        private static void LoadTriggerDataFromIni(IniData data)
+        {
 
             // --- TRIGGER TYPES (GUI VARIABLE TYPE DEFINITIONS) --- //
 
@@ -167,33 +180,37 @@ namespace BetterTriggers.WorldEdit
 
         private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary)
         {
-            var triggerEvents = data.Sections[sectionName];
+            var section = data.Sections[sectionName];
+            if (section == null)
+                return;
+
             string name = string.Empty;
             FunctionTemplate functionTemplate = null;
-            foreach (var _event in triggerEvents)
+            foreach (var _func in section)
             {
-                string key = _event.KeyName;
+                string key = _func.KeyName;
+
 
                 if (key.ToLower().StartsWith(string.Concat("_", name).ToLower())) // ToLower here because Blizzard typo.
                 {
                     if (key.EndsWith("DisplayName"))
                     {
-                        functionTemplate.name = _event.Value.Replace("\"", "");
+                        functionTemplate.name = _func.Value.Replace("\"", "");
                         ParamDisplayNames.Add(name, functionTemplate.name);
                     }
                     else if (key.EndsWith("Parameters"))
                     {
-                        functionTemplate.paramText = _event.Value.Replace("\"", "");
+                        functionTemplate.paramText = _func.Value.Replace("\"", "");
                         ParamCodeText.Add(name, functionTemplate.paramText);
                     }
                     else if (key.EndsWith("Category"))
                     {
-                        functionTemplate.category = _event.Value;
+                        functionTemplate.category = _func.Value;
                         FunctionCategories.Add(name, functionTemplate.category);
                     }
                     else if (key.EndsWith("ScriptName"))
                     {
-                        functionTemplate.value = _event.Value;
+                        functionTemplate.scriptName = _func.Value;
                     }
 
                     FunctionTemplate controlValue;
@@ -205,9 +222,8 @@ namespace BetterTriggers.WorldEdit
                 }
                 else
                 {
-
                     string returnType = string.Empty;
-                    string[] _params = _event.Value.Split(",");
+                    string[] _params = _func.Value.Split(",");
                     List<ParameterTemplate> parameters = new List<ParameterTemplate>();
 
                     if (sectionName == "TriggerEvents")
@@ -256,6 +272,33 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
+        /// <summary>
+        /// Loads custom constants similar to 'bj_lastCreatedUnit', 'bj_lastCreatedItem' etc.
+        /// </summary>
+        /// <param name="iniData"></param>
+        private static void LoadCustomBlizzardJ(IniData iniData)
+        {
+            var section = iniData.Sections["Presets"];
+            foreach (var key in section)
+            {
+                string keyName = key.KeyName;
+                Value initialValue = new Value();
+                string type = string.Empty;
+
+                string[] split = key.Value.Split(',');
+                type = split[0];
+                initialValue.value = split[1];
+
+                Variable constant = new Variable()
+                {
+                    Name = keyName,
+                    Type = type,
+                    InitialValue = initialValue
+                };
+
+                customConstants.Add(constant);
+            }
+        }
 
 
 
@@ -290,7 +333,8 @@ namespace BetterTriggers.WorldEdit
                     {
                         list.Add(variable.Type);
                         list.Add(variable.Type);
-                    } else
+                    }
+                    else
                     {
                         list.Add("null");
                         list.Add("null");
@@ -309,6 +353,11 @@ namespace BetterTriggers.WorldEdit
             FunctionsAll.TryGetValue(f.value, out functionTemplate);
             functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
             return list;
+        }
+
+        public static List<FunctionTemplate> GetFunctionTemplatesAll()
+        {
+            return FunctionsAll.Select(f => f.Value).ToList();
         }
 
         internal static string GetConstantCodeText(string identifier, ScriptLanguage language)

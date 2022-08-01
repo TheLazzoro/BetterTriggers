@@ -43,7 +43,7 @@
         <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
         <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-        
+
         <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <!--<Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
@@ -86,7 +86,7 @@
             </Setter>
         </Style>
 
-        
+
         <!--MENU-->
         <LinearGradientBrush x:Key="DarkBrush" StartPoint="0.5,0" EndPoint="0.5,1">
             <GradientBrush.GradientStops>
@@ -222,7 +222,7 @@
                 </MultiTrigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        
+
 
 
         <!-- I don't know much about styling, but this is what is happening:
@@ -404,13 +404,13 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        
+
         <!-- COMMAND DEFINITIONS -->
         <RoutedUICommand x:Key="NewProject"></RoutedUICommand>
         <RoutedUICommand x:Key="OpenProject"></RoutedUICommand>
         <RoutedUICommand x:Key="SaveProject"></RoutedUICommand>
         <RoutedUICommand x:Key="CloseProject"></RoutedUICommand>
-        
+
         <RoutedUICommand x:Key="Undo"></RoutedUICommand>
         <RoutedUICommand x:Key="Redo"></RoutedUICommand>
 
@@ -422,10 +422,10 @@
         <RoutedUICommand x:Key="NewEvent"></RoutedUICommand>
         <RoutedUICommand x:Key="NewCondition"></RoutedUICommand>
         <RoutedUICommand x:Key="NewAction"></RoutedUICommand>
-        
+
     </Window.Resources>
 
-    
+
     <Window.CommandBindings>
         <CommandBinding Command="New" CanExecute="CommandBinding_CanExecute_NewProject" Executed="CommandBinding_Executed_NewProject"/>
         <CommandBinding Command="{StaticResource NewProject}" CanExecute="CommandBinding_CanExecute_NewProject" Executed="CommandBinding_Executed_NewProject"/>
@@ -462,7 +462,7 @@
         <KeyBinding Command="{StaticResource NewCondition}" Key="D" Modifiers="Ctrl"/>
         <KeyBinding Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
     </Window.InputBindings>
-    
+
     <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -712,7 +712,7 @@
                     </Setter>
                 </Style>
             </TabControl.Resources>
-            
+
         </TabControl>
 
     </Grid>

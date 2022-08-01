@@ -104,14 +104,16 @@ namespace BetterTriggers
             genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\unitskinstrings.txt"));
             genericData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\upgradeskinstrings.txt"));
 
-            genericData.ForEach(iniFile => AddGenericStringEntries(IniFileHelper.Parse(IniFileConverter.Convert(iniFile))));
-            unitData.ForEach(iniFile => AddUnitStringEntries(IniFileHelper.Parse(IniFileConverter.Convert(iniFile))));
+            genericData.ForEach(iniFile => AddGenericStringEntries(IniFileConverter.GetIniData(iniFile)));
+            unitData.ForEach(iniFile => AddUnitStringEntries(IniFileConverter.GetIniData(iniFile)));
 
 
             AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\worldeditstrings.txt"));
             AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\worldeditgamestrings.txt"));
+            AddWorldEditStrings(File.ReadAllLines(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\Custom\worldeditstrings_custom.txt"));
 
-            AddTriggerHints(IniFileHelper.Parse(IniFileConverter.Convert(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\ui\triggerstrings.txt"))));
+            AddTriggerHints(IniFileConverter.GetIniData(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\ui\triggerstrings.txt")));
+            AddTriggerHints(IniFileConverter.GetIniData(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\Custom\triggerstrings_custom.txt")));
         }
 
         private static void AddTriggerHints(IniData iniData)

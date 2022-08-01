@@ -68,12 +68,7 @@ namespace BetterTriggers.WorldEdit
             var reader = new StreamReader(file);
             var text = reader.ReadToEnd();
 
-            var iniFile = IniFileConverter.Convert(text);
-            IniDataParser parser = new IniDataParser();
-            parser.Configuration.AllowDuplicateSections = true;
-            parser.Configuration.AllowDuplicateKeys = true;
-            IniData data = parser.Parse(iniFile);
-
+            var data = IniFileConverter.GetIniData(text);
 
             var sections = data.Sections.GetEnumerator();
             while (sections.MoveNext())

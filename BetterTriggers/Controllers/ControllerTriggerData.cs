@@ -169,6 +169,20 @@ namespace BetterTriggers.Controllers
         {
             string paramText = string.Empty;
             TriggerData.ParamCodeText.TryGetValue(function.value, out paramText);
+            if(paramText == null)
+            {
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function);
+                paramText = function.value + "(";
+                for (int i = 0; i < function.parameters.Count; i++)
+                {
+                    var p = function.parameters[i];
+                    paramText += ",~" + returnTypes[i] + ",";
+                    if (i != function.parameters.Count - 1)
+                        paramText += ", ";
+                }
+                paramText += ")";
+            }
+
             return paramText;
         }
 
