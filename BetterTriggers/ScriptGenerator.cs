@@ -1619,6 +1619,7 @@ end
             Function f = t.function;
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
 
+
             if (f.value == "ForLoopAMultiple" || f.value == "ForLoopBMultiple")
             {
                 string loopIndex = f.value == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
@@ -2025,6 +2026,8 @@ end
             // --------------------- //
             // --- REGULAR CALLS --- //
             // --------------------- //
+
+            
             if (!nested)
                 script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
             else
@@ -2047,7 +2050,8 @@ end
                 FunctionTemplate template;
                 TriggerData.FunctionsAll.TryGetValue(f.value, out template);
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
-                f.value = template.value; // This exists because of triggerdata.txt 'ScriptName' key.
+                if(template.scriptName != null)
+                    f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.
 
                 if (returnType == "event")
                     returnTypes.Insert(0, "trigger");

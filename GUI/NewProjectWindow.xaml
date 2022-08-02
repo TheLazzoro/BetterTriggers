@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="NewProjectWindow" Height="350" Width="544" Background="#FF303030" ResizeMode="NoResize" KeyDown="Window_KeyDown">
+        Title="New Project" Height="350" Width="544" Background="#FF303030" ResizeMode="NoResize" KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -23,6 +23,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="267" Height="200"   >
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/Resources/Orc.png" Stretch="Uniform"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        
         <Label Content="Create a new project" Grid.Row="0" Foreground="#eee" FontSize="24" />
         <Label Content="Project Name:" Grid.Row="1" Foreground="#eee"/>
         <TextBox x:Name="textBoxProjectName" Grid.Row="2" Margin="5,0,0,0" Width="250" HorizontalAlignment="Left" Foreground="#eee" Background="#FF202020" BorderBrush="#FF0A0A0A" TextChanged="textBoxProjectName_TextChanged"/>

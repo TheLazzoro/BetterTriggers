@@ -355,6 +355,13 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
+        public static FunctionTemplate GetFunctionTemplate(string key)
+        {
+            FunctionTemplate functionTemplate;
+            FunctionsAll.TryGetValue(key, out functionTemplate);
+            return functionTemplate;
+        }
+
         public static List<FunctionTemplate> GetFunctionTemplatesAll()
         {
             return FunctionsAll.Select(f => f.Value).ToList();

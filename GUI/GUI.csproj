@@ -57,6 +57,7 @@
     <None Remove="Resources\Icons\undo.png" />
     <None Remove="Resources\Icons\Warcraft_III_World_Editor.png" />
     <None Remove="Resources\map.png" />
+    <None Remove="Resources\Orc.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
     <None Remove="Resources\SyntaxHighlighting\LuaHighlighting.xml" />
     <None Remove="Resources\ui-editoricon-triggercategories_element.png" />
@@ -221,6 +222,9 @@
     <Content Include="Resources\Icons\Warcraft_III_World_Editor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Orc.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -285,6 +289,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="LoadingDataWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AboutBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MessageBox.xaml.cs">
@@ -357,6 +364,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="LoadingDataWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="AboutBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

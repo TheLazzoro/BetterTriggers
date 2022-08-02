@@ -273,48 +273,13 @@ namespace GUI
 
         private void btnTestMap_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            if (!controller.War3MapDirExists())
-            {
-                SelectWar3MapWindow window = new SelectWar3MapWindow();
-                window.ShowDialog();
-                if (!window.OK)
-                {
-                    return;
-                }
-            }
-            try
-            {
-                controller.TestMap();
-            }
-            catch (Exception ex)
-            {
-                MessageBox dialogBox = new MessageBox("Error", ex.Message);
-                dialogBox.ShowDialog();
-            }
+            TestMap();
+
         }
 
         private void btnBuildMap_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            if (!controller.War3MapDirExists())
-            {
-                SelectWar3MapWindow window = new SelectWar3MapWindow();
-                window.ShowDialog();
-                if (!window.OK)
-                {
-                    return;
-                }
-            }
-            try
-            {
-                controller.BuildMap();
-            }
-            catch (Exception ex)
-            {
-                MessageBox dialogBox = new MessageBox("Error", ex.Message);
-                dialogBox.ShowDialog();
-            }
+            BuildMap();
         }
 
 
@@ -352,6 +317,14 @@ namespace GUI
             {
                 ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
                 controller.SaveAll();
+            }
+            else if (e.Key == Key.F9 && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                TestMap();
+            }
+            else if (e.Key == Key.B && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                BuildMap();
             }
         }
 
@@ -470,6 +443,52 @@ namespace GUI
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             controllerTriggerExplorer.Populate(triggerExplorer);
+        }
+
+        private void TestMap()
+        {
+            ControllerProject controller = new ControllerProject();
+            if (!controller.War3MapDirExists())
+            {
+                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                window.ShowDialog();
+                if (!window.OK)
+                {
+                    return;
+                }
+            }
+            try
+            {
+                controller.TestMap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                dialogBox.ShowDialog();
+            }
+        }
+
+        private void BuildMap()
+        {
+            ControllerProject controller = new ControllerProject();
+            if (!controller.War3MapDirExists())
+            {
+                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                window.ShowDialog();
+                if (!window.OK)
+                {
+                    return;
+                }
+            }
+            try
+            {
+                controller.BuildMap();
+            }
+            catch (Exception ex)
+            {
+                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                dialogBox.ShowDialog();
+            }
         }
 
         private void EnableToolbar(bool enable)
@@ -623,7 +642,6 @@ namespace GUI
         private void CommandBinding_CanExecute_NewTrigger(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = IsProjectActive();
-
         }
 
         private void CommandBinding_Executed_NewTrigger(object sender, ExecutedRoutedEventArgs e)
@@ -646,7 +664,6 @@ namespace GUI
         private void CommandBinding_CanExecute_NewGlobalVariable(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = IsProjectActive();
-
         }
 
         private void CommandBinding_Executed_NewGlobalVariable(object sender, ExecutedRoutedEventArgs e)
@@ -724,6 +741,21 @@ namespace GUI
         {
             Settings settings = Settings.Load();
             settings.triggerExplorerWidth = (int)rowTriggerExplorer.Width.Value;
+        }
+
+        private void menuItemHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var uri = "https://thelazzoro.github.io/BetterTriggersGuide/#/Guide";
+            var psi = new System.Diagnostics.ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = uri;
+            System.Diagnostics.Process.Start(psi);
+        }
+
+        private void menuItemAbout_Click(object sender, RoutedEventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog();
         }
     }
 }

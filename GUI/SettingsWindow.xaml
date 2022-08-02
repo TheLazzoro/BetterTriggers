@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="SettingsWindow" WindowStartupLocation="CenterOwner" Height="380" MinHeight="380" Width="410" MinWidth="410" Background="#FF353535">
+        Title="Options" WindowStartupLocation="CenterOwner" Height="380" MinHeight="380" Width="410" MinWidth="410" Background="#FF353535">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>

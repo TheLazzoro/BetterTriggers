@@ -22,6 +22,9 @@ namespace GUI.Utility
         public static List<Inline> Format(string text)
         {
             List<Inline> inlines = new List<Inline>();
+            if (text == null)
+                return inlines;
+
             colorCode = "FFFFFFFF";
             text = text.Replace("|n", System.Environment.NewLine);
 

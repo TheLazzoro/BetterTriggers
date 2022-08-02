@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="OnCloseWindow" WindowStartupLocation="CenterOwner" Height="145" Width="300" Background="#FF202020" ResizeMode="NoResize">
+        Title="Confirmation" WindowStartupLocation="CenterOwner" Height="145" Width="300" Background="#FF202020" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
