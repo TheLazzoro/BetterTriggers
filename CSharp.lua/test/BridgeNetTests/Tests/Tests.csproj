@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Batch1\Batch1.csproj" />
+    <ProjectReference Include="..\BridgeTestNUnit\BridgeTestNUnit.csproj" />
+  </ItemGroup>
+
+</Project>
