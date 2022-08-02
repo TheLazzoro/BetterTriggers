@@ -123,9 +123,9 @@ end
             if (ContainerProject.project == null)
                 return false;
 
-            if (File.Exists(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j")))
+            if (language == ScriptLanguage.Lua && File.Exists(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j")))
                 File.Delete(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j"));
-            if (File.Exists(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.lua")))
+            if (language == ScriptLanguage.Jass && File.Exists(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.lua")))
                 File.Delete(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.lua"));
 
             string scriptFile = language == ScriptLanguage.Jass ? "war3map.j" : "war3map.lua";
