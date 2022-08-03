@@ -9,7 +9,7 @@
             function.value = "SetVariable";
         }
 
-        public new SetVariable Clone()
+        public override SetVariable Clone()
         {
             SetVariable setVariable = new SetVariable();
             setVariable.function = this.function.Clone();

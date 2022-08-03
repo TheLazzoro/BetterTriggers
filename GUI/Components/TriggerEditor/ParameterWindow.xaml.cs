@@ -100,6 +100,7 @@ namespace GUI
             variableControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             triggerRefControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             importControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            valueControl.OK += delegate { OK(); };
 
 
             IParameterControl parameterControl = constantControl; // default
@@ -240,11 +241,16 @@ namespace GUI
             ShowHideTabs(importControl);
         }
 
-        private void btnOK_Click(object sender, RoutedEventArgs e)
+        private void OK()
         {
             this.selectedParameter = selectedControl.GetSelectedItem();
             this.isOK = true;
             this.Close();
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            OK();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

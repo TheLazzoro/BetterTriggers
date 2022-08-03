@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Models.SaveableData;
+using System.Windows.Input;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -47,6 +48,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private Searchables searchables;
 
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
 
         public ValueControlUnitTypes()
         {
@@ -55,6 +57,17 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             var controller = new ControllerMapData();
             unitData = controller.GetUnitTypesAll();
             //comboboxRace.SelectedIndex = 0;
+
+            this.KeyDown += ValueControlUnitTypes_KeyDown;
+        }
+
+        private void ValueControlUnitTypes_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter && selectedType != null)
+                return;
+
+            EventHandler handler = OK;
+            handler?.Invoke(this, e);
         }
 
         public void SetDefaultSelection(string value)

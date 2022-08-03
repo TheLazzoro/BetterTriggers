@@ -27,6 +27,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         static string color1 = "000000";
 
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
 
         public ValueControlString(string returnType)
         {
@@ -85,6 +86,16 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             colorPicker1.StandardColors = collection;
 
             this.Loaded += ValueControlString_Loaded;
+            this.KeyDown += ValueControlString_KeyDown;
+        }
+
+        private void ValueControlString_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            EventHandler handler = OK;
+            handler?.Invoke(this, e);
         }
 
         private void ValueControlString_Loaded(object sender, RoutedEventArgs e)

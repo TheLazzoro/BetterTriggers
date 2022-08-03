@@ -12,6 +12,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ParameterValueControl : UserControl, IParameterControl
     {
         public EventHandler SelectionChanged;
+        public EventHandler OK;
         private IValueControl valueControl;
 
         public ParameterValueControl(string returnType)
@@ -142,11 +143,19 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             control.HorizontalContentAlignment = HorizontalAlignment.Stretch;
 
             valueControl.SelectionChanged += ValueControl_SelectionChanged;
+            valueControl.OK += ValueControl_OK;
         }
+
 
         private void ValueControl_SelectionChanged(object sender, EventArgs e)
         {
             EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        private void ValueControl_OK(object sender, EventArgs e)
+        {
+            EventHandler handler = OK;
             handler?.Invoke(this, e);
         }
 

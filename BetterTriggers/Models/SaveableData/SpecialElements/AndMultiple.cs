@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.SaveableData
             function.value = "AndMultiple";
         }
 
-        public new AndMultiple Clone()
+        public override AndMultiple Clone()
         {
             AndMultiple andMultiple = new AndMultiple();
             andMultiple.function = this.function.Clone();

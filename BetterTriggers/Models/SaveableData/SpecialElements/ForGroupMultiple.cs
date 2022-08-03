@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.SaveableData
             function.value = "ForGroupMultiple";
         }
 
-        public new ForGroupMultiple Clone()
+        public override ForGroupMultiple Clone()
         {
             ForGroupMultiple forGroup = new ForGroupMultiple();
             forGroup.function = this.function.Clone();

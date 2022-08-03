@@ -13,6 +13,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private ListViewItem selectedItem;
 
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
 
         public ValueControlGeneric(List<Value> values, string returnType)
         {
@@ -32,7 +33,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     Object = listItem,
                     Words = new List<string>()
                     {
-                        "PLACEHOLDER",
+                        controller.GetValueName(values[i].value, returnType).ToLower(),
                         values[i].value.ToLower()
                     },
                 });
@@ -42,7 +43,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.SetSearchableList(searchables);
 
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
+            listControl.listView.MouseDoubleClick += ListView_MouseDoubleClick;
         }
+
 
         public void SetDefaultSelection(string value)
         {
@@ -88,6 +91,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             selectedItem = listControl.listView.SelectedItem as ListViewItem;
             EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            EventHandler handler = OK;
             handler?.Invoke(this, e);
         }
     }

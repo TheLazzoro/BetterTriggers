@@ -23,6 +23,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private string previousValue;
 
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
 
         public ValueControlInteger()
         {
@@ -31,6 +32,16 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             textBox.Text = "0";
 
             this.Loaded += ValueControlInteger_Loaded;
+            this.KeyDown += ValueControlInteger_KeyDown;
+        }
+
+        private void ValueControlInteger_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            EventHandler handler = OK;
+            handler?.Invoke(this, e);
         }
 
         private void ValueControlInteger_Loaded(object sender, RoutedEventArgs e)

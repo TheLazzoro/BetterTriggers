@@ -22,6 +22,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private ListViewItem selectedItem;
 
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
 
         public ValueControlAbilities()
         {
@@ -43,6 +44,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             }
 
             listViewAbilities.SelectionChanged += ListViewAbilities_SelectionChanged;
+            listViewAbilities.MouseDoubleClick += ListViewAbilities_MouseDoubleClick;
         }
 
 
@@ -70,6 +72,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private void ListViewAbilities_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+
+        private void ListViewAbilities_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            EventHandler handler = OK;
             handler?.Invoke(this, e);
         }
 

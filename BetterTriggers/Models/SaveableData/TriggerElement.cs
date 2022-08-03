@@ -25,7 +25,7 @@ namespace BetterTriggers.Models.SaveableData
             this.function.value = value;
         }
 
-        public TriggerElement Clone()
+        public virtual TriggerElement Clone()
         {
             TriggerElement clone = new TriggerElement();
             clone.isEnabled = isEnabled;

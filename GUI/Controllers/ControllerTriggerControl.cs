@@ -102,6 +102,7 @@ namespace GUI.Controllers
         {
             if (treeViewTriggerElement.triggerElement is IfThenElse)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (IfThenElse)treeViewTriggerElement.triggerElement;
 
                 var If = new NodeCondition("If - Conditions");
@@ -120,6 +121,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is AndMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (AndMultiple)treeViewTriggerElement.triggerElement;
                 var And = new NodeCondition("Conditions");
                 And.SetTriggerElements(function.And);
@@ -129,6 +131,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is OrMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (OrMultiple)treeViewTriggerElement.triggerElement;
                 var Or = new NodeCondition("Conditions");
                 Or.SetTriggerElements(function.Or);
@@ -138,6 +141,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is ForGroupMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (ForGroupMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -147,6 +151,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is ForForceMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (ForForceMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -156,6 +161,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is ForLoopAMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (ForLoopAMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -165,6 +171,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is ForLoopBMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (ForLoopBMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -174,6 +181,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is ForLoopVarMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (ForLoopVarMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -183,6 +191,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is EnumDestructablesInRectAllMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (EnumDestructablesInRectAllMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -192,6 +201,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is EnumDestructiblesInCircleBJMultiple)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (EnumDestructiblesInCircleBJMultiple)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -201,6 +211,7 @@ namespace GUI.Controllers
             }
             else if (treeViewTriggerElement.triggerElement is EnumItemsInRectBJ)
             {
+                treeViewTriggerElement.ExpandSubtree();
                 var function = (EnumItemsInRectBJ)treeViewTriggerElement.triggerElement;
                 var Actions = new NodeAction("Loop - Actions");
                 Actions.SetTriggerElements(function.Actions);
@@ -212,6 +223,8 @@ namespace GUI.Controllers
 
         public void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
         {
+            TreeViewItem item = (TreeViewItem)parentNode;
+            item.ExpandSubtree();
             parentNode.SetTriggerElements(triggerElements);
             for (int i = 0; i < triggerElements.Count; i++)
             {

@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.SaveableData
             function.value = "ForLoopVarMultiple";
         }
 
-        public new ForLoopVarMultiple Clone()
+        public override ForLoopVarMultiple Clone()
         {
             ForLoopVarMultiple forLoop = new ForLoopVarMultiple();
             forLoop.function = this.function.Clone();

@@ -23,6 +23,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private string previousValue;
 
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
 
         public ValueControlReal()
         {
@@ -31,12 +32,23 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             textBox.Text = "0.00";
 
             this.Loaded += ValueControlReal_Loaded;
+            this.KeyDown += ValueControlReal_KeyDown;
         }
+
 
         private void ValueControlReal_Loaded(object sender, RoutedEventArgs e)
         {
             //EventHandler handler = SelectionChanged;
             //handler?.Invoke(this, e);
+        }
+
+        private void ValueControlReal_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            EventHandler handler = OK;
+            handler?.Invoke(this, e);
         }
 
         public void SetDefaultSelection(string value)

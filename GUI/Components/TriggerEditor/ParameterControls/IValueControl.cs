@@ -9,6 +9,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         Parameter GetSelected();
         event EventHandler SelectionChanged;
+        event EventHandler OK;
         int GetElementCount();
         void SetDefaultSelection(string value);
     }

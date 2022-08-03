@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.SaveableData
             function.value = "OrMultiple";
         }
 
-        public new OrMultiple Clone()
+        public override OrMultiple Clone()
         {
             OrMultiple andMultiple = new OrMultiple();
             andMultiple.function = this.function.Clone();

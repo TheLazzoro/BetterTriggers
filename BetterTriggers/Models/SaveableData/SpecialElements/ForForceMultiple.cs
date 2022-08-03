@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.SaveableData
             function.value = "ForForceMultiple";
         }
 
-        public new ForForceMultiple Clone()
+        public override ForForceMultiple Clone()
         {
             ForForceMultiple forForce = new ForForceMultiple();
             forForce.function = this.function.Clone();

@@ -20,17 +20,29 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ValueControlBoolean : UserControl, IValueControl
     {
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
 
         public ValueControlBoolean()
         {
             InitializeComponent();
 
             checkBox.Click += CheckBox_Click;
+            this.KeyDown += ValueControlBoolean_KeyDown;
         }
+
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
             EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        private void ValueControlBoolean_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            EventHandler handler = OK;
             handler?.Invoke(this, e);
         }
 

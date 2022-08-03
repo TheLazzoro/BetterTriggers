@@ -23,16 +23,29 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ValueControlScript : UserControl, IValueControl
     {
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
+
         public ValueControlScript()
         {
             InitializeComponent();
 
             this.Loaded += ValueControlScript_Loaded;
+            this.KeyDown += ValueControlScript_KeyDown;
         }
+
 
         private void ValueControlScript_Loaded(object sender, RoutedEventArgs e)
         {
             EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        private void ValueControlScript_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter)
+                return;
+
+            EventHandler handler = OK;
             handler?.Invoke(this, e);
         }
 

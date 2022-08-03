@@ -14,6 +14,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ValueControlModels : UserControl, IValueControl
     {
         public event EventHandler SelectionChanged;
+        public event EventHandler OK;
+
+
         public ValueControlModels()
         {
             InitializeComponent();
@@ -48,6 +51,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             Grid.SetRowSpan(categoryControl, 2);
 
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
+            listControl.listView.MouseDoubleClick += ListView_MouseDoubleClick;
         }
 
 
@@ -84,6 +88,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             textBoxAsset.Text = model.Path;
 
             EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+        }
+
+        private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            EventHandler handler = OK;
             handler?.Invoke(this, e);
         }
     }
