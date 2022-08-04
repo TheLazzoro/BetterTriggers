@@ -13,8 +13,6 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerTrigger
     {
-        /// <summary>
-        /// </summary>
         /// <returns>Full file path.</returns>
         public string CreateTrigger()
         {
@@ -41,8 +39,6 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// Creates a list of saveable trigger refs
         /// </summary>
-        /// <param name="returnType"></param>
-        /// <returns></returns>
         public List<TriggerRef> GetTriggerRefs()
         {
             List<ExplorerElementTrigger> elements = GetTriggersAll();
@@ -98,9 +94,6 @@ namespace BetterTriggers.Controllers
             return Triggers.GetAll();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="function"></param>
         /// <returns>A list of all parameters given to a TriggerElement</returns>
         public List<Parameter> GetElementParametersAll(TriggerElement te)
         {
@@ -143,11 +136,6 @@ namespace BetterTriggers.Controllers
                 CopiedElements.CutTriggerElements = null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="parentList"></param>
-        /// <param name="insertIndex"></param>
         /// <returns>A list of pasted elements.</returns>
         public List<TriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<TriggerElement> parentList, int insertIndex)
         {
@@ -172,6 +160,7 @@ namespace BetterTriggers.Controllers
             return pasted;
         }
 
+        /// <returns>Whether the trigger had invalid references removed.</returns>
         public bool RemoveInvalidReferences(ExplorerElementTrigger explorerElement)
         {
             int removeCount = 0;
@@ -616,6 +605,9 @@ namespace BetterTriggers.Controllers
                 default:
                     break;
             }
+
+            if (text == null)
+                text = string.Empty;
 
             return text;
         }

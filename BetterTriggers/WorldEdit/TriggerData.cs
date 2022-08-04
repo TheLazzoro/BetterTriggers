@@ -33,59 +33,81 @@ namespace BetterTriggers.WorldEdit
         internal static List<Variable> customConstants = new List<Variable>();
 
 
+        public static void LoadForTest()
+        {
+            Load(true);
+        }
+
         internal static void Load()
         {
-            string baseDir = System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
-            string pathCommonJ = baseDir + "common.j";
-            string pathBlizzardJ = baseDir + "Blizzard.j";
+            Load(false);
+        }
 
-            if (!File.Exists(pathCommonJ))
+        private static void Load(bool isTest)
+        {
+            IniData data = null;
+
+            if (isTest)
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/triggerdata.txt");
+                string triggerdata = File.ReadAllText(path);
+                data = IniFileConverter.GetIniData(triggerdata);
+            }
+            else
+            {
+                string baseDir = System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
+                string pathCommonJ = baseDir + "common.j";
+                string pathBlizzardJ = baseDir + "Blizzard.j";
 
-                CASCFile commonJ = (CASCFile)units.Entries["common.j"];
-                Casc.SaveFile(commonJ, pathCommonJ);
+                if (!File.Exists(pathCommonJ))
+                {
+                    var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
+
+                    CASCFile commonJ = (CASCFile)units.Entries["common.j"];
+                    Casc.SaveFile(commonJ, pathCommonJ);
+                }
+
+                if (!File.Exists(pathBlizzardJ))
+                {
+                    var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
+
+                    CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
+                    Casc.SaveFile(blizzardJ, pathBlizzardJ);
+                }
+
+                var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
+                CASCFile triggerData = (CASCFile)ui.Entries["triggerdata.txt"];
+                var file = Casc.GetCasc().OpenFile(triggerData.FullName);
+                var reader = new StreamReader(file);
+                var text = reader.ReadToEnd();
+
+                data = IniFileConverter.GetIniData(text);
+
+                // --- TRIGGER CATEGORIES --- //
+
+                var triggerCategories = data.Sections["TriggerCategories"];
+                var replText = (CASCFolder)Casc.GetWar3ModFolder().Entries["replaceabletextures"];
+                var worldEditUI = (CASCFolder)replText.Entries["worldeditui"];
+                foreach (var category in triggerCategories)
+                {
+                    string[] values = category.Value.Split(",");
+
+                    if (values[1] == "none")
+                        continue;
+
+                    string WE_STRING = values[0];
+                    string texturePath = Path.GetFileName(values[1] + ".dds");
+                    bool shouldDisplay = true;
+                    if (values.Length == 3)
+                        shouldDisplay = false;
+
+                    CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
+                    Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
+
+                    Category.Create(category.KeyName, stream, WE_STRING, shouldDisplay);
+                }
             }
 
-            if (!File.Exists(pathBlizzardJ))
-            {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-
-                CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
-                Casc.SaveFile(blizzardJ, pathBlizzardJ);
-            }
-
-            var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
-            CASCFile triggerData = (CASCFile)ui.Entries["triggerdata.txt"];
-            var file = Casc.GetCasc().OpenFile(triggerData.FullName);
-            var reader = new StreamReader(file);
-            var text = reader.ReadToEnd();
-
-            var data = IniFileConverter.GetIniData(text);
-
-            // --- TRIGGER CATEGORIES --- //
-
-            var triggerCategories = data.Sections["TriggerCategories"];
-            var replText = (CASCFolder)Casc.GetWar3ModFolder().Entries["replaceabletextures"];
-            var worldEditUI = (CASCFolder)replText.Entries["worldeditui"];
-            foreach (var category in triggerCategories)
-            {
-                string[] values = category.Value.Split(",");
-
-                if (values[1] == "none")
-                    continue;
-
-                string WE_STRING = values[0];
-                string texturePath = Path.GetFileName(values[1] + ".dds");
-                bool shouldDisplay = true;
-                if (values.Length == 3)
-                    shouldDisplay = false;
-
-                CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
-                Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
-
-                Category.Create(category.KeyName, stream, WE_STRING, shouldDisplay);
-            }
 
             Stream s;
             s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png", FileMode.Open);
@@ -113,7 +135,6 @@ namespace BetterTriggers.WorldEdit
             // --- LOAD CUSTOM DATA --- //
 
             var textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom.txt"));
-
             var dataCustom = IniFileConverter.GetIniData(textCustom);
             LoadTriggerDataFromIni(dataCustom);
 
