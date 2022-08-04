@@ -38,8 +38,10 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void ValueControlReal_Loaded(object sender, RoutedEventArgs e)
         {
-            //EventHandler handler = SelectionChanged;
-            //handler?.Invoke(this, e);
+            EventHandler handler = SelectionChanged;
+            handler?.Invoke(this, e);
+            textBox.Focus();
+            textBox.SelectAll();
         }
 
         private void ValueControlReal_KeyDown(object sender, KeyEventArgs e)

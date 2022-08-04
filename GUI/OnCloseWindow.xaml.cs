@@ -29,7 +29,7 @@ namespace GUI
             this.Owner = MainWindow.GetMainWindow();
 
             ControllerProject controller = new ControllerProject();
-            lblMessage.Content = $"Save changes to '{controller.GetProjectRoot().GetName()}'?";
+            lblMessage.Text = $"Save changes to '{controller.GetProjectRoot().GetName()}'?";
         }
 
         private void btnYes_Click(object sender, RoutedEventArgs e)

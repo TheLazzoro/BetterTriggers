@@ -18,14 +18,12 @@ namespace GUI.Components.TriggerEditor
     public class HyperlinkParameterVariable : HyperlinkBT
     {
         internal ParameterFacadeVariable parameterFacade;
-        private readonly string returnType;
         ExplorerElementVariable explorerElement;
 
-        public HyperlinkParameterVariable(ParameterFacadeVariable parameterFacade, string text, string returnType)
+        public HyperlinkParameterVariable(ParameterFacadeVariable parameterFacade, string text)
             : base(parameterFacade.GetParameter(0), text)
         {
             this.parameterFacade = parameterFacade;
-            this.returnType = returnType;
             this.explorerElement = parameterFacade.GetExplorerElementVariable();
 
             this.Click += HyperlinkParameter_Click;
@@ -33,7 +31,7 @@ namespace GUI.Components.TriggerEditor
 
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
-            var window = new ParameterWindow(parameter, returnType);
+            var window = new ParameterWindow(parameter, explorerElement.variable.Type);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.

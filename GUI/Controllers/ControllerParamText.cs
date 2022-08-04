@@ -376,7 +376,7 @@ namespace GUI.Controllers
             if (parameterFacade is ParameterFacadeTrigger)
                 hyperlinkBT = new HyperlinkParameterTrigger(parameterFacade as ParameterFacadeTrigger, text, parameters, index, returnType);
             else if (parameterFacade is ParameterFacadeVariable)
-                hyperlinkBT = new HyperlinkParameterVariable(parameterFacade as ParameterFacadeVariable, text, returnType);
+                hyperlinkBT = new HyperlinkParameterVariable(parameterFacade as ParameterFacadeVariable, text);
 
             hyperlinkParameters.Add(hyperlinkBT);
 

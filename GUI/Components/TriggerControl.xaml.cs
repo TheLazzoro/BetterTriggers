@@ -471,7 +471,6 @@ namespace GUI.Components
             if (attachTarget.GetType() != ContainerCopiedElementsGUI.copiedElementParent.GetType()) // reject if TriggerElement types don't match. 
                 return;
 
-
             ControllerTrigger controller = new ControllerTrigger();
             var pasted = controller.PasteTriggerElements(explorerElementTrigger, attachTarget.GetTriggerElements(), insertIndex);
 
@@ -481,7 +480,7 @@ namespace GUI.Components
                 this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
 
                 pasted[i].Attach(treeViewTriggerElement);
-                treeViewTriggerElement.OnCreated(insertIndex + i); // index hack. May want a "GetIndex" method on TriggerElements.
+                treeViewTriggerElement.OnCreated(pasted[i].Parent.IndexOf(pasted[i]));
             }
         }
 

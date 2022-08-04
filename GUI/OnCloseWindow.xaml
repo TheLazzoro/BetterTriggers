@@ -14,7 +14,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <Label x:Name="lblMessage" Content="Save changes to [INSERT NAME]?" Foreground="#EEE" Grid.Row="1" HorizontalAlignment="Center" />
+        <TextBlock x:Name="lblMessage" Foreground="#EEE" Grid.Row="1" HorizontalAlignment="Center" TextTrimming="WordEllipsis">Save changes to [INSERT NAME]?</TextBlock>
 
         <Button x:Name="btnYes" Content="Yes" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,175,0" Click="btnYes_Click" />
         <Button x:Name="btnOK" Content="No" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />

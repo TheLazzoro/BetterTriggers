@@ -126,6 +126,13 @@ namespace GUI.Components
 
                 previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
                 defaultSelected = comboBoxVariableType.SelectedIndex;
+
+                explorerElementVariable.variable.InitialValue = new Parameter(); // Reset initial value
+                 
+                ControllerParamText controllerParamText = new ControllerParamText();
+                this.textblockInitialValue.Inlines.Clear();
+                var inlines = controllerParamText.GenerateParamText(explorerElementVariable);
+                this.textblockInitialValue.Inlines.AddRange(inlines);
             }
             else
             {

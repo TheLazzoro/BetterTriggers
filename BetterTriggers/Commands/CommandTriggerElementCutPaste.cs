@@ -41,14 +41,18 @@ namespace BetterTriggers.Commands
                 listToCut[i].RemoveFromParent();
                 listToCut[i].Deleted();
             }
-            for (int i = 0; i < listToPaste.Count; i++)
+            if (cutParent == pasteParent && pastedIndex > cutIndex)
             {
-                listToPaste[i].SetParent(pasteParent, pastedIndex + i);
+                this.pastedIndex = pastedIndex - listToPaste.Count;
             }
+
+            for (int i = 0; i < listToPaste.Count; i++)
+                listToPaste[i].SetParent(pasteParent, pastedIndex + i);
 
             ControllerReferences controller = new ControllerReferences();
             controller.UpdateReferences(from);
             controller.UpdateReferences(to);
+            CopiedElements.CutTriggerElements = null; // Reset
 
             CommandManager.AddCommand(this);
         }

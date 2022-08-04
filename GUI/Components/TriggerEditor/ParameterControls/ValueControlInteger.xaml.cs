@@ -48,6 +48,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             EventHandler handler = SelectionChanged;
             handler?.Invoke(this, e);
+            textBox.Focus();
+            textBox.SelectAll();
         }
 
         public void SetDefaultSelection(string value)
