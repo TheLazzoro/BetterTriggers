@@ -3,6 +3,7 @@ using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -120,7 +121,7 @@ namespace GUI.Components.Shared
         {
             var group = new DrawingGroup();
             group.Children.Add(new ImageDrawing(DrawIconImage(Category.Get(category).Icon), new Rect(0, 0, 16, 16)));
-            if(state == TreeItemState.Disabled || state == TreeItemState.HasErrors)
+            if (state == TreeItemState.Disabled || state == TreeItemState.HasErrors)
                 group.Children.Add(new ImageDrawing(DrawIconImage(Category.Get("TC_ERROR").Icon), new Rect(0, 0, 16, 16)));
             else if (state == TreeItemState.HasErrorsNoTextColor)
                 group.Children.Add(new ImageDrawing(DrawIconImage(Category.Get("TC_INVALID").Icon), new Rect(0, 0, 16, 16)));
@@ -206,21 +207,21 @@ namespace GUI.Components.Shared
             return bmImage;
         }
 
-        private static BitmapImage DrawIconImage(Stream stream)
+        private static BitmapImage DrawIconImage(System.Drawing.Bitmap image)
         {
-            BitmapImage image = null;
-            string path = string.Empty;
+            using (var ms = new System.IO.MemoryStream())
+            {
+                image.Save(ms, ImageFormat.Png);
+                ms.Seek(0, SeekOrigin.Begin);
 
-            //image = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Resources/Icons/" + path));
-            image = new BitmapImage();
-            image.BeginInit();
-            image.StreamSource = stream;
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.EndInit();
-            image.Freeze();
-            image.StreamSource.Position = 0;
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = ms;
+                bitmapImage.EndInit();
 
-            return image;
+                return bitmapImage;
+            }
         }
     }
 }

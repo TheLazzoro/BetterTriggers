@@ -177,6 +177,9 @@ namespace BetterTriggers.WorldEdit
                     Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
                 }
             }
+
+            unitDataSlk.Close();
+            unitSkin.Close();
         }
     }
 }
