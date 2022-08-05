@@ -13,6 +13,15 @@ namespace Tests
         static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "source";
         static string targetFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "target";
 
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+            Console.WriteLine("-----------");
+            Console.WriteLine("RUNNING FS TESTS");
+            Console.WriteLine("-----------");
+            Console.WriteLine("");
+        }
+
         [TestInitialize]
         public void BeforeEach()
         {

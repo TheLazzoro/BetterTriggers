@@ -23,11 +23,14 @@ namespace Tests
         static IExplorerElement element1, element2, element3;
 
 
-        //[AssemblyInitialize]
-        //public static void Init()
-        //{
-
-        //}
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+            Console.WriteLine("-----------");
+            Console.WriteLine("RUNNING PROJECT TESTS");
+            Console.WriteLine("-----------");
+            Console.WriteLine("");
+        }
 
         [TestInitialize]
         public void BeforeEach()
@@ -47,6 +50,8 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
+            ControllerProject controllerProject = new ControllerProject();
+            controllerProject.CloseProject();
         }
 
         [TestMethod]
