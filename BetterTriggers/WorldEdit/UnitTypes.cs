@@ -64,19 +64,34 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             unitTypes = new Dictionary<string, UnitType>();
             unitTypesBase = new Dictionary<string, UnitType>();
             unitTypesCustom = new Dictionary<string, UnitType>();
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+            Stream unitDataSlk;
+            Stream unitSkin;
 
-            // Extract base data
-            CASCFile unitData = (CASCFile)units.Entries["unitdata.slk"];
-            var file = Casc.GetCasc().OpenFile(unitData.FullName);
+            if (isTest)
+            {
+                unitDataSlk = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitdata.slk"), FileMode.Open);
+                unitSkin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitskin.txt"), FileMode.Open);
+            }
+            else
+            {
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+
+                // Extract base data
+                CASCFile cascFile = (CASCFile)units.Entries["unitdata.slk"];
+                unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName);
+
+                CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
+                unitSkin = Casc.GetCasc().OpenFile(unitSkins.FullName);
+            }
+
             SylkParser sylkParser = new SylkParser();
-            SylkTable table = sylkParser.Parse(file);
+            SylkTable table = sylkParser.Parse(unitDataSlk);
             for (int i = 1; i < table.Count(); i++)
             {
                 var row = table.ElementAt(i);
@@ -92,9 +107,8 @@ namespace BetterTriggers.WorldEdit
             }
 
             // Parse ini file
-            CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
-            file = Casc.GetCasc().OpenFile(unitSkins.FullName);
-            var reader = new StreamReader(file);
+
+            var reader = new StreamReader(unitSkin);
             var text = reader.ReadToEnd();
 
             var data = IniFileConverter.GetIniData(text);
@@ -116,7 +130,8 @@ namespace BetterTriggers.WorldEdit
                 unitType.isSpecial = isSpecial == "1";
                 unitType.isCampaign = isCampaign == "1";
                 unitType.Model = model;
-                unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
+                if (!isTest)
+                    unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
 
                 unitType.Name = GetName(unitType); // Spaghetti
             }

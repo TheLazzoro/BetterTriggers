@@ -50,23 +50,32 @@ namespace BetterTriggers.WorldEdit
             return upgradeType.DisplayName;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             upgrades = new Dictionary<string, UpgradeType>();
             upgradesBase = new Dictionary<string, UpgradeType>();
             upgradesCustom = new Dictionary<string, UpgradeType>();
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+            Stream upgradedata;
 
-            /* TODO:
-             * We are loading too many upgrades from this.
-             * There are 'upgrades' for 'Chaos Conversions' and other stuff
-             * which are not actual upgrades that show up in the object editor.
-            */
-            CASCFile abilityData = (CASCFile)units.Entries["upgradedata.slk"];
-            var file = Casc.GetCasc().OpenFile(abilityData.FullName);
+            if (isTest)
+            {
+                upgradedata = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/upgradedata.slk"), FileMode.Open);
+            }
+            else
+            {
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                /* TODO:
+                 * We are loading too many upgrades from this.
+                 * There are 'upgrades' for 'Chaos Conversions' and other stuff
+                 * which are not actual upgrades that show up in the object editor.
+                */
+                CASCFile abilityData = (CASCFile)units.Entries["upgradedata.slk"];
+                upgradedata = Casc.GetCasc().OpenFile(abilityData.FullName);
+            }
+
             SylkParser sylkParser = new SylkParser();
-            SylkTable table = sylkParser.Parse(file);
+            SylkTable table = sylkParser.Parse(upgradedata);
             for (int i = 1; i < table.Count(); i++)
             {
                 var row = table.ElementAt(i);

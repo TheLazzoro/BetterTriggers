@@ -48,18 +48,28 @@ namespace BetterTriggers.WorldEdit
             return itemType.DisplayName;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             items = new Dictionary<string, ItemType>();
             itemsBase = new Dictionary<string, ItemType>();
             itemsCustom = new Dictionary<string, ItemType>();
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+            Stream itemskin;
+
+            if (isTest)
+            {
+                itemskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/itemskin.txt"), FileMode.Open);
+            }
+            else
+            {
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                CASCFile itemSkins = (CASCFile)units.Entries["itemskin.txt"];
+                itemskin = Casc.GetCasc().OpenFile(itemSkins.FullName);
+            }
+
 
             // Parse ini file
-            CASCFile itemSkins = (CASCFile)units.Entries["itemskin.txt"];
-            var file = Casc.GetCasc().OpenFile(itemSkins.FullName);
-            var reader = new StreamReader(file);
+            var reader = new StreamReader(itemskin);
             var text = reader.ReadToEnd();
 
             var data = IniFileConverter.GetIniData(text);

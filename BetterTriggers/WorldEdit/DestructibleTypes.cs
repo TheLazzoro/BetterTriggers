@@ -54,20 +54,28 @@ namespace BetterTriggers.WorldEdit
             return destType.DisplayName;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             destructibles = new Dictionary<string, DestructibleType>();
             destructiblesBase = new Dictionary<string, DestructibleType>();
             destructiblesCustom = new Dictionary<string, DestructibleType>();
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+            Stream destructibleskin;
 
-            // Parse ini file
-            CASCFile destSkins = (CASCFile)units.Entries["destructableskin.txt"];
-            var file = Casc.GetCasc().OpenFile(destSkins.FullName);
-            var reader = new StreamReader(file);
+            if (isTest)
+            {
+                destructibleskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/destructableskin.txt"), FileMode.Open);
+            }
+            else
+            {
+                var cascFolder = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                CASCFile destSkins = (CASCFile)cascFolder.Entries["destructableskin.txt"];
+                destructibleskin = Casc.GetCasc().OpenFile(destSkins.FullName);
+            }
+
+
+            var reader = new StreamReader(destructibleskin);
             var text = reader.ReadToEnd();
-
             var data = IniFileConverter.GetIniData(text);
 
             var sections = data.Sections.GetEnumerator();

@@ -30,7 +30,7 @@ namespace BetterTriggers
                 OnSaving(sender, e);
         }
 
-        public static void Init(string _mapPath)
+        public static void Init(string _mapPath, bool isTest = false)
         {
             mapPath = _mapPath;
             watcher = new System.IO.FileSystemWatcher();
@@ -38,7 +38,7 @@ namespace BetterTriggers
             watcher.EnableRaisingEvents = true;
             watcher.Created += Watcher_Created;
 
-            Load();
+            Load(isTest);
         }
 
         private static void Watcher_Created(object sender, FileSystemEventArgs e)
@@ -57,9 +57,10 @@ namespace BetterTriggers
                 return false;
         }
 
+
         // TODO: Optimize to only reload custom map data
         // Right now this is re-run when new map data is detected.
-        public static void Load()
+        public static void Load(bool isTest = false)
         {
             while (IsMapSaving())
             {
@@ -68,13 +69,13 @@ namespace BetterTriggers
 
             Info.Load();
             MapStrings.Load();
-            UnitTypes.Load();
-            ItemTypes.Load();
-            DestructibleTypes.Load();
-            DoodadTypes.Load();
-            AbilityTypes.Load();
-            BuffTypes.Load();
-            UpgradeTypes.Load();
+            UnitTypes.Load(isTest);
+            ItemTypes.Load(isTest);
+            DestructibleTypes.Load(isTest);
+            DoodadTypes.Load(isTest);
+            AbilityTypes.Load(isTest);
+            BuffTypes.Load(isTest);
+            UpgradeTypes.Load(isTest);
 
             Cameras.Load();
             Destructibles.Load();
@@ -82,7 +83,7 @@ namespace BetterTriggers
             Sounds.Load();
             Units.Load();
 
-            ModelData.Load(); // requires above
+            ModelData.Load(isTest); // requires above
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace BetterTriggers.WorldEdit
             return assetModels;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             assetModels.Clear();
             var unitData = UnitTypes.GetBase();
@@ -30,14 +30,22 @@ namespace BetterTriggers.WorldEdit
             var doodData = DoodadTypes.GetBase();
             var itemData = ItemTypes.GetBase();
 
-
             // some asset strings occur multiple times
             HashSet<AssetModel> hashset = new HashSet<AssetModel>();
+            Stream abilityskin;
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-            CASCFile abilitySkin = (CASCFile)units.Entries["abilityskin.txt"];
-            var file = Casc.GetCasc().OpenFile(abilitySkin.FullName);
-            StreamReader reader = new StreamReader(file);
+            if (isTest)
+            {
+                abilityskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/abilityskin.txt"), FileMode.Open);
+            }
+            else
+            {
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                CASCFile cascFile = (CASCFile)units.Entries["abilityskin.txt"];
+                abilityskin = Casc.GetCasc().OpenFile(cascFile.FullName);
+            }
+
+            StreamReader reader = new StreamReader(abilityskin);
             string text = reader.ReadToEnd();
 
             var data = IniFileConverter.GetIniData(text);

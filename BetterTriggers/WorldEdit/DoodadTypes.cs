@@ -36,18 +36,27 @@ namespace BetterTriggers.WorldEdit
             return doodadsCustom;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             doodads = new List<DoodadType>();
             doodadsBase = new List<DoodadType>();
             doodadsCustom = new List<DoodadType>();
 
-            var folderDoodads = (CASCFolder)Casc.GetWar3ModFolder().Entries["doodads"];
+            Stream doodadskin;
+
+            if (isTest)
+            {
+                doodadskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/doodadskins.txt"), FileMode.Open);
+            }
+            else
+            {
+                var folderDoodads = (CASCFolder)Casc.GetWar3ModFolder().Entries["doodads"];
+                CASCFile doodadSkins = (CASCFile)folderDoodads.Entries["doodadskins.txt"];
+                doodadskin = Casc.GetCasc().OpenFile(doodadSkins.FullName);
+            }
 
             // Parse ini file
-            CASCFile doodadSkins = (CASCFile)folderDoodads.Entries["doodadskins.txt"];
-            var file = Casc.GetCasc().OpenFile(doodadSkins.FullName);
-            var reader = new StreamReader(file);
+            var reader = new StreamReader(doodadskin);
             var text = reader.ReadToEnd();
 
             var data = IniFileConverter.GetIniData(text);

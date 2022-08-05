@@ -50,23 +50,32 @@ namespace BetterTriggers.WorldEdit
             return buffType.DisplayName;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             buffs = new Dictionary<string, BuffType>();
             buffsBase = new Dictionary<string, BuffType>();
             buffsCustom = new Dictionary<string, BuffType>();
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+            Stream buffdata;
 
-            /* TODO:
-             * We are loading too many buffs from this.
-             * There are 'buffs' for other stuff which are not
-             * actual buffs that show up in the object editor.
-            */
-            CASCFile abilityData = (CASCFile)units.Entries["abilitybuffdata.slk"];
-            var file = Casc.GetCasc().OpenFile(abilityData.FullName);
+            if (isTest)
+            {
+                buffdata = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/abilitybuffdata.slk"), FileMode.Open);
+            }
+            else
+            {
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                /* TODO:
+                 * We are loading too many buffs from this.
+                 * There are 'buffs' for other stuff which are not
+                 * actual buffs that show up in the object editor.
+                */
+                CASCFile abilityData = (CASCFile)units.Entries["abilitybuffdata.slk"];
+                buffdata = Casc.GetCasc().OpenFile(abilityData.FullName);
+            }
+
             SylkParser sylkParser = new SylkParser();
-            SylkTable table = sylkParser.Parse(file);
+            SylkTable table = sylkParser.Parse(buffdata);
             for (int i = 1; i < table.Count(); i++)
             {
                 var row = table.ElementAt(i);

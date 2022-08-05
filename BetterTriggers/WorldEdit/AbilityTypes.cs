@@ -48,23 +48,34 @@ namespace BetterTriggers.WorldEdit
             return abilityType.DisplayName;
         }
 
-        internal static void Load()
+        internal static void Load(bool isTest = false)
         {
             abilities = new Dictionary<string, AbilityType>();
             abilitiesBase = new Dictionary<string, AbilityType>();
             abilitiesCustom = new Dictionary<string, AbilityType>();
 
-            var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+            Stream abilitydata;
 
-            /* TODO:
-             * We are loading too many abilities from this.
-             * There are 'abilities' for 'Chaos Conversions' and other stuff
-             * which are not actual abilites that show up in the object editor.
-            */
-            CASCFile abilityData = (CASCFile)units.Entries["abilitydata.slk"]; 
-            var file = Casc.GetCasc().OpenFile(abilityData.FullName);
+            if (isTest)
+            {
+                abilitydata = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/abilitydata.slk"), FileMode.Open);
+            }
+            else
+            {
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
+                /* TODO:
+                 * We are loading too many abilities from this.
+                 * There are 'abilities' for 'Chaos Conversions' and other stuff
+                 * which are not actual abilites that show up in the object editor.
+                */
+                CASCFile abilityData = (CASCFile)units.Entries["abilitydata.slk"];
+                abilitydata = Casc.GetCasc().OpenFile(abilityData.FullName);
+
+            }
+
+
             SylkParser sylkParser = new SylkParser();
-            SylkTable table = sylkParser.Parse(file);
+            SylkTable table = sylkParser.Parse(abilitydata);
             for (int i = 1; i < table.Count(); i++)
             {
                 var row = table.ElementAt(i);

@@ -37,10 +37,11 @@ namespace BetterTriggers.WorldEdit
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
 
-        public void Convert(string mapPath, string outputFullPath)
+        /// <returns>Project file path.</returns>
+        public string Convert(string mapPath, string projectDestinationDir)
         {
             Load(mapPath);
-            Convert(outputFullPath);
+            return Convert(projectDestinationDir);
         }
 
         private void Load(string mapPath)
@@ -71,8 +72,7 @@ namespace BetterTriggers.WorldEdit
                     rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
                 customTextTriggers.CustomTextTriggers.ForEach(item =>
                 {
-                    if (item.Code != string.Empty)
-                        wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
+                    wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
                 });
             }
             using (Stream s = new FileStream(Path.Combine(mapPath, pathInfo), FileMode.Open, FileAccess.Read))
@@ -89,7 +89,8 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        private void Convert(string fullPath)
+        /// <returns>Project file path.</returns>
+        private string Convert(string fullPath)
         {
             ControllerProject controller = new ControllerProject();
             string projectPath = controller.CreateProject(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
@@ -158,6 +159,8 @@ namespace BetterTriggers.WorldEdit
             }
 
             File.WriteAllText(projectPath, JsonConvert.SerializeObject(project, Formatting.Indented));
+
+            return projectPath;
         }
 
         private IExplorerElement CreateExplorerElement(TriggerItem triggerItem)
@@ -250,7 +253,7 @@ namespace BetterTriggers.WorldEdit
             Parameter initialValue = new Parameter();
             if (TriggerData.ConstantExists(variableDefinition.InitialValue))
                 initialValue = new Constant { value = variableDefinition.InitialValue };
-            else if(variableDefinition.InitialValue != "")
+            else if (variableDefinition.InitialValue != "")
                 initialValue = new Value { value = variableDefinition.InitialValue };
 
             ExplorerElementVariable variable = new ExplorerElementVariable()
@@ -291,12 +294,12 @@ namespace BetterTriggers.WorldEdit
 
             trigger.Id = triggerDefinition.Id;
             trigger.Comment = triggerDefinition.Description;
+            trigger.Script = wctStrings[wctIndex];
+            wctIndex++;
             if (triggerDefinition.IsCustomTextTrigger)
             {
                 trigger.IsScript = triggerDefinition.IsCustomTextTrigger;
                 trigger.RunOnMapInit = triggerDefinition.RunOnMapInit;
-                trigger.Script = wctStrings[wctIndex];
-                wctIndex++;
                 return explorerElementTrigger;
             }
 

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Containers;
+﻿using System.Net;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
@@ -17,6 +18,8 @@ using War3Net.Build.Providers;
 using War3Net.Common.Extensions;
 using War3Net.Build.Extensions;
 using System.Linq;
+using War3Net.Build.Environment;
+using System.Text.RegularExpressions;
 
 namespace BetterTriggers
 {
@@ -44,6 +47,7 @@ namespace BetterTriggers
         List<ExplorerElementScript> scripts = new List<ExplorerElementScript>();
         List<ExplorerElementTrigger> triggers = new List<ExplorerElementTrigger>();
         Dictionary<string, Tuple<Parameter, string>> generatedVarNames = new Dictionary<string, Tuple<Parameter, string>>(); // [value, [parameter, returnType] ]
+        List<string> globalVarNames = new List<string>(); // Used in an edge case (old maps) where vars are multiple defined.
         CultureInfo enUS = new CultureInfo("en-US");
 
         string triggerName = string.Empty;
@@ -310,27 +314,43 @@ end
             var regions = Regions.GetAll();
             foreach (var r in regions)
             {
+                if (globalVarNames.Contains(r.GetVariableName()))
+                    continue;
+
                 string rect = language == ScriptLanguage.Jass ? "rect" : "";
-                script.Append($"{rect} gg_rct_{r.Name.Replace(" ", "_")} = {_null} {newline}");
+                script.Append($"{rect} {GetCorrectedVarName($"gg_rct_{r.Name.Replace(" ", "_")}")} = {_null} {newline}");
+                globalVarNames.Add(r.GetVariableName());
             }
             var sounds = Sounds.GetSoundsAll();
             foreach (var s in sounds)
             {
+                if (globalVarNames.Contains(s.Name))
+                    continue;
+
                 string sound = language == ScriptLanguage.Jass ? "sound" : "";
-                script.Append($"{sound} {s.Name} = {_null} {newline}");
+                script.Append($"{sound} {GetCorrectedVarName(s.Name.Replace(" ", "_"))} = {_null} {newline}");
+                globalVarNames.Add(s.Name);
             }
             var music = Sounds.GetMusicAll();
             foreach (var s in music)
             {
+                if (globalVarNames.Contains(s.Name))
+                    continue;
+
                 string _music = language == ScriptLanguage.Jass ? "string" : "";
-                script.Append($"{_music} {s.Name} = {_null} {newline}");
+                script.Append($"{_music} {GetCorrectedVarName(s.Name.Replace(" ", "_"))} = {_null} {newline}");
+                globalVarNames.Add(s.Name);
             }
             var cameras = Cameras.GetAll();
             foreach (var c in cameras)
             {
+                if (globalVarNames.Contains(c.GetVariableName()))
+                    continue;
+
                 string camerasetup = language == ScriptLanguage.Jass ? "camerasetup" : "";
-                var cameraName = $"gg_cam_{c.Name.Replace(" ", "_")}";
+                var cameraName = GetCorrectedVarName($"gg_cam_{c.Name.Replace(" ", "_")}");
                 script.Append($"{camerasetup} {cameraName} = {_null} {newline}");
+                globalVarNames.Add(c.GetVariableName());
             }
 
             foreach (var trigger in triggers)
@@ -434,6 +454,22 @@ end
             //script.Append($"function BlzLoadTOCFile {functionReturnsNothing}");
         }
 
+        private bool IsASCII(string value)
+        {
+            // ASCII encoding replaces non-ascii with question marks, so we use UTF8 to see if multi-byte sequences are there
+            return Encoding.UTF8.GetByteCount(value) == value.Length;
+        }
+
+        /// <summary>
+        /// Takes an already generated varname and replaces invalid ASCII chars
+        /// </summary>
+        private string GetCorrectedVarName(string generatedVarName)
+        {
+            string name = Regex.Replace(generatedVarName, @"[^\u0000-\u007F]+", "__"); ;
+
+            return name;
+        }
+
         private string GetGlobalsStartValue(string returnType)
         {
             string value = _null;
@@ -516,7 +552,7 @@ end
                     var destinationRect = Regions.GetAll().Where(region => region.CreationNumber == u.WaygateDestinationRegionId).SingleOrDefault();
                     if (destinationRect is not null)
                     {
-                        string regionVar = $"gg_rct_{destinationRect.ToString().Replace(" ", "_")}";
+                        string regionVar = GetCorrectedVarName($"gg_rct_{destinationRect.ToString().Replace(" ", "_")}");
                         script.Append($"\t{call} WaygateSetDestination({varName}, GetRectCenterX({regionVar}), GetRectCenterY({regionVar})){newline}");
                         script.Append($"\t{call} WaygateActivate({varName}, true){newline}");
                     }
@@ -683,7 +719,7 @@ end
                 var right = r.Right;
                 var top = r.Top;
 
-                var varName = "gg_rct_" + id;
+                string varName = GetCorrectedVarName($"gg_rct_{id}");
 
                 script.Append($"{set} {varName} = Rect({left}, {bottom}, {right}, {top}){newline}");
                 if (r.WeatherType == War3Net.Build.WeatherType.None)
@@ -712,7 +748,7 @@ end
             var cameras = Cameras.GetAll();
             foreach (var c in cameras)
             {
-                var id = $"gg_cam_{c.Name.Replace(" ", "_")}";
+                var id = GetCorrectedVarName($"gg_cam_{c.Name.Replace(" ", "_")}");
 
 
                 script.Append($"{set} {id} = CreateCameraSetup(){newline}");
@@ -1979,7 +2015,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.value == "ForForce" || f.value == "ForGroup" || f.value == "EnumDestructablesInRectAll" || f.value == "EnumDestructablesInCircleBJ" || f.value == "EnumItemsInRectBJ")
+            else if (f.value == "ForForce" || f.value == "ForGroup" || f.value == "EnumDestructablesInRectAll" || f.value == "EnumItemsInRectBJ")
             {
                 string function_name = generate_function_name(triggerName);
 
@@ -1988,6 +2024,21 @@ end
                 string pre = string.Empty;
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
                 pre += $"\t{ConvertFunctionToJass(f.parameters[1] as Function, pre_actions, nested)}{newline}";
+                pre += $"{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
+
+                return script.ToString();
+            }
+
+            else if (f.value == "EnumDestructablesInCircleBJ")
+            {
+                string function_name = generate_function_name(triggerName);
+
+                script.Append($"{call} {f.value}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, {function} {function_name}){newline}");
+
+                string pre = string.Empty;
+                pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += $"\t{ConvertFunctionToJass(f.parameters[2] as Function, pre_actions, nested)}{newline}";
                 pre += $"{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
@@ -2027,7 +2078,7 @@ end
             // --- REGULAR CALLS --- //
             // --------------------- //
 
-            
+
             if (!nested)
                 script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
             else
@@ -2050,7 +2101,7 @@ end
                 FunctionTemplate template;
                 TriggerData.FunctionsAll.TryGetValue(f.value, out template);
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
-                if(template.scriptName != null)
+                if (template.scriptName != null)
                     f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.
 
                 if (returnType == "event")
@@ -2216,6 +2267,11 @@ end
                     output += $"gg_snd_{v.value.Replace(" ", "_")}";
                 else
                     output += v.value;
+
+                // TODO:
+                // One would think that we need to do 'GetCorrectedVarName' also,
+                // but JassHelper for some reason does it on it's own.
+                // Investigate plz.
             }
 
             return output;

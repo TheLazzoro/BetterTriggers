@@ -46,7 +46,7 @@ namespace BetterTriggers
         }
 
 
-        internal static void Load()
+        public static void Load()
         {
             Settings settings = Settings.Load();
 
