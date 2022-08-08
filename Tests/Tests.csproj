@@ -6,6 +6,10 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Resources\JassHelper\Blizzard.j" />
     <None Remove="Resources\JassHelper\common.j" />
@@ -90,6 +94,33 @@
     <None Remove="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\conversation.json" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.doo" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.imp" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.mmp" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.shd" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3a" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3b" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3c" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3d" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3e" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3h" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3i" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3q" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3r" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3s" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3t" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3u" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wct" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wpm" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wtg" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wts" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapExtra.txt" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapMap.blp" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapMisc.txt" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapPreview.tga" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapSkin.txt" />
+    <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\conversation.json" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3map.imp" />
@@ -144,7 +175,6 @@
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\conversation.json" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.imp" />
-    <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.j" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.mmp" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.shd" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.w3a" />
@@ -421,6 +451,87 @@
     <Content Include="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\conversation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.imp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.mmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.shd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3a">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3b">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3d">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3e">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3h">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3i">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3q">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3s">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3t">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.w3u">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wct">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wpm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wtg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.wts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapExtra.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapMap.blp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapMisc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapPreview.tga">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapSkin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\Maps\MZA 2.41.w3x\conversation.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -581,9 +692,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.imp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.j">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.mmp">

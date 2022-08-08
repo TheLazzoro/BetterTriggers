@@ -40,12 +40,15 @@ namespace Tests
             ControllerProject controllerProject = new ControllerProject();
             projectPath = controllerProject.CreateProject(language, name, directory);
             project = controllerProject.LoadProject(projectPath);
-            
+            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+
         }
 
         [TestCleanup]
         public void AfterEach()
         {
+            ControllerProject controllerProject = new ControllerProject();
+            controllerProject.CloseProject();
         }
 
         [TestMethod]
@@ -58,6 +61,7 @@ namespace Tests
             ControllerProject controller = new ControllerProject();
             projectPath = controller.CreateProject(language, name, directory);
             project = controller.LoadProject(projectPath);
+            controller.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
             Assert.AreEqual("jass", project.Language);
             Assert.AreEqual(name, project.Name);

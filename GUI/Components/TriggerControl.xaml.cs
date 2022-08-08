@@ -97,7 +97,7 @@ namespace GUI.Components
             this.selectedItems = controllerTriggerControl.SelectItemsMultiple(selectedElement, selectedElementEnd);
         }
 
-        public void Refresh()
+        private void Refresh()
         {
             Refresh(categoryEvent);
             Refresh(categoryCondition);
@@ -765,7 +765,7 @@ namespace GUI.Components
 
         public void OnRemoteChange()
         {
-            throw new NotImplementedException();
+            Refresh();
         }
     }
 }

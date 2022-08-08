@@ -125,21 +125,6 @@ namespace GUI
             _IsDragging = false;
         }
 
-        private void treeViewItem_PreviewDrop(object sender, DragEventArgs e)
-        {
-            /*
-            if (_IsDragging && dragItem != null)
-            {
-                var parent = (TreeViewItem) dragItem.Parent;
-
-                parent.Items.Remove(dragItem);
-
-                var dropTarget = (TreeViewItem) e.OriginalSource;
-                dropTarget.Items.Insert(0, dragItem);
-            }
-            */
-        }
-
         public void CreateRootItem()
         {
             this.map = new TreeItemExplorerElement(ContainerProject.projectFiles[0]);
@@ -366,6 +351,11 @@ namespace GUI
             controllerTriggerExplorer.RecursePopulate(controllerTriggerExplorer.GetCurrentExplorer(), parent, pasted);
         }
 
+        private void menuRename_Click(object sender, RoutedEventArgs e)
+        {
+            currentElement.ShowRenameBox();
+        }
+
         private void menuDelete_Click(object sender, RoutedEventArgs e)
         {
             ControllerFileSystem controller = new ControllerFileSystem();
@@ -412,5 +402,6 @@ namespace GUI
             ControllerFileSystem controller = new ControllerFileSystem();
             controller.OpenInExplorer(currentElement.Ielement.GetPath());
         }
+
     }
 }

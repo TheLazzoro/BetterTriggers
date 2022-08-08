@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using War3Net.Build.Extensions;
+using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
 
@@ -21,6 +22,7 @@ namespace BetterTriggers.WorldEdit
         private static Dictionary<string, UnitType> unitTypes;
         private static Dictionary<string, UnitType> unitTypesBase;
         private static Dictionary<string, UnitType> unitTypesCustom;
+        private static bool IsTest = false;
 
         internal static List<UnitType> GetAll()
         {
@@ -69,6 +71,7 @@ namespace BetterTriggers.WorldEdit
             unitTypes = new Dictionary<string, UnitType>();
             unitTypesBase = new Dictionary<string, UnitType>();
             unitTypesCustom = new Dictionary<string, UnitType>();
+            IsTest = isTest;
 
             Stream unitDataSlk;
             Stream unitSkin;
@@ -82,7 +85,6 @@ namespace BetterTriggers.WorldEdit
             {
                 var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
 
-                // Extract base data
                 CASCFile cascFile = (CASCFile)units.Entries["unitdata.slk"];
                 unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName);
 
@@ -106,13 +108,9 @@ namespace BetterTriggers.WorldEdit
                 unitTypesBase.TryAdd(unitType.Id, unitType);
             }
 
-            // Parse ini file
-
             var reader = new StreamReader(unitSkin);
             var text = reader.ReadToEnd();
-
             var data = IniFileConverter.GetIniData(text);
-
             var unitTypesList = GetBase();
             for (int i = 0; i < unitTypesList.Count; i++)
             {
@@ -130,10 +128,10 @@ namespace BetterTriggers.WorldEdit
                 unitType.isSpecial = isSpecial == "1";
                 unitType.isCampaign = isCampaign == "1";
                 unitType.Model = model;
+                unitType.Name = GetName(unitType); // Spaghetti
+
                 if (!isTest)
                     unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
-
-                unitType.Name = GetName(unitType); // Spaghetti
             }
 
             string filePath = "war3map.w3u";
@@ -145,11 +143,21 @@ namespace BetterTriggers.WorldEdit
                 Thread.Sleep(1000);
             }
 
-            // Custom units
+
+            // Custom data
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);
                 var customUnits = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUnitObjectData(bReader, true);
+
+
+                // Base units
+                foreach (var baseUnit in customUnits.BaseUnits)
+                {
+                    SetCustomFields(baseUnit);
+                }
+
+                // custom units
                 for (int i = 0; i < customUnits.NewUnits.Count; i++)
                 {
                     var customUnit = customUnits.NewUnits[i];
@@ -157,26 +165,74 @@ namespace BetterTriggers.WorldEdit
                     UnitType baseUnit = GetUnitType(Int32Extensions.ToRawcode(customUnit.OldId));
                     string name = baseUnit.Name;
                     string sort = baseUnit.Sort;
-                    foreach (var modified in customUnit.Modifications)
-                    {
-                        if (Int32Extensions.ToRawcode(modified.Id) == "unam")
-                            name = MapStrings.GetString(modified.ValueAsString);
-                    }
+                    string race = baseUnit.Race;
+                    string icon = baseUnit.Icon;
+                    Stream image = baseUnit.Image;
 
                     var unitType = new UnitType()
                     {
                         Id = customUnit.ToString().Substring(0, 4),
                         Name = name,
                         Sort = sort,
-                        Race = baseUnit.Race, // TODO:
-                        Image = baseUnit.Image, // TODO:
+                        Race = race,
+                        Icon = icon,
+                        Image = image
                     };
+                    SetCustomFields(customUnit);
+
                     unitTypes.TryAdd(unitType.Id, unitType);
                     unitTypesCustom.TryAdd(unitType.Id, unitType);
-
                     Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
                 }
             }
+        }
+
+        private static void SetCustomFields(SimpleObjectModification modified)
+        {
+            if (IsTest)
+                return;
+
+            UnitType unitType = GetUnitType(Int32Extensions.ToRawcode(modified.OldId));
+            string name = unitType.Name;
+            string race = unitType.Race;
+            string icon = unitType.Icon;
+            Stream image = unitType.Image;
+
+            if (unitType.Id == "hfoo")
+            {
+
+            }
+
+            foreach (var modification in modified.Modifications)
+            {
+                if (Int32Extensions.ToRawcode(modification.Id) == "unam")
+                    name = MapStrings.GetString(modification.ValueAsString);
+                else if (Int32Extensions.ToRawcode(modification.Id) == "urac")
+                    race = modification.Value as string;
+                else if (Int32Extensions.ToRawcode(modification.Id) == "uico")
+                {
+                    string iconPath = modification.Value as string;
+                    Stream stream = null;
+                    if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds")))
+                        stream = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds"));
+
+                    if (stream == null)
+                    {
+                        iconPath = Path.Combine(CustomMapData.mapPath, iconPath);
+                        if (File.Exists(iconPath))
+                            stream = File.OpenRead(iconPath);
+                        else
+                            stream = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Resources/Icons/War3Green.png"));
+                    }
+
+                    image = stream;
+                }
+            }
+
+            unitType.Name = name;
+            unitType.Race = race;
+            unitType.Icon = icon;
+            unitType.Image = image;
         }
     }
 }

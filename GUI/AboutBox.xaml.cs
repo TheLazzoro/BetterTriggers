@@ -12,6 +12,11 @@ namespace GUI
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
+
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            txtVersion.Text = "Version: " + version;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

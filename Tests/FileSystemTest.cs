@@ -13,6 +13,7 @@ namespace Tests
         static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "source";
         static string targetFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "target";
 
+
         [TestInitialize]
         public void BeforeEach()
         {

@@ -1,0 +1,20 @@
+[CustomSkin]
+AllianceLumber=ReplaceableTextures\CommandButtons\HG.blp
+AllianceLumberDisabled=ReplaceableTextures\CommandButtons\HG.blp
+InfoPanelIconArmorDivine=UI\Widgets\Console\Human\infocard-armor-divine.blp
+LumberIcon=ReplaceableTextures\CommandButtons\HG.blp
+
+[FrameDef]
+COLON_GOLD_INCOME_RATE=TRIGSTR_5461
+COLON_LUMBER=TRIGSTR_5462
+LOADING_LOADING=A long time ago...
+LOADING_PRESS_A_KEY=Press any key to continue
+LOADING_WAITING_FOR_PLAYERS=Waiting for other players...
+LUMBER=TRIGSTR_5463
+RESOURCE_UBERTIP_LUMBER=TRIGSTR_5464
+RESOURCE_UBERTIP_UPKEEP=TRIGSTR_5465
+RESOURCE_UBERTIP_UPKEEP_INFO=TRIGSTR_5466
+UPKEEP_HIGH=TRIGSTR_5469
+UPKEEP_LOW=TRIGSTR_5468
+UPKEEP_NONE=TRIGSTR_5467
+

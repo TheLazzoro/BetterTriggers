@@ -27,7 +27,7 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <TextBlock Grid.Row="1" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">
+        <TextBlock x:Name="txtVersion" Grid.Row="1" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">
             Version: 1.0.1
         </TextBlock>
         <TextBlock Grid.Row="2" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">

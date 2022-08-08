@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="Resources\Icons\trigger-error.png" />
     <None Remove="Resources\Icons\trigger-invalid.png" />
+    <None Remove="Resources\Icons\War3Green.png" />
     <None Remove="Resources\Icons\_editor-triggeraction.png" />
     <None Remove="Resources\Icons\_editor-triggercondition.png" />
     <None Remove="Resources\Icons\_editor-triggerevent.png" />
@@ -79,6 +80,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\trigger-invalid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\War3Green.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\_editor-triggeraction.png">

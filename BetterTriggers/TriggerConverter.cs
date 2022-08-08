@@ -46,6 +46,12 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
+            CustomMapData.mapPath = mapPath;
+            Regions.Load();
+            Cameras.Load();
+            Sounds.Load();
+
+
             string pathTriggers = "war3map.wtg";
             string pathCustomText = "war3map.wct";
             string pathInfo = "war3map.w3i";
@@ -447,6 +453,9 @@ namespace BetterTriggers.WorldEdit
                             arrayIndex.Add(new Value() { value = "0" });
                         }
 
+
+
+
                         // In our editor regions, cameras, units etc. are considered values, not variables.
                         // Also, War3Net does not include 'gg' prefixes in variable names.
                         if (foreignParam.Value.StartsWith("gg_unit_"))
@@ -456,11 +465,55 @@ namespace BetterTriggers.WorldEdit
                         else if (foreignParam.Value.StartsWith("gg_dest_"))
                             parameter = new Value() { value = foreignParam.Value.Replace("gg_dest_", "") };
                         else if (foreignParam.Value.StartsWith("gg_rct_"))
-                            parameter = new Value() { value = foreignParam.Value.Replace("gg_rct_", "") };
+                        {
+                            // This madness exists because of cyrillic and other non-ASCII chars.
+                            // Old versions of WE (other language versions too?) accept non-ASCII chars
+                            // for variable names in WE, but references in WTG are underscore formatted.
+                            // ... So we need to search and replace using the Ascii util.
+
+                            var val = foreignParam.Value.Replace("gg_rct_", "");
+                            var regions = Regions.GetAll();
+                            for (int r = 0; r < regions.Count; r++)
+                            {
+                                var region = regions[r];
+                                if (val == Ascii.ReplaceNonASCII(region.ToString().Replace(" ", "_")))
+                                {
+                                    val = region.Name.Replace("gg_rct_", "");
+                                    break;
+                                }
+                            }
+                            parameter = new Value() { value = val };
+                        }
                         else if (foreignParam.Value.StartsWith("gg_cam_"))
-                            parameter = new Value() { value = foreignParam.Value.Replace("gg_cam_", "") };
+                        {
+                            var val = foreignParam.Value.Replace("gg_cam_", "");
+                            var cameras = Cameras.GetAll();
+                            for (int c = 0; c < cameras.Count; c++)
+                            {
+                                var camera = cameras[c];
+                                if (val == Ascii.ReplaceNonASCII(camera.ToString().Replace(" ", "_")))
+                                {
+                                    val = camera.Name.Replace("gg_cam_", "");
+                                    break;
+                                }
+                            }
+                            parameter = new Value() { value = val };
+                        }
                         else if (foreignParam.Value.StartsWith("gg_snd_"))
-                            parameter = new Value() { value = foreignParam.Value.Replace("gg_snd_", "") };
+                        {
+                            var val = foreignParam.Value.Replace("gg_snd_", "");
+                            var sounds = Sounds.GetAll();
+                            for (int c = 0; c < sounds.Count; c++)
+                            {
+                                var sound = sounds[c];
+                                if (val == Ascii.ReplaceNonASCII(sound.ToString().Replace(" ", "_")))
+                                {
+                                    val = sound.Name.Replace("gg_snd_", "");
+                                    break;
+                                }
+                            }
+                            parameter = new Value() { value = val };
+                        }
 
                         if (parameter != null)
                             break;

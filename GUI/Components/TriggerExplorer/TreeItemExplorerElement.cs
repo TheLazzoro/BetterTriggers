@@ -83,6 +83,11 @@ namespace GUI.Components.TriggerExplorer
                 tabItem.Header = this.Ielement.GetName();
             }
 
+            if( this.editor is TriggerControl)
+            {
+                var control = this.editor as TriggerControl;
+                control.OnRemoteChange();
+            }
             if (this.editor is VariableControl)
             {
                 var control = this.editor as VariableControl;

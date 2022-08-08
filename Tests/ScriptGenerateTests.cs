@@ -22,7 +22,7 @@ namespace Tests
         static string mapDir;
         static string projectFile;
         static bool success;
-        static string failedMsg = "Script generate failed. Project folder kept for inspection. Remember to delete before next test.";
+        static string failedMsg = "Script generate failed. Project folder kept for inspection.";
 
 
         [ClassInitialize]
@@ -30,6 +30,14 @@ namespace Tests
         {
             Locale.Load();
             TriggerData.LoadForTest();
+
+
+            string[] testMaps = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/"));
+            foreach(var folder in testMaps)
+            {
+                if (!folder.EndsWith(".w3x"))
+                    Directory.Delete(folder, true);
+            }
         }
 
         [ClassCleanup]
@@ -103,6 +111,15 @@ namespace Tests
         public void ConvertMap_GenerateScript_WoW_Dungeons_Classic()
         {
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/WoW Dungeons Classic 3.9.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_Holy_War_Anniversary()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/HolyWarAnniversary1_32a.w3x");
             ConvertMap_GenerateScript(mapDir);
 
             Assert.IsTrue(success, failedMsg);

@@ -20,6 +20,7 @@ using War3Net.Build.Extensions;
 using System.Linq;
 using War3Net.Build.Environment;
 using System.Text.RegularExpressions;
+using BetterTriggers.Utility;
 
 namespace BetterTriggers
 {
@@ -318,27 +319,27 @@ end
                     continue;
 
                 string rect = language == ScriptLanguage.Jass ? "rect" : "";
-                script.Append($"{rect} {GetCorrectedVarName($"gg_rct_{r.Name.Replace(" ", "_")}")} = {_null} {newline}");
+                script.Append($"{rect} {Ascii.ReplaceNonASCII($"gg_rct_{r.Name.Replace(" ", "_")}", true)} = {_null} {newline}");
                 globalVarNames.Add(r.GetVariableName());
             }
             var sounds = Sounds.GetSoundsAll();
             foreach (var s in sounds)
             {
-                if (globalVarNames.Contains(s.Name))
+                if (globalVarNames.Contains("gg_snd_" + s.Name))
                     continue;
 
                 string sound = language == ScriptLanguage.Jass ? "sound" : "";
-                script.Append($"{sound} {GetCorrectedVarName(s.Name.Replace(" ", "_"))} = {_null} {newline}");
+                script.Append($"{sound} {Ascii.ReplaceNonASCII(s.Name.Replace(" ", "_"), true)} = {_null} {newline}");
                 globalVarNames.Add(s.Name);
             }
             var music = Sounds.GetMusicAll();
             foreach (var s in music)
             {
-                if (globalVarNames.Contains(s.Name))
+                if (globalVarNames.Contains("gg_snd_" + s.Name))
                     continue;
 
                 string _music = language == ScriptLanguage.Jass ? "string" : "";
-                script.Append($"{_music} {GetCorrectedVarName(s.Name.Replace(" ", "_"))} = {_null} {newline}");
+                script.Append($"{_music} {Ascii.ReplaceNonASCII(s.Name.Replace(" ", "_"), true)} = {_null} {newline}");
                 globalVarNames.Add(s.Name);
             }
             var cameras = Cameras.GetAll();
@@ -348,7 +349,7 @@ end
                     continue;
 
                 string camerasetup = language == ScriptLanguage.Jass ? "camerasetup" : "";
-                var cameraName = GetCorrectedVarName($"gg_cam_{c.Name.Replace(" ", "_")}");
+                var cameraName = Ascii.ReplaceNonASCII($"gg_cam_{c.Name.Replace(" ", "_")}", true);
                 script.Append($"{camerasetup} {cameraName} = {_null} {newline}");
                 globalVarNames.Add(c.GetVariableName());
             }
@@ -356,7 +357,7 @@ end
             foreach (var trigger in triggers)
             {
                 string _trigger = language == ScriptLanguage.Jass ? "trigger" : "";
-                script.Append($"{_trigger} gg_trg_{trigger.GetName().Replace(" ", "_")} = {_null}{newline}");
+                script.Append($"{_trigger} {Ascii.ReplaceNonASCII($"gg_trg_{trigger.GetName().Replace(" ", "_")}", true)} = {_null}{newline}");
             }
 
             script.Append(endglobals + newline);
@@ -454,21 +455,6 @@ end
             //script.Append($"function BlzLoadTOCFile {functionReturnsNothing}");
         }
 
-        private bool IsASCII(string value)
-        {
-            // ASCII encoding replaces non-ascii with question marks, so we use UTF8 to see if multi-byte sequences are there
-            return Encoding.UTF8.GetByteCount(value) == value.Length;
-        }
-
-        /// <summary>
-        /// Takes an already generated varname and replaces invalid ASCII chars
-        /// </summary>
-        private string GetCorrectedVarName(string generatedVarName)
-        {
-            string name = Regex.Replace(generatedVarName, @"[^\u0000-\u007F]+", "__"); ;
-
-            return name;
-        }
 
         private string GetGlobalsStartValue(string returnType)
         {
@@ -552,7 +538,7 @@ end
                     var destinationRect = Regions.GetAll().Where(region => region.CreationNumber == u.WaygateDestinationRegionId).SingleOrDefault();
                     if (destinationRect is not null)
                     {
-                        string regionVar = GetCorrectedVarName($"gg_rct_{destinationRect.ToString().Replace(" ", "_")}");
+                        string regionVar = Ascii.ReplaceNonASCII($"gg_rct_{destinationRect.ToString().Replace(" ", "_")}", true);
                         script.Append($"\t{call} WaygateSetDestination({varName}, GetRectCenterX({regionVar}), GetRectCenterY({regionVar})){newline}");
                         script.Append($"\t{call} WaygateActivate({varName}, true){newline}");
                     }
@@ -719,7 +705,7 @@ end
                 var right = r.Right;
                 var top = r.Top;
 
-                string varName = GetCorrectedVarName($"gg_rct_{id}");
+                string varName = Ascii.ReplaceNonASCII($"gg_rct_{id}", true);
 
                 script.Append($"{set} {varName} = Rect({left}, {bottom}, {right}, {top}){newline}");
                 if (r.WeatherType == War3Net.Build.WeatherType.None)
@@ -748,7 +734,7 @@ end
             var cameras = Cameras.GetAll();
             foreach (var c in cameras)
             {
-                var id = GetCorrectedVarName($"gg_cam_{c.Name.Replace(" ", "_")}");
+                var id = Ascii.ReplaceNonASCII($"gg_cam_{c.Name.Replace(" ", "_")}", true);
 
 
                 script.Append($"{set} {id} = CreateCameraSetup(){newline}");
@@ -1154,7 +1140,7 @@ end
                 if (!t.isEnabled)
                     continue;
 
-                string triggerName = t.GetName().Replace(" ", "_");
+                string triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
                 script.Append($"\t{call} InitTrig_{triggerName}(){newline}");
             }
             script.Append($"{endfunction}{newline}{newline}");
@@ -1572,7 +1558,7 @@ end
 
         public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
         {
-            triggerName = t.GetName().Replace(" ", "_");
+            triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
             string triggerVarName = "gg_trg_" + triggerName;
             string triggerActionName = "Trig_" + triggerName + "_Actions";
 
@@ -2222,7 +2208,7 @@ end
                 Trigger trigger = controller.GetById(t.TriggerId);
                 string name = controller.GetTriggerName(trigger.Id);
 
-                output += "gg_trg_" + name.Replace(" ", "_");
+                output += "gg_trg_" + Ascii.ReplaceNonASCII(name.Replace(" ", "_"), true);
             }
             else if (parameter is Value)
             {
@@ -2260,16 +2246,16 @@ end
                 else if (returnType == "item")
                     output += $"gg_item_{v.value.Replace(" ", "_")}";
                 else if (returnType == "rect")
-                    output += $"gg_rct_{v.value.Replace(" ", "_")}";
+                    output += Ascii.ReplaceNonASCII($"gg_rct_{v.value.Replace(" ", "_")}", true);
                 else if (returnType == "camerasetup")
-                    output += $"gg_cam_{v.value.Replace(" ", "_")}";
+                    output += Ascii.ReplaceNonASCII($"gg_cam_{v.value.Replace(" ", "_")}", true);
                 else if (returnType == "sound")
-                    output += $"gg_snd_{v.value.Replace(" ", "_")}";
+                    output += Ascii.ReplaceNonASCII($"gg_snd_{v.value.Replace(" ", "_")}", true);
                 else
                     output += v.value;
 
                 // TODO:
-                // One would think that we need to do 'GetCorrectedVarName' also,
+                // One would think that we need to do 'Ascii.ReplaceNonASCII' also,
                 // but JassHelper for some reason does it on it's own.
                 // Investigate plz.
             }

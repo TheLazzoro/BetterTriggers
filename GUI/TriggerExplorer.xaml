@@ -94,7 +94,6 @@
                     <!-- We have to select the item which is right-clicked on -->
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
-                    <EventSetter Event="TreeViewItem.Drop" Handler="treeViewItem_PreviewDrop"/>
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
                 </Style>
             </TreeView.ItemContainerStyle>
@@ -104,6 +103,7 @@
                     <MenuItem x:Name="menuCut" Header="Cut" Click="menuCut_Click"></MenuItem>
                     <MenuItem x:Name="menuCopy" Header="Copy" Click="menuCopy_Click"></MenuItem>
                     <MenuItem x:Name="menuPaste" Header="Paste" Click="menuPaste_Click"></MenuItem>
+                    <MenuItem x:Name="menuRename" Header="Rename" Click="menuRename_Click"></MenuItem>
                     <MenuItem x:Name="menuDelete" Header="Delete" Click="menuDelete_Click"></MenuItem>
                     <Separator Background="#555555"></Separator>
                     <MenuItem x:Name="menuNewCategory" Header="New Category" Click="menuNewCategory_Click">
