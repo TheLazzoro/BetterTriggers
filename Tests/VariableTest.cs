@@ -23,11 +23,14 @@ namespace Tests
         static ExplorerElementVariable element1, element2, element3;
 
 
-        //[AssemblyInitialize]
-        //public static void Init()
-        //{
-
-        //}
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+            Console.WriteLine("-----------");
+            Console.WriteLine("RUNNING VARIABLE TESTS");
+            Console.WriteLine("-----------");
+            Console.WriteLine("");
+        }
 
         [TestInitialize]
         public void BeforeEach()

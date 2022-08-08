@@ -49,6 +49,18 @@ namespace BetterTriggers.WorldEdit
 
             if (isTest)
             {
+                Types.Clear();
+                ConstantTemplates.Clear();
+                EventTemplates.Clear();
+                ConditionTemplates.Clear();
+                ActionTemplates.Clear();
+                CallTemplates.Clear();
+                FunctionsAll.Clear();
+                ParamDisplayNames.Clear();
+                ParamCodeText.Clear();
+                FunctionCategories.Clear();
+                customConstants.Clear();
+
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/triggerdata.txt");
                 string triggerdata = File.ReadAllText(path);
                 data = IniFileConverter.GetIniData(triggerdata);
@@ -104,30 +116,39 @@ namespace BetterTriggers.WorldEdit
                     CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
                     Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
 
-                    Category.Create(category.KeyName, stream, WE_STRING, shouldDisplay);
+                    System.Drawing.Bitmap image = Converters.ReadDDS(stream);
+                    Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
                 }
+
+                System.Drawing.Bitmap img;
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png");
+                Category.Create("TC_MAP", img, "???", false);
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png");
+                Category.Create("TC_ACTION", img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png");
+                Category.Create("TC_CONDITION_NEW", img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
+                Category.Create("TC_EVENT", img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
+                Category.Create("TC_ERROR", img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
+                Category.Create("TC_INVALID", img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png");
+                Category.Create("TC_TRIGGER_NEW", img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png");
+                Category.Create("TC_DIRECTORY", img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
+                Category.Create("TC_SCRIPT", img, "???", false);
             }
 
 
-            Stream s;
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png", FileMode.Open);
-            Category.Create("TC_MAP", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png", FileMode.Open);
-            Category.Create("TC_ACTION", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png", FileMode.Open);
-            Category.Create("TC_CONDITION_NEW", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png", FileMode.Open);
-            Category.Create("TC_EVENT", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png", FileMode.Open);
-            Category.Create("TC_ERROR", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png", FileMode.Open);
-            Category.Create("TC_INVALID", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png", FileMode.Open);
-            Category.Create("TC_TRIGGER_NEW", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png", FileMode.Open);
-            Category.Create("TC_DIRECTORY", s, "???", false);
-            s = new FileStream(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png", FileMode.Open);
-            Category.Create("TC_SCRIPT", s, "???", false);
 
             LoadTriggerDataFromIni(data);
 

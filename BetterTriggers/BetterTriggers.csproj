@@ -277,10 +277,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCnEncoder.Net" Version="1.2.3" />
     <PackageReference Include="CascLib" Version="1.0.19" />
     <PackageReference Include="ini-parser" Version="2.5.2" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
 

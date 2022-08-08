@@ -53,5 +53,13 @@ namespace BetterTriggers.WorldEdit
 
             return varType.BaseType;
         }
+
+        /// <summary>
+        /// Only used for testing.
+        /// </summary>
+        internal static void Clear()
+        {
+            types.Clear();
+        }
     }
 }

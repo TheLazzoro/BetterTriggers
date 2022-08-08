@@ -28,6 +28,11 @@ namespace Tests
         [ClassInitialize]
         public static void Init(TestContext context)
         {
+            Console.WriteLine("-----------");
+            Console.WriteLine("RUNNING TRIGGER DATA TESTS");
+            Console.WriteLine("-----------");
+            Console.WriteLine("");
+
             TriggerData.LoadForTest();
         }
 
