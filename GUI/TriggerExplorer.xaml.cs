@@ -131,10 +131,8 @@ namespace GUI
             treeViewTriggerExplorer.Items.Add(this.map);
             this.map.IsExpanded = true;
             this.map.IsSelected = true;
-            //item.AllowDrop = true; // maybe needed?
         }
 
-        // This is the actual function we want to use.
         private void treeViewItem_DragOver(object sender, DragEventArgs e)
         {
             if (dragItem == null)
@@ -240,6 +238,9 @@ namespace GUI
             }
 
             if (parentDropTarget == null)
+                return;
+
+            if (!dragItem.IsKeyboardFocused)
                 return;
 
             parentDropTarget.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));

@@ -154,7 +154,7 @@ namespace BetterTriggers.WorldEdit
                 // Base units
                 foreach (var baseUnit in customUnits.BaseUnits)
                 {
-                    SetCustomFields(baseUnit);
+                    SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId));
                 }
 
                 // custom units
@@ -178,11 +178,10 @@ namespace BetterTriggers.WorldEdit
                         Icon = icon,
                         Image = image
                     };
-                    SetCustomFields(customUnit);
-
                     unitTypes.TryAdd(unitType.Id, unitType);
                     unitTypesCustom.TryAdd(unitType.Id, unitType);
-                    Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
+
+                    SetCustomFields(customUnit, unitType.Id);
                 }
             }
 
@@ -190,21 +189,18 @@ namespace BetterTriggers.WorldEdit
             unitSkin.Close();
         }
 
-        private static void SetCustomFields(SimpleObjectModification modified)
+        private static void SetCustomFields(SimpleObjectModification modified, string unitId)
         {
             if (IsTest)
                 return;
 
-            UnitType unitType = GetUnitType(Int32Extensions.ToRawcode(modified.OldId));
+            UnitType unitType = GetUnitType(unitId);
             string name = unitType.Name;
             string race = unitType.Race;
             string icon = unitType.Icon;
+            string sort = unitType.Sort;
+            bool isSpecial = unitType.isSpecial;
             Stream image = unitType.Image;
-
-            if (unitType.Id == "hfoo")
-            {
-
-            }
 
             foreach (var modification in modified.Modifications)
             {
@@ -212,6 +208,10 @@ namespace BetterTriggers.WorldEdit
                     name = MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "urac")
                     race = modification.Value as string;
+                else if (Int32Extensions.ToRawcode(modification.Id) == "uspe")
+                    isSpecial = (modification.Value as int?) == 1;
+                else if (Int32Extensions.ToRawcode(modification.Id) == "ubdg") // is building
+                    sort = (modification.Value as int?) == 1 ? "u3" : sort;
                 else if (Int32Extensions.ToRawcode(modification.Id) == "uico")
                 {
                     string iconPath = modification.Value as string;
@@ -228,6 +228,7 @@ namespace BetterTriggers.WorldEdit
                             stream = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Resources/Icons/War3Green.png"));
                     }
 
+                    icon = iconPath;
                     image = stream;
                 }
             }
@@ -235,7 +236,10 @@ namespace BetterTriggers.WorldEdit
             unitType.Name = name;
             unitType.Race = race;
             unitType.Icon = icon;
+            unitType.isSpecial = isSpecial;
+            unitType.Sort = sort;
             unitType.Image = image;
+            Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
         }
     }
 }

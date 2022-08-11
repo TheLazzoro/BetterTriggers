@@ -256,7 +256,10 @@ namespace GUI.Components
             dragItem = this.treeViewTriggers.SelectedItem as TreeViewItem;
 
             if (dragItem is NodeEvent || dragItem is NodeCondition || dragItem is NodeAction)
+            {
+                _IsDragging = false;
                 return;
+            }
 
             DataObject data = null;
 
@@ -287,6 +290,9 @@ namespace GUI.Components
         private void treeViewItem_DragOver(object sender, DragEventArgs e)
         {
             if (dragItem == null)
+                return;
+
+            if (!dragItem.IsKeyboardFocused)
                 return;
 
             TreeViewItem currentParent = (TreeViewItem)dragItem.Parent;
@@ -371,6 +377,9 @@ namespace GUI.Components
             if (!_IsDragging || dragItem == null)
                 return;
 
+            if (!dragItem.IsKeyboardFocused)
+                return;
+
             if (adorner != null)
             {
                 if (lineIndicator != null)
@@ -380,6 +389,9 @@ namespace GUI.Components
             }
 
             if (parentDropTarget == null)
+                return;
+
+            if (UIUtility.IsCircularParent(dragItem, parentDropTarget))
                 return;
 
             TreeViewTriggerElement item = (TreeViewTriggerElement)dragItem;

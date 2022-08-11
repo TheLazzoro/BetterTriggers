@@ -56,14 +56,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             var controller = new ControllerMapData();
             unitData = controller.GetUnitTypesAll();
-            //comboboxRace.SelectedIndex = 0;
+            comboboxRace.SelectedIndex = 0;
 
             this.KeyDown += ValueControlUnitTypes_KeyDown;
         }
 
         private void ValueControlUnitTypes_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key != Key.Enter && selectedType != null)
+            if (e.Key != Key.Enter || selectedType != null)
                 return;
 
             EventHandler handler = OK;
@@ -99,9 +99,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             else if (defaultSelected.Race == "nightelf")
                 comboboxRace.SelectedIndex = 3;
             else if (defaultSelected.Race == "naga")
-                comboboxRace.SelectedIndex = 4;
-            else
                 comboboxRace.SelectedIndex = 5;
+            else
+                comboboxRace.SelectedIndex = 4;
         }
 
         public Parameter GetSelected()
@@ -234,7 +234,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 else
                     itemControlSpecial.Items.Add(btn);
 
-                if(defaultSelected != null && defaultSelected.Id == btn.UnitType) {
+                if (defaultSelected != null && defaultSelected.Id == btn.UnitType)
+                {
                     selectedButton = btn;
                     btn.AddSelectedBorder();
                     SetSelectedType(btn.UnitType);

@@ -116,17 +116,15 @@ namespace GUI
                 window.Top = this.Top + this.Height / 2 - window.Height / 2;
                 window.Left = this.Left + this.Width / 2 - window.Width / 2;
                 window.ShowDialog();
-                ControllerMapData controllerMapData = new ControllerMapData();
-                var modifiedTriggers = controllerMapData.ReloadMapData();
-                if (modifiedTriggers.Count == 0)
-                    return;
 
-                ChangedTriggersWindow changedTriggersWindow = new ChangedTriggersWindow(modifiedTriggers);
-                changedTriggersWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-                changedTriggersWindow.Top = this.Top + this.Height / 2 - changedTriggersWindow.Height / 2;
-                changedTriggersWindow.Left = this.Left + this.Width / 2 - changedTriggersWindow.Width / 2;
-                changedTriggersWindow.Show();
+                VerifyTriggerData();
             });
+        }
+
+        private void VerifyTriggerData()
+        {
+            VerifyingTriggersWindow window = new VerifyingTriggersWindow();
+            window.ShowDialog();
         }
 
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -443,6 +441,8 @@ namespace GUI
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             controllerTriggerExplorer.Populate(triggerExplorer);
+
+            VerifyTriggerData();
         }
 
         private void TestMap()

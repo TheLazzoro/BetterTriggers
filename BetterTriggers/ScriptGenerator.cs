@@ -261,9 +261,9 @@ end
                 script.Append(globals + newline);
                 script.Append(newline);
                 if (!variable.IsArray)
-                    script.Append($"{varType} udg_{variable.Name} = {GetGlobalsStartValue(varType)}");
+                    script.Append($"{varType} {variable.GetGlobalName()} = {GetGlobalsStartValue(varType)}");
                 else
-                    script.Append($"{varType}{array} udg_{variable.Name}{dimensions}");
+                    script.Append($"{varType}{array} {variable.GetGlobalName()}{dimensions}");
                 script.Append(newline);
                 script.Append(endglobals + newline);
             }
@@ -382,19 +382,19 @@ end
 
 
                 if (!variable.IsArray && !string.IsNullOrEmpty(initialValue))
-                    script.Append($"\t{set} udg_" + variable.Name + "=" + initialValue + newline);
+                    script.Append($"\t{set} {variable.GetGlobalName()} =" + initialValue + newline);
                 else if (variable.IsArray && !variable.IsTwoDimensions && !string.IsNullOrEmpty(initialValue))
                 {
                     for (int j = 0; j <= variable.ArraySize[0]; j++)
                     {
-                        script.Append($"\t{set} udg_{variable.Name}[{j}] = {initialValue}{newline}");
+                        script.Append($"\t{set} {variable.GetGlobalName()}[{j}] = {initialValue}{newline}");
                     }
                 }
                 else if (variable.IsArray && variable.IsTwoDimensions)
                 {
                     if (language == ScriptLanguage.Lua)
                     {
-                        script.Append($"\tudg_{variable.Name} = array2DLua({variable.ArraySize[0]}, {variable.ArraySize[1]}, {initialValue}){newline}");
+                        script.Append($"\t{variable.GetGlobalName()} = array2DLua({variable.ArraySize[0]}, {variable.ArraySize[1]}, {initialValue}){newline}");
                         continue;
                     }
 
@@ -402,7 +402,7 @@ end
                     {
                         for (int k = 0; k <= variable.ArraySize[1]; k++)
                         {
-                            script.Append($"\t{set} udg_{variable.Name}[{j}][{k}] = {initialValue}{newline}");
+                            script.Append($"\t{set} {variable.GetGlobalName()}[{j}][{k}] = {initialValue}{newline}");
                         }
                     }
                 }
@@ -1677,7 +1677,7 @@ end
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
                 VariableRef varRef = (VariableRef)loopVar.function.parameters[0];
                 var explorerVariable = Variables.FindExplorerVariableById(varRef.VariableId);
-                string variable = explorerVariable.GetName();
+                string variable = explorerVariable.variable.GetGlobalName();
 
                 string array0 = string.Empty;
                 string array1 = string.Empty;
@@ -1686,15 +1686,15 @@ end
                 if (explorerVariable.variable.IsTwoDimensions)
                     array1 = $"[{ConvertParametersToJass(varRef.arrayIndexValues[1], "integer", pre_actions)}]";
 
-                script.Append($"{set} udg_{variable}{array0}{array1} = ");
+                script.Append($"{set} {variable}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(loopVar.function.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
+                script.Append($"\t{startLoop}{variable}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
 
                 foreach (var action in loopVar.Actions)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
-                script.Append($"\t{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
+                script.Append($"\t{set} {variable}{array0}{array1} = {variable}{array0}{array1} + 1{newline}");
                 script.Append($"{endloop}{newline}");
 
                 return script.ToString();
@@ -1982,7 +1982,7 @@ end
             {
                 VariableRef varRef = (VariableRef)f.parameters[0];
                 var explorerVariable = Variables.FindExplorerVariableById(varRef.VariableId);
-                string variable = explorerVariable.GetName();
+                string variable = explorerVariable.variable.GetGlobalName();
 
                 string array0 = string.Empty;
                 string array1 = string.Empty;
@@ -1991,11 +1991,11 @@ end
                 if (explorerVariable.variable.IsTwoDimensions)
                     array1 = $"[{ConvertParametersToJass(varRef.arrayIndexValues[1], "integer", pre_actions)}]";
 
-                script.Append($"{set} udg_{variable}{array0}{array1} = ");
+                script.Append($"{set} {variable}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"\t{startLoop}udg_{variable}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
+                script.Append($"\t{startLoop}{variable}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
                 script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[3], pre_actions, nested)} {newline}");
-                script.Append($"\t{set} udg_{variable}{array0}{array1} = udg_{variable}{array0}{array1} + 1{newline}");
+                script.Append($"\t{set} {variable}{array0}{array1} = {variable}{array0}{array1} + 1{newline}");
                 script.Append($"\t{endloop}{newline}");
 
                 return script.ToString();
@@ -2189,7 +2189,7 @@ end
                 if (isVarAsString_Real)
                     output += "\"";
 
-                output += "udg_" + variable.Name;
+                output += variable.GetGlobalName();
 
                 if (variable.IsArray)
                 {

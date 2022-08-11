@@ -24,5 +24,14 @@ namespace BetterTriggers.Models.SaveableData
 
             return cloned;
         }
+
+        public string GetGlobalName()
+        {
+            string name = "udg_" + Name.Replace(" ", "_");
+            if(name.EndsWith("_"))
+                name = name + "v";
+
+            return name;
+        }
     }
 }

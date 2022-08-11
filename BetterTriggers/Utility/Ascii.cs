@@ -21,6 +21,10 @@ namespace BetterTriggers.Utility
             string output = Regex.Replace(text, @"[^\u0000-\u007F]+", "__");
             if (isScriptGenerate && output != text)
                 output = output + "u";
+            while(isScriptGenerate && output.EndsWith("_"))
+            {
+                output = output.Substring(0, output.Length-1);
+            }
 
             return output;
         }
