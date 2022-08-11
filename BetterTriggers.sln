@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "War3Net.IO.Slk", "War3Net.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.lua", "CSharp.lua\CSharp.lua\CSharp.lua.csproj", "{CC89F455-4942-4634-9AC6-11EEE3DA816E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "War3Net.Drawing.Blp", "War3Net.Drawing.Blp\War3Net.Drawing.Blp.csproj", "{DA911E87-130A-4FB6-B9BF-D08B23F3311B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{CC89F455-4942-4634-9AC6-11EEE3DA816E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC89F455-4942-4634-9AC6-11EEE3DA816E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC89F455-4942-4634-9AC6-11EEE3DA816E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA911E87-130A-4FB6-B9BF-D08B23F3311B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA911E87-130A-4FB6-B9BF-D08B23F3311B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA911E87-130A-4FB6-B9BF-D08B23F3311B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA911E87-130A-4FB6-B9BF-D08B23F3311B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

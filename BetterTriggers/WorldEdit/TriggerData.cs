@@ -116,7 +116,7 @@ namespace BetterTriggers.WorldEdit
                     CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
                     Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
 
-                    System.Drawing.Bitmap image = Converters.ReadDDS(stream);
+                    System.Drawing.Bitmap image = Images.ReadImage(stream);
                     Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
                 }
 

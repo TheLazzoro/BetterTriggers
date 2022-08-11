@@ -5,6 +5,7 @@ using IniParser.Model;
 using IniParser.Parser;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -131,7 +132,7 @@ namespace BetterTriggers.WorldEdit
                 unitType.Name = GetName(unitType); // Spaghetti
 
                 if (!isTest)
-                    unitType.Image = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds"));
+                    unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
             }
 
             string filePath = "war3map.w3u";
@@ -167,7 +168,7 @@ namespace BetterTriggers.WorldEdit
                     string sort = baseUnit.Sort;
                     string race = baseUnit.Race;
                     string icon = baseUnit.Icon;
-                    Stream image = baseUnit.Image;
+                    Bitmap image = baseUnit.Image;
 
                     var unitType = new UnitType()
                     {
@@ -200,7 +201,7 @@ namespace BetterTriggers.WorldEdit
             string icon = unitType.Icon;
             string sort = unitType.Sort;
             bool isSpecial = unitType.isSpecial;
-            Stream image = unitType.Image;
+            Bitmap image = unitType.Image;
 
             foreach (var modification in modified.Modifications)
             {
@@ -221,15 +222,31 @@ namespace BetterTriggers.WorldEdit
 
                     if (stream == null)
                     {
-                        iconPath = Path.Combine(CustomMapData.mapPath, iconPath);
-                        if (File.Exists(iconPath))
-                            stream = File.OpenRead(iconPath);
+                        // WE accepts paths with no extensions, so we need to work around that.
+                        iconPath = Path.Combine(CustomMapData.mapPath, Path.Combine(Path.GetDirectoryName(iconPath), Path.GetFileNameWithoutExtension(iconPath)));
+                        string finalIconPath = string.Empty;
+                        string[] extensions = { ".blp", ".tga", ".dds" };
+                        int i = 0;
+                        bool exists = false;
+                        while (i < extensions.Length)
+                        {
+                            finalIconPath = iconPath + extensions[i];
+                            if (File.Exists(finalIconPath))
+                            {
+                                exists = true;
+                                break;
+                            }
+
+                            i++;
+                        }
+                        if (exists)
+                            stream = File.OpenRead(finalIconPath);
                         else
                             stream = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Resources/Icons/War3Green.png"));
                     }
 
                     icon = iconPath;
-                    image = stream;
+                    image = Images.ReadImage(stream);
                 }
             }
 

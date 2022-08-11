@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.WorldEdit;
+using GUI.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,13 +27,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             Image img = new Image();
             img.Width = Width;
             img.Height = Height;
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            unit.Image.Seek(0, System.IO.SeekOrigin.Begin); // reset back to start of stream
-            bitmap.StreamSource = unit.Image;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            img.Source = bitmap;
+            img.Stretch = Stretch.Fill;
+            img.Source = BitmapConverter.ToBitmapImage(unit.Image);
 
 
 

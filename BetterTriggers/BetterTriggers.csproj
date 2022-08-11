@@ -294,6 +294,7 @@
     <ProjectReference Include="..\War3Net.CodeAnalysis.Transpilers\War3Net.CodeAnalysis.Transpilers.csproj" />
     <ProjectReference Include="..\War3Net.CodeAnalysis\War3Net.CodeAnalysis.csproj" />
     <ProjectReference Include="..\War3Net.Common\War3Net.Common.csproj" />
+    <ProjectReference Include="..\War3Net.Drawing.Blp\War3Net.Drawing.Blp.csproj" />
     <ProjectReference Include="..\War3Net.IO.Compression\War3Net.IO.Compression.csproj" />
     <ProjectReference Include="..\War3Net.IO.Mpq\War3Net.IO.Mpq.csproj" />
     <ProjectReference Include="..\War3Net.IO.Slk\War3Net.IO.Slk.csproj" />

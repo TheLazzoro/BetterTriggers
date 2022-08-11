@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 
@@ -15,6 +16,6 @@ namespace BetterTriggers.Models.War3Data
         public string Model;
         public bool isSpecial;
         public bool isCampaign;
-        public Stream Image;
+        public Bitmap Image;
     }
 }
