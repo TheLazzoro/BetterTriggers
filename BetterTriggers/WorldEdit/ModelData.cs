@@ -122,6 +122,7 @@ namespace BetterTriggers.WorldEdit
             }
             for (int i = 0; i < destData.Count; i++)
             {
+                if(destData[i].Model != null)
                 hashset.Add(new AssetModel()
                 {
                     DisplayName = destData[i].DisplayName == null ? "" : destData[i].DisplayName,

@@ -602,6 +602,9 @@ namespace BetterTriggers.Controllers
                 case "itemcode":
                     text = ItemTypes.GetName(key);
                     break;
+                case "doodadcode":
+                    text = DoodadTypes.GetName(key);
+                    break;
                 default:
                     break;
             }
@@ -626,6 +629,8 @@ namespace BetterTriggers.Controllers
             else if (returnType == "techcode")
                 text = $"[{key}] ";
             else if (returnType == "itemcode")
+                text = $"[{key}] ";
+            else if (returnType == "doodadcode")
                 text = $"[{key}] ";
 
             return text;

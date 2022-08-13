@@ -15,8 +15,11 @@ namespace BetterTriggers
 {
     public static class Locale
     {
-        private static Dictionary<string, string> WE_Strings = new Dictionary<string, string>();
-        private static Dictionary<string, UnitName> Unit_Names = new Dictionary<string, UnitName>();
+        private static Dictionary<string, string> WE_Strings;
+        private static Dictionary<string, string> DisplayNames;
+        private static Dictionary<string, string> EditorSuffixes;
+        private static Dictionary<string, UnitName> Unit_Names;
+
 
         public static string Translate(string key)
         {
@@ -45,10 +48,34 @@ namespace BetterTriggers
             Unit_Names.TryAdd(unitcode, unitName);
         }
 
+        internal static string GetEditorSuffix(string code)
+        {
+            if (code == null)
+                return null;
+
+            string text;
+            EditorSuffixes.TryGetValue(code, out text);
+            return text;
+        }
+
+        internal static string GetDisplayName(string code)
+        {
+            if (code == null)
+                return null;
+
+            string text;
+            DisplayNames.TryGetValue(code, out text);
+            return text;
+        }
 
         public static void Load()
         {
             Settings settings = Settings.Load();
+            WE_Strings = new Dictionary<string, string>();
+            DisplayNames = new Dictionary<string, string>();
+            EditorSuffixes = new Dictionary<string, string>();
+            Unit_Names = new Dictionary<string, UnitName>();
+
 
             /*
             if (settings.language == "en") // placeholder for now
@@ -129,7 +156,7 @@ namespace BetterTriggers
                         string key = keyEnumerator.Current.KeyName;
                         if (key.EndsWith("Hint"))
                         {
-                            WE_Strings.TryAdd(key.Substring(0, key.Length-4), keyEnumerator.Current.Value.Replace("\"", ""));
+                            WE_Strings.TryAdd(key.Substring(0, key.Length - 4), keyEnumerator.Current.Value.Replace("\"", ""));
                         }
                     }
                 }
@@ -141,12 +168,35 @@ namespace BetterTriggers
             for (int i = 0; i < iniData.Sections.Count; i++)
             {
                 var enumerator = iniData.Sections.GetEnumerator();
+                string sectionName = null;
                 while (enumerator.MoveNext())
                 {
+                    sectionName = enumerator.Current.SectionName;
+                    string displayName = null;
                     if (enumerator.Current.Keys["Name"] != null)
-                        WE_Strings.TryAdd(enumerator.Current.SectionName, enumerator.Current.Keys["Name"]);
+                        displayName = enumerator.Current.Keys["Name"];
                     else if (enumerator.Current.Keys["Bufftip"] != null)
-                        WE_Strings.TryAdd(enumerator.Current.SectionName, enumerator.Current.Keys["Bufftip"]);
+                        displayName = enumerator.Current.Keys["Bufftip"];
+                    else if (enumerator.Current.Keys["EditorName"] != null)
+                        displayName = enumerator.Current.Keys["EditorName"];
+
+                    // Trim display name - upgrade name fields can contain multiple names (upgrade level 1, 2, 3 etc.)
+                    if (displayName != null)
+                    {
+                        if (displayName.Contains(','))
+                            displayName = displayName.Substring(0, displayName.IndexOf(',')); // finds the first index of char.
+                        DisplayNames.TryAdd(sectionName, displayName);
+                    }
+
+                    if (enumerator.Current.Keys["EditorSuffix"] != null)
+                        EditorSuffixes.TryAdd(sectionName, enumerator.Current.Keys["EditorSuffix"]);
+                }
+
+                DisplayNames.TryGetValue(sectionName, out string value);
+                if (value == null || value == "")
+                {
+                    DisplayNames.Remove(sectionName);
+                    DisplayNames.Add(sectionName, "Unknown");
                 }
             }
         }
@@ -162,6 +212,7 @@ namespace BetterTriggers
                     {
                         Name = enumerator.Current.Keys["Name"],
                         Propernames = enumerator.Current.Keys["Propernames"],
+                        EditorSuffix = enumerator.Current.Keys["EditorSuffix"],
                     };
                     Unit_Names.TryAdd(enumerator.Current.SectionName, unitName);
                 }

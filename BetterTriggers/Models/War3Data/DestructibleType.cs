@@ -8,6 +8,7 @@ namespace BetterTriggers.Models.War3Data
     {
         public string DestCode;
         public string DisplayName;
+        public string EditorSuffix;
         public string Model;
     }
 }

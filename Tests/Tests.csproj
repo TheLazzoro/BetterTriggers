@@ -16,6 +16,7 @@
     <None Remove="TestResources\abilitybuffdata.slk" />
     <None Remove="TestResources\abilitydata.slk" />
     <None Remove="TestResources\abilityskin.txt" />
+    <None Remove="TestResources\destructabledata.slk" />
     <None Remove="TestResources\destructableskin.txt" />
     <None Remove="TestResources\doodadskins.txt" />
     <None Remove="TestResources\itemskin.txt" />
@@ -218,6 +219,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\abilityskin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\destructabledata.slk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\destructableskin.txt">

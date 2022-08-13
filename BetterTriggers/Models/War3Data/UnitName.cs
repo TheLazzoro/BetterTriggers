@@ -8,5 +8,6 @@ namespace BetterTriggers.Models.War3Data
     {
         public string Name;
         public string Propernames;
+        public string EditorSuffix;
     }
 }

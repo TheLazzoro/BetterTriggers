@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using War3Net.Build.Extensions;
+using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 
 namespace BetterTriggers.WorldEdit
@@ -84,7 +85,7 @@ namespace BetterTriggers.WorldEdit
                 var item = new ItemType()
                 {
                     ItemCode = id,
-                    DisplayName = Locale.Translate(id),
+                    DisplayName = Locale.GetDisplayName(id),
                     Model = model,
                 };
                 items.TryAdd(item.ItemCode, item);
@@ -100,24 +101,22 @@ namespace BetterTriggers.WorldEdit
                 Thread.Sleep(1000);
             }
 
-            //Custom items
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);
                 var customItems = War3Net.Build.Extensions.BinaryReaderExtensions.ReadItemObjectData(bReader, true);
 
+                for (int i = 0; i < customItems.BaseItems.Count; i++)
+                {
+                    var baseItem = customItems.BaseItems[i];
+                    SetCustomFields(baseItem, Int32Extensions.ToRawcode(baseItem.OldId));
+                }
+
                 for (int i = 0; i < customItems.NewItems.Count; i++)
                 {
                     var customItem = customItems.NewItems[i];
-
                     ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(customItem.OldId));
                     string name = baseAbil.DisplayName;
-                    foreach (var modified in customItem.Modifications)
-                    {
-                        if (Int32Extensions.ToRawcode(modified.Id) == "unam")
-                            name = MapStrings.GetString(modified.ValueAsString);
-                    }
-
                     var item = new ItemType()
                     {
                         ItemCode = customItem.ToString().Substring(0, 4),
@@ -125,9 +124,23 @@ namespace BetterTriggers.WorldEdit
                     };
                     items.TryAdd(item.ItemCode, item);
                     itemsCustom.TryAdd(item.ItemCode, item);
+                    SetCustomFields(customItem, item.ItemCode);
                 }
             }
         }
 
+        private static void SetCustomFields(SimpleObjectModification modified, string itemcode)
+        {
+            ItemType itemType = GetItemType(itemcode);
+            string displayName = itemType.DisplayName;
+
+            foreach (var modification in modified.Modifications)
+            {
+                if (Int32Extensions.ToRawcode(modification.Id) == "unam")
+                    displayName = MapStrings.GetString(modification.ValueAsString);
+            }
+
+            itemType.DisplayName = displayName;
+        }
     }
 }

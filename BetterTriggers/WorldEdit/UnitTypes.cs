@@ -64,6 +64,8 @@ namespace BetterTriggers.WorldEdit
             else
                 name = unitName.Name;
 
+            name = name + " " + unitName.EditorSuffix;
+
             return name;
         }
 
@@ -95,7 +97,8 @@ namespace BetterTriggers.WorldEdit
 
             SylkParser sylkParser = new SylkParser();
             SylkTable table = sylkParser.Parse(unitDataSlk);
-            for (int i = 1; i < table.Count(); i++)
+            int count = table.Count();
+            for (int i = 1; i < count; i++)
             {
                 var row = table.ElementAt(i);
                 UnitType unitType = new UnitType()
@@ -179,6 +182,8 @@ namespace BetterTriggers.WorldEdit
                         Icon = icon,
                         Image = image
                     };
+
+                    Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
                     unitTypes.TryAdd(unitType.Id, unitType);
                     unitTypesCustom.TryAdd(unitType.Id, unitType);
 
@@ -196,7 +201,7 @@ namespace BetterTriggers.WorldEdit
                 return;
 
             UnitType unitType = GetUnitType(unitId);
-            string name = unitType.Name;
+            UnitName unitName = Locale.GetUnitName(unitId);
             string race = unitType.Race;
             string icon = unitType.Icon;
             string sort = unitType.Sort;
@@ -206,7 +211,9 @@ namespace BetterTriggers.WorldEdit
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "unam")
-                    name = MapStrings.GetString(modification.ValueAsString);
+                    unitName.Name = MapStrings.GetString(modification.ValueAsString);
+                else if (Int32Extensions.ToRawcode(modification.Id) == "unsf")
+                    unitName.EditorSuffix = MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "urac")
                     race = modification.Value as string;
                 else if (Int32Extensions.ToRawcode(modification.Id) == "uspe")
@@ -250,13 +257,12 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
-            unitType.Name = name;
+            unitType.Name = GetName(unitId);
             unitType.Race = race;
             unitType.Icon = icon;
             unitType.isSpecial = isSpecial;
             unitType.Sort = sort;
             unitType.Image = image;
-            Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
         }
     }
 }

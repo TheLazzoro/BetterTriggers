@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Extensions;
+using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
 
@@ -51,7 +52,11 @@ namespace BetterTriggers.WorldEdit
             if (destType == null)
                 return null;
 
-            return destType.DisplayName;
+            string name = destType.DisplayName;
+            if (destType.EditorSuffix != null)
+                name += " " + destType.EditorSuffix;
+
+            return name;
         }
 
         internal static void Load(bool isTest = false)
@@ -61,39 +66,52 @@ namespace BetterTriggers.WorldEdit
             destructiblesCustom = new Dictionary<string, DestructibleType>();
 
             Stream destructibleskin;
+            Stream destructibleDataSLK;
 
             if (isTest)
             {
                 destructibleskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/destructableskin.txt"), FileMode.Open);
+                destructibleDataSLK = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/destructabledata.slk"), FileMode.Open);
             }
             else
             {
                 var cascFolder = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
                 CASCFile destSkins = (CASCFile)cascFolder.Entries["destructableskin.txt"];
                 destructibleskin = Casc.GetCasc().OpenFile(destSkins.FullName);
+
+                CASCFile destData = (CASCFile)cascFolder.Entries["destructabledata.slk"];
+                destructibleDataSLK = Casc.GetCasc().OpenFile(destData.FullName);
             }
 
 
+            SylkParser sylkParser = new SylkParser();
+            SylkTable table = sylkParser.Parse(destructibleDataSLK);
+            int count = table.Count();
+            for (int i = 1; i < count; i++)
+            {
+                var row = table.ElementAt(i);
+                DestructibleType destType = new DestructibleType()
+                {
+                    DestCode = (string)row.GetValue(0),
+                    DisplayName = Locale.Translate((string)row.GetValue(6)),
+                    EditorSuffix = Locale.Translate((string)row.GetValue(7)),
+                };
+
+                destructibles.TryAdd(destType.DestCode, destType);
+                destructiblesBase.TryAdd(destType.DestCode, destType);
+            }
+
+            // Add 'model' from 'destructableskin.txt'
             var reader = new StreamReader(destructibleskin);
             var text = reader.ReadToEnd();
             var data = IniFileConverter.GetIniData(text);
-
-            var sections = data.Sections.GetEnumerator();
-            while (sections.MoveNext())
+            var destTypesList = GetBase();
+            for (int i = 0; i < destTypesList.Count; i++)
             {
-                var id = sections.Current.SectionName;
-                var keys = sections.Current.Keys;
-                var name = Locale.Translate(keys["Name"]);
-                var model = keys["file"];
-
-                var destructible = new DestructibleType()
-                {
-                    DestCode = id,
-                    DisplayName = name,
-                    Model = model,
-                };
-                destructibles.TryAdd(destructible.DestCode, destructible);
-                destructiblesBase.TryAdd(destructible.DestCode, destructible);
+                var destType = destTypesList[i];
+                var section = data[destType.DestCode];
+                string model = section["file"];
+                destType.Model = model;
             }
 
 
@@ -112,18 +130,17 @@ namespace BetterTriggers.WorldEdit
                 BinaryReader binaryReader = new BinaryReader(s);
                 var customDestructibles = War3Net.Build.Extensions.BinaryReaderExtensions.ReadMapDestructableObjectData(binaryReader);
 
+                for (int i = 0; i < customDestructibles.BaseDestructables.Count; i++)
+                {
+                    var baseDest = customDestructibles.BaseDestructables[i];
+                    SetCustomFields(baseDest, Int32Extensions.ToRawcode(baseDest.OldId));
+                }
+
                 for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
                 {
                     var dest = customDestructibles.NewDestructables[i];
-
                     DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
                     string name = baseDest.DisplayName;
-                    foreach (var modified in dest.Modifications)
-                    {
-                        if (Int32Extensions.ToRawcode(modified.Id) == "bnam")
-                            name = MapStrings.GetString(modified.ValueAsString);
-                    }
-
                     DestructibleType destructible = new DestructibleType()
                     {
                         DestCode = dest.ToString().Substring(0, 4),
@@ -131,9 +148,25 @@ namespace BetterTriggers.WorldEdit
                     };
                     destructibles.TryAdd(destructible.DestCode, destructible);
                     destructiblesCustom.TryAdd(destructible.DestCode, destructible);
+                    SetCustomFields(dest, destructible.DestCode);
                 }
             }
         }
 
+        private static void SetCustomFields(SimpleObjectModification modified, string buffcode)
+        {
+            DestructibleType buffType = GetDestType(buffcode);
+            string displayName = buffType.DisplayName;
+            string editorSuffix = buffType.EditorSuffix;
+            foreach (var modification in modified.Modifications)
+            {
+                if (Int32Extensions.ToRawcode(modification.Id) == "bnam")
+                    displayName = MapStrings.GetString(modification.ValueAsString);
+                else if (Int32Extensions.ToRawcode(modification.Id) == "bsuf")
+                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+            }
+            buffType.DisplayName = displayName;
+            buffType.EditorSuffix = editorSuffix;
+        }
     }
 }

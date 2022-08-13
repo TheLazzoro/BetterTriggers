@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Extensions;
+using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
 
@@ -79,10 +80,12 @@ namespace BetterTriggers.WorldEdit
             for (int i = 1; i < table.Count(); i++)
             {
                 var row = table.ElementAt(i);
+                string techcode = (string)row.GetValue(0);
                 UpgradeType upgrade = new UpgradeType()
                 {
-                    UpgradeCode = (string)row.GetValue(0),
-                    DisplayName = Locale.Translate((string)row.GetValue(0)),
+                    UpgradeCode = techcode,
+                    DisplayName = Locale.GetDisplayName(techcode),
+                    EditorSuffix = Locale.GetEditorSuffix(techcode),
                 };
 
                 if (upgrade.UpgradeCode == null)
@@ -107,6 +110,12 @@ namespace BetterTriggers.WorldEdit
                 BinaryReader reader = new BinaryReader(s);
                 var customUpgrades = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUpgradeObjectData(reader, true);
 
+                for (int i = 0; i < customUpgrades.BaseUpgrades.Count; i++)
+                {
+                    var baseUpgrade = customUpgrades.BaseUpgrades[i];
+                    SetCustomFields(baseUpgrade, Int32Extensions.ToRawcode(baseUpgrade.OldId));
+                }
+
                 for (int i = 0; i < customUpgrades.NewUpgrades.Count; i++)
                 {
                     var customUpgrade = customUpgrades.NewUpgrades[i];
@@ -126,9 +135,25 @@ namespace BetterTriggers.WorldEdit
                     };
                     upgrades.TryAdd(upgrade.UpgradeCode, upgrade);
                     upgradesCustom.TryAdd(upgrade.UpgradeCode, upgrade);
+                    SetCustomFields(customUpgrade, upgrade.UpgradeCode);
                 }
             }
         }
 
+        private static void SetCustomFields(LevelObjectModification modified, string techcode)
+        {
+            UpgradeType upgradeType = GetUpgradeType(techcode);
+            string displayName = upgradeType.DisplayName;
+            string editorSuffix = upgradeType.EditorSuffix;
+            foreach (var modification in modified.Modifications)
+            {
+                if (Int32Extensions.ToRawcode(modification.Id) == "gnam")
+                    displayName = MapStrings.GetString(modification.ValueAsString);
+                else if (Int32Extensions.ToRawcode(modification.Id) == "gnsf")
+                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+            }
+            upgradeType.DisplayName = displayName;
+            upgradeType.EditorSuffix = editorSuffix;
+        }
     }
 }

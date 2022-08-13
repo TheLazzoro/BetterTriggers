@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using War3Net.Build.Extensions;
+using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
 
@@ -47,7 +48,11 @@ namespace BetterTriggers.WorldEdit
             if (buffType == null)
                 return null;
 
-            return buffType.DisplayName;
+            string name = buffType.DisplayName;
+            if (buffType.EditorSuffix != null)
+                name += " " + buffType.EditorSuffix;
+
+            return name;
         }
 
         internal static void Load(bool isTest = false)
@@ -76,13 +81,16 @@ namespace BetterTriggers.WorldEdit
 
             SylkParser sylkParser = new SylkParser();
             SylkTable table = sylkParser.Parse(buffdata);
-            for (int i = 1; i < table.Count(); i++)
+            int count = table.Count();
+            for (int i = 1; i < count; i++)
             {
                 var row = table.ElementAt(i);
+                string buffcode = (string)row.GetValue(0);
                 BuffType buff = new BuffType()
                 {
-                    BuffCode = (string)row.GetValue(0),
-                    DisplayName = Locale.Translate((string)row.GetValue(0)),
+                    BuffCode = buffcode,
+                    DisplayName = Locale.GetDisplayName(buffcode),
+                    EditorSuffix = Locale.GetEditorSuffix(buffcode),
                 };
 
                 if (buff.BuffCode == null)
@@ -107,18 +115,17 @@ namespace BetterTriggers.WorldEdit
                 BinaryReader reader = new BinaryReader(s);
                 var customBuffs = War3Net.Build.Extensions.BinaryReaderExtensions.ReadBuffObjectData(reader, true);
 
+                for (int i = 0; i < customBuffs.BaseBuffs.Count; i++)
+                {
+                    var baseBuff = customBuffs.BaseBuffs[i];
+                    SetCustomFields(baseBuff, Int32Extensions.ToRawcode(baseBuff.OldId));
+                }
+                
                 for (int i = 0; i < customBuffs.NewBuffs.Count; i++)
                 {
                     var customBuff = customBuffs.NewBuffs[i];
-
                     BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(customBuff.OldId));
                     string name = baseBuff.DisplayName;
-                    foreach (var modified in customBuff.Modifications)
-                    {
-                        if (Int32Extensions.ToRawcode(modified.Id) == "ftip")
-                            name = MapStrings.GetString(modified.ValueAsString);
-                    }
-
                     var buff = new BuffType()
                     {
                         BuffCode = customBuff.ToString().Substring(0, 4),
@@ -126,9 +133,29 @@ namespace BetterTriggers.WorldEdit
                     };
                     buffs.TryAdd(buff.BuffCode, buff);
                     buffsCustom.TryAdd(buff.BuffCode, buff);
+                    SetCustomFields(customBuff, buff.BuffCode);
                 }
             }
         }
 
+        private static void SetCustomFields(SimpleObjectModification modified, string buffcode)
+        {
+            BuffType buffType = GetBuffType(buffcode);
+            string displayName = buffType.DisplayName;
+            string editorSuffix = buffType.EditorSuffix;
+
+            foreach (var modification in modified.Modifications)
+            {
+                if (Int32Extensions.ToRawcode(modification.Id) == "ftip")
+                    displayName = MapStrings.GetString(modification.ValueAsString);
+                else if (Int32Extensions.ToRawcode(modification.Id) == "fnam")
+                    displayName = MapStrings.GetString(modification.ValueAsString);
+                else if (Int32Extensions.ToRawcode(modification.Id) == "fnsf")
+                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+            }
+
+            buffType.DisplayName = displayName;
+            buffType.EditorSuffix = editorSuffix;
+        }
     }
 }

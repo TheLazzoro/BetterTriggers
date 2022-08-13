@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using War3Net.Build.Extensions;
+using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
 
@@ -45,7 +46,11 @@ namespace BetterTriggers.WorldEdit
             if (abilityType == null)
                 return null;
 
-            return abilityType.DisplayName;
+            string name = abilityType.DisplayName;
+            if (abilityType.EditorSuffix != null)
+                name += " " + abilityType.EditorSuffix;
+
+            return name;
         }
 
         internal static void Load(bool isTest = false)
@@ -76,13 +81,16 @@ namespace BetterTriggers.WorldEdit
 
             SylkParser sylkParser = new SylkParser();
             SylkTable table = sylkParser.Parse(abilitydata);
-            for (int i = 1; i < table.Count(); i++)
+            int count = table.Count();
+            for (int i = 1; i < count; i++)
             {
                 var row = table.ElementAt(i);
+                string abilcode = (string)row.GetValue(0);
                 AbilityType ability = new AbilityType()
                 {
-                    AbilCode = (string)row.GetValue(0),
-                    DisplayName = Locale.Translate((string)row.GetValue(0)),
+                    AbilCode = abilcode,
+                    DisplayName = Locale.GetDisplayName(abilcode),
+                    EditorSuffix = Locale.GetEditorSuffix(abilcode),
                 };
 
                 if (ability.AbilCode == null)
@@ -107,28 +115,47 @@ namespace BetterTriggers.WorldEdit
                 BinaryReader reader = new BinaryReader(s);
                 var customAbilities = War3Net.Build.Extensions.BinaryReaderExtensions.ReadAbilityObjectData(reader, true);
 
+                for (int i = 0; i < customAbilities.BaseAbilities.Count; i++)
+                {
+                    var baseAbility = customAbilities.BaseAbilities[i];
+                    SetCustomFields(baseAbility, Int32Extensions.ToRawcode(baseAbility.OldId));
+                }
+                
                 for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
                 {
                     var customAbility = customAbilities.NewAbilities[i];
-
                     AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(customAbility.OldId));
                     string name = baseAbil.DisplayName;
-                    foreach (var modified in customAbility.Modifications)
-                    {
-                        if (Int32Extensions.ToRawcode(modified.Id) == "anam")
-                            name = MapStrings.GetString(modified.ValueAsString);
-                    }
-
+                    string editorSuffix = baseAbil.EditorSuffix;
                     var ability = new AbilityType()
                     {
                         AbilCode = customAbility.ToString().Substring(0, 4),
                         DisplayName = name,
+                        EditorSuffix = editorSuffix,
                     };
                     abilities.TryAdd(ability.AbilCode, ability);
                     abilitiesCustom.TryAdd(ability.AbilCode, ability);
+                    SetCustomFields(customAbility, ability.AbilCode);
                 }
             }
         }
 
+        private static void SetCustomFields(LevelObjectModification modified, string abilcode)
+        {
+            AbilityType abilityType = GetAbilityType(abilcode);
+            string displayName = abilityType.DisplayName;
+            string editorSuffix = abilityType.EditorSuffix;
+
+            foreach (var modification in modified.Modifications)
+            {
+                if (Int32Extensions.ToRawcode(modification.Id) == "anam")
+                    displayName = MapStrings.GetString(modification.ValueAsString);
+                else if (Int32Extensions.ToRawcode(modification.Id) == "ansf")
+                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+            }
+
+            abilityType.DisplayName = displayName;
+            abilityType.EditorSuffix = editorSuffix;
+        }
     }
 }
