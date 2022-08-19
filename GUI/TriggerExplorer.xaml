@@ -95,6 +95,8 @@
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
+                    <EventSetter Event="TreeViewItem.Expanded" Handler="treeViewItem_Expanded"/>
+                    <EventSetter Event="TreeViewItem.Collapsed" Handler="treeViewItem_Collapsed"/>
                 </Style>
             </TreeView.ItemContainerStyle>
 

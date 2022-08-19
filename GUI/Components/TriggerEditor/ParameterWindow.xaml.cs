@@ -135,7 +135,7 @@ namespace GUI
                 parameterControl = importControl;
             }
             ShowHideTabs(parameterControl);
-            parameterControl.SetDefaultSelection(parameter.value);
+            parameterControl.SetDefaultSelection(parameter);
 
             if(function == null)
             {

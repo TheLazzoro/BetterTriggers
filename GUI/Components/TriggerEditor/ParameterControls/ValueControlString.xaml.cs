@@ -104,9 +104,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             handler?.Invoke(this, e);
         }
 
-        public void SetDefaultSelection(string value)
+        public void SetDefaultSelection(Parameter parameter)
         {
-            textBoxString.Text = value;
+            textBoxString.Text = parameter.value;
         }
 
         public int GetElementCount()

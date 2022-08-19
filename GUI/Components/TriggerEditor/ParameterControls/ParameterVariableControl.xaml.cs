@@ -43,20 +43,29 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(string value)
+        public void SetDefaultSelection(Parameter parameter)
         {
             int i = 0;
             bool found = false;
+            ControllerVariable controllerVariable = new ControllerVariable();
+            Variable selected = null;
+            if (parameter is VariableRef)
+                selected = controllerVariable.GetByReference(parameter as VariableRef);
+
+            if (selected == null)
+                return;
+
             while (!found && i < listControl.listView.Items.Count)
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var variableRef = item.Tag as VariableRef;
-                if (variableRef.value == value)
+                var variable = controllerVariable.GetByReference(variableRef);
+                if (variable == selected)
                     found = true;
                 else
                     i++;
             }
-            if (found == false)
+            if (!found)
                 return;
 
             var defaultSelected = listControl.listView.Items[i] as ListViewItem;

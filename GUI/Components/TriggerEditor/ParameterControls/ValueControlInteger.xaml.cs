@@ -52,9 +52,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             textBox.SelectAll();
         }
 
-        public void SetDefaultSelection(string value)
+        public void SetDefaultSelection(Parameter parameter)
         {
-            textBox.Text = value;
+            textBox.Text = parameter.value;
         }
 
         public int GetElementCount()

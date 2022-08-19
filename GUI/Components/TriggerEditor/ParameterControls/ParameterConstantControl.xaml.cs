@@ -68,7 +68,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(string value)
+        public void SetDefaultSelection(Parameter parameter)
         {
             int i = 0;
             bool found = false;
@@ -76,7 +76,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var constant = item.Tag as ConstantTemplate;
-                if (constant.value == value)
+                if (constant.value == parameter.value)
                     found = true;
                 else
                     i++;

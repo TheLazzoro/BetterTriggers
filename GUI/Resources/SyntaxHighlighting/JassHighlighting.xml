@@ -83,6 +83,7 @@
             <Word>library</Word>
             <Word>endlibrary</Word>
             <Word>initializer</Word>
+            <Word>requires</Word>
             <Word>struct</Word>
             <Word>endstruct</Word>
             <Word>method</Word>
@@ -90,6 +91,9 @@
             <Word>private</Word>
             <Word>public</Word>
             <Word>native</Word>
+            <Word>static</Word>
+            <Word>create</Word>
+            <Word>allocate</Word>
         </Keywords>
 
         <!-- TYPES -->
@@ -98,6 +102,7 @@
             <Word>boolean</Word>
             <Word>integer</Word>
             <Word>real</Word>
+            <Word>string</Word>
             <Word>agent</Word>
             <Word>event</Word>
             <Word>player</Word>

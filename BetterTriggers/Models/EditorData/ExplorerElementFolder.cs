@@ -11,6 +11,7 @@ namespace BetterTriggers.Models.EditorData
         public string path;
         public List<IExplorerElement> explorerElements = new List<IExplorerElement>();
         public List<IExplorerElementUI> observers = new List<IExplorerElementUI>();
+        public bool isExpanded;
         private DateTime LastWrite;
         private long Size;
 

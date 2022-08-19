@@ -6,6 +6,7 @@ namespace BetterTriggers.Models.SaveableData
     {
         public bool isEnabled;
         public bool isInitiallyOn;
+        public bool isExpanded;
         public string path;
         public List<War3ProjectFileEntry> Files = new List<War3ProjectFileEntry>();
     }

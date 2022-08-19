@@ -32,6 +32,9 @@ namespace GUI.Controllers
             if (element is ExplorerElementFolder)
             {
                 var folder = element as ExplorerElementFolder;
+                if (folder.isExpanded)
+                    treeItem.ExpandSubtree();
+
                 for (int i = 0; i < folder.explorerElements.Count; i++)
                 {
                     var child = folder.explorerElements[i];

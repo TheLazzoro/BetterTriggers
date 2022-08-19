@@ -61,7 +61,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(string value)
+        public void SetDefaultSelection(Parameter parameter)
         {
             int i = 0;
             bool found = false;
@@ -69,7 +69,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var function = item.Tag as FunctionTemplate;
-                if(function.value == value)
+                if(function.value == parameter.value)
                     found = true;
                 else
                     i++;

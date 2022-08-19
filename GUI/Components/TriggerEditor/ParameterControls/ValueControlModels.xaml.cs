@@ -55,9 +55,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(string value)
+        public void SetDefaultSelection(Parameter parameter)
         {
-            textBoxAsset.Text = value;
+            textBoxAsset.Text = parameter.value;
         }
 
         public int GetElementCount()

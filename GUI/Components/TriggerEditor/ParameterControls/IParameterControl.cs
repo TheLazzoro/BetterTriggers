@@ -12,6 +12,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         Parameter GetSelectedItem();
         void SetVisibility(Visibility visibility);
         int GetElementCount();
-        void SetDefaultSelection(string value);
+        void SetDefaultSelection(Parameter parameter);
     }
 }

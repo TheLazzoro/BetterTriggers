@@ -70,7 +70,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             handler?.Invoke(this, e);
         }
 
-        public void SetDefaultSelection(string value)
+        public void SetDefaultSelection(Parameter parameter)
         {
             // TODO:
             int selectedIndex = 0;
@@ -78,7 +78,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             bool found = false;
             while (!found && i < unitData.Count)
             {
-                if (unitData[i].Id == value)
+                if (unitData[i].Id == parameter.value)
                     found = true;
                 else
                     i++;

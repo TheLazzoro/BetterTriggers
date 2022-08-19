@@ -269,6 +269,7 @@ namespace BetterTriggers.Controllers
             {
                 var folder = (ExplorerElementFolder)elementParent;
                 elementChildren = folder.explorerElements;
+                folder.isExpanded = entryParent.isExpanded;
             }
 
             int insertIndex = 0;
@@ -371,6 +372,7 @@ namespace BetterTriggers.Controllers
         private void RecurseSaveFileEntries(ExplorerElementFolder parent, War3ProjectFileEntry parentEntry)
         {
             List<IExplorerElement> children = parent.explorerElements;
+            parentEntry.isExpanded = parent.isExpanded;
 
             for (int i = 0; i < children.Count; i++)
             {

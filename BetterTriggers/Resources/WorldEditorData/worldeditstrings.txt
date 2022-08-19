@@ -4192,6 +4192,8 @@ WESTRING_PEVENT_VICTORY_MSG="Victory!"
 WESTRING_PUEVENT_DEATH="Dies"
 WESTRING_PUEVENT_DECAY="Decays"
 WESTRING_PUEVENT_CHANGESOWNER="Changes owner"
+WESTRING_PUEVENT_DAMAGED="Takes damage"
+WESTRING_PUEVENT_DAMAGING="About to take damage"
 WESTRING_PUEVENT_HEROLEVEL="Gains a level"
 WESTRING_PUEVENT_HEROSKILL="Learns a skill"
 WESTRING_PUEVENT_HEROREVIVABLE="Becomes revivable"
@@ -4235,6 +4237,7 @@ WESTRING_UEVENT_DEATH="Dies"
 WESTRING_UEVENT_DECAY="Decays"
 WESTRING_UEVENT_CHANGESOWNER="Changes owner"
 WESTRING_UEVENT_DAMAGED="Takes damage"
+WESTRING_UEVENT_DAMAGING="About to take damage"
 WESTRING_UEVENT_HEROLEVEL="Gains a level"
 WESTRING_UEVENT_HEROSKILL="Learns a skill"
 WESTRING_UEVENT_HEROREVIVABLE="Becomes revivable"
@@ -5477,6 +5480,14 @@ WESTRING_VOLUMEGROUP_MUSIC="Music"
 WESTRING_VOLUMEGROUP_UNITMOVEMENT="Unit Movement Sounds"
 WESTRING_VOLUMEGROUP_UNITSOUNDS="Unit Response Sounds"
 WESTRING_VOLUMEGROUP_UI="User Interface Sounds"
+// Cinematic Volume Groups
+WESTRING_VOLUMEGROUP_CINEMATIC_GENERAL="Cinematic General"
+WESTRING_VOLUMEGROUP_CINEMATIC_AMBIENT="Cinematic Ambient Sounds"
+WESTRING_VOLUMEGROUP_CINEMATIC_MUSIC="Cinematic Music"
+WESTRING_VOLUMEGROUP_CINEMATIC_DIALOGUE="Cinematic Dialogue"
+WESTRING_VOLUMEGROUP_CINEMATIC_SOUND_EFFECTS_1="Cinematic Sound Effects 1"
+WESTRING_VOLUMEGROUP_CINEMATIC_SOUND_EFFECTS_2="Cinematic Sound Effects 2"
+WESTRING_VOLUMEGROUP_CINEMATIC_SOUND_EFFECTS_3="Cinematic Sound Effects 3"
 
 // Fog states
 WESTRING_FOGSTATE_MASKED="Black mask"
@@ -7542,6 +7553,7 @@ WESTRING_BEVAL_BFVI=Fog Visibility
 WESTRING_BEVAL_BPTX=Pathing Texture
 WESTRING_BEVAL_BPTD=Pathing Texture (Dead)
 WESTRING_BEVAL_BDSN=Death
+WESTRING_BEVAL_BSND=Looping Sound
 WESTRING_BEVAL_BSHD=Shadow
 WESTRING_BEVAL_BSMM=Minimap - Show
 WESTRING_BEVAL_BMMR=Minimap Color 1 (Red)
@@ -8336,7 +8348,7 @@ WESTRING_AEVAL_HSB2=Bonus Damage (Percent)
 WESTRING_AEVAL_HSB3=Defense Type Affected
 WESTRING_AEVAL_IOFR=Healing Multiplier
 WESTRING_AEVAL_AIVU=Is Magic Immune
-WESTRING_AEVAL_AAT1=AOE Damage
+WESTRING_AEVAL_AAT1=Initially Enabled
 
 // Ability Editor Field Values
 WESTRING_AE_ATTACKBITS_NONE=None
@@ -8645,6 +8657,8 @@ WESTRING_MISCVAL_MXBS=Movement - Building Speed - Maximum
 WESTRING_MISCVAL_MNBS=Movement - Building Speed - Minimum
 WESTRING_MISCVAL_CCCR=Creeps - Maximum Creep Camp Radius (pathing cells)
 WESTRING_MISCVAL_CCCR_HINT="This radius is used for determining creep camps for the minimap icons and AI evaluation."
+WESTRING_MISCVAL_NBPP=Gameplay - Neutral Building Polling Period
+WESTRING_MISCVAL_NBPP_HINT="This determines how often buildings with shopping abilities will scan for valid patrons. Measured in seconds."
 //#LINENOBETA
 WESTRING_MISCVAL_FCAP=Food Limit
 //#LINENOBETA

@@ -11,6 +11,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         event EventHandler SelectionChanged;
         event EventHandler OK;
         int GetElementCount();
-        void SetDefaultSelection(string value);
+        void SetDefaultSelection(Parameter parameter);
     }
 }

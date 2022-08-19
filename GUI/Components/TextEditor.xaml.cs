@@ -1,6 +1,7 @@
 ﻿using GUI.Components.TextEditorExtensions;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +47,8 @@ namespace GUI.Components
                     this.avalonEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
+
+            //var searchPanel = SearchPanel.Install(avalonEditor);
 
             avalonEditor.Text = content;
         }

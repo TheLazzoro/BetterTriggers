@@ -48,16 +48,28 @@ namespace BetterTriggers.Commands
                 Parameter setVarParam = triggerElement.function.parameters[0];
                 Parameter value = triggerElement.function.parameters[1];
 
-                // Reset if value type doesn't match variable type
-                if (paramCollection[paramIndex] == setVarParam && paramToAdd.value != value.value)
+                if(paramCollection[paramIndex] == setVarParam && setVarParam is VariableRef && oldParameter is VariableRef)
                 {
-                    setVarValueOld = value;
-                    setVarValueNew = new Parameter()
+                    var setVarParamRef = setVarParam as VariableRef;
+                    var setVarParamRefOld = oldParameter as VariableRef;
+                    var newVar = controllerVar.GetByReference(setVarParamRef);
+                    var oldVar = controllerVar.GetByReference(setVarParamRefOld);
+                    if(newVar.Type != oldVar.Type)
                     {
-                        value = null,
-                    };
+                        setVarValueOld = value;
+                        setVarValueNew = new Parameter()
+                        {
+                            value = null,
+                        };
+                        paramCollection[paramIndex + 1] = setVarValueNew;
+                    }
 
-                    paramCollection[paramIndex + 1] = setVarValueNew;
+                    // Copy array index parameters
+                    if(newVar.IsArray == oldVar.IsArray && newVar.IsTwoDimensions == oldVar.IsTwoDimensions)
+                    {
+                        setVarParamRef.arrayIndexValues[0] = setVarParamRefOld.arrayIndexValues[0].Clone();
+                        setVarParamRef.arrayIndexValues[1] = setVarParamRefOld.arrayIndexValues[1].Clone();
+                    }
                 }
             }
 

@@ -265,6 +265,26 @@ namespace GUI
             dragItem.IsSelected = true;
         }
 
+        private void treeViewItem_Expanded(object sender, RoutedEventArgs e)
+        {
+            var treeItem = (TreeItemExplorerElement) e.Source;
+            var explorerElement = treeItem.Ielement as ExplorerElementFolder;
+            if (explorerElement == null)
+                return;
+
+            explorerElement.isExpanded = true;
+        }
+
+        private void treeViewItem_Collapsed(object sender, RoutedEventArgs e)
+        {
+            var treeItem = (TreeItemExplorerElement)e.Source;
+            var explorerElement = treeItem.Ielement as ExplorerElementFolder;
+            if (explorerElement == null)
+                return;
+
+            explorerElement.isExpanded = false;
+        }
+
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
