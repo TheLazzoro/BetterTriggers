@@ -5,6 +5,7 @@ using System.Windows;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 
 namespace BetterTriggers.Commands
 {
@@ -54,7 +55,7 @@ namespace BetterTriggers.Commands
                     var setVarParamRefOld = oldParameter as VariableRef;
                     var newVar = controllerVar.GetByReference(setVarParamRef);
                     var oldVar = controllerVar.GetByReference(setVarParamRefOld);
-                    if(newVar.Type != oldVar.Type)
+                    if(!Types.AreTypesEqual(newVar.Type, oldVar.Type))
                     {
                         setVarValueOld = value;
                         setVarValueNew = new Parameter()

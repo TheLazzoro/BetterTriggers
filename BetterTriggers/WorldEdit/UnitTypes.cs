@@ -197,8 +197,8 @@ namespace BetterTriggers.WorldEdit
 
         private static void SetCustomFields(SimpleObjectModification modified, string unitId)
         {
-            if (IsTest)
-                return;
+            //if (IsTest)
+            //    return;
 
             UnitType unitType = GetUnitType(unitId);
             UnitName unitName = Locale.GetUnitName(unitId);
@@ -224,7 +224,7 @@ namespace BetterTriggers.WorldEdit
                 {
                     string iconPath = modification.Value as string;
                     Stream stream = null;
-                    if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds")))
+                    if (!IsTest && Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds")))
                         stream = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds"));
 
                     if (stream == null)

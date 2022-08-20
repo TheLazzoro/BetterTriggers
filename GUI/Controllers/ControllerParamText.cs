@@ -86,7 +86,7 @@ namespace GUI.Controllers
                     }
 
                     // This exists in case a variable has been changed
-                    if (variable == null || (expectedType != actualType && actualType != "AnyGlobal" && actualType != "VarAsString_Real"))
+                    if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";
@@ -285,7 +285,7 @@ namespace GUI.Controllers
                     }
 
                     // This exists in case a variable has been changed
-                    if (variable == null || (expectedType != actualType && actualType != "AnyGlobal" && actualType != "VarAsString_Real"))
+                    if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
                     {
                         parameters[paramIndex] = new Parameter();
                         varName = "null";

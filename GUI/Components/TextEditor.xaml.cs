@@ -48,7 +48,7 @@ namespace GUI.Components
                 }
             }
 
-            //var searchPanel = SearchPanel.Install(avalonEditor);
+            var searchPanel = SearchPanel.Install(avalonEditor);
 
             avalonEditor.Text = content;
         }

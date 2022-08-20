@@ -61,5 +61,16 @@ namespace BetterTriggers.WorldEdit
         {
             types.Clear();
         }
+
+        public static bool AreTypesEqual(string type1, string type2)
+        {
+            bool areEqual = false;
+            if ((type1 == "VarAsString_Real" && type2 == "real") || (type2 == "VarAsString_Real" && type1 == "real"))
+                areEqual = true;
+            else
+                areEqual = type1 == type2;
+
+            return areEqual;
+        }
     }
 }

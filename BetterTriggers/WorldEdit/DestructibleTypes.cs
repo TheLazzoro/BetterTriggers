@@ -151,6 +151,9 @@ namespace BetterTriggers.WorldEdit
                     SetCustomFields(dest, destructible.DestCode);
                 }
             }
+
+            destructibleskin.Close();
+            destructibleDataSLK.Close();
         }
 
         private static void SetCustomFields(SimpleObjectModification modified, string buffcode)

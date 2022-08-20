@@ -284,20 +284,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CSharp.lua\CSharp.lua\CSharp.lua.csproj" />
-    <ProjectReference Include="..\War3Net.Build.Core\War3Net.Build.Core.csproj" />
-    <ProjectReference Include="..\War3Net.Build\War3Net.Build.csproj" />
-    <ProjectReference Include="..\War3Net.CodeAnalysis.Jass\War3Net.CodeAnalysis.Jass.csproj" />
-    <ProjectReference Include="..\War3Net.CodeAnalysis.Transpilers\War3Net.CodeAnalysis.Transpilers.csproj" />
-    <ProjectReference Include="..\War3Net.CodeAnalysis\War3Net.CodeAnalysis.csproj" />
-    <ProjectReference Include="..\War3Net.Common\War3Net.Common.csproj" />
-    <ProjectReference Include="..\War3Net.Drawing.Blp\War3Net.Drawing.Blp.csproj" />
-    <ProjectReference Include="..\War3Net.IO.Compression\War3Net.IO.Compression.csproj" />
-    <ProjectReference Include="..\War3Net.IO.Mpq\War3Net.IO.Mpq.csproj" />
-    <ProjectReference Include="..\War3Net.IO.Slk\War3Net.IO.Slk.csproj" />
+    <PackageReference Include="War3Net.Build" Version="5.5.0" />
+    <PackageReference Include="War3Net.Build.Core" Version="5.5.0" />
+    <PackageReference Include="War3Net.Drawing.Blp" Version="5.5.0" />
+    <PackageReference Include="War3Net.IO.Mpq" Version="5.5.0" />
   </ItemGroup>
 
 </Project>

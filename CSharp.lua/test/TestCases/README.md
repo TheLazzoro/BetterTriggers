@@ -1,1 +1,0 @@
-run cmd.bat, auto run TestCases, this test code from https://github.com/Ourpalm/ILRuntime/tree/master/TestCases

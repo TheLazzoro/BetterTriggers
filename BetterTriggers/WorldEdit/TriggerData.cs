@@ -397,6 +397,7 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
+
         public static FunctionTemplate GetFunctionTemplate(string key)
         {
             FunctionTemplate functionTemplate;
