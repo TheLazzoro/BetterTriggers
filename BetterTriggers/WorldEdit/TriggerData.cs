@@ -32,6 +32,8 @@ namespace BetterTriggers.WorldEdit
 
         internal static List<Variable> customConstants = new List<Variable>();
 
+        private static Dictionary<FunctionTemplate, string> Defaults = new Dictionary<FunctionTemplate, string>(); // saves the raw default values so we can operate on them later.
+
 
         public static void LoadForTest()
         {
@@ -218,6 +220,36 @@ namespace BetterTriggers.WorldEdit
             LoadFunctions(data, "TriggerConditions", ConditionTemplates);
             LoadFunctions(data, "TriggerActions", ActionTemplates);
             LoadFunctions(data, "TriggerCalls", CallTemplates);
+
+            // --- DEFAULTS --- //
+            foreach (var function in Defaults)
+            {
+                string[] defaultsTxt = function.Value.Split(",");
+                FunctionTemplate template = function.Key;
+                List<ParameterTemplate> defaults = new List<ParameterTemplate>();
+                for (int i = 0; i < defaultsTxt.Length; i++)
+                {
+                    string def = defaultsTxt[i];
+                    ParameterTemplate oldParameter = template.parameters[i];
+                    ConstantTemplate constantTemplate = GetConstantTemplate(def);
+                    FunctionTemplate functionTemplate = GetFunctionTemplate(def);
+                    if (functionTemplate != null)
+                        defaults.Add(functionTemplate);
+                    else if (constantTemplate != null)
+                        defaults.Add(constantTemplate);
+                    else if (def != "_")
+                        defaults.Add(new ValueTemplate() { value = def, returnType = oldParameter.returnType });
+                    else
+                        defaults.Add(new ParameterTemplate() { returnType = oldParameter.returnType });
+
+                    /* hackfix because of Blizzard default returntype mismatch for some parameters...
+                     * 'RectContainsItem' has 'GetRectCenter' for a 'rect' parameter, but returns location.
+                     */
+                    if (defaults[i].returnType != oldParameter.returnType)
+                        defaults[i] = oldParameter;
+                }
+                template.parameters = defaults;
+            }
         }
 
         private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary)
@@ -249,6 +281,12 @@ namespace BetterTriggers.WorldEdit
                     {
                         functionTemplate.category = _func.Value;
                         FunctionCategories.Add(name, functionTemplate.category);
+                    }
+                    else if (key.EndsWith("Defaults"))
+                    {
+                        string[] defaultsTxt = _func.Value.Split(",");
+                        if(defaultsTxt.Length >= 1 && defaultsTxt[0] != "" && defaultsTxt[0] != "_" && defaultsTxt[0] != "_true")
+                            Defaults.TryAdd(functionTemplate, _func.Value);
                     }
                     else if (key.EndsWith("ScriptName"))
                     {
@@ -398,11 +436,18 @@ namespace BetterTriggers.WorldEdit
         }
 
 
-        public static FunctionTemplate GetFunctionTemplate(string key)
+        private static FunctionTemplate GetFunctionTemplate(string key)
         {
             FunctionTemplate functionTemplate;
             FunctionsAll.TryGetValue(key, out functionTemplate);
             return functionTemplate;
+        }
+
+        private static ConstantTemplate GetConstantTemplate(string key)
+        {
+            ConstantTemplate constantTemplate;
+            ConstantTemplates.TryGetValue(key, out constantTemplate);
+            return constantTemplate;
         }
 
         public static List<FunctionTemplate> GetFunctionTemplatesAll()

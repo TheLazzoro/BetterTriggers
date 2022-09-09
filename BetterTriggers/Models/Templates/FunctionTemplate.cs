@@ -15,7 +15,7 @@ namespace BetterTriggers.Models.Templates
         public string paramText;
         public string category;
 
-        public FunctionTemplate Clone()
+        public override FunctionTemplate Clone()
         {
             FunctionTemplate clone = (FunctionTemplate)this.MemberwiseClone();
             clone.parameters = new List<ParameterTemplate>(parameters);
@@ -31,15 +31,20 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
+        public override Function ToParameter()
+        {
+            Function function = new Function();
+            List<Parameter> parameters = new List<Parameter>();
+            this.parameters.ForEach(p => parameters.Add(p.ToParameter()));
+            function.value = new string(this.value);
+            function.parameters = parameters;
+            return function;
+        }
+
         public TriggerElement ToTriggerElement()
         {
             TriggerElement te = TriggerElementFactory.Create(value);
-            List<Parameter> parameters = new List<Parameter>();
-            this.parameters.ForEach(p => parameters.Add(new Parameter()));
-
-            te.function.value = value;
-            te.function.parameters = parameters;
-
+            te.function = ToParameter();
             return te;
         }
 
