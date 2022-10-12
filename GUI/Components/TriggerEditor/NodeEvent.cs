@@ -7,13 +7,14 @@ using BetterTriggers.Models.SaveableData;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class NodeEvent : TreeViewItem, INode
+    public class NodeEvent : TreeItemBT, INode
     {
         public List<TriggerElement> TriggerElements = new List<TriggerElement>();
 
         public NodeEvent(string text)
         {
             TreeItemHeader header = new TreeItemHeader(text, "TC_EVENT");
+            this.treeItemHeader = header;
             this.Header = header;
         }
 

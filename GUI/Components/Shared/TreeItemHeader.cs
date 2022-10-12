@@ -76,6 +76,11 @@ namespace GUI.Components.Shared
             RenameBox.Text = text;
         }
 
+        public string GetDisplayText()
+        {
+            return DisplayText.Text;
+        }
+
         public void ShowRenameBox(bool doShow)
         {
             if (doShow)

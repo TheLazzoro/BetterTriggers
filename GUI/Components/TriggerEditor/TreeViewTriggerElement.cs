@@ -15,7 +15,7 @@ using static GUI.Components.Shared.TreeItemHeader;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class TreeViewTriggerElement : TreeViewItem, ITriggerElementUI
+    public class TreeViewTriggerElement : TreeItemBT, ITriggerElementUI
     {
         internal TriggerElement triggerElement;
         internal string paramText;
@@ -89,6 +89,7 @@ namespace GUI.Components.TriggerEditor
             TreeItemState state = areParametersValid == true ? TreeItemState.Normal : TreeItemState.HasErrors;
 
             TreeItemHeader header = new TreeItemHeader(text, category, state, isEnabled);
+            this.treeItemHeader = header;
             this.Header = header;
         }
 

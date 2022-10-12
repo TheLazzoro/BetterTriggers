@@ -15,12 +15,11 @@ using static GUI.Components.Shared.TreeItemHeader;
 
 namespace GUI.Components.TriggerExplorer
 {
-    public class TreeItemExplorerElement : TreeViewItem, IExplorerElementUI
+    public class TreeItemExplorerElement : TreeItemBT, IExplorerElementUI
     {
         public TabItemBT tabItem;
         public IExplorerElement Ielement;
         public IEditor editor;
-        private TreeItemHeader treeItemHeader;
         private string categoryName;
 
         public TreeItemExplorerElement(IExplorerElement explorerElement)

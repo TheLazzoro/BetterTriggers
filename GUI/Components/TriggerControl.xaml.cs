@@ -53,7 +53,8 @@ namespace GUI.Components
 
             this.explorerElementTrigger = explorerElementTrigger;
             TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
-            TextEditor.avalonEditor.TextChanged += delegate {
+            TextEditor.avalonEditor.TextChanged += delegate
+            {
                 explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text;
                 OnStateChange();
             };
@@ -550,11 +551,11 @@ namespace GUI.Components
         private void checkBoxIsCustomScript_Click(object sender, RoutedEventArgs e)
         {
             bool isScript = (bool)checkBoxIsCustomScript.IsChecked;
-            if(!isScript)
+            if (!isScript)
             {
                 DialogBox dialog = new DialogBox("Confirmation", "All changes made in the custom script will be lost when you switch. This cannot be undone.\n\nDo you wish to continue?");
                 dialog.ShowDialog();
-                if(!dialog.OK)
+                if (!dialog.OK)
                 {
                     explorerElementTrigger.trigger.Script = "";
                     checkBoxIsCustomScript.IsChecked = true;
@@ -574,7 +575,7 @@ namespace GUI.Components
 
         private void ShowTextEditor(bool doShow)
         {
-            if(doShow)
+            if (doShow)
             {
                 if (!grid.Children.Contains(TextEditor))
                     grid.Children.Add(TextEditor);
@@ -588,16 +589,17 @@ namespace GUI.Components
                 for (int i = 0; i < explorerElementTrigger.trigger.Events.Count; i++)
                 {
                     var _event = explorerElementTrigger.trigger.Events[i];
-                    if(_event.function.value == "MapInitializationEvent")
+                    if (_event.function.value == "MapInitializationEvent")
                     {
                         explorerElementTrigger.trigger.RunOnMapInit = true;
                         checkBoxRunOnMapInit.IsChecked = true;
                         break;
                     }
                 }
-            } else
+            }
+            else
             {
-                if(grid.Children.Contains(TextEditor))
+                if (grid.Children.Contains(TextEditor))
                     grid.Children.Remove(TextEditor);
 
                 checkBoxList.Items.Remove(checkBoxIsCustomScript);
@@ -606,7 +608,7 @@ namespace GUI.Components
                 checkBoxList.Items.Add(checkBoxIsInitiallyOn);
                 checkBoxList.Items.Add(checkBoxIsCustomScript);
             }
-        } 
+        }
 
         private void treeViewTriggers_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -675,10 +677,33 @@ namespace GUI.Components
             CopyTriggerElement();
         }
 
+        private string indent = string.Empty;
         private void menuCopyAsText_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox dialog = new MessageBox("Error", "Not implemented.");
-            dialog.ShowDialog();
+            string text = string.Empty;
+            text += RecurseCopyText(categoryEvent);
+            text += RecurseCopyText(categoryCondition);
+            text += RecurseCopyText(categoryAction);
+
+            Clipboard.SetText(text);
+        }
+
+        private string RecurseCopyText(TreeItemBT item)
+        {
+            string output = string.Empty;
+            output += $"{indent}{item.GetHeaderText()}\n";
+
+            if (item.Items.Count > 0)
+            {
+                indent += "  ";
+                foreach (var child in item.Items)
+                {
+                    output += RecurseCopyText((TreeItemBT)child);
+                }
+                indent = indent.Substring(0, indent.Length - 2);
+            }
+
+            return output;
         }
 
         private void menuPaste_Click(object sender, RoutedEventArgs e)

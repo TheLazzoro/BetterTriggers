@@ -7,13 +7,14 @@ using BetterTriggers.Models.SaveableData;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class NodeCondition : TreeViewItem, INode
+    public class NodeCondition : TreeItemBT, INode
     {
         public List<TriggerElement> TriggerElements = new List<TriggerElement>();
 
         public NodeCondition(string text)
         {
             TreeItemHeader header = new TreeItemHeader(text, "TC_CONDITION_NEW");
+            this.treeItemHeader = header;
             this.Header = header;
         }
 
