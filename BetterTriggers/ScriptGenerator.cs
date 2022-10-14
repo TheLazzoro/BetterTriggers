@@ -2086,13 +2086,6 @@ end
                 f = f.Clone();
                 FunctionTemplate template;
                 TriggerData.FunctionsAll.TryGetValue(f.value, out template);
-
-                if (f.value == "RectContainsItem")
-                {
-                    
-                }
-
-
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
                 if (template.scriptName != null)
                     f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.

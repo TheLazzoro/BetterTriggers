@@ -285,7 +285,7 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="War3Net.Build" Version="5.5.0" />
-    <PackageReference Include="War3Net.Build.Core" Version="5.5.0" />
+    <PackageReference Include="War3Net.Build.Core" Version="5.5.1" />
     <PackageReference Include="War3Net.Drawing.Blp" Version="5.5.0" />
     <PackageReference Include="War3Net.IO.Mpq" Version="5.5.0" />
   </ItemGroup>

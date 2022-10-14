@@ -17,6 +17,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             if (returnType == "VarAsString_Real")
                 returnType = "real";
+            else if (returnType == "StringExt")
+                returnType = "string";
 
             ControllerVariable controllerVariable = new ControllerVariable();
             List<VariableRef> variables = controllerVariable.GetVariableRefs(returnType);

@@ -798,6 +798,7 @@ namespace GUI.Components
         /// </summary>
         private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
+            // Cancel the current scroll attempt
             e.Handled = true;
         }
 

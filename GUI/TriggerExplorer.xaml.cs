@@ -328,6 +328,10 @@ namespace GUI
                 var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
                 controllerTriggerExplorer.RecursePopulate(controllerTriggerExplorer.GetCurrentExplorer(), parent, pasted);
             }
+            else if(e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                OpenSearchField();
+            }
         }
 
         private void treeViewTriggerExplorer_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -422,6 +426,74 @@ namespace GUI
         {
             ControllerFileSystem controller = new ControllerFileSystem();
             controller.OpenInExplorer(currentElement.Ielement.GetPath());
+        }
+
+        private void OpenSearchField()
+        {
+            searchField.Visibility = searchField.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+            if (searchField.Visibility == Visibility.Visible)
+                searchTextBox.Focus();
+        }
+
+        private void CloseSearchField()
+        {
+            searchField.Visibility = Visibility.Hidden;
+            var treeItem = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
+            if (treeItem != null)
+                treeItem.Focus();
+        }
+
+        private void btnCloseSearchField_Click(object sender, RoutedEventArgs e)
+        {
+            CloseSearchField();
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            Search();
+        }
+
+        private void searchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                Search();
+            else if (e.Key == Key.Escape)
+                CloseSearchField();
+        }
+
+        private void Search()
+        {
+            TreeItemBT treeItem = SearchForElement(treeViewTriggerExplorer.Items[0] as TreeItemBT);
+            if (treeItem != null)
+            {
+                TreeItemBT parent = treeItem.Parent as TreeItemBT;
+                while (parent != null)
+                {
+                    parent.IsExpanded = true;
+                    parent = parent.Parent as TreeItemBT;
+                }
+                treeItem.IsSelected = true;
+                treeItem.BringIntoView();
+                treeItem.Focus();
+            }
+        }
+
+        private TreeItemBT SearchForElement(TreeItemBT parent)
+        {
+            if (parent.GetHeaderText().ToLower().Contains(searchTextBox.Text.ToLower()))
+                return parent;
+
+            TreeItemBT treeItem = null;
+            if(parent.Items.Count > 0)
+            {
+                foreach (var item in parent.Items)
+                {
+                    treeItem = SearchForElement(item as TreeItemBT);
+                    if (treeItem != null)
+                        break;
+                }
+            }
+            return treeItem;
         }
 
     }
