@@ -681,6 +681,7 @@ namespace GUI.Components
         private void menuCopyAsText_Click(object sender, RoutedEventArgs e)
         {
             string text = string.Empty;
+            indent = string.Empty;
             text += RecurseCopyText(categoryEvent);
             text += RecurseCopyText(categoryCondition);
             text += RecurseCopyText(categoryAction);

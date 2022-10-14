@@ -61,6 +61,11 @@ namespace BetterTriggers.Controllers
             return name;
         }
 
+        public List<ExplorerElementVariable> GetVariablesAll()
+        {
+            return Variables.variableContainer;
+        }
+
         public List<Variable> GetVariables(string returnType)
         {
             List<Variable> list = new List<Variable>();

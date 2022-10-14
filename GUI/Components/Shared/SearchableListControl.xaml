@@ -15,7 +15,7 @@
         <Label Content="Search:" Grid.Row="0" HorizontalAlignment="Left" Foreground="White"/>
         <TextBox x:Name="textBoxSearch" Height="20" Margin="60,0,5,0" BorderBrush="#FF0A0A0A" Background="#FF1E1E1E" Foreground="White" TextChanged="textBoxSearch_TextChanged" />
 
-        <ListView x:Name="listView"  Grid.Row="1" BorderBrush="#00ABADB3" Background="#FF282828" Margin="0,0,0,5" />
+        <ListView x:Name="listView"  Grid.Row="1" Foreground="#CCC" BorderBrush="#00ABADB3" Background="#FF282828" Margin="0,0,0,5" />
 
     </Grid>
 </UserControl>

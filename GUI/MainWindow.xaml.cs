@@ -54,6 +54,8 @@ namespace GUI
             //btnCopy.ToolTip             = Locale.Translate(btnCopy.ToolTip as string);
             //btnPaste.ToolTip            = Locale.Translate(btnPaste.ToolTip as string);
 
+            btnVariableMenu.ToolTip = Locale.Translate(btnVariableMenu.ToolTip as string);
+
             btnCreateFolder.ToolTip = Locale.Translate(btnCreateFolder.ToolTip as string);
             btnCreateTrigger.ToolTip = Locale.Translate(btnCreateTrigger.ToolTip as string);
             btnCreateScript.ToolTip = Locale.Translate(btnCreateScript.ToolTip as string);
@@ -628,6 +630,12 @@ namespace GUI
             BetterTriggers.Commands.CommandManager.Redo();
         }
 
+        private void btnVariableMenu_Click(object sender, RoutedEventArgs e)
+        {
+            VariableListWindow window = new VariableListWindow();
+            window.ShowDialog();
+        }
+
         private void CommandBinding_CanExecute_NewCategory(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = IsProjectActive();
@@ -757,5 +765,6 @@ namespace GUI
             AboutBox aboutBox = new AboutBox();
             aboutBox.ShowDialog();
         }
+
     }
 }
