@@ -233,8 +233,8 @@
         
         -->
 
-
         <!-- SubmenuItem -->
+        <!--
 
         <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}"
                      TargetType="{x:Type MenuItem}">
@@ -321,6 +321,8 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        -->
+
 
         <!-- SubmenuHeader -->
 
@@ -446,21 +448,21 @@
         <CommandBinding Command="{StaticResource NewAction}" CanExecute="CommandBinding_CanExecute_NewAction" Executed="CommandBinding_Executed_NewAction"/>
     </Window.CommandBindings>
     <Window.InputBindings>
-        <KeyBinding Command="{StaticResource NewProject}" Key="N" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource OpenProject}" Key="O" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource SaveProject}" Key="S" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewProject" Command="{StaticResource NewProject}" Key="N" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingOpenProject" Command="{StaticResource OpenProject}" Key="O" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingSaveProject" Command="{StaticResource SaveProject}" Key="S" Modifiers="Ctrl"/>
 
-        <KeyBinding Command="{StaticResource Undo}" Key="Z" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource Redo}" Key="Y" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingUndo" Command="{StaticResource Undo}" Key="Z" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingRedo" Command="{StaticResource Redo}" Key="Y" Modifiers="Ctrl"/>
 
-        <KeyBinding Command="{StaticResource NewCategory}" Key="G" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource NewTrigger}" Key="T" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource NewScript}" Key="U" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource NewGlobalVariable}" Key="L" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewCategory" Command="{StaticResource NewCategory}" Key="G" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewTrigger" Command="{StaticResource NewTrigger}" Key="T" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewScript" Command="{StaticResource NewScript}" Key="U" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewVariable" Command="{StaticResource NewGlobalVariable}" Key="L" Modifiers="Ctrl"/>
 
-        <KeyBinding Command="{StaticResource NewEvent}" Key="E" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource NewCondition}" Key="D" Modifiers="Ctrl"/>
-        <KeyBinding Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewEvent" Command="{StaticResource NewEvent}" Key="E" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewCondition" Command="{StaticResource NewCondition}" Key="D" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewAction" Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
     </Window.InputBindings>
 
     <Grid x:Name="mainGrid">
@@ -508,7 +510,8 @@
             </MenuItem>-->
             <MenuItem x:Name="menuTools" Header="WESTRING_MENU_TOOLS" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
                 <MenuItem  Name="menuItemTriggerConverter" Header="Trigger Converter" Click="menuItemTriggerConverter_Click" />
-                <MenuItem  Name="menuItemOptions" Header="WESTRING_MAPTAB_OPTIONS" Click="menuItemOptions_Click" />
+                <MenuItem  Name="menuItemOptions" Header="Test Map Options" Click="menuItemOptions_Click" />
+                <MenuItem  Name="menuItemKeybindings" Header="Keybindings" Click="menuItemKeybindings_Click"  />
             </MenuItem>
             <MenuItem x:Name="menuHelp" Header="Help" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
                 <MenuItem  Name="menuItemHelp" Header="Better Triggers Help..." Click="menuItemHelp_Click" />

@@ -183,7 +183,7 @@
         </TreeView>
 
         <!-- Search Field -->
-        <Border x:Name="searchField" Width="225" Height="45" Background="#444" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,22,0">
+        <Border x:Name="searchField" Visibility="Hidden" Width="225" Height="45" Background="#444" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,22,0">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" Direction="-90"
                               RenderingBias="Quality" ShadowDepth="2"/>

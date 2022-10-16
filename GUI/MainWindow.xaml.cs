@@ -15,9 +15,6 @@ using System.Windows.Media;
 
 namespace GUI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         static Window instance;
@@ -96,7 +93,10 @@ namespace GUI
 
 
             menuTools.Header = Locale.Translate(menuTools.Header as string);
-            menuItemOptions.Header = Locale.Translate(menuItemOptions.Header as string);
+
+            // Load keybindings
+            Keybindings keybindings = Keybindings.Load();
+            SetKeybindings(keybindings);
         }
 
         /// <summary>
@@ -108,6 +108,68 @@ namespace GUI
             return instance;
         }
 
+        public void SetKeybindings(Keybindings keybindings)
+        {
+            if (keybindings == null)
+                return;
+
+            keybindingNewProject.Key = keybindings.NewProject.key;
+            keybindingNewProject.Modifiers = keybindings.NewProject.modifier;
+            keybindingOpenProject.Key = keybindings.OpenProject.key;
+            keybindingOpenProject.Modifiers = keybindings.OpenProject.modifier;
+            keybindingSaveProject.Key = keybindings.SaveProject.key;
+            keybindingSaveProject.Modifiers = keybindings.SaveProject.modifier;
+            keybindingUndo.Key = keybindings.Undo.key;
+            keybindingUndo.Modifiers = keybindings.Undo.modifier;
+            keybindingRedo.Key = keybindings.Redo.key;
+            keybindingRedo.Modifiers = keybindings.Redo.modifier;
+            keybindingNewCategory.Key = keybindings.NewCategory.key;
+            keybindingNewCategory.Modifiers = keybindings.NewCategory.modifier;
+            keybindingNewTrigger.Key = keybindings.NewTrigger.key;
+            keybindingNewTrigger.Modifiers = keybindings.NewTrigger.modifier;
+            keybindingNewScript.Key = keybindings.NewScript.key;
+            keybindingNewScript.Modifiers = keybindings.NewScript.modifier;
+            keybindingNewVariable.Key = keybindings.NewGlobalVariable.key;
+            keybindingNewVariable.Modifiers = keybindings.NewGlobalVariable.modifier;
+            keybindingNewEvent.Key = keybindings.NewEvent.key;
+            keybindingNewEvent.Modifiers = keybindings.NewEvent.modifier;
+            keybindingNewCondition.Key = keybindings.NewCondition.key;
+            keybindingNewCondition.Modifiers = keybindings.NewCondition.modifier;
+            keybindingNewAction.Key = keybindings.NewAction.key;
+            keybindingNewAction.Modifiers = keybindings.NewAction.modifier;
+
+            menuNewProject.InputGestureText = Keybindings.GetModifierText(keybindingNewProject.Modifiers) + "+" + keybindingNewProject.Key;
+            menuOpen.InputGestureText = Keybindings.GetModifierText(keybindingOpenProject.Modifiers) + "+" + keybindingOpenProject.Key;
+            menuSave.InputGestureText = Keybindings.GetModifierText(keybindingSaveProject.Modifiers) + "+" + keybindingSaveProject.Key;
+            menuItemUndo.InputGestureText = Keybindings.GetModifierText(keybindingUndo.Modifiers) + "+" + keybindingUndo.Key;
+            menuItemRedo.InputGestureText = Keybindings.GetModifierText(keybindingRedo.Modifiers) + "+" + keybindingRedo.Key;
+            menuNewCategory.InputGestureText = Keybindings.GetModifierText(keybindingNewCategory.Modifiers) + "+" + keybindingNewCategory.Key;
+            menuNewTrigger.InputGestureText = Keybindings.GetModifierText(keybindingNewTrigger.Modifiers) + "+" + keybindingNewTrigger.Key;
+            menuNewScript.InputGestureText = Keybindings.GetModifierText(keybindingNewScript.Modifiers) + "+" + keybindingNewScript.Key;
+            menuNewVariable.InputGestureText = Keybindings.GetModifierText(keybindingNewVariable.Modifiers) + "+" + keybindingNewVariable.Key;
+            menuNewEvent.InputGestureText = Keybindings.GetModifierText(keybindingNewEvent.Modifiers) + "+" + keybindingNewEvent.Key;
+            menuNewAction.InputGestureText = Keybindings.GetModifierText(keybindingNewAction.Modifiers) + "+" + keybindingNewAction.Key;
+        }
+
+        public Keybindings GetKeybindings()
+        {
+            Keybindings keybindings = new Keybindings();
+
+            keybindings.NewProject = new Keybinding() { key = keybindingNewProject.Key, modifier = keybindingNewProject.Modifiers };
+            keybindings.OpenProject = new Keybinding() { key = keybindingOpenProject.Key, modifier = keybindingOpenProject.Modifiers };
+            keybindings.SaveProject = new Keybinding() { key = keybindingSaveProject.Key, modifier = keybindingSaveProject.Modifiers };
+            keybindings.Undo = new Keybinding() { key = keybindingUndo.Key, modifier = keybindingUndo.Modifiers };
+            keybindings.Redo = new Keybinding() { key = keybindingRedo.Key, modifier = keybindingRedo.Modifiers };
+            keybindings.NewCategory = new Keybinding() { key = keybindingNewCategory.Key, modifier = keybindingNewCategory.Modifiers };
+            keybindings.NewTrigger = new Keybinding() { key = keybindingNewTrigger.Key, modifier = keybindingNewTrigger.Modifiers };
+            keybindings.NewScript = new Keybinding() { key = keybindingNewScript.Key, modifier = keybindingNewScript.Modifiers };
+            keybindings.NewGlobalVariable = new Keybinding() { key = keybindingNewVariable.Key, modifier = keybindingNewVariable.Modifiers };
+            keybindings.NewEvent = new Keybinding() { key = keybindingNewEvent.Key, modifier = keybindingNewEvent.Modifiers };
+            keybindings.NewCondition = new Keybinding() { key = keybindingNewCondition.Key, modifier = keybindingNewCondition.Modifiers };
+            keybindings.NewAction = new Keybinding() { key = keybindingNewAction.Key, modifier = keybindingNewAction.Modifiers };
+
+            return keybindings;
+        }
 
         private void CustomMapData_OnSaving(object sender, System.IO.FileSystemEventArgs e)
         {
@@ -531,6 +593,7 @@ namespace GUI
         {
             bool doClose = DoCloseProject();
             Settings.Save(Settings.Load());
+            Keybindings.Save(GetKeybindings());
             e.Cancel = !doClose;
         }
 
@@ -766,5 +829,12 @@ namespace GUI
             aboutBox.ShowDialog();
         }
 
+        private void menuItemKeybindings_Click(object sender, RoutedEventArgs e)
+        {
+            KeybindingWindow window = new KeybindingWindow(GetKeybindings());
+            window.ShowDialog();
+            if (window.OK)
+                SetKeybindings(window.keybindings);
+        }
     }
 }

@@ -244,6 +244,9 @@ namespace GUI
         private void OK()
         {
             this.selectedParameter = selectedControl.GetSelectedItem();
+            if (this.selectedParameter == null)
+                return;
+
             this.isOK = true;
             this.Close();
         }
