@@ -137,6 +137,10 @@ namespace GUI
             keybindingNewCondition.Modifiers = keybindings.NewCondition.modifier;
             keybindingNewAction.Key = keybindings.NewAction.key;
             keybindingNewAction.Modifiers = keybindings.NewAction.modifier;
+            keybindingTestMap.Key = keybindings.TestMap.key;
+            keybindingTestMap.Modifiers = keybindings.TestMap.modifier;
+            keybindingBuildMap.Key = keybindings.BuildMap.key;
+            keybindingBuildMap.Modifiers = keybindings.BuildMap.modifier;
 
             menuNewProject.InputGestureText = Keybindings.GetModifierText(keybindingNewProject.Modifiers) + "+" + keybindingNewProject.Key;
             menuOpen.InputGestureText = Keybindings.GetModifierText(keybindingOpenProject.Modifiers) + "+" + keybindingOpenProject.Key;
@@ -167,6 +171,8 @@ namespace GUI
             keybindings.NewEvent = new Keybinding() { key = keybindingNewEvent.Key, modifier = keybindingNewEvent.Modifiers };
             keybindings.NewCondition = new Keybinding() { key = keybindingNewCondition.Key, modifier = keybindingNewCondition.Modifiers };
             keybindings.NewAction = new Keybinding() { key = keybindingNewAction.Key, modifier = keybindingNewAction.Modifiers };
+            keybindings.TestMap = new Keybinding() { key = keybindingTestMap.Key, modifier = keybindingTestMap.Modifiers };
+            keybindings.BuildMap = new Keybinding() { key = keybindingBuildMap.Key, modifier = keybindingBuildMap.Modifiers };
 
             return keybindings;
         }
@@ -365,30 +371,6 @@ namespace GUI
                 menuItemRedo.Header = "Redo";
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Z && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                BetterTriggers.Commands.CommandManager.Undo();
-            }
-            else if (e.Key == Key.Y && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                BetterTriggers.Commands.CommandManager.Redo();
-            }
-            else if (e.Key == Key.S && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                controller.SaveAll();
-            }
-            else if (e.Key == Key.F9 && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                TestMap();
-            }
-            else if (e.Key == Key.B && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                BuildMap();
-            }
-        }
 
         private void menuItemOptions_Click(object sender, RoutedEventArgs e)
         {
@@ -638,7 +620,7 @@ namespace GUI
             OpenMap();
         }
 
-        private void CommandBinding_CanExecute_Save(object sender, CanExecuteRoutedEventArgs e)
+        private void CommandBinding_CanExecute_IsProjectActive(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = IsProjectActive();
         }
@@ -649,11 +631,6 @@ namespace GUI
             controller.SaveProject();
         }
 
-
-        private void CommandBinding_CanExecute_CloseProject(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = IsProjectActive();
-        }
 
         private void CommandBinding_Executed_CloseProject(object sender, ExecutedRoutedEventArgs e)
         {
@@ -699,20 +676,10 @@ namespace GUI
             window.ShowDialog();
         }
 
-        private void CommandBinding_CanExecute_NewCategory(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = IsProjectActive();
-        }
-
         private void CommandBinding_Executed_NewCategory(object sender, ExecutedRoutedEventArgs e)
         {
             var controller = new ControllerFolder();
             controller.CreateFolder();
-        }
-
-        private void CommandBinding_CanExecute_NewTrigger(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = IsProjectActive();
         }
 
         private void CommandBinding_Executed_NewTrigger(object sender, ExecutedRoutedEventArgs e)
@@ -721,20 +688,10 @@ namespace GUI
             controller.CreateTrigger();
         }
 
-        private void CommandBinding_CanExecute_NewScript(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = IsProjectActive();
-        }
-
         private void CommandBinding_Executed_NewScript(object sender, ExecutedRoutedEventArgs e)
         {
             var controller = new ControllerScript();
             controller.CreateScript();
-        }
-
-        private void CommandBinding_CanExecute_NewGlobalVariable(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = IsProjectActive();
         }
 
         private void CommandBinding_Executed_NewGlobalVariable(object sender, ExecutedRoutedEventArgs e)
@@ -786,6 +743,18 @@ namespace GUI
         {
             var triggerControl = selectedExplorerItem.editor as TriggerControl;
             triggerControl.CreateAction();
+        }
+
+        private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
+        {
+            var controller = new ControllerProject();
+            controller.TestMap();
+        }
+
+        private void CommandBinding_Executed_BuildMap(object sender, ExecutedRoutedEventArgs e)
+        {
+            var controller = new ControllerProject();
+            controller.BuildMap();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)

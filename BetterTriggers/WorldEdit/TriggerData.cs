@@ -33,7 +33,8 @@ namespace BetterTriggers.WorldEdit
         internal static List<Variable> customConstants = new List<Variable>();
 
         private static Dictionary<FunctionTemplate, string> Defaults = new Dictionary<FunctionTemplate, string>(); // saves the raw default values so we can operate on them later.
-
+        internal static string customBJFunctions_Jass;
+        internal static string customBJFunctions_Lua;
 
         public static void LoadForTest()
         {
@@ -69,25 +70,15 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                string baseDir = System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
+                string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
                 string pathCommonJ = baseDir + "common.j";
                 string pathBlizzardJ = baseDir + "Blizzard.j";
-
-                if (!File.Exists(pathCommonJ))
-                {
-                    var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-
-                    CASCFile commonJ = (CASCFile)units.Entries["common.j"];
-                    Casc.SaveFile(commonJ, pathCommonJ);
-                }
-
-                if (!File.Exists(pathBlizzardJ))
-                {
-                    var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-
-                    CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
-                    Casc.SaveFile(blizzardJ, pathBlizzardJ);
-                }
+                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
+                CASCFile commonJ = (CASCFile)units.Entries["common.j"];
+                Casc.SaveFile(commonJ, pathCommonJ);
+                units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
+                CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
+                Casc.SaveFile(blizzardJ, pathBlizzardJ);
 
                 var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
                 CASCFile triggerData = (CASCFile)ui.Entries["triggerdata.txt"];
@@ -157,6 +148,11 @@ namespace BetterTriggers.WorldEdit
 
             // --- LOAD CUSTOM DATA --- //
 
+            // --- Loads in all editor versions --- //
+
+            customBJFunctions_Jass = string.Empty;
+            customBJFunctions_Lua = string.Empty;
+
             var textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom.txt"));
             var dataCustom = IniFileConverter.GetIniData(textCustom);
             LoadTriggerDataFromIni(dataCustom);
@@ -164,6 +160,36 @@ namespace BetterTriggers.WorldEdit
             textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom.txt"));
             dataCustom = IniFileConverter.GetIniData(textCustom);
             LoadCustomBlizzardJ(dataCustom);
+
+
+            // --- Loads depending on version --- //
+
+            if (isTest)
+                return;
+
+            if (Casc.GameVersion.Minor >= 31)
+            {
+                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));
+                dataCustom = IniFileConverter.GetIniData(textCustom);
+                LoadTriggerDataFromIni(dataCustom);
+
+                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom_31.txt"));
+                dataCustom = IniFileConverter.GetIniData(textCustom);
+                LoadCustomBlizzardJ(dataCustom);
+            }
+            if (Casc.GameVersion.Minor >= 33)
+            {
+                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_33.txt"));
+                dataCustom = IniFileConverter.GetIniData(textCustom);
+                LoadTriggerDataFromIni(dataCustom);
+
+                //textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom_33.txt"));
+                //dataCustom = IniFileConverter.GetIniData(textCustom);
+                //LoadCustomBlizzardJ(dataCustom);
+
+
+                customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33.j"));
+            }
         }
 
         private static void LoadTriggerDataFromIni(IniData data)
@@ -221,14 +247,17 @@ namespace BetterTriggers.WorldEdit
             LoadFunctions(data, "TriggerActions", ActionTemplates);
             LoadFunctions(data, "TriggerCalls", CallTemplates);
 
-            // --- DEFAULTS --- //
+            // --- INIT DEFAULTS --- //
             foreach (var function in Defaults)
             {
                 string[] defaultsTxt = function.Value.Split(",");
                 FunctionTemplate template = function.Key;
                 List<ParameterTemplate> defaults = new List<ParameterTemplate>();
-                for (int i = 0; i < defaultsTxt.Length; i++)
+                for (int i = 0; i < template.parameters.Count; i++)
                 {
+                    if (defaultsTxt.Length < template.parameters.Count)
+                        continue;
+
                     string def = defaultsTxt[i];
                     ParameterTemplate oldParameter = template.parameters[i];
                     ConstantTemplate constantTemplate = GetConstantTemplate(def);
@@ -248,6 +277,10 @@ namespace BetterTriggers.WorldEdit
                     if (defaults[i].returnType != oldParameter.returnType)
                         defaults[i] = oldParameter;
                 }
+
+                if (defaultsTxt.Length != template.parameters.Count)
+                    continue;
+
                 template.parameters = defaults;
             }
         }
@@ -285,7 +318,8 @@ namespace BetterTriggers.WorldEdit
                     else if (key.EndsWith("Defaults"))
                     {
                         string[] defaultsTxt = _func.Value.Split(",");
-                        if(defaultsTxt.Length >= 1 && defaultsTxt[0] != "" && defaultsTxt[0] != "_" && defaultsTxt[0] != "_true")
+                        //if (defaultsTxt.Length >= 1 && defaultsTxt[0] != "" && defaultsTxt[0] != "_" && defaultsTxt[0] != "_true")
+                        if (defaultsTxt.Length >= 1 && defaultsTxt[0] != "" && defaultsTxt[0] != "_true")
                             Defaults.TryAdd(functionTemplate, _func.Value);
                     }
                     else if (key.EndsWith("ScriptName"))
@@ -432,6 +466,7 @@ namespace BetterTriggers.WorldEdit
             FunctionTemplate functionTemplate;
             FunctionsAll.TryGetValue(f.value, out functionTemplate);
             functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
+
             return list;
         }
 

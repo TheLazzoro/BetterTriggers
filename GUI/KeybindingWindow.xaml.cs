@@ -20,6 +20,14 @@ namespace GUI
         public bool OK { get; internal set; }
         public Keybindings keybindings { get; }
 
+        private List<Button> buttons = new List<Button>();
+        private List<ComboBox> comboBoxes = new List<ComboBox>();
+
+        class ComboBoxKeybind : ComboBox
+        {
+            public ComboBoxItem PreviousSelected;
+        }
+
         public KeybindingWindow(Keybindings keybindings)
         {
             this.Owner = MainWindow.GetMainWindow();
@@ -50,40 +58,87 @@ namespace GUI
                 label.Content = GetKeybindingName(property.Name);
                 grid.Children.Add(label);
 
-                ComboBox comboBox = new ComboBox();
+                ComboBoxKeybind comboBox = new ComboBoxKeybind();
                 foreach (ModifierKeys modifier in Enum.GetValues(typeof(ModifierKeys)))
                 {
                     ComboBoxItem item = new ComboBoxItem();
                     item.Content = modifier.ToString();
                     item.Tag = modifier;
                     comboBox.Items.Add(item);
-                    if(keybinding.modifier == modifier)
+                    if (keybinding.modifier == modifier)
+                    {
                         comboBox.SelectedItem = item;
+                        comboBox.PreviousSelected = item;
+                    }
                 }
                 comboBox.Height = 22;
+                comboBox.Tag = keybinding;
                 Grid.SetColumn(comboBox, 1);
                 grid.Children.Add(comboBox);
-                comboBox.SelectionChanged += delegate
+                comboBoxes.Add(comboBox);
+                comboBox.SelectionChanged += new SelectionChangedEventHandler(delegate (object sender, SelectionChangedEventArgs e)
                 {
                     ComboBoxItem selected = (ComboBoxItem)comboBox.SelectedItem;
-                    keybinding.modifier = (ModifierKeys)selected.Tag;
-                };
+                    ModifierKeys modifier = (ModifierKeys)selected.Tag;
+
+                    if (selected == comboBox.PreviousSelected)
+                        return;
+
+                    if (keybindings.IsKeybindingAlreadySet(modifier, keybinding.key))
+                    {
+                        DialogBox dialog = new DialogBox("Confirm keybinding",
+                            $"This keybinding '{Keybindings.GetModifierText(modifier)}+{keybinding.key}' is already set. Do you wish to rebind it?");
+                        dialog.ShowDialog();
+                        if (!dialog.OK)
+                        {
+                            comboBox.SelectedItem = comboBox.PreviousSelected;
+                            return;
+                        }
+                    }
+
+                    comboBox.PreviousSelected = selected;
+                    keybindings.UnbindKeybinding(modifier, keybinding.key);
+                    keybinding.modifier = modifier;
+                    RefreshUI();
+                });
 
                 Button button = new Button();
                 button.Height = 22;
                 button.Width = 75;
                 button.Content = keybinding.key.ToString();
+                button.Tag = keybinding;
                 Grid.SetColumn(button, 2);
                 grid.Children.Add(button);
+                buttons.Add(button);
                 button.Click += delegate
                 {
                     SetKeyWindow window = new SetKeyWindow();
                     window.ShowDialog();
                     if (window.ok == false)
                         return;
+
+                    if (keybindings.IsKeybindingAlreadySet(keybinding.modifier, window.key))
+                    {
+                        DialogBox dialog = new DialogBox("Confirm keybinding",
+                            $"This keybinding '{Keybindings.GetModifierText(keybinding.modifier)}+{window.key}' is already set. Do you wish to overwrite?");
+                        dialog.ShowDialog();
+                        if (!dialog.OK)
+                            return;
+                    }
+
+                    keybindings.UnbindKeybinding(keybinding.modifier, window.key);
                     keybinding.key = window.key;
-                    button.Content = keybinding.key;
+                    RefreshUI();
                 };
+            }
+        }
+
+        private void RefreshUI()
+        {
+            foreach (var button in buttons)
+            {
+                Keybinding keybinding = button.Tag as Keybinding;
+                button.Content = keybinding.key;
             }
         }
 
@@ -127,6 +182,12 @@ namespace GUI
                     break;
                 case "NewAction":
                     memberName = "New Action";
+                    break;
+                case "TestMap":
+                    memberName = "Test Map";
+                    break;
+                case "BuildMap":
+                    memberName = "Build Map";
                     break;
                 default:
                     memberName = "MISSING STRING!!!";

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -21,20 +22,22 @@ namespace GUI
     /// </summary>
     public class Keybindings
     {
-        public Keybinding NewProject { get; set; }
-        public Keybinding OpenProject { get; set; }
-        public Keybinding SaveProject { get; set; }
-        public Keybinding Undo { get; set; }
-        public Keybinding Redo { get; set; }
-        public Keybinding NewCategory { get; set; }
-        public Keybinding NewTrigger { get; set; }
-        public Keybinding NewScript { get; set; }
-        public Keybinding NewGlobalVariable { get; set; }
-        public Keybinding NewEvent { get; set; }
-        public Keybinding NewCondition { get; set; }
-        public Keybinding NewAction { get; set; }
+        public Keybinding NewProject { get; set; } = new Keybinding() { key = Key.N, modifier = ModifierKeys.Control };
+        public Keybinding OpenProject { get; set; } = new Keybinding() { key = Key.O, modifier = ModifierKeys.Control };
+        public Keybinding SaveProject { get; set; } = new Keybinding() { key = Key.S, modifier = ModifierKeys.Control };
+        public Keybinding Undo { get; set; } = new Keybinding() { key = Key.Z, modifier = ModifierKeys.Control };
+        public Keybinding Redo { get; set; } = new Keybinding() { key = Key.Y, modifier = ModifierKeys.Control };
+        public Keybinding NewCategory { get; set; } = new Keybinding() { key = Key.G, modifier = ModifierKeys.Control };
+        public Keybinding NewTrigger { get; set; } = new Keybinding() { key = Key.T, modifier = ModifierKeys.Control };
+        public Keybinding NewScript { get; set; } = new Keybinding() { key = Key.U, modifier = ModifierKeys.Control };
+        public Keybinding NewGlobalVariable { get; set; } = new Keybinding() { key = Key.L, modifier = ModifierKeys.Control };
+        public Keybinding NewEvent { get; set; } = new Keybinding() { key = Key.E, modifier = ModifierKeys.Control };
+        public Keybinding NewCondition { get; set; } = new Keybinding() { key = Key.D, modifier = ModifierKeys.Control };
+        public Keybinding NewAction { get; set; } = new Keybinding() { key = Key.W, modifier = ModifierKeys.Control };
+        public Keybinding TestMap { get; set; } = new Keybinding() { key = Key.F9, modifier = ModifierKeys.Control };
+        public Keybinding BuildMap { get; set; } = new Keybinding() { key = Key.B, modifier = ModifierKeys.Control };
 
-        
+
         public static string GetModifierText(ModifierKeys modifier)
         {
             string text = string.Empty;
@@ -83,6 +86,37 @@ namespace GUI
             string file = File.ReadAllText(path);
             Keybindings keybindings = JsonConvert.DeserializeObject<Keybindings>(file);
             return keybindings;
+        }
+
+        public bool IsKeybindingAlreadySet(ModifierKeys modifier, Key key)
+        {
+            bool alreadySet = false;
+            foreach (PropertyInfo property in this.GetType().GetProperties())
+            {
+                Keybinding keybinding = (Keybinding)property.GetValue(this);
+                if(modifier == keybinding.modifier && key == keybinding.key)
+                {
+                    alreadySet = true;
+                    break;
+                }
+            }
+            return alreadySet;
+        }
+
+        /// <summary>
+        /// Unbinds a command with the given key combinations.
+        /// </summary>
+        public void UnbindKeybinding(ModifierKeys modifier, Key key)
+        {
+            foreach (PropertyInfo property in this.GetType().GetProperties())
+            {
+                Keybinding keybinding = (Keybinding)property.GetValue(this);
+                if (modifier == keybinding.modifier && key == keybinding.key)
+                {
+                    keybinding.key = Key.None;
+                    break;
+                }
+            }
         }
     }
 }

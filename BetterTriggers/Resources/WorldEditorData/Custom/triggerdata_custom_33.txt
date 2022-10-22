@@ -46,15 +46,43 @@
 // Value 0: first game version in which this function is valid
 // Value 1+: argument types
 
-RemoveLocation=2,location
-_RemoveLocation_DisplayName="Remove Point"
-_RemoveLocation_Parameters="Remove ,~Location,"
-_RemoveLocation_Category=TC_NOTHING
 
-DestroyGroup=2,group
-_DestroyGroup_DisplayName="Destroy Unit Group"
-_DestroyGroup_Parameters="Destroy ,~Unit Group,"
-_DestroyGroup_Category=TC_UNITGROUP
+// We need to create our own 'BJ' functions here because of the integer order id thing.
+// It needs order 'Presets' (e.g. unitorderutarg) instead.
+
+BlzQueueImmediateOrderById=2,unit,unitordernotarg
+_BlzQueueImmediateOrderById_DisplayName="Issue Order With No Target Queued"
+_BlzQueueImmediateOrderById_Parameters="Order ,~Unit, to ,~Order, after existing orders"
+_BlzQueueImmediateOrderById_ScriptName=BlzQueueImmediateOrderByIdBT
+_BlzQueueImmediateOrderById_Category=TC_UNIT
+
+BlzQueuePointOrderById=2,unit,unitorderptarg,location
+_BlzQueuePointOrderById_DisplayName="Issue Order Targeting A Point Queued"
+_BlzQueuePointOrderById_Parameters="Order ,~Unit, to ,~Order, ,~Point, after existing orders"
+_BlzQueuePointOrderById_ScriptName=BlzQueuePointOrderByIdBT
+_BlzQueuePointOrderById_Defaults=_,UnitOrderMove,GetRectCenter
+_BlzQueuePointOrderById_Category=TC_UNIT
+
+BlzQueueTargetOrderById=2,unit,unitorderutarg,unit
+_BlzQueueTargetOrderById_DisplayName="Issue Order Targeting A Unit Queued"
+_BlzQueueTargetOrderById_Parameters="Order ,~Unit, to ,~Order, ,~Unit, after existing orders"
+_BlzQueueTargetOrderById_ScriptName=BlzQueueTargetOrderByIdBT
+_BlzQueueTargetOrderById_Defaults=_,UnitOrderAttackUnit,_
+_BlzQueueTargetOrderById_Category=TC_UNIT
+
+BlzQueueTargetDestructableOrderById=2,unit,unitorderdtarg,destructable
+_BlzQueueTargetDestructableOrderById_DisplayName="Issue Order Targeting A Destructible Queued"
+_BlzQueueTargetDestructableOrderById_Parameters="Order ,~Unit, to ,~Order, ,~Destructible, after existing orders"
+_BlzQueueTargetDestructableOrderById_ScriptName=BlzQueueTargetOrderByIdBT
+_BlzQueueTargetDestructableOrderById_Defaults=_,UnitOrderHarvestDestructible,_
+_BlzQueueTargetDestructableOrderById_Category=TC_UNIT
+
+BlzQueueTargetItemOrderById=2,unit,unitorderitarg,item
+_BlzQueueTargetItemOrderById_DisplayName="Issue Order Targeting An Item Queued"
+_BlzQueueTargetItemOrderById_Parameters="Order ,~Unit, to ,~Order, ,~Item, after existing orders"
+_BlzQueueTargetItemOrderById_ScriptName=BlzQueueTargetOrderByIdBT
+_BlzQueueTargetItemOrderById_Defaults=_,UnitOrderSmartItem,_
+_BlzQueueTargetItemOrderById_Category=TC_UNIT
 
 
 
@@ -69,7 +97,3 @@ _DestroyGroup_Category=TC_UNITGROUP
 //
 // Note: Operators are specially handled by the editor
 
-GetLocalPlayer=2,0,player
-_GetLocalPlayer_DisplayName="Local Player"
-_GetLocalPlayer_Parameters="Local player"
-_GetLocalPlayer_Category=TC_NOTHING

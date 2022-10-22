@@ -6,8 +6,8 @@
         UseLayoutRounding="True"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" WindowState="Normal" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
-    <!--Title="Better Triggers" Height="686" Width="994" Background="#FF131313" KeyDown="Window_KeyDown" ResizeMode="CanResize" WindowStyle="None" WindowStartupLocation="Manual" WindowState="Normal" AllowsTransparency="True" > -->
+        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" WindowState="Normal" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
+    <!--Title="Better Triggers" Height="686" Width="994" Background="#FF131313" ResizeMode="CanResize" WindowStyle="None" WindowStartupLocation="Manual" WindowState="Normal" AllowsTransparency="True" > -->
 
 
 
@@ -425,6 +425,9 @@
         <RoutedUICommand x:Key="NewCondition"></RoutedUICommand>
         <RoutedUICommand x:Key="NewAction"></RoutedUICommand>
 
+        <RoutedUICommand x:Key="TestMap"></RoutedUICommand>
+        <RoutedUICommand x:Key="BuildMap"></RoutedUICommand>
+        
     </Window.Resources>
 
 
@@ -432,20 +435,24 @@
         <CommandBinding Command="New" CanExecute="CommandBinding_CanExecute_NewProject" Executed="CommandBinding_Executed_NewProject"/>
         <CommandBinding Command="{StaticResource NewProject}" CanExecute="CommandBinding_CanExecute_NewProject" Executed="CommandBinding_Executed_NewProject"/>
         <CommandBinding Command="{StaticResource OpenProject}" CanExecute="CommandBinding_CanExecute_OpenProject" Executed="CommandBinding_Executed_OpenProject"/>
-        <CommandBinding Command="{StaticResource SaveProject}" CanExecute="CommandBinding_CanExecute_Save" Executed="CommandBinding_Executed_Save"/>
-        <CommandBinding Command="{StaticResource CloseProject}" CanExecute="CommandBinding_CanExecute_CloseProject" Executed="CommandBinding_Executed_CloseProject"/>
+        <CommandBinding Command="{StaticResource SaveProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_Save"/>
+        <CommandBinding Command="{StaticResource CloseProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_CloseProject"/>
 
         <CommandBinding Command="{StaticResource Undo}" CanExecute="CommandBinding_CanExecute_Undo" Executed="CommandBinding_Executed_Undo"/>
         <CommandBinding Command="{StaticResource Redo}" CanExecute="CommandBinding_CanExecute_Redo" Executed="CommandBinding_Executed_Redo"/>
 
-        <CommandBinding Command="{StaticResource NewCategory}" CanExecute="CommandBinding_CanExecute_NewCategory" Executed="CommandBinding_Executed_NewCategory"/>
-        <CommandBinding Command="{StaticResource NewTrigger}" CanExecute="CommandBinding_CanExecute_NewTrigger" Executed="CommandBinding_Executed_NewTrigger"/>
-        <CommandBinding Command="{StaticResource NewScript}" CanExecute="CommandBinding_CanExecute_NewScript" Executed="CommandBinding_Executed_NewScript"/>
-        <CommandBinding Command="{StaticResource NewGlobalVariable}" CanExecute="CommandBinding_CanExecute_NewGlobalVariable" Executed="CommandBinding_Executed_NewGlobalVariable"/>
+        <CommandBinding Command="{StaticResource NewCategory}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_NewCategory"/>
+        <CommandBinding Command="{StaticResource NewTrigger}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_NewTrigger"/>
+        <CommandBinding Command="{StaticResource NewScript}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_NewScript"/>
+        <CommandBinding Command="{StaticResource NewGlobalVariable}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_NewGlobalVariable"/>
 
         <CommandBinding Command="{StaticResource NewEvent}" CanExecute="CommandBinding_CanExecute_NewEvent" Executed="CommandBinding_Executed_NewEvent"/>
         <CommandBinding Command="{StaticResource NewCondition}" CanExecute="CommandBinding_CanExecute_NewCondition" Executed="CommandBinding_Executed_NewCondition"/>
         <CommandBinding Command="{StaticResource NewAction}" CanExecute="CommandBinding_CanExecute_NewAction" Executed="CommandBinding_Executed_NewAction"/>
+
+        <CommandBinding Command="{StaticResource TestMap}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_TestMap"/>
+        <CommandBinding Command="{StaticResource BuildMap}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_BuildMap"/>
+        
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding x:Name="keybindingNewProject" Command="{StaticResource NewProject}" Key="N" Modifiers="Ctrl"/>
@@ -463,6 +470,10 @@
         <KeyBinding x:Name="keybindingNewEvent" Command="{StaticResource NewEvent}" Key="E" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewCondition" Command="{StaticResource NewCondition}" Key="D" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewAction" Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
+
+        <KeyBinding x:Name="keybindingTestMap" Command="{StaticResource TestMap}" Key="F9" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingBuildMap" Command="{StaticResource BuildMap}" Key="B" Modifiers="Ctrl"/>
+        
     </Window.InputBindings>
 
     <Grid x:Name="mainGrid">

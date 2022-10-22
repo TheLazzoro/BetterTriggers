@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
@@ -7,12 +8,16 @@ namespace BetterTriggers.Models.SaveableData
     {
         public string Name;
         public int Version;
+        public Version GameVersion;
         public string Language;
         public string Comment;
         public string Header;
         public string War3MapDirectory;
         public List<War3ProjectFileEntry> Files;
 
+        /// <summary>
+        /// Specifies the current editor version. Increment when new features to the file format are added.
+        /// </summary>
         [JsonIgnore]
         public static readonly int EditorVersion = 0;
     }

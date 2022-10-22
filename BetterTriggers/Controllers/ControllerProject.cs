@@ -2,6 +2,7 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -220,7 +221,12 @@ namespace BetterTriggers.Controllers
             if (project.Version > War3Project.EditorVersion)
                 throw new Exception($"Project failed to load. Requires newer editor version.\n\nProject version: {project.Version}\nEditor version: {War3Project.EditorVersion}");
 
+            if (project.GameVersion > Casc.GameVersion)
+                throw new Exception($"Project failed to load. Requires newer game version.\n\nProject version: {project.GameVersion}\nGame version: {Casc.GameVersion}");
+
+
             project.Version = War3Project.EditorVersion; // updates version.
+            project.GameVersion = Casc.GameVersion; // updates game version.
             src = Path.Combine(Path.GetDirectoryName(filepath), "src");
             ContainerProject container = new ContainerProject();
             container.LoadProject(project, filepath, src);

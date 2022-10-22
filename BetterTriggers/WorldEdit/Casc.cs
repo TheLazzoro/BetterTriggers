@@ -10,6 +10,7 @@ namespace BetterTriggers.WorldEdit
 {
     public class Casc
     {
+        public static System.Version GameVersion { get; set; }
         private static bool _onlineMode = false;
         private static string product = "w3";
         private static CASCFolder war3_w3mod;
@@ -24,6 +25,7 @@ namespace BetterTriggers.WorldEdit
 
                 CASCConfig.LoadFlags |= LoadFlags.Install;
                 CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(settings.war3root, product);
+                GameVersion = new Version(config.VersionName);
 
                 casc = CASCHandler.OpenStorage(config);
 

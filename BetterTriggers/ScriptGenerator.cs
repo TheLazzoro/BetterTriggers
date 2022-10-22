@@ -444,15 +444,19 @@ end
         /// <param name="script"></param>
         private void GenerateBetterTriggersFunctions(StringBuilder script)
         {
-            /*
             script.Append(separator);
             script.Append($"{comment}{newline}");
             script.Append($"{comment}  Better Triggers Functions{newline}");
             script.Append($"{comment}{newline}");
             script.Append(separator);
-            */
 
             //script.Append($"function BlzLoadTOCFile {functionReturnsNothing}");
+
+            if (language == ScriptLanguage.Jass)
+                script.Append(TriggerData.customBJFunctions_Jass);
+            else
+                script.Append(TriggerData.customBJFunctions_Lua);
+
         }
 
 
