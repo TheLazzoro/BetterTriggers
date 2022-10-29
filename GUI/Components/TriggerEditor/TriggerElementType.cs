@@ -4,6 +4,7 @@
     {
         Event,
         Condition,
+        LocalVariable,
         Action
     }
 }

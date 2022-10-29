@@ -201,5 +201,10 @@ namespace BetterTriggers.Models.EditorData
                 observers[i].OnSaved();
             }
         }
+
+        public List<ExplorerElementTrigger> GetReferrers()
+        {
+            return new List<ExplorerElementTrigger>();
+        }
     }
 }

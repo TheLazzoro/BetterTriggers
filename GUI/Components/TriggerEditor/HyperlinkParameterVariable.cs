@@ -18,25 +18,25 @@ namespace GUI.Components.TriggerEditor
     public class HyperlinkParameterVariable : HyperlinkBT
     {
         internal ParameterFacadeVariable parameterFacade;
-        ExplorerElementVariable explorerElement;
+        Variable variable;
 
         public HyperlinkParameterVariable(ParameterFacadeVariable parameterFacade, string text)
             : base(parameterFacade.GetParameter(0), text)
         {
             this.parameterFacade = parameterFacade;
-            this.explorerElement = parameterFacade.GetExplorerElementVariable();
+            this.variable = parameterFacade.GetVariable();
 
             this.Click += HyperlinkParameter_Click;
         }
 
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
-            var window = new ParameterWindow(parameter, explorerElement.variable.Type);
+            var window = new ParameterWindow(parameter, variable.Type);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandVariableModifyInitialValue command = new CommandVariableModifyInitialValue(explorerElement, window.selectedParameter);
+                CommandVariableModifyInitialValue command = new CommandVariableModifyInitialValue(variable, window.selectedParameter);
                 command.Execute();
             }
         }

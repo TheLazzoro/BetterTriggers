@@ -118,12 +118,20 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public void CopyTriggerElements(ExplorerElementTrigger copiedFrom, List<TriggerElement> list, bool isCut = false)
+        public void CopyTriggerElements(ExplorerElementTrigger copiedFrom, List<ITriggerElement> list, bool isCut = false)
         {
-            List<TriggerElement> copiedItems = new List<TriggerElement>();
+            List<ITriggerElement> copiedItems = new List<ITriggerElement>();
             for (int i = 0; i < list.Count; i++)
             {
-                copiedItems.Add(list[i].Clone());
+                if(list[i] is TriggerElement)
+                {
+                    var element = (TriggerElement)list[i];
+                    copiedItems.Add(element.Clone());
+                } else if(list[i] is LocalVariable)
+                {
+                    var element = (LocalVariable)list[i];
+                    copiedItems.Add(element.Clone());
+                }
             }
             CopiedElements.CopiedTriggerElements = copiedItems;
 
@@ -137,13 +145,22 @@ namespace BetterTriggers.Controllers
         }
 
         /// <returns>A list of pasted elements.</returns>
-        public List<TriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<TriggerElement> parentList, int insertIndex)
+        public List<ITriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<ITriggerElement> parentList, int insertIndex)
         {
             var copied = CopiedElements.CopiedTriggerElements;
-            var pasted = new List<TriggerElement>();
+            var pasted = new List<ITriggerElement>();
             for (int i = 0; i < copied.Count; i++)
             {
-                pasted.Add(copied[i].Clone());
+                if (copied[i] is TriggerElement)
+                {
+                    var element = (TriggerElement)copied[i];
+                    pasted.Add(element.Clone());
+                }
+                else if (copied[i] is LocalVariable)
+                {
+                    var element = (LocalVariable)copied[i];
+                    pasted.Add(element.Clone());
+                }
             }
 
             if (CopiedElements.CutTriggerElements == null)

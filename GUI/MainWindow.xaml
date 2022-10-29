@@ -423,6 +423,7 @@
 
         <RoutedUICommand x:Key="NewEvent"></RoutedUICommand>
         <RoutedUICommand x:Key="NewCondition"></RoutedUICommand>
+        <RoutedUICommand x:Key="NewLocalVariable"></RoutedUICommand>
         <RoutedUICommand x:Key="NewAction"></RoutedUICommand>
 
         <RoutedUICommand x:Key="TestMap"></RoutedUICommand>
@@ -432,7 +433,6 @@
 
 
     <Window.CommandBindings>
-        <CommandBinding Command="New" CanExecute="CommandBinding_CanExecute_NewProject" Executed="CommandBinding_Executed_NewProject"/>
         <CommandBinding Command="{StaticResource NewProject}" CanExecute="CommandBinding_CanExecute_NewProject" Executed="CommandBinding_Executed_NewProject"/>
         <CommandBinding Command="{StaticResource OpenProject}" CanExecute="CommandBinding_CanExecute_OpenProject" Executed="CommandBinding_Executed_OpenProject"/>
         <CommandBinding Command="{StaticResource SaveProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_Save"/>
@@ -446,9 +446,10 @@
         <CommandBinding Command="{StaticResource NewScript}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_NewScript"/>
         <CommandBinding Command="{StaticResource NewGlobalVariable}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_NewGlobalVariable"/>
 
-        <CommandBinding Command="{StaticResource NewEvent}" CanExecute="CommandBinding_CanExecute_NewEvent" Executed="CommandBinding_Executed_NewEvent"/>
-        <CommandBinding Command="{StaticResource NewCondition}" CanExecute="CommandBinding_CanExecute_NewCondition" Executed="CommandBinding_Executed_NewCondition"/>
-        <CommandBinding Command="{StaticResource NewAction}" CanExecute="CommandBinding_CanExecute_NewAction" Executed="CommandBinding_Executed_NewAction"/>
+        <CommandBinding Command="{StaticResource NewEvent}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewEvent"/>
+        <CommandBinding Command="{StaticResource NewCondition}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewCondition"/>
+        <CommandBinding Command="{StaticResource NewLocalVariable}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewLocalVariable"/>
+        <CommandBinding Command="{StaticResource NewAction}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewAction"/>
 
         <CommandBinding Command="{StaticResource TestMap}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_TestMap"/>
         <CommandBinding Command="{StaticResource BuildMap}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_BuildMap"/>
@@ -469,6 +470,7 @@
 
         <KeyBinding x:Name="keybindingNewEvent" Command="{StaticResource NewEvent}" Key="E" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewCondition" Command="{StaticResource NewCondition}" Key="D" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewLocalVariable" Command="{StaticResource NewAction}" Key="K" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewAction" Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
 
         <KeyBinding x:Name="keybindingTestMap" Command="{StaticResource TestMap}" Key="F9" Modifiers="Ctrl"/>
@@ -511,6 +513,7 @@
                 <Separator></Separator>
                 <MenuItem Name="menuNewEvent" Command="{StaticResource NewEvent}" InputGestureText="Ctrl+E" Header="WESTRING_MENU_EVENT" />
                 <MenuItem Name="menuNewCondition" Command="{StaticResource NewCondition}" InputGestureText="Ctrl+D" Header="WESTRING_MENU_CONDITION" />
+                <MenuItem Name="menuNewLocalVariable" Command="{StaticResource NewLocalVariable}" InputGestureText="Ctrl+K" Header="Local Variable..." />
                 <MenuItem Name="menuNewAction" Command="{StaticResource NewCondition}" InputGestureText="Ctrl+W" Header="WESTRING_MENU_ACTION" />
             </MenuItem>
             <!--<MenuItem x:Name="menuJassHelper" Header="WESTRING_MENU_JASSHELPER" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
@@ -637,6 +640,11 @@
             <Button x:Name="btnCreateAction" IsEnabled="False" ToolTip="WESTRING_TOOLBAR_SE_ACTION" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  Click="btnCreateAction_Click">
                 <Button.Content>
                     <Image Source="Resources/Icons/editor-triggeraction.png" Stretch="None"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="btnCreateLocalVariable" IsEnabled="False" ToolTip="New Local Variable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateLocalVariable_Click" >
+                <Button.Content>
+                    <Image Source="Resources/Icons/ui-editoricon-triggercategories_localvariable.png" Stretch="None"/>
                 </Button.Content>
             </Button>
             <Button x:Name="btnSaveScript" IsEnabled="False" ToolTip="WESTRING_MENU_VALIDATE_MAP_TRIGGERS" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">

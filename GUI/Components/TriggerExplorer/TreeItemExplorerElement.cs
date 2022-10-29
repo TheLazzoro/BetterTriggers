@@ -27,17 +27,17 @@ namespace GUI.Components.TriggerExplorer
             this.Ielement = explorerElement;
 
             if (Ielement is ExplorerElementRoot)
-                categoryName = "TC_MAP";
+                categoryName = TriggerCategory.TC_MAP;
             else if (Ielement is ExplorerElementFolder)
-                categoryName = "TC_DIRECTORY";
+                categoryName = TriggerCategory.TC_DIRECTORY;
             else if (Ielement is ExplorerElementTrigger)
-                categoryName = "TC_TRIGGER_NEW";
+                categoryName = TriggerCategory.TC_TRIGGER_NEW;
             else if (Ielement is ExplorerElementScript)
-                categoryName = "TC_SCRIPT";
+                categoryName = TriggerCategory.TC_SCRIPT;
             else if (Ielement is ExplorerElementVariable)
-                categoryName = "TC_SETVARIABLE";
+                categoryName = TriggerCategory.TC_SETVARIABLE;
             else
-                categoryName = "TC_WTF";
+                categoryName = "TC_WTF"; // shouldn't happen
 
             TreeItemState state = Ielement.GetEnabled() == true ? TreeItemState.Normal : TreeItemState.Disabled;
             this.treeItemHeader = new TreeItemHeader(Ielement.GetName(), categoryName, state, Ielement.GetInitiallyOn());
@@ -90,7 +90,7 @@ namespace GUI.Components.TriggerExplorer
             if (this.editor is VariableControl)
             {
                 var control = this.editor as VariableControl;
-                control.Rename(Ielement.GetName());
+                control.UpdateIdentifierText(Ielement.GetName());
             }
             else if(this.editor is ScriptControl)
             {

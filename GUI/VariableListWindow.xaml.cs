@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using GUI.Components;
 using System;
@@ -21,7 +22,7 @@ namespace GUI
 {
     public class ListItemVariable : ListViewItem
     {
-        public ExplorerElementVariable variable { get; set; }
+        public Variable variable { get; set; }
     }
 
 
@@ -41,7 +42,7 @@ namespace GUI
             var variables = controller.GetVariablesAll();
             variables.ForEach(v =>
             {
-                var item = new ListItemVariable { Content = v.GetName(), variable = v };
+                var item = new ListItemVariable { Content = v.Name, variable = v };
                 objects.Add(new Searchable()
                 {
                     Object = item,

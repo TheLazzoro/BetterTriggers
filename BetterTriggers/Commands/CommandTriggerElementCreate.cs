@@ -6,11 +6,11 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementCreate : ICommand
     {
         string commandName = "Create Trigger Element";
-        TriggerElement triggerElement;
-        List<TriggerElement> parent;
+        ITriggerElement triggerElement;
+        List<ITriggerElement> parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementCreate(TriggerElement triggerElement, List<TriggerElement> parent, int insertIndex)
+        public CommandTriggerElementCreate(ITriggerElement triggerElement, List<ITriggerElement> parent, int insertIndex)
         {
             this.triggerElement = triggerElement;
             this.parent = parent;

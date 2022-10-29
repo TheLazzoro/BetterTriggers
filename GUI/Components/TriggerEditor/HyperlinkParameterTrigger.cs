@@ -38,12 +38,13 @@ namespace GUI.Components.TriggerEditor
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var window = new ParameterWindow(parameter, returnType, treeViewTriggerElement.triggerElement.function);
+            var triggerElement = (TriggerElement)treeViewTriggerElement.triggerElement;
+            var window = new ParameterWindow(parameter, returnType, triggerElement.function);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(treeViewTriggerElement.triggerElement, treeViewTriggerElement.GetExplorerElementTrigger(), parameters, index, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(triggerElement, treeViewTriggerElement.GetExplorerElementTrigger(), parameters, index, window.selectedParameter);
                 command.Execute();
             }
         }

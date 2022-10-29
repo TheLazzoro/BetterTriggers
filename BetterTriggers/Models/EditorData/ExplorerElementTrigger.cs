@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -224,6 +225,11 @@ namespace BetterTriggers.Models.EditorData
             {
                 observers[i].OnSaved();
             }
+        }
+
+        public List<ExplorerElementTrigger> GetReferrers()
+        {
+            return References.GetReferreres(trigger);
         }
     }
 }

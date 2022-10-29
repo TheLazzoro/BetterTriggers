@@ -11,34 +11,31 @@ namespace BetterTriggers.Commands
     public class CommandVariableModifyInitialValue : ICommand
     {
         string commandName = "Modify Initial Value";
-        ExplorerElementVariable explorerElement;
+        Variable variable;
         Parameter newParameter;
         Parameter oldParameter;
 
-        public CommandVariableModifyInitialValue(ExplorerElementVariable explorerElement, Parameter parameter)
+        public CommandVariableModifyInitialValue(Variable variable, Parameter parameter)
         {
-            this.explorerElement = explorerElement;
+            this.variable = variable;
             this.newParameter = parameter;
-            this.oldParameter = explorerElement.variable.InitialValue;
+            this.oldParameter = variable.InitialValue;
         }
 
         public void Execute()
         {
-            explorerElement.variable.InitialValue = newParameter;
-            explorerElement.OnRemoteChange();
+            variable.InitialValue = newParameter;
             CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
-            explorerElement.variable.InitialValue = newParameter;
-            explorerElement.OnRemoteChange();
+            variable.InitialValue = newParameter;
         }
 
         public void Undo()
         {
-            explorerElement.variable.InitialValue = oldParameter;
-            explorerElement.OnRemoteChange();
+            variable.InitialValue = oldParameter;
         }
 
         public string GetCommandName()

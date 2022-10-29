@@ -17,18 +17,18 @@ namespace GUI.Components.TriggerEditor
 {
     public class TreeViewTriggerElement : TreeItemBT, ITriggerElementUI
     {
-        internal TriggerElement triggerElement;
-        internal string paramText;
-        protected string category;
+        internal ITriggerElement triggerElement;
+        internal string paramText { get; set; }
+        protected string category { get; set; }
         private TriggerControl triggerControl;
 
-        public TreeViewTriggerElement(TriggerElement triggerElement)
+        public TreeViewTriggerElement(ITriggerElement triggerElement)
         {
             this.triggerElement = triggerElement;
 
             ControllerTriggerData controller = new ControllerTriggerData();
-            this.paramText = controller.GetParamText(triggerElement.function);
-            this.category = controller.GetCategoryTriggerElement(triggerElement.function);
+            this.paramText = controller.GetParamText(triggerElement);
+            this.category = controller.GetCategoryTriggerElement(triggerElement);
 
             this.UpdateTreeItem();
 
@@ -81,12 +81,17 @@ namespace GUI.Components.TriggerEditor
             ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
             string text = controllerTriggerTreeItem.GenerateTreeItemText(this);
 
-            List<Parameter> parameters = this.triggerElement.function.parameters;
-
-            bool areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
-            bool isEnabled = triggerElement.isEnabled;
-
-            TreeItemState state = areParametersValid == true ? TreeItemState.Normal : TreeItemState.HasErrors;
+            bool isEnabled = true;
+            bool areParametersValid = true;
+            TreeItemState state = TreeItemState.Normal;
+            if(this.triggerElement is not LocalVariable)
+            {
+                var _triggerElement = (TriggerElement)this.triggerElement;
+                List<Parameter> parameters = _triggerElement.function.parameters;
+                areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
+                isEnabled = _triggerElement.isEnabled;
+                state = areParametersValid == true ? TreeItemState.Normal : TreeItemState.HasErrors;
+            }
 
             TreeItemHeader header = new TreeItemHeader(text, category, state, isEnabled);
             this.treeItemHeader = header;
@@ -96,7 +101,7 @@ namespace GUI.Components.TriggerEditor
         public void UpdatePosition()
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
-            controller.OnTriggerElementMove(this, triggerElement.Parent.IndexOf(triggerElement));
+            controller.OnTriggerElementMove(this, triggerElement.GetParent().IndexOf(triggerElement));
             GetTriggerControl().OnStateChange();
 
             this.IsSelected = true;

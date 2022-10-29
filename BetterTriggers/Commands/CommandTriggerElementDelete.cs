@@ -12,15 +12,15 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Delete Trigger Element";
         ExplorerElementTrigger explorerElement;
-        List<TriggerElement> elementsToDelete;
-        List<TriggerElement> Parent;
+        List<ITriggerElement> elementsToDelete;
+        List<ITriggerElement> Parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementDelete(ExplorerElementTrigger element, List<TriggerElement> elementsToDelete)
+        public CommandTriggerElementDelete(ExplorerElementTrigger element, List<ITriggerElement> elementsToDelete)
         {
             this.explorerElement = element;
             this.elementsToDelete = elementsToDelete;
-            this.Parent = elementsToDelete[0].Parent;
+            this.Parent = elementsToDelete[0].GetParent();
             this.insertIndex = this.Parent.IndexOf(elementsToDelete[0]);
         }
 

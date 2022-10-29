@@ -1,32 +1,30 @@
 ﻿using BetterTriggers.JsonBaseConverter;
+using BetterTriggers.Models.EditorData;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
     [JsonConverter(typeof(BaseConverterTriggerElement))]
-    public class TriggerElement : ITriggerElement
+    public class LocalVariable : ITriggerElement
     {
-        public bool isEnabled = true;
-        public Function function = new Function();
+        public Variable variable = new Variable();
 
-        
+        /// <summary>
+        /// Only directly set this field when the trigger loads the first time.
+        /// Otherwise use SetParent().
+        /// </summary>
         [JsonIgnore]
-        private List<ITriggerElement> Parent;
+        public List<ITriggerElement> Parent;
         [JsonIgnore]
         private List<ITriggerElementUI> triggerElementUIs = new List<ITriggerElementUI>();
 
-        public TriggerElement() { }
-        public TriggerElement(string value)
-        {
-            this.function.value = value;
-        }
+        public LocalVariable() { }
 
-        public virtual TriggerElement Clone()
+        public virtual LocalVariable Clone()
         {
-            TriggerElement clone = new TriggerElement();
-            clone.isEnabled = isEnabled;
-            clone.function = function.Clone();
+            LocalVariable clone = new LocalVariable();
+            clone.variable = (Variable)variable.Clone();
 
             return clone;
         }
@@ -34,6 +32,11 @@ namespace BetterTriggers.Models.SaveableData
         public void SetParent(List<ITriggerElement> Parent, int insertIndex)
         {
             Parent.Insert(insertIndex, this);
+            this.Parent = Parent;
+        }
+
+        public void SetParent(List<ITriggerElement> Parent)
+        {
             this.Parent = Parent;
         }
 
@@ -96,11 +99,6 @@ namespace BetterTriggers.Models.SaveableData
         public List<ITriggerElement> GetParent()
         {
             return this.Parent;
-        }
-
-        public void SetParent(List<ITriggerElement> parent)
-        {
-            this.Parent = parent;
         }
     }
 }

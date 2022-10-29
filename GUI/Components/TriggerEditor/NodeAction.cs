@@ -4,16 +4,17 @@ using System.Text;
 using System.Windows.Controls;
 using GUI.Components.Shared;
 using BetterTriggers.Models.SaveableData;
+using System.Linq;
 
 namespace GUI.Components.TriggerEditor
 {
     public class NodeAction : TreeItemBT, INode
     {
-        public List<TriggerElement> TriggerElements = new List<TriggerElement>();
+        public List<ITriggerElement> TriggerElements = new List<ITriggerElement>();
         
         public NodeAction(string text)
         {
-            TreeItemHeader header = new TreeItemHeader(text, "TC_ACTION");
+            TreeItemHeader header = new TreeItemHeader(text, TriggerCategory.TC_ACTION);
             this.treeItemHeader = header;
             this.Header = header;
         }
@@ -44,7 +45,7 @@ namespace GUI.Components.TriggerEditor
             return triggerElements;
         }
 
-        public List<TriggerElement> GetTriggerElements()
+        public List<ITriggerElement> GetTriggerElements()
         {
             return TriggerElements;
         }
@@ -54,7 +55,7 @@ namespace GUI.Components.TriggerEditor
             return TriggerElementType.Action;
         }
 
-        public void SetTriggerElements(List<TriggerElement> triggerElements)
+        public void SetTriggerElements(List<ITriggerElement> triggerElements)
         {
             this.TriggerElements = triggerElements;
         }

@@ -34,6 +34,7 @@ namespace GUI
         public Keybinding NewEvent { get; set; } = new Keybinding() { key = Key.E, modifier = ModifierKeys.Control };
         public Keybinding NewCondition { get; set; } = new Keybinding() { key = Key.D, modifier = ModifierKeys.Control };
         public Keybinding NewAction { get; set; } = new Keybinding() { key = Key.W, modifier = ModifierKeys.Control };
+        public Keybinding NewLocalVariable { get; set; } = new Keybinding() { key = Key.K, modifier = ModifierKeys.Control };
         public Keybinding TestMap { get; set; } = new Keybinding() { key = Key.F9, modifier = ModifierKeys.Control };
         public Keybinding BuildMap { get; set; } = new Keybinding() { key = Key.B, modifier = ModifierKeys.Control };
 

@@ -48,15 +48,15 @@ namespace Tests
             ControllerVariable controllerVariable = new ControllerVariable();
             string fullPath = controllerVariable.CreateVariable();
             controllerProject.OnCreateElement(fullPath);
-            element1 = Variables.GetLastCreated();
+            element1 = ContainerProject.lastCreated as ExplorerElementVariable;
 
             fullPath = controllerVariable.CreateVariable();
             controllerProject.OnCreateElement(fullPath);
-            element2 = Variables.GetLastCreated();
+            element2 = ContainerProject.lastCreated as ExplorerElementVariable;
 
             fullPath = controllerVariable.CreateVariable();
             controllerProject.OnCreateElement(fullPath);
-            element3 = Variables.GetLastCreated();
+            element3 = ContainerProject.lastCreated as ExplorerElementVariable;
         }
 
         [TestCleanup]
@@ -72,7 +72,7 @@ namespace Tests
             ControllerVariable controllerVariable = new ControllerVariable();
             string fullPath = controllerVariable.CreateVariable();
             controllerProject.OnCreateElement(fullPath);
-            var element = Variables.GetLastCreated();
+            var element = ContainerProject.lastCreated as ExplorerElementVariable;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -95,7 +95,7 @@ namespace Tests
             string expectedType = element1.variable.Type;
             string actualType = element.variable.Type;
 
-            Assert.AreEqual(element, Variables.GetLastCreated());
+            Assert.AreEqual(element, ContainerProject.lastCreated);
             Assert.AreEqual(expectedArray0, actualArray0);
             Assert.AreEqual(expectedArray1, actualArray1);
             Assert.AreEqual(expectedType, actualType);

@@ -24,8 +24,9 @@ namespace GUI.Controllers
         public string GenerateTreeItemText(TreeViewTriggerElement treeItem)
         {
             StringBuilder sb = new StringBuilder();
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(treeItem.triggerElement.function);
-            GenerateTreeItemText(sb, treeItem.triggerElement.function.parameters, returnTypes, treeItem.paramText);
+            var triggerElement = (TriggerElement)treeItem.triggerElement;
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
+            GenerateTreeItemText(sb, triggerElement.function.parameters, returnTypes, treeItem.paramText);
 
             return sb.ToString();
         }
@@ -170,7 +171,7 @@ namespace GUI.Controllers
             }
         }
 
-        public List<Inline> GenerateParamText(ExplorerElementVariable variable)
+        public List<Inline> GenerateParamText(Variable variable)
         {
             List<Inline> Inlines = new List<Inline>();
             var generated = RecurseGenerateParamText(new ParameterFacadeVariable(variable, "~Value"));
@@ -187,9 +188,10 @@ namespace GUI.Controllers
         public List<Inline> GenerateParamText(TreeViewTriggerElement treeItem)
         {
             this.treeItem = treeItem;
+            var triggerElement = (TriggerElement)treeItem.triggerElement;
             List<Inline> Inlines = new List<Inline>();
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(treeItem.triggerElement.function);
-            var generated = RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, treeItem.triggerElement.function.parameters, returnTypes, treeItem.paramText));
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
+            var generated = RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, triggerElement.function.parameters, returnTypes, treeItem.paramText));
 
             // First and last inline must be a string.
             // Otherwise hyperlinks get cut from the treeitem header (WPF black magic).

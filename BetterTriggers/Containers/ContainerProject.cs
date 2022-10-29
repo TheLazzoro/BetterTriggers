@@ -15,6 +15,7 @@ namespace BetterTriggers.Containers
         public static List<IExplorerElement> projectFiles;
         public static string currentSelectedElement;
         public static BufferingFileSystemWatcher fileSystemWatcher;
+        public static IExplorerElement lastCreated;
 
         public static event FileSystemEventHandler OnCreated;
         public static event FileSystemEventHandler OnMoved;

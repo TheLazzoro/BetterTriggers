@@ -13,6 +13,7 @@ using GUI.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -28,6 +29,7 @@ namespace GUI.Components
 
         public NodeEvent categoryEvent;
         public NodeCondition categoryCondition;
+        public NodeLocalVariable categoryLocalVariable;
         public NodeAction categoryAction;
 
         Point _startPoint;
@@ -46,6 +48,8 @@ namespace GUI.Components
         AdornerLayer adorner;
         TreeItemAdornerLine lineIndicator;
         TreeItemAdornerSquare squareIndicator;
+
+        VariableControl variableControl;
 
         public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
         {
@@ -69,10 +73,12 @@ namespace GUI.Components
 
             categoryEvent = new NodeEvent("Events");
             categoryCondition = new NodeCondition("Conditions");
+            categoryLocalVariable = new NodeLocalVariable("Local Variables");
             categoryAction = new NodeAction("Actions");
 
             treeViewTriggers.Items.Add(categoryEvent);
             treeViewTriggers.Items.Add(categoryCondition);
+            treeViewTriggers.Items.Add(categoryLocalVariable);
             treeViewTriggers.Items.Add(categoryAction);
 
 
@@ -102,6 +108,7 @@ namespace GUI.Components
         {
             Refresh(categoryEvent);
             Refresh(categoryCondition);
+            Refresh(categoryLocalVariable);
             Refresh(categoryAction);
         }
 
@@ -125,9 +132,10 @@ namespace GUI.Components
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
             this.textBoxComment.Text = trigger.Comment;
-            controller.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
-            controller.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
-            controller.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
+            controller.RecurseLoadTrigger(trigger.Events.Cast<ITriggerElement>().ToList(), this.categoryEvent);
+            controller.RecurseLoadTrigger(trigger.Conditions.Cast<ITriggerElement>().ToList(), this.categoryCondition);
+            controller.RecurseLoadTrigger(trigger.LocalVariables.Cast<ITriggerElement>().ToList(), this.categoryLocalVariable);
+            controller.RecurseLoadTrigger(trigger.Actions.Cast<ITriggerElement>().ToList(), this.categoryAction);
 
             this.categoryEvent.ExpandSubtree();
             this.categoryCondition.ExpandSubtree();
@@ -154,16 +162,38 @@ namespace GUI.Components
             CreateTriggerElement(TriggerElementType.Action);
         }
 
+        public void CreateLocalVariable()
+        {
+            CreateTriggerElement(TriggerElementType.LocalVariable);
+        }
+
         private void CreateTriggerElement(TriggerElementType type)
         {
+            int insertIndex = 0;
+
+            if (type == TriggerElementType.LocalVariable)
+            {
+                // TODO:
+                insertIndex = categoryLocalVariable.GetTriggerElements().Count;
+                LocalVariable localVariable = new LocalVariable();
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable,categoryLocalVariable.GetTriggerElements(), insertIndex );
+                command.Execute();
+
+                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(localVariable);
+                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
+
+                localVariable.Attach(treeViewTriggerElement);
+                treeViewTriggerElement.OnCreated(insertIndex);
+                return;
+            }
+
             var menu = new TriggerElementMenuWindow(type);
             menu.ShowDialog();
             TriggerElement triggerElement = menu.createdTriggerElement;
 
             INode parent = null;
-            List<TriggerElement> parentItems = null;
+            List<ITriggerElement> parentItems = null;
             var selected = treeViewTriggers.SelectedItem;
-            int insertIndex = 0;
             if (selected is TreeViewTriggerElement)
             {
                 var selectedTreeItem = (TreeViewTriggerElement)selected;
@@ -226,8 +256,24 @@ namespace GUI.Components
             ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
             var inlines = controllerTriggerTreeItem.GenerateParamText(item);
 
-            textblockParams.Inlines.AddRange(inlines);
-            textblockDescription.Text = Locale.Translate(item.triggerElement.function.value);
+            if (item.triggerElement is TriggerElement)
+            {
+                var element = (TriggerElement)item.triggerElement;
+                if (!grid.Children.Contains(textblockParams))
+                {
+                    grid.Children.Add(textblockParams);
+                    grid.Children.Add(textblockDescription);
+                }
+                textblockParams.Inlines.AddRange(inlines);
+                textblockDescription.Text = Locale.Translate(element.function.value);
+            }
+            else if (item.triggerElement is LocalVariable)
+            {
+                var element = (LocalVariable)item.triggerElement;
+                grid.Children.Remove(textblockParams);
+                grid.Children.Remove(textblockDescription);
+                variableControl = new VariableControl(element.variable);
+            }
         }
 
         // TODO: There are two 'SelectedItemChanged' functions?
@@ -438,7 +484,7 @@ namespace GUI.Components
 
         public void DeleteTriggerElement()
         {
-            List<TriggerElement> elementsToDelete = new List<TriggerElement>();
+            List<ITriggerElement> elementsToDelete = new List<ITriggerElement>();
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 elementsToDelete.Add(selectedItems[i].triggerElement);
@@ -454,7 +500,7 @@ namespace GUI.Components
         private void CopyTriggerElement(bool isCut = false)
         {
             ControllerTrigger controller = new ControllerTrigger();
-            List<TriggerElement> triggerElements = new List<TriggerElement>();
+            List<ITriggerElement> triggerElements = new List<ITriggerElement>();
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 triggerElements.Add(selectedItems[i].triggerElement);
@@ -493,7 +539,7 @@ namespace GUI.Components
                 this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
 
                 pasted[i].Attach(treeViewTriggerElement);
-                treeViewTriggerElement.OnCreated(pasted[i].Parent.IndexOf(pasted[i]));
+                treeViewTriggerElement.OnCreated(pasted[i].GetParent().IndexOf(pasted[i]));
             }
         }
 
@@ -641,7 +687,11 @@ namespace GUI.Components
                 menuDelete.IsEnabled = true;
                 var treeItemTriggerElement = (TreeViewTriggerElement)rightClickedElement;
                 menuFunctionEnabled.IsEnabled = true;
-                menuFunctionEnabled.IsChecked = treeItemTriggerElement.triggerElement.isEnabled;
+                if (treeItemTriggerElement.triggerElement is TriggerElement)
+                {
+                    var element = (TriggerElement)treeItemTriggerElement.triggerElement;
+                    menuFunctionEnabled.IsChecked = element.isEnabled;
+                }
             }
         }
 
@@ -734,7 +784,7 @@ namespace GUI.Components
 
         private void menuFunctionEnabled_Click(object sender, RoutedEventArgs e)
         {
-            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(selectedElementEnd.triggerElement);
+            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable((TriggerElement)selectedElementEnd.triggerElement);
             command.Execute();
         }
 
@@ -774,16 +824,18 @@ namespace GUI.Components
             else
                 return;
 
-            TriggerElementMenuWindow window = new TriggerElementMenuWindow(elementType, toReplace.triggerElement);
+            var triggerElement = (TriggerElement)toReplace.triggerElement;
+
+            TriggerElementMenuWindow window = new TriggerElementMenuWindow(elementType, (TriggerElement)toReplace.triggerElement);
             window.ShowDialog();
             TriggerElement selected = window.createdTriggerElement;
 
-            if (selected == null || selected.function.value == toReplace.triggerElement.function.value)
+            if (selected == null || selected.function.value == triggerElement.function.value)
                 return;
 
             TreeViewItem parent = toReplace.Parent as TreeViewItem;
             int index = parent.Items.IndexOf(toReplace);
-            CommandTriggerElementReplace command = new CommandTriggerElementReplace(toReplace.triggerElement, selected);
+            CommandTriggerElementReplace command = new CommandTriggerElementReplace(triggerElement, selected);
             command.Execute();
 
             TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(selected);

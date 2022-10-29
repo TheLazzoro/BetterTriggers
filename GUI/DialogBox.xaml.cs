@@ -32,6 +32,11 @@ namespace GUI
         {
             if (e.Key == Key.Escape)
                 this.Close();
+            else if(e.Key == Key.Enter)
+            {
+                this.OK = true;
+                this.Close();
+            }
         }
     }
 }

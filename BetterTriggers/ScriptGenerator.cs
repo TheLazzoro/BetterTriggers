@@ -1680,25 +1680,25 @@ end
             {
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
                 VariableRef varRef = (VariableRef)loopVar.function.parameters[0];
-                var explorerVariable = Variables.FindExplorerVariableById(varRef.VariableId);
-                string variable = explorerVariable.variable.GetGlobalName();
+                var variable = Variables.FindVariableById(varRef.VariableId);
+                string varName = variable.GetGlobalName();
 
                 string array0 = string.Empty;
                 string array1 = string.Empty;
-                if (explorerVariable.variable.IsArray)
+                if (variable.IsArray)
                     array0 = $"[{ConvertParametersToJass(varRef.arrayIndexValues[0], "integer", pre_actions)}]";
-                if (explorerVariable.variable.IsTwoDimensions)
+                if (variable.IsTwoDimensions)
                     array1 = $"[{ConvertParametersToJass(varRef.arrayIndexValues[1], "integer", pre_actions)}]";
 
-                script.Append($"{set} {variable}{array0}{array1} = ");
+                script.Append($"{set} {varName}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(loopVar.function.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"\t{startLoop}{variable}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
+                script.Append($"\t{startLoop}{varName}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
 
                 foreach (var action in loopVar.Actions)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
-                script.Append($"\t{set} {variable}{array0}{array1} = {variable}{array0}{array1} + 1{newline}");
+                script.Append($"\t{set} {varName}{array0}{array1} = {varName}{array0}{array1} + 1{newline}");
                 script.Append($"{endloop}{newline}");
 
                 return script.ToString();
@@ -1985,21 +1985,21 @@ end
             else if (f.value == "ForLoopVar")
             {
                 VariableRef varRef = (VariableRef)f.parameters[0];
-                var explorerVariable = Variables.FindExplorerVariableById(varRef.VariableId);
-                string variable = explorerVariable.variable.GetGlobalName();
+                var variable = Variables.FindVariableById(varRef.VariableId);
+                string varName = variable.GetGlobalName();
 
                 string array0 = string.Empty;
                 string array1 = string.Empty;
-                if (explorerVariable.variable.IsArray)
+                if (variable.IsArray)
                     array0 = $"[{ConvertParametersToJass(varRef.arrayIndexValues[0], "integer", pre_actions)}]";
-                if (explorerVariable.variable.IsTwoDimensions)
+                if (variable.IsTwoDimensions)
                     array1 = $"[{ConvertParametersToJass(varRef.arrayIndexValues[1], "integer", pre_actions)}]";
 
-                script.Append($"{set} {variable}{array0}{array1} = ");
+                script.Append($"{set} {varName}{array0}{array1} = ");
                 script.Append(ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
-                script.Append($"\t{startLoop}{variable}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
+                script.Append($"\t{startLoop}{varName}{array0}{array1} > {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
                 script.Append($"\t{ConvertFunctionToJass((Function)f.parameters[3], pre_actions, nested)} {newline}");
-                script.Append($"\t{set} {variable}{array0}{array1} = {variable}{array0}{array1} + 1{newline}");
+                script.Append($"\t{set} {varName}{array0}{array1} = {varName}{array0}{array1} + 1{newline}");
                 script.Append($"\t{endloop}{newline}");
 
                 return script.ToString();

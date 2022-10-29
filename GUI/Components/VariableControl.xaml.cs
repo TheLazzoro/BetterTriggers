@@ -27,7 +27,8 @@ namespace GUI.Components
 {
     public partial class VariableControl : UserControl, IEditor
     {
-        private ExplorerElementVariable explorerElementVariable;
+        private Variable variable;
+        private bool isLocalVariable;
         private ComboBoxItemType previousSelected;
         private bool isLoading = true;
         private int defaultSelected = 0;
@@ -37,12 +38,12 @@ namespace GUI.Components
         private string previousText1 = "1";
 
         private bool preventStateChange = true;
+        private bool suppressUIEvents = false;
 
-        public VariableControl(ExplorerElementVariable explorerElementVariable)
+        public VariableControl(Variable variable, bool isLocalVariable = false)
         {
-            this.explorerElementVariable = explorerElementVariable;
-            Variable variable = explorerElementVariable.variable;
-
+            this.variable = variable;
+            this.isLocalVariable = isLocalVariable;
             previousText0 = variable.ArraySize[0].ToString();
             previousText1 = variable.ArraySize[1].ToString();
 
@@ -67,8 +68,12 @@ namespace GUI.Components
             }
 
             ControllerVariable controllerVariable = new ControllerVariable();
-            Rename(controllerVariable.GetVariableNameById(variable.Id));
-            OnRemoteChange();
+            UpdateIdentifierText(controllerVariable.GetVariableNameById(variable.Id));
+            ControllerParamText controllerParamText = new ControllerParamText();
+            var inlines = controllerParamText.GenerateParamText(variable);
+            this.textblockInitialValue.Inlines.AddRange(inlines);
+
+            variable.ValuesChanged += Variable_ValuesChanged;
             checkBoxIsArray.IsChecked = variable.IsArray;
             textBoxArraySize0.IsEnabled = variable.IsArray;
             comboBoxArrayDimensions.IsEnabled = variable.IsArray;
@@ -85,53 +90,63 @@ namespace GUI.Components
             preventStateChange = false;
         }
 
+        private void Variable_ValuesChanged(object sender, EventArgs e)
+        {
+            suppressUIEvents = true;
+            UpdateIdentifierText(variable.Name);
+            checkBoxIsArray.IsChecked = variable.IsArray;
+            comboBoxArrayDimensions.SelectedIndex = variable.IsTwoDimensions ? 1 : 0;
+            foreach (var i in comboBoxVariableType.Items)
+            {
+                ComboBoxItemType item = (ComboBoxItemType)i;
+                if (item.Type == variable.Type)
+                {
+                    comboBoxVariableType.SelectedItem = item;
+                    break;
+                }
+            }
+
+            ControllerParamText controllerParamText = new ControllerParamText();
+            this.textblockInitialValue.Inlines.Clear();
+            var inlines = controllerParamText.GenerateParamText(variable);
+            this.textblockInitialValue.Inlines.AddRange(inlines);
+            OnStateChange();
+
+            suppressUIEvents = false;
+        }
+
         private void comboBoxVariableType_Loaded(object sender, RoutedEventArgs e)
         {
             comboBoxVariableType.SelectedIndex = defaultSelected;
             isLoading = false;
         }
 
-        public void Rename(string name)
+        public void UpdateIdentifierText(string name)
         {
-            var newIdentifier = "udg_" + name;
+            string prefix = isLocalVariable ? "udl_" : "udg_";
+            var newIdentifier = prefix + name;
             this.textBlockVariableNameUDG.Text = newIdentifier;
-        }
-
-        [Browsable(true)]
-        [Category("Action")]
-        public event EventHandler OnRename;
-
-        private void textBoxVariableName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                //bubble the event up to the parent
-                if (this.OnRename != null)
-                    this.OnRename(this, e);
-            }
         }
 
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (isLoading)
+            if (isLoading || suppressUIEvents)
                 return;
 
             if (ResetVarRefs())
             {
                 var selected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
 
-                CommandVariableModifyType command = new CommandVariableModifyType(explorerElementVariable, selected.Type, previousSelected.Type);
+                CommandVariableModifyType command = new CommandVariableModifyType(variable, selected.Type);
                 command.Execute();
                 OnStateChange();
 
                 previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
                 defaultSelected = comboBoxVariableType.SelectedIndex;
 
-                explorerElementVariable.variable.InitialValue = new Parameter(); // Reset initial value
-                 
                 ControllerParamText controllerParamText = new ControllerParamText();
                 this.textblockInitialValue.Inlines.Clear();
-                var inlines = controllerParamText.GenerateParamText(explorerElementVariable);
+                var inlines = controllerParamText.GenerateParamText(variable);
                 this.textblockInitialValue.Inlines.AddRange(inlines);
             }
             else
@@ -148,7 +163,7 @@ namespace GUI.Components
 
             if (ResetVarRefs())
             {
-                CommandVariableModifyArray command = new CommandVariableModifyArray(explorerElementVariable, (bool)checkBoxIsArray.IsChecked);
+                CommandVariableModifyArray command = new CommandVariableModifyArray(variable, (bool)checkBoxIsArray.IsChecked);
                 command.Execute();
                 OnStateChange();
 
@@ -173,13 +188,13 @@ namespace GUI.Components
             bool isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             if (ResetVarRefs())
             {
-                CommandVariableModifyDimension command = new CommandVariableModifyDimension(explorerElementVariable, isTwoDimensions);
+                CommandVariableModifyDimension command = new CommandVariableModifyDimension(variable, isTwoDimensions);
                 command.Execute();
                 OnStateChange();
             }
             else
             {
-                if (!explorerElementVariable.variable.IsTwoDimensions)
+                if (!variable.IsTwoDimensions)
                     comboBoxArrayDimensions.SelectedIndex = 0;
                 else
                     comboBoxArrayDimensions.SelectedIndex = 1;
@@ -197,7 +212,7 @@ namespace GUI.Components
         {
             bool ok = true;
             ControllerReferences controllerRef = new ControllerReferences();
-            List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(this.explorerElementVariable);
+            List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(this.variable);
 
             if (refs.Count > 0)
             {
@@ -208,7 +223,7 @@ namespace GUI.Components
                 if (ok)
                 {
                     ControllerVariable controller = new ControllerVariable();
-                    controller.RemoveVariableRefFromTriggers(this.explorerElementVariable);
+                    controller.RemoveVariableRefFromTriggers(this.variable);
                 }
             }
 
@@ -245,11 +260,8 @@ namespace GUI.Components
 
         public void OnRemoteChange()
         {
-            ControllerParamText controllerParamText = new ControllerParamText();
-            this.textblockInitialValue.Inlines.Clear();
-            var inlines = controllerParamText.GenerateParamText(explorerElementVariable);
-            this.textblockInitialValue.Inlines.AddRange(inlines);
-            OnStateChange();
+            // TODO: Why is this here?
+            throw new Exception("Hello. Notice this call plz.");
         }
 
         private void textBoxArraySize0_TextChanged(object sender, TextChangedEventArgs e)
@@ -280,8 +292,8 @@ namespace GUI.Components
                 previousText0 = textBoxArraySize0.Text;
                 previousText1 = textBoxArraySize1.Text;
 
-                explorerElementVariable.variable.ArraySize[0] = size0;
-                explorerElementVariable.variable.ArraySize[1] = size1;
+                variable.ArraySize[0] = size0;
+                variable.ArraySize[1] = size1;
 
                 OnStateChange();
             }

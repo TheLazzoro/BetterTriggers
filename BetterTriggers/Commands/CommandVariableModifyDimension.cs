@@ -3,39 +3,37 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
 {
     public class CommandVariableModifyDimension : ICommand
     {
         string commandName = "Modify Variable Dimension";
-        ExplorerElementVariable explorerElement;
+        Variable variable;
         bool isTwoDimensions;
 
-        public CommandVariableModifyDimension(ExplorerElementVariable explorerElement, bool isTwoDimensions)
+        public CommandVariableModifyDimension(Variable variable, bool isTwoDimensions)
         {
-            this.explorerElement = explorerElement;
+            this.variable = variable;
             this.isTwoDimensions = isTwoDimensions;
         }
 
         public void Execute()
         {
-            explorerElement.variable.IsTwoDimensions = isTwoDimensions;
-            explorerElement.Notify();
+            variable.IsTwoDimensions = isTwoDimensions;
 
             CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
-            explorerElement.variable.IsTwoDimensions = isTwoDimensions;
-            explorerElement.Notify();
+            variable.IsTwoDimensions = isTwoDimensions;
         }
 
         public void Undo()
         {
-            explorerElement.variable.IsTwoDimensions = !isTwoDimensions;
-            explorerElement.Notify();
+            variable.IsTwoDimensions = !isTwoDimensions;
         }
 
         public string GetCommandName()

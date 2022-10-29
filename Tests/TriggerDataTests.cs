@@ -23,6 +23,7 @@ namespace Tests
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
         static ExplorerElementVariable variable;
+        static string variablePath;
 
 
         [ClassInitialize]
@@ -56,8 +57,9 @@ namespace Tests
 
             ControllerVariable controllerVariable = new ControllerVariable();
             string fullPath = controllerVariable.CreateVariable();
+            variablePath = fullPath;
             controllerProject.OnCreateElement(fullPath); // Force OnCreate 'event'.
-            variable = Variables.GetLastCreated();
+            variable = ContainerProject.lastCreated as ExplorerElementVariable;
         }
 
         [TestCleanup]
@@ -141,7 +143,7 @@ namespace Tests
             // --- 'SetVariable' edge case --- //
 
             ControllerProject controllerProject = new ControllerProject();
-            controllerProject.OnDeleteElement(variable.GetPath());
+            controllerProject.OnDeleteElement(variablePath);
 
             expected.Clear();
             expected.Add("null");

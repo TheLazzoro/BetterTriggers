@@ -9,16 +9,16 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementMove : ICommand
     {
         string commandName = "Move Trigger Element";
-        TriggerElement triggerElement;
-        List<TriggerElement> OldParent;
-        List<TriggerElement> NewParent;
+        ITriggerElement triggerElement;
+        List<ITriggerElement> OldParent;
+        List<ITriggerElement> NewParent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandTriggerElementMove(TriggerElement triggerElement, List<TriggerElement> NewParent, int NewInsertIndex)
+        public CommandTriggerElementMove(ITriggerElement triggerElement, List<ITriggerElement> NewParent, int NewInsertIndex)
         {
             this.triggerElement = triggerElement;
-            this.OldParent = triggerElement.Parent;
+            this.OldParent = triggerElement.GetParent();
             this.OldInsertIndex = this.OldParent.IndexOf(triggerElement);
             this.NewParent = NewParent;
             this.NewInsertIndex = NewInsertIndex;

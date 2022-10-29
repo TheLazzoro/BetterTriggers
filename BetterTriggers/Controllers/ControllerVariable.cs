@@ -35,7 +35,6 @@ namespace BetterTriggers.Controllers
             };
             string json = JsonConvert.SerializeObject(variable);
             string fullPath = Path.Combine(directory, name + ".var");
-
             File.WriteAllText(fullPath, json);
 
             return fullPath;
@@ -61,7 +60,7 @@ namespace BetterTriggers.Controllers
             return name;
         }
 
-        public List<ExplorerElementVariable> GetVariablesAll()
+        public List<Variable> GetVariablesAll()
         {
             return Variables.variableContainer;
         }
@@ -72,13 +71,10 @@ namespace BetterTriggers.Controllers
 
             for (int i = 0; i < Variables.variableContainer.Count; i++)
             {
-                if (returnType != "AnyGlobal" && Variables.variableContainer[i].variable.Type != returnType)
+                if (returnType != "AnyGlobal" && Variables.variableContainer[i].Type != returnType)
                     continue;
 
-                var explorerElement = Variables.variableContainer[i];
-                string name = System.IO.Path.GetFileNameWithoutExtension(explorerElement.GetPath());
-                Variable variable = explorerElement.variable;
-                variable.Name = name;
+                var variable = Variables.variableContainer[i];
                 list.Add(variable);
             }
 
@@ -133,72 +129,10 @@ namespace BetterTriggers.Controllers
             return GetById(variableRef.VariableId);
         }
 
-        public ExplorerElementVariable GetExplorerElementVariableInMemory(string filepath)
+        public void RemoveVariableRefFromTriggers(Variable variable)
         {
-            ExplorerElementVariable variable = null;
-            int i = 0;
-            bool found = false;
-
-            while (!found)
-            {
-                if (Variables.variableContainer[i].GetPath() == filepath)
-                {
-                    found = true;
-                    variable = Variables.variableContainer[i];
-                }
-
-                i++;
-            }
-
-
-            return variable;
+            References.ResetVariableReferences(variable);
         }
 
-        public void RemoveVariableRefFromTriggers(ExplorerElementVariable explorerElementVariable)
-        {
-            References.ResetVariableReferences(explorerElementVariable);
-        }
-
-
-        /*
-        public VariableControl CreateVariableWithElements(TabControl tabControl, Model.Data.Variable variable)
-        {
-            var variableControl = new VariableControl(variable.Id);
-            variableControl.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            variableControl.VerticalContentAlignment = VerticalAlignment.Stretch;
-            GenerateVariableElements(variableControl, variable);
-
-            return variableControl;
-        }
-
-        private void GenerateVariableElements(VariableControl variableControl, Model.Data.Variable variable)
-        {
-            variableControl.OnElementRename(variable.Name);
-
-            ControllerTriggerData controller = new ControllerTriggerData();
-            List<ComboBoxItemType> list = controller.LoadVariableTypes();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                variableControl.comboBoxVariableType.Items.Add(list[i]);
-            }
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].Type == variable.Type)
-                    variableControl.comboBoxVariableType.SelectedItem = list[i];
-            }
-
-
-            variableControl.checkBoxIsArray.IsChecked = variable.IsArray;
-
-            if (variable.IsTwoDimensions)
-                variableControl.comboBoxArrayDimensions.SelectedIndex = 1;
-            else
-                variableControl.comboBoxArrayDimensions.SelectedIndex = 0;
-
-            variableControl.textBoxArraySize0.Text = variable.ArraySize[0].ToString();
-            variableControl.textBoxArraySize1.Text = variable.ArraySize[1].ToString();
-        }
-        */
     }
 }

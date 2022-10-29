@@ -11,42 +11,45 @@ namespace BetterTriggers.Commands
     public class CommandVariableModifyType : ICommand
     {
         string commandName = "Modify Variable Type";
-        ExplorerElementVariable explorerElement;
+        Variable variable;
         string selectedType;
         string previousType;
         Parameter newInitialValue;
         Parameter previousInitialValue;
 
-        public CommandVariableModifyType(ExplorerElementVariable explorerElement, string selectedType, string previousType)
+        public CommandVariableModifyType(Variable variable, string selectedType)
         {
-            this.explorerElement = explorerElement;
+            this.variable = variable;
             this.selectedType = selectedType;
-            this.previousType = previousType;
-            this.previousInitialValue = explorerElement.variable.InitialValue;
+            this.previousType = variable.Type;
+            this.previousInitialValue = variable.InitialValue;
             this.newInitialValue = new Parameter();
         }
 
         public void Execute()
         {
-            explorerElement.variable.InitialValue = newInitialValue;
-            explorerElement.variable.Type = selectedType;
-            explorerElement.Notify();
+            variable.SuppressChangedEvent = true;
+            variable.InitialValue = newInitialValue;
+            variable.SuppressChangedEvent = false;
+            variable.Type = selectedType;
 
             CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
-            explorerElement.variable.InitialValue = newInitialValue;
-            explorerElement.variable.Type = selectedType;
-            explorerElement.Notify();
+            variable.SuppressChangedEvent = true;
+            variable.InitialValue = newInitialValue;
+            variable.SuppressChangedEvent = false;
+            variable.Type = selectedType;
         }
 
         public void Undo()
         {
-            explorerElement.variable.InitialValue = previousInitialValue;
-            explorerElement.variable.Type = previousType;
-            explorerElement.Notify();
+            variable.SuppressChangedEvent = true;
+            variable.InitialValue = previousInitialValue;
+            variable.SuppressChangedEvent = false;
+            variable.Type = previousType;
         }
 
         public string GetCommandName()

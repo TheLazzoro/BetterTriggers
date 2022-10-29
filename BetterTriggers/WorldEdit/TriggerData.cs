@@ -115,30 +115,33 @@ namespace BetterTriggers.WorldEdit
 
                 System.Drawing.Bitmap img;
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png");
-                Category.Create("TC_MAP", img, "???", false);
+                Category.Create(TriggerCategory.TC_MAP, img, "???", false);
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png");
-                Category.Create("TC_ACTION", img, "???", false);
+                Category.Create(TriggerCategory.TC_ACTION, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png");
-                Category.Create("TC_CONDITION_NEW", img, "???", false);
+                Category.Create(TriggerCategory.TC_CONDITION_NEW, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
-                Category.Create("TC_EVENT", img, "???", false);
+                Category.Create(TriggerCategory.TC_EVENT, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
-                Category.Create("TC_ERROR", img, "???", false);
+                Category.Create(TriggerCategory.TC_ERROR, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
-                Category.Create("TC_INVALID", img, "???", false);
+                Category.Create(TriggerCategory.TC_INVALID, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png");
-                Category.Create("TC_TRIGGER_NEW", img, "???", false);
+                Category.Create(TriggerCategory.TC_TRIGGER_NEW, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png");
-                Category.Create("TC_DIRECTORY", img, "???", false);
+                Category.Create(TriggerCategory.TC_DIRECTORY, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
-                Category.Create("TC_SCRIPT", img, "???", false);
+                Category.Create(TriggerCategory.TC_SCRIPT, img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_localvariable.png");
+                Category.Create(TriggerCategory.TC_LOCAL_VARIABLE, img, "???", false);
             }
 
 

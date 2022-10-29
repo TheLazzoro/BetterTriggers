@@ -26,14 +26,14 @@ namespace BetterTriggers.Controllers
                 if (p is VariableRef)
                 {
                     VariableRef varRef = (VariableRef)p;
-                    ExplorerElementVariable element = Variables.FindExplorerVariableById(varRef.VariableId);
+                    Variable element = Variables.FindVariableById(varRef.VariableId);
                     References.AddReferrer(t, element);
                 }
                 else if (p is TriggerRef)
                 {
                     TriggerRef tRef = (TriggerRef)p;
                     ExplorerElementTrigger element = Triggers.FindById(tRef.TriggerId);
-                    References.AddReferrer(t, element);
+                    References.AddReferrer(t, element.trigger);
                 }
             });
         }
@@ -44,8 +44,8 @@ namespace BetterTriggers.Controllers
             triggers.ForEach(trigger => UpdateReferences(trigger));
         }
 
-        public List<ExplorerElementTrigger> GetReferrers(IExplorerElement explorerElement) {
-            return References.GetReferreres(explorerElement);
+        public List<ExplorerElementTrigger> GetReferrers(IReferable element) {
+            return References.GetReferreres(element);
         }
 
         public void RemoveReferences(ExplorerElementTrigger t)

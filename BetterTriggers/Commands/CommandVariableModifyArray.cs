@@ -3,39 +3,37 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
 {
     public class CommandVariableModifyArray : ICommand
     {
         string commandName = "Modify Variable Array";
-        ExplorerElementVariable explorerElement;
+        Variable variable;
         bool isArray;
 
-        public CommandVariableModifyArray(ExplorerElementVariable explorerElement, bool isArray)
+        public CommandVariableModifyArray(Variable variable, bool isArray)
         {
-            this.explorerElement = explorerElement;
+            this.variable = variable;
             this.isArray = isArray;
         }
 
         public void Execute()
         {
-            explorerElement.variable.IsArray = isArray;
-            explorerElement.Notify();
+            variable.IsArray = isArray;
 
             CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
-            explorerElement.variable.IsArray = isArray;
-            explorerElement.Notify();
+            variable.IsArray = isArray;
         }
 
         public void Undo()
         {
-            explorerElement.variable.IsArray = !isArray;
-            explorerElement.Notify();
+            variable.IsArray = !isArray;
         }
 
         public string GetCommandName()

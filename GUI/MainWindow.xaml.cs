@@ -137,6 +137,8 @@ namespace GUI
             keybindingNewCondition.Modifiers = keybindings.NewCondition.modifier;
             keybindingNewAction.Key = keybindings.NewAction.key;
             keybindingNewAction.Modifiers = keybindings.NewAction.modifier;
+            keybindingNewLocalVariable.Key = keybindings.NewLocalVariable.key;
+            keybindingNewLocalVariable.Modifiers = keybindings.NewLocalVariable.modifier;
             keybindingTestMap.Key = keybindings.TestMap.key;
             keybindingTestMap.Modifiers = keybindings.TestMap.modifier;
             keybindingBuildMap.Key = keybindings.BuildMap.key;
@@ -152,7 +154,9 @@ namespace GUI
             menuNewScript.InputGestureText = Keybindings.GetModifierText(keybindingNewScript.Modifiers) + "+" + keybindingNewScript.Key;
             menuNewVariable.InputGestureText = Keybindings.GetModifierText(keybindingNewVariable.Modifiers) + "+" + keybindingNewVariable.Key;
             menuNewEvent.InputGestureText = Keybindings.GetModifierText(keybindingNewEvent.Modifiers) + "+" + keybindingNewEvent.Key;
+            menuNewCondition.InputGestureText = Keybindings.GetModifierText(keybindingNewCondition.Modifiers) + "+" + keybindingNewCondition.Key;
             menuNewAction.InputGestureText = Keybindings.GetModifierText(keybindingNewAction.Modifiers) + "+" + keybindingNewAction.Key;
+            menuNewLocalVariable.InputGestureText = Keybindings.GetModifierText(keybindingNewLocalVariable.Modifiers) + "+" + keybindingNewLocalVariable.Key;
         }
 
         public Keybindings GetKeybindings()
@@ -171,6 +175,7 @@ namespace GUI
             keybindings.NewEvent = new Keybinding() { key = keybindingNewEvent.Key, modifier = keybindingNewEvent.Modifiers };
             keybindings.NewCondition = new Keybinding() { key = keybindingNewCondition.Key, modifier = keybindingNewCondition.Modifiers };
             keybindings.NewAction = new Keybinding() { key = keybindingNewAction.Key, modifier = keybindingNewAction.Modifiers };
+            keybindings.NewLocalVariable = new Keybinding() { key = keybindingNewLocalVariable.Key, modifier = keybindingNewLocalVariable.Modifiers };
             keybindings.TestMap = new Keybinding() { key = keybindingTestMap.Key, modifier = keybindingTestMap.Modifiers };
             keybindings.BuildMap = new Keybinding() { key = keybindingBuildMap.Key, modifier = keybindingBuildMap.Modifiers };
 
@@ -552,6 +557,7 @@ namespace GUI
         {
             btnCreateEvent.IsEnabled = enable;
             btnCreateCondition.IsEnabled = enable;
+            btnCreateLocalVariable.IsEnabled = enable;
             btnCreateAction.IsEnabled = enable;
         }
 
@@ -700,7 +706,7 @@ namespace GUI
             controller.CreateVariable();
         }
 
-        private void CommandBinding_CanExecute_NewEvent(object sender, CanExecuteRoutedEventArgs e)
+        private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)
         {
             if (selectedExplorerItem != null)
             {
@@ -715,34 +721,28 @@ namespace GUI
             triggerControl.CreateEvent();
         }
 
-        private void CommandBinding_CanExecute_NewCondition(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (selectedExplorerItem != null)
-            {
-                var triggerControl = selectedExplorerItem.editor as TriggerControl;
-                e.CanExecute = triggerControl != null;
-            }
-        }
-
         private void CommandBinding_Executed_NewCondition(object sender, ExecutedRoutedEventArgs e)
         {
             var triggerControl = selectedExplorerItem.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
-        private void CommandBinding_CanExecute_NewAction(object sender, CanExecuteRoutedEventArgs e)
+        private void CommandBinding_Executed_NewLocalVariable(object sender, ExecutedRoutedEventArgs e)
         {
-            if (selectedExplorerItem != null)
-            {
-                var triggerControl = selectedExplorerItem.editor as TriggerControl;
-                e.CanExecute = triggerControl != null;
-            }
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            triggerControl.CreateLocalVariable();
         }
 
         private void CommandBinding_Executed_NewAction(object sender, ExecutedRoutedEventArgs e)
         {
             var triggerControl = selectedExplorerItem.editor as TriggerControl;
             triggerControl.CreateAction();
+        }
+
+        private void btnCreateLocalVariable_Click(object sender, RoutedEventArgs e)
+        {
+            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            triggerControl.CreateLocalVariable();
         }
 
         private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
@@ -805,5 +805,6 @@ namespace GUI
             if (window.OK)
                 SetKeybindings(window.keybindings);
         }
+
     }
 }

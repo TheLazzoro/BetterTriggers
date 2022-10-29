@@ -9,8 +9,8 @@ namespace GUI.Components.TriggerEditor
 {
     public interface INode
     {
-        void SetTriggerElements(List<TriggerElement> triggerElements);
-        List<TriggerElement> GetTriggerElements();
+        void SetTriggerElements(List<ITriggerElement> triggerElements);
+        List<ITriggerElement> GetTriggerElements();
         TriggerElementType GetNodeType();
         List<TreeViewTriggerElement> GetTreeViewTriggerElements();
         void Add(TreeViewTriggerElement triggerElement);

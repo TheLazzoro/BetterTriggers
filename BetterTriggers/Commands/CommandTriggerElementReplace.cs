@@ -8,14 +8,14 @@ namespace BetterTriggers.Commands
         string commandName = "Replace Trigger Element";
         TriggerElement toReplace;
         TriggerElement toInsert;
-        List<TriggerElement> parent;
+        List<ITriggerElement> parent;
         int insertIndex = 0;
 
         public CommandTriggerElementReplace(TriggerElement toReplace, TriggerElement toInsert)
         {
             this.toReplace = toReplace;
             this.toInsert = toInsert;
-            this.parent = toReplace.Parent;
+            this.parent = toReplace.GetParent();
             this.insertIndex = parent.IndexOf(toReplace);
         }
 

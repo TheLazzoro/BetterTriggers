@@ -38,6 +38,6 @@ namespace BetterTriggers.Models.EditorData
         void DeleteObservers();
         void ChangedPosition();
         IExplorerElement Clone();
-
+        List<ExplorerElementTrigger> GetReferrers();
     }
 }

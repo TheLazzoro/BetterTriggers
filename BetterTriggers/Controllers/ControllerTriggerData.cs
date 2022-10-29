@@ -165,11 +165,29 @@ namespace BetterTriggers.Controllers
             return displayName;
         }
 
+        public string GetParamText(ITriggerElement triggerElement)
+        {
+            string paramText = string.Empty;
+            if (triggerElement is TriggerElement)
+            {
+                var element = (TriggerElement)triggerElement;
+                var function = element.function;
+                paramText = GetParamText(function);
+            }
+            else if (triggerElement is LocalVariable)
+            {
+                var element = (LocalVariable)triggerElement;
+                paramText = element.variable.Name;
+            }
+
+            return paramText;
+        }
+
         public string GetParamText(Function function)
         {
             string paramText = string.Empty;
             TriggerData.ParamCodeText.TryGetValue(function.value, out paramText);
-            if(paramText == null)
+            if (paramText == null)
             {
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(function);
                 paramText = function.value + "(";
@@ -186,11 +204,20 @@ namespace BetterTriggers.Controllers
             return paramText;
         }
 
-        // TODO: Seems very slow just by looking at it.
-        public string GetCategoryTriggerElement(Function function)
+        public string GetCategoryTriggerElement(ITriggerElement triggerElement)
         {
-            string category;
-            TriggerData.FunctionCategories.TryGetValue(function.value, out category);
+            string category = string.Empty;
+            if (triggerElement is TriggerElement)
+            {
+                var element = (TriggerElement)triggerElement;
+                TriggerData.FunctionCategories.TryGetValue(element.function.value, out category);
+            }
+            else if (triggerElement is LocalVariable)
+                category = TriggerCategory.TC_LOCAL_VARIABLE;
+
+            if (category == null || category == string.Empty)
+                throw new Exception("Category was null");
+
             return category;
         }
     }

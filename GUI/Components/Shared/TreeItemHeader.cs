@@ -131,9 +131,9 @@ namespace GUI.Components.Shared
             Graphics g = Graphics.FromImage(icon);
 
             if (state == TreeItemState.Disabled || state == TreeItemState.HasErrors)
-                overlay = Category.Get("TC_ERROR").Icon;
+                overlay = Category.Get(TriggerCategory.TC_ERROR).Icon;
             else if (state == TreeItemState.HasErrorsNoTextColor)
-                overlay = Category.Get("TC_INVALID").Icon;
+                overlay = Category.Get(TriggerCategory.TC_INVALID).Icon;
 
             if(overlay != null)
                 g.DrawImage(overlay, 0, 0, icon.Width, icon.Height);

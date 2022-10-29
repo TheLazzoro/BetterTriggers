@@ -311,7 +311,8 @@ namespace BetterTriggers.Controllers
                             break;
                         case ".var":
                             explorerElementChild = new ExplorerElementVariable(path);
-                            Variables.AddVariable(explorerElementChild as ExplorerElementVariable);
+                            var explorerVariable = (ExplorerElementVariable)explorerElementChild;
+                            Variables.AddVariable(explorerVariable.variable);
                             break;
                         default:
                             break;
@@ -453,7 +454,10 @@ namespace BetterTriggers.Controllers
             else if (element is ExplorerElementScript)
                 Scripts.AddScript(element as ExplorerElementScript);
             else if (element is ExplorerElementVariable)
-                Variables.AddVariable(element as ExplorerElementVariable);
+            {
+                var variable = (ExplorerElementVariable)element;
+                Variables.AddVariable(variable.variable);
+            }
 
         }
 
@@ -478,7 +482,10 @@ namespace BetterTriggers.Controllers
             else if (element is ExplorerElementScript)
                 Scripts.Remove(element as ExplorerElementScript);
             else if (element is ExplorerElementVariable)
-                Variables.Remove(element as ExplorerElementVariable);
+            {
+                var variable = (ExplorerElementVariable)element;
+                Variables.Remove(variable.variable);
+            }
         }
 
         public void OnCreateElement(string fullPath, bool doRecurse = true)
@@ -514,6 +521,7 @@ namespace BetterTriggers.Controllers
                     break;
             }
             AddElementToContainer(explorerElement);
+            ContainerProject.lastCreated = explorerElement;
 
             CommandExplorerElementCreate command = new CommandExplorerElementCreate(explorerElement, parent, parent.GetExplorerElements().Count);
             command.Execute();
@@ -844,6 +852,7 @@ namespace BetterTriggers.Controllers
 
             CommandExplorerElementPaste command = new CommandExplorerElementPaste(pasted, parent, insertIndex);
             command.Execute();
+            ContainerProject.lastCreated = pasted;
 
             return pasted;
         }

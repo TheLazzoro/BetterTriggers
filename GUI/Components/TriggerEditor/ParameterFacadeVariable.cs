@@ -10,31 +10,31 @@ namespace GUI.Components.TriggerEditor
 {
     public class ParameterFacadeVariable : IParameterFacade
     {
-        private ExplorerElementVariable explorerElement;
+        private Variable variable;
         private string paramText;
         private List<string> returnTypes = new List<string>();
 
-        public ParameterFacadeVariable(ExplorerElementVariable explorerElement, string paramText)
+        public ParameterFacadeVariable(Variable variable, string paramText)
         {
-            this.explorerElement = explorerElement;
+            this.variable = variable;
             this.paramText = paramText;
-            this.returnTypes.Add(explorerElement.variable.Type);
+            this.returnTypes.Add(variable.Type);
         }
 
-        public ExplorerElementVariable GetExplorerElementVariable()
+        public Variable GetVariable()
         {
-            return explorerElement;
+            return variable;
         }
 
         public Parameter GetParameter(int index)
         {
-            return explorerElement.variable.InitialValue;
+            return variable.InitialValue;
         }
 
         public List<Parameter> GetParametersAll()
         {
             List<Parameter> list = new List<Parameter>();
-            list.Add(explorerElement.variable.InitialValue);
+            list.Add(variable.InitialValue);
             return list;
         }
 
@@ -50,7 +50,7 @@ namespace GUI.Components.TriggerEditor
 
         public void SetParameterAtIndex(Parameter parameter, int index)
         {
-            explorerElement.variable.InitialValue = parameter;
+            variable.InitialValue = parameter;
         }
     }
 }

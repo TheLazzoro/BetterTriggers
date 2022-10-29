@@ -9,16 +9,11 @@ namespace BetterTriggers.Containers
 {
     public static class Variables
     {
-        public static List<ExplorerElementVariable> variableContainer = new List<ExplorerElementVariable>();
+        public static List<Variable> variableContainer = new List<Variable>();
 
-        public static void AddVariable(ExplorerElementVariable variable)
+        public static void AddVariable(Variable variable)
         {
             variableContainer.Add(variable);
-        }
-
-        public static int Count()
-        {
-            return variableContainer.Count;
         }
 
         /// <summary>
@@ -32,7 +27,7 @@ namespace BetterTriggers.Containers
 
             foreach (var item in variableContainer)
             {
-                if (item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.Name.ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }
@@ -51,7 +46,7 @@ namespace BetterTriggers.Containers
                 bool doesIdExist = false;
                 while (!doesIdExist && i < variableContainer.Count)
                 {
-                    if (variableContainer[i].variable.Id == generatedId)
+                    if (variableContainer[i].Id == generatedId)
                         doesIdExist = true;
                     else
                         i++;
@@ -66,20 +61,15 @@ namespace BetterTriggers.Containers
             return generatedId;
         }
 
-        public static ExplorerElementVariable GetLastCreated()
+        internal static Variable FindVariableById(int Id)
         {
-            return variableContainer[variableContainer.Count - 1];
-        }
-
-        internal static ExplorerElementVariable FindExplorerVariableById(int Id)
-        {
-            ExplorerElementVariable var = null;
+            Variable var = null;
 
             bool found = false;
             int i = 0;
             while (!found && i < variableContainer.Count)
             {
-                if (variableContainer[i].variable.Id == Id)
+                if (variableContainer[i].Id == Id)
                 {
                     var = variableContainer[i];
                     found = true;
@@ -99,9 +89,9 @@ namespace BetterTriggers.Containers
             int i = 0;
             while (!found && i < variableContainer.Count)
             {
-                if (variableContainer[i].variable.Id == Id)
+                if (variableContainer[i].Id == Id)
                 {
-                    var = variableContainer[i].variable;
+                    var = variableContainer[i];
                     found = true;
                 }
 
@@ -119,9 +109,9 @@ namespace BetterTriggers.Containers
             int i = 0;
             while (!found && i < variableContainer.Count)
             {
-                if(variableContainer[i].variable.Id == Id)
+                if(variableContainer[i].Id == Id)
                 {
-                    name = Path.GetFileNameWithoutExtension(variableContainer[i].path);
+                    name = variableContainer[i].Name;
                     found = true;
                 }
 
@@ -131,9 +121,9 @@ namespace BetterTriggers.Containers
             return name;
         }
 
-        public static void Remove(ExplorerElementVariable explorerElementVariable)
+        public static void Remove(Variable variable)
         {
-            variableContainer.Remove(explorerElementVariable);
+            variableContainer.Remove(variable);
         }
 
         internal static void Clear()

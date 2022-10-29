@@ -78,7 +78,8 @@ namespace GUI.Controllers
                 }
                 else if (selectedItem.Ielement is ExplorerElementVariable)
                 {
-                    var variableControl = new VariableControl((ExplorerElementVariable)selectedItem.Ielement);
+                    var element = (ExplorerElementVariable)selectedItem.Ielement;
+                    var variableControl = new VariableControl(element.variable);
                     variableControl.Attach(selectedItem);
                     selectedItem.editor = variableControl;
                 }

@@ -8,13 +8,13 @@ using System.Linq;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class NodeEvent : TreeItemBT, INode
+    public class NodeLocalVariable : TreeItemBT, INode
     {
-        public List<ITriggerElement> TriggerElements = new List<ITriggerElement>();
+        public List<ITriggerElement> LocalVariables = new List<ITriggerElement>();
 
-        public NodeEvent(string text)
+        public NodeLocalVariable(string text)
         {
-            TreeItemHeader header = new TreeItemHeader(text, TriggerCategory.TC_EVENT);
+            TreeItemHeader header = new TreeItemHeader(text, TriggerCategory.TC_LOCAL_VARIABLE);
             this.treeItemHeader = header;
             this.Header = header;
         }
@@ -47,17 +47,17 @@ namespace GUI.Components.TriggerEditor
 
         public List<ITriggerElement> GetTriggerElements()
         {
-            return TriggerElements;
+            return LocalVariables;
         }
 
         public TriggerElementType GetNodeType()
         {
-            return TriggerElementType.Event;
+            return TriggerElementType.LocalVariable;
         }
 
         public void SetTriggerElements(List<ITriggerElement> triggerElements)
         {
-            this.TriggerElements = triggerElements;
+            this.LocalVariables = triggerElements;
         }
     }
 }
