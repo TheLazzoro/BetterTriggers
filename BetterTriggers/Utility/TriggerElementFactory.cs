@@ -9,7 +9,7 @@ namespace BetterTriggers.Utility
 {
     public static class TriggerElementFactory
     {
-        public static TriggerElement Create(string name)
+        public static ECA Create(string name)
         {
             switch (name)
             {
@@ -38,7 +38,7 @@ namespace BetterTriggers.Utility
                 case "EnumItemsInRectBJMultiple":
                     return new EnumItemsInRectBJ();
                 default:
-                    return new TriggerElement(name);
+                    return new ECA(name);
             }
         }
     }

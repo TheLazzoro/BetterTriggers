@@ -1,37 +1,31 @@
 ﻿using BetterTriggers.JsonBaseConverter;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.SaveableData
 {
     [JsonConverter(typeof(BaseConverterTriggerElement))]
-    public class TriggerElement : ITriggerElement
+    public class TriggerElement
     {
-        public bool isEnabled = true;
-        public Function function = new Function();
-
-        
+        /// <summary>
+        /// Only directly set this field when the trigger loads the first time.
+        /// Otherwise use SetParent().
+        /// </summary>
         [JsonIgnore]
-        private List<ITriggerElement> Parent;
+        private List<TriggerElement> Parent;
         [JsonIgnore]
-        private List<ITriggerElementUI> triggerElementUIs = new List<ITriggerElementUI>();
-
-        public TriggerElement() { }
-        public TriggerElement(string value)
-        {
-            this.function.value = value;
-        }
+        protected List<ITriggerElementUI> triggerElementUIs = new List<ITriggerElementUI>(); // TODO: Make this event-based instead of observer pattern. This should not know the UI in any sense.
 
         public virtual TriggerElement Clone()
         {
-            TriggerElement clone = new TriggerElement();
-            clone.isEnabled = isEnabled;
-            clone.function = function.Clone();
-
-            return clone;
+            return new TriggerElement();
         }
 
-        public void SetParent(List<ITriggerElement> Parent, int insertIndex)
+        public void SetParent(List<TriggerElement> Parent, int insertIndex)
         {
             Parent.Insert(insertIndex, this);
             this.Parent = Parent;
@@ -41,6 +35,16 @@ namespace BetterTriggers.Models.SaveableData
         {
             this.Parent.Remove(this);
             this.Parent = null;
+        }
+
+        public List<TriggerElement> GetParent()
+        {
+            return this.Parent;
+        }
+
+        public void SetParent(List<TriggerElement> parent)
+        {
+            this.Parent = parent;
         }
 
         public void Attach(ITriggerElementUI elementUI)
@@ -91,16 +95,6 @@ namespace BetterTriggers.Models.SaveableData
             {
                 triggerElementUIs[i].OnDeleted();
             }
-        }
-
-        public List<ITriggerElement> GetParent()
-        {
-            return this.Parent;
-        }
-
-        public void SetParent(List<ITriggerElement> parent)
-        {
-            this.Parent = parent;
         }
     }
 }

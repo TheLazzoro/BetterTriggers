@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class AndMultiple : TriggerElement
+    public class AndMultiple : ECA
     {
         public readonly int ElementType = 2; // DO NOT CHANGE
         public List<TriggerElement> And = new List<TriggerElement>();

@@ -1,6 +1,6 @@
 ﻿namespace BetterTriggers.Models.SaveableData
 {
-    public class SetVariable : TriggerElement
+    public class SetVariable : ECA
     {
         public readonly int ElementType = 9; // DO NOT CHANGE
 

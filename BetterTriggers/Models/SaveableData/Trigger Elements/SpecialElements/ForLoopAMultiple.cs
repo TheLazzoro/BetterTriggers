@@ -2,19 +2,19 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class ForLoopVarMultiple : TriggerElement
+    public class ForLoopAMultiple : ECA
     {
-        public readonly int ElementType = 8; // DO NOT CHANGE
+        public readonly int ElementType = 6; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();
 
-        public ForLoopVarMultiple()
+        public ForLoopAMultiple()
         {
-            function.value = "ForLoopVarMultiple";
+            function.value = "ForLoopAMultiple";
         }
 
-        public override ForLoopVarMultiple Clone()
+        public override ForLoopAMultiple Clone()
         {
-            ForLoopVarMultiple forLoop = new ForLoopVarMultiple();
+            ForLoopAMultiple forLoop = new ForLoopAMultiple();
             forLoop.function = this.function.Clone();
             forLoop.Actions = new List<TriggerElement>();
             Actions.ForEach(element => forLoop.Actions.Add(element.Clone()));

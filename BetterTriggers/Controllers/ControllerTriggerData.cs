@@ -165,12 +165,12 @@ namespace BetterTriggers.Controllers
             return displayName;
         }
 
-        public string GetParamText(ITriggerElement triggerElement)
+        public string GetParamText(TriggerElement triggerElement)
         {
             string paramText = string.Empty;
-            if (triggerElement is TriggerElement)
+            if (triggerElement is ECA)
             {
-                var element = (TriggerElement)triggerElement;
+                var element = (ECA)triggerElement;
                 var function = element.function;
                 paramText = GetParamText(function);
             }
@@ -204,12 +204,12 @@ namespace BetterTriggers.Controllers
             return paramText;
         }
 
-        public string GetCategoryTriggerElement(ITriggerElement triggerElement)
+        public string GetCategoryTriggerElement(TriggerElement triggerElement)
         {
             string category = string.Empty;
-            if (triggerElement is TriggerElement)
+            if (triggerElement is ECA)
             {
-                var element = (TriggerElement)triggerElement;
+                var element = (ECA)triggerElement;
                 TriggerData.FunctionCategories.TryGetValue(element.function.value, out category);
             }
             else if (triggerElement is LocalVariable)

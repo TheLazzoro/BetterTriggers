@@ -38,7 +38,7 @@ namespace GUI.Components.TriggerEditor
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var triggerElement = (TriggerElement)treeViewTriggerElement.triggerElement;
+            var triggerElement = (ECA)treeViewTriggerElement.triggerElement;
             var window = new ParameterWindow(parameter, returnType, triggerElement.function);
             window.ShowDialog();
 

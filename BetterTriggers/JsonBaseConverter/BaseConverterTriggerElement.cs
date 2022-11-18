@@ -11,16 +11,22 @@ namespace BetterTriggers.JsonBaseConverter
 {
     public class BaseConverterTriggerElement : JsonConverter
     {
-        static JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings() { ContractResolver = new ParameterConverter() };
+        static JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings() { ContractResolver = new JsonConverter_BT() };
 
         public override bool CanConvert(System.Type objectType)
         {
-            return (objectType == typeof(TriggerElement));
+            return (objectType == typeof(ECA));
         }
 
         public object Create(Type objectType, JObject jObject)
         {
-            
+            if (jObject.ContainsKey("LocalVar"))
+            {
+                var n = (int)jObject.Property("LocalVar");
+                if (n == 1) return new LocalVariable();
+                throw new ApplicationException(String.Format("LocalVar type {0} not supported!", n));
+            }
+
             if (jObject.ContainsKey("ElementType"))
             {
                 var type = (int)jObject.Property("ElementType");
@@ -51,13 +57,13 @@ namespace BetterTriggers.JsonBaseConverter
                     case 12:
                         return new EnumItemsInRectBJ();
                     default:
-                        return new TriggerElement();
+                        return new ECA();
                 }
 
                 throw new ApplicationException(String.Format("The given trigger element type {0} is not supported!", type));
             }
             else
-                return new TriggerElement();
+                return new ECA();
 
         }
 

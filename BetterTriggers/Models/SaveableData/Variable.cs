@@ -16,6 +16,8 @@ namespace BetterTriggers.Models.SaveableData
         public Parameter InitialValue { get { return _initialValue; } set { _initialValue = value; OnValuesChanged(); } }
 
         [JsonIgnore]
+        public bool SuppressChangedEvent = false;
+        [JsonIgnore]
         private string _name;
         [JsonIgnore]
         private string _type;
@@ -27,7 +29,6 @@ namespace BetterTriggers.Models.SaveableData
         private Parameter _initialValue;
 
         public event EventHandler ValuesChanged;
-        public bool SuppressChangedEvent = false;
 
         protected virtual void OnValuesChanged()
         {

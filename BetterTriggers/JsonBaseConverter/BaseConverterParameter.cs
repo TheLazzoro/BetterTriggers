@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.JsonBaseConverter
 {
-    public class BaseConverter : JsonConverter
+    public class BaseConverterParameter : JsonConverter
     {
-        static JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings() { ContractResolver = new ParameterConverter() };
+        static JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings() { ContractResolver = new JsonConverter_BT() };
 
         public override bool CanConvert(System.Type objectType)
         {

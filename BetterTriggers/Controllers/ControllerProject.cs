@@ -312,6 +312,10 @@ namespace BetterTriggers.Controllers
                         case ".var":
                             explorerElementChild = new ExplorerElementVariable(path);
                             var explorerVariable = (ExplorerElementVariable)explorerElementChild;
+                            
+                            // TODO: this is an ugly fix
+                            // 
+                            explorerVariable.variable.Name = Path.GetFileNameWithoutExtension(explorerVariable.GetPath()); 
                             Variables.AddVariable(explorerVariable.variable);
                             break;
                         default:

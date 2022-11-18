@@ -24,7 +24,7 @@ namespace GUI.Controllers
         public string GenerateTreeItemText(TreeViewTriggerElement treeItem)
         {
             StringBuilder sb = new StringBuilder();
-            var triggerElement = (TriggerElement)treeItem.triggerElement;
+            var triggerElement = (ECA)treeItem.triggerElement;
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
             GenerateTreeItemText(sb, triggerElement.function.parameters, returnTypes, treeItem.paramText);
 
@@ -188,7 +188,7 @@ namespace GUI.Controllers
         public List<Inline> GenerateParamText(TreeViewTriggerElement treeItem)
         {
             this.treeItem = treeItem;
-            var triggerElement = (TriggerElement)treeItem.triggerElement;
+            var triggerElement = (ECA)treeItem.triggerElement;
             List<Inline> Inlines = new List<Inline>();
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
             var generated = RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, triggerElement.function.parameters, returnTypes, treeItem.paramText));

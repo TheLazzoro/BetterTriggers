@@ -41,9 +41,9 @@ namespace BetterTriggers.Models.Templates
             return function;
         }
 
-        public TriggerElement ToTriggerElement()
+        public ECA ToTriggerElement()
         {
-            TriggerElement te = TriggerElementFactory.Create(value);
+            ECA te = TriggerElementFactory.Create(value);
             te.function = ToParameter();
             return te;
         }

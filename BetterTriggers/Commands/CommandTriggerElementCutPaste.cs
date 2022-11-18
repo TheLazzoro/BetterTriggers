@@ -17,12 +17,12 @@ namespace BetterTriggers.Commands
         int cutIndex = 0;
         ExplorerElementTrigger from;
         ExplorerElementTrigger to;
-        List<ITriggerElement> listToCut;
-        List<ITriggerElement> listToPaste;
-        List<ITriggerElement> cutParent;
-        List<ITriggerElement> pasteParent;
+        List<TriggerElement> listToCut;
+        List<TriggerElement> listToPaste;
+        List<TriggerElement> cutParent;
+        List<TriggerElement> pasteParent;
 
-        public CommandTriggerElementCutPaste(ExplorerElementTrigger from, ExplorerElementTrigger to, List<ITriggerElement> listToPaste, List<ITriggerElement> pasteParent, int pastedIndex)
+        public CommandTriggerElementCutPaste(ExplorerElementTrigger from, ExplorerElementTrigger to, List<TriggerElement> listToPaste, List<TriggerElement> pasteParent, int pastedIndex)
         {
             this.from = from;
             this.to = to;

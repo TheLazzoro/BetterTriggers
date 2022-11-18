@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class ForGroupMultiple : TriggerElement
+    public class ForGroupMultiple : ECA
     {
         public readonly int ElementType = 4; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();

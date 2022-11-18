@@ -17,12 +17,12 @@ namespace GUI.Components.TriggerEditor
 {
     public class TreeViewTriggerElement : TreeItemBT, ITriggerElementUI
     {
-        internal ITriggerElement triggerElement;
+        internal TriggerElement triggerElement { get; }
         internal string paramText { get; set; }
         protected string category { get; set; }
         private TriggerControl triggerControl;
 
-        public TreeViewTriggerElement(ITriggerElement triggerElement)
+        public TreeViewTriggerElement(TriggerElement triggerElement)
         {
             this.triggerElement = triggerElement;
 
@@ -86,7 +86,7 @@ namespace GUI.Components.TriggerEditor
             TreeItemState state = TreeItemState.Normal;
             if(this.triggerElement is not LocalVariable)
             {
-                var _triggerElement = (TriggerElement)this.triggerElement;
+                var _triggerElement = (ECA)this.triggerElement;
                 List<Parameter> parameters = _triggerElement.function.parameters;
                 areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
                 isEnabled = _triggerElement.isEnabled;

@@ -14,14 +14,14 @@ namespace GUI.Components.TriggerEditor
 {
     public partial class TriggerElementMenuWindow : Window
     {
-        public TriggerElement createdTriggerElement;
+        public ECA createdTriggerElement;
         TriggerElementType triggerElementType;
-        TriggerElement selected;
-        TriggerElement previous;
+        ECA selected;
+        ECA previous;
 
         ListViewItem defaultSelected;
 
-        public TriggerElementMenuWindow(TriggerElementType triggerElementType, TriggerElement previous = null)
+        public TriggerElementMenuWindow(TriggerElementType triggerElementType, ECA previous = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
@@ -80,7 +80,7 @@ namespace GUI.Components.TriggerEditor
                 if (previous != null && previous.function.value == templates[i].value)
                 {
                     defaultSelected = listItem;
-                    selected = (TriggerElement)listItem.Tag;
+                    selected = (ECA)listItem.Tag;
                     listItem.IsSelected = true;
                 }
             }
@@ -98,7 +98,7 @@ namespace GUI.Components.TriggerEditor
                 if (item == null)
                     return;
 
-                selected = (TriggerElement)item.Tag;
+                selected = (ECA)item.Tag;
                 textBoxDescription.Text = Locale.Translate(selected.function.value);
             };
             listControl.listView.MouseDoubleClick += delegate
@@ -110,7 +110,7 @@ namespace GUI.Components.TriggerEditor
             if (selected == null)
             {
                 defaultSelected = (ListViewItem)listControl.listView.Items[0];
-                selected = (TriggerElement)defaultSelected.Tag;
+                selected = (ECA)defaultSelected.Tag;
             }
 
             listControl.listView.ScrollIntoView(defaultSelected);

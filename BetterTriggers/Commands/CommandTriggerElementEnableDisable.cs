@@ -9,9 +9,9 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementEnableDisable : ICommand
     {
         string commandName = "Change Enable Trigger Element";
-        TriggerElement triggerElement;
+        ECA triggerElement;
 
-        public CommandTriggerElementEnableDisable(TriggerElement triggerElement)
+        public CommandTriggerElementEnableDisable(ECA triggerElement)
         {
             this.triggerElement = triggerElement;
         }

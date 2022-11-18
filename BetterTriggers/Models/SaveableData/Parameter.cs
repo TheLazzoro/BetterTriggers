@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace BetterTriggers.Models.SaveableData
 {
-    [JsonConverter(typeof(BaseConverter))]
+    [JsonConverter(typeof(BaseConverterParameter))]
     public class Parameter
     {
         public string value;

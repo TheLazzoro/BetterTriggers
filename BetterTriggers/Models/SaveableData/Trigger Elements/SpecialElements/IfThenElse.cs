@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class IfThenElse : TriggerElement
+    public class IfThenElse : ECA
     {
         public readonly int ElementType = 1; // DO NOT CHANGE
         public List<TriggerElement> If = new List<TriggerElement>();

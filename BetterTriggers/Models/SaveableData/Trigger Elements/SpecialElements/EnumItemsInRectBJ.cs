@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class EnumItemsInRectBJ : TriggerElement
+    public class EnumItemsInRectBJ : ECA
     {
         public readonly int ElementType = 12; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();

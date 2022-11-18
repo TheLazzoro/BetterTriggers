@@ -6,8 +6,8 @@ namespace BetterTriggers.Containers
 {
     internal static class CopiedElements
     {
-        internal static List<ITriggerElement> CopiedTriggerElements = new List<ITriggerElement>();
-        internal static List<ITriggerElement> CutTriggerElements = new List<ITriggerElement>();
+        internal static List<TriggerElement> CopiedTriggerElements = new();
+        internal static List<TriggerElement> CutTriggerElements = new();
         internal static ExplorerElementTrigger CopiedFromTrigger;
 
         internal static IExplorerElement CopiedExplorerElement;

@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class ForForceMultiple : TriggerElement
+    public class ForForceMultiple : ECA
     {
         public readonly int ElementType = 5; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();

@@ -97,7 +97,8 @@ namespace BetterTriggers.Controllers
         /// <returns>A list of all parameters given to a TriggerElement</returns>
         public List<Parameter> GetElementParametersAll(TriggerElement te)
         {
-            List<Parameter> list = GetElementParametersAll(te.function.parameters);
+            ECA eca = (ECA)te;
+            List<Parameter> list = GetElementParametersAll(eca.function.parameters);
             return list;
         }
 
@@ -118,14 +119,14 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public void CopyTriggerElements(ExplorerElementTrigger copiedFrom, List<ITriggerElement> list, bool isCut = false)
+        public void CopyTriggerElements(ExplorerElementTrigger copiedFrom, List<TriggerElement> list, bool isCut = false)
         {
-            List<ITriggerElement> copiedItems = new List<ITriggerElement>();
+            List<TriggerElement> copiedItems = new List<TriggerElement>();
             for (int i = 0; i < list.Count; i++)
             {
-                if(list[i] is TriggerElement)
+                if(list[i] is ECA)
                 {
-                    var element = (TriggerElement)list[i];
+                    var element = (ECA)list[i];
                     copiedItems.Add(element.Clone());
                 } else if(list[i] is LocalVariable)
                 {
@@ -145,15 +146,15 @@ namespace BetterTriggers.Controllers
         }
 
         /// <returns>A list of pasted elements.</returns>
-        public List<ITriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<ITriggerElement> parentList, int insertIndex)
+        public List<TriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<TriggerElement> parentList, int insertIndex)
         {
             var copied = CopiedElements.CopiedTriggerElements;
-            var pasted = new List<ITriggerElement>();
+            var pasted = new List<TriggerElement>();
             for (int i = 0; i < copied.Count; i++)
             {
-                if (copied[i] is TriggerElement)
+                if (copied[i] is ECA)
                 {
-                    var element = (TriggerElement)copied[i];
+                    var element = (ECA)copied[i];
                     pasted.Add(element.Clone());
                 }
                 else if (copied[i] is LocalVariable)
@@ -194,7 +195,7 @@ namespace BetterTriggers.Controllers
 
             for (int i = 0; i < triggerElements.Count; i++)
             {
-                var triggerElement = triggerElements[i];
+                var triggerElement = (ECA) triggerElements[i];
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
                 removeCount += VerifyParametersAndRemove(triggerElement.function.parameters, returnTypes);
 
@@ -385,7 +386,8 @@ namespace BetterTriggers.Controllers
             List<Function> list = new List<Function>();
             triggerElements.ForEach(t =>
             {
-                list.AddRange(GetFunctionsFromParameters(t.function));
+                var eca = (ECA)t;
+                list.AddRange(GetFunctionsFromParameters(eca.function));
 
                 if (t is IfThenElse)
                 {

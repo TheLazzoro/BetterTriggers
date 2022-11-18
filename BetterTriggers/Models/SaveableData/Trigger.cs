@@ -9,10 +9,10 @@ namespace BetterTriggers.Models.SaveableData
         public bool IsScript;
         public bool RunOnMapInit;
         public string Script;
-        public List<TriggerElement> Events = new List<TriggerElement>();
-        public List<TriggerElement> Conditions = new List<TriggerElement>();
-        public List<LocalVariable> LocalVariables = new List<LocalVariable>();
-        public List<TriggerElement> Actions = new List<TriggerElement>();
+        public List<TriggerElement> Events = new ();
+        public List<TriggerElement> Conditions = new ();
+        public List<TriggerElement> LocalVariables = new ();
+        public List<TriggerElement> Actions = new ();
 
         internal Trigger Clone()
         {
@@ -34,10 +34,9 @@ namespace BetterTriggers.Models.SaveableData
             bool validName = false;
             while (!validName)
             {
-                foreach (var localVar in LocalVariables)
+                foreach (LocalVariable localVar in LocalVariables)
                 {
                     name = localVar.variable.Name;
-                    
                 }
             }
         }

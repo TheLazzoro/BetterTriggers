@@ -13,7 +13,7 @@ namespace BetterTriggers.JsonBaseConverter
     {
         protected override JsonConverter ResolveContractConverter(System.Type objectType)
         {
-            if (typeof(TriggerElement).IsAssignableFrom(objectType) && !objectType.IsAbstract)
+            if (typeof(ECA).IsAssignableFrom(objectType) && !objectType.IsAbstract)
                 return null; // pretend TableSortRuleConvert is not specified (thus avoiding a stack overflow)
             return base.ResolveContractConverter(objectType);
         }

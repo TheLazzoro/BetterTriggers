@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.JsonBaseConverter
 {
-    public class ParameterConverter : DefaultContractResolver
+    public class JsonConverter_BT : DefaultContractResolver
     {
         protected override JsonConverter ResolveContractConverter(System.Type objectType)
         {

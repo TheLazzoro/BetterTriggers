@@ -132,13 +132,14 @@ namespace GUI.Components
         {
             ControllerTriggerControl controller = new ControllerTriggerControl();
             this.textBoxComment.Text = trigger.Comment;
-            controller.RecurseLoadTrigger(trigger.Events.Cast<ITriggerElement>().ToList(), this.categoryEvent);
-            controller.RecurseLoadTrigger(trigger.Conditions.Cast<ITriggerElement>().ToList(), this.categoryCondition);
-            controller.RecurseLoadTrigger(trigger.LocalVariables.Cast<ITriggerElement>().ToList(), this.categoryLocalVariable);
-            controller.RecurseLoadTrigger(trigger.Actions.Cast<ITriggerElement>().ToList(), this.categoryAction);
+            controller.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
+            controller.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
+            controller.RecurseLoadTrigger(trigger.LocalVariables, this.categoryLocalVariable);
+            controller.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
 
             this.categoryEvent.ExpandSubtree();
             this.categoryCondition.ExpandSubtree();
+            this.categoryLocalVariable.ExpandSubtree();
             this.categoryAction.ExpandSubtree();
         }
 
@@ -189,10 +190,10 @@ namespace GUI.Components
 
             var menu = new TriggerElementMenuWindow(type);
             menu.ShowDialog();
-            TriggerElement triggerElement = menu.createdTriggerElement;
+            ECA triggerElement = menu.createdTriggerElement;
 
             INode parent = null;
-            List<ITriggerElement> parentItems = null;
+            List<TriggerElement> parentItems = null;
             var selected = treeViewTriggers.SelectedItem;
             if (selected is TreeViewTriggerElement)
             {
@@ -256,9 +257,9 @@ namespace GUI.Components
             ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
             var inlines = controllerTriggerTreeItem.GenerateParamText(item);
 
-            if (item.triggerElement is TriggerElement)
+            if (item.triggerElement is ECA)
             {
-                var element = (TriggerElement)item.triggerElement;
+                var element = (ECA)item.triggerElement;
                 if (!grid.Children.Contains(textblockParams))
                 {
                     grid.Children.Add(textblockParams);
@@ -484,7 +485,7 @@ namespace GUI.Components
 
         public void DeleteTriggerElement()
         {
-            List<ITriggerElement> elementsToDelete = new List<ITriggerElement>();
+            List<TriggerElement> elementsToDelete = new List<TriggerElement>();
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 elementsToDelete.Add(selectedItems[i].triggerElement);
@@ -500,7 +501,7 @@ namespace GUI.Components
         private void CopyTriggerElement(bool isCut = false)
         {
             ControllerTrigger controller = new ControllerTrigger();
-            List<ITriggerElement> triggerElements = new List<ITriggerElement>();
+            List<TriggerElement> triggerElements = new List<TriggerElement>();
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 triggerElements.Add(selectedItems[i].triggerElement);
@@ -634,7 +635,7 @@ namespace GUI.Components
                 explorerElementTrigger.trigger.RunOnMapInit = false;
                 for (int i = 0; i < explorerElementTrigger.trigger.Events.Count; i++)
                 {
-                    var _event = explorerElementTrigger.trigger.Events[i];
+                    var _event = (ECA)explorerElementTrigger.trigger.Events[i];
                     if (_event.function.value == "MapInitializationEvent")
                     {
                         explorerElementTrigger.trigger.RunOnMapInit = true;
@@ -687,9 +688,9 @@ namespace GUI.Components
                 menuDelete.IsEnabled = true;
                 var treeItemTriggerElement = (TreeViewTriggerElement)rightClickedElement;
                 menuFunctionEnabled.IsEnabled = true;
-                if (treeItemTriggerElement.triggerElement is TriggerElement)
+                if (treeItemTriggerElement.triggerElement is ECA)
                 {
-                    var element = (TriggerElement)treeItemTriggerElement.triggerElement;
+                    var element = (ECA)treeItemTriggerElement.triggerElement;
                     menuFunctionEnabled.IsChecked = element.isEnabled;
                 }
             }
@@ -784,7 +785,7 @@ namespace GUI.Components
 
         private void menuFunctionEnabled_Click(object sender, RoutedEventArgs e)
         {
-            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable((TriggerElement)selectedElementEnd.triggerElement);
+            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable((ECA)selectedElementEnd.triggerElement);
             command.Execute();
         }
 
@@ -824,11 +825,11 @@ namespace GUI.Components
             else
                 return;
 
-            var triggerElement = (TriggerElement)toReplace.triggerElement;
+            var triggerElement = (ECA)toReplace.triggerElement;
 
-            TriggerElementMenuWindow window = new TriggerElementMenuWindow(elementType, (TriggerElement)toReplace.triggerElement);
+            TriggerElementMenuWindow window = new TriggerElementMenuWindow(elementType, (ECA)toReplace.triggerElement);
             window.ShowDialog();
-            TriggerElement selected = window.createdTriggerElement;
+            ECA selected = window.createdTriggerElement;
 
             if (selected == null || selected.function.value == triggerElement.function.value)
                 return;

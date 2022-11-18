@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class EnumDestructablesInRectAllMultiple : TriggerElement
+    public class EnumDestructablesInRectAllMultiple : ECA
     {
         public readonly int ElementType = 10; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();

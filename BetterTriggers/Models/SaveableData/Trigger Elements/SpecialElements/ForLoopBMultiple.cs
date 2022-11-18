@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class ForLoopBMultiple : TriggerElement
+    public class ForLoopBMultiple : ECA
     {
         public readonly int ElementType = 7; // DO NOT CHANGE
         public List<TriggerElement> Actions = new List<TriggerElement>();

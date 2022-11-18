@@ -10,7 +10,7 @@ namespace GUI.Components.TriggerEditor
 {
     public class NodeLocalVariable : TreeItemBT, INode
     {
-        public List<ITriggerElement> LocalVariables = new List<ITriggerElement>();
+        public List<TriggerElement> LocalVariables = new List<TriggerElement>();
 
         public NodeLocalVariable(string text)
         {
@@ -45,7 +45,7 @@ namespace GUI.Components.TriggerEditor
             return triggerElements;
         }
 
-        public List<ITriggerElement> GetTriggerElements()
+        public List<TriggerElement> GetTriggerElements()
         {
             return LocalVariables;
         }
@@ -55,7 +55,7 @@ namespace GUI.Components.TriggerEditor
             return TriggerElementType.LocalVariable;
         }
 
-        public void SetTriggerElements(List<ITriggerElement> triggerElements)
+        public void SetTriggerElements(List<TriggerElement> triggerElements)
         {
             this.LocalVariables = triggerElements;
         }

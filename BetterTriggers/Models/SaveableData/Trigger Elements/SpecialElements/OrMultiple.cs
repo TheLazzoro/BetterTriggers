@@ -2,7 +2,7 @@
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class OrMultiple : TriggerElement
+    public class OrMultiple : ECA
     {
         public readonly int ElementType = 3; // DO NOT CHANGE
         public List<TriggerElement> Or = new List<TriggerElement>();
