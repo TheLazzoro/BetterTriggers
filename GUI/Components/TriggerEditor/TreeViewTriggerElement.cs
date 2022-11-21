@@ -5,11 +5,13 @@ using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using GUI.Controllers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using static GUI.Components.Shared.TreeItemHeader;
 
@@ -25,16 +27,21 @@ namespace GUI.Components.TriggerEditor
         public TreeViewTriggerElement(TriggerElement triggerElement)
         {
             this.triggerElement = triggerElement;
-
             ControllerTriggerData controller = new ControllerTriggerData();
-            this.paramText = controller.GetParamText(triggerElement);
             this.category = controller.GetCategoryTriggerElement(triggerElement);
+            if (triggerElement is ECA)
+            {
+                this.paramText = controller.GetParamText(triggerElement);
+                ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
+                controllerTriggerControl.CreateSpecialTriggerElement(this);
+            }
 
             this.UpdateTreeItem();
-
-            ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
-            controllerTriggerControl.CreateSpecialTriggerElement(this);
+            this.KeyDown += TreeViewTriggerElement_KeyDown;
+            this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
         }
+
+
 
         /// <summary>
         /// Gets the TriggerControl the item is attached to.
@@ -79,12 +86,16 @@ namespace GUI.Components.TriggerEditor
         {
             ControllerTrigger controllerTrigger = new ControllerTrigger();
             ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
-            string text = controllerTriggerTreeItem.GenerateTreeItemText(this);
+            string text = string.Empty;
+            if (this.triggerElement is ECA)
+                text = controllerTriggerTreeItem.GenerateTreeItemText(this);
+            else if (triggerElement is LocalVariable localVar)
+                text = localVar.variable.Name;
 
             bool isEnabled = true;
             bool areParametersValid = true;
             TreeItemState state = TreeItemState.Normal;
-            if(this.triggerElement is not LocalVariable)
+            if (this.triggerElement is not LocalVariable)
             {
                 var _triggerElement = (ECA)this.triggerElement;
                 List<Parameter> parameters = _triggerElement.function.parameters;
@@ -113,7 +124,7 @@ namespace GUI.Components.TriggerEditor
             ControllerParamText controllerTriggerElement = new ControllerParamText();
             controllerTriggerElement.GenerateParamText(this);
             UpdateTreeItem();
-            GetTriggerControl().RefreshParameterBlock();
+            GetTriggerControl().RefreshBottomControls();
             GetTriggerControl().OnStateChange();
         }
 
@@ -158,6 +169,45 @@ namespace GUI.Components.TriggerEditor
 
             this.IsSelected = true;
             this.Focus();
+        }
+
+        public void ShowRenameBox()
+        {
+            this.treeItemHeader.ShowRenameBox(true);
+        }
+
+        private void TreeViewTriggerElement_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F2 && triggerElement is LocalVariable)
+            {
+                ShowRenameBox();
+                e.Handled = true;
+            }
+        }
+
+        private void RenameBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                string renameText = this.treeItemHeader.GetRenameText();
+                var localVar = (LocalVariable)triggerElement;
+                ControllerVariable controller = new();
+                try
+                {
+                    controller.RenameLocalVariable(GetTriggerControl().explorerElementTrigger.trigger, localVar, renameText);
+                    this.treeItemHeader.ShowRenameBox(false);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox messageBox = new MessageBox("Error", ex.Message);
+                    messageBox.ShowDialog();
+                }
+            }
+            else if (e.Key == Key.Escape)
+            {
+                this.treeItemHeader.ShowRenameBox(false);
+                this.Focus();
+            }
         }
     }
 }

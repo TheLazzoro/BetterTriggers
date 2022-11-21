@@ -68,7 +68,7 @@ namespace GUI.Components
             }
 
             ControllerVariable controllerVariable = new ControllerVariable();
-            UpdateIdentifierText(controllerVariable.GetVariableNameById(variable.Id));
+            UpdateIdentifierText(variable.Name);
             ControllerParamText controllerParamText = new ControllerParamText();
             var inlines = controllerParamText.GenerateParamText(variable);
             this.textblockInitialValue.Inlines.AddRange(inlines);
@@ -306,5 +306,9 @@ namespace GUI.Components
             //e.Handled = true;
         }
 
+        internal void Dispose()
+        {
+            variable.ValuesChanged -= Variable_ValuesChanged;
+        }
     }
 }

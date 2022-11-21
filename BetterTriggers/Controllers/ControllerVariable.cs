@@ -8,6 +8,7 @@ using System.Windows;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Commands;
 
 namespace BetterTriggers.Controllers
 {
@@ -58,6 +59,47 @@ namespace BetterTriggers.Controllers
                 i++;
             }
             return name;
+        }
+
+        public void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
+        {
+            string baseName = "UntitledVariable";
+            string name = baseName;
+            int i = 0;
+            bool validName = false;
+            while (!validName)
+            {
+                foreach (LocalVariable localVar in trig.LocalVariables)
+                {
+                    validName = name != localVar.variable.Name;
+                    if (!validName)
+                    {
+                        name = baseName + i;
+                        i++;
+                        break;
+                    }
+                }
+            }
+            localVariable.variable.Name = name;
+            localVariable.variable.Id = Variables.GenerateId();
+            localVariable.variable.Type = "integer";
+            localVariable.variable.InitialValue = new Value() { value = "0" };
+
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable, parent, insertIndex);
+            command.Execute();
+        }
+
+        public void RenameLocalVariable(Trigger trig, LocalVariable variable, string name)
+        {
+            if (name == variable.variable.Name)
+                return;
+
+            foreach (LocalVariable v in trig.LocalVariables)
+            {
+                if (v.variable.Name == name)
+                    throw new Exception($"Local variable with name '{name}' already exists.");
+            }
+            variable.variable.Name = name;
         }
 
         public List<Variable> GetVariablesAll()

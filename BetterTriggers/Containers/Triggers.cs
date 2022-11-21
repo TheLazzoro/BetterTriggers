@@ -101,18 +101,6 @@ namespace BetterTriggers.Containers
             triggerElementContainer.Remove(explorerElement);
         }
 
-        public static void RemoveByFilePath(string filePath)
-        {
-            for( int i = 0; i < triggerElementContainer.Count; i++)
-            {
-                var item = triggerElementContainer[i];
-                if (item.GetPath() == filePath)
-                {
-                    triggerElementContainer.Remove(item);
-                }
-            }
-        }
-
         internal static ExplorerElementTrigger GetByReference(TriggerRef triggerRef)
         {
             return FindById(triggerRef.TriggerId);

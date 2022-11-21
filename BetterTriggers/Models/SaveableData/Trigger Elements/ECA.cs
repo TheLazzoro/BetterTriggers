@@ -9,7 +9,6 @@ namespace BetterTriggers.Models.SaveableData
         public bool isEnabled = true;
         public Function function = new Function();
 
-        
         public ECA() { }
         public ECA(string value)
         {
@@ -24,48 +23,5 @@ namespace BetterTriggers.Models.SaveableData
 
             return clone;
         }
-
-
-        public void ChangedParams()
-        {
-            for (int i = 0; i < triggerElementUIs.Count; i++)
-            {
-                triggerElementUIs[i].UpdateParams();
-            }
-        }
-
-        public void ChangedPosition()
-        {
-            for (int i = 0; i < triggerElementUIs.Count; i++)
-            {
-                triggerElementUIs[i].UpdatePosition();
-            }
-        }
-
-        public void ChangedEnabled()
-        {
-            for (int i = 0; i < triggerElementUIs.Count; i++)
-            {
-                triggerElementUIs[i].UpdateEnabled();
-            }
-        }
-
-        public void Created(int insertIndex)
-        {
-            for (int i = 0; i < triggerElementUIs.Count; i++)
-            {
-                triggerElementUIs[i].OnCreated(insertIndex);
-            }
-        }
-
-        public void Deleted()
-        {
-            for (int i = 0; i < triggerElementUIs.Count; i++)
-            {
-                triggerElementUIs[i].OnDeleted();
-            }
-        }
-
-
     }
 }

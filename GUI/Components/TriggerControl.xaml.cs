@@ -174,12 +174,10 @@ namespace GUI.Components
 
             if (type == TriggerElementType.LocalVariable)
             {
-                // TODO:
                 insertIndex = categoryLocalVariable.GetTriggerElements().Count;
-                LocalVariable localVariable = new LocalVariable();
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable,categoryLocalVariable.GetTriggerElements(), insertIndex );
-                command.Execute();
-
+                LocalVariable localVariable = new LocalVariable(); // TODO: This is probably not supposed to be here.
+                ControllerVariable controller = new ControllerVariable();
+                controller.CreateLocalVariable(explorerElementTrigger.trigger, localVariable, categoryLocalVariable.GetTriggerElements(), insertIndex);
                 TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(localVariable);
                 this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
 
@@ -246,7 +244,7 @@ namespace GUI.Components
             }
         }
 
-        public void RefreshParameterBlock()
+        public void RefreshBottomControls()
         {
             var item = treeViewTriggers.SelectedItem as TreeViewTriggerElement;
             textblockParams.Inlines.Clear();
@@ -254,11 +252,16 @@ namespace GUI.Components
             if (item == null)
                 return;
 
-            ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
-            var inlines = controllerTriggerTreeItem.GenerateParamText(item);
+            if (grid.Children.Contains(variableControl))
+            {
+                variableControl.Dispose();
+                grid.Children.Remove(variableControl);
+            }
 
             if (item.triggerElement is ECA)
             {
+                ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
+                var inlines = controllerTriggerTreeItem.GenerateParamText(item);
                 var element = (ECA)item.triggerElement;
                 if (!grid.Children.Contains(textblockParams))
                 {
@@ -273,14 +276,16 @@ namespace GUI.Components
                 var element = (LocalVariable)item.triggerElement;
                 grid.Children.Remove(textblockParams);
                 grid.Children.Remove(textblockDescription);
-                variableControl = new VariableControl(element.variable);
+                variableControl = new VariableControl(element.variable, true);
+                grid.Children.Add(variableControl);
+                Grid.SetRow(variableControl, 3);
             }
         }
 
         // TODO: There are two 'SelectedItemChanged' functions?
         private void treeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            RefreshParameterBlock();
+            RefreshBottomControls();
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -500,6 +505,10 @@ namespace GUI.Components
 
         private void CopyTriggerElement(bool isCut = false)
         {
+            var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
+            if (selected == null)
+                return;
+
             ControllerTrigger controller = new ControllerTrigger();
             List<TriggerElement> triggerElements = new List<TriggerElement>();
             for (int i = 0; i < selectedItems.Count; i++)
@@ -508,13 +517,15 @@ namespace GUI.Components
             }
             controller.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
 
-            var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
             ContainerCopiedElementsGUI.copiedElementParent = (INode)selected.Parent;
         }
 
         private void PasteTriggerElement()
         {
             var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
+            if (selected == null)
+                return;
+
             INode attachTarget = null;
             int insertIndex = 0;
             if (selected is TreeViewTriggerElement)
@@ -768,6 +779,14 @@ namespace GUI.Components
             DeleteTriggerElement();
         }
 
+        private void menuRename_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedElementEnd == null || selectedElementEnd.triggerElement is not LocalVariable)
+                return;
+
+            selectedElementEnd.ShowRenameBox();
+        }
+
         private void menuEvent_Click(object sender, RoutedEventArgs e)
         {
             CreateEvent();
@@ -785,6 +804,9 @@ namespace GUI.Components
 
         private void menuFunctionEnabled_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedElementEnd == null)
+                return;
+
             CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable((ECA)selectedElementEnd.triggerElement);
             command.Execute();
         }
@@ -858,6 +880,24 @@ namespace GUI.Components
         public void OnRemoteChange()
         {
             Refresh();
+        }
+
+        private void treeViewTriggers_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            bool selectionIsNull = selectedElementEnd == null;
+            menuCut.IsEnabled = !selectionIsNull;
+            menuCopy.IsEnabled = !selectionIsNull;
+            menuPaste.IsEnabled = !selectionIsNull;
+            menuDelete.IsEnabled = !selectionIsNull;
+            menuRename.IsEnabled = !selectionIsNull;
+            menuFunctionEnabled.IsEnabled = !selectionIsNull;
+            if (selectionIsNull)
+                return;
+
+            bool isECA = selectedElementEnd.triggerElement is ECA;
+            bool isLocalVar = selectedElementEnd.triggerElement is LocalVariable;
+            menuFunctionEnabled.IsEnabled = isECA;
+            menuRename.IsEnabled = isLocalVar;
         }
     }
 }

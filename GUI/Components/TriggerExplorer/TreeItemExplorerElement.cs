@@ -119,7 +119,6 @@ namespace GUI.Components.TriggerExplorer
                 ShowRenameBox();
                 e.Handled = true;
             }
-
         }
 
         private void RenameBox_KeyDown(object sender, KeyEventArgs e)

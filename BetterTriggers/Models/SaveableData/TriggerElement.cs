@@ -1,4 +1,5 @@
-﻿using BetterTriggers.JsonBaseConverter;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.JsonBaseConverter;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -83,6 +84,8 @@ namespace BetterTriggers.Models.SaveableData
 
         public void Created(int insertIndex)
         {
+            if (this is LocalVariable localVar)
+                Variables.AddLocalVariable(localVar);
             for (int i = 0; i < triggerElementUIs.Count; i++)
             {
                 triggerElementUIs[i].OnCreated(insertIndex);
@@ -91,6 +94,8 @@ namespace BetterTriggers.Models.SaveableData
 
         public void Deleted()
         {
+            if (this is LocalVariable localVar)
+                Variables.RemoveLocalVariable(localVar);
             for (int i = 0; i < triggerElementUIs.Count; i++)
             {
                 triggerElementUIs[i].OnDeleted();

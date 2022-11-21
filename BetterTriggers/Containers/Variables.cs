@@ -10,6 +10,7 @@ namespace BetterTriggers.Containers
     public static class Variables
     {
         public static List<Variable> variableContainer = new List<Variable>();
+        public static List<Variable> localVariableContainer = new List<Variable>();
 
         public static void AddVariable(Variable variable)
         {
@@ -42,14 +43,16 @@ namespace BetterTriggers.Containers
             bool isIdValid = false;
             while (!isIdValid)
             {
-                int i = 0;
                 bool doesIdExist = false;
-                while (!doesIdExist && i < variableContainer.Count)
+                foreach (var variable in variableContainer)
                 {
-                    if (variableContainer[i].Id == generatedId)
+                    if (variable.Id == generatedId)
                         doesIdExist = true;
-                    else
-                        i++;
+                }
+                foreach (var variable in localVariableContainer)
+                {
+                    if (variable.Id == generatedId)
+                        doesIdExist = true;
                 }
 
                 if (!doesIdExist)
@@ -114,14 +117,23 @@ namespace BetterTriggers.Containers
                     name = variableContainer[i].Name;
                     found = true;
                 }
-
+                i++;
+            }
+            i = 0;
+            while(!found && i < localVariableContainer.Count)
+            {
+                if (localVariableContainer[i].Id == Id)
+                {
+                    name = localVariableContainer[i].Name;
+                    found = true;
+                }
                 i++;
             }
 
             return name;
         }
 
-        public static void Remove(Variable variable)
+        internal static void Remove(Variable variable)
         {
             variableContainer.Remove(variable);
         }
@@ -129,6 +141,16 @@ namespace BetterTriggers.Containers
         internal static void Clear()
         {
             variableContainer.Clear();
+        }
+
+        internal static void AddLocalVariable(LocalVariable localVariable)
+        {
+            localVariableContainer.Add(localVariable.variable);
+        }
+
+        internal static void RemoveLocalVariable(LocalVariable localVariable)
+        {
+            localVariableContainer.Remove(localVariable.variable);
         }
     }
 }

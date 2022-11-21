@@ -302,7 +302,13 @@ namespace BetterTriggers.Controllers
                             break;
                         case ".trg":
                             explorerElementChild = new ExplorerElementTrigger(path);
-                            Triggers.AddTrigger(explorerElementChild as ExplorerElementTrigger);
+                            var exTrig = explorerElementChild as ExplorerElementTrigger;
+                            Triggers.AddTrigger(exTrig);
+                            exTrig.trigger.LocalVariables.ForEach(v =>
+                            {
+                                var localVar = (LocalVariable)v;
+                                Variables.AddLocalVariable(localVar);
+                            });
                             break;
                         case ".j":
                         case ".lua":
@@ -312,10 +318,10 @@ namespace BetterTriggers.Controllers
                         case ".var":
                             explorerElementChild = new ExplorerElementVariable(path);
                             var explorerVariable = (ExplorerElementVariable)explorerElementChild;
-                            
+
                             // TODO: this is an ugly fix
                             // 
-                            explorerVariable.variable.Name = Path.GetFileNameWithoutExtension(explorerVariable.GetPath()); 
+                            explorerVariable.variable.Name = Path.GetFileNameWithoutExtension(explorerVariable.GetPath());
                             Variables.AddVariable(explorerVariable.variable);
                             break;
                         default:
@@ -474,7 +480,7 @@ namespace BetterTriggers.Controllers
             if (element is ExplorerElementFolder)
             {
                 var folder = element as ExplorerElementFolder;
-                for(int i = 0; i < element.GetExplorerElements().Count; i++)
+                for (int i = 0; i < element.GetExplorerElements().Count; i++)
                 {
                     var subElement = element.GetExplorerElements()[i];
                     RemoveElementFromContainer(subElement);

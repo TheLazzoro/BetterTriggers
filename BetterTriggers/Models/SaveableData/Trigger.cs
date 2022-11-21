@@ -25,20 +25,5 @@ namespace BetterTriggers.Models.SaveableData
 
             return cloned;
         }
-
-        internal void CreateLocalVariable()
-        {
-            string name = "udl_UntitledVariable";
-            int i = 0;
-            string suffix = "";
-            bool validName = false;
-            while (!validName)
-            {
-                foreach (LocalVariable localVar in LocalVariables)
-                {
-                    name = localVar.variable.Name;
-                }
-            }
-        }
     }
 }
