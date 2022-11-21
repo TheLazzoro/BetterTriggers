@@ -83,6 +83,7 @@ namespace BetterTriggers.Controllers
             localVariable.variable.Name = name;
             localVariable.variable.Id = Variables.GenerateId();
             localVariable.variable.Type = "integer";
+            localVariable.variable.ArraySize = new int[] { 1, 1 };
             localVariable.variable.InitialValue = new Value() { value = "0" };
 
             CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable, parent, insertIndex);
