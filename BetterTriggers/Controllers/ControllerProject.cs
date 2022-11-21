@@ -200,6 +200,9 @@ namespace BetterTriggers.Controllers
 
 
         private string src;
+        public event Action<int, int> FileLoadEvent;
+        private int totalFiles;
+        private int loadedFiles;
         /// <summary>
         /// Loads all files from a given project into the container
         /// </summary>
@@ -246,6 +249,8 @@ namespace BetterTriggers.Controllers
 
             // get all files
             string[] files = Directory.GetFileSystemEntries(src, "*", SearchOption.AllDirectories);
+            totalFiles = files.Length;
+            loadedFiles = 0;
             List<string> fileCheckList = new List<string>();
             fileCheckList.AddRange(files);
 
@@ -335,6 +340,8 @@ namespace BetterTriggers.Controllers
                     if (Directory.Exists(explorerElementChild.GetPath()))
                         RecurseLoad(entryChild, explorerElementChild, fileCheckList);
 
+                    loadedFiles++;
+                    FileLoadEvent?.Invoke(loadedFiles, totalFiles);
                 }
             }
         }

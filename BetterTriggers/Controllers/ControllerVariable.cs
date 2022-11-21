@@ -67,7 +67,7 @@ namespace BetterTriggers.Controllers
             string name = baseName;
             int i = 0;
             bool validName = false;
-            while (!validName)
+            while (!validName && trig.LocalVariables.Count > 0)
             {
                 foreach (LocalVariable localVar in trig.LocalVariables)
                 {

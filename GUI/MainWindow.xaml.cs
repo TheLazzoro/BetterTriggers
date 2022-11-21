@@ -442,7 +442,9 @@ namespace GUI
             War3Project project = null;
             try
             {
-                project = controllerProject.LoadProject(file);
+                LoadingProjectFilesWindow loadingFilesWindow = new LoadingProjectFilesWindow(file);
+                loadingFilesWindow.ShowDialog();
+                project = loadingFilesWindow.project;
             }
             catch (Exception ex)
             {

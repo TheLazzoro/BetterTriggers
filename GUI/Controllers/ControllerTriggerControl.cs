@@ -221,7 +221,6 @@ namespace GUI.Controllers
                 RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
             }
         }
-
         public void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
         {
             TreeViewItem item = (TreeViewItem)parentNode;

@@ -59,7 +59,5 @@ namespace GUI.Components.TriggerEditor
         {
             this.TriggerElements = triggerElements;
         }
-
-        
     }
 }

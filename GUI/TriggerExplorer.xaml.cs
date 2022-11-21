@@ -412,13 +412,19 @@ namespace GUI
 
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Crashes when right-click enable/disabling a trigger element that isn't in the TabControl.
-            currentElement.editor.SetElementEnabled(!currentElement.Ielement.GetEnabled());
+            // TODO: This will not update the checkmark in the editor view.
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementEnabled(currentElement.Ielement, !currentElement.Ielement.GetEnabled());
+            if (currentElement.editor != null)
+                currentElement.editor.OnStateChange();
         }
 
         private void menuElementInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
-            currentElement.editor.SetElementInitiallyOn(!currentElement.Ielement.GetInitiallyOn());
+            ControllerProject controller = new ControllerProject();
+            controller.SetElementInitiallyOn(currentElement.Ielement, !currentElement.Ielement.GetInitiallyOn());
+            if (currentElement.editor != null)
+                currentElement.editor.OnStateChange();
         }
 
         private void menuOpenInExplorer_Click(object sender, RoutedEventArgs e)
