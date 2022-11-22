@@ -32,11 +32,11 @@ namespace GUI.Components.TriggerEditor
             if (triggerElement is ECA)
             {
                 this.paramText = controller.GetParamText(triggerElement);
+                this.UpdateTreeItem();
                 ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
                 controllerTriggerControl.CreateSpecialTriggerElement(this);
             }
 
-            this.UpdateTreeItem();
             this.KeyDown += TreeViewTriggerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
         }
