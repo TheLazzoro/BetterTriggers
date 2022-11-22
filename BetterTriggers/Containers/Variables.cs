@@ -64,7 +64,7 @@ namespace BetterTriggers.Containers
             return generatedId;
         }
 
-        internal static Variable FindVariableById(int Id)
+        internal static Variable GetVariableById(int Id)
         {
             Variable var = null;
 
@@ -80,21 +80,12 @@ namespace BetterTriggers.Containers
 
                 i++;
             }
-
-            return var;
-        }
-        
-        internal static Variable GetVariableById(int Id)
-        {
-            Variable var = null;
-
-            bool found = false;
-            int i = 0;
-            while (!found && i < variableContainer.Count)
+            i = 0;
+            while (!found && i < localVariableContainer.Count)
             {
-                if (variableContainer[i].Id == Id)
+                if (localVariableContainer[i].Id == Id)
                 {
-                    var = variableContainer[i];
+                    var = localVariableContainer[i];
                     found = true;
                 }
 

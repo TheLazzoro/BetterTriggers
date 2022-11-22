@@ -2,6 +2,7 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
+using GUI.Components;
 using GUI.Components.TriggerEditor.ParameterControls;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,7 @@ namespace GUI
             Grid.SetRow(constantControl, 1);
             Grid.SetColumnSpan(constantControl, 2);
 
-            this.variableControl = new ParameterVariableControl(returnType);
+            this.variableControl = new ParameterVariableControl(returnType, TriggerControl.TriggerInFocus);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);

@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
+using System;
 using System.ComponentModel;
 using System.Windows;
 
@@ -33,15 +34,32 @@ namespace GUI
             lblInfo.Content = $"Loading Project Files {filesLoaded}/{totalFiles}";
             if (e.ProgressPercentage == 100 && project != null)
                 this.Close();
+
+            if(e.ProgressPercentage == -1)
+            {
+                MessageBox message = new MessageBox("Error", errorMsg);
+                message.ShowDialog();
+                this.Close();
+            }
         }
 
         int filesLoaded = 0;
         int totalFiles = 0;
+        string errorMsg = string.Empty;
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
             ControllerProject controllerProject = new ControllerProject();
             controllerProject.FileLoadEvent += ControllerProject_FileLoadEvent;
-            project = controllerProject.LoadProject(projectPath);
+            try
+            {
+                project = controllerProject.LoadProject(projectPath);
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                worker.ReportProgress(-1);
+                return;
+            }
             worker.ReportProgress(100);
         }
 

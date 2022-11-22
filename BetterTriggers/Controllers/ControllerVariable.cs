@@ -108,16 +108,19 @@ namespace BetterTriggers.Controllers
             return Variables.variableContainer;
         }
 
-        public List<Variable> GetVariables(string returnType)
+        private List<Variable> GetVariables(string returnType, Trigger trig)
         {
             List<Variable> list = new List<Variable>();
+            List<Variable> all = new List<Variable>();
+            all.AddRange(Variables.variableContainer); // globals
+            all.AddRange(Variables.localVariableContainer); // locals
 
-            for (int i = 0; i < Variables.variableContainer.Count; i++)
+            for (int i = 0; i < all.Count; i++)
             {
-                if (returnType != "AnyGlobal" && Variables.variableContainer[i].Type != returnType)
+                if (returnType != "AnyGlobal" && all[i].Type != returnType)
                     continue;
 
-                var variable = Variables.variableContainer[i];
+                var variable = all[i];
                 list.Add(variable);
             }
 
@@ -129,7 +132,7 @@ namespace BetterTriggers.Controllers
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
-        public List<VariableRef> GetVariableRefs(string returnType)
+        public List<VariableRef> GetVariableRefs(string returnType, Trigger trig)
         {
             bool wasIntegervar = false;
             if (returnType == "integervar")
@@ -138,7 +141,7 @@ namespace BetterTriggers.Controllers
                 returnType = "integer";
             }
 
-            List<Variable> variables = GetVariables(returnType);
+            List<Variable> variables = GetVariables(returnType, trig);
             List<VariableRef> list = new List<VariableRef>();
 
             for (int i = 0; i < variables.Count; i++)

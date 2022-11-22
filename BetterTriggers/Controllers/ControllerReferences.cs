@@ -26,7 +26,7 @@ namespace BetterTriggers.Controllers
                 if (p is VariableRef)
                 {
                     VariableRef varRef = (VariableRef)p;
-                    Variable element = Variables.FindVariableById(varRef.VariableId);
+                    Variable element = Variables.GetVariableById(varRef.VariableId);
                     References.AddReferrer(t, element);
                 }
                 else if (p is TriggerRef)

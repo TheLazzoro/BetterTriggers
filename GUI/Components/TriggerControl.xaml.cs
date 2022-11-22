@@ -32,6 +32,8 @@ namespace GUI.Components
         public NodeLocalVariable categoryLocalVariable;
         public NodeAction categoryAction;
 
+        public static BetterTriggers.Models.SaveableData.Trigger TriggerInFocus;
+
         Point _startPoint;
         TreeViewItem dragItem;
         bool _IsDragging = false;
@@ -308,7 +310,7 @@ namespace GUI.Components
             _IsDragging = true;
             dragItem = this.treeViewTriggers.SelectedItem as TreeViewItem;
 
-            if (dragItem is NodeEvent || dragItem is NodeCondition || dragItem is NodeAction)
+            if (dragItem is INode)
             {
                 _IsDragging = false;
                 return;
@@ -370,11 +372,7 @@ namespace GUI.Components
 
             if (dropTarget is TreeViewTriggerElement)
             {
-                if (dragItem.Parent is NodeEvent && !(dropTarget.Parent is NodeEvent))
-                    return;
-                else if (dragItem.Parent is NodeCondition && !(dropTarget.Parent is NodeCondition))
-                    return;
-                else if (dragItem.Parent is NodeAction && !(dropTarget.Parent is NodeAction))
+                if (dragItem.Parent is NodeEvent && !(dropTarget.Parent is INode))
                     return;
 
                 var relativePos = e.GetPosition(dropTarget);
@@ -498,6 +496,31 @@ namespace GUI.Components
 
             if (elementsToDelete.Count == 0)
                 return;
+
+            // local variables
+            List<LocalVariable> inUse = new List<LocalVariable>();
+            elementsToDelete.ForEach(v =>
+            {
+                var localVar = v as LocalVariable;
+                if (localVar != null)
+                {
+                    ControllerReferences controllerRef = new ControllerReferences();
+                    List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(localVar.variable);
+                    if (refs.Count > 0)
+                        inUse.Add(localVar);
+                }
+
+            });
+            if (inUse.Count > 0)
+            {
+                LocalsInUseWindow window = new LocalsInUseWindow(inUse);
+                window.ShowDialog();
+                if (!window.OK)
+                    return;
+
+                ControllerVariable controller = new ControllerVariable();
+                inUse.ForEach(v => controller.RemoveVariableRefFromTriggers(v.variable));
+            }
 
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
             command.Execute();

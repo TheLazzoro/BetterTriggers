@@ -255,7 +255,11 @@ namespace GUI
         private void EnableTriggerElementButtons()
         {
             if (selectedExplorerItem.editor as TriggerControl != null)
+            {
+                TriggerControl control = (TriggerControl)selectedExplorerItem.editor;
+                TriggerControl.TriggerInFocus = control.explorerElementTrigger.trigger;
                 EnableECAButtons(true);
+            }
             else
                 EnableECAButtons(false);
         }
@@ -440,18 +444,11 @@ namespace GUI
         {
             ControllerProject controllerProject = new ControllerProject();
             War3Project project = null;
-            try
-            {
-                LoadingProjectFilesWindow loadingFilesWindow = new LoadingProjectFilesWindow(file);
-                loadingFilesWindow.ShowDialog();
-                project = loadingFilesWindow.project;
-            }
-            catch (Exception ex)
-            {
-                MessageBox dialog = new MessageBox("Error", ex.Message);
-                dialog.ShowDialog();
+            LoadingProjectFilesWindow loadingFilesWindow = new LoadingProjectFilesWindow(file);
+            loadingFilesWindow.ShowDialog();
+            project = loadingFilesWindow.project;
+            if (project == null)
                 return;
-            }
 
             if (!controllerProject.War3MapDirExists())
             {
