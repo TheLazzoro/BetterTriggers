@@ -90,7 +90,7 @@ namespace GUI.Components.TriggerExplorer
             if (this.editor is VariableControl)
             {
                 var control = this.editor as VariableControl;
-                control.UpdateIdentifierText(Ielement.GetName());
+                control.UpdateIdentifierText();
             }
             else if(this.editor is ScriptControl)
             {

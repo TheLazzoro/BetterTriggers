@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BetterTriggers.Containers;
+using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
@@ -9,10 +10,10 @@ namespace BetterTriggers.Models.SaveableData
         public bool IsScript;
         public bool RunOnMapInit;
         public string Script;
-        public List<TriggerElement> Events = new ();
-        public List<TriggerElement> Conditions = new ();
-        public List<TriggerElement> LocalVariables = new ();
-        public List<TriggerElement> Actions = new ();
+        public List<TriggerElement> Events = new();
+        public List<TriggerElement> LocalVariables = new();
+        public List<TriggerElement> Conditions = new();
+        public List<TriggerElement> Actions = new();
 
         internal Trigger Clone()
         {

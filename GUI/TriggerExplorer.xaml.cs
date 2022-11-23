@@ -109,10 +109,14 @@ namespace GUI
         {
             _IsDragging = true;
             dragItem = this.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-            DataObject data = null;
 
-            data = new DataObject("inadt", dragItem);
+            if (dragItem == null || dragItem.treeItemHeader.isRenaming)
+            {
+                _IsDragging = false;
+                return;
+            }
 
+            DataObject data = new DataObject("inadt", dragItem);
             if (data != null)
             {
                 DragDropEffects dde = DragDropEffects.Move;
@@ -267,7 +271,7 @@ namespace GUI
 
         private void treeViewItem_Expanded(object sender, RoutedEventArgs e)
         {
-            var treeItem = (TreeItemExplorerElement) e.Source;
+            var treeItem = (TreeItemExplorerElement)e.Source;
             var explorerElement = treeItem.Ielement as ExplorerElementFolder;
             if (explorerElement == null)
                 return;
@@ -327,7 +331,7 @@ namespace GUI
                 var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
                 controllerTriggerExplorer.RecursePopulate(controllerTriggerExplorer.GetCurrentExplorer(), parent, pasted);
             }
-            else if(e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 OpenSearchField();
             }
@@ -368,7 +372,7 @@ namespace GUI
         private void menuPaste_Click(object sender, RoutedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
-            IExplorerElement pasted =  controller.PasteExplorerElement(currentElement.Ielement);
+            IExplorerElement pasted = controller.PasteExplorerElement(currentElement.Ielement);
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
@@ -489,7 +493,7 @@ namespace GUI
                 return parent;
 
             TreeItemBT treeItem = null;
-            if(parent.Items.Count > 0)
+            if (parent.Items.Count > 0)
             {
                 foreach (var item in parent.Items)
                 {

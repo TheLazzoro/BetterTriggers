@@ -37,7 +37,32 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public static int GenerateId()
+        /// <summary>
+        /// Returns true if an element with the given id exists in the container.
+        /// </summary>
+        public static bool Contains(int id)
+        {
+            bool found = true;
+            foreach (var variable in variableContainer)
+            {
+                if (variable.Id == id)
+                    found = true;
+            }
+            foreach (var variable in localVariableContainer)
+            {
+                if (variable.Id == id)
+                    found = true;
+            }
+
+            return found;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="blacklist">Id's that cannot be used.</param>
+        /// <returns></returns>
+        public static int GenerateId(List<int> blacklist = null)
         {
             int generatedId = 0;
             bool isIdValid = false;
@@ -53,6 +78,14 @@ namespace BetterTriggers.Containers
                 {
                     if (variable.Id == generatedId)
                         doesIdExist = true;
+                }
+                if (blacklist != null)
+                {
+                    foreach (var id in blacklist)
+                    {
+                        if (generatedId == id)
+                            doesIdExist = true;
+                    }
                 }
 
                 if (!doesIdExist)
@@ -103,7 +136,7 @@ namespace BetterTriggers.Containers
             int i = 0;
             while (!found && i < variableContainer.Count)
             {
-                if(variableContainer[i].Id == Id)
+                if (variableContainer[i].Id == Id)
                 {
                     name = variableContainer[i].Name;
                     found = true;
@@ -111,7 +144,7 @@ namespace BetterTriggers.Containers
                 i++;
             }
             i = 0;
-            while(!found && i < localVariableContainer.Count)
+            while (!found && i < localVariableContainer.Count)
             {
                 if (localVariableContainer[i].Id == Id)
                 {

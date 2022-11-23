@@ -113,7 +113,10 @@ namespace BetterTriggers.Controllers
             List<Variable> list = new List<Variable>();
             List<Variable> all = new List<Variable>();
             all.AddRange(Variables.variableContainer); // globals
-            all.AddRange(Variables.localVariableContainer); // locals
+            trig.LocalVariables.ForEach(e => { // locals
+                var lv = (LocalVariable)e;
+                all.Add(lv.variable);
+            });
 
             for (int i = 0; i < all.Count; i++)
             {
@@ -180,5 +183,10 @@ namespace BetterTriggers.Controllers
             References.ResetVariableReferences(variable);
         }
 
+        public void RemoveLocalVariable(LocalVariable localVariable)
+        {
+            Variables.RemoveLocalVariable(localVariable);
+            RemoveVariableRefFromTriggers(localVariable.variable);
+        }
     }
 }

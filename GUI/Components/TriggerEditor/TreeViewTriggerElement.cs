@@ -36,6 +36,8 @@ namespace GUI.Components.TriggerEditor
                 ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
                 controllerTriggerControl.CreateSpecialTriggerElement(this);
             }
+            else if(triggerElement is LocalVariable)
+                this.UpdateTreeItem();
 
             this.KeyDown += TreeViewTriggerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
@@ -176,6 +178,11 @@ namespace GUI.Components.TriggerEditor
             this.treeItemHeader.ShowRenameBox(true);
         }
 
+        public bool IsRenaming()
+        {
+            return this.treeItemHeader.isRenaming;
+        }
+
         private void TreeViewTriggerElement_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.F2 && triggerElement is LocalVariable)
@@ -196,6 +203,8 @@ namespace GUI.Components.TriggerEditor
                 {
                     controller.RenameLocalVariable(GetTriggerControl().explorerElementTrigger.trigger, localVar, renameText);
                     this.treeItemHeader.ShowRenameBox(false);
+                    this.treeItemHeader.SetDisplayText(renameText);
+                    GetTriggerControl().OnStateChange();
                 }
                 catch (Exception ex)
                 {

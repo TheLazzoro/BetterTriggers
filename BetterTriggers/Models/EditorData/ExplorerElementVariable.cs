@@ -19,12 +19,16 @@ namespace BetterTriggers.Models.EditorData
 
         public ExplorerElementVariable() { }
 
+        /// <summary>Reserved for copy-pasting purposes.</summary>
         public ExplorerElementVariable(string path)
         {
             this.path = path;
             string json = File.ReadAllText(path);
             variable = JsonConvert.DeserializeObject<Variable>(json);
             UpdateMetadata();
+
+            variable.Name = Path.GetFileNameWithoutExtension(GetPath());
+            Variables.AddVariable(this.variable);
         }
 
         public string GetName()

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BetterTriggers.Containers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,12 +18,16 @@ namespace BetterTriggers.Models.EditorData
 
         private IExplorerElement Parent;
 
-        public ExplorerElementFolder() { }
+        /// <summary>Reserved for copy-pasting purposes.</summary>
+        public ExplorerElementFolder()
+        {
+        }
 
         public ExplorerElementFolder(string path)
         {
             this.path = path;
             UpdateMetadata();
+            Folders.AddFolder(this);
         }
 
         public string GetName()

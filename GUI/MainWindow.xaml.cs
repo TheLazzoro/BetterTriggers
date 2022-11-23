@@ -601,6 +601,8 @@ namespace GUI
             else if (!onCloseWindow.Yes && !onCloseWindow.No)
                 return false;
 
+            UnsavedFiles.Clear();
+
             return true;
         }
 

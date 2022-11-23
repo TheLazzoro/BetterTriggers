@@ -20,6 +20,7 @@ namespace BetterTriggers.Models.EditorData
 
         private IExplorerElement Parent;
 
+        /// <summary>Reserved for copy-pasting purposes.</summary>
         public ExplorerElementTrigger() { }
 
         public ExplorerElementTrigger(string path)
@@ -33,6 +34,7 @@ namespace BetterTriggers.Models.EditorData
                 try
                 {
                     json = File.ReadAllText(path);
+                    Triggers.AddTrigger(this);
                     isReadyForRead = true;
                 }
                 catch (Exception ex)
@@ -45,6 +47,7 @@ namespace BetterTriggers.Models.EditorData
                 }
             }
             trigger = JsonConvert.DeserializeObject<Trigger>(json);
+            StoreLocalVariables();
             UpdateMetadata();
         }
 
@@ -180,6 +183,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void Created(int insertIndex)
         {
+            StoreLocalVariables();
             for (int i = 0; i < observers.Count; i++)
             {
                 observers[i].OnCreated(insertIndex);
@@ -188,6 +192,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void Deleted()
         {
+            RemoveLocalVariables();
             for (int i = 0; i < observers.Count; i++)
             {
                 observers[i].Delete();
@@ -230,6 +235,24 @@ namespace BetterTriggers.Models.EditorData
         public List<ExplorerElementTrigger> GetReferrers()
         {
             return References.GetReferreres(trigger);
+        }
+
+        private void StoreLocalVariables()
+        {
+            trigger.LocalVariables.ForEach(e =>
+            {
+                var lv = (LocalVariable)e;
+                Variables.AddLocalVariable(lv);
+            });
+        }
+
+        private void RemoveLocalVariables()
+        {
+            trigger.LocalVariables.ForEach(e =>
+            {
+                var lv = (LocalVariable)e;
+                Variables.RemoveLocalVariable(lv);
+            });
         }
     }
 }

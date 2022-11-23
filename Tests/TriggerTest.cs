@@ -106,5 +106,28 @@ namespace Tests
             Assert.AreEqual(expectedTriggerCount, actualTriggerCount);
             Assert.AreEqual(expectedParamCount, actualParamCount);
         }
+
+        [TestMethod]
+        public void OnPrepareExplorerTrigger()
+        {
+            ControllerProject controllerProject = new ControllerProject();
+            ControllerVariable controllerVar = new ControllerVariable();
+            LocalVariable localVariable = new LocalVariable();
+            controllerVar.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 0);
+            controllerVar.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 1);
+            controllerVar.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 2);
+            controllerProject.CopyExplorerElement(element1);
+            var pasted = (ExplorerElementTrigger) controllerProject.PasteExplorerElement(element1);
+
+            for (int i = 0; i < pasted.trigger.LocalVariables.Count; i++)
+            {
+                var copiedLv = (LocalVariable) element1.trigger.LocalVariables[i];
+                var pastedLv = (LocalVariable)pasted.trigger.LocalVariables[i];
+                int notEqualId = copiedLv.variable.Id;
+                int actualId = pastedLv.variable.Id;
+
+                Assert.AreNotEqual(notEqualId, actualId);
+            }
+        }
     }
 }

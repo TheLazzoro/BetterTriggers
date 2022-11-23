@@ -303,31 +303,16 @@ namespace BetterTriggers.Controllers
                     {
                         case "":
                             explorerElementChild = new ExplorerElementFolder(path);
-                            Folders.AddFolder(explorerElementChild as ExplorerElementFolder);
                             break;
                         case ".trg":
                             explorerElementChild = new ExplorerElementTrigger(path);
-                            var exTrig = explorerElementChild as ExplorerElementTrigger;
-                            Triggers.AddTrigger(exTrig);
-                            exTrig.trigger.LocalVariables.ForEach(v =>
-                            {
-                                var localVar = (LocalVariable)v;
-                                Variables.AddLocalVariable(localVar);
-                            });
                             break;
                         case ".j":
                         case ".lua":
                             explorerElementChild = new ExplorerElementScript(path);
-                            Scripts.AddScript(explorerElementChild as ExplorerElementScript);
                             break;
                         case ".var":
                             explorerElementChild = new ExplorerElementVariable(path);
-                            var explorerVariable = (ExplorerElementVariable)explorerElementChild;
-
-                            // TODO: this is an ugly fix
-                            // 
-                            explorerVariable.variable.Name = Path.GetFileNameWithoutExtension(explorerVariable.GetPath());
-                            Variables.AddVariable(explorerVariable.variable);
                             break;
                         default:
                             break;
@@ -891,6 +876,26 @@ namespace BetterTriggers.Controllers
 
                 element.trigger.Id = Triggers.GenerateId();
                 element.SetPath(Path.Combine(folder, name));
+
+
+                // Adjusts local variable ids
+                List<int> blacklistedIds = new List<int>();
+                ControllerTrigger controller = new ControllerTrigger();
+                var varRefs = controller.GetVariableRefsFromTrigger(element);
+                element.trigger.LocalVariables.ForEach(v =>
+                {
+                    var lv = (LocalVariable)v;
+                    int oldId = lv.variable.Id;
+                    int newId = Variables.GenerateId(blacklistedIds);
+                    Variables.AddLocalVariable(lv);
+                    lv.variable.Id = newId;
+                    blacklistedIds.Add(newId);
+
+                    var matches = varRefs.Where(x => x.VariableId == oldId);
+                    foreach (var match in matches)
+                        match.VariableId = newId;
+                });
+
             }
             else if (explorerElement is ExplorerElementVariable)
             {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Containers
 {
-    internal static class UnsavedFiles
+    public static class UnsavedFiles
     {
         private static List<IExplorerElement> unsavedFiles = new List<IExplorerElement>();
 
@@ -34,7 +34,7 @@ namespace BetterTriggers.Containers
             return unsavedFiles.Count;
         }
 
-        internal static void Clear()
+        public static void Clear()
         {
             unsavedFiles.Clear();
         }

@@ -28,7 +28,6 @@ namespace GUI.Components
     public partial class VariableControl : UserControl, IEditor
     {
         private Variable variable;
-        private bool isLocalVariable;
         private ComboBoxItemType previousSelected;
         private bool isLoading = true;
         private int defaultSelected = 0;
@@ -40,14 +39,21 @@ namespace GUI.Components
         private bool preventStateChange = true;
         private bool suppressUIEvents = false;
 
-        public VariableControl(Variable variable, bool isLocalVariable = false)
+        public VariableControl(Variable variable)
         {
             this.variable = variable;
-            this.isLocalVariable = isLocalVariable;
             previousText0 = variable.ArraySize[0].ToString();
             previousText1 = variable.ArraySize[1].ToString();
 
             InitializeComponent();
+
+            if(variable._isLocal)
+            {
+                lblDimensions.Visibility = Visibility.Hidden;
+                comboBoxArrayDimensions.Visibility = Visibility.Hidden;
+                lblSize1.Visibility = Visibility.Hidden;
+                textBoxArraySize1.Visibility = Visibility.Hidden;
+            }
 
             ControllerTriggerData controller = new ControllerTriggerData();
             List<Types> types = controller.LoadAllVariableTypes();
@@ -68,7 +74,7 @@ namespace GUI.Components
             }
 
             ControllerVariable controllerVariable = new ControllerVariable();
-            UpdateIdentifierText(variable.Name);
+            UpdateIdentifierText();
             ControllerParamText controllerParamText = new ControllerParamText();
             var inlines = controllerParamText.GenerateParamText(variable);
             this.textblockInitialValue.Inlines.AddRange(inlines);
@@ -93,7 +99,7 @@ namespace GUI.Components
         private void Variable_ValuesChanged(object sender, EventArgs e)
         {
             suppressUIEvents = true;
-            UpdateIdentifierText(variable.Name);
+            UpdateIdentifierText();
             checkBoxIsArray.IsChecked = variable.IsArray;
             comboBoxArrayDimensions.SelectedIndex = variable.IsTwoDimensions ? 1 : 0;
             foreach (var i in comboBoxVariableType.Items)
@@ -121,11 +127,9 @@ namespace GUI.Components
             isLoading = false;
         }
 
-        public void UpdateIdentifierText(string name)
+        public void UpdateIdentifierText()
         {
-            string prefix = isLocalVariable ? "udl_" : "udg_";
-            var newIdentifier = prefix + name;
-            this.textBlockVariableNameUDG.Text = newIdentifier;
+            this.textBlockVariableNameUDG.Text = variable.GetIdentifierName();
         }
 
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)

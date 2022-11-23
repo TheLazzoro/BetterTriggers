@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Models.EditorData
@@ -17,6 +18,7 @@ namespace BetterTriggers.Models.EditorData
 
         private IExplorerElement Parent;
 
+        /// <summary>Reserved for copy-pasting purposes.</summary>
         public ExplorerElementScript() { }
 
         public ExplorerElementScript(string path)
@@ -25,6 +27,7 @@ namespace BetterTriggers.Models.EditorData
             ControllerScript controller = new ControllerScript();
             this.script = controller.LoadScriptFromFile(GetPath());
             UpdateMetadata();
+            Scripts.AddScript(this);
         }
 
         public string GetName()

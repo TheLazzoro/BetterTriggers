@@ -9,8 +9,11 @@ namespace BetterTriggers.Models.SaveableData
     {
         public readonly int LocalVar = 1; // DO NOT CHANGE
         public Variable variable = new Variable();
-        
-        public LocalVariable() { }
+
+        public LocalVariable()
+        {
+            variable._isLocal = true;
+        }
 
         public override LocalVariable Clone()
         {

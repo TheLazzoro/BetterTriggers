@@ -27,6 +27,8 @@ namespace BetterTriggers.Models.SaveableData
         private bool _isTwoDimensions;
         [JsonIgnore]
         private Parameter _initialValue;
+        [JsonIgnore]
+        public bool _isLocal { get; internal set; }
 
         public event EventHandler ValuesChanged;
 
@@ -40,6 +42,7 @@ namespace BetterTriggers.Models.SaveableData
         public Variable Clone()
         {
             Variable cloned = new Variable();
+            cloned.Id = Id;
             cloned.Name = new string(Name);
             cloned.Type = new string(Type);
             cloned.IsArray = IsArray;
@@ -50,9 +53,10 @@ namespace BetterTriggers.Models.SaveableData
             return cloned;
         }
 
-        public string GetGlobalName()
+        public string GetIdentifierName()
         {
-            string name = "udg_" + Name.Replace(" ", "_");
+            string prefix = _isLocal ? "udl_" : "udg_";
+            string name = prefix + Name.Replace(" ", "_");
             if(name.EndsWith("_"))
                 name = name + "v";
 

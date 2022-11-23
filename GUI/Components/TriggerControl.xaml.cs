@@ -35,7 +35,7 @@ namespace GUI.Components
         public static BetterTriggers.Models.SaveableData.Trigger TriggerInFocus;
 
         Point _startPoint;
-        TreeViewItem dragItem;
+        TreeViewTriggerElement dragItem;
         bool _IsDragging = false;
         int insertIndex = 0;
         TreeViewItem parentDropTarget;
@@ -74,13 +74,13 @@ namespace GUI.Components
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
 
             categoryEvent = new NodeEvent("Events");
-            categoryCondition = new NodeCondition("Conditions");
             categoryLocalVariable = new NodeLocalVariable("Local Variables");
+            categoryCondition = new NodeCondition("Conditions");
             categoryAction = new NodeAction("Actions");
 
             treeViewTriggers.Items.Add(categoryEvent);
-            treeViewTriggers.Items.Add(categoryCondition);
             treeViewTriggers.Items.Add(categoryLocalVariable);
+            treeViewTriggers.Items.Add(categoryCondition);
             treeViewTriggers.Items.Add(categoryAction);
 
 
@@ -278,7 +278,7 @@ namespace GUI.Components
                 var element = (LocalVariable)item.triggerElement;
                 grid.Children.Remove(textblockParams);
                 grid.Children.Remove(textblockDescription);
-                variableControl = new VariableControl(element.variable, true);
+                variableControl = new VariableControl(element.variable);
                 grid.Children.Add(variableControl);
                 Grid.SetRow(variableControl, 3);
             }
@@ -308,20 +308,15 @@ namespace GUI.Components
         private void StartDrag(MouseEventArgs e)
         {
             _IsDragging = true;
-            dragItem = this.treeViewTriggers.SelectedItem as TreeViewItem;
+            dragItem = this.treeViewTriggers.SelectedItem as TreeViewTriggerElement;
 
-            if (dragItem is INode)
+            if (dragItem == null || dragItem.IsRenaming())
             {
                 _IsDragging = false;
                 return;
             }
 
-            DataObject data = null;
-
-            if (dragItem == null)
-                return;
-
-            data = new DataObject("inadt", dragItem);
+            DataObject data = new DataObject("inadt", dragItem);
 
             if (data != null)
             {
@@ -519,7 +514,7 @@ namespace GUI.Components
                     return;
 
                 ControllerVariable controller = new ControllerVariable();
-                inUse.ForEach(v => controller.RemoveVariableRefFromTriggers(v.variable));
+                inUse.ForEach(v => controller.RemoveLocalVariable(v));
             }
 
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
@@ -815,6 +810,11 @@ namespace GUI.Components
             CreateEvent();
         }
 
+        private void menuLocalVar_Click(object sender, RoutedEventArgs e)
+        {
+            CreateLocalVariable();
+        }
+
         private void menuCondition_Click(object sender, RoutedEventArgs e)
         {
             CreateCondition();
@@ -922,5 +922,6 @@ namespace GUI.Components
             menuFunctionEnabled.IsEnabled = isECA;
             menuRename.IsEnabled = isLocalVar;
         }
+
     }
 }

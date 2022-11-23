@@ -21,9 +21,11 @@ namespace GUI.Components.Shared
     public class TreeItemHeader : StackPanel
     {
         internal TextBox RenameBox;
+        internal bool isRenaming { get; private set; }
         private System.Windows.Shapes.Rectangle Icon;
         private TextBlock DisplayText;
         private string categoryName = string.Empty;
+
 
         public enum TreeItemState
         {
@@ -83,6 +85,7 @@ namespace GUI.Components.Shared
 
         public void ShowRenameBox(bool doShow)
         {
+            isRenaming = doShow;
             if (doShow)
             {
                 this.Children.Remove(DisplayText);

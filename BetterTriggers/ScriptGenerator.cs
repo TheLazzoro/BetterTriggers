@@ -261,9 +261,9 @@ end
                 script.Append(globals + newline);
                 script.Append(newline);
                 if (!variable.IsArray)
-                    script.Append($"{varType} {variable.GetGlobalName()} = {GetGlobalsStartValue(varType)}");
+                    script.Append($"{varType} {variable.GetIdentifierName()} = {GetGlobalsStartValue(varType)}");
                 else
-                    script.Append($"{varType}{array} {variable.GetGlobalName()}{dimensions}");
+                    script.Append($"{varType}{array} {variable.GetIdentifierName()}{dimensions}");
                 script.Append(newline);
                 script.Append(endglobals + newline);
             }
@@ -382,19 +382,19 @@ end
 
 
                 if (!variable.IsArray && !string.IsNullOrEmpty(initialValue))
-                    script.Append($"\t{set} {variable.GetGlobalName()} =" + initialValue + newline);
+                    script.Append($"\t{set} {variable.GetIdentifierName()} =" + initialValue + newline);
                 else if (variable.IsArray && !variable.IsTwoDimensions && !string.IsNullOrEmpty(initialValue))
                 {
                     for (int j = 0; j <= variable.ArraySize[0]; j++)
                     {
-                        script.Append($"\t{set} {variable.GetGlobalName()}[{j}] = {initialValue}{newline}");
+                        script.Append($"\t{set} {variable.GetIdentifierName()}[{j}] = {initialValue}{newline}");
                     }
                 }
                 else if (variable.IsArray && variable.IsTwoDimensions)
                 {
                     if (language == ScriptLanguage.Lua)
                     {
-                        script.Append($"\t{variable.GetGlobalName()} = array2DLua({variable.ArraySize[0]}, {variable.ArraySize[1]}, {initialValue}){newline}");
+                        script.Append($"\t{variable.GetIdentifierName()} = array2DLua({variable.ArraySize[0]}, {variable.ArraySize[1]}, {initialValue}){newline}");
                         continue;
                     }
 
@@ -402,7 +402,7 @@ end
                     {
                         for (int k = 0; k <= variable.ArraySize[1]; k++)
                         {
-                            script.Append($"\t{set} {variable.GetGlobalName()}[{j}][{k}] = {initialValue}{newline}");
+                            script.Append($"\t{set} {variable.GetIdentifierName()}[{j}][{k}] = {initialValue}{newline}");
                         }
                     }
                 }
@@ -1560,6 +1560,7 @@ end
             }
         }
 
+        StringBuilder localVariables;
         public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
         {
             triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
@@ -1569,12 +1570,12 @@ end
             StringBuilder events = new StringBuilder();
             StringBuilder conditions = new StringBuilder();
             PreActions pre_actions = new PreActions();
+            localVariables = new StringBuilder();
             StringBuilder actions = new StringBuilder();
 
             events.Append($"function InitTrig_{triggerName} {functionReturnsNothing}{newline}");
             events.Append($"\t{set} {triggerVarName} = CreateTrigger(){newline}");
 
-            actions.Append($"function {triggerActionName} {functionReturnsNothing}{newline}");
 
             foreach (ECA e in t.trigger.Events)
             {
@@ -1598,6 +1599,18 @@ end
                 string _event = ConvertTriggerElementToJass(clonedEvent, pre_actions, false);
                 events.Append($"{_event} {newline}");
             }
+            foreach (LocalVariable localVar in t.trigger.LocalVariables)
+            {
+                string name = " " + localVar.variable.GetIdentifierName();
+                string initialValue;
+                string array = string.Empty;
+                string type = language == ScriptLanguage.Jass ? localVar.variable.Type : string.Empty;
+                if(language == ScriptLanguage.Jass)
+                    array = localVar.variable.IsArray ? " array " : string.Empty;
+                initialValue = localVar.variable.InitialValue == null ? string.Empty : " = " + localVar.variable.InitialValue.value; 
+                    
+                localVariables.Append($"\tlocal {type}{array}{name}{initialValue}{newline}");
+            }
             foreach (ECA c in t.trigger.Conditions)
             {
                 string condition = ConvertTriggerElementToJass(c, pre_actions, true);
@@ -1608,6 +1621,8 @@ end
                 conditions.Append($"\t\treturn false{newline}");
                 conditions.Append($"\t{endif}{newline}");
             }
+            actions.Insert(0, localVariables.ToString());
+            actions.Insert(0, $"function {triggerActionName} {functionReturnsNothing}{newline}");
             foreach (ECA a in t.trigger.Actions)
             {
                 actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, false)}{newline}");
@@ -1616,6 +1631,7 @@ end
 
             if (conditions.ToString() != "")
             {
+                conditions.Insert(0, localVariables.ToString());
                 conditions.Insert(0, $"function Trig_{triggerName}_Conditions {functionReturnsBoolean}{newline}");
                 conditions.Append($"\treturn true{newline}");
                 conditions.Append($"{endfunction}{newline}{newline}");
@@ -1681,7 +1697,7 @@ end
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
                 VariableRef varRef = (VariableRef)loopVar.function.parameters[0];
                 var variable = Variables.GetVariableById(varRef.VariableId);
-                string varName = variable.GetGlobalName();
+                string varName = variable.GetIdentifierName();
 
                 string array0 = string.Empty;
                 string array1 = string.Empty;
@@ -1987,7 +2003,7 @@ end
             {
                 VariableRef varRef = (VariableRef)f.parameters[0];
                 var variable = Variables.GetVariableById(varRef.VariableId);
-                string varName = variable.GetGlobalName();
+                string varName = variable.GetIdentifierName();
 
                 string array0 = string.Empty;
                 string array1 = string.Empty;
@@ -2194,7 +2210,7 @@ end
                 if (isVarAsString_Real)
                     output += "\"";
 
-                output += variable.GetGlobalName();
+                output += variable.GetIdentifierName();
 
                 if (variable.IsArray)
                 {

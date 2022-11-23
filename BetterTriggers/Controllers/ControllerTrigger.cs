@@ -497,6 +497,20 @@ namespace BetterTriggers.Controllers
             return parameters;
         }
 
+        public List<VariableRef> GetVariableRefsFromTrigger(ExplorerElementTrigger explorerElement)
+        {
+            List<Parameter> _params = GetParametersFromTrigger(explorerElement);
+            List<VariableRef> variableRefs = new List<VariableRef>();
+            _params.ForEach(p =>
+            {
+                var varRef = p as VariableRef;
+                if (varRef != null)
+                    variableRefs.Add(varRef);
+            });
+
+            return variableRefs;
+        }
+
         /// <summary>
         /// </summary>
         /// <returns>A list of every parameter in the given trigger.</returns>
