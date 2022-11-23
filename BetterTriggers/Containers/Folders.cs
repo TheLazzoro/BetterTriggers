@@ -7,7 +7,7 @@ namespace BetterTriggers.Containers
 {
     public static class Folders
     {
-        private static List<ExplorerElementFolder> folderContainer = new List<ExplorerElementFolder>();
+        private static HashSet<ExplorerElementFolder> folderContainer = new HashSet<ExplorerElementFolder>();
 
         public static void Clear()
         {
@@ -17,11 +17,6 @@ namespace BetterTriggers.Containers
         public static void AddFolder(ExplorerElementFolder folder)
         {
             folderContainer.Add(folder);
-        }
-
-        public static int Count()
-        {
-            return folderContainer.Count;
         }
 
         /// <summary>
@@ -44,26 +39,10 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public static ExplorerElementFolder Get(int index)
-        {
-            return folderContainer[index];
-        }
-
         public static void Remove(ExplorerElementFolder explorerElement)
         {
             folderContainer.Remove(explorerElement);
         }
 
-        public static void RemoveByFilePath(string filePath)
-        {
-            for (int i = 0; i < folderContainer.Count; i++)
-            {
-                var item = folderContainer[i];
-                if (item.GetPath() == filePath)
-                {
-                    folderContainer.Remove(item);
-                }
-            }
-        }
     }
 }

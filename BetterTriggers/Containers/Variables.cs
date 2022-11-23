@@ -9,8 +9,8 @@ namespace BetterTriggers.Containers
 {
     public static class Variables
     {
-        public static List<Variable> variableContainer = new List<Variable>();
-        public static List<Variable> localVariableContainer = new List<Variable>();
+        public static HashSet<Variable> variableContainer = new HashSet<Variable>();
+        public static HashSet<Variable> localVariableContainer = new HashSet<Variable>();
 
         public static void AddVariable(Variable variable)
         {
@@ -102,27 +102,23 @@ namespace BetterTriggers.Containers
             Variable var = null;
 
             bool found = false;
-            int i = 0;
-            while (!found && i < variableContainer.Count)
+            var enumerator = variableContainer.GetEnumerator();
+            while (!found && enumerator.MoveNext())
             {
-                if (variableContainer[i].Id == Id)
+                if (enumerator.Current.Id == Id)
                 {
-                    var = variableContainer[i];
+                    var = enumerator.Current;
                     found = true;
                 }
-
-                i++;
             }
-            i = 0;
-            while (!found && i < localVariableContainer.Count)
+            enumerator = localVariableContainer.GetEnumerator();
+            while (!found && enumerator.MoveNext())
             {
-                if (localVariableContainer[i].Id == Id)
+                if (enumerator.Current.Id == Id)
                 {
-                    var = localVariableContainer[i];
+                    var = enumerator.Current;
                     found = true;
                 }
-
-                i++;
             }
 
             return var;
@@ -133,25 +129,23 @@ namespace BetterTriggers.Containers
             string name = string.Empty;
 
             bool found = false;
-            int i = 0;
-            while (!found && i < variableContainer.Count)
+            var enumerator = variableContainer.GetEnumerator();
+            while (!found && enumerator.MoveNext())
             {
-                if (variableContainer[i].Id == Id)
+                if (enumerator.Current.Id == Id)
                 {
-                    name = variableContainer[i].Name;
+                    name = enumerator.Current.Name;
                     found = true;
                 }
-                i++;
             }
-            i = 0;
-            while (!found && i < localVariableContainer.Count)
+            enumerator = localVariableContainer.GetEnumerator();
+            while (!found && enumerator.MoveNext())
             {
-                if (localVariableContainer[i].Id == Id)
+                if (enumerator.Current.Id == Id)
                 {
-                    name = localVariableContainer[i].Name;
+                    name = enumerator.Current.Name;
                     found = true;
                 }
-                i++;
             }
 
             return name;

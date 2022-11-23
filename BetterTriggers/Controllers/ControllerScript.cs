@@ -82,22 +82,5 @@ namespace BetterTriggers.Controllers
 
             return script;
         }
-
-        public ExplorerElementScript GetExplorerElementByFileName(string filePath)
-        {
-            ExplorerElementScript explorerElement = null;
-
-            for (int i = 0; i < Scripts.Count(); i++)
-            {
-                var element = Scripts.Get(i);
-                if (element.GetPath() == filePath)
-                {
-                    explorerElement = element;
-                    break;
-                }
-            }
-
-            return explorerElement;
-        }
     }
 }

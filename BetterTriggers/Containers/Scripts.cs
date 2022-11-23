@@ -2,21 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace BetterTriggers.Containers
 {
     public static class Scripts
     {
-        private static List<ExplorerElementScript> scriptContainer = new List<ExplorerElementScript>();
+        private static HashSet<ExplorerElementScript> scriptContainer = new HashSet<ExplorerElementScript>();
 
         public static void AddScript(ExplorerElementScript script)
         {
             scriptContainer.Add(script);
-        }
-
-        public static int Count()
-        {
-            return scriptContainer.Count;
         }
 
         /// <summary>
@@ -39,26 +35,9 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public static ExplorerElementScript Get(int index)
-        {
-            return scriptContainer[index];
-        }
-
         public static void Remove(ExplorerElementScript explorerElement)
         {
             scriptContainer.Remove(explorerElement);
-        }
-
-        public static void RemoveByFilePath(string filePath)
-        {
-            for (int i = 0; i < scriptContainer.Count; i++)
-            {
-                var item = scriptContainer[i];
-                if (item.GetPath() == filePath)
-                {
-                    scriptContainer.Remove(item);
-                }
-            }
         }
 
         internal static void Clear()

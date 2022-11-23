@@ -9,6 +9,7 @@ using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Commands;
+using System.Linq;
 
 namespace BetterTriggers.Controllers
 {
@@ -105,7 +106,7 @@ namespace BetterTriggers.Controllers
 
         public List<Variable> GetVariablesAll()
         {
-            return Variables.variableContainer;
+            return Variables.variableContainer.Select(x => x).ToList();
         }
 
         private List<Variable> GetVariables(string returnType, Trigger trig)

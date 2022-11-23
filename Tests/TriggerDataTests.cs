@@ -1,3 +1,4 @@
+using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
@@ -34,6 +35,7 @@ namespace Tests
             Console.WriteLine("-----------");
             Console.WriteLine("");
 
+            Locale.Load();
             TriggerData.LoadForTest();
         }
 
@@ -141,6 +143,8 @@ namespace Tests
 
 
             // --- 'SetVariable' edge case --- //
+            // When deleting a variable we should expect the reference to be deleted also,
+            // which is what happens in @GetParameterReturnTypes.
 
             ControllerProject controllerProject = new ControllerProject();
             controllerProject.OnDeleteElement(variablePath);

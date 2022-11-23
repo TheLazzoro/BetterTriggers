@@ -3,16 +3,19 @@ using BetterTriggers.Models.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace BetterTriggers.Containers
 {
     public static class Triggers
     {
-        private static List<ExplorerElementTrigger> triggerElementContainer = new List<ExplorerElementTrigger>();
+        private static HashSet<ExplorerElementTrigger> triggerElementContainer = new HashSet<ExplorerElementTrigger>();
+        private static ExplorerElementTrigger lastCreated;
 
         public static void AddTrigger(ExplorerElementTrigger trigger)
         {
             triggerElementContainer.Add(trigger);
+            lastCreated = trigger;
         }
 
         public static int GenerateId()
@@ -21,14 +24,12 @@ namespace BetterTriggers.Containers
             bool isIdValid = false;
             while (!isIdValid)
             {
-                int i = 0;
                 bool doesIdExist = false;
-                while (!doesIdExist && i < triggerElementContainer.Count)
+                var enumerator = triggerElementContainer.GetEnumerator();
+                while (!doesIdExist && enumerator.MoveNext())
                 {
-                    if (triggerElementContainer[i].trigger.Id == generatedId)
+                    if (enumerator.Current.trigger.Id == generatedId)
                         doesIdExist = true;
-                    else
-                        i++;
                 }
 
                 if (!doesIdExist)
@@ -56,7 +57,7 @@ namespace BetterTriggers.Containers
 
             foreach (var item in triggerElementContainer)
             {
-                if(item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }
@@ -74,11 +75,12 @@ namespace BetterTriggers.Containers
         public static ExplorerElementTrigger FindById(int id)
         {
             ExplorerElementTrigger trigger = null;
-            for (int i = 0; i < triggerElementContainer.Count; i++)
+            var enumerator = triggerElementContainer.GetEnumerator();
+            while (enumerator.MoveNext())
             {
-                if(triggerElementContainer[i].trigger.Id == id)
+                if (enumerator.Current.trigger.Id == id)
                 {
-                    trigger = triggerElementContainer[i];
+                    trigger = enumerator.Current;
                     break;
                 }
             }
@@ -88,12 +90,12 @@ namespace BetterTriggers.Containers
 
         public static ExplorerElementTrigger GetLastCreated()
         {
-            return triggerElementContainer[triggerElementContainer.Count - 1];
+            return lastCreated;
         }
 
         internal static List<ExplorerElementTrigger> GetAll()
         {
-            return triggerElementContainer;
+            return triggerElementContainer.Select(x => x).ToList();
         }
 
         public static void Remove(ExplorerElementTrigger explorerElement)
