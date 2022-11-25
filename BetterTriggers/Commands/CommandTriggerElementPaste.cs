@@ -30,6 +30,7 @@ namespace BetterTriggers.Commands
             for (int i = 0; i < listToPaste.Count; i++)
             {
                 listToPaste[i].SetParent(parent, pastedIndex + i);
+                listToPaste[i].Created(pastedIndex + i);
             }
 
             ControllerReferences controller = new ControllerReferences();

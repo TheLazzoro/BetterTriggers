@@ -18,7 +18,8 @@ namespace BetterTriggers.Models.SaveableData
         public override LocalVariable Clone()
         {
             LocalVariable clone = new LocalVariable();
-            clone.variable = (Variable)variable.Clone();
+            clone.variable = variable.Clone();
+            clone.variable._isLocal = true;
 
             return clone;
         }

@@ -1560,7 +1560,54 @@ end
             }
         }
 
-        StringBuilder localVariables;
+        StringBuilder localVariableDecl;
+        List<Variable> localVariables;
+        List<Variable> globalLocalCarries;
+        private string SetLocals()
+        {
+            StringBuilder s = new StringBuilder();
+            for (int i = 0; i < localVariables.Count; i++)
+            {
+                var global = globalLocalCarries[i];
+                var local = localVariables[i];
+                s.Append($"{set} ");
+                s.Append($"{local.GetIdentifierName()}");
+                s.Append($" = ");
+                s.Append($"{global.Name}");
+                s.Append($"{newline}");
+            }
+            return s.ToString();
+        }
+
+        private string CarryLocals()
+        {
+            StringBuilder s = new StringBuilder();
+            for (int i = 0; i < localVariables.Count; i++)
+            {
+                var global = globalLocalCarries[i];
+                var local = localVariables[i];
+                s.Append($"{set} ");
+                s.Append($"{global.Name}");
+                s.Append($" = ");
+                s.Append($"{local.GetIdentifierName()}");
+                s.Append($"{newline}");
+            }
+            return s.ToString();
+        }
+
+        private string NullLocals()
+        {
+            StringBuilder s = new StringBuilder();
+            localVariables.ForEach(v =>
+            {
+                s.Append($"{set} ");
+                s.Append($"{v.GetIdentifierName()}");
+                s.Append($" = {GetGlobalsStartValue(v.Type)}");
+                s.Append($"{newline}");
+            });
+            return s.ToString();
+        }
+
         public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
         {
             triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
@@ -1570,7 +1617,9 @@ end
             StringBuilder events = new StringBuilder();
             StringBuilder conditions = new StringBuilder();
             PreActions pre_actions = new PreActions();
-            localVariables = new StringBuilder();
+            localVariableDecl = new StringBuilder();
+            localVariables = new List<Variable>();
+            globalLocalCarries = new List<Variable>();
             StringBuilder actions = new StringBuilder();
 
             events.Append($"function InitTrig_{triggerName} {functionReturnsNothing}{newline}");
@@ -1588,7 +1637,7 @@ end
                     continue;
                 }
 
-                ECA clonedEvent = e.Clone(); // Need to insert trigger variable at index 0.
+                ECA clonedEvent = e.Clone(); // Need to insert trigger variable at index 0, so we clone it instead of using the original one.
                 TriggerRef triggerRef = new TriggerRef()
                 {
                     TriggerId = t.trigger.Id,
@@ -1601,15 +1650,29 @@ end
             }
             foreach (LocalVariable localVar in t.trigger.LocalVariables)
             {
-                string name = " " + localVar.variable.GetIdentifierName();
+                localVariables.Add(localVar.variable);
+                string name = localVar.variable.GetIdentifierName();
                 string initialValue;
                 string array = string.Empty;
+                string arrayLua = string.Empty;
                 string type = language == ScriptLanguage.Jass ? localVar.variable.Type : string.Empty;
-                if(language == ScriptLanguage.Jass)
-                    array = localVar.variable.IsArray ? " array " : string.Empty;
-                initialValue = localVar.variable.InitialValue == null ? string.Empty : " = " + localVar.variable.InitialValue.value; 
-                    
-                localVariables.Append($"\tlocal {type}{array}{name}{initialValue}{newline}");
+                if (language == ScriptLanguage.Jass)
+                    array = localVar.variable.IsArray ? "array" : string.Empty;
+                if (language == ScriptLanguage.Lua)
+                    arrayLua = " = {}";
+                //initialValue = localVar.variable.InitialValue == null ? string.Empty : " = " + localVar.variable.InitialValue.value;
+                // TODO: Initial values for local variables? Array initial values could be a problem. Consider.
+
+                localVariableDecl.Append($"\tlocal {type} {array} {name}{arrayLua}{newline}");
+
+                Variable globalCarry = new Variable();
+                globalCarry.Name = $"{name}_c_{t.trigger.Id}";
+                globalCarry.Type = type;
+                globalCarry.IsArray = localVar.variable.IsArray;
+                globalLocalCarries.Add(globalCarry);
+                events.Insert(0, $"{endglobals}{newline}");
+                events.Insert(0, $"{type} {array} {globalCarry.Name} {arrayLua}{newline}");
+                events.Insert(0, $"{globals}{newline}");
             }
             foreach (ECA c in t.trigger.Conditions)
             {
@@ -1621,7 +1684,7 @@ end
                 conditions.Append($"\t\treturn false{newline}");
                 conditions.Append($"\t{endif}{newline}");
             }
-            actions.Insert(0, localVariables.ToString());
+            actions.Insert(0, localVariableDecl.ToString());
             actions.Insert(0, $"function {triggerActionName} {functionReturnsNothing}{newline}");
             foreach (ECA a in t.trigger.Actions)
             {
@@ -1631,7 +1694,7 @@ end
 
             if (conditions.ToString() != "")
             {
-                conditions.Insert(0, localVariables.ToString());
+                conditions.Insert(0, localVariableDecl.ToString());
                 conditions.Insert(0, $"function Trig_{triggerName}_Conditions {functionReturnsBoolean}{newline}");
                 conditions.Append($"\treturn true{newline}");
                 conditions.Append($"{endfunction}{newline}{newline}");
@@ -1662,7 +1725,7 @@ end
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
 
 
-            if (f.value == "ForLoopAMultiple" || f.value == "ForLoopBMultiple")
+            if (t is ForLoopAMultiple || t is ForLoopBMultiple)
             {
                 string loopIndex = f.value == "ForLoopAMultiple" ? "bj_forLoopAIndex" : "bj_forLoopBIndex";
                 string loopIndexEnd = f.value == "ForLoopAMultiple" ? "bj_forLoopAIndexEnd" : "bj_forLoopBIndexEnd";
@@ -1671,7 +1734,7 @@ end
                 script.Append($"{set} {loopIndexEnd}={ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)} {newline}");
                 script.Append($"\t{startLoop}{loopIndex} > {loopIndexEnd}{breakLoop}{newline}");
 
-                if (f.value == "ForLoopAMultiple")
+                if (t is ForLoopAMultiple)
                 {
                     ForLoopAMultiple loopA = (ForLoopAMultiple)t;
                     foreach (ECA action in loopA.Actions)
@@ -1692,7 +1755,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.value == "ForLoopVarMultiple")
+            else if (t is ForLoopVarMultiple)
             {
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
                 VariableRef varRef = (VariableRef)loopVar.function.parameters[0];
@@ -1720,7 +1783,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.value == "IfThenElseMultiple")
+            else if (t is IfThenElse)
             {
                 IfThenElse ifThenElse = (IfThenElse)t;
 
@@ -1728,7 +1791,7 @@ end
                 List<ECA> conditions = new List<ECA>();
                 ifThenElse.If.ForEach(c =>
                 {
-                    ECA cond = (ECA) c;
+                    ECA cond = (ECA)c;
                     int emptyParams = controllerTrigger.VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
@@ -1766,11 +1829,11 @@ end
                 return script.ToString();
             }
 
-            else if (f.value == "ForForceMultiple" || f.value == "ForGroupMultiple")
+            else if (t is ForForceMultiple || t is ForGroupMultiple)
             {
                 string function_name = generate_function_name(triggerName);
 
-                // Remove multiple
+                // Remove 'multiple'
                 script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
@@ -1792,20 +1855,24 @@ end
                     }
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
                 return script.ToString();
             }
 
-            else if (f.value == "EnumDestructablesInRectAllMultiple")
+            else if (t is EnumDestructablesInRectAllMultiple)
             {
                 EnumDestructablesInRectAllMultiple enumDest = (EnumDestructablesInRectAllMultiple)t;
 
                 string function_name = generate_function_name(triggerName);
 
-                // Remove multiple
+                // Remove 'multiple'
                 script.Append($"{call} {f.value.Substring(0, 26)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, function {function_name}){newline}");
 
                 string pre = string.Empty;
@@ -1815,20 +1882,24 @@ end
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
                 return script.ToString();
             }
 
-            else if (f.value == "EnumDestructablesInCircleBJMultiple")
+            else if (t is EnumDestructiblesInCircleBJMultiple)
             {
                 EnumDestructiblesInCircleBJMultiple enumDest = (EnumDestructiblesInCircleBJMultiple)t;
 
                 string function_name = generate_function_name(triggerName);
 
-                // Remove multiple
+                // Remove 'multiple'
                 script.Append($"{call} {f.value.Substring(0, 27)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
@@ -1838,20 +1909,24 @@ end
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
                 return script.ToString();
             }
 
-            else if (f.value == "EnumItemsInRectBJMultiple")
+            else if (t is EnumItemsInRectBJ)
             {
                 EnumItemsInRectBJ enumItem = (EnumItemsInRectBJ)t;
 
                 string function_name = generate_function_name(triggerName);
 
-                // Remove multiple
+                // Remove 'multiple'
                 script.Append($"{call} {f.value.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
@@ -1861,14 +1936,18 @@ end
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
                 return script.ToString();
             }
 
-            else if (f.value == "AndMultiple")
+            else if (t is AndMultiple)
             {
                 AndMultiple andMultiple = (AndMultiple)t;
                 var verifiedTriggerElements = new List<ECA>();
@@ -1898,7 +1977,7 @@ end
                 return script.ToString();
             }
 
-            else if (f.value == "OrMultiple")
+            else if (t is OrMultiple)
             {
                 OrMultiple orMultiple = (OrMultiple)t;
                 var verifiedTriggerElements = new List<ECA>();

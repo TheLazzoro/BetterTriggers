@@ -97,6 +97,28 @@ namespace BetterTriggers.Containers
             return generatedId;
         }
 
+        internal static string GenerateLocalName(Trigger trig, string oldName = "UntitledVariable")
+        {
+            string baseName = oldName;
+            string name = baseName;
+            int i = 0;
+            bool validName = false;
+            while (!validName && trig.LocalVariables.Count > 0)
+            {
+                foreach (LocalVariable localVar in trig.LocalVariables)
+                {
+                    validName = name != localVar.variable.Name;
+                    if (!validName)
+                    {
+                        name = baseName + i;
+                        i++;
+                        break;
+                    }
+                }
+            }
+            return name;
+        }
+
         internal static Variable GetVariableById(int Id)
         {
             Variable var = null;

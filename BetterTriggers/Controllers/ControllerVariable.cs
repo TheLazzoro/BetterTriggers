@@ -64,24 +64,7 @@ namespace BetterTriggers.Controllers
 
         public void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
         {
-            string baseName = "UntitledVariable";
-            string name = baseName;
-            int i = 0;
-            bool validName = false;
-            while (!validName && trig.LocalVariables.Count > 0)
-            {
-                foreach (LocalVariable localVar in trig.LocalVariables)
-                {
-                    validName = name != localVar.variable.Name;
-                    if (!validName)
-                    {
-                        name = baseName + i;
-                        i++;
-                        break;
-                    }
-                }
-            }
-            localVariable.variable.Name = name;
+            localVariable.variable.Name = Variables.GenerateLocalName(trig);
             localVariable.variable.Id = Variables.GenerateId();
             localVariable.variable.Type = "integer";
             localVariable.variable.ArraySize = new int[] { 1, 1 };

@@ -43,7 +43,7 @@
         <Label x:Name="lblSize1" Content="Size:" Foreground="#ccc" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
         <TextBox x:Name="textBoxArraySize1" Foreground="White" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A" TextChanged="textBoxArraySize1_TextChanged"/>
 
-        <Label Content="Initial Value:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Foreground="#ccc"/>
+        <Label x:Name="lblInitialValue" Content="Initial Value:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Foreground="#ccc"/>
         <TextBlock x:Name="textblockInitialValue" Grid.Row="8" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center"></TextBlock>
     </Grid>
 </UserControl>

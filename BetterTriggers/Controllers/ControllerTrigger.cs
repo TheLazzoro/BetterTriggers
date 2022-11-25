@@ -160,7 +160,11 @@ namespace BetterTriggers.Controllers
                 else if (copied[i] is LocalVariable)
                 {
                     var element = (LocalVariable)copied[i];
-                    pasted.Add(element.Clone());
+                    var clone = element.Clone();
+                    clone.variable.Id = Variables.GenerateId();
+                    clone.variable.Name = Variables.GenerateLocalName(destinationTrigger.trigger, clone.variable.Name);
+                    pasted.Add(clone);
+                    Variables.AddLocalVariable(clone);
                 }
             }
 
@@ -340,12 +344,22 @@ namespace BetterTriggers.Controllers
                     var function = (Function)parameter;
                     invalidCount += VerifyParameters(function.parameters);
                 }
-                else if(parameter is VariableRef)
+                else if(parameter is VariableRef varRef)
                 {
                     ControllerVariable controller = new ControllerVariable();
-                    var variable = controller.GetByReference(parameter as VariableRef);
+                    var variable = controller.GetByReference(varRef);
                     if (variable == null)
                         invalidCount++;
+                    if(variable.IsArray)
+                    {
+                        if (varRef.arrayIndexValues[0] == null || varRef.arrayIndexValues[0].value == "")
+                            invalidCount++;
+                    }
+                    if(variable.IsArray && variable.IsTwoDimensions)
+                    {
+                        if (varRef.arrayIndexValues[1] == null || varRef.arrayIndexValues[1].value == "")
+                            invalidCount++;
+                    }
                 }
             }
 

@@ -9,6 +9,6 @@ namespace GUI.Container
 {
     public static class ContainerCopiedElementsGUI
     {
-        public static INode copiedElementParent; // hack. Should probably move these things to the backend sometime.
+        public static INode copiedElementParent; // TODO: hack. Should probably move these things to the backend sometime.
     }
 }

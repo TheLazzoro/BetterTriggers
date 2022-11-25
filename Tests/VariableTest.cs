@@ -37,7 +37,7 @@ namespace Tests
         {
             if (Directory.Exists(Path.Combine(directory, name)))
                 Directory.Delete(Path.Combine(directory, name), true);
-            if(File.Exists(Path.Combine(directory, name + ".json")))
+            if (File.Exists(Path.Combine(directory, name + ".json")))
                 File.Delete(Path.Combine(directory, name + ".json"));
 
             ControllerProject controllerProject = new ControllerProject();
@@ -87,6 +87,9 @@ namespace Tests
             controllerProject.CopyExplorerElement(element1);
             var element = controllerProject.PasteExplorerElement(element3) as ExplorerElementVariable;
 
+            string expectedName = element1.variable.Name + "2";
+            string actualName = element.variable.Name;
+
             int expectedArray0 = element1.variable.ArraySize[0];
             int expectedArray1 = element1.variable.ArraySize[1];
             int actualArray0 = element.variable.ArraySize[0];
@@ -99,6 +102,19 @@ namespace Tests
             Assert.AreEqual(expectedArray0, actualArray0);
             Assert.AreEqual(expectedArray1, actualArray1);
             Assert.AreEqual(expectedType, actualType);
+            Assert.AreEqual(expectedName, actualName);
+        }
+
+        [TestMethod]
+        public void CloneLocalVariable()
+        {
+            var trig = new Trigger();
+            ControllerVariable controller = new ControllerVariable();
+            LocalVariable variable = new LocalVariable();
+            controller.CreateLocalVariable(trig, variable, trig.LocalVariables, 0);
+
+            Assert.AreEqual("UntitledVariable", variable.variable.Name);
+            Assert.AreEqual(true, variable.variable._isLocal);
         }
     }
 }

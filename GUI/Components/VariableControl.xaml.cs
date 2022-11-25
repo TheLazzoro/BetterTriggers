@@ -53,6 +53,9 @@ namespace GUI.Components
                 comboBoxArrayDimensions.Visibility = Visibility.Hidden;
                 lblSize1.Visibility = Visibility.Hidden;
                 textBoxArraySize1.Visibility = Visibility.Hidden;
+                lblInitialValue.Visibility = Visibility.Hidden;
+                textblockInitialValue.Visibility = Visibility.Hidden;
+                checkBoxIsArray.Visibility = Visibility.Hidden;
             }
 
             ControllerTriggerData controller = new ControllerTriggerData();
@@ -73,7 +76,6 @@ namespace GUI.Components
                 }
             }
 
-            ControllerVariable controllerVariable = new ControllerVariable();
             UpdateIdentifierText();
             ControllerParamText controllerParamText = new ControllerParamText();
             var inlines = controllerParamText.GenerateParamText(variable);
