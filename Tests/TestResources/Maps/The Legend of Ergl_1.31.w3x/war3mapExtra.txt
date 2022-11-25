@@ -1,0 +1,3 @@
+[MapExtraInfo]
+SkyModel=0
+

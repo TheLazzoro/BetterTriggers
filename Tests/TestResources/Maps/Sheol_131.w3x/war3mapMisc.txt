@@ -1,0 +1,11 @@
+[Misc]
+CallForHelp=300.0
+CreepCallForHelp=300.0
+GuardDistance=5000.0
+GuardReturnTime=10000.0
+HeroFactorXP=90,80,70,60,50,45,40,35,30,20
+IntManaBonus=0.0
+IntRegenBonus=0.0
+MaxGuardDistance=100000.0
+ReactionDelay=0.0
+

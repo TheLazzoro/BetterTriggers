@@ -139,6 +139,26 @@ namespace Tests
             Assert.IsTrue(success, failedMsg);
         }
 
+        [TestMethod]
+        public void ConvertMap_GenerateScript_The_Legend_of_Ergl_131()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/The Legend of Ergl_1.31.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_Sheol_131()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Sheol_131.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+
+
         void ConvertMap_GenerateScript(string mapDir)
         {
             TriggerConverter triggerConverter = new TriggerConverter();

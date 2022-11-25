@@ -1,0 +1,13 @@
+[Misc]
+BoneDecayTime=3.0
+BuildingAngle=-1.0
+DamageBonusMagic=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusNormal=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusPierce=0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00
+DecayTime=1.0
+GuardReturnTime=9999.0
+MaxGuardDistance=9999.0
+MaxUnitSpeed=522.0
+MinUnitSpeed=0.0
+ReactionDelay=0.01
+

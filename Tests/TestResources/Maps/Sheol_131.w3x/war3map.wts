@@ -1,0 +1,3716 @@
+﻿STRING 1
+{
+Player 1
+}
+
+STRING 3
+{
+|c00540081Sheol|r
+}
+
+STRING 4
+{
+1
+}
+
+STRING 5
+{
+You play as humanity's hatred reincarnate on a mission to vanquish evil.
+
+Made for Hiveworkshop's 16th mini-mapping contest.
+}
+
+STRING 6
+{
+FeelsGoodMan
+}
+
+STRING 7
+// Doodads: D000 (CD - 1), Name (Name)
+{
+CD - 1
+}
+
+STRING 40
+// Doodads: D001 (CD - 2), Name (Name)
+{
+CD - 2
+}
+
+STRING 41
+// Doodads: D002 (CD - 3), Name (Name)
+{
+CD - 3
+}
+
+STRING 42
+// Doodads: D003 (CD - 4), Name (Name)
+{
+CD - 4
+}
+
+STRING 43
+// Doodads: D004 (CD - 5), Name (Name)
+{
+CD - 5
+}
+
+STRING 44
+// Doodads: D005 (CD - 6), Name (Name)
+{
+CD - 6
+}
+
+STRING 45
+// Doodads: D006 (CD - 7), Name (Name)
+{
+CD - 7
+}
+
+STRING 46
+// Doodads: D007 (CD - 8), Name (Name)
+{
+CD - 8
+}
+
+STRING 47
+// Doodads: D008 (CD - 9), Name (Name)
+{
+CD - 9
+}
+
+STRING 48
+// Doodads: D009 (CD - 10), Name (Name)
+{
+CD - 10
+}
+
+STRING 49
+// Doodads: D00A (CD - 11), Name (Name)
+{
+CD - 11
+}
+
+STRING 50
+// Doodads: D00B (CD - 12), Name (Name)
+{
+CD - 12
+}
+
+STRING 51
+// Doodads: D00C (CD - 13), Name (Name)
+{
+CD - 13
+}
+
+STRING 52
+// Doodads: D00D (CD - 14), Name (Name)
+{
+CD - 14
+}
+
+STRING 53
+// Doodads: D00E (CD - 15), Name (Name)
+{
+CD - 15
+}
+
+STRING 54
+// Doodads: D00F (CD - 16), Name (Name)
+{
+CD - 16
+}
+
+STRING 55
+// Doodads: D00G (CD - 17), Name (Name)
+{
+CD - 17
+}
+
+STRING 56
+// Doodads: D00H (CD - 18), Name (Name)
+{
+CD - 18
+}
+
+STRING 57
+// Doodads: D00I (CD - 19), Name (Name)
+{
+CD - 19
+}
+
+STRING 58
+// Doodads: D00J (CD - 20), Name (Name)
+{
+CD - 20
+}
+
+STRING 59
+// Doodads: D00K (CD - 21), Name (Name)
+{
+CD - 21
+}
+
+STRING 60
+// Doodads: D00L (CD - 22), Name (Name)
+{
+CD - 22
+}
+
+STRING 61
+// Doodads: D00M (CD - 23), Name (Name)
+{
+CD - 23
+}
+
+STRING 62
+// Doodads: D00N (CD - 24), Name (Name)
+{
+CD - 24
+}
+
+STRING 63
+// Doodads: D00O (CD - 25), Name (Name)
+{
+CD - 25
+}
+
+STRING 64
+// Doodads: D00P (CD - 26), Name (Name)
+{
+CD - 26
+}
+
+STRING 65
+// Doodads: D00Q (CD - 27), Name (Name)
+{
+CD - 27
+}
+
+STRING 66
+// Doodads: D00R (CD - 28), Name (Name)
+{
+CD - 28
+}
+
+STRING 67
+// Doodads: D00S (CD - 29), Name (Name)
+{
+CD - 29
+}
+
+STRING 68
+// Doodads: D00T (CD - 30), Name (Name)
+{
+CD - 30
+}
+
+STRING 69
+// Doodads: D00U (CD - 31), Name (Name)
+{
+CD - 31
+}
+
+STRING 70
+// Doodads: D00V (CD - 32), Name (Name)
+{
+CD - 32
+}
+
+STRING 71
+// Doodads: D00X (CD - 33), Name (Name)
+{
+CD - 33
+}
+
+STRING 72
+// Doodads: D00W (CD - Omnilight Blue), Name (Name)
+{
+CD - Omnilight Blue
+}
+
+STRING 73
+// Doodads: D00Y (CD - Cloud), Name (Name)
+{
+CD - Cloud
+}
+
+STRING 74
+// Doodads: D00Z (CD - Omnilight Orange), Name (Name)
+{
+CD - Omnilight Orange
+}
+
+STRING 75
+// Doodads: D010 (CD - Terrain Fog), Name (Name)
+{
+CD - Terrain Fog
+}
+
+STRING 76
+// Doodads: D011 (CD - Terrain Glow), Name (Name)
+{
+CD - Terrain Glow
+}
+
+STRING 77
+{
+Spirit of Hatred
+}
+
+STRING 78
+// Units: Hvwd (Spirit of Hatred), Propernames (Proper Names)
+{
+Unnamed
+}
+
+STRING 79
+// Doodads: D012 (CD - Soul Medium), Name (Name)
+{
+CD - Soul Medium
+}
+
+STRING 80
+// Doodads: D013 (CD - Soul Small), Name (Name)
+{
+CD - Soul Small
+}
+
+STRING 81
+// Doodads: D015 (CD - Statue 1), Name (Name)
+{
+CD - Statue 1
+}
+
+STRING 82
+// Doodads: D014 (CD - Statue 2), Name (Name)
+{
+CD - Statue 2
+}
+
+STRING 83
+// Doodads: D016 (CD - Statue 3), Name (Name)
+{
+CD - Statue 3
+}
+
+STRING 84
+// Doodads: D017 (CD - Chain), Name (Name)
+{
+CD - Chain
+}
+
+STRING 85
+// Doodads: D018 (CD - Lamp), Name (Name)
+{
+CD - Lamp
+}
+
+STRING 86
+// Doodads: D019 (CD - Torch), Name (Name)
+{
+CD - Torch
+}
+
+STRING 87
+// Doodads: D01A (CD - Soul Huge), Name (Name)
+{
+CD - Soul Huge
+}
+
+STRING 88
+// Doodads: D01B (CD - Skeletons), Name (Name)
+{
+CD - Skeletons
+}
+
+STRING 89
+// Items: I000 (Soul), Name (Name)
+{
+Soul
+}
+
+STRING 92
+// Units: u000 (Shade), Name (Name)
+{
+Shade
+}
+
+STRING 93
+// Doodads: D01C (CD - Skeletons Small), Name (Name)
+{
+CD - Skeletons Small
+}
+
+STRING 94
+// Units: h001 (Dummy), Name (Name)
+{
+Dummy
+}
+
+STRING 95
+// Abilities: A001 (Wave), Name (Name)
+{
+Wave
+}
+
+STRING 99
+// Abilities: A000 (Slam), Name (Name)
+{
+Slam
+}
+
+STRING 103
+// Abilities: A001 (Wave), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 104
+// Abilities: A001 (Wave), Researchhotkey (Hotkey - Learn)
+{
+Q
+}
+
+STRING 105
+// Abilities: A001 (Wave), Unhotkey (Hotkey - Turn Off)
+{
+Q
+}
+
+STRING 106
+// Abilities: A000 (Slam), Hotkey (Hotkey - Normal)
+{
+R
+}
+
+STRING 107
+// Abilities: A000 (Slam), Researchhotkey (Hotkey - Learn)
+{
+R
+}
+
+STRING 108
+// Abilities: A000 (Slam), Unhotkey (Hotkey - Turn Off)
+{
+R
+}
+
+STRING 110
+// Destructibles: B000 (Chest), Name (Name)
+{
+Chest
+}
+
+STRING 112
+// Doodads: D01D (CD - NEW - 3), Name (Name)
+{
+CD - NEW - 3
+}
+
+STRING 113
+// Doodads: D01E (CD - NEW - 1), Name (Name)
+{
+CD - NEW - 1
+}
+
+STRING 114
+// Doodads: D01F (CD - NEW - 2), Name (Name)
+{
+CD - NEW - 2
+}
+
+STRING 115
+// Doodads: D01G (CD - NEW - 5), Name (Name)
+{
+CD - NEW - 5
+}
+
+STRING 116
+// Doodads: D01H (CD - NEW - 4), Name (Name)
+{
+CD - NEW - 4
+}
+
+STRING 117
+// Doodads: D01I (CD - NEW - 6), Name (Name)
+{
+CD - NEW - 6
+}
+
+STRING 118
+// Doodads: D01J (CD - NEW - 8), Name (Name)
+{
+CD - NEW - 8
+}
+
+STRING 119
+// Doodads: D01K (CD - NEW - 7), Name (Name)
+{
+CD - NEW - 7
+}
+
+STRING 120
+// Doodads: D01L (CD - NEW - 9), Name (Name)
+{
+CD - NEW - 9
+}
+
+STRING 121
+// Doodads: D01M (CD - NEW - 10), Name (Name)
+{
+CD - NEW - 10
+}
+
+STRING 122
+// Doodads: D01N (CD - Chain 2), Name (Name)
+{
+CD - Chain 2
+}
+
+STRING 162
+// Doodads: D01O (CD - SpawnMark1), Name (Name)
+{
+CD - SpawnMark1
+}
+
+STRING 163
+// Doodads: D01P (CD - SpawnMark2), Name (Name)
+{
+CD - SpawnMark2
+}
+
+STRING 164
+{
+Spawn Activated!
+}
+
+STRING 165
+{
+Spawn Activated!
+}
+
+STRING 166
+{
+Spawn Activated!
+}
+
+STRING 167
+{
+Spawn Activated!
+}
+
+STRING 168
+{
+Spawn Activated!
+}
+
+STRING 169
+{
+You have died. You will respawn at the closest respawn point soon!
+}
+
+STRING 170
+// Doodads: D01Q (CD - Porticulis), Name (Name)
+{
+CD - Porticulis
+}
+
+STRING 171
+{
+Click on the '|cffd45e19QUEST LOG|r' or press '|cffd45e19F9|r' to read important game information.
+
+Made by |cffd45e19FeelsGoodMan |rfor |cffd45e19Hiveworkshop|r's 16th mini map contest.
+}
+
+STRING 176
+// Abilities: A002 (Spirit Blows), Name (Name)
+{
+Spirit Blows
+}
+
+STRING 180
+// Abilities: A003 (Attack Speed Ability), Name (Name)
+{
+Attack Speed Ability
+}
+
+STRING 184
+// Abilities: A004 (Movement Speed Bonus), Name (Name)
+{
+Movement Speed Bonus
+}
+
+STRING 185
+{
+Gem of Death fades in
+}
+
+STRING 186
+{
+Gem of Life fades in
+}
+
+STRING 191
+// Doodads: D01R (CD - Yellow Drop Zone), Name (Name)
+{
+CD - Yellow Drop Zone
+}
+
+STRING 192
+// Doodads: D01S (CD - Red Drop Zone), Name (Name)
+{
+CD - Red Drop Zone
+}
+
+STRING 193
+// Doodads: D01T (CD - Painting), Name (Name)
+{
+CD - Painting
+}
+
+STRING 196
+// Units: o000 (Demonic Centaur), Name (Name)
+{
+Demonic Centaur
+}
+
+STRING 198
+// Units: h00G (Necro Witch), Name (Name)
+{
+Necro Witch
+}
+
+STRING 202
+// Items: I001 (Gem of |cffffff00Life|r), Name (Name)
+{
+Gem of |cffffff00Life|r
+}
+
+STRING 204
+// Items: I002 (Gem of |cffff0000Death|r), Name (Name)
+{
+Gem of |cffff0000Death|r
+}
+
+STRING 206
+// Units: h006 (Laser Beam), Name (Name)
+{
+Laser Beam
+}
+
+STRING 208
+// Abilities: A006 (Disable Right-Click), Name (Name)
+{
+Disable Right-Click
+}
+
+STRING 213
+// Abilities: A005 (Soul Ray), Name (Name)
+{
+Soul Ray
+}
+
+STRING 216
+// Abilities: A005 (Soul Ray), Untip (Tooltip - Turn Off)
+{
+Deactivate Soul Ray
+}
+
+STRING 217
+// Abilities: A005 (Soul Ray), Unubertip (Tooltip - Turn Off - Extended)
+{
+Deactivate Soul Ray to stop draining soul charges.
+}
+
+STRING 219
+// Abilities: A000 (Slam), Ubertip (Tooltip - Normal - Extended)
+{
+Slams the ground, knocking nearby units far back. Deals 200 damage.|n|n|cff6f2583Costs 10 soul charges.|r
+}
+
+STRING 222
+// Abilities: A005 (Soul Ray), Researchhotkey (Hotkey - Learn)
+{
+E
+}
+
+STRING 223
+// Abilities: A005 (Soul Ray), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 224
+// Abilities: A005 (Soul Ray), Unhotkey (Hotkey - Turn Off)
+{
+E
+}
+
+STRING 225
+// Abilities: A005 (Soul Ray), Ubertip (Tooltip - Normal - Extended)
+{
+Shoots a controllable beam in the direction of the caster, reaching 800 range. The beam follows the position of the mouse, and deals 50 damage per second to units caught in its path. While active it drains 2 soul charges every second until deactivated, or until the casters mana is below 5.|n|n|cff6f2583Costs 2 soul charges per second.|r 
+}
+
+STRING 226
+// Units: e001 (Dummy Caster), Name (Name)
+{
+Dummy Caster
+}
+
+STRING 227
+// Abilities: A009 (Universal Stun), Name (Name)
+{
+Universal Stun
+}
+
+STRING 231
+// Abilities: A012 (Charge), Researchhotkey (Hotkey - Learn)
+{
+D
+}
+
+STRING 233
+// Abilities: A012 (Charge), Tip (Tooltip - Normal)
+{
+[|cff48d1ccW|r] Zandalari Charge - [|cffffcc00Level 2|r] |n|cff7896ff13.5 second cooldown|r
+}
+
+STRING 234
+// Abilities: A012 (Charge), Tip (Tooltip - Normal)
+{
+[|cff48d1ccW|r] Zandalari Charge - [|cffffcc00Level 3|r] |n|cff7896ff13 second cooldown|r
+}
+
+STRING 235
+// Abilities: A012 (Charge), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080[|r|cffffff00Active|r|cff808080]|r: |cffc8ffffFils charges forward towards the target location, dealing|r 120|cffff8c00(+70%)|r |cffe15e19Physical|r |cffc8ffffdamage and stunning the first enemy he collides with for|r 2 |cffc8ffffseconds.
+}
+
+STRING 236
+// Abilities: A012 (Charge), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080[|r|cffffff00Active|r|cff808080]|r: |cffc8ffffFils charges forward towards the target location, dealing|r 150|cffff8c00(+70%)|r |cffe15e19Physical|r |cffc8ffffdamage and stunning the first enemy he collides with for|r 2 |cffc8ffffseconds.
+}
+
+STRING 237
+// Abilities: A012 (Charge), Name (Name)
+{
+Charge
+}
+
+STRING 238
+// Abilities: A012 (Charge), Hotkey (Hotkey - Normal)
+{
+D
+}
+
+STRING 239
+// Abilities: A012 (Charge), Tip (Tooltip - Normal)
+{
+[|cff48d1ccW|r] Zandalari Charge - [|cffffcc00Level 4|r] |n|cff7896ff12.5 second cooldown|r
+}
+
+STRING 240
+// Abilities: A012 (Charge), Tip (Tooltip - Normal)
+{
+[|cff48d1ccW|r] Zandalari Charge - [|cffffcc00Level 5|r] |n|cff7896ff12 second cooldown|r
+}
+
+STRING 241
+// Abilities: A012 (Charge), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080[|r|cffffff00Active|r|cff808080]|r: |cffc8ffffFils charges forward towards the target location, dealing|r 180|cffff8c00(+70%)|r |cffe15e19Physical|r |cffc8ffffdamage and stunning the first enemy he collides with for|r 2 |cffc8ffffseconds.
+}
+
+STRING 242
+// Abilities: A012 (Charge), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080[|r|cffffff00Active|r|cff808080]|r: |cffc8ffffFils charges forward towards the target location, dealing|r 210|cffff8c00(+70%)|r |cffe15e19Physical|r |cffc8ffffdamage and stunning the first enemy he collides with for|r 2 |cffc8ffffseconds.
+}
+
+STRING 244
+// Units: h007 (Shadow Fiend), Name (Name)
+{
+Shadow Fiend
+}
+
+STRING 247
+// Units: h002 (Unholy Warrior), Name (Name)
+{
+Unholy Warrior
+}
+
+STRING 250
+// Buffs/Effects: BEim (), Bufftip (Tooltip)
+{
+Soul Ray
+}
+
+STRING 253
+// Units: hrif (Fireball), Name (Name)
+{
+Fireball
+}
+
+STRING 254
+// Doodads: D01U (CD - Terrain Fog Colored), Name (Name)
+{
+CD - Terrain Fog Colored
+}
+
+STRING 255
+// Units: h008 (Dummy Tall Z Projectiles), Name (Name)
+{
+Dummy Tall Z Projectiles
+}
+
+STRING 256
+// Abilities: A007 (FireBolt), Name (Name)
+{
+FireBolt
+}
+
+STRING 257
+// Units: h009 (Portal), Name (Name)
+{
+Portal
+}
+
+STRING 258
+// Doodads: D01V (CD - Spires), Name (Name)
+{
+CD - Spires
+}
+
+STRING 259
+// Doodads: D01W (CD - Lava), Name (Name)
+{
+CD - Lava
+}
+
+STRING 261
+// Units: h00B (Fire Beam), Name (Name)
+{
+Fire Beam
+}
+
+STRING 262
+// Units: uban (Death Shade), Name (Name)
+{
+Death Shade
+}
+
+STRING 263
+// Units: u001 (Life Shade), Name (Name)
+{
+Life Shade
+}
+
+STRING 264
+// Units: h004 (Blue Soul), Name (Name)
+{
+Blue Soul
+}
+
+STRING 265
+// Units: h00C (Red Soul), Name (Name)
+{
+Red Soul
+}
+
+STRING 269
+// Items: I001 (Gem of |cffffff00Life|r), Ubertip (Tooltip - Extended)
+{
+This gem attracts shades as long as it is in your inventory. When shades dies they drop a soul on the ground that restores 65 HP when consumed. Souls can be consumed by walking on them, and they stay on the ground for 20 seconds before fading.|n|nThe gem of life will fade from your inventory if held for more than 2 minutes without placing it in a drop zone. It will then be returned to its last drop zone.|n|nDrop zones are marked with either a |cffff0000red |ror |cffffff00yellow |rmarker, and the gems can only be contained within their respective zones.
+}
+
+STRING 270
+// Items: I002 (Gem of |cffff0000Death|r), Ubertip (Tooltip - Extended)
+{
+This gem attracts shades as long as it is in your inventory. When shades dies they drop a soul on the ground that restores 15 mana when consumed. Souls can be consumed by walking on them, and they stay on the ground for 20 seconds before fading.|n|nThe gem of death will fade from your inventory if held for more than 2 minutes without placing it in a drop zone. It will then be returned to its last drop zone.|n|nDrop zones are marked with either a |cffff0000red |ror |cffffff00yellow |rmarker, and the gems can only be contained within their respective zones.
+}
+
+STRING 275
+// Units: h00A (Fire Ward), Name (Name)
+{
+Fire Ward
+}
+
+STRING 282
+// Units: h005 (Skeleton Warrior), Name (Name)
+{
+Skeleton Warrior
+}
+
+STRING 284
+// Units: h00F (Void Missile), Name (Name)
+{
+Void Missile
+}
+
+STRING 285
+// Abilities: A008 (Shadow Hand Shadow Spell), Name (Name)
+{
+Shadow Hand Shadow Spell
+}
+
+STRING 287
+{
+Witch of Endor
+}
+
+STRING 288
+// war3mapImported\1.mp3
+{
+I see you got past Mammon. Such a weak creature. He is not worthy of the title demon.
+}
+
+STRING 294
+// Units: h00G (Necro Witch), EditorSuffix (Name - Editor Suffix)
+{
+(Portrait)
+}
+
+STRING 295
+// Units: h00H (Centaur), Name (Name)
+{
+Centaur
+}
+
+STRING 296
+// Units: h00H (Centaur), EditorSuffix (Name - Editor Suffix)
+{
+(Portrait)
+}
+
+STRING 297
+{
+Unnamed
+}
+
+STRING 298
+// war3mapImported\SW1.mp3
+{
+You will meet the same fate as him, Witch of Endor.
+}
+
+STRING 299
+{
+Witch of Endor
+}
+
+STRING 300
+// war3mapImported\2.mp3
+{
+You know me? Peculiar. I sense something about you.
+}
+
+STRING 301
+{
+You need both the |cffffff00Gem of Life|r and |cffff0000Gem of Death|r to enter.
+}
+
+STRING 302
+// Units: o001 (Abaddon), Name (Name)
+{
+Abaddon
+}
+
+STRING 303
+// Units: h003 (Witch of Endor), Name (Name)
+{
+Witch of Endor
+}
+
+STRING 304
+// Units: h00I (Shade of Samuel), Name (Name)
+{
+Shade of Samuel
+}
+
+STRING 305
+// Units: h00J (Nuckelavee), Name (Name)
+{
+Nuckelavee
+}
+
+STRING 306
+// Units: h00K (Fireball), Name (Name)
+{
+Fireball
+}
+
+STRING 307
+{
+You need both the |cffffff00Gem of Life|r and |cffff0000Gem of Death|r to enter.
+}
+
+STRING 319
+{
+Gem of Death fades in
+}
+
+STRING 320
+{
+Gem of Life fades in
+}
+
+STRING 321
+// Doodads: D01X (CD - Lamp Scolo), Name (Name)
+{
+CD - Lamp Scolo
+}
+
+STRING 322
+// Doodads: D01Y (CD - Galaxy), Name (Name)
+{
+CD - Galaxy
+}
+
+STRING 323
+// Doodads: D01Z (Fire Blue BIG), Name (Name)
+{
+Fire Blue BIG
+}
+
+STRING 324
+{
+Gem of Death fades in
+}
+
+STRING 325
+{
+Gem of Life fades in
+}
+
+STRING 328
+// Abilities: A00A (Drop Gem of Death), Ubertip (Tooltip - Normal - Extended)
+{
+Drops or picks up the |cffff0000Gem of Death|r.
+}
+
+STRING 329
+// Abilities: A00A (Drop Gem of Death), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 330
+// Abilities: A00A (Drop Gem of Death), Unhotkey (Hotkey - Turn Off)
+{
+F
+}
+
+STRING 331
+// Abilities: A00A (Drop Gem of Death), Name (Name)
+{
+Drop Gem of Death
+}
+
+STRING 337
+// Abilities: A00A (Drop Gem of Death), Tip (Tooltip - Normal)
+{
+Gem of Death [|cff00ffffF|r]
+}
+
+STRING 338
+// Abilities: A00B (Drop Gem of Life), Name (Name)
+{
+Drop Gem of Life
+}
+
+STRING 339
+// Abilities: A00B (Drop Gem of Life), Tip (Tooltip - Normal)
+{
+Gem of Life [|cff00ffffG|r]
+}
+
+STRING 340
+// Abilities: A00B (Drop Gem of Life), Ubertip (Tooltip - Normal - Extended)
+{
+Drops or picks up the |cffffff00Gem of Life|r.
+}
+
+STRING 341
+// Abilities: A00B (Drop Gem of Life), Hotkey (Hotkey - Normal)
+{
+G
+}
+
+STRING 342
+// Abilities: A00B (Drop Gem of Life), Unhotkey (Hotkey - Turn Off)
+{
+G
+}
+
+STRING 344
+// Items: I003 (Grand Soul), Name (Name)
+{
+Grand Soul
+}
+
+STRING 345
+{
+You have consumed a |cffff00ffGrand Soul|r. Grand souls grants part of their owners abilities to the one who consumes it.
+}
+
+STRING 346
+{
+You have consumed a |cffff00ffGrand Soul|r. 
+}
+
+STRING 347
+{
+You have consumed a |cffff00ffGrand Soul|r. 
+}
+
+STRING 348
+{
+You have consumed a |cffff00ffGrand Soul|r. 
+}
+
+STRING 350
+// Abilities: A005 (Soul Ray), Tip (Tooltip - Normal)
+{
+Ray of Endor [|cff00ffffE|r]
+}
+
+STRING 351
+// Abilities: A012 (Charge), Researchtip (Tooltip - Learn)
+{
+Samuel's Dash (|cff00ffffD|r)
+}
+
+STRING 352
+// Doodads: D020 (CD - Web), Name (Name)
+{
+CD - Web
+}
+
+STRING 353
+// Doodads: D021 (CD - Weapon 1), Name (Name)
+{
+CD - Weapon 1
+}
+
+STRING 354
+// Doodads: D022 (CD - Weapon 2), Name (Name)
+{
+CD - Weapon 2
+}
+
+STRING 355
+// Doodads: D023 (CD - Weapon 3), Name (Name)
+{
+CD - Weapon 3
+}
+
+STRING 356
+// Doodads: D024 (CD - Weapon 4), Name (Name)
+{
+CD - Weapon 4
+}
+
+STRING 357
+// Units: u002 (Spider Lord), Name (Name)
+{
+Spider Lord
+}
+
+STRING 358
+// Units: n001 (Giant Spider), Name (Name)
+{
+Giant Spider
+}
+
+STRING 359
+// Doodads: D025 (CD NEW - BUILDINGS), Name (Name)
+{
+CD NEW - BUILDINGS
+}
+
+STRING 360
+// Doodads: D026 (CD NEW - BUILDINGS 2), Name (Name)
+{
+CD NEW - BUILDINGS 2
+}
+
+STRING 361
+// Doodads: D027 (CD NEW - BUILDINGS WELL), Name (Name)
+{
+CD NEW - BUILDINGS WELL
+}
+
+STRING 362
+// Doodads: D028 (CD NEW - WALL), Name (Name)
+{
+CD NEW - WALL
+}
+
+STRING 363
+// Doodads: D029 (CD NEW - BUILDINGS HATCH), Name (Name)
+{
+CD NEW - BUILDINGS HATCH
+}
+
+STRING 364
+// Doodads: D02A (CD NEW - Bush), Name (Name)
+{
+CD NEW - Bush
+}
+
+STRING 365
+// Doodads: D02B (CD NEW - Tree 1), Name (Name)
+{
+CD NEW - Tree 1
+}
+
+STRING 366
+// Doodads: D02C (CD NEW - Floor), Name (Name)
+{
+CD NEW - Floor
+}
+
+STRING 367
+// Doodads: D02D (CD NEW - Shrroms), Name (Name)
+{
+CD NEW - Shrroms
+}
+
+STRING 368
+// Doodads: D02E (CD NEW - Grass), Name (Name)
+{
+CD NEW - Grass
+}
+
+STRING 369
+// Doodads: D02F (CD - Stormsphere), Name (Name)
+{
+CD - Stormsphere
+}
+
+STRING 370
+// Doodads: D02G (CD - Soul Huge No Glow), Name (Name)
+{
+CD - Soul Huge No Glow
+}
+
+STRING 380
+// Doodads: D02H (CD - Terrain Glow Dark), Name (Name)
+{
+CD - Terrain Glow Dark
+}
+
+STRING 381
+// Doodads: D02I (CD - Terrain Glow Dark Purple), Name (Name)
+{
+CD - Terrain Glow Dark Purple
+}
+
+STRING 382
+// Doodads: D02J (CD - Terrain Glow Black), Name (Name)
+{
+CD - Terrain Glow Black
+}
+
+STRING 383
+// Units: Hvwd (Spirit of Hatred), Name (Name)
+{
+Spirit of Hatred
+}
+
+STRING 384
+// Units: h00L (Seraphiel), Name (Name)
+{
+Seraphiel
+}
+
+STRING 389
+{
+The world of men is over.
+}
+
+STRING 390
+{
+After years of war against demons, humanity eventually lost. 
+}
+
+STRING 391
+{
+Darkness engulfed the world, and the realm of men is now a desolate place, void of life or warmth. 
+}
+
+STRING 396
+{
+Unnamed
+}
+
+STRING 397
+// war3mapImported\SS11.mp3
+{
+W
+}
+
+STRING 398
+{
+Unnamed
+}
+
+STRING 399
+{
+Wh
+}
+
+STRING 400
+{
+Unnamed
+}
+
+STRING 401
+{
+Wha
+}
+
+STRING 402
+{
+Unnamed
+}
+
+STRING 403
+{
+What
+}
+
+STRING 404
+{
+Unnamed
+}
+
+STRING 405
+{
+What a
+}
+
+STRING 406
+{
+Unnamed
+}
+
+STRING 407
+{
+What am
+}
+
+STRING 408
+{
+Unnamed
+}
+
+STRING 409
+{
+What am I
+}
+
+STRING 410
+{
+Unnamed
+}
+
+STRING 411
+{
+What am I?
+}
+
+STRING 412
+{
+Unnamed
+}
+
+STRING 413
+{
+What am I?.
+}
+
+STRING 414
+{
+Unnamed
+}
+
+STRING 415
+{
+What am I?..
+}
+
+STRING 416
+{
+Unnamed
+}
+
+STRING 417
+{
+What am I?...
+}
+
+STRING 418
+{
+Seraphiel
+}
+
+STRING 419
+// war3mapImported\Seraphiel Intro 1.mp3
+{
+You are what remains of a defeated race.
+}
+
+STRING 420
+{
+Seraphiel
+}
+
+STRING 421
+// war3mapImported\Seraphiel Intro 2.mp3
+{
+You are pure hatred in both mind and spirit. Humanity is your progenitor, and you are simply a manifestation of their collective anger.
+}
+
+STRING 422
+{
+Seraphiel
+}
+
+STRING 423
+// war3mapImported\Seraphiel Intro 4.mp3
+{
+I am Seraphiel, leader of the Seraphs, and the one who will make sure you have your vengeance.
+}
+
+STRING 424
+{
+Seraphiel
+}
+
+STRING 425
+{
+You are what remains of a defeated race.
+}
+
+STRING 426
+{
+Seraphiel
+}
+
+STRING 427
+{
+I am Seraphiel, leader of the Seraphs, and the one who will make sure you have your vengeance.
+}
+
+STRING 428
+{
+Unnamed
+}
+
+STRING 429
+// war3mapImported\SS12.mp3
+{
+All the voices in my head
+}
+
+STRING 430
+{
+Seraphiel
+}
+
+STRING 431
+// war3mapImported\Seraphiel Intro 5.mp3
+{
+They are souls, eternally damned in Sheol.
+}
+
+STRING 432
+{
+Seraphiel
+}
+
+STRING 433
+// war3mapImported\Seraphiel Intro 6.mp3
+{
+You can hear their anger, because you were born from it.
+}
+
+STRING 434
+{
+Unnamed
+}
+
+STRING 435
+{
+Are they dead?
+}
+
+STRING 436
+{
+Unnamed
+}
+
+STRING 437
+{
+All the voices in my head.
+}
+
+STRING 438
+{
+Unnamed
+}
+
+STRING 439
+{
+All the voices in my head...
+}
+
+STRING 440
+{
+Unnamed
+}
+
+STRING 441
+{
+All the voices in my head..
+}
+
+STRING 442
+{
+Seraphiel
+}
+
+STRING 443
+// war3mapImported\Seraphiel Intro 7.mp3
+{
+When the door to Sheol opened we Seraphs were too slow to close it as we met heavy resistance.
+}
+
+STRING 444
+{
+Seraphiel
+}
+
+STRING 445
+// war3mapImported\Seraphiel Intro 8.mp3
+{
+Now that all human souls are trapped in Sheol we angels are working hard to free them, but there is one problem
+}
+
+STRING 446
+{
+Seraphiel
+}
+
+STRING 447
+{
+Now that all human souls are trapped in Sheol we angels are working hard to free them, but there is one problem.
+}
+
+STRING 448
+{
+Seraphiel
+}
+
+STRING 449
+{
+Now that all human souls are trapped in Sheol we angels are working hard to free them, but there is one problem..
+}
+
+STRING 450
+{
+Seraphiel
+}
+
+STRING 451
+{
+Now that all human souls are trapped in Sheol we angels are working hard to free them, but there is one problem...
+}
+
+STRING 452
+{
+Seraphiel
+}
+
+STRING 453
+// war3mapImported\Seraphiel Intro 9.mp3
+{
+We can't enter Sheol.
+}
+
+STRING 454
+{
+Seraphiel
+}
+
+STRING 455
+// war3mapImported\Seraphiel Intro 10.mp3
+{
+Even if we forced their gates open and stepped inside we would instantly cease to be.
+}
+
+STRING 456
+{
+Unnamed
+}
+
+STRING 457
+// war3mapImported\SS13.mp3
+{
+So
+}
+
+STRING 458
+{
+Unnamed
+}
+
+STRING 459
+{
+So.
+}
+
+STRING 460
+{
+Unnamed
+}
+
+STRING 461
+{
+So..
+}
+
+STRING 462
+{
+Unnamed
+}
+
+STRING 463
+{
+So...
+}
+
+STRING 464
+{
+Unnamed
+}
+
+STRING 465
+{
+So... You want me to go to Sheol?
+}
+
+STRING 466
+{
+Seraphiel
+}
+
+STRING 467
+// war3mapImported\Seraphiel Intro 11.mp3
+{
+That is the only way you can be truly free. 
+}
+
+STRING 468
+// Doodads: D02K (CD NEW - Ground Details 1), Name (Name)
+{
+CD NEW - Ground Details 1
+}
+
+STRING 469
+// Doodads: D02L (CD NEW - Ground Details 2), Name (Name)
+{
+CD NEW - Ground Details 2
+}
+
+STRING 470
+{
+Seraphiel
+}
+
+STRING 471
+{
+Even if we forced their gates open and stepped inside we would instantly cease to be.
+}
+
+STRING 472
+{
+Seraphiel
+}
+
+STRING 473
+{
+Now that all human souls are trapped in Sheol we angels are working hard to free them, but there is one problem...
+}
+
+STRING 474
+{
+Seraphiel
+}
+
+STRING 475
+{
+Now that all human souls are trapped in Sheol we angels are working hard to free them, but there is one problem...
+}
+
+STRING 476
+{
+Unnamed
+}
+
+STRING 477
+// war3mapImported\SS14.mp3
+{
+My whole being screams for vengeance. 
+}
+
+STRING 478
+{
+Unnamed
+}
+
+STRING 479
+// war3mapImported\SS15.mp3
+{
+If the demons are responsible for this unbearable suffering then I will go into the deepest pits of hell and deliver retribution to them all.
+}
+
+STRING 480
+{
+Seraphiel
+}
+
+STRING 481
+// war3mapImported\Seraphiel Intro 12.mp3
+{
+It is settled then.
+}
+
+STRING 482
+{
+Seraphiel
+}
+
+STRING 483
+// war3mapImported\Seraphiel Intro 13.mp3
+{
+I will teleport you into purgatory, from there on you have to find the entrance to Sheol.
+}
+
+STRING 484
+{
+Unnamed
+}
+
+STRING 485
+// war3mapImported\SS16.mp3
+{
+I will do what I have to, show me the way.
+}
+
+STRING 486
+{
+Seraphiel
+}
+
+STRING 487
+// war3mapImported\Seraphiel Intro 14.mp3
+{
+May light illuminate your path. Carry out your task without fail so humanity will get salvation.
+}
+
+STRING 488
+{
+Unnamed
+}
+
+STRING 489
+{
+If the demons are responsible for this unbearable suffering then I will go into the deepest pits of hell and deliver retribution to them all.
+}
+
+STRING 490
+{
+Unnamed
+}
+
+STRING 491
+{
+If the demons are responsible for this unbearable suffering then I will go into the deepest pits of hell and deliver retribution to them all.
+}
+
+STRING 492
+{
+Mammon
+}
+
+STRING 493
+// war3mapImported\M1.mp3
+{
+Rhaaargh!!
+}
+
+STRING 494
+{
+Mammon
+}
+
+STRING 495
+// war3mapImported\M3.mp3
+{
+What are you?
+
+}
+
+STRING 496
+{
+Mammon
+}
+
+STRING 497
+// war3mapImported\M2.mp3
+{
+You're foolish to come here on your own.
+}
+
+STRING 498
+{
+Unnamed
+}
+
+STRING 499
+// war3mapImported\SM1.mp3
+{
+You're as perverse as always I see, Mammon.
+}
+
+STRING 502
+// Units: o002 (Mammon), Name (Name)
+{
+Mammon
+}
+
+STRING 509
+// Units: h00M (Skull Missile), Name (Name)
+{
+Skull Missile
+}
+
+STRING 510
+// Units: h00N (Spell Dummy), Name (Name)
+{
+Spell Dummy
+}
+
+STRING 511
+{
+Witch of Endor
+}
+
+STRING 512
+// war3mapImported\5.mp3
+{
+Now, let me absorb your power!
+}
+
+STRING 513
+// Units: h00D (Ward of Endor), Name (Name)
+{
+Ward of Endor
+}
+
+STRING 514
+// Units: h00O (Laser Beam Endor), Name (Name)
+{
+Laser Beam Endor
+}
+
+STRING 515
+// Abilities: AHdr (Siphon Mana), EditorSuffix (Editor Suffix)
+{
+(Witch of Endor)
+}
+
+STRING 516
+// Abilities: A00C (Spell Witch of Endor), Name (Name)
+{
+Spell Witch of Endor
+}
+
+STRING 517
+// Units: h00P (Endor Missile), Name (Name)
+{
+Endor Missile
+}
+
+STRING 520
+{
+Gem of Death fades in
+}
+
+STRING 521
+{
+Game Information
+}
+
+STRING 522
+{
+Move by holding and moving the '|cffd45e19RIGHT MOUSE BUTTON|r'. 
+
+Consume |cffd45e19souls |rto regenerate HP or MP. 
+ - |cff0000ffBlue|r souls regenerates |cff0000ffMana|r.
+ - |cffff0000Red |rsouls regenerates |cffff0000HP|r.
+
+|cffd45e19Spawn points|r are found at various locations around the map. Simply |cffd45e19walk on them|r to activate them. Activating a spawn point deactivates your last activated spawn point. 
+}
+
+STRING 523
+// Units: h00Q (Ghost), Name (Name)
+{
+Ghost
+}
+
+STRING 524
+// Units: u003 (Gargoyle), Name (Name)
+{
+Gargoyle
+}
+
+STRING 525
+// Items: pghe (|cffff0000Healing Potion|r), Name (Name)
+{
+|cffff0000Healing Potion|r
+}
+
+STRING 526
+// Units: h00R (Tentacle), Name (Name)
+{
+Tentacle
+}
+
+STRING 527
+// Doodads: D02M (CD - Omnilight Purple), Name (Name)
+{
+CD - Omnilight Purple
+}
+
+STRING 528
+// Doodads: D02N (CD - Omnilight Red), Name (Name)
+{
+CD - Omnilight Red
+}
+
+STRING 529
+{
+Witch of Endor
+}
+
+STRING 530
+{
+Something powerful.
+}
+
+STRING 531
+{
+Witch of Endor
+}
+
+STRING 532
+// war3mapImported\3.mp3
+{
+Whatever it is, it will soon be mine.
+}
+
+STRING 533
+{
+Unnamed
+}
+
+STRING 534
+// war3mapImported\SW2.mp3
+{
+Vanquishing you will give me great pleasure. Only oblivion awaits you.
+}
+
+STRING 535
+{
+Witch of Endor
+}
+
+STRING 536
+// war3mapImported\4.mp3
+{
+Hah, come, Samuel!
+}
+
+STRING 537
+{
+Witch of Endor
+}
+
+STRING 538
+{
+Hah, come, Samuel!
+}
+
+STRING 539
+{
+Witch of Endor
+}
+
+STRING 540
+{
+Hah, come, Samuel!
+}
+
+STRING 541
+{
+Witch of Endor
+}
+
+STRING 542
+{
+Hah, come, Samuel!
+}
+
+STRING 543
+{
+Witch of Endor
+}
+
+STRING 544
+{
+Hah, come, Samuel!
+}
+
+STRING 545
+{
+Beelzebub
+}
+
+STRING 546
+// war3mapImported\B1.mp3
+{
+Hello there, tormented one.
+}
+
+STRING 547
+{
+Gem of Death fades in
+}
+
+STRING 549
+{
+Gem of Death fades in
+}
+
+STRING 550
+// Units: o003 (Beelzebub), Name (Name)
+{
+Beelzebub
+}
+
+STRING 552
+{
+Beelzebub
+}
+
+STRING 553
+// war3mapImported\B3.mp3
+{
+Ah good, that means we have no need for introductions or formalities.
+}
+
+STRING 554
+{
+Unnamed
+}
+
+STRING 555
+// war3mapImported\SB1.mp3
+{
+I know who you are.
+}
+
+STRING 564
+{
+Abaddon
+}
+
+STRING 565
+{
+Welcome, to Sheol.
+}
+
+STRING 566
+{
+Unnamed
+}
+
+STRING 567
+{
+I am finally here. This is where it all ends. Demons, as humans already have, shall see their end.
+}
+
+STRING 568
+{
+Abaddon
+}
+
+STRING 569
+{
+You have done well to crawl all the way down into the deepest, darkest pits of hell.
+}
+
+STRING 570
+{
+Unnamed
+}
+
+STRING 571
+{
+I am finally here. This is where it all ends. Demons, as humans already have, shall see their end.
+}
+
+STRING 572
+{
+Unnamed
+}
+
+STRING 573
+{
+I am finally here. This is where it all ends. Demons, as humans already have, shall see their end.
+}
+
+STRING 574
+{
+Unnamed
+}
+
+STRING 575
+{
+I am finally here. This is where it all ends. Demons, as humans already have, shall see their end.
+}
+
+STRING 576
+{
+Abaddon
+}
+
+STRING 577
+{
+Hahahaha.
+}
+
+STRING 578
+{
+Abaddon
+}
+
+STRING 579
+{
+Let me ask you, spirit.
+}
+
+STRING 580
+{
+Abaddon
+}
+
+STRING 581
+{
+Who sent you here?
+}
+
+STRING 582
+{
+Abaddon
+}
+
+STRING 583
+{
+Humans aren't able to manifest into spiritual form on their own.
+}
+
+STRING 584
+{
+Abaddon
+}
+
+STRING 585
+{
+I know it was none of my demons.
+}
+
+STRING 586
+{
+Abaddon
+}
+
+STRING 587
+{
+So if it was none of my demons, and not humans, then that leaves only the angels.
+}
+
+STRING 588
+{
+Abaddon
+}
+
+STRING 589
+{
+So if it was none of my demons, and not humans, then that leaves only the angels.
+}
+
+STRING 590
+{
+Abaddon
+}
+
+STRING 591
+{
+You think angels care about humans?
+}
+
+STRING 592
+{
+Unnamed
+}
+
+STRING 593
+{
+The angels offered me revenge, that is all I care about.
+}
+
+STRING 594
+{
+Unnamed
+}
+
+STRING 595
+{
+Prepare to die, Abaddon...
+}
+
+STRING 596
+{
+Abaddon
+}
+
+STRING 597
+{
+HA! Revenge? We demons were merely the executioners. The angels are the ones who passed the sentence.
+}
+
+STRING 598
+{
+Abaddon
+}
+
+STRING 599
+{
+So, ask yourself again spirit, who do you think *REALLY* killed humanity?
+}
+
+STRING 600
+{
+Unnamed
+}
+
+STRING 601
+{
+You're lying. The Seraphim would never harm humans.
+}
+
+STRING 602
+{
+Unnamed
+}
+
+STRING 603
+{
+You're lying. The Seraphim would never harm humans.
+}
+
+STRING 604
+{
+Abaddon
+}
+
+STRING 605
+{
+Oh how naiive of you. You think the angels are good just because they have shining armor and look more like humans than demons?
+}
+
+STRING 606
+{
+Abaddon
+}
+
+STRING 607
+{
+Hmf. The angels are just the same as demons. Twisted, evil, hungry for power.
+}
+
+STRING 608
+{
+Abaddon
+}
+
+STRING 609
+{
+The angels opened the door to Sheol and let us roam freely in the first place, spirit.
+}
+
+STRING 610
+{
+Abaddon
+}
+
+STRING 611
+{
+Then they closed it RIGHT after all humans were dead.
+}
+
+STRING 612
+{
+Abaddon
+}
+
+STRING 613
+{
+And now, unable to venture into Sheol, they send you. A spirit. A remnant of humanity, to vanquish all demons so they can have the world for themselves.
+}
+
+STRING 614
+{
+Unnamed
+}
+
+STRING 615
+{
+You lie.
+}
+
+STRING 616
+{
+Unnamed
+}
+
+STRING 617
+{
+I refuse to believe what you say.
+}
+
+STRING 618
+{
+Unnamed
+}
+
+STRING 619
+{
+I refuse to believe what you say.
+}
+
+STRING 620
+{
+Unnamed
+}
+
+STRING 621
+{
+The angels have always said demons are not only strong, but also cunning and sly.
+}
+
+STRING 622
+{
+Abaddon
+}
+
+STRING 623
+{
+A delusion, spread by the angels themselves. I have nothing to gain from lying to you spirit.
+}
+
+STRING 624
+{
+Abaddon
+}
+
+STRING 625
+{
+You know it in your heart to be true.
+}
+
+STRING 626
+{
+Abaddon
+}
+
+STRING 627
+{
+Not that that changes anything, I shall break you right here anyway, then I will break free from Sheol and tear the heavens down. 
+}
+
+STRING 628
+{
+Abaddon
+}
+
+STRING 629
+{
+Now, DIE, PUNY SPIRIT!
+}
+
+STRING 630
+{
+Abaddon
+}
+
+STRING 631
+// war3mapImported\Abaddon21.mp3
+{
+What?
+}
+
+STRING 632
+{
+Unnamed
+}
+
+STRING 633
+// war3mapImported\SS21.mp3
+{
+And so, I have had my revenge upon all those who deserves it.
+}
+
+STRING 634
+{
+Abaddon
+}
+
+STRING 635
+// war3mapImported\Abaddon22.mp3
+{
+How is this possible?
+}
+
+STRING 638
+{
+Seraphiel
+}
+
+STRING 639
+// war3mapImported\SO1.mp3
+{
+Good job, spirit. You have done more than we could ever hope for.
+}
+
+STRING 640
+{
+Seraphiel
+}
+
+STRING 641
+{
+Good job, spirit. You have done more than we could ever hope for.
+}
+
+STRING 642
+{
+Seraphiel
+}
+
+STRING 643
+// war3mapImported\SO2.mp3
+{
+We Seraphim can finally walk in Sheol now that Abaddon is dead.
+}
+
+STRING 644
+{
+Unnamed
+}
+
+STRING 645
+// war3mapImported\SS22.mp3
+{
+Is it true?
+}
+
+STRING 646
+{
+Unnamed
+}
+
+STRING 647
+{
+Is it true?
+}
+
+STRING 648
+{
+Seraphiel
+}
+
+STRING 649
+// war3mapImported\SO3.mp3
+{
+Why of course.
+}
+
+STRING 650
+{
+Unnamed
+}
+
+STRING 651
+// war3mapImported\SS23.mp3
+{
+Did you open the gates to Sheol so demons could roam freely?
+}
+
+STRING 652
+{
+Seraphiel
+}
+
+STRING 653
+// war3mapImported\SO4.mp3
+{
+The world belongs to the angels.
+}
+
+STRING 654
+{
+Seraphiel
+}
+
+STRING 655
+// war3mapImported\SO5.mp3
+{
+Our father has abandoned this world, and humans with it.
+}
+
+STRING 656
+{
+Seraphiel
+}
+
+STRING 657
+// war3mapImported\SO6.mp3
+{
+We are reshaping the world how it was meant to be, without demons or humans.
+}
+
+STRING 658
+{
+Seraphiel
+}
+
+STRING 659
+// war3mapImported\SO7.mp3
+{
+From the ashes of destruction a new reign shall rise. The reign of angels.
+}
+
+STRING 660
+{
+Seraphiel
+}
+
+STRING 661
+// war3mapImported\SO9.mp3
+{
+Now I must thank you again, you have made all of this possible.
+}
+
+STRING 662
+{
+Unnamed
+}
+
+STRING 663
+// war3mapImported\SS24.mp3
+{
+It is true then. I will never truly have my revenge before you are dead. 
+}
+
+STRING 664
+{
+Seraphiel
+}
+
+STRING 665
+// war3mapImported\SO8.mp3
+{
+Don't be foolish. You can't kill me. I MADE you.
+}
+
+STRING 666
+{
+Seraphiel
+}
+
+STRING 667
+// war3mapImported\SO10.mp3
+{
+Goodbye spirit.
+}
+
+STRING 672
+{
+Seraphiel
+}
+
+STRING 673
+{
+Goodbye spirit.
+}
+
+STRING 678
+{
+Unnamed
+}
+
+STRING 679
+{
+NOOO!!
+}
+
+STRING 686
+{
+Unnamed
+}
+
+STRING 687
+// war3mapImported\SS26.mp3
+{
+I will never truly have my revenge before the heavens are lit on fire, and all angels are dead.
+}
+
+STRING 688
+{
+Unnamed
+}
+
+STRING 689
+// war3mapImported\SS27.mp3
+{
+I shall exact revenge on the holy just as I have the unholy.
+}
+
+STRING 690
+{
+Unnamed
+}
+
+STRING 691
+// war3mapImported\SS28.mp3
+{
+Just wait, Seraphiel, I am coming for you!
+}
+
+STRING 694
+{
+Gem of Death fades in
+}
+
+STRING 695
+{
+Gem of Life fades in
+}
+
+STRING 698
+{
+Abaddon
+}
+
+STRING 699
+{
+How is this possible?
+}
+
+STRING 706
+{
+Unnamed
+}
+
+STRING 707
+// war3mapImported\SS25.mp3
+{
+NOOO!!
+}
+
+STRING 708
+{
+Abaddon
+}
+
+STRING 709
+{
+How is this possible?
+}
+
+STRING 710
+{
+Abaddon
+}
+
+STRING 711
+{
+What?
+}
+
+STRING 712
+{
+Abaddon
+}
+
+STRING 713
+{
+How is this possible?
+}
+
+STRING 715
+{
+To be continued?....
+}
+
+STRING 716
+{
+Abaddon
+}
+
+STRING 717
+{
+The pearly white gates shall burn, and the beautiful, sparkling gardens shall be corrupted.
+}
+
+STRING 718
+{
+Beelzebub
+}
+
+STRING 719
+// war3mapImported\B4.mp3
+{
+You know, I am starting to get rather bored down here.
+}
+
+STRING 720
+{
+Beelzebub
+}
+
+STRING 721
+// war3mapImported\B5.mp3
+{
+There are no humans around to torture. Only souls, but they can't bleed or scream.
+}
+
+STRING 732
+// Items: ratf (|cff00ffffFocusing Lens|r), Ubertip (Tooltip - Extended)
+{
+Makes 'Ray of Endor' deal double damage.
+}
+
+STRING 733
+// Items: ratf (|cff00ffffFocusing Lens|r), Name (Name)
+{
+|cff00ffffFocusing Lens|r
+}
+
+STRING 736
+// Items: I004 (|cffffff00Ring of the Seraph|r), Description (Description)
+{
+Ring ring.
+}
+
+STRING 737
+// Items: I004 (|cffffff00Ring of the Seraph|r), Name (Name)
+{
+|cffffff00Ring of the Seraph|r
+}
+
+STRING 740
+// Items: I005 (|cffffff00Wings of the Seraph|r), Description (Description)
+{
+Wing Wing
+}
+
+STRING 741
+// Items: I005 (|cffffff00Wings of the Seraph|r), Name (Name)
+{
+|cffffff00Wings of the Seraph|r
+}
+
+STRING 746
+// Items: I006 (|cffffff00Feather of the Seraph|r), Name (Name)
+{
+|cffffff00Feather of the Seraph|r
+}
+
+STRING 748
+{
+Beelzebub
+}
+
+STRING 749
+// war3mapImported\B2.mp3
+{
+I am Beelzebub. Nice to meet you.
+}
+
+STRING 750
+{
+Unnamed
+}
+
+STRING 751
+// war3mapImported\SB2.mp3
+{
+As if I can forget the sight of you and your legions spewing out of hell.
+}
+
+STRING 752
+{
+Unnamed
+}
+
+STRING 753
+// war3mapImported\SB3.mp3
+{
+You're a monster. 
+}
+
+STRING 754
+{
+Unnamed
+}
+
+STRING 755
+// war3mapImported\SB4.mp3
+{
+Pure evil incarnate. 
+}
+
+STRING 756
+{
+Beelzebub
+}
+
+STRING 757
+// war3mapImported\B6.mp3
+{
+Am I? There is no good or evil, there is only power, and the ones who are too weak to seek it.
+}
+
+STRING 758
+{
+Beelzebub
+}
+
+STRING 759
+// war3mapImported\B7.mp3
+{
+We are the same, you know. You are standing in front of me with only an immense desire to kill. 
+}
+
+STRING 760
+{
+Beelzebub
+}
+
+STRING 761
+// war3mapImported\B8.mp3
+{
+You have become the very thing you wish to destroy. 
+}
+
+STRING 762
+{
+Unnamed
+}
+
+STRING 763
+// war3mapImported\SB5.mp3
+{
+We are not the same. I kill only the wicked. 
+}
+
+STRING 764
+{
+Beelzebub
+}
+
+STRING 765
+// war3mapImported\B9.mp3
+{
+You seem blind to your own contradiction. No matter, let me demonstrate my power and let's get on with the inevitable.
+}
+
+STRING 766
+{
+Unnamed
+}
+
+STRING 767
+{
+Pure evil incarnate. 
+}
+
+STRING 768
+{
+Mammon
+}
+
+STRING 769
+// war3mapImported\M4.mp3
+{
+I don't smell any blood in you.
+}
+
+STRING 770
+{
+Mammon
+}
+
+STRING 771
+// war3mapImported\M5.mp3
+{
+I can't eat you like a human.
+}
+
+STRING 772
+{
+Mammon
+}
+
+STRING 773
+// war3mapImported\M6.mp3
+{
+I want human FLEEESH!!
+}
+
+STRING 774
+{
+Mammon
+}
+
+STRING 775
+// war3mapImported\M7.mp3
+{
+Agh, be quiet!
+}
+
+STRING 776
+{
+Mammon
+}
+
+STRING 777
+// war3mapImported\M8.mp3
+{
+Come here!!
+}
+
+STRING 778
+{
+Unnamed
+}
+
+STRING 779
+// war3mapImported\SM2.mp3
+{
+You are about to meet your maker.
+}
+
+STRING 780
+{
+Unnamed
+}
+
+STRING 781
+{
+Do you have any final words?
+}
+
+STRING 782
+{
+Mammon
+}
+
+STRING 783
+// war3mapImported\M5.mp3
+{
+I can't eat you like a human.
+}
+
+STRING 789
+// Items: I008 (|cff800000Skulls of the Four Horsemen|r), Description (Description)
+{
+Skull Skull
+}
+
+STRING 790
+// Items: I008 (|cff800000Skulls of the Four Horsemen|r), Name (Name)
+{
+|cff800000Skulls of the Four Horsemen|r
+}
+
+STRING 792
+// Items: I00A (|cff800000Skull of Baphomet|r), Description (Description)
+{
+Skull Skull
+}
+
+STRING 793
+// Items: I00E (Warriors Helmet), Description (Description)
+{
+Skull Skull
+}
+
+STRING 796
+// Items: I009 (Swift Dagger), Description (Description)
+{
+Blade Blade
+}
+
+STRING 797
+// Items: I00F (|cffffff00Seraphs Chalice|r), Description (Description)
+{
+Skull Skull
+}
+
+STRING 801
+// Items: I00B (|cff0000ffSoul Potion|r), Name (Name)
+{
+|cff0000ffSoul Potion|r
+}
+
+STRING 802
+// Items: I00B (|cff0000ffSoul Potion|r), Description (Description)
+{
+Restores soul charges.
+}
+
+STRING 803
+// Items: I00B (|cff0000ffSoul Potion|r), Ubertip (Tooltip - Extended)
+{
+Restores 50 soul charges when used.
+}
+
+STRING 805
+// Items: I00C (|cff6f2583Soul Depletion Halt Potion|r), Description (Description)
+{
+Restores soul charges.
+}
+
+STRING 807
+// Abilities: A00D (Soul Regeneration Halt), Name (Name)
+{
+Soul Regeneration Halt
+}
+
+STRING 813
+// Items: I007 (|cff00ffffAmulet of Endor|r), Ubertip (Tooltip - Extended)
+{
+Halves your soul depletion rate. 
+}
+
+STRING 817
+// Abilities: A00E (Soul Regen Halt), Name (Name)
+{
+Soul Regen Halt
+}
+
+STRING 818
+// Buffs/Effects: B000 (), Bufftip (Tooltip)
+{
+Soul Depletion Halt
+}
+
+STRING 819
+// Buffs/Effects: B000 (), Buffubertip (Tooltip - Extended)
+{
+This units automatic soul depletion rate has stopped temporarily.
+}
+
+STRING 829
+// Items: I00C (|cff6f2583Soul Depletion Halt Potion|r), Name (Name)
+{
+|cff6f2583Soul Depletion Halt Potion|r
+}
+
+STRING 830
+// Items: I00C (|cff6f2583Soul Depletion Halt Potion|r), Ubertip (Tooltip - Extended)
+{
+Stops souls from automatically depleting for 60 seconds. 
+}
+
+STRING 832
+// Items: I00A (|cff800000Skull of Baphomet|r), Name (Name)
+{
+|cff800000Skull of Baphomet|r
+}
+
+STRING 834
+// Items: I00D (|cff800000Sword of Alastor|r), Name (Name)
+{
+|cff800000Sword of Alastor|r
+}
+
+STRING 837
+// Items: I00E (Warriors Helmet), Name (Name)
+{
+Warriors Helmet
+}
+
+STRING 841
+// Items: I00F (|cffffff00Seraphs Chalice|r), Name (Name)
+{
+|cffffff00Seraphs Chalice|r
+}
+
+STRING 845
+// Items: I00G (|cff00ffffJar of Endless Souls|r), Description (Description)
+{
+Weird Item
+}
+
+STRING 855
+// Items: I00H (|cff00ffffPower Amplifier|r), Description (Description)
+{
+Makes Beelzebub's Might deal 100 extra damage, and have 150 increased range. 
+}
+
+STRING 859
+// Abilities: A001 (Wave), Tip (Tooltip - Normal)
+{
+Spiritual Wave [|cff00ffffQ|r]
+}
+
+STRING 860
+// Abilities: A000 (Slam), Tip (Tooltip - Normal)
+{
+Beelzebub's Might [|cff00ffffR|r]
+}
+
+STRING 861
+// Abilities: A012 (Charge), Tip (Tooltip - Normal)
+{
+Samuel's Dash [|cff00ffffD|r]
+}
+
+STRING 862
+// Abilities: A00F (Void Rain), Name (Name)
+{
+Void Rain
+}
+
+STRING 863
+// Items: I004 (|cffffff00Ring of the Seraph|r), Ubertip (Tooltip - Extended)
+{
+|cffffff00Seraph Item.|r|n|nIncreases armor by 5 and HP by 300.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 864
+// Items: I004 (|cffffff00Ring of the Seraph|r), Tip (Tooltip - Basic)
+{
+|cffffff00Seraph Item.|r|n|nIncreases armor by 5 and HP by 300.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 865
+// Items: I006 (|cffffff00Feather of the Seraph|r), Ubertip (Tooltip - Extended)
+{
+|cffffff00Seraph Item.|r|n|nIncreases your movement speed and grants 5 agility.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 866
+// Items: I006 (|cffffff00Feather of the Seraph|r), Tip (Tooltip - Basic)
+{
+|cffffff00Seraph Item.|r|n|nIncreases your movement speed and grants 5 agility.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 867
+// Items: I006 (|cffffff00Feather of the Seraph|r), Description (Description)
+{
+Angelic Feather.
+}
+
+STRING 868
+// Items: I00F (|cffffff00Seraphs Chalice|r), Ubertip (Tooltip - Extended)
+{
+|cffffff00Seraph Item.|r|n|nDecreases all enemy units critical strike chance towards you by 10%.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 869
+// Items: I00F (|cffffff00Seraphs Chalice|r), Tip (Tooltip - Basic)
+{
+|cffffff00Seraph Item.|r|n|nDecreases all enemy units critical strike chance towards you by 10%.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 870
+// Items: I00G (|cff00ffffJar of Endless Souls|r), Ubertip (Tooltip - Extended)
+{
+Increases your total soul capacity by 50, and increases soul charges gained from absorbing souls by 5.
+}
+
+STRING 871
+// Items: I00G (|cff00ffffJar of Endless Souls|r), Tip (Tooltip - Basic)
+{
+Increases your total soul capacity by 50, and increases soul charges gained from absorbing souls by 5.
+}
+
+STRING 872
+// Items: I00G (|cff00ffffJar of Endless Souls|r), Name (Name)
+{
+|cff00ffffJar of Endless Souls|r
+}
+
+STRING 873
+// Items: I00H (|cff00ffffPower Amplifier|r), Ubertip (Tooltip - Extended)
+{
+Makes all spells deal 20% more damage.|n|nSpiritual wave has a stronger knockback.|n|nMammons Cleave has 2 extra blows.|n|nSamuel's Dash charge distance is increased.|n|nRay of Endor slows affected units (Does not slow bosses).|n|nBeelzebub's Might has increased AoE and stronger knockback.
+}
+
+STRING 874
+// Items: I00H (|cff00ffffPower Amplifier|r), Name (Name)
+{
+|cff00ffffPower Amplifier|r
+}
+
+STRING 875
+// Abilities: AImv (Item Mana Bonus (50)), Name (Name)
+{
+Item Mana Bonus (50)
+}
+
+STRING 876
+// Abilities: A001 (Wave), Ubertip (Tooltip - Normal - Extended)
+{
+Sends three shockwaves in a cone in front of the caster. Each wave deals 333 damage per second to nearby units, and knocks units back. |n|n|cff6f2583Costs 5 soul charges.|r 
+}
+
+STRING 877
+// Units: h00S (Ghost Projectile), Name (Name)
+{
+Ghost Projectile
+}
+
+STRING 878
+// Items: I00H (|cff00ffffPower Amplifier|r), Tip (Tooltip - Basic)
+{
+Makes all spells deal 20% more damage.|n|nSpiritual wave has a stronger knockback.|n|nMammons Cleave has 2 extra blows.|n|nSamuel's Dash charge distance is increased.|n|nRay of Endor slows affected units (Does not slow bosses).|n|nBeelzebub's Might has increased AoE and stronger knockback.
+}
+
+STRING 879
+// Abilities: A00G (Ghost Projectile), Name (Name)
+{
+Ghost Projectile
+}
+
+STRING 880
+// Units: h00T (Ethereal Fiend), Name (Name)
+{
+Ethereal Fiend
+}
+
+STRING 881
+// Abilities: A00H (Ethereal Walk), Name (Name)
+{
+Ethereal Walk
+}
+
+STRING 882
+// Items: I00D (|cff800000Sword of Alastor|r), Description (Description)
+{
+|cff800000Demonic Item.|n|n|rYour melee attacks has a 10% chance to create an explosion that deals 100 damage to the primary target, and 50 damage to units within 150 AoE of target. |n|nNearby units are knocked back.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 883
+// Items: ratf (|cff00ffffFocusing Lens|r), Tip (Tooltip - Basic)
+{
+Makes Ray of Endor deal double damage. 
+}
+
+STRING 884
+// Items: I007 (|cff00ffffAmulet of Endor|r), Tip (Tooltip - Basic)
+{
+Halves your soul depletion rate. 
+}
+
+STRING 885
+// Items: I007 (|cff00ffffAmulet of Endor|r), Description (Description)
+{
+Halves your soul depletion rate. 
+}
+
+STRING 886
+// Abilities: AHad (Devotion Aura), EditorSuffix (Editor Suffix)
+{
+(negative)
+}
+
+STRING 887
+// Units: h00U (Moving Sword), Name (Name)
+{
+Moving Sword
+}
+
+STRING 889
+// Items: I009 (Swift Dagger), Ubertip (Tooltip - Extended)
+{
+Increases damage by 5 and agility by 3.
+}
+
+STRING 890
+// Items: I009 (Swift Dagger), Tip (Tooltip - Basic)
+{
+Increases damage by 5 and agility by 3.
+}
+
+STRING 891
+// Items: I009 (Swift Dagger), Name (Name)
+{
+Swift Dagger
+}
+
+STRING 892
+// Items: I00A (|cff800000Skull of Baphomet|r), Ubertip (Tooltip - Extended)
+{
+|cff800000Demonic Item.|n|n|rIncreases attack speed by 15% and attack damage by 10.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 893
+// Items: I00A (|cff800000Skull of Baphomet|r), Tip (Tooltip - Basic)
+{
+|cff800000Demonic Item.|n|n|rIncreases attack speed by 15% and attack damage by 10.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 894
+// Items: I00E (Warriors Helmet), Ubertip (Tooltip - Extended)
+{
+Increases max HP by 200 and armor by 3.
+}
+
+STRING 895
+// Items: I00E (Warriors Helmet), Tip (Tooltip - Basic)
+{
+Increases max HP by 200 and armor by 3.
+}
+
+STRING 898
+// Items: I00I (|cff800000Wand of Belphegor|r), Name (Name)
+{
+|cff800000Wand of Belphegor|r
+}
+
+STRING 899
+// Items: I00I (|cff800000Wand of Belphegor|r), Description (Description)
+{
+Wand Wand
+}
+
+STRING 901
+// Items: I00I (|cff800000Wand of Belphegor|r), Ubertip (Tooltip - Extended)
+{
+|cff800000Demonic Item.|n|n|rWhoever holds this wand is protected by a moving sword with 30 base damage that automatically attacks nearby units.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 902
+// Items: I00I (|cff800000Wand of Belphegor|r), Tip (Tooltip - Basic)
+{
+|cff800000Demonic Item.|n|n|rWhoever holds this wand is protected by a moving sword with 30 base damage that automatically attacks nearby units.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 903
+// Units: h00V (Evil Chest), Name (Name)
+{
+Evil Chest
+}
+
+STRING 904
+// Units: h00W (Centaur Orb), Name (Name)
+{
+Centaur Orb
+}
+
+STRING 905
+// Units: h00X (Centaur Missile), Name (Name)
+{
+Centaur Missile
+}
+
+STRING 906
+{
+Gem of Death fades in
+}
+
+STRING 907
+{
+Gem of Death fades in
+}
+
+STRING 908
+// Units: h00Y (Lesser Demon), Name (Name)
+{
+Lesser Demon
+}
+
+STRING 909
+// Abilities: A00I (Lesser Demon Slam), Name (Name)
+{
+Lesser Demon Slam
+}
+
+STRING 910
+// Units: n002 (Spider Lord), Name (Name)
+{
+Spider Lord
+}
+
+STRING 912
+{
+Gem of Death fades in
+}
+
+STRING 913
+{
+Gem of Death fades in
+}
+
+STRING 914
+{
+Gem of Death fades in
+}
+
+STRING 915
+{
+Gem of Death fades in
+}
+
+STRING 916
+{
+Gem of Death fades in
+}
+
+STRING 917
+{
+Gem of Death fades in
+}
+
+STRING 920
+{
+|cff32c832AGI|r
+}
+
+STRING 921
+{
+|cff969696Damage|r
+}
+
+STRING 922
+{
+|cff3232c8INT|r
+}
+
+STRING 923
+{
+|cffc83232STR|r
+}
+
+STRING 924
+{
+|cff969696Armor|r
+}
+
+STRING 925
+{
+|cff6f2583Sheol|r
+}
+
+STRING 926
+{
+|cff6f2583Sheol|r
+}
+
+STRING 927
+{
+|cff6f2583Sheol|r
+}
+
+STRING 928
+{
+|cff6f2583Sheol|r
+}
+
+STRING 929
+{
+|cff6f2583Sheol|r
+}
+
+STRING 930
+{
+|cff6f2583Sheol|r
+}
+
+STRING 931
+{
+|cff6f2583Sheol|r
+}
+
+STRING 932
+{
+|cff6f2583Sheol|r
+}
+
+STRING 933
+{
+|cff6f2583Sheol|r
+}
+
+STRING 934
+// Units: h00Z (Web Missile), Name (Name)
+{
+Web Missile
+}
+
+STRING 935
+// Abilities: Aens (Ensnare), EditorSuffix (Editor Suffix)
+{
+(Dummy Ability)
+}
+
+STRING 936
+// Abilities: A00J (Web Missile), Name (Name)
+{
+Web Missile
+}
+
+STRING 937
+// Abilities: A00J (Web Missile), EditorSuffix (Editor Suffix)
+{
+(Spider Ability)
+}
+
+STRING 939
+// Buffs/Effects: Bena (), Bufftip (Tooltip)
+{
+Web
+}
+
+STRING 940
+// Buffs/Effects: Bena (), EditorSuffix (Editor Suffix)
+{
+ (Air Custom)
+}
+
+STRING 942
+// Buffs/Effects: Bens (Ensnare (General Custom)), Bufftip (Tooltip)
+{
+Web
+}
+
+STRING 943
+// Buffs/Effects: Bens (Ensnare (General Custom)), EditorName (Name (Editor Only))
+{
+Ensnare (General Custom)
+}
+
+STRING 945
+// Buffs/Effects: Beng (), Bufftip (Tooltip)
+{
+Web
+}
+
+STRING 946
+// Buffs/Effects: Beng (), EditorSuffix (Editor Suffix)
+{
+ (Ground Custom)
+}
+
+STRING 947
+// Buffs/Effects: Bena (), Buffubertip (Tooltip - Extended)
+{
+This unit is webbed; it cannot move and takes 20% more damage from spiders.
+}
+
+STRING 948
+// Buffs/Effects: Bens (Ensnare (General Custom)), Buffubertip (Tooltip - Extended)
+{
+This unit is webbed; it cannot move and takes 20% more damage from spiders.
+}
+
+STRING 949
+// Buffs/Effects: Beng (), Buffubertip (Tooltip - Extended)
+{
+This unit is webbed; it cannot move and takes 20% more damage from spiders.
+}
+
+STRING 950
+{
+Vanquish Evil
+}
+
+STRING 951
+{
+Find your way to Sheol. Kill all evil in your path.
+}
+
+STRING 952
+// Units: h00E (Shadow Eyes), Name (Name)
+{
+Shadow Eyes
+}
+
+STRING 953
+// Abilities: A002 (Spirit Blows), Tip (Tooltip - Normal)
+{
+Mammon's Cleave [|cff00ffffW|r]
+}
+
+STRING 954
+// Abilities: A002 (Spirit Blows), Ubertip (Tooltip - Normal - Extended)
+{
+The caster imbues his weapons with spiritual power, increasing attack speed by 300, movement speed by 100% and makes the next 6 normal melee blows deal damage to units in a cone formation behind the primary target, knocking them back slightly. Secondary targets takes 50% damage. Lasts 10 seconds, or until you have dealt 6 blows.|n|n|cff6f2583Costs 5 soul charges.|r
+}
+
+STRING 955
+// Abilities: A00K (Ress Sickness), Name (Name)
+{
+Ress Sickness
+}
+
+STRING 956
+// Buffs/Effects: BEim (), Buffubertip (Tooltip - Extended)
+{
+This unit is firing a laser in front of it damaging all enemies caught in its path.
+}
+
+STRING 957
+// Buffs/Effects: BOwk (), Buffubertip (Tooltip - Extended)
+{
+This unit has increased movement speed and its melee blows damages enemies in a cone in behind the attacked unit. Enemies hit by the cleave cone gets knocked back.
+}
+
+STRING 958
+// Buffs/Effects: BOwk (), Bufftip (Tooltip)
+{
+Mammon's Cleave
+}
+
+STRING 959
+// Buffs/Effects: B001 (Resurrection Sickness), EditorName (Name (Editor Only))
+{
+Resurrection Sickness
+}
+
+STRING 963
+// Items: I007 (|cff00ffffAmulet of Endor|r), Name (Name)
+{
+|cff00ffffAmulet of Endor|r
+}
+
+STRING 964
+// Items: I008 (|cff800000Skulls of the Four Horsemen|r), Ubertip (Tooltip - Extended)
+{
+|cff800000Demonic Item.|n|n|rIncreases critical strike chance by 5% and critical damage by 10%.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 965
+// Items: I008 (|cff800000Skulls of the Four Horsemen|r), Tip (Tooltip - Basic)
+{
+|cff800000Demonic Item.|n|n|rIncreases critical strike chance by 5% and critical damage by 10%.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 966
+// Items: I00D (|cff800000Sword of Alastor|r), Ubertip (Tooltip - Extended)
+{
+|cff800000Demonic Item.|n|n|rYour melee attacks has a 5% chance to create an explosion that deals 100 damage to the primary target, and 50 damage to units within 150 AoE of target. |n|nNearby units are knocked back.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 967
+// Items: I00D (|cff800000Sword of Alastor|r), Tip (Tooltip - Basic)
+{
+|cff800000Demonic Item.|n|n|rYour melee attacks has a 5% chance to create an explosion that deals 100 damage to the primary target, and 50 damage to units within 150 AoE of target. |n|nNearby units are knocked back.|n|n|cff800000If you have all 4 Demonic set pieces you will deal 25% more damage.|r
+}
+
+STRING 968
+// Buffs/Effects: B001 (Resurrection Sickness), Buffubertip (Tooltip - Extended)
+{
+This unit has just respawned. It deals half damage and souls depletes twice as fast. Lasts 2 minutes.
+}
+
+STRING 969
+// Abilities: A012 (Charge), Ubertip (Tooltip - Normal - Extended)
+{
+The caster charges forward, dealing damage to, and stunning the first unit in its path. Adjacent units are knocked back.|n|n(Does not hit shades).|n|n|cff6f2583Instantly recharges 10 souls when used.|r
+}
+
+STRING 970
+// Abilities: A012 (Charge), Researchubertip (Tooltip - Learn - Extended)
+{
+The caster charges forward, dealing damage to, and stunning the first unit in its path. Adjacent units are knocked back.|n|n(Does not hit shades).|n|n|cff6f2583Instantly recharges 10 souls when used.|r
+}
+
+STRING 971
+// Items: ratf (|cff00ffffFocusing Lens|r), Description (Description)
+{
+Makes 'Ray of Endor' deal double damage.
+}
+
+STRING 972
+// Buffs/Effects: B001 (Resurrection Sickness), Bufftip (Tooltip)
+{
+|cffff0000Resurrection Sickness|r
+}
+
+STRING 973
+{
++75
+}
+
+STRING 974
+{
++65
+}
+
+STRING 975
+// Items: I005 (|cffffff00Wings of the Seraph|r), Ubertip (Tooltip - Extended)
+{
+|cffffff00Seraph Item.|r|n|nWhenever you take melee damage you have a 5% chance to smite your attacker with a holy bolt, dealing 150 spell damage.|n|nIncreases HP gained from absorbing souls by 10.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 976
+// Items: I005 (|cffffff00Wings of the Seraph|r), Tip (Tooltip - Basic)
+{
+|cffffff00Seraph Item.|r|n|nWhenever you take melee damage you have a 5% chance to smite your attacker with a holy bolt, dealing 150 spell damage.|n|nIncreases HP gained from absorbing souls by 10.|n|n|cffffff00If you have all 4 Seraph set pieces you will take 25% less damage.|r
+}
+
+STRING 977
+{
+Choose Movement System:
+}
+
+STRING 978
+{
+Warcraft III Movement
+}
+
+STRING 979
+{
+Diablo Movement
+}
+
+STRING 980
+{
+Type 'movement' to change movement system at any time!
+}
+

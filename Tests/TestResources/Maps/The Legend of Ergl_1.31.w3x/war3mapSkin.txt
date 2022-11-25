@@ -1,0 +1,4 @@
+[CustomSkin]
+CinematicBorder=UI\Widgets\EscMenu\Human\blank-background.blp
+EscMenuBackground=UI\Widgets\EscMenu\Human\blank-background.blp
+

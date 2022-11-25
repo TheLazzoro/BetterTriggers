@@ -1,0 +1,1185 @@
+﻿STRING 1
+{
+|cff0099ffThe Legend of Ergl 1.1|r
+}
+
+STRING 2
+{
+1
+}
+
+STRING 3
+{
+|cffffcc00A lazy murloc is banished from his tribe until he can prove his worth. But in the process of trying to find an artifact, he stumbles upon temple inhabited by creatures less than willing to aid him in his search.|r
+}
+
+STRING 4
+{
+Tickles
+}
+
+STRING 5
+{
+Player 1
+}
+
+STRING 6
+{
+Force 1
+}
+
+STRING 7
+// Units: n000 (Ergl), Name (Name)
+{
+Ergl
+}
+
+STRING 8
+// Units: n001 (Dummy), Name (Name)
+{
+Dummy
+}
+
+STRING 9
+// Doodads: D000 (Pathing Blocker (2x2 Both)), Name (Name)
+{
+Pathing Blocker (2x2 Both)
+}
+
+STRING 10
+// Abilities: A000 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 12
+// Abilities: A001 (Swim), Name (Name)
+{
+Swim
+}
+
+STRING 24
+// Abilities: A003 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 26
+// Abilities: A004 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 28
+// Abilities: A005 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 30
+// Abilities: A006 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 32
+// Abilities: A007 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 34
+// Abilities: A008 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 36
+// Abilities: A00B (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 38
+// Abilities: A009 (Attack Speed), Name (Name)
+{
+Attack Speed
+}
+
+STRING 39
+// Abilities: A009 (Attack Speed), EditorSuffix (Editor Suffix)
+{
+(Enemies)
+}
+
+STRING 41
+// Units: h001 (Mur'Gul Reaver), Name (Name)
+{
+Mur'Gul Reaver
+}
+
+STRING 42
+// Units: h002 (Mur'Gul Overseer), Name (Name)
+{
+Mur'Gul Overseer
+}
+
+STRING 43
+// Units: h003 (Mur'Gul Minion), Name (Name)
+{
+Mur'Gul Minion
+}
+
+STRING 44
+// Units: h000 (Mur'Gul Berserker), Name (Name)
+{
+Mur'Gul Berserker
+}
+
+STRING 45
+// Abilities: A00A (Berserk), EditorSuffix (Editor Suffix)
+{
+(Mug'Gul Berserker)
+}
+
+STRING 46
+// Abilities: A000 (Projectile), EditorSuffix (Editor Suffix)
+{
+01
+}
+
+STRING 48
+// Abilities: A003 (Projectile), EditorSuffix (Editor Suffix)
+{
+03
+}
+
+STRING 49
+// Abilities: A004 (Projectile), EditorSuffix (Editor Suffix)
+{
+04
+}
+
+STRING 50
+// Abilities: A005 (Projectile), EditorSuffix (Editor Suffix)
+{
+05
+}
+
+STRING 51
+// Abilities: A006 (Projectile), EditorSuffix (Editor Suffix)
+{
+06
+}
+
+STRING 52
+// Abilities: A007 (Projectile), EditorSuffix (Editor Suffix)
+{
+07
+}
+
+STRING 53
+// Abilities: A008 (Projectile), EditorSuffix (Editor Suffix)
+{
+08
+}
+
+STRING 55
+// Abilities: A00B (Projectile), EditorSuffix (Editor Suffix)
+{
+00
+}
+
+STRING 56
+// Units: h000 (Mur'Gul Berserker), EditorSuffix (Name - Editor Suffix)
+{
+(1)
+}
+
+STRING 57
+// Units: h001 (Mur'Gul Reaver), EditorSuffix (Name - Editor Suffix)
+{
+(2)
+}
+
+STRING 58
+// Units: h002 (Mur'Gul Overseer), EditorSuffix (Name - Editor Suffix)
+{
+(3)
+}
+
+STRING 59
+// Units: h003 (Mur'Gul Minion), EditorSuffix (Name - Editor Suffix)
+{
+(4)
+}
+
+STRING 60
+// Abilities: A00C (Spawn), Name (Name)
+{
+Spawn
+}
+
+STRING 63
+// Abilities: A002 (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 64
+// Abilities: A002 (Projectile), EditorSuffix (Editor Suffix)
+{
+100
+}
+
+STRING 66
+// Units: n002 (Tidal Crystal), Name (Name)
+{
+Tidal Crystal
+}
+
+STRING 119
+// Abilities: A00D (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 120
+// Abilities: A00D (Projectile), EditorSuffix (Editor Suffix)
+{
+02
+}
+
+STRING 121
+// Units: h004 (Agitated Makrura), Name (Name)
+{
+Agitated Makrura
+}
+
+STRING 122
+// Units: h004 (Agitated Makrura), EditorSuffix (Name - Editor Suffix)
+{
+(5)
+}
+
+STRING 123
+// Units: h006 (Snap Dragon), Name (Name)
+{
+Snap Dragon
+}
+
+STRING 124
+// Units: h006 (Snap Dragon), EditorSuffix (Name - Editor Suffix)
+{
+(6)
+}
+
+STRING 125
+// Units: h007 (Naga Royal Guard), Name (Name)
+{
+Naga Royal Guard
+}
+
+STRING 126
+// Units: h007 (Naga Royal Guard), EditorSuffix (Name - Editor Suffix)
+{
+(8)
+}
+
+STRING 127
+// Units: h008 (Naga Siren), Name (Name)
+{
+Naga Siren
+}
+
+STRING 128
+// Units: h008 (Naga Siren), EditorSuffix (Name - Editor Suffix)
+{
+(9)
+}
+
+STRING 129
+// Units: h009 (Naga Myrmidon), Name (Name)
+{
+Naga Myrmidon
+}
+
+STRING 130
+// Units: h009 (Naga Myrmidon), EditorSuffix (Name - Editor Suffix)
+{
+(7)
+}
+
+STRING 131
+// Abilities: A00E (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 132
+// Abilities: A00E (Projectile), EditorSuffix (Editor Suffix)
+{
+09
+}
+
+STRING 142
+// Abilities: A00G (Breathing), Name (Name)
+{
+Breathing
+}
+
+STRING 143
+// Units: h005 (Turtle Hatchling), Name (Name)
+{
+Turtle Hatchling
+}
+
+STRING 144
+// Units: h005 (Turtle Hatchling), EditorSuffix (Name - Editor Suffix)
+{
+(10)
+}
+
+STRING 145
+// Units: h00A (Dragon Turtle), Name (Name)
+{
+Dragon Turtle
+}
+
+STRING 146
+// Units: h00A (Dragon Turtle), EditorSuffix (Name - Editor Suffix)
+{
+(11)
+}
+
+STRING 147
+// Abilities: A00F (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 148
+// Abilities: A00F (Projectile), EditorSuffix (Editor Suffix)
+{
+10
+}
+
+STRING 149
+// Abilities: A00H (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 150
+// Abilities: A00H (Projectile), EditorSuffix (Editor Suffix)
+{
+11
+}
+
+STRING 154
+// Abilities: A00I (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 155
+// Abilities: A00I (Projectile), EditorSuffix (Editor Suffix)
+{
+101
+}
+
+STRING 156
+// Units: n006 (Danger), Name (Name)
+{
+Danger
+}
+
+STRING 157
+// Abilities: A00J (Danger), Name (Name)
+{
+Danger
+}
+
+STRING 158
+// Abilities: A00K (Impale), Name (Name)
+{
+Impale
+}
+
+STRING 171
+// Units: h00B (Leg), Name (Name)
+{
+Leg
+}
+
+STRING 172
+// Units: h00B (Leg), EditorSuffix (Name - Editor Suffix)
+{
+(Dragon Turtle)
+}
+
+STRING 173
+// Doodads: D002 (Wall01), Name (Name)
+{
+Wall01
+}
+
+STRING 174
+// Doodads: D003 (Wall02), Name (Name)
+{
+Wall02
+}
+
+STRING 175
+// Doodads: D004 (Wall03), Name (Name)
+{
+Wall03
+}
+
+STRING 176
+// Doodads: D005 (Wall04), Name (Name)
+{
+Wall04
+}
+
+STRING 177
+// Doodads: D006 (Wall05), Name (Name)
+{
+Wall05
+}
+
+STRING 181
+// Doodads: D00A (Pathing Blocker (2x2 Ground)), Name (Name)
+{
+Pathing Blocker (2x2 Ground)
+}
+
+STRING 183
+// Doodads: D00B (Flooring1), Name (Name)
+{
+Flooring1
+}
+
+STRING 184
+// Doodads: D00C (Flooring2), Name (Name)
+{
+Flooring2
+}
+
+STRING 225
+// Doodads: D007 (Pathing Blocker (4x4 Both)), Name (Name)
+{
+Pathing Blocker (4x4 Both)
+}
+
+STRING 226
+{
+Sea Witch
+}
+
+STRING 227
+{
+|cffffb4c8"Greetingss, little one. I am ssurprised a creature so delicate-looking made it through the entirety of my temple."|r |cffafafafShe appears to be contemplating his potential.|r
+}
+
+STRING 228
+{
+Ergl
+}
+
+STRING 229
+{
+|cffe6ff50"Ergl look for hero heart. Heart here?"|r
+}
+
+STRING 230
+{
+Sea Witch
+}
+
+STRING 231
+{
+|cffffb4c8"There is no ssuch object here. I may have overlooked the deathss of the mur'gul guardss, but not of my naga brethren."|r |cffafafafShe narrows her eyes into a sinister glare.|r |cffffb4c8"You will not be leaving here alive to complete your quesst."|r
+}
+
+STRING 233
+// Units: h00C (Sea Witch), EditorSuffix (Name - Editor Suffix)
+{
+(12)
+}
+
+STRING 234
+// Units: e000 (Hydra), Name (Name)
+{
+Hydra
+}
+
+STRING 235
+// Units: e000 (Hydra), EditorSuffix (Name - Editor Suffix)
+{
+(13)
+}
+
+STRING 236
+// Doodads: D008 (Ruins Gate), Name (Name)
+{
+Ruins Gate
+}
+
+STRING 238
+// Units: n007 (Lever), Name (Name)
+{
+Lever
+}
+
+STRING 240
+// Units: n004 (Void Crystal), Name (Name)
+{
+Void Crystal
+}
+
+STRING 245
+// Units: n005 (Siege Crystal), Name (Name)
+{
+Siege Crystal
+}
+
+STRING 247
+// Units: h00C (Sea Witch), Name (Name)
+{
+Sea Witch
+}
+
+STRING 248
+// Abilities: A00L (Swim), Name (Name)
+{
+Swim
+}
+
+STRING 249
+// Abilities: A00L (Swim), EditorSuffix (Editor Suffix)
+{
+(Boss)
+}
+
+STRING 250
+// Abilities: A00M (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 251
+// Abilities: A00M (Projectile), EditorSuffix (Editor Suffix)
+{
+12
+}
+
+STRING 252
+// Abilities: A00N (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 253
+// Abilities: A00N (Projectile), EditorSuffix (Editor Suffix)
+{
+13
+}
+
+STRING 254
+// Abilities: A00O (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 255
+// Abilities: A00O (Projectile), EditorSuffix (Editor Suffix)
+{
+14
+}
+
+STRING 256
+// Abilities: A00P (Projectile), Name (Name)
+{
+Projectile
+}
+
+STRING 257
+// Abilities: A00P (Projectile), EditorSuffix (Editor Suffix)
+{
+15
+}
+
+STRING 260
+{
+Awaken at Last Checkpoint
+}
+
+STRING 262
+{
+Rage crystals improve damage
+at the cost of receiving more
+damage. Multiple rages stack,
+but all levels of the effect are
+removed upon death.
+}
+
+STRING 263
+// Abilities: A00Q (Spell Animation), Name (Name)
+{
+Spell Animation
+}
+
+STRING 264
+// Abilities: A00Q (Spell Animation), EditorSuffix (Editor Suffix)
+{
+(Sea Witch)
+}
+
+STRING 280
+// Units: h00D (Mur'Gul Reaver), Name (Name)
+{
+Mur'Gul Reaver
+}
+
+STRING 281
+// Units: h00D (Mur'Gul Reaver), EditorSuffix (Name - Editor Suffix)
+{
+(Audience)
+}
+
+STRING 282
+// Units: h00E (Mur'Gul Berserker), Name (Name)
+{
+Mur'Gul Berserker
+}
+
+STRING 283
+// Units: h00E (Mur'Gul Berserker), EditorSuffix (Name - Editor Suffix)
+{
+(Audience)
+}
+
+STRING 284
+// Units: h00F (Mur'Gul Minion), Name (Name)
+{
+Mur'Gul Minion
+}
+
+STRING 285
+// Units: h00F (Mur'Gul Minion), EditorSuffix (Name - Editor Suffix)
+{
+(Audience)
+}
+
+STRING 286
+// Units: h00G (Mur'Gul Overseer), Name (Name)
+{
+Mur'Gul Overseer
+}
+
+STRING 287
+// Units: h00G (Mur'Gul Overseer), EditorSuffix (Name - Editor Suffix)
+{
+(Audience)
+}
+
+STRING 288
+// Abilities: AHtb (Storm Bolt), EditorSuffix (Editor Suffix)
+{
+(Hydra Stun)
+}
+
+STRING 289
+// Abilities: ACro (Roar), EditorSuffix (Editor Suffix)
+{
+(Berserk Crystal)
+}
+
+STRING 290
+// Abilities: A00R (Spell Animation), Name (Name)
+{
+Spell Animation
+}
+
+STRING 291
+// Abilities: A00R (Spell Animation), EditorSuffix (Editor Suffix)
+{
+(Audience)
+}
+
+STRING 292
+// Doodads: D001 (Hut01), Name (Name)
+{
+Hut01
+}
+
+STRING 293
+// Doodads: D00E (Hut02), Name (Name)
+{
+Hut02
+}
+
+STRING 294
+// Doodads: D00F (Hut03), Name (Name)
+{
+Hut03
+}
+
+STRING 335
+{
+Ergl
+}
+
+STRING 336
+{
+|cffe6ff50"Hey, where hero heart? Hero heart here?"|r
+}
+
+STRING 339
+{
+Mur'gul
+}
+
+STRING 340
+{
+|cffafafafThe mur'gul looks him over carefully.|r |cff8cffff"You not allowed here, smoothskin. Leave."|r
+}
+
+STRING 341
+{
+Ergl
+}
+
+STRING 342
+{
+|cffe6ff50"No hero heart? Ergl need hero heart."|r
+}
+
+STRING 343
+{
+Mur'gul
+}
+
+STRING 344
+{
+|cff8cffff"I check you. Maybe heart in corpse of smoothskin. Die."|r
+}
+
+STRING 345
+// Units: n003 (Rage Crystal), Name (Name)
+{
+Rage Crystal
+}
+
+STRING 346
+{
+Understood
+}
+
+STRING 348
+{
+Understood
+}
+
+STRING 349
+{
+Left-click to attack toward your
+cursor. Hold down to continunously
+attack.
+
+Right-click to move. Hold down to
+charge a dash toward your cursor.
+}
+
+STRING 351
+// Units: n008 (Healing Rune), Name (Name)
+{
+Healing Rune
+}
+
+STRING 352
+// Abilities: A00J (Danger), EditorSuffix (Editor Suffix)
+{
+(Turtle)
+}
+
+STRING 353
+// Abilities: A00S (Danger), Name (Name)
+{
+Danger
+}
+
+STRING 354
+// Abilities: A00S (Danger), EditorSuffix (Editor Suffix)
+{
+(Boulder)
+}
+
+STRING 355
+// Abilities: A00T (Boulder), Name (Name)
+{
+Boulder
+}
+
+STRING 360
+{
+Flargl
+}
+
+STRING 361
+{
+|cff64ffa0"Ergl, no time for play. Ergl need work. Help tribe."|r
+
+|cffafafaf[Mouse Click to Continue]|r
+}
+
+STRING 362
+{
+Flargl
+}
+
+STRING 363
+{
+|cff64ffa0"Ergl no work? No find clam? No get food? No hunt treasure?"|r
+}
+
+STRING 364
+{
+Flargl
+}
+
+STRING 365
+{
+|cff64ffa0"Then Ergl banished from tribe."|r
+}
+
+STRING 366
+{
+Flargl
+}
+
+STRING 367
+{
+|cff64ffa0"Yes, but Ergl not banished if Ergl find hero heart."|r
+}
+
+STRING 370
+{
+Flargl
+}
+
+STRING 371
+{
+|cff64ffa0"In ocean. Ergl know when Ergl find. Go."|r
+}
+
+STRING 372
+{
+Ergl
+}
+
+STRING 373
+{
+|cffe6ff50"Fine, Ergl find hero heart..."|r
+
+
+}
+
+STRING 374
+{
+Ergl
+}
+
+STRING 375
+{
+|cffe6ff50"Where Ergl find?"|r
+}
+
+STRING 376
+{
+Ergl
+}
+
+STRING 377
+{
+|cffafafafErgl's face twists and distorts into a horrifying display of anguish and terror.|r |cffe6ff50"No!"|r
+
+
+}
+
+STRING 378
+{
+Ergl
+}
+
+STRING 379
+{
+|cffe6ff50"No. Ergl only want play!"|r
+}
+
+STRING 380
+{
+Ergl
+}
+
+STRING 381
+{
+|cffe6ff50"But Ergl want play..."|r |cffafafafHe pouts like a scolded puppy.|r
+}
+
+STRING 383
+// Abilities: A00U (Light), EditorSuffix (Editor Suffix)
+{
+(Red)
+}
+
+STRING 384
+// Abilities: A00U (Light), Name (Name)
+{
+Light
+}
+
+STRING 387
+{
+Ergl
+}
+
+STRING 388
+{
+|cffe6ff50"Uh... Nope, nope, nope. Ergl go home, now."|r
+}
+
+STRING 389
+{
+Ergl
+}
+
+STRING 390
+{
+|cffafafafA slight whimper can be heard reverberating through the water.|r |cffe6ff50"Ergl so dead."|r
+}
+
+STRING 392
+// Units: n00A (Barrel), EditorSuffix (Name - Editor Suffix)
+{
+(A)
+}
+
+STRING 393
+// Units: n00A (Barrel), Name (Name)
+{
+Barrel
+}
+
+STRING 394
+// Units: n00B (Barrel), EditorSuffix (Name - Editor Suffix)
+{
+(B)
+}
+
+STRING 395
+// Units: n00B (Barrel), Name (Name)
+{
+Barrel
+}
+
+STRING 396
+{
+The ebb and flow of time has
+shown a dire vision of the future.
+But time is fluid, and one may yet
+follow in the wake of a different
+current...
+}
+
+STRING 403
+{
+Naga Siren
+}
+
+STRING 404
+{
+|cffc8ffff"Noisy intruder! Kill it. Kill it!!"|r
+}
+
+STRING 407
+// Abilities: A00V (Spell Animation), Name (Name)
+{
+Spell Animation
+}
+
+STRING 408
+// Abilities: A00V (Spell Animation), EditorSuffix (Editor Suffix)
+{
+(Hydra)
+}
+
+STRING 409
+{
+Mur'gul
+}
+
+STRING 410
+{
+|cffff8c50"You kill our masters?"|r
+}
+
+STRING 415
+{
+Ergl
+}
+
+STRING 416
+{
+|cffe6ff50"Oops. Ergl did accident."|r
+}
+
+STRING 417
+{
+Mur'gul
+}
+
+STRING 418
+{
+|cffff8c50"You Ergl? You free us. Ergl our hero!"|r |cffafafafThe other mur'guls begin to smile and cheer.|r
+}
+
+STRING 419
+{
+Ergl
+}
+
+STRING 420
+{
+|cffe6ff50"Ergl... is hero? Ergl have heart. Ergl have hero heart all along?!"|r |cffafafafHis smile beams at the realization.|r
+}
+
+STRING 421
+{
+ 
+}
+
+STRING 422
+{
+|cffafafafAnd after finally finding a hero's heart, Ergl makes the trek back to his village...|r
+}
+
+STRING 425
+{
+Flargl
+}
+
+STRING 426
+{
+|cff64ffa0"Flargl happy to see Ergl alive. Progress?"|r
+}
+
+STRING 427
+{
+Ergl
+}
+
+STRING 428
+{
+|cffafafafThe confidence radiating from Ergl already hints at his discovery.|r |cffe6ff50"Hero heart inside Ergl all along!"|r
+}
+
+STRING 437
+{
+Flargl
+}
+
+STRING 438
+{
+|cffafafafHe nods his head approvingly.|r |cff64ffa0"Very good. Ergl may return to tribe as clammer."|r
+}
+
+STRING 439
+{
+Ergl
+}
+
+STRING 440
+{
+|cffe6ff50"Ergl so happy! Oh, Ergl friends join tribe, too?"|r
+}
+
+STRING 441
+{
+Flargl
+}
+
+STRING 442
+{
+|cff64ffa0"...Friends?"|r
+}
+
+STRING 445
+{
+Flargl
+}
+
+STRING 446
+{
+|cffafafafFlargl's face twists and distorts into a horrifying display of terror and anguish.|r |cff5aa0ff"No!"|r
+}
+
+STRING 451
+{
+Mattashi
+}
+
+STRING 452
+{
+Creator of the song |CFFFED312Forever Friends|r.
+}
+
+STRING 453
+{
+Killamaaki
+}
+
+STRING 454
+{
+Creator of the songs |CFFFED312Ready to Fight|r, |CFFFED312Guns Blazing|r and |CFFFED312Proceed With Caution|r.
+}
+
+STRING 455
+{
+NemesisTheory
+}
+
+STRING 456
+{
+Creator of the song |CFFFED312Rose at Meridiem|r.
+}
+
+STRING 457
+{
+Koori-kun
+}
+
+STRING 458
+{
+Creator of the song |CFFFED312Temple of Water|r.
+}
+
+STRING 459
+{
+kellym0, God of the Murlocs
+}
+
+STRING 460
+{
+Creator of the model |CFFFED312The Greatest, Eldest, of All Hydras|r.
+}
+
+STRING 463
+{
+The Legend of Ergl,
+by Tickles
+
+Thanks for playing!
+}
+
