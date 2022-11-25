@@ -74,17 +74,19 @@ namespace BetterTriggers.Controllers
             command.Execute();
         }
 
-        public void RenameLocalVariable(Trigger trig, LocalVariable variable, string name)
+        public void RenameLocalVariable(Trigger trig, LocalVariable variable, string newName)
         {
-            if (name == variable.variable.Name)
+            if (newName == variable.variable.Name)
                 return;
 
             foreach (LocalVariable v in trig.LocalVariables)
             {
-                if (v.variable.Name == name)
-                    throw new Exception($"Local variable with name '{name}' already exists.");
+                if (v.variable.Name == newName)
+                    throw new Exception($"Local variable with name '{newName}' already exists.");
             }
-            variable.variable.Name = name;
+
+            CommandLocalVariableRename command = new CommandLocalVariableRename(variable, newName);
+            command.Execute();
         }
 
         public List<Variable> GetVariablesAll()

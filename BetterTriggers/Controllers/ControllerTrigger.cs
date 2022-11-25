@@ -124,11 +124,12 @@ namespace BetterTriggers.Controllers
             List<TriggerElement> copiedItems = new List<TriggerElement>();
             for (int i = 0; i < list.Count; i++)
             {
-                if(list[i] is ECA)
+                if (list[i] is ECA)
                 {
                     var element = (ECA)list[i];
                     copiedItems.Add(element.Clone());
-                } else if(list[i] is LocalVariable)
+                }
+                else if (list[i] is LocalVariable)
                 {
                     var element = (LocalVariable)list[i];
                     copiedItems.Add(element.Clone());
@@ -199,7 +200,7 @@ namespace BetterTriggers.Controllers
 
             for (int i = 0; i < triggerElements.Count; i++)
             {
-                var triggerElement = (ECA) triggerElements[i];
+                var triggerElement = (ECA)triggerElements[i];
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
                 removeCount += VerifyParametersAndRemove(triggerElement.function.parameters, returnTypes);
 
@@ -344,21 +345,24 @@ namespace BetterTriggers.Controllers
                     var function = (Function)parameter;
                     invalidCount += VerifyParameters(function.parameters);
                 }
-                else if(parameter is VariableRef varRef)
+                else if (parameter is VariableRef varRef)
                 {
                     ControllerVariable controller = new ControllerVariable();
                     var variable = controller.GetByReference(varRef);
                     if (variable == null)
                         invalidCount++;
-                    if(variable.IsArray)
+                    else
                     {
-                        if (varRef.arrayIndexValues[0] == null || varRef.arrayIndexValues[0].value == "")
-                            invalidCount++;
-                    }
-                    if(variable.IsArray && variable.IsTwoDimensions)
-                    {
-                        if (varRef.arrayIndexValues[1] == null || varRef.arrayIndexValues[1].value == "")
-                            invalidCount++;
+                        if (variable.IsArray)
+                        {
+                            if (varRef.arrayIndexValues[0] == null || varRef.arrayIndexValues[0].value == "")
+                                invalidCount++;
+                        }
+                        if (variable.IsArray && variable.IsTwoDimensions)
+                        {
+                            if (varRef.arrayIndexValues[1] == null || varRef.arrayIndexValues[1].value == "")
+                                invalidCount++;
+                        }
                     }
                 }
             }
