@@ -88,10 +88,7 @@ namespace GUI.Controllers
 
                     // This exists in case a variable has been changed
                     if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
-                    {
-                        parameters[paramIndex] = new Parameter();
                         varName = "null";
-                    }
                     else
                         varName = Variables.GetVariableNameById(variable.Id);
 
@@ -120,10 +117,7 @@ namespace GUI.Controllers
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
-                    {
-                        parameters[paramIndex] = new Parameter();
                         triggerName = "null";
-                    }
                     else
                         triggerName = controllerTrig.GetTriggerName(trigger.Id);
 
@@ -288,10 +282,7 @@ namespace GUI.Controllers
 
                     // This exists in case a variable has been changed
                     if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
-                    {
-                        parameters[paramIndex] = new Parameter();
                         varName = "null";
-                    }
                     else
                         varName = Variables.GetVariableNameById(variable.Id);
 
@@ -313,10 +304,7 @@ namespace GUI.Controllers
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
-                    {
-                        parameters[paramIndex] = new Parameter();
                         triggerName = "null";
-                    }
                     else
                         triggerName = controllerTrig.GetTriggerName(trigger.Id);
 

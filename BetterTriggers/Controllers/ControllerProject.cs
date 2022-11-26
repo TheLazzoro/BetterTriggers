@@ -412,9 +412,7 @@ namespace BetterTriggers.Controllers
             ContainerProject.project = null;
             ContainerProject.projectFiles = null;
             ContainerProject.currentSelectedElement = null;
-
             CustomMapData.mapPath = null;
-
             CommandManager.Reset();
         }
 

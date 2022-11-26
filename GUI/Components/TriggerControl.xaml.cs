@@ -265,19 +265,12 @@ namespace GUI.Components
                 ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
                 var inlines = controllerTriggerTreeItem.GenerateParamText(item);
                 var element = (ECA)item.triggerElement;
-                if (!grid.Children.Contains(textblockParams))
-                {
-                    grid.Children.Add(textblockParams);
-                    grid.Children.Add(textblockDescription);
-                }
                 textblockParams.Inlines.AddRange(inlines);
                 textblockDescription.Text = Locale.Translate(element.function.value);
             }
             else if (item.triggerElement is LocalVariable)
             {
                 var element = (LocalVariable)item.triggerElement;
-                grid.Children.Remove(textblockParams);
-                grid.Children.Remove(textblockDescription);
                 variableControl = new VariableControl(element.variable);
                 grid.Children.Add(variableControl);
                 Grid.SetRow(variableControl, 3);

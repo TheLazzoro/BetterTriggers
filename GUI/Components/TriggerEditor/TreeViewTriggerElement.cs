@@ -26,6 +26,8 @@ namespace GUI.Components.TriggerEditor
 
         public TreeViewTriggerElement(TriggerElement triggerElement)
         {
+            this.treeItemHeader = new TreeItemHeader();
+            this.Header = treeItemHeader;
             this.triggerElement = triggerElement;
             ControllerTriggerData controller = new ControllerTriggerData();
             this.category = controller.GetCategoryTriggerElement(triggerElement);
@@ -95,20 +97,18 @@ namespace GUI.Components.TriggerEditor
                 text = localVar.variable.Name;
 
             bool isEnabled = true;
-            bool areParametersValid = true;
             TreeItemState state = TreeItemState.Normal;
             if (this.triggerElement is not LocalVariable)
             {
+                bool areParametersValid = true;
                 var _triggerElement = (ECA)this.triggerElement;
                 List<Parameter> parameters = _triggerElement.function.parameters;
                 areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
                 isEnabled = _triggerElement.isEnabled;
-                state = areParametersValid == true ? TreeItemState.Normal : TreeItemState.HasErrors;
+                state = areParametersValid ? TreeItemState.Normal : TreeItemState.HasErrors;
             }
 
-            TreeItemHeader header = new TreeItemHeader(text, category, state, isEnabled);
-            this.treeItemHeader = header;
-            this.Header = header;
+            this.treeItemHeader.Refresh(text, category, state, isEnabled);
         }
 
         public void UpdatePosition()

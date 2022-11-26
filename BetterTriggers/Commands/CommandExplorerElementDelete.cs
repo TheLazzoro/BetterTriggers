@@ -4,6 +4,7 @@ using System.IO;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
 {
@@ -12,24 +13,20 @@ namespace BetterTriggers.Commands
         string commandName = "Delete Explorer Element";
         IExplorerElement deletedElement;
         IExplorerElement parent;
-        string fileContent = string.Empty;
         int index;
+        RefCollection refCollection;
 
         public CommandExplorerElementDelete(IExplorerElement deletedElement)
         {
             this.deletedElement = deletedElement;
             this.parent = deletedElement.GetParent();
             this.index = parent.GetExplorerElements().IndexOf(deletedElement);
-
-            if (!(deletedElement is ExplorerElementFolder))
-            {
-                var saveable = (IExplorerSaveable)deletedElement;
-                fileContent = saveable.GetSaveableString();
-            }
+            this.refCollection = new RefCollection(deletedElement);
         }
 
         public void Execute()
         {
+            refCollection.RemoveRefsFromParent();
             deletedElement.RemoveFromParent();
             deletedElement.Deleted();
 
@@ -44,15 +41,14 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
+            refCollection.RemoveRefsFromParent();
             deletedElement.RemoveFromParent();
             deletedElement.Deleted();
             ControllerProject controllerProject = new ControllerProject();
             
             controllerProject.SetEnableFileEvents(false);
-
             ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
             controllerFileSystem.DeleteElement(deletedElement.GetPath());
-
             controllerProject.SetEnableFileEvents(true);
 
             
@@ -77,6 +73,7 @@ namespace BetterTriggers.Commands
             // We may want to do the same 
 
             controller.SetEnableFileEvents(true);
+            refCollection.AddRefsToParent();
         }
 
         public string GetCommandName()

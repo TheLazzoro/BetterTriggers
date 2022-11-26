@@ -35,6 +35,26 @@ namespace GUI.Components.Shared
             HasErrorsNoTextColor
         }
 
+        public TreeItemHeader() {
+            this.Orientation = Orientation.Horizontal;
+            this.Height = 18;
+            this.Margin = new Thickness(-1, -1, 0, -1);
+
+            Icon = new System.Windows.Shapes.Rectangle();
+            Icon.Width = 16;
+            Icon.Height = 16;
+            this.Children.Add(Icon);
+
+            DisplayText = new TextBlock();
+            DisplayText.Margin = new Thickness(5, 0, 0, 0);
+            DisplayText.FontFamily = new System.Windows.Media.FontFamily("Segoe UI");
+            this.Children.Add(DisplayText);
+
+            RenameBox = new TextBox();
+            RenameBox.Margin = new Thickness(5, 0, 0, 0);
+            this.RenameBox.LostFocus += RenameBox_LostFocus;
+
+        }
 
         public TreeItemHeader(string text, string categoryName, TreeItemState state = TreeItemState.Normal, bool isInitiallyOn = true)
         {
@@ -45,14 +65,22 @@ namespace GUI.Components.Shared
             Icon = new System.Windows.Shapes.Rectangle();
             Icon.Width = 16;
             Icon.Height = 16;
+            this.Children.Add(Icon);
 
             DisplayText = new TextBlock();
             DisplayText.Margin = new Thickness(5, 0, 0, 0);
             DisplayText.FontFamily = new System.Windows.Media.FontFamily("Segoe UI");
+            this.Children.Add(DisplayText);
 
             RenameBox = new TextBox();
             RenameBox.Margin = new Thickness(5, 0, 0, 0);
+            RenameBox.LostFocus += RenameBox_LostFocus;
 
+            Refresh(text, categoryName, state, isInitiallyOn);
+        }
+
+        public void Refresh(string text, string categoryName, TreeItemState state = TreeItemState.Normal, bool isInitiallyOn = true)
+        {
             Category category = Category.Get(categoryName);
 
             if (category.ShouldDisplay)
@@ -64,11 +92,6 @@ namespace GUI.Components.Shared
             SetIcon(categoryName, state);
             SetDisplayText(text);
             SetTextEnabled(state, isInitiallyOn);
-
-            this.Children.Add(Icon);
-            this.Children.Add(DisplayText);
-
-            this.RenameBox.LostFocus += RenameBox_LostFocus;
         }
 
 

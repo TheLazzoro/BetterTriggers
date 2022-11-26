@@ -11,13 +11,15 @@ namespace BetterTriggers.Commands
         IExplorerElement explorerElement;
         string oldFullPath;
         string newFullPath;
+        RefCollection refCollection;
+
 
         public CommandExplorerElementRename(IExplorerElement explorerElement, string newFullPath)
         {
             this.oldFullPath = explorerElement.GetPath();
             this.newFullPath = newFullPath;
-
             this.explorerElement = explorerElement;
+            this.refCollection = new RefCollection(explorerElement);
         }
 
         public void Execute()
@@ -25,6 +27,7 @@ namespace BetterTriggers.Commands
             ControllerProject controller = new ControllerProject();
             controller.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
             explorerElement.ChangedPosition();
+            refCollection.Notify();
 
             CommandManager.AddCommand(this);
         }
@@ -37,10 +40,10 @@ namespace BetterTriggers.Commands
             controllerFileSystem.RenameElementPath(explorerElement.GetPath(), newFullPath);
             controller.SetEnableFileEvents(true);
 
-
             controller.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
             explorerElement.ChangedPosition();
+            refCollection.Notify();
         }
 
         public void Undo()
@@ -54,6 +57,7 @@ namespace BetterTriggers.Commands
             controller.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
             explorerElement.ChangedPosition();
+            refCollection.Notify();
         }
 
         public string GetCommandName()

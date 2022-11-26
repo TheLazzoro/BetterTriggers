@@ -4,46 +4,47 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="#363636">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="307*"/>
-        </Grid.ColumnDefinitions>
+             mc:Ignorable="d" d:DesignWidth="800" Background="#363636" Height="auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="307*"/>
+            </Grid.ColumnDefinitions>
 
-        <Label Content="Identifier:" Grid.Row="1" Grid.Column="0" Foreground="#ccc"/>
-        <TextBox x:Name="textBlockVariableNameUDG" Text="placeholder" Grid.Row="1" IsReadOnly="True" Grid.Column="1" Margin="5,5,5,5" HorizontalAlignment="Left" Width="200" Background="#FF282828" Foreground="White" BorderBrush="#FF1E1E1E"/>
+            <Label Content="Identifier:" Grid.Row="1" Grid.Column="0" Foreground="#ccc"/>
+            <TextBox x:Name="textBlockVariableNameUDG" Text="placeholder" Grid.Row="1" IsReadOnly="True" Grid.Column="1" Margin="5,5,5,5" HorizontalAlignment="Left" Width="200" Background="#FF282828" Foreground="White" BorderBrush="#FF1E1E1E"/>
 
-        <Label Content="Variable Type:" Grid.Row="2" Grid.Column="0"  Foreground="#ccc"/>
-        <ComboBox x:Name="comboBoxVariableType" Grid.Row="2" Grid.Column="1" Margin="5,4,5,4" HorizontalAlignment="Left" Width="200" Background="#FF494949" BorderBrush="#FF575757" SelectionChanged="comboBoxVariableType_SelectionChanged" Loaded="comboBoxVariableType_Loaded" />
+            <Label Content="Variable Type:" Grid.Row="2" Grid.Column="0"  Foreground="#ccc"/>
+            <ComboBox x:Name="comboBoxVariableType" Grid.Row="2" Grid.Column="1" Margin="5,4,5,4" HorizontalAlignment="Left" Width="200" Background="#FF494949" BorderBrush="#FF575757" SelectionChanged="comboBoxVariableType_SelectionChanged" Loaded="comboBoxVariableType_Loaded" />
 
-        <CheckBox x:Name="checkBoxIsArray" Width="75" Content="Array" Foreground="#ccc" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Click="checkBoxIsArray_Click" />
+            <CheckBox x:Name="checkBoxIsArray" Width="75" Content="Array" Foreground="#ccc" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Click="checkBoxIsArray_Click" />
 
-        <Label x:Name="lblDimensions" Content="Dimensions:" Foreground="#ccc" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0"/>
-        <ComboBox x:Name="comboBoxArrayDimensions" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="85,0,0,0" Width="50" SelectionChanged="comboBoxArrayDimensions_SelectionChanged">
-            <ComboBoxItem Content="1"/>
-            <ComboBoxItem Content="2"/>
-        </ComboBox>
+            <Label x:Name="lblDimensions" Content="Dimensions:" Foreground="#ccc" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            <ComboBox x:Name="comboBoxArrayDimensions" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="85,0,0,0" Width="50" SelectionChanged="comboBoxArrayDimensions_SelectionChanged">
+                <ComboBoxItem Content="1"/>
+                <ComboBoxItem Content="2"/>
+            </ComboBox>
 
-        <Label x:Name="lblSize0" Content="Size:" Foreground="#ccc" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
-        <TextBox x:Name="textBoxArraySize0" Foreground="White" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A" TextChanged="textBoxArraySize0_TextChanged"/>
-        <Label x:Name="lblSize1" Content="Size:" Foreground="#ccc" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
-        <TextBox x:Name="textBoxArraySize1" Foreground="White" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A" TextChanged="textBoxArraySize1_TextChanged"/>
+            <Label x:Name="lblSize0" Content="Size:" Foreground="#ccc" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
+            <TextBox x:Name="textBoxArraySize0" Foreground="White" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A" TextChanged="textBoxArraySize0_TextChanged"/>
+            <Label x:Name="lblSize1" Content="Size:" Foreground="#ccc" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
+            <TextBox x:Name="textBoxArraySize1" Foreground="White" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" Background="#FF282828" BorderBrush="#FF0A0A0A" TextChanged="textBoxArraySize1_TextChanged"/>
 
-        <Label x:Name="lblInitialValue" Content="Initial Value:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Foreground="#ccc"/>
-        <TextBlock x:Name="textblockInitialValue" Grid.Row="8" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center"></TextBlock>
-    </Grid>
+            <Label x:Name="lblInitialValue" Content="Initial Value:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Foreground="#ccc"/>
+            <TextBlock x:Name="textblockInitialValue" Grid.Row="8" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center"></TextBlock>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
