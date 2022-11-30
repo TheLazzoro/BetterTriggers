@@ -31,24 +31,24 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
             variable.SuppressChangedEvent = true;
             variable.InitialValue = newInitialValue;
             variable.SuppressChangedEvent = false;
             variable.Type = selectedType;
+            refCollection.RemoveRefsFromParent();
+            References.UpdateReferences(variable);
 
             CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
-            refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
             variable.SuppressChangedEvent = true;
             variable.InitialValue = newInitialValue;
             variable.SuppressChangedEvent = false;
             variable.Type = selectedType;
+            refCollection.RemoveRefsFromParent();
+            References.UpdateReferences(variable);
         }
 
         public void Undo()

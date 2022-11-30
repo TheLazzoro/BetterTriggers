@@ -27,6 +27,8 @@ namespace GUI.Components
 {
     public partial class VariableControl : UserControl, IEditor
     {
+        public event Action OnChange;
+
         private Variable variable;
         private ComboBoxItemType previousSelected;
         private bool isLoading = true;
@@ -117,6 +119,9 @@ namespace GUI.Components
 
         private void comboBoxVariableType_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!isLoading)
+                return;
+
             comboBoxVariableType.SelectedIndex = defaultSelected;
             isLoading = false;
         }
@@ -251,6 +256,7 @@ namespace GUI.Components
             {
                 observer.OnStateChange();
             }
+            OnChange?.Invoke();
         }
 
         public void OnRemoteChange()

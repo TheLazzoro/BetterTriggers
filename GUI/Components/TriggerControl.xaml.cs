@@ -257,6 +257,7 @@ namespace GUI.Components
 
             if (grid.Children.Contains(variableControl))
             {
+                variableControl.OnChange -= VariableControl_OnChange;
                 variableControl.Dispose();
                 grid.Children.Remove(variableControl);
             }
@@ -273,9 +274,15 @@ namespace GUI.Components
             {
                 var element = (LocalVariable)item.triggerElement;
                 variableControl = new VariableControl(element.variable);
+                variableControl.OnChange += VariableControl_OnChange;
                 grid.Children.Add(variableControl);
                 Grid.SetRow(variableControl, 3);
             }
+        }
+
+        private void VariableControl_OnChange()
+        {
+            OnStateChange();
         }
 
         // TODO: There are two 'SelectedItemChanged' functions?
@@ -535,7 +542,7 @@ namespace GUI.Components
         private void PasteTriggerElement()
         {
             var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
-            if (selected == null)
+            if (selected == null || ContainerCopiedElementsGUI.copiedElementParent == null)
                 return;
 
             INode attachTarget = null;
