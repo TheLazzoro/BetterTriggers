@@ -32,6 +32,8 @@ namespace BetterTriggers.Commands
             {
                 listToPaste[i].SetParent(parent, pastedIndex + i);
                 listToPaste[i].Created(pastedIndex + i);
+                if(listToPaste[i] is LocalVariable localVar)
+                    localVar.variable._localTriggerId = explorerElement.trigger.Id;
             }
 
             References.UpdateReferences(explorerElement);

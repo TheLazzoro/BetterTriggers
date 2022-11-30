@@ -7,7 +7,7 @@ namespace BetterTriggers.Models.SaveableData
     public class Variable : IReferable
     {
         public int Id;
-        
+
         public string Name { get { return _name; } set { _name = value; OnValuesChanged(); } }
         public string Type { get { return _type; } set { _type = value; OnValuesChanged(); } }
         public bool IsArray { get { return _isArray; } set { _isArray = value; OnValuesChanged(); } }
@@ -29,6 +29,8 @@ namespace BetterTriggers.Models.SaveableData
         private Parameter _initialValue;
         [JsonIgnore]
         public bool _isLocal { get; internal set; }
+        [JsonIgnore]
+        internal int _localTriggerId { get; set; }
 
         public event EventHandler ValuesChanged;
 
@@ -56,9 +58,11 @@ namespace BetterTriggers.Models.SaveableData
         public string GetIdentifierName()
         {
             string prefix = _isLocal ? "udl_" : "udg_";
+            string suffix = _isLocal ? $"_{_localTriggerId}" : string.Empty;
             string name = prefix + Name.Replace(" ", "_");
-            if(name.EndsWith("_"))
+            if (name.EndsWith("_"))
                 name = name + "v";
+            name += suffix;
 
             return name;
         }

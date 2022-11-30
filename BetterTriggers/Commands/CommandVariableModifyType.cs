@@ -26,7 +26,7 @@ namespace BetterTriggers.Commands
             this.previousType = variable.Type;
             this.previousInitialValue = variable.InitialValue;
             this.newInitialValue = new Parameter();
-            this.refCollection = new RefCollection(variable);
+            this.refCollection = new RefCollection(variable, selectedType);
         }
 
         public void Execute()

@@ -62,7 +62,7 @@ namespace Tests
             ControllerProject controller = new ControllerProject();
             controller.CloseProject();
             string projectDir = Path.GetDirectoryName(projectFile);
-            if (success)
+            if (success && Directory.Exists(projectDir))
                 Directory.Delete(projectDir, true);
         }
 
@@ -153,6 +153,19 @@ namespace Tests
         {
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Sheol_131.w3x");
             ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void GenerateScript_CustomProject_LocalVarMap()
+        {
+            string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
+            ControllerProject controllerProject = new ControllerProject();
+            CustomMapData.Init(mapDir, true); // TODO: CustomMapData init should be run by the controller.
+            controllerProject.LoadProject(projectDir);
+            success = controllerProject.GenerateScript();
 
             Assert.IsTrue(success, failedMsg);
         }

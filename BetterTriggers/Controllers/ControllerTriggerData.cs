@@ -19,30 +19,6 @@ namespace BetterTriggers.Controllers
         }
 
 
-        /// <summary>
-        /// TODO: We need to work more on initial variable values.
-        /// This is a hardcoded quick fix.
-        /// </summary>
-        public string GetTypeInitialValue(string returnType)
-        {
-            string value = "null";
-
-            if (returnType == "boolean")
-                value = "false";
-            else if (returnType == "integer" || returnType == "real")
-                value = "0";
-            else if (returnType == "group")
-                value = "CreateGroup()";
-            else if (returnType == "force")
-                value = "CreateForce()";
-            else if (returnType == "timer")
-                value = "CreateTimer()";
-            else if (returnType == "dialog")
-                value = "DialogCreate()";
-
-            return value;
-        }
-
 
         public List<FunctionTemplate> LoadAllEvents()
         {

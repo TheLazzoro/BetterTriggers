@@ -47,19 +47,6 @@ namespace GUI.Components
 
             InitializeComponent();
 
-            if (variable._isLocal)
-            {
-                lblDimensions.Visibility = Visibility.Hidden;
-                comboBoxArrayDimensions.Visibility = Visibility.Hidden;
-                lblSize0.Visibility = Visibility.Hidden;
-                lblSize1.Visibility = Visibility.Hidden;
-                textBoxArraySize0.Visibility = Visibility.Hidden;
-                textBoxArraySize1.Visibility = Visibility.Hidden;
-                lblInitialValue.Visibility = Visibility.Hidden;
-                textblockInitialValue.Visibility = Visibility.Hidden;
-                checkBoxIsArray.Visibility = Visibility.Hidden;
-            }
-
             ControllerTriggerData controller = new ControllerTriggerData();
             List<Types> types = controller.LoadAllVariableTypes();
 

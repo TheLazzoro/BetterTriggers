@@ -1,0 +1,18 @@
+{
+  "Name": "LocalVarMap",
+  "Version": 0,
+  "GameVersion": null,
+  "Language": "jass",
+  "Comment": null,
+  "Header": "",
+  "War3MapDirectory": "C:\\Users\\Lasse Dam\\Desktop\\LocalVarMap\\map\\Map.w3x",
+  "Files": [
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Untitled Trigger.trg",
+      "Files": []
+    }
+  ]
+}

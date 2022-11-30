@@ -181,6 +181,7 @@ namespace BetterTriggers.Containers
         internal static void Clear()
         {
             variableContainer.Clear();
+            localVariableContainer.Clear();
         }
 
         internal static void AddLocalVariable(LocalVariable localVariable)

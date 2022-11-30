@@ -12,13 +12,18 @@ namespace BetterTriggers.Models.EditorData
     internal class RefCollection
     {
         List<RefParent> refParents = new List<RefParent>();
-        List<ExplorerElementTrigger> triggersToUpdate = new ();
+        List<ExplorerElementTrigger> triggersToUpdate = new();
 
         internal RefCollection(Variable variable)
         {
             CreateVarRefs(variable);
         }
-     
+
+        internal RefCollection(Variable variable, string newType)
+        {
+            CreateVarRefs(variable, newType);
+        }
+
         internal RefCollection(Trigger trigger)
         {
             CreateTrigRefs(trigger);
@@ -32,7 +37,7 @@ namespace BetterTriggers.Models.EditorData
                 CreateTrigRefs(exTrig.trigger);
         }
 
-        private void CreateVarRefs(Variable variable)
+        private void CreateVarRefs(Variable variable, string newType = null)
         {
             this.triggersToUpdate = References.GetReferreres(variable);
             ControllerTrigger controllerProject = new ControllerTrigger();
@@ -45,7 +50,7 @@ namespace BetterTriggers.Models.EditorData
                     {
                         if (varRef.VariableId == variable.Id)
                         {
-                            var refParent = new RefParent(varRef, f);
+                            var refParent = new RefParent(varRef, f, newType);
                             refParents.Add(refParent);
                         }
                     }
@@ -95,25 +100,37 @@ namespace BetterTriggers.Models.EditorData
     internal class RefParent
     {
         Parameter parameter;
+        Parameter setvarOldValue; // hack for 'SetVariable' value undo/redo
         Function parent;
         int index;
-        internal RefParent(Parameter parameter, Function parent)
+        internal RefParent(Parameter parameter, Function parent, string newType = null)
         {
             this.parameter = parameter;
             this.parent = parent;
             this.index = parent.parameters.IndexOf(parameter);
+            if (newType != null && parent.value == "SetVariable" && parameter == parent.parameters[0])
+            {
+                var varRef = (VariableRef)parameter;
+                var variable = Variables.GetVariableById(varRef.VariableId);
+                if (variable.Type != newType)
+                    setvarOldValue = parent.parameters[1];
+            }
         }
 
         internal void RemoveFromParent()
         {
             parent.parameters.Remove(parameter);
             parent.parameters.Insert(index, new Parameter());
+            if(setvarOldValue != null)
+                parent.parameters[1] = new Parameter();
         }
 
         internal void AddToParent()
         {
             parent.parameters.RemoveAt(index);
             parent.parameters.Insert(index, parameter);
+            if (setvarOldValue != null)
+                parent.parameters[1] = setvarOldValue;
         }
     }
 }

@@ -74,13 +74,13 @@ namespace GUI.Components
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
 
             categoryEvent = new NodeEvent("Events");
-            categoryLocalVariable = new NodeLocalVariable("Local Variables");
             categoryCondition = new NodeCondition("Conditions");
+            categoryLocalVariable = new NodeLocalVariable("Local Variables");
             categoryAction = new NodeAction("Actions");
 
             treeViewTriggers.Items.Add(categoryEvent);
-            treeViewTriggers.Items.Add(categoryLocalVariable);
             treeViewTriggers.Items.Add(categoryCondition);
+            treeViewTriggers.Items.Add(categoryLocalVariable);
             treeViewTriggers.Items.Add(categoryAction);
 
 
@@ -178,7 +178,7 @@ namespace GUI.Components
             if (type == TriggerElementType.LocalVariable)
             {
                 insertIndex = categoryLocalVariable.GetTriggerElements().Count;
-                LocalVariable localVariable = new LocalVariable(); // TODO: This is probably not supposed to be here.
+                LocalVariable localVariable = new LocalVariable(explorerElementTrigger.trigger); // TODO: This is probably not supposed to be here.
                 ControllerVariable controller = new ControllerVariable();
                 controller.CreateLocalVariable(explorerElementTrigger.trigger, localVariable, categoryLocalVariable.GetTriggerElements(), insertIndex);
                 TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(localVariable);

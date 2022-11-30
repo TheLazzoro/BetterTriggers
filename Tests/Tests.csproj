@@ -275,6 +275,22 @@
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Projects\LocalVarMap\LocalVarMap.json" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.doo" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.j" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.mmp" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.shd" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3c" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3e" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3i" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3r" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wct" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wpm" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wtg" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wts" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3mapMap.blp" />
+    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Projects\LocalVarMap\src\Untitled Trigger.trg" />
     <None Remove="TestResources\triggerdata.txt" />
     <None Remove="TestResources\unitdata.slk" />
     <None Remove="TestResources\unitskin.txt" />
@@ -1069,6 +1085,54 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\LocalVarMap.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.j">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.mmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.shd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3e">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3i">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wct">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wpm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wtg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.wts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3mapMap.blp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Projects\LocalVarMap\src\Untitled Trigger.trg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\triggerdata.txt">

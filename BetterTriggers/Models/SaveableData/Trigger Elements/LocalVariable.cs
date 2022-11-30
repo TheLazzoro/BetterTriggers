@@ -15,6 +15,12 @@ namespace BetterTriggers.Models.SaveableData
             variable._isLocal = true;
         }
 
+        public LocalVariable(Trigger trig)
+        {
+            variable._isLocal = true;
+            AttachTrigger(trig);
+        }
+
         public override LocalVariable Clone()
         {
             LocalVariable clone = new LocalVariable();
@@ -22,6 +28,11 @@ namespace BetterTriggers.Models.SaveableData
             clone.variable._isLocal = true;
 
             return clone;
+        }
+
+        public void AttachTrigger(Trigger trig)
+        {
+            this.variable._localTriggerId = trig.Id;
         }
     }
 }
