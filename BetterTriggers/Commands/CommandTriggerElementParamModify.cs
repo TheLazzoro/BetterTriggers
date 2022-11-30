@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
@@ -37,11 +38,10 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             ControllerVariable controllerVar = new ControllerVariable();
-            ControllerReferences controllerRef = new ControllerReferences();
 
             paramCollection[paramIndex] = paramToAdd;
 
-            controllerRef.UpdateReferences(explorerElement);
+            References.UpdateReferences(explorerElement);
 
             // Special case
             if (triggerElement is SetVariable)
@@ -81,9 +81,6 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            ControllerVariable controllerVar = new ControllerVariable();
-            ControllerReferences controllerRef = new ControllerReferences();
-
             // 'SetVariable' special case
             if (setVarValueNew != null)
             {
@@ -91,17 +88,14 @@ namespace BetterTriggers.Commands
             }
 
             paramCollection[paramIndex] = paramToAdd;
-            controllerRef.UpdateReferences(explorerElement);
+            References.UpdateReferences(explorerElement);
             triggerElement.ChangedParams();
         }
 
         public void Undo()
         {
-            ControllerVariable controllerVar = new ControllerVariable();
-            ControllerReferences controllerRef = new ControllerReferences();
-
             paramCollection[paramIndex] = oldParameter;
-            controllerRef.UpdateReferences(explorerElement);
+            References.UpdateReferences(explorerElement);
             triggerElement.ChangedParams();
         }
 

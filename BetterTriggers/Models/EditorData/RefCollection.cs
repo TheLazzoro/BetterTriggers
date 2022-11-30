@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.EditorData
     internal class RefCollection
     {
         List<RefParent> refParents = new List<RefParent>();
-        List<ExplorerElementTrigger> triggersToUpdate;
+        List<ExplorerElementTrigger> triggersToUpdate = new ();
 
         internal RefCollection(Variable variable)
         {

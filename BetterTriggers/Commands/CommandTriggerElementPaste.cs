@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
@@ -33,8 +34,7 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Created(pastedIndex + i);
             }
 
-            ControllerReferences controller = new ControllerReferences();
-            controller.UpdateReferences(explorerElement);
+            References.UpdateReferences(explorerElement);
             CommandManager.AddCommand(this);
         }
 
@@ -46,8 +46,8 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Created(pastedIndex + i);
             }
 
-            ControllerReferences controller = new ControllerReferences();
-            controller.UpdateReferences(explorerElement);
+
+            References.UpdateReferences(explorerElement);
         }
 
         public void Undo()
@@ -58,8 +58,7 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Deleted();
             }
 
-            ControllerReferences controller = new ControllerReferences();
-            controller.UpdateReferences(explorerElement);
+            References.UpdateReferences(explorerElement);
         }
 
         public string GetCommandName()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
@@ -16,6 +17,7 @@ namespace BetterTriggers.Commands
         string previousType;
         Parameter newInitialValue;
         Parameter previousInitialValue;
+        RefCollection refCollection;
 
         public CommandVariableModifyType(Variable variable, string selectedType)
         {
@@ -24,10 +26,13 @@ namespace BetterTriggers.Commands
             this.previousType = variable.Type;
             this.previousInitialValue = variable.InitialValue;
             this.newInitialValue = new Parameter();
+            this.refCollection = new RefCollection(variable);
         }
 
         public void Execute()
         {
+            refCollection.RemoveRefsFromParent();
+            References.UpdateReferences(variable);
             variable.SuppressChangedEvent = true;
             variable.InitialValue = newInitialValue;
             variable.SuppressChangedEvent = false;
@@ -38,6 +43,8 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
+            refCollection.RemoveRefsFromParent();
+            References.UpdateReferences(variable);
             variable.SuppressChangedEvent = true;
             variable.InitialValue = newInitialValue;
             variable.SuppressChangedEvent = false;
@@ -50,6 +57,8 @@ namespace BetterTriggers.Commands
             variable.InitialValue = previousInitialValue;
             variable.SuppressChangedEvent = false;
             variable.Type = previousType;
+            refCollection.AddRefsToParent();
+            References.UpdateReferences(variable);
         }
 
         public string GetCommandName()

@@ -49,9 +49,8 @@ namespace BetterTriggers.Commands
             for (int i = 0; i < listToPaste.Count; i++)
                 listToPaste[i].SetParent(pasteParent, pastedIndex + i);
 
-            ControllerReferences controller = new ControllerReferences();
-            controller.UpdateReferences(from);
-            controller.UpdateReferences(to);
+            References.UpdateReferences(from);
+            References.UpdateReferences(to);
             CopiedElements.CutTriggerElements = null; // Reset
 
             CommandManager.AddCommand(this);
@@ -70,9 +69,8 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Created(pastedIndex + i);
             }
 
-            ControllerReferences controller = new ControllerReferences();
-            controller.UpdateReferences(from);
-            controller.UpdateReferences(to);
+            References.UpdateReferences(from);
+            References.UpdateReferences(to);
         }
 
         public void Undo()
@@ -88,9 +86,8 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Deleted();
             }
 
-            ControllerReferences controller = new ControllerReferences();
-            controller.UpdateReferences(from);
-            controller.UpdateReferences(to);
+            References.UpdateReferences(from);
+            References.UpdateReferences(to);
         }
 
         public string GetCommandName()

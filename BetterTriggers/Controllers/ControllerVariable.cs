@@ -164,15 +164,10 @@ namespace BetterTriggers.Controllers
             return GetById(variableRef.VariableId);
         }
 
-        public void RemoveVariableRefFromTriggers(Variable variable)
-        {
-            References.ResetVariableReferences(variable);
-        }
-
         public void RemoveLocalVariable(LocalVariable localVariable)
         {
             Variables.RemoveLocalVariable(localVariable);
-            RemoveVariableRefFromTriggers(localVariable.variable);
+            // TODO: RemoveVariableRefFromTriggers(localVariable.variable);
         }
     }
 }

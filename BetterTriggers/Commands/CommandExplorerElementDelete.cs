@@ -31,10 +31,7 @@ namespace BetterTriggers.Commands
             deletedElement.Deleted();
 
             if (deletedElement is ExplorerElementTrigger)
-            {
-                ControllerReferences controllerRef = new ControllerReferences();
-                controllerRef.RemoveReferences(deletedElement as ExplorerElementTrigger);
-            }
+                References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
 
             CommandManager.AddCommand(this);
         }
@@ -54,10 +51,7 @@ namespace BetterTriggers.Commands
             
             
             if (deletedElement is ExplorerElementTrigger)
-            {
-                ControllerReferences controllerRef = new ControllerReferences();
-                controllerRef.RemoveReferences(deletedElement as ExplorerElementTrigger);
-            }
+                References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
         }
 
         public void Undo()

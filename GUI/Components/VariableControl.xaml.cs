@@ -227,12 +227,6 @@ namespace GUI.Components
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
                 dialog.ShowDialog();
                 ok = dialog.OK;
-
-                if (ok)
-                {
-                    ControllerVariable controller = new ControllerVariable();
-                    controller.RemoveVariableRefFromTriggers(this.variable);
-                }
             }
 
             return ok;

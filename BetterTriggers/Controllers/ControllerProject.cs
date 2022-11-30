@@ -265,8 +265,7 @@ namespace BetterTriggers.Controllers
 
             CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
 
-            ControllerReferences controllerRef = new ControllerReferences();
-            controllerRef.UpdateReferencesAll();
+            References.UpdateReferencesAll();
             controllerRecentFiles.AddProjectToRecent(filepath);
 
             return project;
