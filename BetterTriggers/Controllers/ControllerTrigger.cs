@@ -8,6 +8,7 @@ using System.Text;
 using BetterTriggers.WorldEdit;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.EditorData;
+using System.Linq;
 
 namespace BetterTriggers.Controllers
 {
@@ -353,16 +354,13 @@ namespace BetterTriggers.Controllers
                         invalidCount++;
                     else
                     {
+                        List<Parameter> arrays = new List<Parameter>();
                         if (variable.IsArray)
-                        {
-                            if (varRef.arrayIndexValues[0] == null || varRef.arrayIndexValues[0].value == "")
-                                invalidCount++;
-                        }
+                            arrays.Add(varRef.arrayIndexValues[0]);
                         if (variable.IsArray && variable.IsTwoDimensions)
-                        {
-                            if (varRef.arrayIndexValues[1] == null || varRef.arrayIndexValues[1].value == "")
-                                invalidCount++;
-                        }
+                            arrays.Add(varRef.arrayIndexValues[1]);
+                        
+                        invalidCount += VerifyParameters(arrays);
                     }
                 }
             }

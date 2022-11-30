@@ -112,6 +112,7 @@ namespace GUI.Components
             Refresh(categoryCondition);
             Refresh(categoryLocalVariable);
             Refresh(categoryAction);
+            RefreshBottomControls();
         }
 
         private void Refresh(TreeViewItem treeViewItem)

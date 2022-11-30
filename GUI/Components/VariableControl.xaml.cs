@@ -47,7 +47,7 @@ namespace GUI.Components
 
             InitializeComponent();
 
-            if(variable._isLocal)
+            if (variable._isLocal)
             {
                 lblDimensions.Visibility = Visibility.Hidden;
                 comboBoxArrayDimensions.Visibility = Visibility.Hidden;
@@ -103,24 +103,27 @@ namespace GUI.Components
         private void Variable_ValuesChanged(object sender, EventArgs e)
         {
             suppressUIEvents = true;
-            UpdateIdentifierText();
-            checkBoxIsArray.IsChecked = variable.IsArray;
-            comboBoxArrayDimensions.SelectedIndex = variable.IsTwoDimensions ? 1 : 0;
-            foreach (var i in comboBoxVariableType.Items)
+            Application.Current.Dispatcher.Invoke(delegate
             {
-                ComboBoxItemType item = (ComboBoxItemType)i;
-                if (item.Type == variable.Type)
+                UpdateIdentifierText();
+                checkBoxIsArray.IsChecked = variable.IsArray;
+                comboBoxArrayDimensions.SelectedIndex = variable.IsTwoDimensions ? 1 : 0;
+                foreach (var i in comboBoxVariableType.Items)
                 {
-                    comboBoxVariableType.SelectedItem = item;
-                    break;
+                    ComboBoxItemType item = (ComboBoxItemType)i;
+                    if (item.Type == variable.Type)
+                    {
+                        comboBoxVariableType.SelectedItem = item;
+                        break;
+                    }
                 }
-            }
 
-            ControllerParamText controllerParamText = new ControllerParamText();
-            this.textblockInitialValue.Inlines.Clear();
-            var inlines = controllerParamText.GenerateParamText(variable);
-            this.textblockInitialValue.Inlines.AddRange(inlines);
-            OnStateChange();
+                ControllerParamText controllerParamText = new ControllerParamText();
+                this.textblockInitialValue.Inlines.Clear();
+                var inlines = controllerParamText.GenerateParamText(variable);
+                this.textblockInitialValue.Inlines.AddRange(inlines);
+                OnStateChange();
+            });
 
             suppressUIEvents = false;
         }
@@ -133,7 +136,10 @@ namespace GUI.Components
 
         public void UpdateIdentifierText()
         {
-            this.textBlockVariableNameUDG.Text = variable.GetIdentifierName();
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                this.textBlockVariableNameUDG.Text = variable.GetIdentifierName();
+            });
         }
 
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
