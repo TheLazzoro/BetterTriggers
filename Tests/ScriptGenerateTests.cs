@@ -86,6 +86,15 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ConvertMap_GenerateScript_DirectStrikeReforged_134()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Direct_Strike_Reforged_Open_Source_1.34.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
         public void ConvertMap_GenerateScript_Enfo_FFB()
         {
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Enfo FFB - v2.42d.w3x");
