@@ -2,6 +2,7 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
@@ -93,6 +94,8 @@ namespace GUI
 
 
             menuTools.Header = Locale.Translate(menuTools.Header as string);
+
+            lblGameVersion.Content = "Game Version: " + Casc.GameVersion;
 
             // Load keybindings
             Keybindings keybindings = Keybindings.Load();

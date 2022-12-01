@@ -2,6 +2,7 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.TriggerEditor.ParameterControls;
 using System;
@@ -34,7 +35,7 @@ namespace GUI
 
         /// <summary>
         /// </summary>
-        /// <param name="function">null indicates we're editing a variable initial value.</param>
+        /// <param name="function">null indicates we're editing a variable initial value. Yes, very hacky.</param>
         public ParameterWindow(Parameter parameter, string returnType, Function function = null)
         {
             InitializeComponent();
@@ -48,7 +49,7 @@ namespace GUI
 
             this.Title = returnType;
 
-
+            bool isAction = function == null ? false : TriggerData.ActionExists(function.value);
             if (function != null && function.value == "SetVariable")
             {
                 ControllerVariable controller = new ControllerVariable();
@@ -69,7 +70,7 @@ namespace GUI
             Grid.SetRow(constantControl, 1);
             Grid.SetColumnSpan(constantControl, 2);
 
-            this.variableControl = new ParameterVariableControl(returnType, TriggerControl.TriggerInFocus);
+            this.variableControl = new ParameterVariableControl(returnType, TriggerControl.TriggerInFocus, isAction);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);

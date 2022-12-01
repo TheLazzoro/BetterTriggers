@@ -94,15 +94,19 @@ namespace BetterTriggers.Controllers
             return Variables.variableContainer.Select(x => x).ToList();
         }
 
-        private List<Variable> GetVariables(string returnType, Trigger trig)
+        private List<Variable> GetVariables(string returnType, Trigger trig, bool includeLocals)
         {
             List<Variable> list = new List<Variable>();
             List<Variable> all = new List<Variable>();
             all.AddRange(Variables.variableContainer); // globals
-            trig.LocalVariables.ForEach(e => { // locals
-                var lv = (LocalVariable)e;
-                all.Add(lv.variable);
-            });
+            if (includeLocals)
+            {
+                trig.LocalVariables.ForEach(e =>
+                { // locals
+                    var lv = (LocalVariable)e;
+                    all.Add(lv.variable);
+                });
+            }
 
             for (int i = 0; i < all.Count; i++)
             {
@@ -121,7 +125,7 @@ namespace BetterTriggers.Controllers
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
-        public List<VariableRef> GetVariableRefs(string returnType, Trigger trig)
+        public List<VariableRef> GetVariableRefs(string returnType, Trigger trig, bool includeLocals)
         {
             bool wasIntegervar = false;
             if (returnType == "integervar")
@@ -130,7 +134,7 @@ namespace BetterTriggers.Controllers
                 returnType = "integer";
             }
 
-            List<Variable> variables = GetVariables(returnType, trig);
+            List<Variable> variables = GetVariables(returnType, trig, includeLocals);
             List<VariableRef> list = new List<VariableRef>();
 
             for (int i = 0; i < variables.Count; i++)
@@ -153,7 +157,7 @@ namespace BetterTriggers.Controllers
             return Variables.GetVariableNameById(id);
         }
 
-        
+
         public Variable GetById(int id)
         {
             return Variables.GetVariableById(id);

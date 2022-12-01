@@ -15,7 +15,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         /// </summary>
         /// <param name="returnType"></param>
         /// <param name="trig"></param>
-        public ParameterVariableControl(string returnType, BetterTriggers.Models.SaveableData.Trigger trig)
+        public ParameterVariableControl(string returnType, BetterTriggers.Models.SaveableData.Trigger trig, bool isAction)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 returnType = "string";
 
             ControllerVariable controllerVariable = new ControllerVariable();
-            List<VariableRef> variables = controllerVariable.GetVariableRefs(returnType, trig);
+            List<VariableRef> variables = controllerVariable.GetVariableRefs(returnType, trig, isAction);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < variables.Count; i++)

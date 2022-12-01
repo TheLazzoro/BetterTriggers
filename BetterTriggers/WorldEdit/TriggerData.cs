@@ -140,7 +140,7 @@ namespace BetterTriggers.WorldEdit
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
                 Category.Create(TriggerCategory.TC_SCRIPT, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_localvariable.png");
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-setvariables-alpha.png");
                 Category.Create(TriggerCategory.TC_LOCAL_VARIABLE, img, "???", false);
             }
 
@@ -514,6 +514,13 @@ namespace BetterTriggers.WorldEdit
         {
             ConstantTemplate temp;
             bool exists = ConstantTemplates.TryGetValue(value, out temp);
+            return exists;
+        }
+
+        public static bool ActionExists(string value)
+        {
+            FunctionTemplate temp;
+            bool exists = ActionTemplates.TryGetValue(value, out temp);
             return exists;
         }
     }

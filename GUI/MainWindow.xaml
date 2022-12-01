@@ -644,7 +644,7 @@
             </Button>
             <Button x:Name="btnCreateLocalVariable" IsEnabled="False" ToolTip="New Local Variable" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateLocalVariable_Click" >
                 <Button.Content>
-                    <Image Source="Resources/Icons/ui-editoricon-triggercategories_localvariable.png" Stretch="None"/>
+                    <Image Source="Resources/Icons/actions-setvariables-alpha.png" Stretch="None"/>
                 </Button.Content>
             </Button>
             <Button x:Name="btnSaveScript" IsEnabled="False" ToolTip="WESTRING_MENU_VALIDATE_MAP_TRIGGERS" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
@@ -666,6 +666,7 @@
                 </Button.Content>
             </Button>
         </ItemsControl>
+        <Label x:Name="lblGameVersion" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Foreground="#CCC" Margin="0,0,20,0"></Label>
 
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0" DragCompleted="GridSplitter_DragCompleted"/>

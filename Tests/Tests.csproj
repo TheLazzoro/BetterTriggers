@@ -277,7 +277,6 @@
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapUnits.doo" />
     <None Remove="TestResources\Projects\LocalVarMap\LocalVarMap.json" />
     <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.doo" />
-    <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.j" />
     <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.mmp" />
     <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.shd" />
     <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.w3c" />
@@ -1091,9 +1090,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.doo">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.j">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Projects\LocalVarMap\map\Map.w3x\war3map.mmp">

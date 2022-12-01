@@ -368,8 +368,17 @@ namespace GUI.Components
 
             if (dropTarget is TreeViewTriggerElement)
             {
-                if (dragItem.Parent is NodeEvent && !(dropTarget.Parent is INode))
+                if (
+                    dragItem.Parent is NodeEvent && !(dropTarget.Parent is NodeEvent) ||
+                    dragItem.Parent is NodeCondition && !(dropTarget.Parent is NodeCondition) ||
+                    dragItem.Parent is NodeAction && !(dropTarget.Parent is NodeAction) ||
+                    dragItem.Parent is NodeLocalVariable && !(dropTarget.Parent is NodeLocalVariable)
+                    )
+                {
+                    parentDropTarget = null;
                     return;
+                }
+
 
                 var relativePos = e.GetPosition(dropTarget);
                 bool inFirstHalf = UIUtility.IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
@@ -403,6 +412,8 @@ namespace GUI.Components
                 else if (dragItem.Parent is NodeCondition && !(dropTarget is NodeCondition))
                     return;
                 else if (dragItem.Parent is NodeAction && !(dropTarget is NodeAction))
+                    return;
+                else if (dragItem.Parent is NodeLocalVariable && !(dropTarget is NodeLocalVariable))
                     return;
 
                 adorner = AdornerLayer.GetAdornerLayer(dropTarget);

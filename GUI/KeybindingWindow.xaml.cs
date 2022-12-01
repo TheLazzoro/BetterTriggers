@@ -23,8 +23,10 @@ namespace GUI
         private List<Button> buttons = new List<Button>();
         private List<ComboBox> comboBoxes = new List<ComboBox>();
 
-        class ComboBoxKeybind : ComboBox
+        class ComboBoxKeybindTag
         {
+            public Keybinding keybinding;
+            public ModifierKeys modifier;
             public ComboBoxItem PreviousSelected;
         }
 
@@ -58,7 +60,8 @@ namespace GUI
                 label.Content = GetKeybindingName(property.Name);
                 grid.Children.Add(label);
 
-                ComboBoxKeybind comboBox = new ComboBoxKeybind();
+                ComboBox comboBox = new ComboBox();
+                var keybindTag = new ComboBoxKeybindTag();
                 foreach (ModifierKeys modifier in Enum.GetValues(typeof(ModifierKeys)))
                 {
                     ComboBoxItem item = new ComboBoxItem();
@@ -68,11 +71,11 @@ namespace GUI
                     if (keybinding.modifier == modifier)
                     {
                         comboBox.SelectedItem = item;
-                        comboBox.PreviousSelected = item;
+                        keybindTag.PreviousSelected = item;
                     }
                 }
                 comboBox.Height = 22;
-                comboBox.Tag = keybinding;
+                comboBox.Tag = keybindTag;
                 Grid.SetColumn(comboBox, 1);
                 grid.Children.Add(comboBox);
                 comboBoxes.Add(comboBox);
@@ -81,7 +84,7 @@ namespace GUI
                     ComboBoxItem selected = (ComboBoxItem)comboBox.SelectedItem;
                     ModifierKeys modifier = (ModifierKeys)selected.Tag;
 
-                    if (selected == comboBox.PreviousSelected)
+                    if (selected == keybindTag.PreviousSelected)
                         return;
 
                     if (keybindings.IsKeybindingAlreadySet(modifier, keybinding.key))
@@ -91,12 +94,12 @@ namespace GUI
                         dialog.ShowDialog();
                         if (!dialog.OK)
                         {
-                            comboBox.SelectedItem = comboBox.PreviousSelected;
+                            comboBox.SelectedItem = keybindTag.PreviousSelected;
                             return;
                         }
                     }
 
-                    comboBox.PreviousSelected = selected;
+                    keybindTag.PreviousSelected = selected;
                     keybindings.UnbindKeybinding(modifier, keybinding.key);
                     keybinding.modifier = modifier;
                     RefreshUI();

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\actions-setvariables-alpha.png" />
     <None Remove="Resources\Icons\trigger-error.png" />
     <None Remove="Resources\Icons\trigger-invalid.png" />
     <None Remove="Resources\Icons\ui-editoricon-triggercategories_localvariable.png" />
@@ -80,6 +81,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Icons\actions-setvariables-alpha.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\trigger-error.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -300,10 +304,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
-    <PackageReference Include="War3Net.Build" Version="5.5.0" />
-    <PackageReference Include="War3Net.Build.Core" Version="5.5.1" />
-    <PackageReference Include="War3Net.Drawing.Blp" Version="5.5.0" />
-    <PackageReference Include="War3Net.IO.Mpq" Version="5.5.0" />
+    <PackageReference Include="War3Net.Build" Version="5.5.6" />
+    <PackageReference Include="War3Net.Build.Core" Version="5.5.6" />
+    <PackageReference Include="War3Net.Drawing.Blp" Version="5.5.5" />
+    <PackageReference Include="War3Net.IO.Mpq" Version="5.5.5" />
   </ItemGroup>
 
 </Project>
