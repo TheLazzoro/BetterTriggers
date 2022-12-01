@@ -2,6 +2,7 @@
 using GUI.Controllers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,7 +46,7 @@ namespace GUI
 
         private void EnableButton()
         {
-            if(lblProjectDestination.Content != null && textBoxProjectName.Text.Length > 0)
+            if(Directory.Exists(lblProjectDestination.Content as string) && textBoxProjectName.Text.Length > 0)
                 btnCreate.IsEnabled = true;
             else
                 btnCreate.IsEnabled = false;

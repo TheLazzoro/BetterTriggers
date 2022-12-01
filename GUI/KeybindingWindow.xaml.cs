@@ -177,6 +177,9 @@ namespace GUI
                 case "NewGlobalVariable":
                     memberName = "New Global Variable";
                     break;
+                case "NewLocalVariable":
+                    memberName = "New Local Variable";
+                    break;
                 case "NewEvent":
                     memberName = "New Event";
                     break;

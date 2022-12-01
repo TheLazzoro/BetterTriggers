@@ -6,7 +6,7 @@
         UseLayoutRounding="True"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Better Triggers" Height="686" Width="994" Background="#FF131313" WindowState="Normal" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
+        Title="Better Triggers" Height="686" Width="994" MinWidth="750" Background="#FF131313" WindowState="Normal" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
     <!--Title="Better Triggers" Height="686" Width="994" Background="#FF131313" ResizeMode="CanResize" WindowStyle="None" WindowStartupLocation="Manual" WindowState="Normal" AllowsTransparency="True" > -->
 
 
@@ -331,11 +331,9 @@
             <Border Name="Border">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"
-                                      SharedSizeGroup="Icon" />
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto"
-                                      SharedSizeGroup="Shortcut" />
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut" />
                         <ColumnDefinition Width="13" />
                     </Grid.ColumnDefinitions>
                     <ContentPresenter Name="Icon"
@@ -376,32 +374,18 @@
             </Border>
 
             <ControlTemplate.Triggers>
-                <Trigger Property="Icon"
-                     Value="{x:Null}">
-                    <Setter TargetName="Icon"
-                        Property="Visibility"
-                        Value="Collapsed" />
+                <Trigger Property="Icon" Value="{x:Null}">
+                    <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
                 </Trigger>
-                <Trigger Property="IsHighlighted"
-                     Value="true">
-                    <Setter TargetName="Border"
-                        Property="Background"
-                        Value="#5082a4" />
+                <Trigger Property="IsHighlighted" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#5082a4" />
                 </Trigger>
-                <Trigger SourceName="Popup"
-                     Property="Popup.AllowsTransparency"
-                     Value="True">
-                    <Setter TargetName="SubmenuBorder"
-                        Property="CornerRadius"
-                        Value="0" />
-                    <Setter TargetName="SubmenuBorder"
-                        Property="Padding"
-                        Value="0,3,0,3" />
+                <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="True">
+                    <Setter TargetName="SubmenuBorder" Property="CornerRadius" Value="0" />
+                    <Setter TargetName="SubmenuBorder" Property="Padding" Value="0,3,0,3" />
                 </Trigger>
-                <Trigger Property="IsEnabled"
-                     Value="false">
-                    <Setter Property="Foreground"
-                        Value="#0f3c5a" />
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#0f3c5a" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -470,7 +454,7 @@
 
         <KeyBinding x:Name="keybindingNewEvent" Command="{StaticResource NewEvent}" Key="E" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewCondition" Command="{StaticResource NewCondition}" Key="D" Modifiers="Ctrl"/>
-        <KeyBinding x:Name="keybindingNewLocalVariable" Command="{StaticResource NewAction}" Key="K" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingNewLocalVariable" Command="{StaticResource NewLocalVariable}" Key="K" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewAction" Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
 
         <KeyBinding x:Name="keybindingTestMap" Command="{StaticResource TestMap}" Key="F9" Modifiers="Ctrl"/>
@@ -666,8 +650,7 @@
                 </Button.Content>
             </Button>
         </ItemsControl>
-        <Label x:Name="lblGameVersion" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Foreground="#CCC" Margin="0,0,20,0"></Label>
-
+        <Button x:Name="btnGameVersion" Foreground="#ccc" Width="auto" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,20,0" Style="{DynamicResource ButtonStyle1}" Click="btnGameVersion_Click" ></Button>
 
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0" DragCompleted="GridSplitter_DragCompleted"/>
 

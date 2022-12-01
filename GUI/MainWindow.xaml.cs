@@ -95,7 +95,7 @@ namespace GUI
 
             menuTools.Header = Locale.Translate(menuTools.Header as string);
 
-            lblGameVersion.Content = "Game Version: " + Casc.GameVersion;
+            btnGameVersion.Content = "Game Version: " + Casc.GameVersion;
 
             // Load keybindings
             Keybindings keybindings = Keybindings.Load();
@@ -810,5 +810,21 @@ namespace GUI
                 SetKeybindings(window.keybindings);
         }
 
+        private void btnGameVersion_Click(object sender, RoutedEventArgs e)
+        {
+            DialogBox dialog = new DialogBox("Change Game Version", "Changing game version requires you to point to a different Warcraft III installation.\n\nThis action closes the current project.\nDo you wish to continue?");
+            dialog.ShowDialog();
+            if (dialog.OK)
+            {
+                if (!DoCloseProject())
+                    return;
+            }
+            else
+                return;
+
+            SetupWindow window = new SetupWindow();
+            window.Show();
+            this.Close();
+        }
     }
 }

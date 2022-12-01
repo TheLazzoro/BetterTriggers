@@ -48,13 +48,15 @@ namespace BetterTriggers.WorldEdit
         public static bool VerifyWc3Storage()
         {
             bool isValid = false;
-            
+            casc = null; // hack. We need to make this entire Casc class more proper.
             try
             {
                 Settings settings = Settings.Load();
 
                 CASCConfig.LoadFlags |= LoadFlags.Install;
                 CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(settings.war3root, product);
+                GameVersion = new Version(config.VersionName);
+                
                 var casc = CASCHandler.OpenStorage(config);
                 casc.Root.SetFlags(LocaleFlags.enGB, false, false);
                 using (var _ = new PerfCounter("LoadListFile()"))
