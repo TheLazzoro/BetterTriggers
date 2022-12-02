@@ -15,36 +15,28 @@ namespace BetterTriggers.Commands
         Variable variable;
         Parameter newParameter;
         Parameter oldParameter;
-        RefCollection refCollection;
 
         public CommandVariableModifyInitialValue(Variable variable, Parameter parameter)
         {
             this.variable = variable;
             this.newParameter = parameter;
             this.oldParameter = variable.InitialValue;
-            this.refCollection = new RefCollection(variable);
         }
 
         public void Execute()
         {
-            refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
             variable.InitialValue = newParameter;
             CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
-            refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
             variable.InitialValue = newParameter;
         }
 
         public void Undo()
         {
             variable.InitialValue = oldParameter;
-            refCollection.AddRefsToParent();
-            References.UpdateReferences(variable);
         }
 
         public string GetCommandName()

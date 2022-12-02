@@ -1589,7 +1589,7 @@ end
         StringBuilder localVariableDecl;
         List<Variable> localVariables;
         List<Variable> globalLocalCarries;
-        
+
         private string SetLocals()
         {
             StringBuilder s = new StringBuilder();
@@ -1644,6 +1644,7 @@ end
             StringBuilder events = new StringBuilder();
             StringBuilder conditions = new StringBuilder();
             PreActions pre_actions = new PreActions();
+            StringBuilder localVariableInit = new StringBuilder();
             localVariableDecl = new StringBuilder();
             localVariables = new List<Variable>();
             globalLocalCarries = new List<Variable>();
@@ -1678,20 +1679,18 @@ end
 
             foreach (LocalVariable localVar in t.trigger.LocalVariables)
             {
-                localVariables.Add(localVar.variable);
-                string name = localVar.variable.GetIdentifierName();
-                string initialValue;
+                var v = localVar.variable;
+                localVariables.Add(v);
+                string name = v.GetIdentifierName();
+                string initialValue = ConvertParametersToJass(v.InitialValue, v.Type, new PreActions());
                 string array = string.Empty;
                 string arrayLua = string.Empty;
-                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(localVar.variable.Type) : string.Empty;
-                if (language == ScriptLanguage.Jass)
-                    array = localVar.variable.IsArray ? "array" : string.Empty;
-                if (language == ScriptLanguage.Lua)
-                    arrayLua = " = {}";
-                //initialValue = localVar.variable.InitialValue == null ? string.Empty : " = " + localVar.variable.InitialValue.value;
-                // TODO: Initial values for local variables? Array initial values could be a problem. Consider.
+                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(v.Type) : string.Empty;
+                initialValue = string.IsNullOrEmpty(initialValue) ? $" = {GetTypeInitialValue(type)}" : initialValue.Insert(0, " = ");
 
-                localVariableDecl.Append($"\tlocal {type} {array} {name}{arrayLua}{newline}");
+
+                localVariableInit.Append($"\tlocal {type} {array} {name}{initialValue}{newline}"); // used on first declaration
+                localVariableDecl.Append($"\tlocal {type} {array} {name}{newline}"); // used 
 
                 Variable globalCarry = new Variable();
                 globalCarry.Name = $"{name}_c_{t.trigger.Id}";
@@ -1713,7 +1712,7 @@ end
                 conditions.Append($"\t\treturn false{newline}");
                 conditions.Append($"\t{endif}{newline}");
             }
-            actions.Insert(0, localVariableDecl.ToString());
+            actions.Insert(0, localVariableInit.ToString());
             actions.Insert(0, $"function {triggerActionName} {functionReturnsNothing}{newline}");
             foreach (ECA a in t.trigger.Actions)
             {
