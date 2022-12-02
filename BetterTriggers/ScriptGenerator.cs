@@ -1586,8 +1586,54 @@ end
             }
         }
 
+        StringBuilder localVariableDecl;
         List<Variable> localVariables;
         List<Variable> globalLocalCarries;
+        
+        private string SetLocals()
+        {
+            StringBuilder s = new StringBuilder();
+            for (int i = 0; i < localVariables.Count; i++)
+            {
+                var global = globalLocalCarries[i];
+                var local = localVariables[i];
+                s.Append($"\t{set} ");
+                s.Append($"{local.GetIdentifierName()}");
+                s.Append($" = ");
+                s.Append($"{global.Name}");
+                s.Append($"{newline}");
+            }
+            return s.ToString();
+        }
+
+        private string CarryLocals()
+        {
+            StringBuilder s = new StringBuilder();
+            for (int i = 0; i < localVariables.Count; i++)
+            {
+                var global = globalLocalCarries[i];
+                var local = localVariables[i];
+                s.Append($"\t{set} ");
+                s.Append($"{global.Name}");
+                s.Append($" = ");
+                s.Append($"{local.GetIdentifierName()}");
+                s.Append($"{newline}");
+            }
+            return s.ToString();
+        }
+
+        private string NullLocals()
+        {
+            StringBuilder s = new StringBuilder();
+            localVariables.ForEach(v =>
+            {
+                s.Append($"\t{set} ");
+                s.Append($"{v.GetIdentifierName()}");
+                s.Append($" = {GetGlobalsStartValue(Types.GetBaseType(v.Type))}");
+                s.Append($"{newline}");
+            });
+            return s.ToString();
+        }
 
         public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
         {
@@ -1598,8 +1644,7 @@ end
             StringBuilder events = new StringBuilder();
             StringBuilder conditions = new StringBuilder();
             PreActions pre_actions = new PreActions();
-            StringBuilder localVariableDecl = new StringBuilder();
-            StringBuilder localVariableInit = new StringBuilder();
+            localVariableDecl = new StringBuilder();
             localVariables = new List<Variable>();
             globalLocalCarries = new List<Variable>();
             StringBuilder actions = new StringBuilder();
@@ -1631,78 +1676,32 @@ end
                 events.Append($"{_event} {newline}");
             }
 
-            localVariableInit.Append($"\tlocal {integer} i_BT{newline}"); // 1st dimension loop
-            localVariableInit.Append($"\tlocal {integer} j_BT{newline}"); // 2nd dimension loop
             foreach (LocalVariable localVar in t.trigger.LocalVariables)
             {
-                var v = localVar.variable;
-                localVariables.Add(v);
-                string name = v.GetIdentifierName();
-                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(v.Type) : string.Empty;
-                string initialValue = ConvertParametersToJass(v.InitialValue, v.Type, new PreActions());
-                if (string.IsNullOrEmpty(initialValue))
-                    initialValue = GetTypeInitialValue(type);
+                localVariables.Add(localVar.variable);
+                string name = localVar.variable.GetIdentifierName();
+                string initialValue;
                 string array = string.Empty;
-                string arrayInit = string.Empty;
-                if (v.IsArray)
-                {
-                    localVariableInit.Append($"\t{set} i_BT = 0{newline}");
-                    if (language == ScriptLanguage.Jass)
-                    {
-                        array = "array";
-                        if (v.IsArray && !v.IsTwoDimensions)
-                        {
-                            arrayInit = $"[{v.ArraySize[0]}]";
-                            localVariableInit.Append($"\t{startLoop} i_BT > {v.ArraySize[0]}{breakLoop}{newline}");
-                            localVariableInit.Append($"\t{set} {name}[i_BT] = {initialValue}{newline}");
-                            localVariableInit.Append($"\t{set} i_BT=i_BT+1{newline}");
-                            localVariableInit.Append($"\t{endloop}{newline}");
-                        }
-                        else if (v.IsArray && v.IsTwoDimensions)
-                        {
-                            arrayInit = $"[{v.ArraySize[0]}][{v.ArraySize[1]}]";
-                            localVariableInit.Append($"\t{startLoop} i_BT > {v.ArraySize[0]}{breakLoop}{newline}");
-                            localVariableInit.Append($"\t{set} j_BT = 0{newline}");
-                            localVariableInit.Append($"\t{startLoop} j_BT > {v.ArraySize[1]}{breakLoop}{newline}");
-                            localVariableInit.Append($"\t{set} {name}[i_BT][j_BT] = {initialValue}{newline}");
-                            localVariableInit.Append($"\t{set} j_BT=j_BT+1{newline}");
-                            localVariableInit.Append($"\t{endloop}{newline}");
-                            localVariableInit.Append($"\t{set} i_BT=i_BT+1{newline}");
-                            localVariableInit.Append($"\t{endloop}{newline}");
-                        }
-                    }
-                    else if (language == ScriptLanguage.Lua)
-                    {
-                        if (v.IsArray && !v.IsTwoDimensions)
-                        {
-                            arrayInit = " = {}";
-                            localVariableInit.Append($"\t{startLoop} i_BT > {v.ArraySize[0]}{breakLoop}{newline}");
-                            localVariableInit.Append($"\t{set} {name}[i_BT] = {initialValue}{newline}");
-                            localVariableInit.Append($"\t{set} i_BT=i_BT+1{newline}");
-                            localVariableInit.Append($"\t{endloop}{newline}");
-                        }
-                        else if (v.IsArray && v.IsTwoDimensions)
-                        {
-                            arrayInit = $" = array2DLua({v.ArraySize[0]}, {v.ArraySize[1]}, {initialValue}){newline}";
-                            localVariableInit.Append($"\t{startLoop} i_BT > {v.ArraySize[0]}{breakLoop}{newline}");
-                            localVariableInit.Append($"\t{set} j_BT = 0{newline}");
-                            localVariableInit.Append($"\t{startLoop} j_BT > {v.ArraySize[1]}{breakLoop}{newline}");
-                            localVariableInit.Append($"\t{set} {name}[i_BT][j_BT] = {initialValue}{newline}");
-                            localVariableInit.Append($"\t{set} j_BT=j_BT+1{newline}");
-                            localVariableInit.Append($"\t{endloop}{newline}");
-                            localVariableInit.Append($"\t{set} i_BT=i_BT+1{newline}");
-                            localVariableInit.Append($"\t{endloop}{newline}");
-                        }
-                    }
-                }
-                else
-                    localVariableInit.Append($"\t{set} {name} = {initialValue}{newline}");
+                string arrayLua = string.Empty;
+                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(localVar.variable.Type) : string.Empty;
+                if (language == ScriptLanguage.Jass)
+                    array = localVar.variable.IsArray ? "array" : string.Empty;
+                if (language == ScriptLanguage.Lua)
+                    arrayLua = " = {}";
+                //initialValue = localVar.variable.InitialValue == null ? string.Empty : " = " + localVar.variable.InitialValue.value;
+                // TODO: Initial values for local variables? Array initial values could be a problem. Consider.
 
-                localVariableDecl.Append($"\t{type} {array} {name}{arrayInit}{newline}");
+                localVariableDecl.Append($"\tlocal {type} {array} {name}{arrayLua}{newline}");
+
+                Variable globalCarry = new Variable();
+                globalCarry.Name = $"{name}_c_{t.trigger.Id}";
+                globalCarry.Type = type;
+                globalCarry.IsArray = localVar.variable.IsArray;
+                globalLocalCarries.Add(globalCarry);
+                events.Insert(0, $"{endglobals}{newline}");
+                events.Insert(0, $"{type} {array} {globalCarry.Name} {arrayLua}{newline}");
+                events.Insert(0, $"{globals}{newline}");
             }
-            events.Insert(0, $"{endglobals}{newline}");
-            events.Insert(0, $"{localVariableDecl.ToString()}{newline}");
-            events.Insert(0, $"{globals}{newline}");
 
             foreach (ECA c in t.trigger.Conditions)
             {
@@ -1714,7 +1713,7 @@ end
                 conditions.Append($"\t\treturn false{newline}");
                 conditions.Append($"\t{endif}{newline}");
             }
-            actions.Insert(0, localVariableInit.ToString());
+            actions.Insert(0, localVariableDecl.ToString());
             actions.Insert(0, $"function {triggerActionName} {functionReturnsNothing}{newline}");
             foreach (ECA a in t.trigger.Actions)
             {
@@ -1884,7 +1883,11 @@ end
                     }
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
@@ -1907,7 +1910,11 @@ end
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
@@ -1930,7 +1937,11 @@ end
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 
@@ -1953,7 +1964,11 @@ end
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
                 pre += $"function {function_name} {functionReturnsNothing}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
                 pre += pre_content;
+                pre += CarryLocals();
+                pre += NullLocals();
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
 

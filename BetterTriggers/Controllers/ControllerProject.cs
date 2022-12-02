@@ -886,7 +886,6 @@ namespace BetterTriggers.Controllers
                     int newId = Variables.GenerateId(blacklistedIds);
                     Variables.AddLocalVariable(lv);
                     lv.variable.Id = newId;
-                    lv.variable._localTriggerId = element.trigger.Id;
                     blacklistedIds.Add(newId);
 
                     var matches = varRefs.Where(x => x.VariableId == oldId);

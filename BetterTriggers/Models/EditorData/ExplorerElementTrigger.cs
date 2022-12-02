@@ -47,11 +47,6 @@ namespace BetterTriggers.Models.EditorData
                 }
             }
             trigger = JsonConvert.DeserializeObject<Trigger>(json);
-            trigger.LocalVariables.ForEach(te =>
-            {
-                var lv = (LocalVariable)te;
-                lv.variable._localTriggerId = trigger.Id;
-            });
             StoreLocalVariables();
             UpdateMetadata();
         }

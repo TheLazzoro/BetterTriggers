@@ -33,7 +33,7 @@
         ],
         "Name": "int0",
         "Type": "integer",
-        "IsArray": true,
+        "IsArray": false,
         "IsTwoDimensions": true,
         "InitialValue": {
           "ParamType": 5,
@@ -68,7 +68,7 @@
         ],
         "Name": "unitgrp0",
         "Type": "group",
-        "IsArray": true,
+        "IsArray": false,
         "IsTwoDimensions": false,
         "InitialValue": {
           "value": null
@@ -85,7 +85,7 @@
         ],
         "Name": "unitgrp1",
         "Type": "group",
-        "IsArray": true,
+        "IsArray": false,
         "IsTwoDimensions": true,
         "InitialValue": {
           "value": null
@@ -102,7 +102,7 @@
         ],
         "Name": "playergrp",
         "Type": "force",
-        "IsArray": true,
+        "IsArray": false,
         "IsTwoDimensions": true,
         "InitialValue": {
           "value": null
@@ -119,7 +119,7 @@
         ],
         "Name": "ability",
         "Type": "ability",
-        "IsArray": true,
+        "IsArray": false,
         "IsTwoDimensions": true,
         "InitialValue": {
           "value": null
@@ -136,7 +136,7 @@
         ],
         "Name": "abilitycode",
         "Type": "abilcode",
-        "IsArray": true,
+        "IsArray": false,
         "IsTwoDimensions": true,
         "InitialValue": {
           "value": null
@@ -153,7 +153,7 @@
         ],
         "Name": "abilitycode0",
         "Type": "abilcode",
-        "IsArray": true,
+        "IsArray": false,
         "IsTwoDimensions": true,
         "InitialValue": {
           "ParamType": 5,

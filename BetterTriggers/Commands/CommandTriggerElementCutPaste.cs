@@ -48,8 +48,6 @@ namespace BetterTriggers.Commands
 
             for (int i = 0; i < listToPaste.Count; i++) {
                 listToPaste[i].SetParent(pasteParent, pastedIndex + i);
-                if (listToPaste[i] is LocalVariable localVar)
-                    localVar.variable._localTriggerId = to.trigger.Id;
             }
 
             References.UpdateReferences(from);

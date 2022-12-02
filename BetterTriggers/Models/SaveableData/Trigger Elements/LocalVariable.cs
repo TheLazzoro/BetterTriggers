@@ -13,12 +13,13 @@ namespace BetterTriggers.Models.SaveableData
         public LocalVariable()
         {
             variable._isLocal = true;
+            variable.IsArray = false; // forces locals to be non-arrays
         }
 
         public LocalVariable(Trigger trig)
         {
             variable._isLocal = true;
-            AttachTrigger(trig);
+            variable.IsArray = false; // forces locals to be non-arrays
         }
 
         public override LocalVariable Clone()
@@ -28,11 +29,6 @@ namespace BetterTriggers.Models.SaveableData
             clone.variable._isLocal = true;
 
             return clone;
-        }
-
-        public void AttachTrigger(Trigger trig)
-        {
-            this.variable._localTriggerId = trig.Id;
         }
     }
 }

@@ -49,6 +49,17 @@ namespace GUI.Components
 
             InitializeComponent();
 
+            if (variable._isLocal)
+            {
+                grid.Children.Remove(lblDimensions);
+                grid.Children.Remove(comboBoxArrayDimensions);
+                grid.Children.Remove(lblSize0);
+                grid.Children.Remove(lblSize1);
+                grid.Children.Remove(textBoxArraySize0);
+                grid.Children.Remove(textBoxArraySize1);
+                grid.Children.Remove(checkBoxIsArray);
+            }
+
             ControllerTriggerData controller = new ControllerTriggerData();
             List<Types> types = controller.LoadAllVariableTypes();
 

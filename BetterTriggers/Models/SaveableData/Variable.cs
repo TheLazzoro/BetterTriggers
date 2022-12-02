@@ -29,8 +29,6 @@ namespace BetterTriggers.Models.SaveableData
         private Parameter _initialValue;
         [JsonIgnore]
         public bool _isLocal { get; internal set; }
-        [JsonIgnore]
-        internal int _localTriggerId { get; set; }
 
         public event EventHandler ValuesChanged;
 
@@ -58,11 +56,9 @@ namespace BetterTriggers.Models.SaveableData
         public string GetIdentifierName()
         {
             string prefix = _isLocal ? "udl_" : "udg_";
-            string suffix = _isLocal ? $"_{_localTriggerId}" : string.Empty;
             string name = prefix + Name.Replace(" ", "_");
             if (name.EndsWith("_"))
                 name = name + "v";
-            name += suffix;
 
             return name;
         }
