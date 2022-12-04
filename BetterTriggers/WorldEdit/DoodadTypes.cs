@@ -60,23 +60,28 @@ namespace BetterTriggers.WorldEdit
             doodadsBase = new Dictionary<string, DoodadType>();
             doodadsCustom = new Dictionary<string, DoodadType>();
 
-            Stream doodadskin;
+            string text;
 
             if (isTest)
             {
-                doodadskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/doodadskins.txt"), FileMode.Open);
+                using (Stream doodadskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/doodadskins.txt"), FileMode.Open))
+                {
+                    var reader = new StreamReader(doodadskin);
+                    text = reader.ReadToEnd();
+                }
             }
             else
             {
                 var folderDoodads = (CASCFolder)Casc.GetWar3ModFolder().Entries["doodads"];
                 CASCFile doodadSkins = (CASCFile)folderDoodads.Entries["doodadskins.txt"];
-                doodadskin = Casc.GetCasc().OpenFile(doodadSkins.FullName);
+                using (Stream doodadskin = Casc.GetCasc().OpenFile(doodadSkins.FullName))
+                {
+                    var reader = new StreamReader(doodadskin);
+                    text = reader.ReadToEnd();
+                }
             }
 
             // Parse ini file
-            var reader = new StreamReader(doodadskin);
-            var text = reader.ReadToEnd();
-
             var data = IniFileConverter.GetIniData(text);
 
             var sections = data.Sections.GetEnumerator();
@@ -133,8 +138,6 @@ namespace BetterTriggers.WorldEdit
                     SetCustomFields(dood, doodad.DoodCode);
                 }
             }
-
-            doodadskin.Dispose();
         }
 
         private static void SetCustomFields(VariationObjectModification modified, string buffcode)

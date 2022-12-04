@@ -76,27 +76,37 @@ namespace BetterTriggers.WorldEdit
             unitTypesCustom = new Dictionary<string, UnitType>();
             IsTest = isTest;
 
-            Stream unitDataSlk;
-            Stream unitSkin;
+            SylkParser sylkParser = new SylkParser();
+            SylkTable table;
+            StreamReader reader;
+            string text;
 
             if (isTest)
             {
-                unitDataSlk = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitdata.slk"), FileMode.Open);
-                unitSkin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitskin.txt"), FileMode.Open);
+                using (Stream unitDataSlk = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitdata.slk"), FileMode.Open))
+                using (Stream unitSkin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitskin.txt"), FileMode.Open))
+                {
+                    table = sylkParser.Parse(unitDataSlk);
+                    reader = new StreamReader(unitSkin);
+                    text = reader.ReadToEnd();
+                }
+
             }
             else
             {
                 var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-
                 CASCFile cascFile = (CASCFile)units.Entries["unitdata.slk"];
-                unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName);
-
                 CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
-                unitSkin = Casc.GetCasc().OpenFile(unitSkins.FullName);
+                using (Stream unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName))
+                using (Stream unitSkin = Casc.GetCasc().OpenFile(unitSkins.FullName))
+                {
+                    reader = new StreamReader(unitSkin);
+                    text = reader.ReadToEnd();
+                    table = sylkParser.Parse(unitDataSlk);
+                }
             }
 
-            SylkParser sylkParser = new SylkParser();
-            SylkTable table = sylkParser.Parse(unitDataSlk);
+
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
@@ -112,8 +122,7 @@ namespace BetterTriggers.WorldEdit
                 unitTypesBase.TryAdd(unitType.Id, unitType);
             }
 
-            var reader = new StreamReader(unitSkin);
-            var text = reader.ReadToEnd();
+
             var data = IniFileConverter.GetIniData(text);
             var unitTypesList = GetBase();
             for (int i = 0; i < unitTypesList.Count; i++)
@@ -190,9 +199,6 @@ namespace BetterTriggers.WorldEdit
                     SetCustomFields(customUnit, unitType.Id);
                 }
             }
-
-            unitDataSlk.Dispose();
-            unitSkin.Dispose();
         }
 
         private static void SetCustomFields(SimpleObjectModification modified, string unitId)

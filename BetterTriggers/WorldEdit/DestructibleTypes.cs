@@ -65,27 +65,36 @@ namespace BetterTriggers.WorldEdit
             destructiblesBase = new Dictionary<string, DestructibleType>();
             destructiblesCustom = new Dictionary<string, DestructibleType>();
 
-            Stream destructibleskin;
-            Stream destructibleDataSLK;
+            SylkParser sylkParser = new SylkParser();
+            SylkTable table;
+            StreamReader reader;
+            string text;
 
             if (isTest)
             {
-                destructibleskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/destructableskin.txt"), FileMode.Open);
-                destructibleDataSLK = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/destructabledata.slk"), FileMode.Open);
+                using (Stream destructibleskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/destructableskin.txt"), FileMode.Open))
+                using (Stream destructibleDataSLK = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/destructabledata.slk"), FileMode.Open))
+                {
+                    table = sylkParser.Parse(destructibleDataSLK); ;
+                    reader = new StreamReader(destructibleskin);
+                    text = reader.ReadToEnd();
+                }
             }
             else
             {
                 var cascFolder = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
                 CASCFile destSkins = (CASCFile)cascFolder.Entries["destructableskin.txt"];
-                destructibleskin = Casc.GetCasc().OpenFile(destSkins.FullName);
-
                 CASCFile destData = (CASCFile)cascFolder.Entries["destructabledata.slk"];
-                destructibleDataSLK = Casc.GetCasc().OpenFile(destData.FullName);
+                using (Stream destructibleskin = Casc.GetCasc().OpenFile(destSkins.FullName))
+                using (Stream destructibleDataSLK = Casc.GetCasc().OpenFile(destData.FullName))
+                {
+                    table = sylkParser.Parse(destructibleDataSLK);
+                    reader = new StreamReader(destructibleskin);
+                    text = reader.ReadToEnd();
+                }
             }
 
 
-            SylkParser sylkParser = new SylkParser();
-            SylkTable table = sylkParser.Parse(destructibleDataSLK);
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
@@ -102,8 +111,7 @@ namespace BetterTriggers.WorldEdit
             }
 
             // Add 'model' from 'destructableskin.txt'
-            var reader = new StreamReader(destructibleskin);
-            var text = reader.ReadToEnd();
+
             var data = IniFileConverter.GetIniData(text);
             var destTypesList = GetBase();
             for (int i = 0; i < destTypesList.Count; i++)
@@ -151,9 +159,6 @@ namespace BetterTriggers.WorldEdit
                     SetCustomFields(dest, destructible.DestCode);
                 }
             }
-
-            destructibleskin.Close();
-            destructibleDataSLK.Close();
         }
 
         private static void SetCustomFields(SimpleObjectModification modified, string buffcode)
