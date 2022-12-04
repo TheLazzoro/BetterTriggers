@@ -395,7 +395,7 @@ namespace GUI
 
         private void NewProject()
         {
-            NewProjectWindow window = new NewProjectWindow();
+            EmptyProjectWindow window = new EmptyProjectWindow();
             window.WindowStartupLocation = WindowStartupLocation.Manual;
             window.Top = this.Top + this.Height / 2 - window.Height / 2;
             window.Left = this.Left + this.Width / 2 - window.Width / 2;

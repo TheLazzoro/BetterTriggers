@@ -1683,14 +1683,12 @@ end
                 localVariables.Add(v);
                 string name = v.GetIdentifierName();
                 string initialValue = ConvertParametersToJass(v.InitialValue, v.Type, new PreActions());
-                string array = string.Empty;
-                string arrayLua = string.Empty;
                 string type = language == ScriptLanguage.Jass ? Types.GetBaseType(v.Type) : string.Empty;
                 initialValue = string.IsNullOrEmpty(initialValue) ? $" = {GetTypeInitialValue(type)}" : initialValue.Insert(0, " = ");
 
 
-                localVariableInit.Append($"\tlocal {type} {array} {name}{initialValue}{newline}"); // used on first declaration
-                localVariableDecl.Append($"\tlocal {type} {array} {name}{newline}"); // used 
+                localVariableInit.Append($"\tlocal {type} {name}{initialValue}{newline}"); // used on first declaration
+                localVariableDecl.Append($"\tlocal {type} {name}{newline}"); // used in special trigger elements
 
                 Variable globalCarry = new Variable();
                 globalCarry.Name = $"{name}_c_{t.trigger.Id}";
@@ -1698,7 +1696,7 @@ end
                 globalCarry.IsArray = localVar.variable.IsArray;
                 globalLocalCarries.Add(globalCarry);
                 events.Insert(0, $"{endglobals}{newline}");
-                events.Insert(0, $"{type} {array} {globalCarry.Name} {arrayLua}{newline}");
+                events.Insert(0, $"{type} {globalCarry.Name}{newline}");
                 events.Insert(0, $"{globals}{newline}");
             }
 

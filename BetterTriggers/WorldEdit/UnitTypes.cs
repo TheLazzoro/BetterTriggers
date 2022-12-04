@@ -191,8 +191,8 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
-            unitDataSlk.Close();
-            unitSkin.Close();
+            unitDataSlk.Dispose();
+            unitSkin.Dispose();
         }
 
         private static void SetCustomFields(SimpleObjectModification modified, string unitId)

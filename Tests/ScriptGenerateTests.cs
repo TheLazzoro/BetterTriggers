@@ -40,7 +40,7 @@ namespace Tests
             string[] testMaps = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/"));
             foreach(var folder in testMaps)
             {
-                if (!folder.EndsWith(".w3x"))
+                if (!folder.EndsWith(".w3x") && !folder.EndsWith(".w3m"))
                     Directory.Delete(folder, true);
             }
         }
@@ -161,6 +161,24 @@ namespace Tests
         public void ConvertMap_GenerateScript_Sheol_131()
         {
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Sheol_131.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_empty_131()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/empty_131.w3m");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_empty_132()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/empty_132.w3m");
             ConvertMap_GenerateScript(mapDir);
 
             Assert.IsTrue(success, failedMsg);

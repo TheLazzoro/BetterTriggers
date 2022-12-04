@@ -133,6 +133,8 @@ namespace BetterTriggers.WorldEdit
                     SetCustomFields(dood, doodad.DoodCode);
                 }
             }
+
+            doodadskin.Dispose();
         }
 
         private static void SetCustomFields(VariationObjectModification modified, string buffcode)

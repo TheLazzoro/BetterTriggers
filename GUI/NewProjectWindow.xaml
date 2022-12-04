@@ -5,44 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        TextOptions.TextFormattingMode="Display"
-        Title="New Project" Height="350" Width="544" Background="#FF303030" ResizeMode="NoResize" KeyDown="Window_KeyDown">
+        Title="New Project" Height="450" Width="800" Background="#FF303030" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" SnapsToDevicePixels="true" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <!--<Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/> -->
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="BorderBrush" Value="#00000000" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#555"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
+                                <Setter Property="Border.CornerRadius" TargetName="border" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#777"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" Value="0.2"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="185*"/>
+            <RowDefinition Height="249*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="29*"/>
         </Grid.ColumnDefinitions>
 
-        <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="267" Height="200"   >
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Resources/Orc.png" Stretch="Uniform"/>
-            </Rectangle.Fill>
-        </Rectangle>
-        
-        <Label Content="Create a new project" Grid.Row="0" Foreground="#eee" FontSize="24" />
-        <Label Content="Project Name:" Grid.Row="1" Foreground="#eee"/>
-        <TextBox x:Name="textBoxProjectName" Grid.Row="2" Margin="5,0,0,0" Width="250" HorizontalAlignment="Left" Foreground="#eee" Background="#FF202020" BorderBrush="#FF0A0A0A" TextChanged="textBoxProjectName_TextChanged"/>
 
-        <Label Content="Select scripting language:" Grid.Row="3" Foreground="#eee" VerticalAlignment="Bottom" FontSize="16"/>
-        <RadioButton x:Name="radBtnJass" Content="Jass" Grid.Row="4" Foreground="#eee" Margin="5,5,5,5" />
-        <RadioButton x:Name="radBtnLua" Content="Lua" Grid.Row="4" Foreground="#eee" Margin="75,5,5,5" />
 
-        <Label Content="Select project destination folder:" Grid.Row="5" Foreground="#eee" VerticalAlignment="Center"/>
-        <Button x:Name="btnProjectDestination" Content="Select..." Grid.Row="5" Width="75" Margin="5,5,5,5" HorizontalAlignment="Right" Click="btnProjectDestination_Click"/>
-
-        <Label x:Name="lblProjectDestination" Content="--- Empty ---" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Foreground="#eee" />
-
-        <Button x:Name="btnCreate" IsEnabled="False" Content="Create Project" Grid.Row="7" Grid.Column="1" Width="100" Margin="5,5,5,5" HorizontalAlignment="Right"  Click="btnCreate_Click"/>
+        <Button x:Name="btnEmptyProject" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  >
+            <Button.Content>
+                <Image Source="Resources/Orc.png" Stretch="Fill" />
+            </Button.Content>
+        </Button>
 
     </Grid>
 </Window>

@@ -74,8 +74,11 @@ namespace BetterTriggers.WorldEdit
                 BinaryReader reader = new BinaryReader(s);
                 var customTextTriggers = BinaryReaderExtensions.ReadMapCustomTextTriggers(reader, System.Text.Encoding.UTF8);
                 rootComment = customTextTriggers.GlobalCustomScriptComment;
-                if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
-                    rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
+                if (customTextTriggers.GlobalCustomScriptCode != null)
+                {
+                    if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
+                        rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
+                }
                 customTextTriggers.CustomTextTriggers.ForEach(item =>
                 {
                     wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
@@ -107,61 +110,65 @@ namespace BetterTriggers.WorldEdit
             project.Header = rootHeader;
             triggerPaths.Add(0, src);
 
-            // First, gather all variables names and ids
-            for (int i = 0; i < triggers.Variables.Count; i++)
+            if (triggers != null)
             {
-                var variable = triggers.Variables[i];
 
-                variableIds.Add(variable.Name, variable.Id);
-                variableTypes.Add(variable.Name, variable.Type);
-
-                explorerVariables.Add(variable.Id, CreateVariable(variable));
-            }
-
-            // Then, gather all trigger names and ids
-            for (int i = 0; i < triggers.TriggerItems.Count; i++)
-            {
-                var triggerItem = triggers.TriggerItems[i];
-                if (triggerItem.Type != TriggerItemType.Gui)
-                    continue;
-
-                triggerIds.TryAdd("gg_trg_" + triggerItem.Name.Replace(" ", "_"), triggerItem.Id);
-            }
-
-            for (int i = 0; i < triggers.TriggerItems.Count; i++)
-            {
-                var triggerItem = triggers.TriggerItems[i];
-                if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
-                    continue;
-
-                IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
-                if (explorerElement == null)
-                    continue;
-
-                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
-                if (explorerElement is ExplorerElementFolder)
-                    Directory.CreateDirectory(explorerElement.GetPath());
-                else
+                // First, gather all variables names and ids
+                for (int i = 0; i < triggers.Variables.Count; i++)
                 {
-                    var saveable = (IExplorerSaveable)explorerElement;
-                    File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
+                    var variable = triggers.Variables[i];
+
+                    variableIds.Add(variable.Name, variable.Id);
+                    variableTypes.Add(variable.Name, variable.Type);
+
+                    explorerVariables.Add(variable.Id, CreateVariable(variable));
                 }
 
-                War3ProjectFileEntry entry = new War3ProjectFileEntry()
+                // Then, gather all trigger names and ids
+                for (int i = 0; i < triggers.TriggerItems.Count; i++)
                 {
-                    isEnabled = explorerElement.GetEnabled(),
-                    isInitiallyOn = explorerElement.GetInitiallyOn(),
-                    path = explorerElement.GetSaveablePath(),
-                };
+                    var triggerItem = triggers.TriggerItems[i];
+                    if (triggerItem.Type != TriggerItemType.Gui)
+                        continue;
 
-                War3ProjectFileEntry parentEnty;
-                projectFilesEntries.TryGetValue(triggerItem.ParentId, out parentEnty);
-                if (parentEnty == null)
-                    project.Files.Add(entry);
-                else
-                    parentEnty.Files.Add(entry);
+                    triggerIds.TryAdd("gg_trg_" + triggerItem.Name.Replace(" ", "_"), triggerItem.Id);
+                }
 
-                projectFilesEntries.TryAdd(triggerItem.Id, entry);
+                for (int i = 0; i < triggers.TriggerItems.Count; i++)
+                {
+                    var triggerItem = triggers.TriggerItems[i];
+                    if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
+                        continue;
+
+                    IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
+                    if (explorerElement == null)
+                        continue;
+
+                    triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
+                    if (explorerElement is ExplorerElementFolder)
+                        Directory.CreateDirectory(explorerElement.GetPath());
+                    else
+                    {
+                        var saveable = (IExplorerSaveable)explorerElement;
+                        File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
+                    }
+
+                    War3ProjectFileEntry entry = new War3ProjectFileEntry()
+                    {
+                        isEnabled = explorerElement.GetEnabled(),
+                        isInitiallyOn = explorerElement.GetInitiallyOn(),
+                        path = explorerElement.GetSaveablePath(),
+                    };
+
+                    War3ProjectFileEntry parentEnty;
+                    projectFilesEntries.TryGetValue(triggerItem.ParentId, out parentEnty);
+                    if (parentEnty == null)
+                        project.Files.Add(entry);
+                    else
+                        parentEnty.Files.Add(entry);
+
+                    projectFilesEntries.TryAdd(triggerItem.Id, entry);
+                }
             }
 
             File.WriteAllText(projectPath, JsonConvert.SerializeObject(project, Formatting.Indented));

@@ -21,7 +21,7 @@ namespace BetterTriggers.WorldEdit
         {
             string filePath = "war3map.w3i";
             if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
-                return;
+                throw new Exception($"'{filePath}' does not exist!");
 
             while (CustomMapData.IsMapSaving())
             {

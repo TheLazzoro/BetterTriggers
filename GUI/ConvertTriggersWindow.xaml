@@ -28,7 +28,7 @@
 
         <Label Grid.Column="1" Grid.Row="0" Foreground="#eee" VerticalAlignment="Center" FontSize="16" >Convert triggers from an existing map</Label>
         
-        <Label Grid.Column="1" Grid.Row="1" Foreground="#eee" VerticalAlignment="Top" >Select map (folder mode):</Label>
+        <Label Grid.Column="1" Grid.Row="1" Foreground="#eee" VerticalAlignment="Top" >Locate map (folder mode):</Label>
         <Button x:Name="btnSelectMap" Width="80" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="btnSelectMap_Click">Select...</Button>
         <TextBlock x:Name="lblMap" Grid.Column="1" Grid.Row="1" Foreground="#eee" VerticalAlignment="Bottom" Margin="100,0,0,0" TextTrimming="WordEllipsis" >N/A</TextBlock>
 

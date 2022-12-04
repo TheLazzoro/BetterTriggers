@@ -77,7 +77,7 @@ namespace GUI
                 return null;
 
             TreeItemExplorerElement traversedTarget = null;
-            while (traversedTarget == null)
+            while (traversedTarget == null && dropTarget != null)
             {
                 dropTarget = dropTarget.Parent as FrameworkElement;
                 if (dropTarget is TreeViewItem)
@@ -355,6 +355,10 @@ namespace GUI
             menuElementInitiallyOn.IsChecked = rightClickedElement.Ielement.GetInitiallyOn();
             menuElementEnabled.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger || rightClickedElement.Ielement is ExplorerElementScript;
             menuElementInitiallyOn.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger;
+            menuRename.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
+            menuDelete.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
+            menuCut.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
+            menuCopy.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
         }
 
         private void menuCut_Click(object sender, RoutedEventArgs e)
