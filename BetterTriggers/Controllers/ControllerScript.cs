@@ -14,7 +14,7 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerScript
     {
-        public void CreateScript()
+        public static void Create()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))
@@ -41,7 +41,7 @@ namespace BetterTriggers.Controllers
             File.WriteAllText(directory + @"\" + name + extension, "");
         }
 
-        public string LoadScriptFromFile(string filePath)
+        public static string LoadFromFile(string filePath)
         {
             string script = string.Empty;
             if (File.Exists(filePath))

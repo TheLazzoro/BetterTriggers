@@ -40,8 +40,6 @@ namespace GUI.Controllers
         /// </summary>
         private void GenerateTreeItemText(StringBuilder sb, List<Parameter> parameters, List<string> returnTypes, string paramText)
         {
-            ControllerTriggerData controller = new ControllerTriggerData();
-
             int paramIndex = 0;
             for (int i = 0; i < paramText.Length; i++)
             {
@@ -61,21 +59,20 @@ namespace GUI.Controllers
                     {
                         List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
                         sb.Append("(");
-                        GenerateTreeItemText(sb, function.parameters, _returnTypes, controller.GetParamText(function)); // recurse
+                        GenerateTreeItemText(sb, function.parameters, _returnTypes, ControllerTriggerData.GetParamText(function)); // recurse
                     }
                     else // whole displayname gets hyperlinked
-                        sb.Append($"({controller.GetParamDisplayName(function)}");
+                        sb.Append($"({ControllerTriggerData.GetParamDisplayName(function)}");
 
                     sb.Append(")");
                 }
                 else if (parameters[paramIndex] is Constant)
-                    sb.Append(controller.GetParamDisplayName(parameters[paramIndex]));
+                    sb.Append(ControllerTriggerData.GetParamDisplayName(parameters[paramIndex]));
 
                 else if (parameters[paramIndex] is VariableRef)
                 {
-                    var controllerVariable = new ControllerVariable();
                     var variableRef = (VariableRef)parameters[paramIndex];
-                    var variable = controllerVariable.GetByReference(variableRef);
+                    var variable = ControllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
                     string expectedType = null;
@@ -110,16 +107,15 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is TriggerRef)
                 {
-                    var controllerTrig = new ControllerTrigger();
                     var triggerRef = (TriggerRef)parameters[paramIndex];
-                    var trigger = controllerTrig.GetByReference(triggerRef);
+                    var trigger = ControllerTrigger.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
                         triggerName = "null";
                     else
-                        triggerName = controllerTrig.GetTriggerName(trigger.Id);
+                        triggerName = ControllerTrigger.GetTriggerName(trigger.Id);
 
                     sb.Append(triggerName);
                 }
@@ -127,7 +123,7 @@ namespace GUI.Controllers
                 {
                     // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
-                    var name = controllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
+                    var name = ControllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     if (name == null || name == "")
@@ -219,7 +215,7 @@ namespace GUI.Controllers
             List<string> returnTypes = parameterFacade.GetReturnTypes();
 
             List<Inline> inlines = new List<Inline>();
-            ControllerTriggerData controller = new ControllerTriggerData();
+            ControllerTriggerData controller = new ();
 
             int paramIndex = 0;
             for (int i = 0; i < paramText.Length; i++)
@@ -248,14 +244,14 @@ namespace GUI.Controllers
                     {
                         List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
                         inlines.Add(AddHyperlink(parameterFacade, "(", parameters, paramIndex, returnTypes[paramIndex]));
-                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, function.parameters, _returnTypes, controller.GetParamText(function)))); // recurse
+                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, function.parameters, _returnTypes, ControllerTriggerData.GetParamText(function)))); // recurse
                     }
                     else // whole displayname gets hyperlinked
                     {
                         Run runFirstBracket = new Run("(");
                         runFirstBracket.FontFamily = new FontFamily("Verdana");
                         inlines.Add(runFirstBracket);
-                        inlines.Add(AddHyperlink(parameterFacade, controller.GetParamDisplayName(function), parameters, paramIndex, returnTypes[paramIndex]));
+                        inlines.Add(AddHyperlink(parameterFacade, ControllerTriggerData.GetParamDisplayName(function), parameters, paramIndex, returnTypes[paramIndex]));
                     }
                     Run run = new Run(")");
                     run.FontFamily = new FontFamily("Verdana");
@@ -263,13 +259,12 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is Constant)
                 {
-                    inlines.Add(AddHyperlink(parameterFacade, controller.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex, returnTypes[paramIndex]));
+                    inlines.Add(AddHyperlink(parameterFacade, ControllerTriggerData.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is VariableRef)
                 {
-                    var controllerVariable = new ControllerVariable();
                     var variableRef = (VariableRef)parameters[paramIndex];
-                    var variable = controllerVariable.GetByReference(variableRef);
+                    var variable = ControllerVariable.GetByReference(variableRef);
                     string varName = string.Empty;
 
                     string expectedType = null;
@@ -297,16 +292,15 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is TriggerRef)
                 {
-                    var controllerTrig = new ControllerTrigger();
                     var triggerRef = (TriggerRef)parameters[paramIndex];
-                    var trigger = controllerTrig.GetByReference(triggerRef);
+                    var trigger = ControllerTrigger.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
                         triggerName = "null";
                     else
-                        triggerName = controllerTrig.GetTriggerName(trigger.Id);
+                        triggerName = ControllerTrigger.GetTriggerName(trigger.Id);
 
                     inlines.Add(AddHyperlink(parameterFacade, triggerName, parameters, paramIndex, returnTypes[paramIndex]));
                 }
@@ -314,7 +308,7 @@ namespace GUI.Controllers
                 {
                     // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
-                    var name = controllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
+                    var name = ControllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     if (name == null || name == "")

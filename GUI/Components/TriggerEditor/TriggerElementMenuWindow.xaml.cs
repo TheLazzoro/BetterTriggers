@@ -38,19 +38,18 @@ namespace GUI.Components.TriggerEditor
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var controllerTriggerData = new ControllerTriggerData();
             var templates = new List<FunctionTemplate>();
             if (triggerElementType == TriggerElementType.Event)
             {
-                templates = controllerTriggerData.LoadAllEvents();
+                templates = ControllerTriggerData.LoadAllEvents();
             }
             else if (triggerElementType == TriggerElementType.Condition)
             {
-                templates = controllerTriggerData.LoadAllConditions();
+                templates = ControllerTriggerData.LoadAllConditions();
             }
             else if (triggerElementType == TriggerElementType.Action)
             {
-                templates = controllerTriggerData.LoadAllActions();
+                templates = ControllerTriggerData.LoadAllActions();
             }
 
             List<Searchable> objects = new List<Searchable>();

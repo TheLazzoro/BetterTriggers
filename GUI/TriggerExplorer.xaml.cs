@@ -262,8 +262,7 @@ namespace GUI
             }
 
             var dropTarget = (TreeItemExplorerElement)parentDropTarget;
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.MoveFile(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
+            ControllerFileSystem.Move(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
 
             // focus select item again
             dragItem.IsSelected = true;
@@ -306,8 +305,7 @@ namespace GUI
                         return;
                 }
 
-                ControllerFileSystem controller = new ControllerFileSystem();
-                controller.DeleteElement(selectedElement.Ielement.GetPath());
+                ControllerFileSystem.Delete(selectedElement.Ielement.GetPath());
             }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
@@ -390,32 +388,27 @@ namespace GUI
 
         private void menuDelete_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.DeleteElement(currentElement.Ielement.GetPath());
+            ControllerFileSystem.Delete(currentElement.Ielement.GetPath());
         }
 
         private void menuNewCategory_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFolder controller = new ControllerFolder();
-            controller.CreateFolder();
+            ControllerFolder.Create();
         }
 
         private void menuNewTrigger_Click(object sender, RoutedEventArgs e)
         {
-            ControllerTrigger controller = new ControllerTrigger();
-            controller.CreateTrigger();
+            ControllerTrigger.Create();
         }
 
         private void menuNewScript_Click(object sender, RoutedEventArgs e)
         {
-            ControllerScript controller = new ControllerScript();
-            controller.CreateScript();
+            ControllerScript.Create();
         }
 
         private void menuNewVariable_Click(object sender, RoutedEventArgs e)
         {
-            ControllerVariable controller = new ControllerVariable();
-            controller.CreateVariable();
+            ControllerVariable.Create();
         }
 
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
@@ -437,8 +430,7 @@ namespace GUI
 
         private void menuOpenInExplorer_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.OpenInExplorer(currentElement.Ielement.GetPath());
+            ControllerFileSystem.OpenInExplorer(currentElement.Ielement.GetPath());
         }
 
         private void OpenSearchField()

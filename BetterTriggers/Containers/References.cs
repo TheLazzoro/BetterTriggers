@@ -81,12 +81,11 @@ namespace BetterTriggers.Containers
         /// </summary>
         internal static void UpdateReferences(ExplorerElementTrigger t)
         {
-            ControllerTrigger controller = new ControllerTrigger();
             List<ExplorerElementVariable> explorerElementVariables = new List<ExplorerElementVariable>();
 
             RemoveReferrer(t);
 
-            var parameters = controller.GetParametersFromTrigger(t);
+            var parameters = ControllerTrigger.GetParametersFromTrigger(t);
             parameters.ForEach(p =>
             {
                 if (p is VariableRef)
@@ -110,11 +109,10 @@ namespace BetterTriggers.Containers
         internal static void UpdateReferences(Variable variable)
         {
             References.ResetVariableReferences(variable);
-            ControllerTrigger controller = new ControllerTrigger();
-            var triggers = controller.GetTriggersAll();
+            var triggers = ControllerTrigger.GetTriggersAll();
             triggers.ForEach(exTrig =>
             {
-                var parameters = controller.GetParametersFromTrigger(exTrig);
+                var parameters = ControllerTrigger.GetParametersFromTrigger(exTrig);
                 parameters.ForEach(p =>
                 {
                     if (p is VariableRef varRef)
@@ -129,8 +127,7 @@ namespace BetterTriggers.Containers
 
         internal static void UpdateReferencesAll()
         {
-            ControllerTrigger controller = new ControllerTrigger();
-            var triggers = controller.GetTriggersAll();
+            var triggers = ControllerTrigger.GetTriggersAll();
             triggers.ForEach(trigger => UpdateReferences(trigger));
         }
     }

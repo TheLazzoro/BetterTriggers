@@ -38,16 +38,12 @@ namespace Tests
         {
             Directory.CreateDirectory(sourceFolder);
             Directory.CreateDirectory(targetFolder);
-
             var file = sourceFolder + @"\" + "testFile";
+            
             File.WriteAllText(file, "This is a test.");
-
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.MoveFile(file, targetFolder, 0);
-
+            ControllerFileSystem.Move(file, targetFolder, 0);
 
             var newPath = targetFolder + @"\" + "testFile";
-
             var expected = true;
             var actual = File.Exists(newPath);
 

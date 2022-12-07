@@ -273,13 +273,12 @@ end
             // Generated variables
 
 
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
-            var functions = controllerTrigger.GetFunctionsAll();
+            var functions = ControllerTrigger.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];
                 List<Parameter> parameters = function.parameters;
-                int errors = controllerTrigger.VerifyParameters(parameters);
+                int errors = ControllerTrigger.VerifyParameters(parameters);
                 if (errors > 0)
                 {
                     functions.Remove(function);
@@ -1741,8 +1740,7 @@ end
 
         private string ConvertTriggerElementToJass(ECA t, PreActions pre_actions, bool nested)
         {
-            ControllerTrigger controller = new ControllerTrigger();
-            if (!t.isEnabled || controller.VerifyParameters(t.function.parameters) > 0)
+            if (!t.isEnabled || ControllerTrigger.VerifyParameters(t.function.parameters) > 0)
                 return "";
 
             StringBuilder script = new StringBuilder();
@@ -1817,7 +1815,7 @@ end
                 ifThenElse.If.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = controllerTrigger.VerifyParameters(cond.function.parameters);
+                    int emptyParams = ControllerTrigger.VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
@@ -1981,7 +1979,7 @@ end
                     if (!element.isEnabled)
                         continue;
 
-                    int emptyParams = controllerTrigger.VerifyParameters(element.function.parameters);
+                    int emptyParams = ControllerTrigger.VerifyParameters(element.function.parameters);
                     if (emptyParams == 0)
                         verifiedTriggerElements.Add(element);
                 }
@@ -2011,7 +2009,7 @@ end
                     if (!element.isEnabled)
                         continue;
 
-                    int emptyParams = controllerTrigger.VerifyParameters(element.function.parameters);
+                    int emptyParams = ControllerTrigger.VerifyParameters(element.function.parameters);
                     if (emptyParams == 0)
                         verifiedTriggerElements.Add(element);
                 }
@@ -2041,7 +2039,7 @@ end
         {
             StringBuilder script = new StringBuilder();
 
-            int invalidParams = controllerTrigger.VerifyParameters(f.parameters);
+            int invalidParams = ControllerTrigger.VerifyParameters(f.parameters);
             if (invalidParams > 0)
                 return "";
 
@@ -2307,8 +2305,7 @@ end
             else if (parameter is VariableRef)
             {
                 VariableRef v = (VariableRef)parameter;
-                ControllerVariable controller = new ControllerVariable();
-                Variable variable = controller.GetByReference(v);
+                Variable variable = ControllerVariable.GetByReference(v);
 
                 bool isVarAsString_Real = returnType == "VarAsString_Real";
                 if (isVarAsString_Real)
@@ -2329,9 +2326,8 @@ end
             else if (parameter is TriggerRef)
             {
                 TriggerRef t = (TriggerRef)parameter;
-                ControllerTrigger controller = new ControllerTrigger();
-                Trigger trigger = controller.GetById(t.TriggerId);
-                string name = controller.GetTriggerName(trigger.Id);
+                Trigger trigger = ControllerTrigger.GetById(t.TriggerId);
+                string name = ControllerTrigger.GetTriggerName(trigger.Id);
 
                 output += "gg_trg_" + Ascii.ReplaceNonASCII(name.Replace(" ", "_"), true);
             }

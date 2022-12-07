@@ -45,16 +45,15 @@ namespace Tests
             project = controllerProject.LoadProject(projectPath);
             controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            ControllerVariable controllerVariable = new ControllerVariable();
-            string fullPath = controllerVariable.CreateVariable();
+            string fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
             element1 = ContainerProject.lastCreated as ExplorerElementVariable;
 
-            fullPath = controllerVariable.CreateVariable();
+            fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
             element2 = ContainerProject.lastCreated as ExplorerElementVariable;
 
-            fullPath = controllerVariable.CreateVariable();
+            fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
             element3 = ContainerProject.lastCreated as ExplorerElementVariable;
         }
@@ -70,7 +69,7 @@ namespace Tests
         {
             ControllerProject controllerProject = new ControllerProject();
             ControllerVariable controllerVariable = new ControllerVariable();
-            string fullPath = controllerVariable.CreateVariable();
+            string fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
             var element = ContainerProject.lastCreated as ExplorerElementVariable;
 
@@ -109,9 +108,8 @@ namespace Tests
         public void CloneLocalVariable()
         {
             var trig = new Trigger();
-            ControllerVariable controller = new ControllerVariable();
             LocalVariable variable = new LocalVariable();
-            controller.CreateLocalVariable(trig, variable, trig.LocalVariables, 0);
+            ControllerVariable.CreateLocalVariable(trig, variable, trig.LocalVariables, 0);
 
             Assert.AreEqual("UntitledVariable", variable.variable.Name);
             Assert.AreEqual(true, variable.variable._isLocal);

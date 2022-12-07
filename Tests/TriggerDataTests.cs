@@ -57,8 +57,7 @@ namespace Tests
             project = controllerProject.LoadProject(projectPath);
             controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            ControllerVariable controllerVariable = new ControllerVariable();
-            string fullPath = controllerVariable.CreateVariable();
+            string fullPath = ControllerVariable.Create();
             variablePath = fullPath;
             controllerProject.OnCreateElement(fullPath); // Force OnCreate 'event'.
             variable = ContainerProject.lastCreated as ExplorerElementVariable;
@@ -73,8 +72,7 @@ namespace Tests
         [TestMethod]
         public void GetValueName()
         {
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
-            string valueName = controllerTrigger.GetValueName(null, "placeholder");
+            string valueName = ControllerTrigger.GetValueName(null, "placeholder");
 
             Assert.IsNotNull(valueName);
         }

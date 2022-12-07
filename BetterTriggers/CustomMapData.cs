@@ -93,11 +93,10 @@ namespace BetterTriggers
         public static List<ExplorerElementTrigger> RemoveInvalidReferences()
         {
             List<ExplorerElementTrigger> modified = new List<ExplorerElementTrigger>();
-            ControllerTrigger controller = new ControllerTrigger();
             var triggers = Triggers.GetAll();
             for (int i = 0; i < triggers.Count; i++)
             {
-                bool wasRemoved = controller.RemoveInvalidReferences(triggers[i]);
+                bool wasRemoved = ControllerTrigger.RemoveInvalidReferences(triggers[i]);
                 if (wasRemoved)
                     modified.Add(triggers[i]);
 

@@ -37,10 +37,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            ControllerVariable controllerVar = new ControllerVariable();
-
             paramCollection[paramIndex] = paramToAdd;
-
             References.UpdateReferences(explorerElement);
 
             // Special case
@@ -53,8 +50,8 @@ namespace BetterTriggers.Commands
                 {
                     var setVarParamRef = setVarParam as VariableRef;
                     var setVarParamRefOld = oldParameter as VariableRef;
-                    var newVar = controllerVar.GetByReference(setVarParamRef);
-                    var oldVar = controllerVar.GetByReference(setVarParamRefOld);
+                    var newVar = ControllerVariable.GetByReference(setVarParamRef);
+                    var oldVar = ControllerVariable.GetByReference(setVarParamRefOld);
                     if(!Types.AreTypesEqual(newVar.Type, oldVar.Type))
                     {
                         setVarValueOld = value;

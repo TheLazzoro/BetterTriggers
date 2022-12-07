@@ -44,9 +44,7 @@ namespace GUI
 
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            ControllerMapData controllerMapData = new ControllerMapData();
-            modifiedTriggers = controllerMapData.ReloadMapData();
-
+            modifiedTriggers = ControllerMapData.ReloadMapData();
             (sender as BackgroundWorker).ReportProgress(100);
         }
     }

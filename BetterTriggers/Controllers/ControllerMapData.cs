@@ -16,77 +16,77 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerMapData
     {
-        public List<AbilityType> GetAbilitiesAll()
+        public static List<AbilityType> GetAbilitiesAll()
         {
             return AbilityTypes.GetAll();
         }
 
-        public List<BuffType> GetBuffsAll()
+        public static List<BuffType> GetBuffsAll()
         {
             return BuffTypes.GetAll();
         }
 
-        public List<UnitType> GetUnitTypesAll()
+        public static List<UnitType> GetUnitTypesAll()
         {
             return UnitTypes.GetAll();
         }
 
-        public List<UpgradeType> GetUpgradeTypesAll()
+        public static List<UpgradeType> GetUpgradeTypesAll()
         {
             return UpgradeTypes.GetAll();
         }
 
-        public List<DestructibleType> GetDestTypesAll()
+        public static List<DestructibleType> GetDestTypesAll()
         {
             return DestructibleTypes.GetAll();
         }
 
-        public List<DoodadType> GetDoodadTypesAll()
+        public static List<DoodadType> GetDoodadTypesAll()
         {
             return DoodadTypes.GetAll();
         }
 
-        public List<ItemType> GetItemTypesAll()
+        public static List<ItemType> GetItemTypesAll()
         {
             return ItemTypes.GetAll();
         }
 
-        public List<UnitData> GetMapUnits()
+        public static List<UnitData> GetMapUnits()
         {
             return Units.GetAll();
         }
 
-        public List<UnitData> GetMapItems()
+        public static List<UnitData> GetMapItems()
         {
             return Units.GetMapItemsAll();
         }
 
-        public List<DoodadData> GetMapDests()
+        public static List<DoodadData> GetMapDests()
         {
             return Destructibles.GetAll();
         }
 
-        public List<Region> GetMapRegions()
+        public static List<Region> GetMapRegions()
         {
             return Regions.GetAll();
         }
 
-        public List<Camera> GetMapCameras()
+        public static List<Camera> GetMapCameras()
         {
             return Cameras.GetAll();
         }
 
-        public List<Sound> GetMapSounds()
+        public static List<Sound> GetMapSounds()
         {
             return Sounds.GetSoundsAll();
         }
 
-        public List<Sound> GetMapMusic()
+        public static List<Sound> GetMapMusic()
         {
             return Sounds.GetMusicAll();
         }
 
-        public List<AssetModel> GetModelData()
+        public static List<AssetModel> GetModelData()
         {
             return ModelData.GetModelsAll();
         }
@@ -97,7 +97,7 @@ namespace BetterTriggers.Controllers
         /// </summary>
         /// <param name="value">Reference to map data.</param>
         /// <returns></returns>
-        internal bool ReferencedDataExists(Value value, string returnType)
+        internal static bool ReferencedDataExists(Value value, string returnType)
         {
             if (returnType == "unitcode")
             {
@@ -241,7 +241,7 @@ namespace BetterTriggers.Controllers
             return false;
         }
 
-        public List<ExplorerElementTrigger> ReloadMapData()
+        public static List<ExplorerElementTrigger> ReloadMapData()
         {
             Commands.CommandManager.Reset();
             CustomMapData.Load();

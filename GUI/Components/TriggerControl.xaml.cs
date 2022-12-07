@@ -179,8 +179,7 @@ namespace GUI.Components
             {
                 insertIndex = categoryLocalVariable.GetTriggerElements().Count;
                 LocalVariable localVariable = new LocalVariable(explorerElementTrigger.trigger); // TODO: This is probably not supposed to be here.
-                ControllerVariable controller = new ControllerVariable();
-                controller.CreateLocalVariable(explorerElementTrigger.trigger, localVariable, categoryLocalVariable.GetTriggerElements(), insertIndex);
+                ControllerVariable.CreateLocalVariable(explorerElementTrigger.trigger, localVariable, categoryLocalVariable.GetTriggerElements(), insertIndex);
                 TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(localVariable);
                 this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
 
@@ -511,8 +510,7 @@ namespace GUI.Components
                 var localVar = v as LocalVariable;
                 if (localVar != null)
                 {
-                    ControllerReferences controllerRef = new ControllerReferences();
-                    List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(localVar.variable);
+                    List<ExplorerElementTrigger> refs = ControllerReferences.GetReferrers(localVar.variable);
                     if (refs.Count > 0)
                         inUse.Add(localVar);
                 }
@@ -525,8 +523,7 @@ namespace GUI.Components
                 if (!window.OK)
                     return;
 
-                ControllerVariable controller = new ControllerVariable();
-                inUse.ForEach(v => controller.RemoveLocalVariable(v));
+                inUse.ForEach(v => ControllerVariable.RemoveLocalVariable(v));
             }
 
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
@@ -539,13 +536,12 @@ namespace GUI.Components
             if (selected == null)
                 return;
 
-            ControllerTrigger controller = new ControllerTrigger();
             List<TriggerElement> triggerElements = new List<TriggerElement>();
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 triggerElements.Add(selectedItems[i].triggerElement);
             }
-            controller.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
+            ControllerTrigger.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
 
             ContainerCopiedElementsGUI.copiedElementParent = (INode)selected.Parent;
         }
@@ -572,8 +568,7 @@ namespace GUI.Components
             if (attachTarget.GetType() != ContainerCopiedElementsGUI.copiedElementParent.GetType()) // reject if TriggerElement types don't match. 
                 return;
 
-            ControllerTrigger controller = new ControllerTrigger();
-            var pasted = controller.PasteTriggerElements(explorerElementTrigger, attachTarget.GetTriggerElements(), insertIndex);
+            var pasted = ControllerTrigger.PasteTriggerElements(explorerElementTrigger, attachTarget.GetTriggerElements(), insertIndex);
 
             for (int i = 0; i < pasted.Count; i++)
             {

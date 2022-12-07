@@ -208,8 +208,6 @@ namespace BetterTriggers.Controllers
         /// </summary>
         public War3Project LoadProject(string filepath)
         {
-            ControllerRecentFiles controllerRecentFiles = new ControllerRecentFiles();
-
             if (!File.Exists(filepath))
                 throw new Exception($"File '{filepath}' does not exist.");
 
@@ -266,7 +264,7 @@ namespace BetterTriggers.Controllers
             CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
 
             References.UpdateReferencesAll();
-            controllerRecentFiles.AddProjectToRecent(filepath);
+            ControllerRecentFiles.AddProjectToRecent(filepath);
 
             return project;
         }
@@ -802,8 +800,7 @@ namespace BetterTriggers.Controllers
             }
 
             ContainerProject.insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
-            ControllerFileSystem controller = new ControllerFileSystem();
-            controller.RenameElement(oldPath, formattedName);
+            ControllerFileSystem.Rename(oldPath, formattedName);
         }
 
         public IExplorerElement GetCopiedElement()
@@ -865,11 +862,10 @@ namespace BetterTriggers.Controllers
         {
             if (explorerElement is ExplorerElementTrigger)
             {
-                ControllerTrigger controllerTrigger = new ControllerTrigger();
                 var element = (ExplorerElementTrigger)explorerElement;
 
                 string folder = Path.GetDirectoryName(element.GetPath());
-                string name = controllerTrigger.GenerateTriggerName();
+                string name = ControllerTrigger.GenerateTriggerName();
 
                 element.trigger.Id = Triggers.GenerateId();
                 element.SetPath(Path.Combine(folder, name));
@@ -896,11 +892,10 @@ namespace BetterTriggers.Controllers
             }
             else if (explorerElement is ExplorerElementVariable)
             {
-                ControllerVariable controllerVariable = new ControllerVariable();
                 var element = (ExplorerElementVariable)explorerElement;
 
                 string folder = Path.GetDirectoryName(element.GetPath());
-                string name = controllerVariable.GenerateName();
+                string name = ControllerVariable.GenerateName();
 
                 element.variable.Id = Variables.GenerateId();
                 element.SetPath(Path.Combine(folder, name));

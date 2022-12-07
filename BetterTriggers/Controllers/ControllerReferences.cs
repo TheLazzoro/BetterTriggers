@@ -10,7 +10,7 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerReferences
     {
-        public List<ExplorerElementTrigger> GetReferrers(IReferable element) {
+        public static List<ExplorerElementTrigger> GetReferrers(IReferable element) {
             return References.GetReferreres(element);
         }
     }

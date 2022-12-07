@@ -37,9 +37,8 @@ namespace GUI
 
             List<ListItemVariable> list = new List<ListItemVariable>();
             List<Searchable> objects = new List<Searchable>();
-            ControllerVariable controller = new ControllerVariable();
             
-            var variables = controller.GetVariablesAll();
+            var variables = ControllerVariable.GetVariablesAll();
             variables.ForEach(v =>
             {
                 var item = new ListItemVariable { Content = v.Name, variable = v };

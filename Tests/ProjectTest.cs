@@ -86,8 +86,7 @@ namespace Tests
         public void OnRenameElement()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
-            string fullPath = controllerTrigger.CreateTrigger();
+            string fullPath = ControllerTrigger.Create();
             controllerProject.OnCreateElement(fullPath);
             var element = Triggers.GetLastCreated();
 

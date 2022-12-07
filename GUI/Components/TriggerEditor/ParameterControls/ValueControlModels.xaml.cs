@@ -21,10 +21,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var controller = new ControllerMapData();
-            var models = controller.GetModelData();
+            var models = ControllerMapData.GetModelData();
             List<Searchable> objects = new List<Searchable>();
-
             for (int i = 0; i < models.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();

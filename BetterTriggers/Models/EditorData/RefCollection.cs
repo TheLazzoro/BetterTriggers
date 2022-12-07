@@ -40,8 +40,7 @@ namespace BetterTriggers.Models.EditorData
         private void CreateVarRefs(Variable variable, string newType = null)
         {
             this.triggersToUpdate = References.GetReferreres(variable);
-            ControllerTrigger controllerProject = new ControllerTrigger();
-            var functions = controllerProject.GetFunctionsAll();
+            var functions = ControllerTrigger.GetFunctionsAll();
             functions.ForEach(f =>
             {
                 f.parameters.ForEach(p =>
@@ -61,8 +60,7 @@ namespace BetterTriggers.Models.EditorData
         private void CreateTrigRefs(Trigger trigger)
         {
             this.triggersToUpdate = References.GetReferreres(trigger);
-            ControllerTrigger controllerProject = new ControllerTrigger();
-            var functions = controllerProject.GetFunctionsAll();
+            var functions = ControllerTrigger.GetFunctionsAll();
             functions.ForEach(f =>
             {
                 f.parameters.ForEach(p =>

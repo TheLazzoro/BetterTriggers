@@ -18,7 +18,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// </summary>
         /// <returns>Full path.</returns>
-        public string CreateVariable()
+        public static string Create()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))
@@ -42,7 +42,7 @@ namespace BetterTriggers.Controllers
             return fullPath;
         }
 
-        public string GenerateName()
+        public static string GenerateName()
         {
             string name = "UntitledVariable";
 
@@ -62,7 +62,7 @@ namespace BetterTriggers.Controllers
             return name;
         }
 
-        public void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
+        public static void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
         {
             localVariable.variable.Name = Variables.GenerateLocalName(trig);
             localVariable.variable.Id = Variables.GenerateId();
@@ -74,7 +74,7 @@ namespace BetterTriggers.Controllers
             command.Execute();
         }
 
-        public void RenameLocalVariable(Trigger trig, LocalVariable variable, string newName)
+        public static void RenameLocalVariable(Trigger trig, LocalVariable variable, string newName)
         {
             if (newName == variable.variable.Name)
                 return;
@@ -89,12 +89,12 @@ namespace BetterTriggers.Controllers
             command.Execute();
         }
 
-        public List<Variable> GetVariablesAll()
+        public static List<Variable> GetVariablesAll()
         {
             return Variables.variableContainer.Select(x => x).ToList();
         }
 
-        private List<Variable> GetVariables(string returnType, Trigger trig, bool includeLocals)
+        private static List<Variable> GetVariables(string returnType, Trigger trig, bool includeLocals)
         {
             List<Variable> list = new List<Variable>();
             List<Variable> all = new List<Variable>();
@@ -125,7 +125,7 @@ namespace BetterTriggers.Controllers
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
-        public List<VariableRef> GetVariableRefs(string returnType, Trigger trig, bool includeLocals)
+        public static List<VariableRef> GetVariableRefs(string returnType, Trigger trig, bool includeLocals)
         {
             bool wasIntegervar = false;
             if (returnType == "integervar")
@@ -152,23 +152,22 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public string GetVariableNameById(int id)
+        public static string GetVariableNameById(int id)
         {
             return Variables.GetVariableNameById(id);
         }
 
-
-        public Variable GetById(int id)
+        public static Variable GetById(int id)
         {
             return Variables.GetVariableById(id);
         }
 
-        public Variable GetByReference(VariableRef variableRef)
+        public static Variable GetByReference(VariableRef variableRef)
         {
             return GetById(variableRef.VariableId);
         }
 
-        public void RemoveLocalVariable(LocalVariable localVariable)
+        public static void RemoveLocalVariable(LocalVariable localVariable)
         {
             Variables.RemoveLocalVariable(localVariable);
             // TODO: RemoveVariableRefFromTriggers(localVariable.variable);

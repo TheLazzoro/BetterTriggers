@@ -15,7 +15,7 @@ namespace BetterTriggers.Controllers
     public class ControllerTrigger
     {
         /// <returns>Full file path.</returns>
-        public string CreateTrigger()
+        public static string Create()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))
@@ -40,7 +40,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// Creates a list of saveable trigger refs
         /// </summary>
-        public List<TriggerRef> GetTriggerRefs()
+        public static List<TriggerRef> GetTriggerRefs()
         {
             List<ExplorerElementTrigger> elements = GetTriggersAll();
             List<TriggerRef> list = new List<TriggerRef>();
@@ -58,7 +58,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public string GenerateTriggerName()
+        public static string GenerateTriggerName()
         {
             string name = "Untitled Trigger";
             bool ok = false;
@@ -78,32 +78,32 @@ namespace BetterTriggers.Controllers
             return name + ".trg";
         }
 
-        public string GetTriggerName(int triggerId)
+        public static string GetTriggerName(int triggerId)
         {
             return Triggers.GetName(triggerId);
         }
 
-        public Trigger GetById(int id)
+        public static Trigger GetById(int id)
         {
             return Triggers.FindById(id).trigger;
         }
 
 
 
-        public List<ExplorerElementTrigger> GetTriggersAll()
+        public static List<ExplorerElementTrigger> GetTriggersAll()
         {
             return Triggers.GetAll();
         }
 
         /// <returns>A list of all parameters given to a TriggerElement</returns>
-        public List<Parameter> GetElementParametersAll(TriggerElement te)
+        public static List<Parameter> GetElementParametersAll(TriggerElement te)
         {
             ECA eca = (ECA)te;
             List<Parameter> list = GetElementParametersAll(eca.function.parameters);
             return list;
         }
 
-        private List<Parameter> GetElementParametersAll(List<Parameter> parameters)
+        private static List<Parameter> GetElementParametersAll(List<Parameter> parameters)
         {
             List<Parameter> list = new List<Parameter>();
 
@@ -120,7 +120,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public void CopyTriggerElements(ExplorerElementTrigger copiedFrom, List<TriggerElement> list, bool isCut = false)
+        public static void CopyTriggerElements(ExplorerElementTrigger copiedFrom, List<TriggerElement> list, bool isCut = false)
         {
             List<TriggerElement> copiedItems = new List<TriggerElement>();
             for (int i = 0; i < list.Count; i++)
@@ -148,7 +148,7 @@ namespace BetterTriggers.Controllers
         }
 
         /// <returns>A list of pasted elements.</returns>
-        public List<TriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<TriggerElement> parentList, int insertIndex)
+        public static List<TriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<TriggerElement> parentList, int insertIndex)
         {
             var copied = CopiedElements.CopiedTriggerElements;
             var pasted = new List<TriggerElement>();
@@ -185,7 +185,7 @@ namespace BetterTriggers.Controllers
         }
 
         /// <returns>Whether the trigger had invalid references removed.</returns>
-        public bool RemoveInvalidReferences(ExplorerElementTrigger explorerElement)
+        public static bool RemoveInvalidReferences(ExplorerElementTrigger explorerElement)
         {
             int removeCount = 0;
             removeCount += RemoveInvalidReferences(explorerElement.trigger.Events);
@@ -195,7 +195,7 @@ namespace BetterTriggers.Controllers
             return removeCount > 0;
         }
 
-        private int RemoveInvalidReferences(List<TriggerElement> triggerElements)
+        private static int RemoveInvalidReferences(List<TriggerElement> triggerElements)
         {
             int removeCount = 0;
 
@@ -268,18 +268,16 @@ namespace BetterTriggers.Controllers
             return removeCount;
         }
 
-        private int VerifyParametersAndRemove(List<Parameter> parameters, List<string> returnTypes)
+        private static int VerifyParametersAndRemove(List<Parameter> parameters, List<string> returnTypes)
         {
             int removeCount = 0;
-            ControllerMapData controllerMapData = new ControllerMapData();
 
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
                 if (parameter is VariableRef)
                 {
-                    ControllerVariable controllerVariable = new ControllerVariable();
-                    Variable variable = controllerVariable.GetByReference(parameter as VariableRef);
+                    Variable variable = ControllerVariable.GetByReference(parameter as VariableRef);
                     if (variable == null)
                     {
                         removeCount++;
@@ -288,8 +286,7 @@ namespace BetterTriggers.Controllers
                 }
                 else if (parameter is TriggerRef)
                 {
-                    ControllerTrigger controllerTrig = new ControllerTrigger();
-                    Trigger trigger = controllerTrig.GetByReference(parameter as TriggerRef);
+                    Trigger trigger = GetByReference(parameter as TriggerRef);
                     if (trigger == null)
                     {
                         removeCount++;
@@ -298,7 +295,7 @@ namespace BetterTriggers.Controllers
                 }
                 else if (parameter is Value)
                 {
-                    bool exists = controllerMapData.ReferencedDataExists(parameter as Value, returnTypes[i]);
+                    bool exists = ControllerMapData.ReferencedDataExists(parameter as Value, returnTypes[i]);
                     if (!exists)
                     {
                         removeCount++;
@@ -318,7 +315,7 @@ namespace BetterTriggers.Controllers
             return removeCount;
         }
 
-        public Trigger GetByReference(TriggerRef triggerRef)
+        public static Trigger GetByReference(TriggerRef triggerRef)
         {
             var explorerElement = Triggers.GetByReference(triggerRef);
             if (explorerElement == null)
@@ -331,7 +328,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// Returns amount of invalid parameters.
         /// </summary>
-        public int VerifyParameters(List<Parameter> parameters)
+        public static int VerifyParameters(List<Parameter> parameters)
         {
             int invalidCount = 0;
 
@@ -348,8 +345,7 @@ namespace BetterTriggers.Controllers
                 }
                 else if (parameter is VariableRef varRef)
                 {
-                    ControllerVariable controller = new ControllerVariable();
-                    var variable = controller.GetByReference(varRef);
+                    var variable = ControllerVariable.GetByReference(varRef);
                     if (variable == null)
                         invalidCount++;
                     else
@@ -368,7 +364,7 @@ namespace BetterTriggers.Controllers
             return invalidCount;
         }
 
-        public int VerifyParametersInTrigger(ExplorerElementTrigger explorerTrigger)
+        public static int VerifyParametersInTrigger(ExplorerElementTrigger explorerTrigger)
         {
             List<Parameter> list = GetParametersFromTrigger(explorerTrigger);
             int invalidCount = VerifyParameters(list);
@@ -378,7 +374,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// </summary>
         /// <returns>A list of every function in every trigger. This also includes inner functions in parameters.</returns>
-        public List<Function> GetFunctionsAll()
+        public static List<Function> GetFunctionsAll()
         {
             var triggers = Triggers.GetAll();
             List<Function> functions = new List<Function>();
@@ -387,7 +383,7 @@ namespace BetterTriggers.Controllers
             return functions;
         }
 
-        public List<Function> GetFunctionsFromTrigger(ExplorerElementTrigger explorerElement)
+        public static List<Function> GetFunctionsFromTrigger(ExplorerElementTrigger explorerElement)
         {
             List<Function> list = new List<Function>();
             list.AddRange(GatherFunctions(explorerElement.trigger.Events));
@@ -397,7 +393,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        private List<Function> GatherFunctions(List<TriggerElement> triggerElements)
+        private static List<Function> GatherFunctions(List<TriggerElement> triggerElements)
         {
             List<Function> list = new List<Function>();
             triggerElements.ForEach(t =>
@@ -467,7 +463,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        private List<Function> GetFunctionsFromParameters(Function function)
+        private static List<Function> GetFunctionsFromParameters(Function function)
         {
             List<Function> list = new List<Function>();
             list.Add(function);
@@ -475,9 +471,8 @@ namespace BetterTriggers.Controllers
             {
                 if (p is VariableRef)
                 {
-                    ControllerVariable controller = new ControllerVariable();
                     VariableRef variableRef = p as VariableRef;
-                    Variable variable = controller.GetByReference(variableRef);
+                    Variable variable = ControllerVariable.GetByReference(variableRef);
                     if (variable == null)
                         return;
 
@@ -504,7 +499,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// </summary>
         /// <returns>A list of every parameter in every trigger.</returns>
-        public List<Parameter> GetParametersAll()
+        public static List<Parameter> GetParametersAll()
         {
             var triggers = Triggers.GetAll();
             List<Parameter> parameters = new List<Parameter>();
@@ -530,7 +525,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// </summary>
         /// <returns>A list of every parameter in the given trigger.</returns>
-        public List<Parameter> GetParametersFromTrigger(ExplorerElementTrigger explorerElement)
+        public static List<Parameter> GetParametersFromTrigger(ExplorerElementTrigger explorerElement)
         {
             List<Parameter> list = new List<Parameter>();
             list.AddRange(GatherTriggerParameters(explorerElement.trigger.Events));
@@ -540,15 +535,14 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        private List<Parameter> GatherTriggerParameters(List<TriggerElement> triggerElements)
+        private static List<Parameter> GatherTriggerParameters(List<TriggerElement> triggerElements)
         {
             List<Parameter> parameters = new List<Parameter>();
-            ControllerTrigger controller = new ControllerTrigger();
 
             for (int i = 0; i < triggerElements.Count; i++)
             {
                 var triggerElement = triggerElements[i];
-                parameters.AddRange(controller.GetElementParametersAll(triggerElement));
+                parameters.AddRange(GetElementParametersAll(triggerElement));
 
 
                 if (triggerElement is IfThenElse)
@@ -613,7 +607,7 @@ namespace BetterTriggers.Controllers
             return parameters;
         }
 
-        public string GetValueName(string key, string returnType)
+        public static string GetValueName(string key, string returnType)
         {
             string text = key;
             switch (returnType)
@@ -664,7 +658,7 @@ namespace BetterTriggers.Controllers
             return text;
         }
 
-        public string GetFourCCDisplay(string key, string returnType)
+        public static string GetFourCCDisplay(string key, string returnType)
         {
             string text = string.Empty;
             if (returnType == "unitcode")

@@ -202,8 +202,7 @@ namespace GUI.Components.TriggerExplorer
             TreeItemState state = Ielement.GetEnabled() == true ? TreeItemState.Normal : TreeItemState.Disabled;
             if (Ielement is ExplorerElementTrigger)
             {
-                ControllerTrigger controllerTrigger = new ControllerTrigger();
-                int invalidCount = controllerTrigger.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
+                int invalidCount = ControllerTrigger.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
                 if (state != TreeItemState.Disabled && invalidCount > 0)
                     state = TreeItemState.HasErrorsNoTextColor;
             }

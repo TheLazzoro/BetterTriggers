@@ -15,10 +15,5 @@ namespace BetterTriggers.Controllers
         {
             UnsavedFiles.RemoveFromUnsaved(explorerElement);
         }
-
-        public void ClearUnsaved()
-        {
-            UnsavedFiles.Clear();
-        }
     }
 }

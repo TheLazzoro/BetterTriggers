@@ -19,8 +19,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var controllerMapData = new ControllerMapData();
-
             List<Value> values;
             switch (returnType)
             {
@@ -49,67 +47,67 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     break;
                 case "abilcode":
                 case "heroskillcode":
-                    var abilities = controllerMapData.GetAbilitiesAll();
+                    var abilities = ControllerMapData.GetAbilitiesAll();
                     values = abilities.Select(a => new Value() { value = a.AbilCode }).ToList();
                     this.valueControl = new ValueControlGeneric(values, returnType);
                     break;
                 case "buffcode":
-                    var buffs = controllerMapData.GetBuffsAll();
+                    var buffs = ControllerMapData.GetBuffsAll();
                     values = buffs.Select(b => new Value() { value = b.BuffCode }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "buffcode");
                     break;
                 case "destructablecode":
-                    var destructibles = controllerMapData.GetDestTypesAll();
+                    var destructibles = ControllerMapData.GetDestTypesAll();
                     values = destructibles.Select(d => new Value() { value = d.DestCode }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "destructablecode");
                     break;
                 case "doodadcode":
-                    var doodads = controllerMapData.GetDoodadTypesAll();
+                    var doodads = ControllerMapData.GetDoodadTypesAll();
                     values = doodads.Select(d => new Value() { value = d.DoodCode }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "doodadcode");
                     break;
                 case "techcode":
-                    var upgrades = controllerMapData.GetUpgradeTypesAll();
+                    var upgrades = ControllerMapData.GetUpgradeTypesAll();
                     values = upgrades.Select(up => new Value() { value = up.UpgradeCode }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "techcode");
                     break;
                 case "itemcode":
-                    var itemTypes = controllerMapData.GetItemTypesAll();
+                    var itemTypes = ControllerMapData.GetItemTypesAll();
                     values = itemTypes.Select(i => new Value() { value = i.ItemCode }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "itemcode");
                     break;
                 case "item":
-                    var items = controllerMapData.GetMapItems();
+                    var items = ControllerMapData.GetMapItems();
                     values = items.Select(i => new Value() { value = $"{i.ToString()}_{i.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "item");
                     break;
                 case "unit":
-                    var units = controllerMapData.GetMapUnits();
+                    var units = ControllerMapData.GetMapUnits();
                     values = units.Select(u => new Value() { value = $"{u.ToString()}_{u.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "unit");
                     break;
                 case "destructable":
-                    var mapDestructibles = controllerMapData.GetMapDests();
+                    var mapDestructibles = ControllerMapData.GetMapDests();
                     values = mapDestructibles.Select(dest => new Value() { value = $"{dest.ToString()}_{dest.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "destructable");
                     break;
                 case "rect":
-                    var rects = controllerMapData.GetMapRegions();
+                    var rects = ControllerMapData.GetMapRegions();
                     values = rects.Select(rect => new Value() { value = rect.ToString() }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "rect");
                     break;
                 case "camerasetup":
-                    var cameras = controllerMapData.GetMapCameras();
+                    var cameras = ControllerMapData.GetMapCameras();
                     values = cameras.Select(c => new Value() { value = c.ToString() }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "camerasetup");
                     break;
                 case "sound":
-                    var sound = controllerMapData.GetMapSounds();
+                    var sound = ControllerMapData.GetMapSounds();
                     values = sound.Select(s => new Value() { value = s.Name }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "sound");
                     break;
                 case "musicfile":
-                    var music = controllerMapData.GetMapMusic();
+                    var music = ControllerMapData.GetMapMusic();
                     values = music.Select(m => new Value() { value = m.Name }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "musicfile");
                     break;
@@ -117,8 +115,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     this.valueControl = new ValueControlModels();
                     break;
                 case "trigger":
-                    ControllerTrigger controllerTrigger = new ControllerTrigger();
-                    var triggers = controllerTrigger.GetTriggersAll();
+                    var triggers = ControllerTrigger.GetTriggersAll();
                     values = triggers.Select(trig => new Value() { value = trig.GetId().ToString() }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "trigger");
                     break;

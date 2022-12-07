@@ -60,9 +60,7 @@ namespace GUI.Components
                 grid.Children.Remove(checkBoxIsArray);
             }
 
-            ControllerTriggerData controller = new ControllerTriggerData();
-            List<Types> types = controller.LoadAllVariableTypes();
-
+            List<Types> types = ControllerTriggerData.LoadAllVariableTypes();
             for (int i = 0; i < types.Count; i++)
             {
                 ComboBoxItemType item = new ComboBoxItemType();
@@ -228,9 +226,7 @@ namespace GUI.Components
         private bool ResetVarRefs()
         {
             bool ok = true;
-            ControllerReferences controllerRef = new ControllerReferences();
-            List<ExplorerElementTrigger> refs = controllerRef.GetReferrers(this.variable);
-
+            List<ExplorerElementTrigger> refs = ControllerReferences.GetReferrers(this.variable);
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);

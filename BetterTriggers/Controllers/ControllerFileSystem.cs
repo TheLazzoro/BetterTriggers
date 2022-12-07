@@ -10,12 +10,7 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerFileSystem
     {
-        public void SaveFile(string path, string json)
-        {
-            File.WriteAllText(path, json);
-        }
-
-        public void MoveFile(string elementToMove, string targetDir, int insertIndex)
+        public static void Move(string elementToMove, string targetDir, int insertIndex)
         {
             ContainerProject.insertIndex = insertIndex;
             string directory = targetDir;
@@ -34,7 +29,7 @@ namespace BetterTriggers.Controllers
             }
         }
 
-        public void DeleteElement(string path)
+        public static void Delete(string path)
         {
             if (File.Exists(path))
                 //File.Delete(path);
@@ -49,7 +44,7 @@ namespace BetterTriggers.Controllers
         /// </summary>
         /// <param name="oldPath"></param>
         /// <param name="renamedText"></param>
-        public void RenameElement(string oldPath, string renamedText)
+        public static void Rename(string oldPath, string renamedText)
         {
             string newPath = Path.Combine(Path.GetDirectoryName(oldPath), renamedText);
 
@@ -72,12 +67,12 @@ namespace BetterTriggers.Controllers
         /// </summary>
         /// <param name="oldFullPath"></param>
         /// <param name="newFullPath"></param>
-        public void RenameElementPath(string oldFullPath, string newFullPath)
+        public static void RenameElementPath(string oldFullPath, string newFullPath)
         {
             File.Move(oldFullPath, newFullPath);
         }
 
-        public void OpenInExplorer(string fullPath)
+        public static void OpenInExplorer(string fullPath)
         {
             if (Directory.Exists(Path.GetDirectoryName(fullPath)))
             {

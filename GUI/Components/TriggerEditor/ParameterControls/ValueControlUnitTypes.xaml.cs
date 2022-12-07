@@ -54,8 +54,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var controller = new ControllerMapData();
-            unitData = controller.GetUnitTypesAll();
+            unitData = ControllerMapData.GetUnitTypesAll();
             comboboxRace.SelectedIndex = 0;
 
             this.KeyDown += ValueControlUnitTypes_KeyDown;

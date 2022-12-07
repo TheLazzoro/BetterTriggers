@@ -13,14 +13,13 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerTriggerData
     {
-        public List<Types> LoadAllVariableTypes()
+        public static List<Types> LoadAllVariableTypes()
         {
             return Types.GetGlobalTypes();
         }
 
 
-
-        public List<FunctionTemplate> LoadAllEvents()
+        public static List<FunctionTemplate> LoadAllEvents()
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
             var enumerator = TriggerData.EventTemplates.GetEnumerator();
@@ -32,7 +31,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public List<FunctionTemplate> LoadAllCalls(string returnType)
+        public static List<FunctionTemplate> LoadAllCalls(string returnType)
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
 
@@ -95,7 +94,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public List<ConstantTemplate> LoadAllConstants()
+        public static List<ConstantTemplate> LoadAllConstants()
         {
             List<ConstantTemplate> list = new List<ConstantTemplate>();
             var enumerator = TriggerData.ConstantTemplates.GetEnumerator();
@@ -107,7 +106,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public List<FunctionTemplate> LoadAllConditions()
+        public static List<FunctionTemplate> LoadAllConditions()
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
             var enumerator = TriggerData.ConditionTemplates.GetEnumerator();
@@ -119,7 +118,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public List<FunctionTemplate> LoadAllActions()
+        public static List<FunctionTemplate> LoadAllActions()
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
             var enumerator = TriggerData.ActionTemplates.GetEnumerator();
@@ -131,7 +130,7 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public string GetParamDisplayName(Parameter parameter)
+        public static string GetParamDisplayName(Parameter parameter)
         {
             if (parameter is Value)
                 return parameter.value;
@@ -141,7 +140,7 @@ namespace BetterTriggers.Controllers
             return displayName;
         }
 
-        public string GetParamText(TriggerElement triggerElement)
+        public static string GetParamText(TriggerElement triggerElement)
         {
             string paramText = string.Empty;
             if (triggerElement is ECA)
@@ -159,7 +158,7 @@ namespace BetterTriggers.Controllers
             return paramText;
         }
 
-        public string GetParamText(Function function)
+        public static string GetParamText(Function function)
         {
             string paramText = string.Empty;
             TriggerData.ParamCodeText.TryGetValue(function.value, out paramText);
@@ -180,7 +179,7 @@ namespace BetterTriggers.Controllers
             return paramText;
         }
 
-        public string GetCategoryTriggerElement(TriggerElement triggerElement)
+        public static string GetCategoryTriggerElement(TriggerElement triggerElement)
         {
             string category = string.Empty;
             if (triggerElement is ECA)

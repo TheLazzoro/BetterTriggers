@@ -11,7 +11,7 @@ namespace BetterTriggers.Controllers
         private static List<string> recentFiles = new List<string>();
         private static string pathRecentFiles = System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\" + "recent";
 
-        public List<string> GetRecentFiles()
+        public static List<string> GetRecentFiles()
         {
             if (recentFiles.Count == 0)
             {
@@ -40,7 +40,7 @@ namespace BetterTriggers.Controllers
             return lastTenFiles;
         }
 
-        public void AddProjectToRecent(string projectFilePath)
+        public static void AddProjectToRecent(string projectFilePath)
         {
             if (recentFiles.Contains(projectFilePath))
             {
@@ -51,15 +51,7 @@ namespace BetterTriggers.Controllers
             Save();
         }
 
-        public void RemoveRecentByPath(string filePath)
-        {
-            if (recentFiles.Contains(filePath))
-                recentFiles.Remove(filePath);
-
-            Save();
-        }
-
-        private void Save()
+        private static void Save()
         {
             string saveable = string.Empty;
 

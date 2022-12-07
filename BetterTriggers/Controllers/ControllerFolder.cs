@@ -8,7 +8,7 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// Creates a folder at the destination folder.
         /// </summary>
-        public void CreateFolder()
+        public static void Create()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))

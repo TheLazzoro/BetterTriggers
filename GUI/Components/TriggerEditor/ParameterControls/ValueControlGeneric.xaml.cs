@@ -19,21 +19,18 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            ControllerTrigger controller = new ControllerTrigger();
-
             List<Searchable> objects = new List<Searchable>();
-
             for (int i = 0; i < values.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = $"{controller.GetFourCCDisplay(values[i].value, returnType)}{controller.GetValueName(values[i].value, returnType)}";
+                listItem.Content = $"{ControllerTrigger.GetFourCCDisplay(values[i].value, returnType)}{ControllerTrigger.GetValueName(values[i].value, returnType)}";
                 listItem.Tag = values[i];
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
                     Words = new List<string>()
                     {
-                        controller.GetValueName(values[i].value, returnType).ToLower(),
+                        ControllerTrigger.GetValueName(values[i].value, returnType).ToLower(),
                         values[i].value.ToLower()
                     },
                 });

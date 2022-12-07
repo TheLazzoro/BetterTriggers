@@ -29,11 +29,10 @@ namespace GUI.Components.TriggerEditor
             this.treeItemHeader = new TreeItemHeader();
             this.Header = treeItemHeader;
             this.triggerElement = triggerElement;
-            ControllerTriggerData controller = new ControllerTriggerData();
-            this.category = controller.GetCategoryTriggerElement(triggerElement);
+            this.category = ControllerTriggerData.GetCategoryTriggerElement(triggerElement);
             if (triggerElement is ECA)
             {
-                this.paramText = controller.GetParamText(triggerElement);
+                this.paramText = ControllerTriggerData.GetParamText(triggerElement);
                 this.UpdateTreeItem();
                 ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
                 controllerTriggerControl.CreateSpecialTriggerElement(this);
@@ -88,7 +87,6 @@ namespace GUI.Components.TriggerEditor
         // TODO: Clean up.
         public void UpdateTreeItem()
         {
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
             ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
             string text = string.Empty;
             if (this.triggerElement is ECA)
@@ -103,7 +101,7 @@ namespace GUI.Components.TriggerEditor
                 bool areParametersValid = true;
                 var _triggerElement = (ECA)this.triggerElement;
                 List<Parameter> parameters = _triggerElement.function.parameters;
-                areParametersValid = controllerTrigger.VerifyParameters(parameters) == 0;
+                areParametersValid = ControllerTrigger.VerifyParameters(parameters) == 0;
                 isEnabled = _triggerElement.isEnabled;
                 state = areParametersValid ? TreeItemState.Normal : TreeItemState.HasErrors;
             }
@@ -198,10 +196,9 @@ namespace GUI.Components.TriggerEditor
             {
                 string renameText = this.treeItemHeader.GetRenameText();
                 var localVar = (LocalVariable)triggerElement;
-                ControllerVariable controller = new();
                 try
                 {
-                    controller.RenameLocalVariable(GetTriggerControl().explorerElementTrigger.trigger, localVar, renameText);
+                    ControllerVariable.RenameLocalVariable(GetTriggerControl().explorerElementTrigger.trigger, localVar, renameText);
                     this.treeItemHeader.ShowRenameBox(false);
                     this.treeItemHeader.SetDisplayText(renameText);
                     GetTriggerControl().OnStateChange();

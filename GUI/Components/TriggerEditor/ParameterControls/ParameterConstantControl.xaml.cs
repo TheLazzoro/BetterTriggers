@@ -32,11 +32,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var controllerTriggerData = new ControllerTriggerData();
-            var constants = controllerTriggerData.LoadAllConstants();
+            var constants = ControllerTriggerData.LoadAllConstants();
             List<Searchable> objects = new List<Searchable>();
-
-
             for (int i = 0; i < constants.Count; i++)
             {
                 var constant = constants[i];

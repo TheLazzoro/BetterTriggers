@@ -51,16 +51,15 @@ namespace Tests
             project = controllerProject.LoadProject(projectPath);
             controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
-            string fullPath = controllerTrigger.CreateTrigger();
+            string fullPath = ControllerTrigger.Create();
             controllerProject.OnCreateElement(fullPath); // Force OnCreate 'event'.
             element1 = Triggers.GetLastCreated();
 
-            fullPath = controllerTrigger.CreateTrigger();
+            fullPath = ControllerTrigger.Create();
             controllerProject.OnCreateElement(fullPath);
             element2 = Triggers.GetLastCreated();
 
-            fullPath = controllerTrigger.CreateTrigger();
+            fullPath = ControllerTrigger.Create();
             controllerProject.OnCreateElement(fullPath);
             element3 = Triggers.GetLastCreated();
         }
@@ -77,8 +76,7 @@ namespace Tests
         public void OnCreateTrigger()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
-            string fullPath = controllerTrigger.CreateTrigger();
+            string fullPath = ControllerTrigger.Create();
             controllerProject.OnCreateElement(fullPath);
 
             var element = Triggers.GetLastCreated();
@@ -92,15 +90,14 @@ namespace Tests
         public void OnPasteTrigger()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerTrigger controllerTrigger = new ControllerTrigger();
             controllerProject.CopyExplorerElement(element1);
             var element = controllerProject.PasteExplorerElement(element3);
 
             int expectedTriggerCount = 4;
             int actualTriggerCount = Triggers.Count();
 
-            var expectedParameters = controllerTrigger.GetParametersFromTrigger(element1);
-            var actualParameters = controllerTrigger.GetParametersFromTrigger(element as ExplorerElementTrigger);
+            var expectedParameters = ControllerTrigger.GetParametersFromTrigger(element1);
+            var actualParameters = ControllerTrigger.GetParametersFromTrigger(element as ExplorerElementTrigger);
             int expectedParamCount = expectedParameters.Count;
             int actualParamCount = actualParameters.Count;
 
@@ -113,11 +110,10 @@ namespace Tests
         public void OnPrepareExplorerTrigger()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerVariable controllerVar = new ControllerVariable();
             LocalVariable localVariable = new LocalVariable();
-            controllerVar.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 0);
-            controllerVar.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 1);
-            controllerVar.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 2);
+            ControllerVariable.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 0);
+            ControllerVariable.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 1);
+            ControllerVariable.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 2);
             controllerProject.CopyExplorerElement(element1);
             var pasted = (ExplorerElementTrigger) controllerProject.PasteExplorerElement(element1);
 

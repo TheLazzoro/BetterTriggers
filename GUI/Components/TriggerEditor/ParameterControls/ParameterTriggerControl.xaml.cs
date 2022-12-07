@@ -15,13 +15,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            ControllerTrigger controllerTrig = new ControllerTrigger();
-            List<TriggerRef> triggers = controllerTrig.GetTriggerRefs();
+            List<TriggerRef> triggers = ControllerTrigger.GetTriggerRefs();
             List<Searchable> objects = new List<Searchable>();
-
             for (int i = 0; i < triggers.Count; i++)
             {
-                string triggerName = controllerTrig.GetTriggerName(triggers[i].TriggerId);
+                string triggerName = ControllerTrigger.GetTriggerName(triggers[i].TriggerId);
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = triggerName;
                 listItem.Tag = triggers[i];

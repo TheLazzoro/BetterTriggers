@@ -305,26 +305,22 @@ namespace GUI
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerFolder();
-            controller.CreateFolder();
+            ControllerFolder.Create();
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerTrigger();
-            controller.CreateTrigger();
+            ControllerTrigger.Create();
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerScript();
-            controller.CreateScript();
+            ControllerScript.Create();
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
-            var controller = new ControllerVariable();
-            controller.CreateVariable();
+            ControllerVariable.Create();
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
@@ -422,8 +418,7 @@ namespace GUI
         private void menuRecentFiles_MouseEnter(object sender, MouseEventArgs e)
         {
             menuRecentFiles.Items.Clear();
-            ControllerRecentFiles controllerRecentFiles = new ControllerRecentFiles();
-            List<string> recentFiles = controllerRecentFiles.GetRecentFiles();
+            List<string> recentFiles = ControllerRecentFiles.GetRecentFiles();
 
             for (int i = 0; i < recentFiles.Count; i++)
             {
@@ -688,26 +683,22 @@ namespace GUI
 
         private void CommandBinding_Executed_NewCategory(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerFolder();
-            controller.CreateFolder();
+            ControllerFolder.Create();
         }
 
         private void CommandBinding_Executed_NewTrigger(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerTrigger();
-            controller.CreateTrigger();
+            ControllerTrigger.Create();
         }
 
         private void CommandBinding_Executed_NewScript(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerScript();
-            controller.CreateScript();
+            ControllerScript.Create();
         }
 
         private void CommandBinding_Executed_NewGlobalVariable(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerVariable();
-            controller.CreateVariable();
+            ControllerVariable.Create();
         }
 
         private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)

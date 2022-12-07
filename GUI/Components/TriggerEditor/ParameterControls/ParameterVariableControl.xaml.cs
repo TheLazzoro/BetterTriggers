@@ -24,13 +24,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             else if (returnType == "StringExt")
                 returnType = "string";
 
-            ControllerVariable controllerVariable = new ControllerVariable();
-            List<VariableRef> variables = controllerVariable.GetVariableRefs(returnType, trig, isAction);
+            List<VariableRef> variables = ControllerVariable.GetVariableRefs(returnType, trig, isAction);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < variables.Count; i++)
             {
-                string varName = controllerVariable.GetVariableNameById(variables[i].VariableId);
+                string varName = ControllerVariable.GetVariableNameById(variables[i].VariableId);
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = varName;
                 listItem.Tag = variables[i];
@@ -53,10 +52,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             int i = 0;
             bool found = false;
-            ControllerVariable controllerVariable = new ControllerVariable();
             Variable selected = null;
             if (parameter is VariableRef)
-                selected = controllerVariable.GetByReference(parameter as VariableRef);
+                selected = ControllerVariable.GetByReference(parameter as VariableRef);
 
             if (selected == null)
                 return;
@@ -65,7 +63,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var variableRef = item.Tag as VariableRef;
-                var variable = controllerVariable.GetByReference(variableRef);
+                var variable = ControllerVariable.GetByReference(variableRef);
                 if (variable == selected)
                     found = true;
                 else

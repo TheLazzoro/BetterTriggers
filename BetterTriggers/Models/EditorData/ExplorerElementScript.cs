@@ -24,8 +24,7 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElementScript(string path)
         {
             this.path = path;
-            ControllerScript controller = new ControllerScript();
-            this.script = controller.LoadScriptFromFile(GetPath());
+            this.script = ControllerScript.LoadFromFile(GetPath());
             UpdateMetadata();
             Scripts.AddScript(this);
         }
@@ -73,8 +72,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void Notify()
         {
-            ControllerScript controller = new ControllerScript();
-            this.script = controller.LoadScriptFromFile(GetPath());
+            this.script = ControllerScript.LoadFromFile(GetPath());
             for (int i = 0; i < observers.Count; i++)
             {
                 observers[i].Reload();

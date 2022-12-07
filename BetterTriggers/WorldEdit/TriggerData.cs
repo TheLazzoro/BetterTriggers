@@ -441,11 +441,10 @@ namespace BetterTriggers.WorldEdit
 
             if (f.value == "SetVariable")
             {
-                ControllerVariable controller = new ControllerVariable();
                 VariableRef varRef = f.parameters[0] as VariableRef;
                 if (varRef != null)
                 {
-                    Variable variable = controller.GetByReference(f.parameters[0] as VariableRef);
+                    Variable variable = ControllerVariable.GetByReference(f.parameters[0] as VariableRef);
                     if (variable != null)
                     {
                         list.Add(variable.Type);

@@ -52,12 +52,11 @@ namespace GUI
             bool isAction = function == null ? false : TriggerData.ActionExists(function.value);
             if (function != null && function.value == "SetVariable")
             {
-                ControllerVariable controller = new ControllerVariable();
                 VariableRef variableRef = function.parameters[0] as VariableRef;
                 if (parameter == function.parameters[0])
                     returnType = "AnyGlobal";
                 else if (parameter == function.parameters[1])
-                    returnType = controller.GetById(variableRef.VariableId).Type;
+                    returnType = ControllerVariable.GetById(variableRef.VariableId).Type;
             }
 
             this.functionControl = new ParameterFunctionControl(returnType);

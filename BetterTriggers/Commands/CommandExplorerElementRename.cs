@@ -36,8 +36,7 @@ namespace BetterTriggers.Commands
         {
             ControllerProject controller = new ControllerProject();
             controller.SetEnableFileEvents(false);
-            ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.RenameElementPath(explorerElement.GetPath(), newFullPath);
+            ControllerFileSystem.RenameElementPath(explorerElement.GetPath(), newFullPath);
             controller.SetEnableFileEvents(true);
 
             controller.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
@@ -50,8 +49,7 @@ namespace BetterTriggers.Commands
         {
             ControllerProject controller = new ControllerProject();
             controller.SetEnableFileEvents(false);
-            ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.RenameElementPath(explorerElement.GetPath(), oldFullPath);
+            ControllerFileSystem.RenameElementPath(explorerElement.GetPath(), oldFullPath);
             controller.SetEnableFileEvents(true);
 
             controller.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);

@@ -44,8 +44,7 @@ namespace BetterTriggers.Commands
             ControllerProject controllerProject = new ControllerProject();
             
             controllerProject.SetEnableFileEvents(false);
-            ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
-            controllerFileSystem.DeleteElement(deletedElement.GetPath());
+            ControllerFileSystem.Delete(deletedElement.GetPath());
             controllerProject.SetEnableFileEvents(true);
 
             

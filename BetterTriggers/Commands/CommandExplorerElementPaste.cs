@@ -38,14 +38,13 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
             controllerProject.SetEnableFileEvents(false);
             CreatePastedElements(toPaste, pasteParent);
 
             if (toCut != null)
             {
                 CopiedElements.CutExplorerElement = null;
-                controllerFileSystem.DeleteElement(toCut.GetPath());
+                ControllerFileSystem.Delete(toCut.GetPath());
                 toCut.RemoveFromParent();
                 toCut.Deleted();
             }
@@ -61,13 +60,12 @@ namespace BetterTriggers.Commands
         public void Redo()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
             controllerProject.SetEnableFileEvents(false);
             CreatePastedElements(toPaste, pasteParent);
 
             if (toCut != null)
             {
-                controllerFileSystem.DeleteElement(toCut.GetPath());
+                ControllerFileSystem.Delete(toCut.GetPath());
                 toCut.RemoveFromParent();
                 toCut.Deleted();
             }
@@ -80,9 +78,8 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerFileSystem controllerFileSystem = new ControllerFileSystem();
             controllerProject.SetEnableFileEvents(false);
-            controllerFileSystem.DeleteElement(toPaste.GetPath());
+            ControllerFileSystem.Delete(toPaste.GetPath());
             RemovePastedElements(toPaste);
 
             if (toCut != null)
