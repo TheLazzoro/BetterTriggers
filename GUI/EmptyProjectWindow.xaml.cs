@@ -16,13 +16,11 @@ using War3Net.Build.Info;
 
 namespace GUI
 {
-    /// <summary>
-    /// Interaction logic for NewProjectWindow.xaml
-    /// </summary>
-    public partial class EmptyProjectWindow : Window
+    public partial class EmptyProjectWindow : UserControl, INewProjectControl
     {
-        public bool Ok = false;
-        public string projectFilePath;
+        public string ProjectLocation { get; set; }
+
+        public event Action OnOpenProject;
         
         public EmptyProjectWindow()
         {
@@ -61,10 +59,8 @@ namespace GUI
                 language = ScriptLanguage.Lua;
 
             ControllerProject controller = new ControllerProject();
-            projectFilePath = controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
-
-            this.Ok = true;
-            this.Close();
+            ProjectLocation = controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
+            OnOpenProject?.Invoke();
         }
 
         private void textBoxProjectName_TextChanged(object sender, TextChangedEventArgs e)
@@ -75,7 +71,7 @@ namespace GUI
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
-                this.Close();
+                OnOpenProject?.Invoke();
         }
     }
 }

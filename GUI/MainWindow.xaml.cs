@@ -391,17 +391,14 @@ namespace GUI
 
         private void NewProject()
         {
-            EmptyProjectWindow window = new EmptyProjectWindow();
+            NewProjectWindow window = new ();
             window.WindowStartupLocation = WindowStartupLocation.Manual;
             window.Top = this.Top + this.Height / 2 - window.Height / 2;
             window.Left = this.Left + this.Width / 2 - window.Width / 2;
             window.ShowDialog();
 
-            if (window.Ok)
-            {
-                string projectPath = window.projectFilePath;
-                OpenProject(projectPath);
-            }
+            if (window.doOpen && DoCloseProject())
+                OpenProject(window.projectPath);
         }
 
         private void OpenMap()
@@ -409,7 +406,7 @@ namespace GUI
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.DefaultExt = ".json";
             dialog.Filter = "JSON Files (*.json)|*.json";
-            if (dialog.ShowDialog() == true)
+            if (dialog.ShowDialog() == true && DoCloseProject())
             {
                 OpenProject(dialog.FileName);
             }
@@ -572,6 +569,8 @@ namespace GUI
         {
             ConvertTriggersWindow window = new ConvertTriggersWindow();
             window.ShowDialog();
+            if(window.doOpen && DoCloseProject())
+                OpenProject(window.ProjectLocation);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

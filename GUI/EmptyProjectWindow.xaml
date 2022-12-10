@@ -1,4 +1,4 @@
-﻿<Window x:Class="GUI.EmptyProjectWindow"
+﻿<UserControl x:Class="GUI.EmptyProjectWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="New Project" Height="350" Width="544" Background="#FF303030" ResizeMode="NoResize" KeyDown="Window_KeyDown">
+        Background="#FF303030" KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -45,4 +45,4 @@
         <Button x:Name="btnCreate" IsEnabled="False" Content="Create Project" Grid.Row="7" Grid.Column="1" Width="100" Margin="5,5,5,5" HorizontalAlignment="Right"  Click="btnCreate_Click"/>
 
     </Grid>
-</Window>
+</UserControl>

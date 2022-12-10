@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="New Project" Height="450" Width="800" Background="#FF303030" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="New Project" Height="350" Width="545" Background="#FF303030" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <Style x:Key="FocusVisual">
@@ -59,21 +59,33 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="185*"/>
-            <RowDefinition Height="249*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="11*"/>
-            <ColumnDefinition Width="29*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
 
 
-        <Button x:Name="btnEmptyProject" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"  >
+        <TextBlock Text="Create a new project" Grid.Row="0" Foreground="#eee" FontSize="24" Grid.ColumnSpan="2" Margin="5,5,0,25" />
+        
+        <Label Content="Empty Project" Grid.Row="1" Foreground="#eee" HorizontalAlignment="Center" />
+        <Button x:Name="btnEmptyProject" Background="#444" Width="128" Height="128" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnEmptyProject_Click" >
             <Button.Content>
-                <Image Source="Resources/Orc.png" Stretch="Fill" />
+                <Image Source="Resources/Icons/code_blue.ico" Width="48" />
+            </Button.Content>
+        </Button>
+
+        <Label Content="Copy Triggers From Map" Grid.Row="1" Grid.Column="1" Foreground="#eee" HorizontalAlignment="Center" />
+        <Button x:Name="btnConvert" Background="#444" Width="128" Height="128" Grid.Column="1" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnConvert_Click"  >
+            <Button.Content>
+                <Image Source="Resources/Icons/convert.png" Stretch="Fill" />
             </Button.Content>
         </Button>
 

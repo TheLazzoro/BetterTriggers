@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\Icons\code.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\code_blue.ico</ApplicationIcon>
     <AssemblyName>Better Triggers</AssemblyName>
     <Version>1.1.2</Version>
   </PropertyGroup>
@@ -45,6 +45,8 @@
     <None Remove="Resources\Icons\actions-wait.png" />
     <None Remove="Resources\Icons\close-tab.png" />
     <None Remove="Resources\Icons\code.ico" />
+    <None Remove="Resources\Icons\code_blue.ico" />
+    <None Remove="Resources\Icons\convert.png" />
     <None Remove="Resources\Icons\editor-testmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-exportmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-mapvalidation.png" />
@@ -76,6 +78,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\code.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\code_blue.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\convert.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\editor-testmap.dds">

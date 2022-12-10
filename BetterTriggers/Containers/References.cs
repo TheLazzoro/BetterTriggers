@@ -92,13 +92,15 @@ namespace BetterTriggers.Containers
                 {
                     VariableRef varRef = (VariableRef)p;
                     Variable element = Variables.GetVariableById(varRef.VariableId);
-                    AddReferrer(t, element);
+                    if (element != null)
+                        AddReferrer(t, element);
                 }
                 else if (p is TriggerRef)
                 {
                     TriggerRef tRef = (TriggerRef)p;
                     ExplorerElementTrigger element = Triggers.FindById(tRef.TriggerId);
-                    AddReferrer(t, element.trigger);
+                    if(element != null)
+                        AddReferrer(t, element.trigger);
                 }
             });
         }

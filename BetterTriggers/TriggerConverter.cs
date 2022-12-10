@@ -18,6 +18,7 @@ namespace BetterTriggers.WorldEdit
 {
     public class TriggerConverter
     {
+        private string mapPath;
         private MapTriggers triggers;
         private MapInfo mapInfo;
         private ScriptLanguage language;
@@ -40,6 +41,7 @@ namespace BetterTriggers.WorldEdit
         /// <returns>Project file path.</returns>
         public string Convert(string mapPath, string projectDestinationDir)
         {
+            this.mapPath = mapPath;
             Load(mapPath);
             return Convert(projectDestinationDir);
         }
@@ -106,6 +108,7 @@ namespace BetterTriggers.WorldEdit
             War3Project project = JsonConvert.DeserializeObject<War3Project>(File.ReadAllText(projectPath));
             string src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
 
+            project.War3MapDirectory = mapPath;
             project.Comment = rootComment;
             project.Header = rootHeader;
             triggerPaths.Add(0, src);

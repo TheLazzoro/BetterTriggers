@@ -13,12 +13,13 @@ using GUI.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-
+using System.Windows.Media;
 
 namespace GUI.Components
 {
@@ -44,6 +45,7 @@ namespace GUI.Components
         private ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
         private TreeViewTriggerElement selectedElement;
         private TreeViewTriggerElement selectedElementEnd;
+        private List<TreeViewTriggerElement> selectedElements = new List<TreeViewTriggerElement>();
         private List<TreeViewTriggerElement> selectedItems = new List<TreeViewTriggerElement>();
 
         // attaches to a treeviewitem
@@ -83,7 +85,6 @@ namespace GUI.Components
             treeViewTriggers.Items.Add(categoryLocalVariable);
             treeViewTriggers.Items.Add(categoryAction);
 
-
             LoadTrigger(explorerElementTrigger.trigger);
         }
 
@@ -91,7 +92,7 @@ namespace GUI.Components
         {
             if (treeViewTriggers.SelectedItem is INode)
             {
-                this.selectedItems = controllerTriggerControl.SelectItemsMultiple(null, null);
+                this.selectedItems = SelectItemsMultiple(null, null);
                 return;
             }
 
@@ -103,7 +104,7 @@ namespace GUI.Components
                 selectedElementEnd = (TreeViewTriggerElement)treeViewTriggers.SelectedItem;
             }
 
-            this.selectedItems = controllerTriggerControl.SelectItemsMultiple(selectedElement, selectedElementEnd);
+            this.selectedItems = SelectItemsMultiple(selectedElement, selectedElementEnd);
         }
 
         private void Refresh()
@@ -133,17 +134,16 @@ namespace GUI.Components
 
         private void LoadTrigger(BetterTriggers.Models.SaveableData.Trigger trigger)
         {
-            ControllerTriggerControl controller = new ControllerTriggerControl();
             this.textBoxComment.Text = trigger.Comment;
-            controller.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
-            controller.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
-            controller.RecurseLoadTrigger(trigger.LocalVariables, this.categoryLocalVariable);
-            controller.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
+            ControllerTriggerControl.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
+            ControllerTriggerControl.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
+            ControllerTriggerControl.RecurseLoadTrigger(trigger.LocalVariables, this.categoryLocalVariable);
+            ControllerTriggerControl.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
 
-            this.categoryEvent.ExpandSubtree();
-            this.categoryCondition.ExpandSubtree();
-            this.categoryLocalVariable.ExpandSubtree();
-            this.categoryAction.ExpandSubtree();
+            this.categoryEvent.IsExpanded = true;
+            this.categoryCondition.IsExpanded = true;
+            this.categoryLocalVariable.IsExpanded = true;
+            this.categoryAction.IsExpanded = true;
         }
 
         public UserControl GetControl()
@@ -478,6 +478,60 @@ namespace GUI.Components
             }
 
             return traversedTarget;
+        }
+
+        /// <summary>
+        /// Returns a list of selected elements in the editor.
+        /// Returns only the first selected element if their 'Parents' don't match.
+        /// </summary>
+        /// <param name="startElement"></param>
+        /// <param name="endElement"></param>
+        /// <returns></returns>
+        public List<TreeViewTriggerElement> SelectItemsMultiple(TreeViewTriggerElement startElement, TreeViewTriggerElement endElement)
+        {
+            // visually deselect old items
+            for (int i = 0; i < selectedElements.Count; i++)
+            {
+                selectedElements[i].Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            }
+            if (startElement == null && endElement == null)
+                return null;
+
+            selectedElements = new List<TreeViewTriggerElement>();
+            if (startElement.Parent == endElement.Parent)
+            {
+                var parent = (TreeViewItem)startElement.Parent;
+
+                TreeViewTriggerElement correctedStartElement;
+                TreeViewTriggerElement correctedEndElement;
+                if (parent.Items.IndexOf(startElement) < parent.Items.IndexOf(endElement))
+                {
+                    correctedStartElement = startElement;
+                    correctedEndElement = endElement;
+                }
+                else
+                {
+                    correctedStartElement = endElement;
+                    correctedEndElement = startElement;
+                }
+
+                int startIndex = parent.Items.IndexOf(correctedStartElement);
+                int size = parent.Items.IndexOf(correctedEndElement) - parent.Items.IndexOf(correctedStartElement);
+                for (int i = 0; i <= size; i++)
+                {
+                    selectedElements.Add((TreeViewTriggerElement)parent.Items[startIndex + i]);
+                }
+            }
+            else
+                selectedElements.Add(endElement);
+
+            // visually select elements
+            for (int i = 0; i < selectedElements.Count; i++)
+            {
+                selectedElements[i].Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#aa357EC7");
+            }
+
+            return selectedElements;
         }
 
         private void treeViewTriggers_KeyDown(object sender, KeyEventArgs e)
