@@ -47,7 +47,7 @@
     <None Remove="Resources\WorldEditorData\commonabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\Custom\BlizzardJ_custom.txt" />
     <None Remove="Resources\WorldEditorData\Custom\BlizzardJ_custom_31.txt" />
-    <None Remove="Resources\WorldEditorData\Custom\FunctionDef_BT_33.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\FunctionDef_BT_33.j" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom_31.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom_33.txt" />
@@ -201,7 +201,7 @@
     <Content Include="Resources\WorldEditorData\Custom\BlizzardJ_custom.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33.txt">
+    <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33.j">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom_33.txt">

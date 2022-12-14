@@ -137,6 +137,9 @@ namespace BetterTriggers.Controllers
 
             string displayName;
             TriggerData.ParamDisplayNames.TryGetValue(parameter.value, out displayName);
+            if (displayName == null)
+                displayName = parameter.value;
+
             return displayName;
         }
 

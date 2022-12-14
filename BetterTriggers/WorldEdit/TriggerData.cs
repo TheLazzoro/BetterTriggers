@@ -67,12 +67,19 @@ namespace BetterTriggers.WorldEdit
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/triggerdata.txt");
                 string triggerdata = File.ReadAllText(path);
                 data = IniFileConverter.GetIniData(triggerdata);
+
+                string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
+                ScriptGenerator.PathCommonJ = Path.Combine(baseDir, "common.txt");
+                ScriptGenerator.PathBlizzardJ = Path.Combine(baseDir, "Blizzardj.txt");
             }
             else
             {
                 string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
                 string pathCommonJ = baseDir + "common.j";
                 string pathBlizzardJ = baseDir + "Blizzard.j";
+                ScriptGenerator.PathCommonJ = pathCommonJ;
+                ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
+
                 var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
                 CASCFile commonJ = (CASCFile)units.Entries["common.j"];
                 Casc.SaveFile(commonJ, pathCommonJ);
@@ -191,7 +198,7 @@ namespace BetterTriggers.WorldEdit
                 //LoadCustomBlizzardJ(dataCustom);
 
 
-                customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33.j"));
+                customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33.txt"));
             }
         }
 

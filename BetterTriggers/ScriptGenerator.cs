@@ -43,6 +43,9 @@ namespace BetterTriggers
 
     public class ScriptGenerator
     {
+        public static string PathCommonJ { get; set; }
+        public static string PathBlizzardJ { get; set; }
+
         ScriptLanguage language;
         List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
         List<ExplorerElementScript> scripts = new List<ExplorerElementScript>();
@@ -149,10 +152,13 @@ end
             if (language == ScriptLanguage.Jass)
             {
                 string JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
-                string CommonJ = "\"" + System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/common.j\"";
-                string BlizzardJ = "\"" + System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/Blizzard.j\"";
-                string fileOutput = "\"" + System.IO.Directory.GetCurrentDirectory() + "/Resources/JassHelper/output.j\"";
-                Process p = Process.Start($"{JassHelper}", $"--scriptonly {CommonJ} {BlizzardJ} \"{scriptFileToInput}\" \"{outputPath}\"");
+                Process p = new();
+                ProcessStartInfo startInfo = new();
+                startInfo.CreateNoWindow = true;
+                startInfo.FileName = JassHelper;
+                startInfo.Arguments = $"--scriptonly {PathCommonJ} {PathBlizzardJ} \"{scriptFileToInput}\" \"{outputPath}\"";
+                p.StartInfo = startInfo;
+                p.Start();
                 p.WaitForExit();
                 success = p.ExitCode == 0;
                 p.Kill();

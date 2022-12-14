@@ -28,12 +28,12 @@ namespace BetterTriggers
 
             string translation;
             WE_Strings.TryGetValue(key, out translation);
-            return translation;
-        }
+            if (translation == null)
+                WE_Strings.TryGetValue(key.ToUpper(), out translation);
+            if (translation == null)
+                    translation = key;
 
-        internal static void AddGenericString(string key, string value)
-        {
-            WE_Strings.TryAdd(key, value);
+            return translation;
         }
 
         internal static UnitName GetUnitName(string unitcode)

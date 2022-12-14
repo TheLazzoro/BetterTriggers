@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\JassHelper\Blizzard.j" />
-    <None Remove="Resources\JassHelper\common.j" />
+    <None Remove="Resources\JassHelper\Blizzardj.txt" />
+    <None Remove="Resources\JassHelper\common.txt" />
     <None Remove="TestResources\abilitybuffdata.slk" />
     <None Remove="TestResources\abilitydata.slk" />
     <None Remove="TestResources\abilityskin.txt" />
@@ -355,10 +355,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\JassHelper\Blizzard.j">
+    <Content Include="Resources\JassHelper\Blizzardj.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\JassHelper\common.j">
+    <Content Include="Resources\JassHelper\common.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\abilitybuffdata.slk">
