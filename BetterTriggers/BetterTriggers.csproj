@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -304,8 +304,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
-    <PackageReference Include="War3Net.Build" Version="5.5.6" />
-    <PackageReference Include="War3Net.Build.Core" Version="5.5.6" />
+    <PackageReference Include="War3Net.Build" Version="5.5.7" />
+    <PackageReference Include="War3Net.Build.Core" Version="5.5.7" />
     <PackageReference Include="War3Net.Drawing.Blp" Version="5.5.5" />
     <PackageReference Include="War3Net.IO.Mpq" Version="5.5.5" />
   </ItemGroup>
