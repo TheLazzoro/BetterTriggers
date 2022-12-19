@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace BetterTriggers.Containers
@@ -44,5 +45,23 @@ namespace BetterTriggers.Containers
             folderContainer.Remove(explorerElement);
         }
 
+        internal static string GenerateName(string folder)
+        {
+            string name = folder;
+            bool exists = true;
+            int i = 0;
+            while (exists)
+            {
+                if (Directory.Exists(name))
+                {
+                    name = folder + i;
+                    i++;
+                }
+                else
+                    exists = false;
+            }
+
+            return name;
+        }
     }
 }

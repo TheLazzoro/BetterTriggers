@@ -58,24 +58,24 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public static string GenerateTriggerName()
+        public static string GenerateTriggerName(string name = "Untitled Trigger")
         {
-            string name = "Untitled Trigger";
+            string generatedName = name;
             bool ok = false;
             int i = 0;
             while (!ok)
             {
-                if (!Triggers.Contains(name))
+                if (!Triggers.Contains(generatedName))
                     ok = true;
                 else
                 {
-                    name = "Untitled Trigger " + i;
+                    generatedName = name + i;
                 }
 
                 i++;
             }
 
-            return name + ".trg";
+            return generatedName + ".trg";
         }
 
         public static string GetTriggerName(int triggerId)

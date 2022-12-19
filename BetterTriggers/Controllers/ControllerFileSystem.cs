@@ -18,14 +18,21 @@ namespace BetterTriggers.Controllers
                 directory = Path.GetDirectoryName(targetDir);
 
             if (File.Exists(elementToMove))
-                File.Move(elementToMove, directory + "/" + Path.GetFileName(elementToMove));
+            {
+                string file = Path.Combine(directory, Path.GetFileName(elementToMove));
+                if (File.Exists(file))
+                    throw new Exception($"File '{file}' already exists!");
+                File.Move(elementToMove, file);
+            }
             else if (Directory.Exists(elementToMove))
             {
-                var name = Path.GetFileName(elementToMove);
-                if (elementToMove == directory + "\\" + name)
+                string folder = Path.Combine(directory, Path.GetFileName(elementToMove));
+                if (elementToMove == folder)
                     return;
+                if(Directory.Exists(folder))
+                    throw new Exception($"Directory '{folder}' already exists!");
 
-                Directory.Move(elementToMove, directory + "/" + name);
+                Directory.Move(elementToMove, folder);
             }
         }
 

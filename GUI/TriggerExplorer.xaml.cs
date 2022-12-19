@@ -243,20 +243,13 @@ namespace GUI
 
             if (parentDropTarget == null)
                 return;
-
             if (parentDropTarget == dragItem) // cannot drag into self
                 return;
-
             if (!dragItem.IsKeyboardFocused)
                 return;
 
             parentDropTarget.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-
             var dragItemParent = (TreeItemExplorerElement)dragItem.Parent;
-            dragItemParent.Items.Remove(dragItem); // hack ?
-
-            // We also insert the item here, in case the file only moved in the dir and didn't get moved to another location
-            parentDropTarget.Items.Insert(this.insertIndex, dragItem);
             if (dragItemParent == parentDropTarget)
             {
                 ControllerProject controllerProject = new ControllerProject();
@@ -265,7 +258,15 @@ namespace GUI
             }
 
             var dropTarget = (TreeItemExplorerElement)parentDropTarget;
-            ControllerFileSystem.Move(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
+            try
+            {
+                ControllerFileSystem.Move(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                dialogBox.ShowDialog();
+            }
 
             // focus select item again
             dragItem.IsSelected = true;

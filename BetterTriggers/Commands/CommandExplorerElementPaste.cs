@@ -120,7 +120,9 @@ namespace BetterTriggers.Commands
             }
             else
             {
-                Directory.CreateDirectory(Path.Combine(dir, name));
+                string folder = Folders.GenerateName(Path.Combine(dir, name));
+                toPaste.SetPath(folder);
+                Directory.CreateDirectory(folder);
                 var children = toPaste.GetExplorerElements();
                 for (int i = 0; i < children.Count; i++)
                 {

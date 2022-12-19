@@ -865,8 +865,7 @@ namespace BetterTriggers.Controllers
                 var element = (ExplorerElementTrigger)explorerElement;
 
                 string folder = Path.GetDirectoryName(element.GetPath());
-                string name = ControllerTrigger.GenerateTriggerName();
-
+                string name = ControllerTrigger.GenerateTriggerName(explorerElement.GetName());
                 element.trigger.Id = Triggers.GenerateId();
                 element.SetPath(Path.Combine(folder, name));
 
@@ -895,10 +894,11 @@ namespace BetterTriggers.Controllers
                 var element = (ExplorerElementVariable)explorerElement;
 
                 string folder = Path.GetDirectoryName(element.GetPath());
-                string name = ControllerVariable.GenerateName();
+                string name = ControllerVariable.GenerateName(explorerElement.GetName());
 
                 element.variable.Id = Variables.GenerateId();
                 element.SetPath(Path.Combine(folder, name));
+
             }
             else if (explorerElement is ExplorerElementFolder)
             {
@@ -908,6 +908,8 @@ namespace BetterTriggers.Controllers
                     PrepareExplorerElement(children[i]);
                 }
             }
+
+            AddElementToContainer(explorerElement);
         }
     }
 }

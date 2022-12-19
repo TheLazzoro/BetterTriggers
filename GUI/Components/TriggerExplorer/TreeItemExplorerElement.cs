@@ -44,6 +44,7 @@ namespace GUI.Components.TriggerExplorer
             this.Header = treeItemHeader;
             this.KeyDown += TreeItemExplorerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
+            this.MouseDoubleClick += TreeItemExplorerElement_MouseDoubleClick;
 
             ReloadElement();
             RefreshHeader();
@@ -210,6 +211,13 @@ namespace GUI.Components.TriggerExplorer
             treeItemHeader.SetTextEnabled(state, Ielement.GetInitiallyOn());
             treeItemHeader.SetIcon(categoryName, state);
             treeItemHeader.SetDisplayText(Ielement.GetName());
+        }
+
+        private void TreeItemExplorerElement_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            /// Prevents treeitem from closing/expanding
+            if (Ielement is ExplorerElementRoot)
+                e.Handled = true;
         }
     }
 }

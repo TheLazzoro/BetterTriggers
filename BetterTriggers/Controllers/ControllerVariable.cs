@@ -42,10 +42,8 @@ namespace BetterTriggers.Controllers
             return fullPath;
         }
 
-        public static string GenerateName()
+        public static string GenerateName(string name = "UntitledVariable")
         {
-            string name = "UntitledVariable";
-
             bool ok = false;
             int i = 0;
             while (!ok)
