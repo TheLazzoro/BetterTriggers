@@ -30,7 +30,7 @@ namespace GUI
                 lblInfo.Content = "Loading CASC data...";
             */
 
-            if(!isCascValid)
+            if(e.ProgressPercentage == 0)
             {
                 SetupWindow window = new SetupWindow();
                 window.Show();
@@ -46,13 +46,14 @@ namespace GUI
 
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            isCascValid = Casc.VerifyWc3Storage();
-            (sender as BackgroundWorker).ReportProgress(0);
+            isCascValid = Casc.Load();
             if(isCascValid)
             {
                 BetterTriggers.Init.Initialize();
                 (sender as BackgroundWorker).ReportProgress(100);
             }
+            else
+                (sender as BackgroundWorker).ReportProgress(0);
         }
     }
 }

@@ -16,7 +16,6 @@ namespace GUI.Controllers
     public class ControllerParamText
     {
         List<HyperlinkBT> hyperlinkParameters = new List<HyperlinkBT>();
-        ControllerTrigger controllerTrigger = new ControllerTrigger();
         TreeViewTriggerElement treeItem;
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -121,16 +120,15 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is Value)
                 {
-                    // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
                     var name = ControllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
-                    if (name == null || name == "")
-                    {
-                        parameters[paramIndex] = new Parameter();
-                        name = "null";
-                    }
+                    //if (name == null || name == "")
+                    //{
+                    //    parameters[paramIndex] = new Parameter();
+                    //    name = "null";
+                    //}
                     sb.Append(name);
                 }
                 else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.
@@ -306,16 +304,15 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is Value)
                 {
-                    // TODO: This will crash if a referenced variable is deleted.
                     var value = (Value)parameters[paramIndex];
                     var name = ControllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
-                    if (name == null || name == "")
-                    {
-                        parameters[paramIndex] = new Parameter();
-                        name = "null";
-                    }
+                    //if (name == null || name == "")
+                    //{
+                    //    parameters[paramIndex] = new Parameter();
+                    //    name = "null";
+                    //}
                     inlines.Add(AddHyperlink(parameterFacade, name, parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.

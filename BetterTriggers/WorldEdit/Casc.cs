@@ -19,6 +19,16 @@ namespace BetterTriggers.WorldEdit
         public static CASCHandler GetCasc()
         {
             if (casc == null)
+                Load();
+
+            return casc;
+        }
+
+        /// <returns>Returns true if the CASC location is valid.</returns>
+        public static bool Load()
+        {
+            bool isValid = false;
+            try
             {
                 // settings from BetterTriggers
                 Settings settings = Settings.Load();
@@ -28,48 +38,17 @@ namespace BetterTriggers.WorldEdit
                 GameVersion = new Version(config.VersionName);
 
                 casc = CASCHandler.OpenStorage(config);
-
                 casc.Root.SetFlags(LocaleFlags.All, false, false);
-
-
                 using (var _ = new PerfCounter("LoadListFile()"))
                 {
                     casc.Root.LoadListFile("listfile.csv");
                 }
-            }
-
-            return casc;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>Valid if true</returns>
-        public static bool VerifyWc3Storage()
-        {
-            bool isValid = false;
-            casc = null; // hack. We need to make this entire Casc class more proper.
-            try
-            {
-                Settings settings = Settings.Load();
-
-                CASCConfig.LoadFlags |= LoadFlags.Install;
-                CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(settings.war3root, product);
-                GameVersion = new Version(config.VersionName);
-                
-                var casc = CASCHandler.OpenStorage(config);
-                casc.Root.SetFlags(LocaleFlags.enGB, false, false);
-                using (var _ = new PerfCounter("LoadListFile()"))
-                {
-                    casc.Root.LoadListFile("listfile.csv");
-                }
-
                 isValid = true;
             }
             catch (Exception ex)
             {
             }
-
+            
             return isValid;
         }
 
@@ -111,7 +90,7 @@ namespace BetterTriggers.WorldEdit
             stream.Read(bytesInStream, 0, bytesInStream.Length);
             fileStream.Write(bytesInStream, 0, bytesInStream.Length);
             fileStream.Close();
-        } 
+        }
 
     }
 }

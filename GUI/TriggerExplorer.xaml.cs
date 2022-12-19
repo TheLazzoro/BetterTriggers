@@ -244,6 +244,9 @@ namespace GUI
             if (parentDropTarget == null)
                 return;
 
+            if (parentDropTarget == dragItem) // cannot drag into self
+                return;
+
             if (!dragItem.IsKeyboardFocused)
                 return;
 

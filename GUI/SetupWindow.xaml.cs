@@ -33,7 +33,7 @@ namespace GUI
             settings.war3root = textBoxRoot.Text;
             Settings.Save(settings);
 
-            if(Casc.VerifyWc3Storage())
+            if(Casc.Load())
             {
                 LoadingCascWindow window = new LoadingCascWindow();
                 window.Show();

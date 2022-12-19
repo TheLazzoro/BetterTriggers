@@ -454,6 +454,13 @@ namespace GUI.Components
             TreeViewTriggerElement item = (TreeViewTriggerElement)dragItem;
             INode targetParentGUI = (INode)parentDropTarget;
 
+            /* Fix for jumpy trigger elements.
+             * When creating a new trigger element on double-click
+             * and then holding and dragging after the dialog menu closed,
+             * the element could jump to the last 'parentDropTarget',
+             * which could be an invalid trigger element location. */
+            parentDropTarget = null; 
+
             CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, targetParentGUI.GetTriggerElements(), insertIndex);
             command.Execute();
         }

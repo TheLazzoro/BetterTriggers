@@ -648,6 +648,11 @@ namespace BetterTriggers.Controllers
                 case "doodadcode":
                     text = DoodadTypes.GetName(key);
                     break;
+                case "string":
+                case "StringExt":
+                    if(key == string.Empty)
+                        text = "<Empty String>";
+                    break;
                 default:
                     break;
             }
