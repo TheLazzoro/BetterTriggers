@@ -897,7 +897,7 @@ namespace BetterTriggers.Controllers
                 string name = ControllerVariable.GenerateName(explorerElement.GetName());
 
                 element.variable.Id = Variables.GenerateId();
-                element.SetPath(Path.Combine(folder, name));
+                element.SetPath(Path.Combine(folder, name + ".var"));
 
             }
             else if (explorerElement is ExplorerElementFolder)

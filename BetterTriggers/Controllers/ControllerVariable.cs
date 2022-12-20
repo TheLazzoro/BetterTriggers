@@ -58,7 +58,7 @@ namespace BetterTriggers.Controllers
 
                 i++;
             }
-            return generatedName + ".var";
+            return generatedName;
         }
 
         public static void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
