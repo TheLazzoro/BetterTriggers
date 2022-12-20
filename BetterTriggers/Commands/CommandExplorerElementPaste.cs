@@ -112,6 +112,12 @@ namespace BetterTriggers.Commands
             toPaste.SetPath(finalPath);
             ControllerProject controller = new ControllerProject();
             controller.AddElementToContainer(toPaste);
+            
+            if(toPaste is ExplorerElementScript script)
+            {
+                finalPath = Scripts.GenerateName(script);
+                toPaste.SetPath(finalPath);
+            }
 
             if (toPaste is IExplorerSaveable)
             {

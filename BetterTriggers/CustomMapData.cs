@@ -33,6 +33,9 @@ namespace BetterTriggers
         public static void Init(string _mapPath, bool isTest = false)
         {
             mapPath = _mapPath;
+            if(watcher != null)
+                watcher.Created -= Watcher_Created;
+
             watcher = new System.IO.FileSystemWatcher();
             watcher.Path = Path.GetDirectoryName(mapPath);
             watcher.EnableRaisingEvents = true;

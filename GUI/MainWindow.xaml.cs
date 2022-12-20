@@ -463,6 +463,9 @@ namespace GUI
             {
                 var parent = (Grid)triggerExplorer.Parent;
                 parent.Children.Remove(triggerExplorer);
+                triggerExplorer.treeViewTriggerExplorer.MouseDoubleClick -= TreeViewTriggerExplorer_MouseDoubleClick;
+                triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged -= TreeViewTriggerExplorer_SelectedItemChanged;
+                triggerExplorer.treeViewTriggerExplorer.KeyDown -= TreeViewTriggerExplorer_KeyDown;
                 triggerExplorer.Dispose();
             }
             triggerExplorer = new TriggerExplorer();

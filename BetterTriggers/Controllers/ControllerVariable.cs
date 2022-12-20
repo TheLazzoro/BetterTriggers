@@ -44,20 +44,21 @@ namespace BetterTriggers.Controllers
 
         public static string GenerateName(string name = "UntitledVariable")
         {
+            string generatedName = name;
             bool ok = false;
             int i = 0;
             while (!ok)
             {
-                if (!Variables.Contains(name))
+                if (!Variables.Contains(generatedName))
                     ok = true;
                 else
                 {
-                    name = "UntitledVariable" + i;
+                    generatedName = name + i;
                 }
 
                 i++;
             }
-            return name;
+            return generatedName + ".var";
         }
 
         public static void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)

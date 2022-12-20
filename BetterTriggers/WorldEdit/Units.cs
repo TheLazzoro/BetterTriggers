@@ -48,7 +48,6 @@ namespace BetterTriggers.WorldEdit
             {
                 BinaryReader reader = new BinaryReader(s);
                 var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
-
                 for (int i = 0; i < mapUnits.Units.Count; i++)
                 {
                     if (mapUnits.Units[i].ToString() == "sloc")

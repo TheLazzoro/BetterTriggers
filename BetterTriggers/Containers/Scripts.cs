@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.IO;
 
 namespace BetterTriggers.Containers
 {
@@ -43,6 +44,28 @@ namespace BetterTriggers.Containers
         internal static void Clear()
         {
             scriptContainer.Clear();
+        }
+
+        internal static string GenerateName(ExplorerElementScript script)
+        {
+            string path = script.GetPath();
+            string folder = Path.GetDirectoryName(path);
+            string filename = Path.GetFileNameWithoutExtension(path);
+            string extension = ContainerProject.project.Language == "lua" ? ".lua" : ".j";
+            int i = 0;
+            bool exists = true;
+            while (exists)
+            {
+                if (File.Exists(path))
+                {
+                    path = Path.Combine(folder, filename + i + extension);
+                    i++;
+                }
+                else
+                    exists = false;
+            }
+
+            return path;
         }
     }
 }
