@@ -8,14 +8,13 @@ namespace BetterTriggers.Controllers
         /// <summary>
         /// Creates a folder at the destination folder.
         /// </summary>
-        public static void Create()
+        public static string Create()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
             string name = "Untitled Category";
-
             bool ok = false;
             int i = 0;
             while (!ok)
@@ -30,7 +29,10 @@ namespace BetterTriggers.Controllers
                 i++;
             }
 
-            Directory.CreateDirectory(directory + @"\" + name);
+            string path = Path.Combine(directory, name);
+            Directory.CreateDirectory(path);
+
+            return path;
         }
     }
 }

@@ -45,6 +45,7 @@ namespace BetterTriggers
     {
         public static string PathCommonJ { get; set; }
         public static string PathBlizzardJ { get; set; }
+        public static string JassHelper { get; set; }
 
         ScriptLanguage language;
         List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
@@ -151,7 +152,6 @@ end
 
             if (language == ScriptLanguage.Jass)
             {
-                string JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
                 Process p = new();
                 ProcessStartInfo startInfo = new();
                 startInfo.CreateNoWindow = true;

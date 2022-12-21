@@ -66,6 +66,8 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
+            ControllerProject controller = new();
+            controller.CloseProject();
         }
 
 

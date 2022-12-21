@@ -11,7 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\JassHelper\bin\sfmpq.dll" />
     <None Remove="Resources\JassHelper\Blizzardj.txt" />
+    <None Remove="Resources\JassHelper\clijasshelper.exe" />
     <None Remove="Resources\JassHelper\common.txt" />
     <None Remove="TestResources\abilitybuffdata.slk" />
     <None Remove="TestResources\abilitydata.slk" />
@@ -355,7 +357,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\JassHelper\bin\sfmpq.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\JassHelper\Blizzardj.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\clijasshelper.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\JassHelper\common.txt">

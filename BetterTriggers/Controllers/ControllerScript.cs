@@ -14,14 +14,14 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerScript
     {
-        public static void Create()
+        /// <returns>Full file path.</returns>
+        public static string Create()
         {
             string directory = ContainerProject.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
             string name = "Untitled Script";
-
             bool ok = false;
             int i = 0;
             while (!ok)
@@ -37,8 +37,10 @@ namespace BetterTriggers.Controllers
             }
 
             string extension = ContainerProject.project.Language == "lua" ? ".lua" : ".j";
+            string fullPath = Path.Combine(directory, name + extension);
+            File.WriteAllText(fullPath, "");
 
-            File.WriteAllText(directory + @"\" + name + extension, "");
+            return fullPath;
         }
 
         public static string LoadFromFile(string filePath)

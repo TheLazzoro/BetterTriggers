@@ -71,6 +71,7 @@ namespace BetterTriggers.WorldEdit
                 string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
                 ScriptGenerator.PathCommonJ = Path.Combine(baseDir, "common.txt");
                 ScriptGenerator.PathBlizzardJ = Path.Combine(baseDir, "Blizzardj.txt");
+                ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/clijasshelper.exe";
             }
             else
             {
@@ -79,6 +80,7 @@ namespace BetterTriggers.WorldEdit
                 string pathBlizzardJ = baseDir + "Blizzard.j";
                 ScriptGenerator.PathCommonJ = pathCommonJ;
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
+                ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
 
                 var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
                 CASCFile commonJ = (CASCFile)units.Entries["common.j"];

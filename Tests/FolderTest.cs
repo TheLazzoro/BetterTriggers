@@ -12,7 +12,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class VariableTest
+    public class FolderTest
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -20,14 +20,14 @@ namespace Tests
         static War3Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElementVariable element1, element2, element3;
+        static ExplorerElementFolder element1;
 
 
         [ClassInitialize]
         public static void Init(TestContext context)
         {
             Console.WriteLine("-----------");
-            Console.WriteLine("RUNNING VARIABLE TESTS");
+            Console.WriteLine("RUNNING FOLDER TESTS");
             Console.WriteLine("-----------");
             Console.WriteLine("");
         }
@@ -45,17 +45,16 @@ namespace Tests
             project = controllerProject.LoadProject(projectPath);
             controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = ControllerVariable.Create();
+            string fullPath = ControllerFolder.Create();
             controllerProject.OnCreateElement(fullPath);
-            element1 = ContainerProject.lastCreated as ExplorerElementVariable;
+            element1 = ContainerProject.lastCreated as ExplorerElementFolder;
+            ContainerProject.currentSelectedElement = element1.GetPath();
 
             fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
-            element2 = ContainerProject.lastCreated as ExplorerElementVariable;
 
-            fullPath = ControllerVariable.Create();
+            fullPath = ControllerTrigger.Create();
             controllerProject.OnCreateElement(fullPath);
-            element3 = ContainerProject.lastCreated as ExplorerElementVariable;
         }
 
         [TestCleanup]
@@ -67,13 +66,12 @@ namespace Tests
 
 
         [TestMethod]
-        public void OnCreateVariable()
+        public void OnCreateFolder()
         {
             ControllerProject controllerProject = new ControllerProject();
-            ControllerVariable controllerVariable = new ControllerVariable();
-            string fullPath = ControllerVariable.Create();
+            string fullPath = ControllerFolder.Create();
             controllerProject.OnCreateElement(fullPath);
-            var element = ContainerProject.lastCreated as ExplorerElementVariable;
+            var element = ContainerProject.lastCreated as ExplorerElementFolder;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -82,39 +80,27 @@ namespace Tests
         }
 
         [TestMethod]
-        public void OnPasteVariable()
+        public void OnPasteFolder()
         {
+            var root = ContainerProject.projectFiles[0];
             ControllerProject controllerProject = new ControllerProject();
             controllerProject.CopyExplorerElement(element1);
-            var element = controllerProject.PasteExplorerElement(element3) as ExplorerElementVariable;
+            var element = controllerProject.PasteExplorerElement(root) as ExplorerElementFolder;
 
-            string expectedName = element1.variable.Name + "2";
-            string actualName = element.variable.Name;
-
-            int expectedArray0 = element1.variable.ArraySize[0];
-            int expectedArray1 = element1.variable.ArraySize[1];
-            int actualArray0 = element.variable.ArraySize[0];
-            int actualArray1 = element.variable.ArraySize[0];
-
-            string expectedType = element1.variable.Type;
-            string actualType = element.variable.Type;
+            int expectedElements = element1.explorerElements.Count;
+            int actualElements = element.explorerElements.Count;
 
             Assert.AreEqual(element, ContainerProject.lastCreated);
-            Assert.AreEqual(expectedArray0, actualArray0);
-            Assert.AreEqual(expectedArray1, actualArray1);
-            Assert.AreEqual(expectedType, actualType);
-            Assert.AreEqual(expectedName, actualName);
-        }
+            Assert.AreEqual(expectedElements, actualElements);
+            Assert.AreNotEqual(element.GetName(), element1.GetName());
 
-        [TestMethod]
-        public void CloneLocalVariable()
-        {
-            var trig = new Trigger();
-            LocalVariable variable = new LocalVariable();
-            ControllerVariable.CreateLocalVariable(trig, variable, trig.LocalVariables, 0);
-
-            Assert.AreEqual("UntitledVariable", variable.variable.Name);
-            Assert.AreEqual(true, variable.variable._isLocal);
+            element.explorerElements.ForEach(el =>
+            {
+                element1.explorerElements.ForEach(toCompare =>
+                {
+                    Assert.AreNotEqual(el.GetName(), toCompare.GetName());
+                });
+            });
         }
     }
 }
