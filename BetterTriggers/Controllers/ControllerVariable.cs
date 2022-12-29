@@ -142,8 +142,8 @@ namespace BetterTriggers.Controllers
                 {
                     VariableId = variables[i].Id,
                 };
-                varRef.arrayIndexValues.Add(new Value());
-                varRef.arrayIndexValues.Add(new Value());
+                varRef.arrayIndexValues.Add(new Value() { value = "0" });
+                varRef.arrayIndexValues.Add(new Value() { value = "0" });
 
                 list.Add(varRef);
             }

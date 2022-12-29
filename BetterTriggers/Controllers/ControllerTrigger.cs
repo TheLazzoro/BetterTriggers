@@ -195,12 +195,15 @@ namespace BetterTriggers.Controllers
             return removeCount > 0;
         }
 
-        private static int RemoveInvalidReferences(List<TriggerElement> triggerElements)
+        public static int RemoveInvalidReferences(List<TriggerElement> triggerElements)
         {
             int removeCount = 0;
 
             for (int i = 0; i < triggerElements.Count; i++)
             {
+                if (triggerElements[i] is LocalVariable)
+                    continue;
+
                 var triggerElement = (ECA)triggerElements[i];
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
                 removeCount += VerifyParametersAndRemove(triggerElement.function.parameters, returnTypes);
