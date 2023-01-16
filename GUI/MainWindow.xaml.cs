@@ -214,16 +214,17 @@ namespace GUI
             ContainerProject.currentSelectedElement = selected.Ielement.GetPath();
         }
 
-        private void TreeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void TriggerExplorer_OnOpenExplorerElement(TreeItemExplorerElement opened)
         {
-            OpenExplorerElement();
-            e.Handled = true; // prevents event from firing up the parent items
-        }
+            selectedExplorerItem = opened;
+            if (selectedExplorerItem == null)
+                return;
 
-        private void TreeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                OpenExplorerElement();
+            triggerExplorer.currentElement = selectedExplorerItem;
+
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            controller.OnSelectTab(selectedExplorerItem, vmd, tabControl);
+            EnableTriggerElementButtons();
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -240,20 +241,6 @@ namespace GUI
             selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
             EnableTriggerElementButtons();
         }
-
-        private void OpenExplorerElement()
-        {
-            selectedExplorerItem = triggerExplorer.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-            if (selectedExplorerItem == null)
-                return;
-
-            triggerExplorer.currentElement = selectedExplorerItem;
-
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectTab(selectedExplorerItem, vmd, tabControl);
-            EnableTriggerElementButtons();
-        }
-
 
         private void EnableTriggerElementButtons()
         {
@@ -391,7 +378,7 @@ namespace GUI
 
         private void NewProject()
         {
-            NewProjectWindow window = new ();
+            NewProjectWindow window = new();
             window.WindowStartupLocation = WindowStartupLocation.Manual;
             window.Top = this.Top + this.Height / 2 - window.Height / 2;
             window.Left = this.Left + this.Width / 2 - window.Width / 2;
@@ -463,26 +450,23 @@ namespace GUI
             {
                 var parent = (Grid)triggerExplorer.Parent;
                 parent.Children.Remove(triggerExplorer);
-                triggerExplorer.treeViewTriggerExplorer.MouseDoubleClick -= TreeViewTriggerExplorer_MouseDoubleClick;
                 triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged -= TreeViewTriggerExplorer_SelectedItemChanged;
-                triggerExplorer.treeViewTriggerExplorer.KeyDown -= TreeViewTriggerExplorer_KeyDown;
+                triggerExplorer.OnOpenExplorerElement -= TriggerExplorer_OnOpenExplorerElement;
                 triggerExplorer.Dispose();
             }
             triggerExplorer = new TriggerExplorer();
             TriggerExplorer.Current = triggerExplorer;
             triggerExplorer.Margin = new Thickness(-1, 1, 4, -1);
             triggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
-            triggerExplorer.Width = Double.NaN;
-            //currentTriggerExplorer.BorderThickness = new Thickness(0, 0, 0, 0);
+            triggerExplorer.Width = double.NaN;
             triggerExplorer.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 32, 32, 32));
             mainGrid.Children.Add(triggerExplorer);
             Grid.SetRow(triggerExplorer, 3);
             Grid.SetRowSpan(triggerExplorer, 4);
             Grid.SetColumn(triggerExplorer, 0);
 
-            triggerExplorer.treeViewTriggerExplorer.MouseDoubleClick += TreeViewTriggerExplorer_MouseDoubleClick; // subscribe to item selection changed event
             triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TreeViewTriggerExplorer_SelectedItemChanged;
-            triggerExplorer.treeViewTriggerExplorer.KeyDown += TreeViewTriggerExplorer_KeyDown;
+            triggerExplorer.OnOpenExplorerElement += TriggerExplorer_OnOpenExplorerElement;
             triggerExplorer.CreateRootItem();
 
             EnableToolbar(true);
@@ -492,6 +476,7 @@ namespace GUI
 
             VerifyTriggerData();
         }
+
 
         private void TestMap()
         {
@@ -572,7 +557,7 @@ namespace GUI
         {
             ConvertTriggersWindow window = new ConvertTriggersWindow();
             window.ShowDialog();
-            if(window.doOpen && DoCloseProject())
+            if (window.doOpen && DoCloseProject())
                 OpenProject(window.ProjectLocation);
         }
 

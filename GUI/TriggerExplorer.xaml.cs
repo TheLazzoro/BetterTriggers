@@ -19,6 +19,8 @@ using GUI.Components;
 using GUI.Components.Shared;
 using GUI.Utility;
 using BetterTriggers.Models.EditorData;
+using System.ComponentModel;
+using System.Threading;
 
 namespace GUI
 {
@@ -28,6 +30,7 @@ namespace GUI
 
         public TreeItemExplorerElement map;
         public TreeItemExplorerElement currentElement;
+        public event Action<TreeItemExplorerElement> OnOpenExplorerElement;
 
         // Drag and drop fields
         Point _startPoint;
@@ -43,12 +46,20 @@ namespace GUI
         TreeItemAdornerLine lineIndicator;
         TreeItemAdornerSquare squareIndicator;
 
+        BackgroundWorker searchWorker;
+
         public TriggerExplorer()
         {
             InitializeComponent();
 
             ContainerProject.OnCreated += ContainerProject_OnElementCreated;
+            searchWorker = new BackgroundWorker();
+            searchWorker.WorkerReportsProgress = true;
+            searchWorker.WorkerSupportsCancellation = true;
+            searchWorker.DoWork += SearchWorker_DoWork;
+            searchWorker.ProgressChanged += SearchWorker_ProgressChanged;
         }
+
 
         public void Dispose()
         {
@@ -294,7 +305,14 @@ namespace GUI
 
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Delete)
+            if (e.Key == Key.Enter)
+            {
+                var selected = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+                if (selected != null)
+                    OnOpenExplorerElement?.Invoke(treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement);
+            }
+
+            else if (e.Key == Key.Delete)
             {
                 TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
                 if (selectedElement == null || selectedElement == map)
@@ -335,7 +353,7 @@ namespace GUI
             }
             else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                OpenSearchField();
+                //OpenSearchField();
             }
         }
 
@@ -505,5 +523,107 @@ namespace GUI
             return treeItem;
         }
 
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                if (searchMenu.Visibility == Visibility.Hidden)
+                {
+                    treeViewSearch.Items.Clear();
+                    searchMenu.Visibility = Visibility.Visible;
+                }
+
+                searchBox.Focus();
+            }
+        }
+
+        private void searchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (searchWorker.IsBusy)
+            {
+                searchWorker.CancelAsync();
+                return;
+            }
+
+            treeViewSearch.Items.Clear();
+            if (string.IsNullOrEmpty(searchBox.Text))
+                return;
+
+            treeItems = GetSubTreeItems(map);
+            searchWord = searchBox.Text.ToLower();
+            searchWorker.RunWorkerAsync();
+        }
+
+        List<TreeItemExplorerElement> treeItems = new();
+        string searchWord;
+        private void SearchWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage < 100)
+            {
+                TreeItemExplorerElement newItem = new TreeItemExplorerElement(e.UserState as IExplorerElement);
+                treeViewSearch.Items.Add(newItem);
+            }
+        }
+        
+        private void SearchWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            treeItems.ForEach(item =>
+            {
+                if (searchWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                if (item.Ielement.GetName().ToLower().Contains(searchWord))
+                {
+                    searchWorker.ReportProgress(0, item.Ielement);
+                    Thread.Sleep(5);
+                }
+            });
+            searchWorker.ReportProgress(100);
+        }
+
+        private List<TreeItemExplorerElement> GetSubTreeItems(TreeItemExplorerElement source)
+        {
+            List<TreeItemExplorerElement> list = new();
+            var items = source.Items.SourceCollection.GetEnumerator();
+            while (items.MoveNext())
+            {
+                var item = (TreeItemExplorerElement)items.Current;
+                list.Add(item);
+                if (item.Items.Count > 0)
+                    list.AddRange(GetSubTreeItems(item)); // recurse
+            }
+
+            return list;
+        }
+
+        private void treeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TreeItemExplorerElement selected = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+            if (selected != null)
+            {
+                OnOpenExplorerElement?.Invoke(selected);
+                e.Handled = true; // prevents event from firing up the parent items
+            }
+        }
+
+        private void treeViewSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TreeItemExplorerElement selected = treeViewSearch.SelectedItem as TreeItemExplorerElement;
+            if (selected != null)
+            {
+                OnOpenExplorerElement?.Invoke(selected);
+                e.Handled = true; // prevents event from firing up the parent items
+            }
+        }
+
+        private void treeViewSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            TreeItemExplorerElement selected = treeViewSearch.SelectedItem as TreeItemExplorerElement;
+            if (selected != null)
+                OnOpenExplorerElement?.Invoke(selected);
+        }
     }
 }
