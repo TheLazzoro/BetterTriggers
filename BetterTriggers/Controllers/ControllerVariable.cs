@@ -90,16 +90,21 @@ namespace BetterTriggers.Controllers
             command.Execute();
         }
 
-        public static List<Variable> GetVariablesAll()
+        public static List<Variable> GetGlobals()
         {
-            return Variables.variableContainer.Select(x => x).ToList();
+            List<Variable> variables = new();
+            Variables.GetGlobals().ToList().ForEach(el =>
+            {
+                variables.Add(el.variable);
+            });
+            return variables;
         }
 
         private static List<Variable> GetVariables(string returnType, Trigger trig, bool includeLocals)
         {
             List<Variable> list = new List<Variable>();
             List<Variable> all = new List<Variable>();
-            all.AddRange(Variables.variableContainer); // globals
+            all.AddRange(GetGlobals()); // globals
             if (includeLocals)
             {
                 trig.LocalVariables.ForEach(e =>
@@ -120,6 +125,7 @@ namespace BetterTriggers.Controllers
 
             return list;
         }
+
 
         /// <summary>
         /// Creates a list of saveable variable refs
@@ -191,7 +197,25 @@ namespace BetterTriggers.Controllers
         public static void RemoveLocalVariable(LocalVariable localVariable)
         {
             Variables.RemoveLocalVariable(localVariable);
-            // TODO: RemoveVariableRefFromTriggers(localVariable.variable);
+        }
+
+        /// <summary>
+        /// Returns true if initial value was removed.
+        /// </summary>
+        internal static bool RemoveInvalidReference(ExplorerElementVariable explorerElementVariable)
+        {
+            Variable variable = explorerElementVariable.variable;
+            if (variable.InitialValue is Value value)
+            {
+                bool dataExists = ControllerMapData.ReferencedDataExists(value, variable.Type);
+                if (!dataExists)
+                {
+                    variable.InitialValue = new Parameter();
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

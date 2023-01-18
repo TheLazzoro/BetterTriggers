@@ -241,14 +241,14 @@ namespace BetterTriggers.Controllers
             return false;
         }
 
-        public static List<ExplorerElementTrigger> ReloadMapData()
+        public static List<IExplorerElement> ReloadMapData()
         {
             Commands.CommandManager.Reset();
             CustomMapData.Load();
-            var changedTriggers = CustomMapData.RemoveInvalidReferences();
-            changedTriggers.ForEach(trig => UnsavedFiles.AddToUnsaved(trig));
+            var changed = CustomMapData.RemoveInvalidReferences();
+            changed.ForEach(trig => UnsavedFiles.AddToUnsaved(trig));
 
-            return changedTriggers;
+            return changed;
         }
     }
 }

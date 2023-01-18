@@ -20,7 +20,7 @@ namespace GUI
     /// </summary>
     public partial class ChangedTriggersWindow : Window
     {
-        public ChangedTriggersWindow(List<ExplorerElementTrigger> explorerElements)
+        public ChangedTriggersWindow(List<IExplorerElement> explorerElements)
         {
             InitializeComponent();
 

@@ -39,15 +39,22 @@ namespace GUI.Components.TriggerEditor
                 this.UpdateTreeItem();
                 CreateSpecialTriggerElement(this);
             }
-            else if(triggerElement is LocalVariable localVar)
+            else if (triggerElement is LocalVariable localVar)
             {
                 this.UpdateTreeItem();
-                localVar.variable.ValuesChanged += delegate { this.UpdateTreeItem(); };
+                localVar.variable.ValuesChanged += delegate
+                {
+                    Application.Current.Dispatcher.Invoke(delegate
+                    {
+                        this.UpdateTreeItem();
+                    });
+                };
             }
 
             this.KeyDown += TreeViewTriggerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
-            this.MouseEnter += new MouseEventHandler(delegate (object sender, MouseEventArgs e) {
+            this.MouseEnter += new MouseEventHandler(delegate (object sender, MouseEventArgs e)
+            {
                 e.Handled = true;
                 OnMouseEnter?.Invoke(this);
             }); // TODO: Memory leak because of static event.
@@ -238,7 +245,7 @@ namespace GUI.Components.TriggerEditor
                 text = controllerTriggerTreeItem.GenerateTreeItemText(this);
             else if (triggerElement is LocalVariable localVar)
                 text = localVar.variable.Name;
-                //text = localVar.variable.Name + $" <{Types.GetDisplayName(localVar.variable.Type)}>"; // TODO: type text also gets into the rename field.
+            //text = localVar.variable.Name + $" <{Types.GetDisplayName(localVar.variable.Type)}>"; // TODO: type text also gets into the rename field.
 
             bool isEnabled = true;
             TreeItemState state = TreeItemState.Normal;

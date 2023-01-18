@@ -191,6 +191,7 @@ namespace BetterTriggers.Controllers
             int removeCount = 0;
             removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Events);
             removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Conditions);
+            removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.LocalVariables);
             removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Actions);
 
             return removeCount > 0;
@@ -202,8 +203,19 @@ namespace BetterTriggers.Controllers
 
             for (int i = 0; i < triggerElements.Count; i++)
             {
-                if (triggerElements[i] is LocalVariable)
+                if (triggerElements[i] is LocalVariable localVar)
+                {
+                    if (localVar.variable.InitialValue is Value value)
+                    {
+                        bool dataExists = ControllerMapData.ReferencedDataExists(value, localVar.variable.Type);
+                        if (!dataExists)
+                        {
+                            localVar.variable.InitialValue = new Parameter();
+                            removeCount += 1;
+                        }
+                    }
                     continue;
+                }
 
                 var triggerElement = (ECA)triggerElements[i];
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
@@ -364,7 +376,7 @@ namespace BetterTriggers.Controllers
                             arrays.Add(varRef.arrayIndexValues[0]);
                         if (variable.IsArray && variable.IsTwoDimensions)
                             arrays.Add(varRef.arrayIndexValues[1]);
-                        
+
                         invalidCount += VerifyParameters(arrays);
                     }
                 }
@@ -552,7 +564,7 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < triggerElements.Count; i++)
             {
                 var triggerElement = triggerElements[i];
-                if(triggerElement is LocalVariable localVar)
+                if (triggerElement is LocalVariable localVar)
                 {
                     parameters.Add(localVar.variable.InitialValue);
                     continue;
@@ -665,7 +677,7 @@ namespace BetterTriggers.Controllers
                     break;
                 case "string":
                 case "StringExt":
-                    if(key == string.Empty)
+                    if (key == string.Empty)
                         text = "<Empty String>";
                     break;
                 default:

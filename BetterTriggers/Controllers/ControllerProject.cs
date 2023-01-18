@@ -455,7 +455,7 @@ namespace BetterTriggers.Controllers
             else if (element is ExplorerElementVariable)
             {
                 var variable = (ExplorerElementVariable)element;
-                Variables.AddVariable(variable.variable);
+                Variables.AddVariable(variable);
             }
 
         }
@@ -483,7 +483,7 @@ namespace BetterTriggers.Controllers
             else if (element is ExplorerElementVariable)
             {
                 var variable = (ExplorerElementVariable)element;
-                Variables.Remove(variable.variable);
+                Variables.Remove(variable);
             }
         }
 

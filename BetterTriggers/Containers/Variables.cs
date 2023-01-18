@@ -4,16 +4,17 @@ using BetterTriggers.Models.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace BetterTriggers.Containers
 {
     public static class Variables
     {
-        public static HashSet<Variable> variableContainer = new HashSet<Variable>();
+        public static HashSet<ExplorerElementVariable> variableContainer = new HashSet<ExplorerElementVariable>();
         public static HashSet<Variable> localVariableContainer = new HashSet<Variable>();
 
-        public static void AddVariable(Variable variable)
+        public static void AddVariable(ExplorerElementVariable variable)
         {
             variableContainer.Add(variable);
         }
@@ -29,7 +30,7 @@ namespace BetterTriggers.Containers
 
             foreach (var item in variableContainer)
             {
-                if (item.Name.ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.variable.Name.ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }
@@ -46,7 +47,7 @@ namespace BetterTriggers.Containers
             bool found = true;
             foreach (var variable in variableContainer)
             {
-                if (variable.Id == id)
+                if (variable.variable.Id == id)
                     found = true;
             }
             foreach (var variable in localVariableContainer)
@@ -72,7 +73,7 @@ namespace BetterTriggers.Containers
                 bool doesIdExist = false;
                 foreach (var variable in variableContainer)
                 {
-                    if (variable.Id == generatedId)
+                    if (variable.variable.Id == generatedId)
                         doesIdExist = true;
                 }
                 foreach (var variable in localVariableContainer)
@@ -120,6 +121,22 @@ namespace BetterTriggers.Containers
             return name;
         }
 
+        internal static List<Variable> GetAll()
+        {
+            List<Variable> list = new();
+            variableContainer.ToList().ForEach(el =>
+            {
+                list.Add(el.variable);
+            });
+            list.AddRange(localVariableContainer.ToList());
+            return list;
+        }
+
+        internal static List<ExplorerElementVariable> GetGlobals()
+        {
+            return variableContainer.ToList();
+        }
+
         internal static Variable GetVariableById(int Id, Trigger trig = null)
         {
             Variable var = null;
@@ -128,14 +145,14 @@ namespace BetterTriggers.Containers
             var enumerator = variableContainer.GetEnumerator();
             while (!found && enumerator.MoveNext())
             {
-                if (enumerator.Current.Id == Id)
+                if (enumerator.Current.variable.Id == Id)
                 {
-                    var = enumerator.Current;
+                    var = enumerator.Current.variable;
                     found = true;
                 }
             }
 
-            if(trig == null)
+            if (trig == null)
                 trig = ControllerTrigger.SelectedTrigger;
 
             if (trig != null) // for local variables
@@ -165,18 +182,18 @@ namespace BetterTriggers.Containers
             var enumerator = variableContainer.GetEnumerator();
             while (!found && enumerator.MoveNext())
             {
-                if (enumerator.Current.Id == Id)
+                if (enumerator.Current.variable.Id == Id)
                 {
-                    var = enumerator.Current;
+                    var = enumerator.Current.variable;
                     found = true;
                 }
             }
-            enumerator = localVariableContainer.GetEnumerator();
-            while (!found && enumerator.MoveNext())
+            var enumerator2 = localVariableContainer.GetEnumerator();
+            while (!found && enumerator2.MoveNext())
             {
-                if (enumerator.Current.Id == Id)
+                if (enumerator2.Current.Id == Id)
                 {
-                    var = enumerator.Current;
+                    var = enumerator2.Current;
                     found = true;
                 }
             }
@@ -192,18 +209,18 @@ namespace BetterTriggers.Containers
             var enumerator = variableContainer.GetEnumerator();
             while (!found && enumerator.MoveNext())
             {
-                if (enumerator.Current.Id == Id)
+                if (enumerator.Current.variable.Id == Id)
                 {
-                    name = enumerator.Current.Name;
+                    name = enumerator.Current.variable.Name;
                     found = true;
                 }
             }
-            enumerator = localVariableContainer.GetEnumerator();
-            while (!found && enumerator.MoveNext())
+            var enumerator2 = localVariableContainer.GetEnumerator();
+            while (!found && enumerator2.MoveNext())
             {
-                if (enumerator.Current.Id == Id)
+                if (enumerator2.Current.Id == Id)
                 {
-                    name = enumerator.Current.Name;
+                    name = enumerator2.Current.Name;
                     found = true;
                 }
             }
@@ -211,7 +228,7 @@ namespace BetterTriggers.Containers
             return name;
         }
 
-        internal static void Remove(Variable variable)
+        internal static void Remove(ExplorerElementVariable variable)
         {
             variableContainer.Remove(variable);
         }

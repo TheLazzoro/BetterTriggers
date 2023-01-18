@@ -309,6 +309,22 @@ end
                     }
                 }
             }
+            var all_variables = Variables.GetAll();
+            for (int i = 0; i < all_variables.Count; i++)
+            {
+                var variable = all_variables[i];
+                if (variable.InitialValue is Value)
+                {
+                    Value value = variable.InitialValue as Value;
+                    if (variable.Type == "unit")
+                        generatedVarNames.TryAdd("gg_unit_" + value.value, new Tuple<Parameter, string>(value, variable.Type));
+                    else if (variable.Type == "destructable")
+                        generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, variable.Type));
+                    else if (variable.Type == "item")
+                        generatedVarNames.TryAdd("gg_item_" + value.value, new Tuple<Parameter, string>(value, variable.Type));
+                }
+            }
+
             script.Append(globals + newline);
 
             // Generated map object globals 
@@ -1748,7 +1764,7 @@ end
         {
             if (!t.isEnabled)
                 return "";
-            if(ControllerTrigger.VerifyParameters(t.function.parameters) > 0)
+            if (ControllerTrigger.VerifyParameters(t.function.parameters) > 0)
                 return "";
 
             StringBuilder script = new StringBuilder();

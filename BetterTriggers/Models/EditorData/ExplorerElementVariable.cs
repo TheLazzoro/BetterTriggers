@@ -28,7 +28,7 @@ namespace BetterTriggers.Models.EditorData
             UpdateMetadata();
 
             variable.Name = Path.GetFileNameWithoutExtension(GetPath());
-            Variables.AddVariable(this.variable);
+            Variables.AddVariable(this);
         }
 
         public string GetName()

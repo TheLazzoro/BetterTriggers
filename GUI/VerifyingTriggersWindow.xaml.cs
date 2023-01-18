@@ -9,7 +9,7 @@ namespace GUI
 {
     public partial class VerifyingTriggersWindow : Window
     {
-        List<ExplorerElementTrigger> modifiedTriggers = new List<ExplorerElementTrigger>();
+        List<IExplorerElement> modifiedElements = new List<IExplorerElement>();
 
         public VerifyingTriggersWindow()
         {
@@ -27,13 +27,13 @@ namespace GUI
 
         private void WorkerVerify_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (modifiedTriggers.Count == 0)
+            if (modifiedElements.Count == 0)
             {
                 this.Close();
                 return;
             }
 
-            ChangedTriggersWindow changedTriggersWindow = new ChangedTriggersWindow(modifiedTriggers);
+            ChangedTriggersWindow changedTriggersWindow = new ChangedTriggersWindow(modifiedElements);
             changedTriggersWindow.WindowStartupLocation = WindowStartupLocation.Manual;
             changedTriggersWindow.Top = this.Top + this.Height / 2 - changedTriggersWindow.Height / 2;
             changedTriggersWindow.Left = this.Left + this.Width / 2 - changedTriggersWindow.Width / 2;
@@ -44,7 +44,7 @@ namespace GUI
 
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            modifiedTriggers = ControllerMapData.ReloadMapData();
+            modifiedElements = ControllerMapData.ReloadMapData();
             (sender as BackgroundWorker).ReportProgress(100);
         }
     }

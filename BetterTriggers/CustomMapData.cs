@@ -93,9 +93,9 @@ namespace BetterTriggers
         /// Removes all used map data that no longer exists in the map.
         /// </summary>
         /// <returns>A list of modified triggers.</returns>
-        public static List<ExplorerElementTrigger> RemoveInvalidReferences()
+        public static List<IExplorerElement> RemoveInvalidReferences()
         {
-            List<ExplorerElementTrigger> modified = new List<ExplorerElementTrigger>();
+            List<IExplorerElement> modified = new List<IExplorerElement>();
             var triggers = Triggers.GetAll();
             for (int i = 0; i < triggers.Count; i++)
             {
@@ -104,6 +104,13 @@ namespace BetterTriggers
                     modified.Add(triggers[i]);
 
                 triggers[i].Notify();
+            }
+            var variables = Variables.GetGlobals();
+            for (int i = 0; i < variables.Count; i++)
+            {
+                bool wasRemoved = ControllerVariable.RemoveInvalidReference(variables[i]);
+                if (wasRemoved)
+                    modified.Add(variables[i]);
             }
 
             return modified;
