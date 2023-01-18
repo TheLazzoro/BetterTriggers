@@ -56,6 +56,9 @@ namespace GUI.Controllers
 
         public void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
         {
+            if (selectedItem.Ielement is ExplorerElementTrigger exTrig)
+                ControllerTrigger.SelectedTrigger = exTrig.trigger;
+
             if (selectedItem.editor == null || selectedItem.tabItem == null)
             {
                 if(selectedItem.Ielement is ExplorerElementRoot)

@@ -79,9 +79,11 @@ namespace BetterTriggers.Controllers
             return exists;
         }
 
+        // TODO: Why do we use two paths?
         public void SetWar3MapDir(string mapDir)
         {
             ContainerProject.project.War3MapDirectory = mapDir;
+            CustomMapData.mapPath = mapDir;
         }
 
         public bool GenerateScript()
@@ -312,7 +314,7 @@ namespace BetterTriggers.Controllers
                             explorerElementChild = new ExplorerElementVariable(path);
                             break;
                         default:
-                            break;
+                            continue;
                     }
 
                     explorerElementChild.SetEnabled(entryChild.isEnabled);
@@ -515,7 +517,7 @@ namespace BetterTriggers.Controllers
                     explorerElement = new ExplorerElementVariable(fullPath);
                     break;
                 default:
-                    break;
+                    return;
             }
             AddElementToContainer(explorerElement);
             ContainerProject.lastCreated = explorerElement;

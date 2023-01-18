@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
@@ -24,6 +25,8 @@ namespace GUI.Components.TriggerEditor
         protected string category { get; set; }
         private TriggerControl triggerControl;
 
+        internal static event Action<TreeViewTriggerElement> OnMouseEnter;
+
         public TreeViewTriggerElement(TriggerElement triggerElement)
         {
             this.treeItemHeader = new TreeItemHeader();
@@ -36,11 +39,18 @@ namespace GUI.Components.TriggerEditor
                 this.UpdateTreeItem();
                 CreateSpecialTriggerElement(this);
             }
-            else if(triggerElement is LocalVariable)
+            else if(triggerElement is LocalVariable localVar)
+            {
                 this.UpdateTreeItem();
+                localVar.variable.ValuesChanged += delegate { this.UpdateTreeItem(); };
+            }
 
             this.KeyDown += TreeViewTriggerElement_KeyDown;
             this.treeItemHeader.RenameBox.KeyDown += RenameBox_KeyDown;
+            this.MouseEnter += new MouseEventHandler(delegate (object sender, MouseEventArgs e) {
+                e.Handled = true;
+                OnMouseEnter?.Invoke(this);
+            }); // TODO: Memory leak because of static event.
         }
 
         private static void CreateSpecialTriggerElement(TreeViewTriggerElement treeViewTriggerElement)
@@ -228,6 +238,7 @@ namespace GUI.Components.TriggerEditor
                 text = controllerTriggerTreeItem.GenerateTreeItemText(this);
             else if (triggerElement is LocalVariable localVar)
                 text = localVar.variable.Name;
+                //text = localVar.variable.Name + $" <{Types.GetDisplayName(localVar.variable.Type)}>"; // TODO: type text also gets into the rename field.
 
             bool isEnabled = true;
             TreeItemState state = TreeItemState.Normal;

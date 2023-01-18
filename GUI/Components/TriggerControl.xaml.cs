@@ -86,6 +86,13 @@ namespace GUI.Components
             treeViewTriggers.Items.Add(categoryAction);
 
             LoadTrigger(explorerElementTrigger.trigger);
+
+            TreeViewTriggerElement.OnMouseEnter += TreeViewTriggerElement_OnMouseEnter;
+        }
+
+        internal void Dispose()
+        {
+            TreeViewTriggerElement.OnMouseEnter -= TreeViewTriggerElement_OnMouseEnter;
         }
 
         private void TreeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -105,6 +112,33 @@ namespace GUI.Components
             }
 
             this.selectedItems = SelectItemsMultiple(selectedElement, selectedElementEnd);
+        }
+
+        /// <summary>
+        /// When mouse hovers over trigger element, determine whether top node is an action.
+        /// </summary>
+        private void TreeViewTriggerElement_OnMouseEnter(TreeViewTriggerElement obj)
+        {
+            ControllerVariable.includeLocals = IsAction(obj);
+        }
+
+        private void bottomControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if(treeViewTriggers.SelectedItem is TreeViewTriggerElement treeItem)
+                ControllerVariable.includeLocals = IsAction(treeItem);
+        }
+
+        private bool IsAction(TreeViewItem item)
+        {
+            bool isAction = false;
+            while(!isAction && item != null)
+            {
+                if (item == categoryAction)
+                    isAction = true;
+                else
+                    item = item.Parent as NodeAction;
+            }
+            return isAction;
         }
 
         private void Refresh()
@@ -461,7 +495,7 @@ namespace GUI.Components
              * which could be an invalid trigger element location. */
             parentDropTarget = null; 
 
-            CommandTriggerElementMove command = new CommandTriggerElementMove(item.triggerElement, targetParentGUI.GetTriggerElements(), insertIndex);
+            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElementTrigger.trigger, item.triggerElement, targetParentGUI.GetTriggerElements(), insertIndex);
             command.Execute();
         }
 
@@ -585,6 +619,7 @@ namespace GUI.Components
                     return;
 
                 inUse.ForEach(v => ControllerVariable.RemoveLocalVariable(v));
+                ControllerTrigger.RemoveInvalidReferences(explorerElementTrigger);
             }
 
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);

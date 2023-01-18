@@ -524,12 +524,5 @@ namespace BetterTriggers.WorldEdit
             bool exists = ConstantTemplates.TryGetValue(value, out temp);
             return exists;
         }
-
-        public static bool ActionExists(string value)
-        {
-            FunctionTemplate temp;
-            bool exists = ActionTemplates.TryGetValue(value, out temp);
-            return exists;
-        }
     }
 }

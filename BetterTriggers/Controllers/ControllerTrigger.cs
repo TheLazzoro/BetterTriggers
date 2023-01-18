@@ -14,6 +14,9 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerTrigger
     {
+        public static Trigger SelectedTrigger { get; set; }
+
+
         /// <returns>Full file path.</returns>
         public static string Create()
         {
@@ -87,8 +90,6 @@ namespace BetterTriggers.Controllers
         {
             return Triggers.FindById(id).trigger;
         }
-
-
 
         public static List<ExplorerElementTrigger> GetTriggersAll()
         {
@@ -188,14 +189,14 @@ namespace BetterTriggers.Controllers
         public static bool RemoveInvalidReferences(ExplorerElementTrigger explorerElement)
         {
             int removeCount = 0;
-            removeCount += RemoveInvalidReferences(explorerElement.trigger.Events);
-            removeCount += RemoveInvalidReferences(explorerElement.trigger.Conditions);
-            removeCount += RemoveInvalidReferences(explorerElement.trigger.Actions);
+            removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Events);
+            removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Conditions);
+            removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Actions);
 
             return removeCount > 0;
         }
 
-        public static int RemoveInvalidReferences(List<TriggerElement> triggerElements)
+        public static int RemoveInvalidReferences(Trigger trig, List<TriggerElement> triggerElements)
         {
             int removeCount = 0;
 
@@ -206,72 +207,76 @@ namespace BetterTriggers.Controllers
 
                 var triggerElement = (ECA)triggerElements[i];
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
-                removeCount += VerifyParametersAndRemove(triggerElement.function.parameters, returnTypes);
+                removeCount += VerifyParametersAndRemove(trig, triggerElement.function.parameters, returnTypes);
 
 
                 if (triggerElement is IfThenElse)
                 {
                     var special = (IfThenElse)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.If);
-                    removeCount += RemoveInvalidReferences(special.Then);
-                    removeCount += RemoveInvalidReferences(special.Else);
+                    removeCount += RemoveInvalidReferences(trig, special.If);
+                    removeCount += RemoveInvalidReferences(trig, special.Then);
+                    removeCount += RemoveInvalidReferences(trig, special.Else);
                 }
                 else if (triggerElement is AndMultiple)
                 {
                     var special = (AndMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.And);
+                    removeCount += RemoveInvalidReferences(trig, special.And);
                 }
                 else if (triggerElement is ForForceMultiple)
                 {
                     var special = (ForForceMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
                 else if (triggerElement is ForGroupMultiple)
                 {
                     var special = (ForGroupMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
                 else if (triggerElement is ForLoopAMultiple)
                 {
                     var special = (ForLoopAMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
                 else if (triggerElement is ForLoopBMultiple)
                 {
                     var special = (ForLoopBMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
                 else if (triggerElement is ForLoopVarMultiple)
                 {
                     var special = (ForLoopVarMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
                 else if (triggerElement is OrMultiple)
                 {
                     var special = (OrMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Or);
+                    removeCount += RemoveInvalidReferences(trig, special.Or);
                 }
                 else if (triggerElement is EnumDestructablesInRectAllMultiple)
                 {
                     var special = (EnumDestructablesInRectAllMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
                 else if (triggerElement is EnumDestructiblesInCircleBJMultiple)
                 {
                     var special = (EnumDestructiblesInCircleBJMultiple)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
                 else if (triggerElement is EnumItemsInRectBJ)
                 {
                     var special = (EnumItemsInRectBJ)triggerElement;
-                    removeCount += RemoveInvalidReferences(special.Actions);
+                    removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
             }
 
             return removeCount;
         }
 
-        private static int VerifyParametersAndRemove(List<Parameter> parameters, List<string> returnTypes)
+        /// <param name="trig">Trigger to be verified.</param>
+        /// <param name="parameters"></param>
+        /// <param name="returnTypes"></param>
+        /// <returns></returns>
+        private static int VerifyParametersAndRemove(Trigger trig, List<Parameter> parameters, List<string> returnTypes)
         {
             int removeCount = 0;
 
@@ -280,7 +285,7 @@ namespace BetterTriggers.Controllers
                 var parameter = parameters[i];
                 if (parameter is VariableRef)
                 {
-                    Variable variable = ControllerVariable.GetByReference(parameter as VariableRef);
+                    Variable variable = ControllerVariable.GetByReference(parameter as VariableRef, trig);
                     if (variable == null)
                     {
                         removeCount++;
@@ -311,7 +316,7 @@ namespace BetterTriggers.Controllers
                 {
                     var function = (Function)parameter;
                     List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
-                    removeCount += VerifyParametersAndRemove(function.parameters, _returnTypes);
+                    removeCount += VerifyParametersAndRemove(trig, function.parameters, _returnTypes);
                 }
             }
 
@@ -328,6 +333,7 @@ namespace BetterTriggers.Controllers
             return trig;
         }
 
+        // TODO: This seems incomplete and intended functionality probably exists in another method.
         /// <summary>
         /// Returns amount of invalid parameters.
         /// </summary>
@@ -348,7 +354,7 @@ namespace BetterTriggers.Controllers
                 }
                 else if (parameter is VariableRef varRef)
                 {
-                    var variable = ControllerVariable.GetByReference(varRef);
+                    var variable = ControllerVariable.GetByReference_AllLocals(varRef);
                     if (variable == null)
                         invalidCount++;
                     else
@@ -533,6 +539,7 @@ namespace BetterTriggers.Controllers
             List<Parameter> list = new List<Parameter>();
             list.AddRange(GatherTriggerParameters(explorerElement.trigger.Events));
             list.AddRange(GatherTriggerParameters(explorerElement.trigger.Conditions));
+            list.AddRange(GatherTriggerParameters(explorerElement.trigger.LocalVariables));
             list.AddRange(GatherTriggerParameters(explorerElement.trigger.Actions));
 
             return list;
@@ -545,8 +552,13 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < triggerElements.Count; i++)
             {
                 var triggerElement = triggerElements[i];
-                parameters.AddRange(GetElementParametersAll(triggerElement));
+                if(triggerElement is LocalVariable localVar)
+                {
+                    parameters.Add(localVar.variable.InitialValue);
+                    continue;
+                }
 
+                parameters.AddRange(GetElementParametersAll(triggerElement));
 
                 if (triggerElement is IfThenElse)
                 {

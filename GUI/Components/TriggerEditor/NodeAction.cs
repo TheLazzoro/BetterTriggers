@@ -11,7 +11,8 @@ namespace GUI.Components.TriggerEditor
     public class NodeAction : TreeItemBT, INode
     {
         public List<TriggerElement> TriggerElements = new List<TriggerElement>();
-        
+
+
         public NodeAction(string text)
         {
             TreeItemHeader header = new TreeItemHeader(text, TriggerCategory.TC_ACTION);

@@ -49,7 +49,6 @@ namespace GUI
 
             this.Title = returnType;
 
-            bool isAction = function == null ? false : TriggerData.ActionExists(function.value);
             if (function != null && function.value == "SetVariable")
             {
                 VariableRef variableRef = function.parameters[0] as VariableRef;
@@ -69,7 +68,7 @@ namespace GUI
             Grid.SetRow(constantControl, 1);
             Grid.SetColumnSpan(constantControl, 2);
 
-            this.variableControl = new ParameterVariableControl(returnType, TriggerControl.TriggerInFocus, isAction);
+            this.variableControl = new ParameterVariableControl(returnType, TriggerControl.TriggerInFocus);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);

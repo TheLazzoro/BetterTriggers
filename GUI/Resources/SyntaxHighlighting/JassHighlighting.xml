@@ -93,7 +93,8 @@
             <Word>native</Word>
             <Word>static</Word>
             <Word>create</Word>
-            <Word>allocate</Word>
+			<Word>allocate</Word>
+			<Word>readonly</Word>
         </Keywords>
 
         <!-- TYPES -->

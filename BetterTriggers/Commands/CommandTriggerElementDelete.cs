@@ -17,12 +17,23 @@ namespace BetterTriggers.Commands
         List<TriggerElement> Parent;
         int insertIndex = 0;
 
+        List<RefCollection> refCollections = new List<RefCollection>();
+
         public CommandTriggerElementDelete(ExplorerElementTrigger element, List<TriggerElement> elementsToDelete)
         {
             this.explorerElement = element;
             this.elementsToDelete = elementsToDelete;
             this.Parent = elementsToDelete[0].GetParent();
             this.insertIndex = this.Parent.IndexOf(elementsToDelete[0]);
+
+            elementsToDelete.ForEach(el =>
+            {
+                if(el is LocalVariable localVar)
+                {
+                    RefCollection refCollection = new RefCollection(localVar.variable);
+                    this.refCollections.Add(refCollection);
+                }
+            });
         }
 
         public void Execute()
@@ -33,6 +44,7 @@ namespace BetterTriggers.Commands
                 elementsToDelete[i].Deleted();
             }
 
+            refCollections.ForEach(r => r.RemoveRefsFromParent());
             References.UpdateReferences(explorerElement);
 
             CommandManager.AddCommand(this);
@@ -46,6 +58,7 @@ namespace BetterTriggers.Commands
                 elementsToDelete[i].Deleted();
             }
 
+            refCollections.ForEach(r => r.RemoveRefsFromParent());
             References.UpdateReferences(explorerElement);
         }
 
@@ -57,6 +70,7 @@ namespace BetterTriggers.Commands
                 elementsToDelete[i].Created(insertIndex + i);
             }
 
+            refCollections.ForEach(r => r.AddRefsToParent());
             References.UpdateReferences(explorerElement);
         }
 

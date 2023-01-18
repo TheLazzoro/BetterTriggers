@@ -28,6 +28,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
+            ControllerTrigger.RemoveInvalidReferences(explorerElement.trigger, listToPaste);
             for (int i = 0; i < listToPaste.Count; i++)
             {
                 listToPaste[i].SetParent(parent, pastedIndex + i);

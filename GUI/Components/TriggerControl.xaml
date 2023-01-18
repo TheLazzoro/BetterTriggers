@@ -175,7 +175,7 @@
         </TreeView>
 
         <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#00F0F0F0" Margin="0,0,0,0" />
-        <ScrollViewer x:Name="bottomControl" Grid.Row="3" Grid.RowSpan="2" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer x:Name="bottomControl" Grid.Row="3" Grid.RowSpan="2" VerticalScrollBarVisibility="Auto" MouseEnter="bottomControl_MouseEnter">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

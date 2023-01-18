@@ -1746,7 +1746,9 @@ end
 
         private string ConvertTriggerElementToJass(ECA t, PreActions pre_actions, bool nested)
         {
-            if (!t.isEnabled || ControllerTrigger.VerifyParameters(t.function.parameters) > 0)
+            if (!t.isEnabled)
+                return "";
+            if(ControllerTrigger.VerifyParameters(t.function.parameters) > 0)
                 return "";
 
             StringBuilder script = new StringBuilder();
@@ -1863,6 +1865,7 @@ end
                 string function_name = generate_function_name(triggerName);
 
                 // Remove 'multiple'
+                script.Append(CarryLocals());
                 script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
@@ -1929,6 +1932,7 @@ end
                 string function_name = generate_function_name(triggerName);
 
                 // Remove 'multiple'
+                script.Append(CarryLocals());
                 script.Append($"{call} {f.value.Substring(0, 27)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
@@ -1956,6 +1960,7 @@ end
                 string function_name = generate_function_name(triggerName);
 
                 // Remove 'multiple'
+                script.Append(CarryLocals());
                 script.Append($"{call} {f.value.Substring(0, 17)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
 
                 string pre = string.Empty;
@@ -2311,7 +2316,7 @@ end
             else if (parameter is VariableRef)
             {
                 VariableRef v = (VariableRef)parameter;
-                Variable variable = ControllerVariable.GetByReference(v);
+                Variable variable = ControllerVariable.GetByReference_AllLocals(v);
 
                 bool isVarAsString_Real = returnType == "VarAsString_Real";
                 if (isVarAsString_Real)

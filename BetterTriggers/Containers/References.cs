@@ -91,7 +91,7 @@ namespace BetterTriggers.Containers
                 if (p is VariableRef)
                 {
                     VariableRef varRef = (VariableRef)p;
-                    Variable element = Variables.GetVariableById(varRef.VariableId);
+                    Variable element = Variables.GetVariableById_AllLocals(varRef.VariableId);
                     if (element != null)
                         AddReferrer(t, element);
                 }

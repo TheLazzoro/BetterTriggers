@@ -109,7 +109,7 @@ namespace GUI.Components.Shared
         public void ShowRenameBox(bool doShow)
         {
             isRenaming = doShow;
-            if (doShow)
+            if (doShow && !this.Children.Contains(RenameBox))
             {
                 this.Children.Remove(DisplayText);
                 this.Children.Add(RenameBox);

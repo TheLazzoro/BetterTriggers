@@ -48,7 +48,8 @@ namespace BetterTriggers
             if (instance != null)
                 return instance;
 
-            filePath = Path.Combine(Directory.GetCurrentDirectory(), "settings/settings.json");
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            filePath = Path.Combine(appData, "Better Triggers/settings.json");
             Settings settings;
             if (File.Exists(filePath))
             {

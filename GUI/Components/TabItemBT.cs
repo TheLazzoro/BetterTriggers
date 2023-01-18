@@ -53,6 +53,8 @@ namespace GUI.Components
         public void Close()
         {
             Parent.Tabs.Remove(this);
+            if (this.explorerElement.editor is TriggerControl triggerControl)
+                triggerControl.Dispose();
             this.explorerElement.editor = null;
             this.explorerElement.tabItem = null;
         }

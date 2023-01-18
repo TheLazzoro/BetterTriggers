@@ -44,6 +44,14 @@ namespace BetterTriggers.WorldEdit
                 Select(varType => varType.Value).ToList();
         }
 
+        public static string GetDisplayName(string type)
+        {
+            string displayName = "MISSING STRING!";
+            Types t;
+            types.TryGetValue(type, out t);
+            return Locale.Translate(t.DisplayName);
+        }
+
         public static string GetBaseType(string type)
         {
             Types varType;

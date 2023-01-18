@@ -55,6 +55,8 @@ namespace GUI
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            ControllerProject controller = new();
+            controller.SetWar3MapDir(mapDir);
             OK = true;
             this.Close();
         }

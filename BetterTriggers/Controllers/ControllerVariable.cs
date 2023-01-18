@@ -15,6 +15,8 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerVariable
     {
+        public static bool includeLocals { get; set; } = true;
+
         /// <summary>
         /// </summary>
         /// <returns>Full path.</returns>
@@ -161,9 +163,29 @@ namespace BetterTriggers.Controllers
             return Variables.GetVariableById(id);
         }
 
+        public static Variable GetById(int id, Trigger trig)
+        {
+            return Variables.GetVariableById(id, trig);
+        }
+
+        public static Variable GetById_AllLocals(int id)
+        {
+            return Variables.GetVariableById_AllLocals(id);
+        }
+
         public static Variable GetByReference(VariableRef variableRef)
         {
             return GetById(variableRef.VariableId);
+        }
+
+        public static Variable GetByReference(VariableRef variableRef, Trigger trig)
+        {
+            return GetById(variableRef.VariableId, trig);
+        }
+
+        public static Variable GetByReference_AllLocals(VariableRef variableRef)
+        {
+            return GetById_AllLocals(variableRef.VariableId);
         }
 
         public static void RemoveLocalVariable(LocalVariable localVariable)

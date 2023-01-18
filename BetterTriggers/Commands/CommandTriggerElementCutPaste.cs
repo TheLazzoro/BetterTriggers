@@ -36,6 +36,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
+            ControllerTrigger.RemoveInvalidReferences(to.trigger, listToPaste);
             for (int i = 0; i < listToCut.Count; i++)
             {
                 listToCut[i].RemoveFromParent();

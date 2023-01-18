@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using System;
 using System.Collections.Generic;
@@ -119,7 +120,44 @@ namespace BetterTriggers.Containers
             return name;
         }
 
-        internal static Variable GetVariableById(int Id)
+        internal static Variable GetVariableById(int Id, Trigger trig = null)
+        {
+            Variable var = null;
+
+            bool found = false;
+            var enumerator = variableContainer.GetEnumerator();
+            while (!found && enumerator.MoveNext())
+            {
+                if (enumerator.Current.Id == Id)
+                {
+                    var = enumerator.Current;
+                    found = true;
+                }
+            }
+
+            if(trig == null)
+                trig = ControllerTrigger.SelectedTrigger;
+
+            if (trig != null) // for local variables
+            {
+                for (int i = 0; i < trig.LocalVariables.Count; i++)
+                {
+                    var localVar = (LocalVariable)trig.LocalVariables[i];
+                    if (localVar.variable.Id == Id)
+                    {
+                        var = localVar.variable;
+                        break;
+                    }
+                }
+            }
+
+            return var;
+        }
+
+        /// <summary>
+        /// Should only be used for script generation.
+        /// </summary>
+        internal static Variable GetVariableById_AllLocals(int Id)
         {
             Variable var = null;
 
