@@ -625,5 +625,10 @@ namespace GUI
             if (selected != null)
                 OnOpenExplorerElement?.Invoke(selected);
         }
+
+        private void btnCloseSearchMenu_Click(object sender, RoutedEventArgs e)
+        {
+            searchMenu.Visibility = Visibility.Hidden;
+        }
     }
 }
