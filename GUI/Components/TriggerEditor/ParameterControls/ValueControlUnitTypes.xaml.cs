@@ -175,7 +175,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                         Words = new List<string>()
                             {
                                 unit.Id.ToLower(),
-                                unit.Name.ToLower()
+                                unit.Name.Name.ToLower(),
+                                unit.Name.Propernames.ToLower(),
+                                unit.Name.EditorSuffix.ToLower()
                             }
                     });
 

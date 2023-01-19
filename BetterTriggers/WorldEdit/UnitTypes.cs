@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using War3Net.Build;
 using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
@@ -58,13 +59,14 @@ namespace BetterTriggers.WorldEdit
             if (unitType == null)
                 return null;
 
-            UnitName unitName = Locale.GetUnitName(unitType.Id);
-            if (unitName.Propernames != null)
+            UnitName unitName = unitType.Name;
+            if (unitName.Propernames != string.Empty)
                 name = unitType.isCampaign ? unitName.Propernames.Split(',')[0] : unitName.Name;
             else
                 name = unitName.Name;
 
-            name = name + " " + unitName.EditorSuffix;
+            if(!string.IsNullOrEmpty(unitName.EditorSuffix))
+                name = name + " " + unitName.EditorSuffix;
 
             return name;
         }
@@ -141,7 +143,7 @@ namespace BetterTriggers.WorldEdit
                 unitType.isSpecial = isSpecial == "1";
                 unitType.isCampaign = isCampaign == "1";
                 unitType.Model = model;
-                unitType.Name = GetName(unitType); // Spaghetti
+                unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
 
                 if (!isTest)
                     unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
@@ -161,7 +163,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);
-                var customUnits = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUnitObjectData(bReader, true);
+                var customUnits = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUnitObjectData(bReader);
 
 
                 // Base units
@@ -176,7 +178,7 @@ namespace BetterTriggers.WorldEdit
                     var customUnit = customUnits.NewUnits[i];
 
                     UnitType baseUnit = GetUnitType(Int32Extensions.ToRawcode(customUnit.OldId));
-                    string name = baseUnit.Name;
+                    UnitName name = baseUnit.Name.Clone();
                     string sort = baseUnit.Sort;
                     string race = baseUnit.Race;
                     string icon = baseUnit.Icon;
@@ -192,7 +194,6 @@ namespace BetterTriggers.WorldEdit
                         Image = image
                     };
 
-                    Locale.AddUnitName(unitType.Id, new UnitName() { Name = name });
                     unitTypes.TryAdd(unitType.Id, unitType);
                     unitTypesCustom.TryAdd(unitType.Id, unitType);
 
@@ -203,11 +204,8 @@ namespace BetterTriggers.WorldEdit
 
         private static void SetCustomFields(SimpleObjectModification modified, string unitId)
         {
-            //if (IsTest)
-            //    return;
-
             UnitType unitType = GetUnitType(unitId);
-            UnitName unitName = Locale.GetUnitName(unitId);
+            UnitName unitName = unitType.Name;
             string race = unitType.Race;
             string icon = unitType.Icon;
             string sort = unitType.Sort;
@@ -263,7 +261,6 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
-            unitType.Name = GetName(unitId);
             unitType.Race = race;
             unitType.Icon = icon;
             unitType.isSpecial = isSpecial;

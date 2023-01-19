@@ -136,7 +136,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader binaryReader = new BinaryReader(s);
-                var customDestructibles = War3Net.Build.Extensions.BinaryReaderExtensions.ReadMapDestructableObjectData(binaryReader);
+                var customDestructibles = binaryReader.ReadDestructableObjectData();
 
                 for (int i = 0; i < customDestructibles.BaseDestructables.Count; i++)
                 {

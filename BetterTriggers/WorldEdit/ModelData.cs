@@ -115,7 +115,7 @@ namespace BetterTriggers.WorldEdit
             {
                 hashset.Add(new AssetModel()
                 {
-                    DisplayName = unitData[i].Name == null ? "" : unitData[i].Name,
+                    DisplayName = unitData[i].Name == null ? "" : UnitTypes.GetName(unitData[i].Id),
                     Path = unitData[i].Model,
                     Category = "Unit"
                 });

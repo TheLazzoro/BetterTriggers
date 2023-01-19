@@ -104,7 +104,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader bReader = new BinaryReader(s);
-                var customItems = War3Net.Build.Extensions.BinaryReaderExtensions.ReadItemObjectData(bReader, true);
+                var customItems = bReader.ReadItemObjectData();
 
                 for (int i = 0; i < customItems.BaseItems.Count; i++)
                 {

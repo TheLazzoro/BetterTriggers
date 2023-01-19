@@ -116,7 +116,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader binaryReader = new BinaryReader(s);
-                var customDoodads = War3Net.Build.Extensions.BinaryReaderExtensions.ReadMapDoodadObjectData(binaryReader);
+                var customDoodads = binaryReader.ReadDoodadObjectData();
 
                 for (int i = 0; i < customDoodads.BaseDoodads.Count; i++)
                 {

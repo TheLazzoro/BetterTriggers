@@ -23,16 +23,6 @@ namespace BetterTriggers.WorldEdit
             return abilities.Select(kvp => kvp.Value).ToList();
         }
 
-        internal static List<AbilityType> GetBase()
-        {
-            return abilitiesBase.Select(kvp => kvp.Value).ToList();
-        }
-
-        internal static List<AbilityType> GetCustom()
-        {
-            return abilitiesCustom.Select(kvp => kvp.Value).ToList();
-        }
-
         public static AbilityType GetAbilityType(string abilcode)
         {
             AbilityType abilType;
@@ -113,7 +103,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader reader = new BinaryReader(s);
-                var customAbilities = War3Net.Build.Extensions.BinaryReaderExtensions.ReadAbilityObjectData(reader, true);
+                var customAbilities = War3Net.Build.Extensions.BinaryReaderExtensions.ReadAbilityObjectData(reader);
 
                 for (int i = 0; i < customAbilities.BaseAbilities.Count; i++)
                 {

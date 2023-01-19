@@ -38,7 +38,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             this.ToolTip = new ToolTip()
             {
-                Content = $"[{unit.Id}] {unit.Name}",
+                Content = $"[{unit.Id}] {UnitTypes.GetName(unit.Id)}",
             };
 
             this.Click += delegate

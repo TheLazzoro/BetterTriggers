@@ -79,6 +79,7 @@ namespace BetterTriggers
             AbilityTypes.Load(isTest);
             BuffTypes.Load(isTest);
             UpgradeTypes.Load(isTest);
+            SkinFiles.Load();
 
             Cameras.Load();
             Destructibles.Load();

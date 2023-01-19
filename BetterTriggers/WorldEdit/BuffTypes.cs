@@ -113,7 +113,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader reader = new BinaryReader(s);
-                var customBuffs = War3Net.Build.Extensions.BinaryReaderExtensions.ReadBuffObjectData(reader, true);
+                var customBuffs = War3Net.Build.Extensions.BinaryReaderExtensions.ReadBuffObjectData(reader);
 
                 for (int i = 0; i < customBuffs.BaseBuffs.Count; i++)
                 {

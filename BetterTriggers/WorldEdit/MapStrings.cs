@@ -18,6 +18,9 @@ namespace BetterTriggers.WorldEdit
         {
             string str;
             triggerStrings.TryGetValue(trigStr, out str);
+            if (str == null)
+                return string.Empty;
+
             return str;
         }
         
@@ -36,7 +39,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 StreamReader sr = new StreamReader(s);
-                triggerStrings = StreamReaderExtensions.ReadMapTriggerStrings(sr);
+                triggerStrings = sr.ReadTriggerStrings();
             }
         }
     }

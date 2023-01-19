@@ -48,7 +48,11 @@ namespace BetterTriggers.WorldEdit
             if (upgradeType == null)
                 return null;
 
-            return upgradeType.DisplayName;
+            string name = upgradeType.DisplayName;
+            if (!string.IsNullOrEmpty(upgradeType.EditorSuffix))
+                name += " " + upgradeType.EditorSuffix;
+
+            return name;
         }
 
         internal static void Load(bool isTest = false)
@@ -108,7 +112,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
             {
                 BinaryReader reader = new BinaryReader(s);
-                var customUpgrades = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUpgradeObjectData(reader, true);
+                var customUpgrades = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUpgradeObjectData(reader);
 
                 for (int i = 0; i < customUpgrades.BaseUpgrades.Count; i++)
                 {

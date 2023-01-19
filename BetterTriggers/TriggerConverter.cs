@@ -95,7 +95,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream s = new FileStream(Path.Combine(mapPath, pathTriggerStrings), FileMode.Open, FileAccess.Read))
             {
                 StreamReader sr = new StreamReader(s);
-                var wts = StreamReaderExtensions.ReadMapTriggerStrings(sr);
+                var wts = StreamReaderExtensions.ReadTriggerStrings(sr);
                 wts.Strings.ForEach(trigStr => triggerStrings.TryAdd(trigStr.Key, trigStr.Value));
             }
         }

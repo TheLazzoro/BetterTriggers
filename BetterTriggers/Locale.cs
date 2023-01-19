@@ -43,11 +43,6 @@ namespace BetterTriggers
             return name;
         }
 
-        internal static void AddUnitName(string unitcode, UnitName unitName)
-        {
-            Unit_Names.TryAdd(unitcode, unitName);
-        }
-
         internal static string GetEditorSuffix(string code)
         {
             if (code == null)
