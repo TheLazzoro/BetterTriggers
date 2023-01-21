@@ -87,6 +87,18 @@ namespace GUI.Controllers
                     selectedItem.editor = variableControl;
                 }
 
+                // select already open tab
+                for (int i = 0; i < tabViewModel.Tabs.Count; i++)
+                {
+                    var tab = tabViewModel.Tabs[i];
+                    if(tab.explorerElement.Ielement.GetPath() == selectedItem.Ielement.GetPath())
+                    {
+                        selectedItem.tabItem = tab;
+                        tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
+                        return;
+                    }
+                }
+
                 if (selectedItem.editor == null)
                     return;
 
