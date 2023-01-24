@@ -182,7 +182,7 @@
         </TreeView>
 
         <!-- New Search -->
-        <Grid x:Name="searchMenu" Visibility="Hidden">
+        <Grid x:Name="searchMenu" Visibility="Hidden" KeyDown="searchMenu_KeyDown" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
@@ -191,12 +191,23 @@
             <Rectangle Fill="#444"></Rectangle>
             <Label Content="Search:" Foreground="#ccc" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" />
             <TextBox x:Name="searchBox" Height="22" Margin="60,0,25,0" TextChanged="searchBox_TextChanged" />
-            <Button x:Name="btnCloseSearchMenu" Width="20" Height="20" Style="{DynamicResource ButtonStyle1}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="btnCloseSearchMenu_Click"  >
+            <Button x:Name="btnCloseSearchMenu" Margin="0,0,2,0" Width="20" Height="20" Style="{DynamicResource ButtonStyle1}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="btnCloseSearchMenu_Click"  >
                 <Button.Content>
                     <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
                 </Button.Content>
             </Button>
             <TreeView x:Name="treeViewSearch" Background="#282828" Grid.Row="1" BorderBrush="#282828" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewSearch_MouseDoubleClick" KeyDown="treeViewSearch_KeyDown" >
+                <TreeView.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                      Color="#357EC7" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                      Color="Black" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                      Color="#55FFFFFF" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                      Color="Black" />
+                </TreeView.Resources>
+
             </TreeView>
         </Grid>
 

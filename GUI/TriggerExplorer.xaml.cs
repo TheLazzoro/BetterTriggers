@@ -58,6 +58,7 @@ namespace GUI
             searchWorker.WorkerSupportsCancellation = true;
             searchWorker.DoWork += SearchWorker_DoWork;
             searchWorker.ProgressChanged += SearchWorker_ProgressChanged;
+            searchWorker.RunWorkerCompleted += SearchWorker_RunWorkerCompleted;
         }
 
 
@@ -545,6 +546,17 @@ namespace GUI
                 return;
             }
 
+            DoSearch();
+        }
+
+        private void SearchWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+                DoSearch();
+        }
+
+        private void DoSearch()
+        {
             treeViewSearch.Items.Clear();
             if (string.IsNullOrEmpty(searchBox.Text))
                 return;
@@ -564,15 +576,16 @@ namespace GUI
                 treeViewSearch.Items.Add(newItem);
             }
         }
-        
+
         private void SearchWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            treeItems.ForEach(item =>
+            for (int i = 0; i < treeItems.Count; i++)
             {
+                var item = treeItems[i];
                 if (searchWorker.CancellationPending)
                 {
                     e.Cancel = true;
-                    return;
+                    break;
                 }
 
                 if (item.Ielement.GetName().ToLower().Contains(searchWord))
@@ -580,7 +593,8 @@ namespace GUI
                     searchWorker.ReportProgress(0, item.Ielement);
                     Thread.Sleep(5);
                 }
-            });
+            }
+
             searchWorker.ReportProgress(100);
         }
 
@@ -621,6 +635,9 @@ namespace GUI
 
         private void treeViewSearch_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key != Key.Enter)
+                return;
+
             TreeItemExplorerElement selected = treeViewSearch.SelectedItem as TreeItemExplorerElement;
             if (selected != null)
                 OnOpenExplorerElement?.Invoke(selected);
@@ -629,6 +646,12 @@ namespace GUI
         private void btnCloseSearchMenu_Click(object sender, RoutedEventArgs e)
         {
             searchMenu.Visibility = Visibility.Hidden;
+        }
+
+        private void searchMenu_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                searchMenu.Visibility = Visibility.Hidden;
         }
     }
 }

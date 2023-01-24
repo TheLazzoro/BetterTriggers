@@ -19,6 +19,7 @@ namespace GUI.Controllers
         TreeViewTriggerElement treeItem;
 
         StringBuilder stringBuilder = new StringBuilder();
+        static FontFamily fontFamily = new FontFamily("Verdana");
 
         public string GenerateTreeItemText(TreeViewTriggerElement treeItem)
         {
@@ -229,7 +230,7 @@ namespace GUI.Controllers
 
                 inlines.Add(new Run(stringBuilder.ToString())
                 {
-                    FontFamily = new FontFamily("Verdana")
+                    FontFamily = fontFamily
                 });
                 stringBuilder.Clear();
 
@@ -247,12 +248,12 @@ namespace GUI.Controllers
                     else // whole displayname gets hyperlinked
                     {
                         Run runFirstBracket = new Run("(");
-                        runFirstBracket.FontFamily = new FontFamily("Verdana");
+                        runFirstBracket.FontFamily = fontFamily;
                         inlines.Add(runFirstBracket);
                         inlines.Add(AddHyperlink(parameterFacade, ControllerTriggerData.GetParamDisplayName(function), parameters, paramIndex, returnTypes[paramIndex]));
                     }
                     Run run = new Run(")");
-                    run.FontFamily = new FontFamily("Verdana");
+                    run.FontFamily = fontFamily;
                     inlines.Add(run);
                 }
                 else if (parameters[paramIndex] is Constant)
@@ -344,7 +345,7 @@ namespace GUI.Controllers
 
             inlines.Add(new Run(stringBuilder.ToString())
             {
-                FontFamily = new FontFamily("Verdana")
+                FontFamily = fontFamily
             });
             stringBuilder.Clear();
 

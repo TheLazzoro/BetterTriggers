@@ -108,7 +108,12 @@ namespace GUI.Controllers
             }
 
             if (selectedItem.tabItem != null)
+            {
+                if(!tabViewModel.Tabs.Contains(selectedItem.tabItem))
+                    tabViewModel.Tabs.Add(selectedItem.tabItem);
+
                 tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
+            }
         }
 
 
