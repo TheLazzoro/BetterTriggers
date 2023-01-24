@@ -100,6 +100,8 @@ namespace GUI
             // Load keybindings
             Keybindings keybindings = Keybindings.Load();
             SetKeybindings(keybindings);
+
+            ControllerRecentFiles.isTest = false; // hack
         }
 
         /// <summary>

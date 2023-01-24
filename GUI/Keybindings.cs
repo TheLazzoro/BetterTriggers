@@ -67,7 +67,7 @@ namespace GUI
         }
 
 
-        private static string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "settings/");
+        private static string dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Better Triggers/");
         private static string fileName = "keybindings.json";
         public static void Save(Keybindings keybindings)
         {
@@ -80,7 +80,7 @@ namespace GUI
 
         public static Keybindings Load()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "settings/keybindings.json");
+            string path = Path.Combine(dirPath, fileName);
             if (!File.Exists(path))
                 return null;
 

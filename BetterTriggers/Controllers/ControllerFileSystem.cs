@@ -78,7 +78,7 @@ namespace BetterTriggers.Controllers
         {
             if (File.Exists(oldFullPath))
                 File.Move(oldFullPath, newFullPath);
-            if (Directory.Exists(oldFullPath))
+            else if (Directory.Exists(oldFullPath))
                 Directory.Move(oldFullPath, newFullPath);
         }
 

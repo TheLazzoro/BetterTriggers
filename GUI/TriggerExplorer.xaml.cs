@@ -37,7 +37,6 @@ namespace GUI
         TreeItemExplorerElement dragItem;
         bool _IsDragging = false;
         TreeViewItem parentDropTarget;
-
         int insertIndex = 0; // used when a file is moved from one location to the other.
                              // We can use it when the user wants to drop a file at a specific index.
 
@@ -103,7 +102,7 @@ namespace GUI
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && !_IsDragging)
+            if (e.LeftButton == MouseButtonState.Pressed && !_IsDragging && !contextMenu.IsVisible)
             {
                 Point position = e.GetPosition(null);
                 if (Math.Abs(position.X - _startPoint.X) >
@@ -152,6 +151,9 @@ namespace GUI
         private void treeViewItem_DragOver(object sender, DragEventArgs e)
         {
             if (dragItem == null)
+                return;
+
+            if (!dragItem.IsKeyboardFocused)
                 return;
 
             TreeViewItem currentParent = dragItem.Parent as TreeViewItem;

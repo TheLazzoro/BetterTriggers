@@ -8,8 +8,9 @@ namespace BetterTriggers.Controllers
 {
     public class ControllerRecentFiles
     {
+        public static bool isTest = true;
         private static List<string> recentFiles = new List<string>();
-        private static string pathRecentFiles = System.IO.Directory.GetCurrentDirectory() + @"\" + @"Resources\" + "recent";
+        private static string pathRecentFiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Better Triggers/recent.txt");
 
         public static List<string> GetRecentFiles()
         {
@@ -42,6 +43,9 @@ namespace BetterTriggers.Controllers
 
         public static void AddProjectToRecent(string projectFilePath)
         {
+            if (isTest)
+                return;
+
             if (recentFiles.Contains(projectFilePath))
             {
                 recentFiles.Remove(projectFilePath);
@@ -62,6 +66,9 @@ namespace BetterTriggers.Controllers
                 saveable += recentFiles[i] + "\n";
                 i++;
             }
+
+            if (!Directory.Exists(Path.GetDirectoryName(pathRecentFiles)))
+                Directory.CreateDirectory(Path.GetDirectoryName(pathRecentFiles));
 
             File.WriteAllText(pathRecentFiles, saveable);
         }
