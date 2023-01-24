@@ -29,7 +29,7 @@ namespace BetterTriggers.Controllers
                 string folder = Path.Combine(directory, Path.GetFileName(elementToMove));
                 if (elementToMove == folder)
                     return;
-                if(Directory.Exists(folder))
+                if (Directory.Exists(folder))
                     throw new Exception($"Directory '{folder}' already exists!");
 
                 Directory.Move(elementToMove, folder);
@@ -58,7 +58,7 @@ namespace BetterTriggers.Controllers
             if (newPath == oldPath)
                 return;
 
-            if(File.Exists(newPath))
+            if (File.Exists(newPath))
                 throw new Exception($"File with name '{renamedText}' already exists in the directory.");
             if (Directory.Exists(newPath))
                 throw new Exception($"Folder with name '{renamedText}' already exists in the directory.");
@@ -76,7 +76,10 @@ namespace BetterTriggers.Controllers
         /// <param name="newFullPath"></param>
         public static void RenameElementPath(string oldFullPath, string newFullPath)
         {
-            File.Move(oldFullPath, newFullPath);
+            if (File.Exists(oldFullPath))
+                File.Move(oldFullPath, newFullPath);
+            if (Directory.Exists(oldFullPath))
+                Directory.Move(oldFullPath, newFullPath);
         }
 
         public static void OpenInExplorer(string fullPath)
@@ -91,6 +94,20 @@ namespace BetterTriggers.Controllers
 
                 Process.Start(startInfo);
             }
+        }
+
+        public static bool IsExtensionValid(string extension)
+        {
+            if (
+                extension == "" ||
+                extension == ".var" ||
+                extension == ".trg" ||
+                extension == ".j" ||
+                extension == ".lua"
+                )
+                return true;
+
+            return false;
         }
     }
 }

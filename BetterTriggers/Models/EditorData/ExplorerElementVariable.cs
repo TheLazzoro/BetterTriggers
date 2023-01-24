@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -23,7 +24,26 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElementVariable(string path)
         {
             this.path = path;
-            string json = File.ReadAllText(path);
+            string json = string.Empty;
+            bool isReadyForRead = false;
+            int sleepTolerance = 100;
+            while (!isReadyForRead)
+            {
+                try
+                {
+                    json = File.ReadAllText(path);
+                    isReadyForRead = true;
+                }
+                catch (Exception ex)
+                {
+                    if (sleepTolerance < 0)
+                        throw new Exception(ex.Message);
+
+                    Thread.Sleep(100);
+                    sleepTolerance--;
+                }
+            }
+
             variable = JsonConvert.DeserializeObject<Variable>(json);
             UpdateMetadata();
 

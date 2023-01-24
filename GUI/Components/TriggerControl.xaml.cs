@@ -285,8 +285,6 @@ namespace GUI.Components
             var item = treeViewTriggers.SelectedItem as TreeViewTriggerElement;
             textblockParams.Inlines.Clear();
             textblockDescription.Text = string.Empty;
-            if (item == null)
-                return;
 
             if (grid.Children.Contains(variableControl))
             {
@@ -294,6 +292,9 @@ namespace GUI.Components
                 variableControl.Dispose();
                 grid.Children.Remove(variableControl);
             }
+
+            if (item == null)
+                return;
 
             if (item.triggerElement is ECA)
             {

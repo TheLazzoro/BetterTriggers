@@ -301,7 +301,10 @@ namespace BetterTriggers.Controllers
                     switch (Path.GetExtension(entryChild.path))
                     {
                         case "":
-                            explorerElementChild = new ExplorerElementFolder(path);
+                            if (Directory.Exists(Path.Combine(src, entryChild.path)))
+                                explorerElementChild = new ExplorerElementFolder(path);
+                            else
+                                continue;
                             break;
                         case ".trg":
                             explorerElementChild = new ExplorerElementTrigger(path);
@@ -504,7 +507,10 @@ namespace BetterTriggers.Controllers
             switch (Path.GetExtension(fullPath))
             {
                 case "":
-                    explorerElement = new ExplorerElementFolder(fullPath);
+                    if (Directory.Exists(fullPath))
+                        explorerElement = new ExplorerElementFolder(fullPath);
+                    else
+                        return;
                     break;
                 case ".trg":
                     explorerElement = new ExplorerElementTrigger(fullPath);
@@ -573,6 +579,8 @@ namespace BetterTriggers.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+            if (elementToRename == null)
+                return null;
 
             CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
             command.Execute();
@@ -639,6 +647,9 @@ namespace BetterTriggers.Controllers
         {
             var rootNode = ContainerProject.projectFiles[0];
             IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
+            if (elementToDelete == null)
+                return;
+
             RemoveElementFromContainer(elementToDelete);
 
             CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
@@ -745,6 +756,9 @@ namespace BetterTriggers.Controllers
         public bool WasFileMoved(string oldFullPath)
         {
             var explorerElement = FindExplorerElement(ContainerProject.projectFiles[0], oldFullPath);
+            if (explorerElement == null)
+                return false;
+
             var exPath = explorerElement.GetPath();
 
             bool wasMoved = false;
@@ -913,5 +927,6 @@ namespace BetterTriggers.Controllers
 
             AddElementToContainer(explorerElement);
         }
+
     }
 }

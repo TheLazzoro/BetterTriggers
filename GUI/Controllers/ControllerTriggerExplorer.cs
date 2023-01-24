@@ -119,6 +119,9 @@ namespace GUI.Controllers
 
         public void OnCreateElement(TriggerExplorer te, string fullPath)
         {
+            if (!ControllerFileSystem.IsExtensionValid(Path.GetExtension(fullPath)))
+                return;
+
             ControllerProject controllerProject = new ControllerProject();
             var explorerElement = controllerProject.FindExplorerElement(controllerProject.GetProjectRoot(), fullPath);
             int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
