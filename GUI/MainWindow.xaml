@@ -508,8 +508,8 @@
             </MenuItem>-->
             <MenuItem x:Name="menuTools" Header="WESTRING_MENU_TOOLS" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
                 <MenuItem  Name="menuItemTriggerConverter" Header="Trigger Converter" Click="menuItemTriggerConverter_Click" />
-                <MenuItem  Name="menuItemOptions" Header="Test Map Options" Click="menuItemOptions_Click" />
                 <MenuItem  Name="menuItemKeybindings" Header="Keybindings" Click="menuItemKeybindings_Click"  />
+                <MenuItem  Name="menuItemOptions" Header="Options" Click="menuItemOptions_Click" />
             </MenuItem>
             <MenuItem x:Name="menuHelp" Header="Help" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
                 <MenuItem  Name="menuItemHelp" Header="Better Triggers Help..." Click="menuItemHelp_Click" />

@@ -1,8 +1,10 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
+using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
 using System;
 using System.Collections.Generic;
@@ -19,7 +21,12 @@ namespace GUI.Controllers
         TreeViewTriggerElement treeItem;
 
         StringBuilder stringBuilder = new StringBuilder();
-        static FontFamily fontFamily = new FontFamily("Verdana");
+        private Settings settings;
+
+        public ControllerParamText()
+        {
+            settings = Settings.Load();
+        }
 
         public string GenerateTreeItemText(TreeViewTriggerElement treeItem)
         {
@@ -214,7 +221,7 @@ namespace GUI.Controllers
             List<string> returnTypes = parameterFacade.GetReturnTypes();
 
             List<Inline> inlines = new List<Inline>();
-            ControllerTriggerData controller = new ();
+            ControllerTriggerData controller = new();
 
             int paramIndex = 0;
             for (int i = 0; i < paramText.Length; i++)
@@ -230,8 +237,9 @@ namespace GUI.Controllers
 
                 inlines.Add(new Run(stringBuilder.ToString())
                 {
-                    FontFamily = fontFamily
-                });
+                    FontFamily = TriggerEditorFont.GetParameterFont(),
+                    FontSize = TriggerEditorFont.GetParameterFontSize()
+            });
                 stringBuilder.Clear();
 
 
@@ -242,18 +250,24 @@ namespace GUI.Controllers
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
                         List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
-                        inlines.Add(AddHyperlink(parameterFacade, "(", parameters, paramIndex, returnTypes[paramIndex]));
+                        if(settings.triggerEditorMode == 0)
+                            inlines.Add(AddHyperlink(parameterFacade, "(", parameters, paramIndex, returnTypes[paramIndex]));
+                        else
+                            inlines.Add(AddHyperlink(parameterFacade, " ( ", parameters, paramIndex, returnTypes[paramIndex]));
+
                         inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, function.parameters, _returnTypes, ControllerTriggerData.GetParamText(function)))); // recurse
                     }
                     else // whole displayname gets hyperlinked
                     {
                         Run runFirstBracket = new Run("(");
-                        runFirstBracket.FontFamily = fontFamily;
+                        runFirstBracket.FontFamily = TriggerEditorFont.GetParameterFont();
+                        runFirstBracket.FontSize = TriggerEditorFont.GetParameterFontSize();
                         inlines.Add(runFirstBracket);
                         inlines.Add(AddHyperlink(parameterFacade, ControllerTriggerData.GetParamDisplayName(function), parameters, paramIndex, returnTypes[paramIndex]));
                     }
                     Run run = new Run(")");
-                    run.FontFamily = fontFamily;
+                    run.FontFamily = TriggerEditorFont.GetParameterFont();
+                    run.FontSize = TriggerEditorFont.GetParameterFontSize();
                     inlines.Add(run);
                 }
                 else if (parameters[paramIndex] is Constant)
@@ -345,7 +359,8 @@ namespace GUI.Controllers
 
             inlines.Add(new Run(stringBuilder.ToString())
             {
-                FontFamily = fontFamily
+                FontFamily = TriggerEditorFont.GetParameterFont(),
+                FontSize = TriggerEditorFont.GetParameterFontSize()
             });
             stringBuilder.Clear();
 

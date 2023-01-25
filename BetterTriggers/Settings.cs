@@ -41,6 +41,8 @@ namespace BetterTriggers
         public int parameterWindowWidth    = 800;
         public int parameterWindowHeight   = 450;
 
+        public int triggerEditorMode       = 0;
+
         private Settings() { }
 
         public static Settings Load()

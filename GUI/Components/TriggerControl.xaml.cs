@@ -59,6 +59,14 @@ namespace GUI.Components
         {
             InitializeComponent();
 
+            Settings settings = Settings.Load();
+            if(settings.triggerEditorMode == 1)
+            {
+                bottomControl.Visibility = Visibility.Hidden;
+                bottomSplitter.Visibility = Visibility.Hidden;
+                Grid.SetRowSpan(treeViewTriggers, 3);
+            }
+
             this.explorerElementTrigger = explorerElementTrigger;
             TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
             TextEditor.avalonEditor.TextChanged += delegate
@@ -327,7 +335,12 @@ namespace GUI.Components
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && !_IsDragging && !contextMenu.IsVisible)
+            if (
+                e.LeftButton == MouseButtonState.Pressed
+                && !_IsDragging
+                && !contextMenu.IsVisible
+                && e.Source is not HyperlinkParameterTrigger // Needed because of weird WPF bug with unclickable links on treeitems when selected.
+                )
             {
                 Point position = e.GetPosition(null);
                 if (Math.Abs(position.X - _startPoint.X) >
@@ -946,17 +959,14 @@ namespace GUI.Components
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeViewTriggerElement doubleClicked = GetTraversedTargetDropItem(e.OriginalSource as FrameworkElement) as TreeViewTriggerElement;
-            if (doubleClicked == null)
-                return;
-
+            TreeViewTriggerElement doubleClicked = selectedElementEnd;
             ReplaceTriggerElement(doubleClicked);
         }
 
         private void treeViewItem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                ReplaceTriggerElement(selectedElement);
+                ReplaceTriggerElement(selectedElementEnd);
         }
 
         private void ReplaceTriggerElement(TreeViewTriggerElement toReplace)
@@ -1001,7 +1011,7 @@ namespace GUI.Components
         private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
             // Cancel the current scroll attempt
-            e.Handled = true;
+            //e.Handled = true;
         }
 
         public void OnRemoteChange()

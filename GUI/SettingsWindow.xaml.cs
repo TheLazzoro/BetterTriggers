@@ -36,6 +36,8 @@ namespace GUI
             checkBoxFixedSeed.IsChecked             = settings.FixedRandomSeed;
             checkBoxNoWFPause.IsChecked             = settings.NoWindowsFocusPause;
             textBoxCopiedMapFile.Text               = settings.CopyLocation;
+            comboboxTriggerStyle.SelectedIndex      = settings.triggerEditorMode;
+
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -48,6 +50,7 @@ namespace GUI
             settings.FixedRandomSeed        = (bool) checkBoxFixedSeed.IsChecked;
             settings.NoWindowsFocusPause    = (bool) checkBoxNoWFPause.IsChecked;
             settings.CopyLocation           = textBoxCopiedMapFile.Text;
+            settings.triggerEditorMode      = comboboxTriggerStyle.SelectedIndex;
 
             Settings.Save(settings);
             this.Close();

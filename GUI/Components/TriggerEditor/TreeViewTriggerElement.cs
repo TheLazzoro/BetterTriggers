@@ -241,25 +241,36 @@ namespace GUI.Components.TriggerEditor
         {
             ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
             string text = string.Empty;
-            if (this.triggerElement is ECA)
-                text = controllerTriggerTreeItem.GenerateTreeItemText(this);
-            else if (triggerElement is LocalVariable localVar)
-                text = localVar.variable.Name;
-            //text = localVar.variable.Name + $" <{Types.GetDisplayName(localVar.variable.Type)}>"; // TODO: type text also gets into the rename field.
-
             bool isEnabled = true;
             TreeItemState state = TreeItemState.Normal;
-            if (this.triggerElement is not LocalVariable)
+            if (this.triggerElement is ECA eca)
             {
+                text = controllerTriggerTreeItem.GenerateTreeItemText(this);
                 bool areParametersValid = true;
-                var _triggerElement = (ECA)this.triggerElement;
-                List<Parameter> parameters = _triggerElement.function.parameters;
+                List<Parameter> parameters = eca.function.parameters;
                 areParametersValid = ControllerTrigger.VerifyParameters(parameters) == 0;
-                isEnabled = _triggerElement.isEnabled;
+                isEnabled = eca.isEnabled;
                 state = areParametersValid ? TreeItemState.Normal : TreeItemState.HasErrors;
+
+                Settings settings = Settings.Load();
+                if (settings.triggerEditorMode == 0)
+                {
+                    this.treeItemHeader.Refresh(text, category, state, isEnabled);
+                }
+                else if (settings.triggerEditorMode == 1)
+                {
+                    List<Inline> inlines = new();
+                    inlines = controllerTriggerTreeItem.GenerateParamText(this);
+                    this.treeItemHeader.Refresh(inlines, category, state, isEnabled);
+                }
+            }
+            else if (triggerElement is LocalVariable localVar)
+            {
+                text = localVar.variable.Name;
+                //text = localVar.variable.Name + $" <{Types.GetDisplayName(localVar.variable.Type)}>"; // TODO: type text also gets into the rename field.
+                this.treeItemHeader.Refresh(text, category, state, isEnabled);
             }
 
-            this.treeItemHeader.Refresh(text, category, state, isEnabled);
         }
 
         public void UpdatePosition()

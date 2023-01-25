@@ -1,6 +1,7 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
+using GUI.Components.TriggerEditor;
 using GUI.Utility;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -47,7 +49,8 @@ namespace GUI.Components.Shared
 
             DisplayText = new TextBlock();
             DisplayText.Margin = new Thickness(5, 0, 0, 0);
-            DisplayText.FontFamily = new System.Windows.Media.FontFamily("Segoe UI");
+            DisplayText.FontFamily = TriggerEditorFont.GetTreeItemFont();
+            DisplayText.FontSize = TriggerEditorFont.GetTreeItemFontSize();
             this.Children.Add(DisplayText);
 
             RenameBox = new TextBox();
@@ -81,24 +84,39 @@ namespace GUI.Components.Shared
 
         public void Refresh(string text, string categoryName, TreeItemState state = TreeItemState.Normal, bool isInitiallyOn = true)
         {
-            Category category = Category.Get(categoryName);
+            _Refresh(categoryName, state, isInitiallyOn);
+            SetDisplayText(text);
+        }
 
+        public void Refresh(List<Inline> inlines, string categoryName, TreeItemState state = TreeItemState.Normal, bool isInitiallyOn = true)
+        {
+            _Refresh(categoryName, state, isInitiallyOn);
+            SetDisplayText(inlines);
+        }
+
+        private void _Refresh(string categoryName, TreeItemState state = TreeItemState.Normal, bool isInitiallyOn = true)
+        {
+            Category category = Category.Get(categoryName);
             if (category.ShouldDisplay)
             {
-                ControllerTriggerData controllerTriggerData = new ControllerTriggerData();
                 this.categoryName = Locale.Translate(Category.Get(categoryName).Name) + " - ";
             }
 
             SetIcon(categoryName, state);
-            SetDisplayText(text);
             SetTextEnabled(state, isInitiallyOn);
         }
-
 
         public void SetDisplayText(string text)
         {
             DisplayText.Text = categoryName + text;
             RenameBox.Text = text;
+        }
+
+        public void SetDisplayText(List<Inline> inlines)
+        {
+            DisplayText.Inlines.Clear();
+            DisplayText.Inlines.Add(categoryName);
+            DisplayText.Inlines.AddRange(inlines);
         }
 
         public string GetDisplayText()
