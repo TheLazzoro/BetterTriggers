@@ -60,7 +60,7 @@ namespace GUI.Components
             InitializeComponent();
 
             Settings settings = Settings.Load();
-            if(settings.triggerEditorMode == 1)
+            if (settings.triggerEditorMode == 1)
             {
                 bottomControl.Visibility = Visibility.Hidden;
                 bottomSplitter.Visibility = Visibility.Hidden;
@@ -132,14 +132,14 @@ namespace GUI.Components
 
         private void bottomControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            if(treeViewTriggers.SelectedItem is TreeViewTriggerElement treeItem)
+            if (treeViewTriggers.SelectedItem is TreeViewTriggerElement treeItem)
                 ControllerVariable.includeLocals = IsAction(treeItem);
         }
 
         private bool IsAction(TreeViewItem item)
         {
             bool isAction = false;
-            while(!isAction && item != null)
+            while (!isAction && item != null)
             {
                 if (item == categoryAction)
                     isAction = true;
@@ -507,7 +507,7 @@ namespace GUI.Components
              * and then holding and dragging after the dialog menu closed,
              * the element could jump to the last 'parentDropTarget',
              * which could be an invalid trigger element location. */
-            parentDropTarget = null; 
+            parentDropTarget = null;
 
             CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElementTrigger.trigger, item.triggerElement, targetParentGUI.GetTriggerElements(), insertIndex);
             command.Execute();
@@ -587,6 +587,77 @@ namespace GUI.Components
             }
 
             return selectedElements;
+        }
+
+        /// <summary>
+        /// Custom arrow key navigation. WPF's built-in TreeView navigation is slow and buggy once treeitems get complex headers.
+        /// </summary>
+        private void treeViewTriggers_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Down && treeViewTriggers.SelectedItem != null)
+            {
+                var current = (TreeViewItem)treeViewTriggers.SelectedItem;
+                if (current.Items.Count > 0 && current.IsExpanded)
+                {
+                    var item = (TreeViewItem)current.Items[0];
+                    item.IsSelected = true;
+                    e.Handled = true;
+                }
+                else
+                {
+                    if (current.Parent is TreeViewItem parent)
+                    {
+                        int curIndex = parent.Items.IndexOf(current);
+                        int newIndex = curIndex + 1;
+                        if (newIndex != parent.Items.Count)
+                        {
+                            var newItem = (TreeViewItem)parent.Items[newIndex];
+                            newItem.IsSelected = true;
+                            e.Handled = true;
+                        }
+                        else
+                        {
+                            //TODO: Moving out of the end of an item collection causes lag
+                        }
+                    }
+                }
+            }
+
+            else if (e.Key == Key.Up && treeViewTriggers.SelectedItem != null)
+            {
+                var current = (TreeViewItem)treeViewTriggers.SelectedItem;
+                if (current.Parent is TreeViewItem parent)
+                {
+                    int curIndex = parent.Items.IndexOf(current);
+                    int newIndex = curIndex - 1;
+                    if (newIndex < 0)
+                    {
+                        parent.IsSelected = true;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        var newItem = (TreeViewItem)parent.Items[newIndex];
+                        var tmp = newItem;
+                        if (tmp.HasItems)
+                        {
+                            bool didSelect = false;
+                            while (!didSelect)
+                            {
+                                tmp = (TreeViewItem)tmp.Items[tmp.Items.Count - 1];
+                                if (!tmp.HasItems || !tmp.IsExpanded)
+                                {
+                                    didSelect = true;
+                                    newItem = tmp;
+                                }
+                            }
+                        }
+
+                        newItem.IsSelected = true;
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         private void treeViewTriggers_KeyDown(object sender, KeyEventArgs e)
@@ -1011,7 +1082,7 @@ namespace GUI.Components
         private void TreeViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
         {
             // Cancel the current scroll attempt
-            //e.Handled = true;
+            e.Handled = true;
         }
 
         public void OnRemoteChange()
