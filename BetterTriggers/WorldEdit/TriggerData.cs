@@ -151,6 +151,9 @@ namespace BetterTriggers.WorldEdit
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-setvariables-alpha.png");
                 Category.Create(TriggerCategory.TC_LOCAL_VARIABLE, img, "???", false);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
+                Category.Create(TriggerCategory.TC_FRAMEHANDLE, img, "Frame", true);
             }
 
 
@@ -169,7 +172,7 @@ namespace BetterTriggers.WorldEdit
             var dataCustom = IniFileConverter.GetIniData(textCustom);
             LoadTriggerDataFromIni(dataCustom);
 
-            textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom.txt"));
+            textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom.txt"));
             dataCustom = IniFileConverter.GetIniData(textCustom);
             LoadCustomBlizzardJ(dataCustom);
 
@@ -185,7 +188,7 @@ namespace BetterTriggers.WorldEdit
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadTriggerDataFromIni(dataCustom);
 
-                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom_31.txt"));
+                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadCustomBlizzardJ(dataCustom);
             }
@@ -201,6 +204,7 @@ namespace BetterTriggers.WorldEdit
 
 
                 customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33.txt"));
+                customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33_Lua.txt"));
             }
         }
 
@@ -408,18 +412,14 @@ namespace BetterTriggers.WorldEdit
             foreach (var key in section)
             {
                 string keyName = key.KeyName;
-                Value initialValue = new Value();
-                string type = string.Empty;
 
                 string[] split = key.Value.Split(',');
-                type = split[0];
-                initialValue.value = split[1];
+                string type = split[0];
 
                 Variable constant = new Variable()
                 {
                     Name = keyName,
                     Type = type,
-                    InitialValue = initialValue
                 };
 
                 customConstants.Add(constant);

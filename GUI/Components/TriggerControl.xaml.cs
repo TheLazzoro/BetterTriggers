@@ -319,6 +319,7 @@ namespace GUI.Components
                 variableControl.OnChange += VariableControl_OnChange;
                 grid.Children.Add(variableControl);
                 Grid.SetRow(variableControl, 3);
+                Grid.SetRowSpan(variableControl, 2);
             }
         }
 
@@ -394,7 +395,7 @@ namespace GUI.Components
                 return;
 
             TreeViewItem currentParent = (TreeViewItem)dragItem.Parent;
-            TreeViewItem dropTarget = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+            TreeViewItem dropTarget = GetTraversedTargetDropItem(e.Source as DependencyObject);
             int currentIndex = currentParent.Items.IndexOf(dragItem);
             if (dropTarget == null)
                 return;
@@ -514,7 +515,7 @@ namespace GUI.Components
         }
 
 
-        private TreeViewItem GetTraversedTargetDropItem(FrameworkElement dropTarget)
+        private TreeViewItem GetTraversedTargetDropItem(DependencyObject dropTarget)
         {
             if (dropTarget == null || dropTarget is TreeView)
                 return null;
@@ -522,7 +523,15 @@ namespace GUI.Components
             TreeViewItem traversedTarget = null;
             while (traversedTarget == null)
             {
-                dropTarget = dropTarget.Parent as FrameworkElement;
+                if(dropTarget is not TextElement)
+                    dropTarget = VisualTreeHelper.GetParent(dropTarget);
+                else
+                {
+                    var d = (TextElement)dropTarget;
+                    dropTarget = d.Parent;
+                }
+
+
                 if (dropTarget is TreeViewItem)
                 {
                     traversedTarget = (TreeViewItem)dropTarget;

@@ -68,15 +68,15 @@ OriginFramePortraitManaText=2,originframetype,ORIGIN_FRAME_PORTRAIT_MANA_TEXT,WE
 OriginFrameUnitPanelBuffBar=2,originframetype,ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR,WE_STRING_ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR
 OriginFrameUnitPanelBuffBarLabel=2,originframetype,ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL,WE_STRING_ORIGIN_FRAME_UNIT_PANEL_BUFF_BAR_LABEL
 
-FramePointTopLeft=2,originframetype,FRAMEPOINT_TOPLEFT,WE_STRING_FRAMEPOINT_TOPLEFT
-FramePointTop=2,originframetype,FRAMEPOINT_TOP,WE_STRING_FRAMEPOINT_TOP
-FramePointTopRight=2,originframetype,FRAMEPOINT_TOPRIGHT,WE_STRING_FRAMEPOINT_TOPRIGHT
-FramePointLeft=2,originframetype,FRAMEPOINT_LEFT,WE_STRING_FRAMEPOINT_LEFT
-FramePointCenter=2,originframetype,FRAMEPOINT_CENTER,WE_STRING_FRAMEPOINT_CENTER
-FramePointRight=2,originframetype,FRAMEPOINT_RIGHT,WE_STRING_FRAMEPOINT_RIGHT
-FramePointBottomLeft=2,originframetype,FRAMEPOINT_BOTTOMLEFT,WE_STRING_FRAMEPOINT_BOTTOMLEFT
-FramePointBottom=2,originframetype,FRAMEPOINT_BOTTOM,WE_STRING_FRAMEPOINT_BOTTOM
-FramePointBottomRight=2,originframetype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPOINT_BOTTOMRIGHT
+FramePointTopLeft=2,framepointtype,FRAMEPOINT_TOPLEFT,WE_STRING_FRAMEPOINT_TOPLEFT
+FramePointTop=2,framepointtype,FRAMEPOINT_TOP,WE_STRING_FRAMEPOINT_TOP
+FramePointTopRight=2,framepointtype,FRAMEPOINT_TOPRIGHT,WE_STRING_FRAMEPOINT_TOPRIGHT
+FramePointLeft=2,framepointtype,FRAMEPOINT_LEFT,WE_STRING_FRAMEPOINT_LEFT
+FramePointCenter=2,framepointtype,FRAMEPOINT_CENTER,WE_STRING_FRAMEPOINT_CENTER
+FramePointRight=2,framepointtype,FRAMEPOINT_RIGHT,WE_STRING_FRAMEPOINT_RIGHT
+FramePointBottomLeft=2,framepointtype,FRAMEPOINT_BOTTOMLEFT,WE_STRING_FRAMEPOINT_BOTTOMLEFT
+FramePointBottom=2,framepointtype,FRAMEPOINT_BOTTOM,WE_STRING_FRAMEPOINT_BOTTOM
+FramePointBottomRight=2,framepointtype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPOINT_BOTTOMRIGHT
 
 
 
@@ -90,7 +90,7 @@ FramePointBottomRight=2,originframetype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPO
 
 BlzTriggerRegisterFrameEvent=2,framehandle,frameeventtype
 _BlzTriggerRegisterFrameEvent_DisplayName="Generic frame event"
-_BlzTriggerRegisterFrameEvent_Category=TC_CUSTOM
+_BlzTriggerRegisterFrameEvent_Category=TC_FRAMEHANDLE
 
 //***************************************************************************
 [TriggerActions]
@@ -99,8 +99,194 @@ _BlzTriggerRegisterFrameEvent_Category=TC_CUSTOM
 // Value 0: first game version in which this function is valid
 // Value 1+: argument types
 
+BlzEnableUIAutoPosition=2,boolean
+_BlzEnableUIAutoPosition_DisplayName="Enable Frame Auto Position"
+_BlzEnableUIAutoPosition_Parameters="Enable frame auto position: ,~Boolean,"
+_BlzEnableUIAutoPosition_Defaults=false
+_BlzEnableUIAutoPosition_Category=TC_FRAMEHANDLE
 
+BlzHideOriginFrames=2,boolean
+_BlzHideOriginFrames_DisplayName="Hide Origin Frames"
+_BlzHideOriginFrames_Parameters="Hide Origin Frames: ,~Boolean,"
+_BlzHideOriginFrames_Defaults=false
+_BlzHideOriginFrames_Category=TC_FRAMEHANDLE
 
+BlzLoadTOCFile=2,string
+_BlzLoadTOCFile_DisplayName="Load TOC File"
+_BlzLoadTOCFile_Parameters="Load TOC ,~Filename,"
+_BlzLoadTOCFile_Defaults=
+_BlzLoadTOCFile_Category=TC_FRAMEHANDLE
+
+BlzCreateFrame=2,string,framehandle,integer,integer
+_BlzCreateFrame_DisplayName="Create Frame"
+_BlzCreateFrame_Parameters="Create a ,~Frame type, frame with parent ,~Parent, with priority ,~Priority, and context ,~Context,"
+_BlzCreateFrame_Defaults=
+_BlzCreateFrame_Category=TC_FRAMEHANDLE
+_BlzCreateFrame_ScriptName=BlzCreateFrameBT
+
+BlzCreateSimpleFrame=2,string,framehandle,integer
+_BlzCreateSimpleFrame_DisplayName="Create Simple Frame"
+_BlzCreateSimpleFrame_Parameters="Create a simple frame ,~Frame type, with parent ,~Parent, with context ,~Context,"
+_BlzCreateSimpleFrame_Defaults=
+_BlzCreateSimpleFrame_Category=TC_FRAMEHANDLE
+
+BlzCreateFrameByType=2,string,string,framehandle,string,integer
+_BlzCreateFrameByType_DisplayName="Create Frame By Type"
+_BlzCreateFrameByType_Parameters="Create a ,~Frame Type, ,~Name, frame with parent ,~Parent, with priority ,~Priority, and context ,~Context,"
+_BlzCreateFrameByType_Defaults=
+_BlzCreateFrameByType_Category=TC_FRAMEHANDLE
+
+BlzDestroyFrame=2,framehandle
+_BlzDestroyFrame_DisplayName="Destroy Frame"
+_BlzDestroyFrame_Parameters="Destroy ,~Frame,"
+_BlzDestroyFrame_Defaults=
+_BlzDestroyFrame_Category=TC_FRAMEHANDLE
+
+BlzFrameSetPoint=2,framehandle,framepointtype,framehandle,framepointtype,real,real
+_BlzFrameSetPoint_DisplayName="Set Point"
+_BlzFrameSetPoint_Parameters="Set ,~Frame, ,~Point Type, relative to ,~Frame, ,~Relative Point, with coordinates X: ,~Number, Y: ,~Number,"
+_BlzFrameSetPoint_Defaults=_,FramePointTopLeft,_,0.4,0.3
+_BlzFrameSetPoint_Category=TC_FRAMEHANDLE
+
+BlzFrameSetAbsPoint=2,framehandle,framepointtype,real,real
+_BlzFrameSetAbsPoint_DisplayName="Set Absolute Point"
+_BlzFrameSetAbsPoint_Parameters="Set ,~Frame, to ,~Point Type, with coordinates X: ,~Number, Y: ,~Number,"
+_BlzFrameSetAbsPoint_Defaults=_,FramePointTopLeft,0.4,0.3
+_BlzFrameSetAbsPoint_Category=TC_FRAMEHANDLE
+
+BlzFrameClearAllPoints=2,framehandle
+_BlzFrameClearAllPoints_DisplayName="Clear All Points For Frame"
+_BlzFrameClearAllPoints_Parameters="Clear all points for ,~Frame,"
+_BlzFrameClearAllPoints_Defaults=
+_BlzFrameClearAllPoints_Category=TC_FRAMEHANDLE
+
+// TODO: Unclear what this is 
+BlzFrameSetAllPoints=2,framehandle,framehandle
+_BlzFrameSetAllPoints_DisplayName=""
+_BlzFrameSetAllPoints_Parameters=""
+_BlzFrameSetAllPoints_Defaults=
+_BlzFrameSetAllPoints_Category=TC_FRAMEHANDLE
+
+BlzFrameSetVisible=2,framehandle,boolean
+_BlzFrameSetVisible_DisplayName="Set Visibility"
+_BlzFrameSetVisible_Parameters="Set ,~Frame, visible: ,~Boolean,"
+_BlzFrameSetVisible_Defaults=_,false
+_BlzFrameSetVisible_Category=TC_FRAMEHANDLE
+
+BlzFrameClick=2,framehandle
+_BlzFrameClick_DisplayName="Click Frame"
+_BlzFrameClick_Parameters="Click ,~Frame,"
+_BlzFrameClick_Defaults=
+_BlzFrameClick_Category=TC_FRAMEHANDLE
+
+BlzFrameSetText=2,framehandle,string
+_BlzFrameSetText_DisplayName="Change Text"
+_BlzFrameSetText_Parameters="Change text of ,~Frame, to ,~Text,"
+_BlzFrameSetText_Defaults=
+_BlzFrameSetText_Category=TC_FRAMEHANDLE
+
+BlzFrameAddText=2,framehandle,string
+_BlzFrameAddText_DisplayName="Add Text"
+_BlzFrameAddText_Parameters="Start new line for ,~Frame, and add ,~Text,"
+_BlzFrameAddText_Defaults=
+_BlzFrameAddText_Category=TC_FRAMEHANDLE
+
+BlzFrameSetTextSizeLimit=2,framehandle,integer
+_BlzFrameSetTextSizeLimit_DisplayName="Set Text Size Limit"
+_BlzFrameSetTextSizeLimit_Parameters="Set ,~Frame, text size limit to ,~Number,"
+_BlzFrameSetTextSizeLimit_Defaults=_,64
+_BlzFrameSetTextSizeLimit_Category=TC_FRAMEHANDLE
+
+BlzFrameSetTextColor=2,framehandle,integer
+_BlzFrameSetTextColor_DisplayName="Change Text Color"
+_BlzFrameSetTextColor_Parameters="Change text color of ,~Frame, to ,~Number,"
+_BlzFrameSetTextColor_Defaults=_,BlzConvertColor
+_BlzFrameSetTextColor_Category=TC_FRAMEHANDLE
+
+BlzFrameSetFocus=2,framehandle,boolean
+_BlzFrameSetFocus_DisplayName="Set Focus"
+_BlzFrameSetFocus_Parameters="Set focus of ,~Frame, to ,~Boolean,"
+_BlzFrameSetFocus_Defaults=_,false
+_BlzFrameSetFocus_Category=TC_FRAMEHANDLE
+
+// TODO: Use model parameter instead of string
+BlzFrameSetModel=2,framehandle,string,integer
+_BlzFrameSetModel_DisplayName="Set Model"
+_BlzFrameSetModel_Parameters="Set model of ,~Frame, to ,~Model, using camera index ,~Camera Index,"
+_BlzFrameSetModel_Defaults=_,_,0
+_BlzFrameSetModel_Category=TC_FRAMEHANDLE
+
+BlzFrameSetEnable=2,framehandle,enabledisableoption
+_BlzFrameSetEnable_DisplayName="Enable/Disable"
+_BlzFrameSetEnable_Parameters="Change ,~Frame, state to ,~Enabled,"
+_BlzFrameSetEnable_Defaults=_,EnableDisableEnable
+_BlzFrameSetEnable_Category=TC_FRAMEHANDLE
+
+BlzFrameSetAlpha=2,framehandle,integer
+_BlzFrameSetAlpha_DisplayName="Set Alpha"
+_BlzFrameSetAlpha_Parameters="Set ,~Frame, alpha to ,~Number,"
+_BlzFrameSetAlpha_Defaults=_,0
+_BlzFrameSetAlpha_Category=TC_FRAMEHANDLE
+
+BlzFrameSetSpriteAnimate=2,framehandle,integer,integer
+_BlzFrameSetSpriteAnimate_DisplayName="Set Sprite Animation"
+_BlzFrameSetSpriteAnimate_Parameters="Set ,~Frame, sprite animation primary property to ,~PrimaryProp, using flag ,~Flags,"
+_BlzFrameSetSpriteAnimate_Defaults=_,0,0
+_BlzFrameSetSpriteAnimate_Category=TC_FRAMEHANDLE
+
+BlzFrameSetTexture=2,framehandle,string,integer,boolean
+_BlzFrameSetTexture_DisplayName="Set Texture"
+_BlzFrameSetTexture_Parameters="Change texture of ,~Frame, to ,~Texture, using flag ,~Flag, and do blend ,~Boolean,"
+_BlzFrameSetTexture_Defaults=_,_,0,true
+_BlzFrameSetTexture_Category=TC_FRAMEHANDLE
+
+BlzFrameSetScale=2,framehandle,real
+_BlzFrameSetScale_DisplayName="Set Scale"
+_BlzFrameSetScale_Parameters="Set scale of ,~Frame, to ,~Number,"
+_BlzFrameSetScale_Defaults=_,1.0
+_BlzFrameSetScale_Category=TC_FRAMEHANDLE
+
+BlzFrameSetTooltip=2,framehandle,framehandle
+_BlzFrameSetTooltip_DisplayName="Set Tooltip"
+_BlzFrameSetTooltip_Parameters="Set tooltip of ,~Frame, to ,~Frame,"
+_BlzFrameSetTooltip_Defaults=
+_BlzFrameSetTooltip_Category=TC_FRAMEHANDLE
+
+BlzFrameCageMouse=2,framehandle,enabledisableoption
+_BlzFrameCageMouse_DisplayName="Cage Mouse Inside Frame"
+_BlzFrameCageMouse_Parameters="Cage mouse inside ,~Frame, with state ,~,"
+_BlzFrameCageMouse_Defaults=
+_BlzFrameCageMouse_Category=TC_FRAMEHANDLE
+
+BlzFrameSetValue=2,framehandle,real
+_BlzFrameSetValue_DisplayName="Set Value"
+_BlzFrameSetValue_Parameters="Set value of ,~Frame, to ,~Number,"
+_BlzFrameSetValue_Defaults=_,0
+_BlzFrameSetValue_Category=TC_FRAMEHANDLE
+
+BlzFrameSetMinMaxValue=2,framehandle,real,real
+_BlzFrameSetMinMaxValue_DisplayName="Set Minimum And Maximum Value"
+_BlzFrameSetMinMaxValue_Parameters="Set ,~Frame, minmum value ,~Value, and maximum value ,~Value,"
+_BlzFrameSetMinMaxValue_Defaults=_,0.0,1.0
+_BlzFrameSetMinMaxValue_Category=TC_FRAMEHANDLE
+
+BlzFrameSetStepSize=2,framehandle,real
+_BlzFrameSetStepSize_DisplayName="Set Step Size"
+_BlzFrameSetStepSize_Parameters="Set step size of ,~Frame, to ,~Number,"
+_BlzFrameSetStepSize_Defaults=_,1.0
+_BlzFrameSetStepSize_Category=TC_FRAMEHANDLE
+
+BlzFrameSetSize=2,framehandle,real,real
+_BlzFrameSetSize_DisplayName="Change Size"
+_BlzFrameSetSize_Parameters="Change size of ,~Frame, to width ,~Number, and height ,~Number,"
+_BlzFrameSetSize_Defaults=_,0.1,0.1
+_BlzFrameSetSize_Category=TC_FRAMEHANDLE
+
+BlzFrameSetVertexColor=2,framehandle,integer
+_BlzFrameSetVertexColor_DisplayName="Change Vertex Color"
+_BlzFrameSetVertexColor_Parameters="Change vertext color of ,~Simple Frame, to ,~Number,"
+_BlzFrameSetVertexColor_Defaults=_,BlzConvertColor
+_BlzFrameSetVertexColor_Category=TC_FRAMEHANDLE
 
 
 //***************************************************************************
@@ -114,3 +300,68 @@ _BlzTriggerRegisterFrameEvent_Category=TC_CUSTOM
 //
 // Note: Operators are specially handled by the editor
 
+BlzConvertColor=2,1,integer,integer,integer,integer,integer
+_BlzConvertColor_DisplayName="Convert Color"
+_BlzConvertColor_Parameters="Convert color (alpha: ,~Alpha,, red: ,~Red,, green: ,~Green,, blue: ,~Blue,)"
+_BlzConvertColor_Defaults=0,255,255,255
+_BlzConvertColor_Category=TC_CONVERSION
+
+BlzGetOriginFrame=2,1,framehandle,originframetype,integer
+_BlzGetOriginFrame_DisplayName="Get Origin Frame"
+_BlzGetOriginFrame_Parameters="Get origin frame ,~Type, at index ,~Index,"
+_BlzGetOriginFrame_Defaults=ORIGIN_FRAME_GAME_UI,0
+_BlzGetOriginFrame_Category=TC_FRAMEHANDLE
+
+GetLastCreatedFrame=2,1,framehandle
+_GetLastCreatedFrame_DisplayName="Last Created Frame"
+_GetLastCreatedFrame_Parameters="Last created frame"
+_GetLastCreatedFrame_Defaults=
+_GetLastCreatedFrame_Category=TC_FRAMEHANDLE
+
+BlzFrameIsVisible=2,1,boolean,framehandle
+_BlzFrameIsVisible_DisplayName="Is Frame Visible"
+_BlzFrameIsVisible_Parameters="Is ,~Frame, visible"
+_BlzFrameIsVisible_Defaults=
+_BlzFrameIsVisible_Category=TC_FRAMEHANDLE
+
+BlzGetFrameByName=2,1,framehandle,string,integer
+_BlzGetFrameByName_DisplayName="Get Frame By Name"
+_BlzGetFrameByName_Parameters="Get frame ,~Frame Name, context ,~Integer,"
+_BlzGetFrameByName_Defaults=_,0
+_BlzGetFrameByName_Category=TC_FRAMEHANDLE
+
+BlzFrameGetName=2,1,string,framehandle
+_BlzFrameGetName_DisplayName="Get Frame Name"
+_BlzFrameGetName_Parameters="Get ,~Frame, name"
+_BlzFrameGetName_Defaults=
+_BlzFrameGetName_Category=TC_FRAMEHANDLE
+
+BlzFrameGetText=2,1,string,framehandle
+_BlzFrameGetText_DisplayName="Get Text Of Frame"
+_BlzFrameGetText_Parameters="Get text of ,~Frame,"
+_BlzFrameGetText_Defaults=
+_BlzFrameGetText_Category=TC_FRAMEHANDLE
+
+BlzFrameGetTextSizeLimit=2,1,framehandle
+_BlzFrameGetTextSizeLimit_DisplayName="Get Text Size Limit"
+_BlzFrameGetTextSizeLimit_Parameters="Get text size limit of ,~Frame,"
+_BlzFrameGetTextSizeLimit_Defaults=
+_BlzFrameGetTextSizeLimit_Category=TC_FRAMEHANDLE
+
+BlzFrameGetEnable=2,1,boolean,framehandle
+_BlzFrameGetEnable_DisplayName="Is Enabled"
+_BlzFrameGetEnable_Parameters="Is ,~Frame, enabled"
+_BlzFrameGetEnable_Defaults=
+_BlzFrameGetEnable_Category=TC_FRAMEHANDLE
+
+BlzFrameGetAlpha=2,1,integer,framehandle
+_BlzFrameGetAlpha_DisplayName="Get Alpha"
+_BlzFrameGetAlpha_Parameters="Get ,~Frame, alpha"
+_BlzFrameGetAlpha_Defaults=
+_BlzFrameGetAlpha_Category=TC_FRAMEHANDLE
+
+BlzFrameGetValue=2,1,real,framehandle
+_BlzFrameGetValue_DisplayName="Get Value"
+_BlzFrameGetValue_Parameters="Get value of ,~Frame,"
+_BlzFrameGetValue_Defaults=
+_BlzFrameGetValue_Category=TC_FRAMEHANDLE

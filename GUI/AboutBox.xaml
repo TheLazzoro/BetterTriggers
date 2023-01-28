@@ -31,7 +31,7 @@
             Version: 1.0.1
         </TextBlock>
         <TextBlock Grid.Row="2" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">
-            Copyright © 2022
+            Copyright © 2023
         </TextBlock>
         <TextBlock Grid.Row="3" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">
             Author: LazZ

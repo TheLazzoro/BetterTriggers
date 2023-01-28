@@ -45,9 +45,10 @@
     <None Remove="Resources\WorldEditorData\commandskinstrings.txt" />
     <None Remove="Resources\WorldEditorData\commandstrings.txt" />
     <None Remove="Resources\WorldEditorData\commonabilitystrings.txt" />
-    <None Remove="Resources\WorldEditorData\Custom\BlizzardJ_custom.txt" />
-    <None Remove="Resources\WorldEditorData\Custom\BlizzardJ_custom_31.txt" />
     <None Remove="Resources\WorldEditorData\Custom\FunctionDef_BT_33.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\FunctionDef_BT_33_Lua.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\Globals_custom.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\Globals_custom_31.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom_31.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom_33.txt" />
@@ -195,10 +196,13 @@
     <Content Include="Resources\WorldEditorData\commonabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\WorldEditorData\Custom\BlizzardJ_custom_31.txt">
+    <Content Include="Resources\WorldEditorData\Custom\Globals_custom_31.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\WorldEditorData\Custom\BlizzardJ_custom.txt">
+    <Content Include="Resources\WorldEditorData\Custom\Globals_custom.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33_Lua.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33.txt">

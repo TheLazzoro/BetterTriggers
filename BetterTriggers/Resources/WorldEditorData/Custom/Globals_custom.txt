@@ -1,5 +1,4 @@
 ﻿[Presets]
 // Key: Preset name
 // Value 0: Return type
-// Value 1: Value
 

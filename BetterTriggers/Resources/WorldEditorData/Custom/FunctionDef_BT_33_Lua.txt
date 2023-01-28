@@ -1,0 +1,11 @@
+﻿function BlzQueueImmediateOrderByIdBT (whichUnit, order)
+    BlzQueueImmediateOrderById(whichUnit, OrderId(order))
+end
+
+function BlzQueuePointOrderByIdBT (order, whichUnit, loc)
+    BlzQueuePointOrderById(whichUnit, OrderId(order), GetLocationX(loc), GetLocationY(loc))
+end
+
+function BlzQueueTargetOrderByIdBT (whichUnit, order, targetWidget)
+    BlzQueueTargetOrderById(whichUnit, OrderId(order), targetWidget)
+end

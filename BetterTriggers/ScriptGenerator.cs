@@ -228,7 +228,7 @@ end
                 string varType = Types.GetBaseType(constant.Type);
                 if (language == ScriptLanguage.Lua)
                     varType = "";
-                script.Append($"{varType} {constant.Name} = {constant.InitialValue.value} {newline}");
+                script.Append($"{varType} {constant.Name} = {GetGlobalsStartValue(Types.GetBaseType(constant.Type))}{newline}");
             }
             script.Append(endglobals + newline);
 
