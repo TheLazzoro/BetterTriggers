@@ -27,6 +27,209 @@ framehandle=2,1,1,WESTRING_TRIGTYPE_framehandle
 //       and they will be converted to double quotes in the script.
 //
 
+OSKEY_BACKSPACE=2,oskeytype,OSKEY_BACKSPACE,Backspace
+OSKEY_TAB=2,oskeytype,OSKEY_TAB,Tab
+OSKEY_CLEAR=2,oskeytype,OSKEY_CLEAR,Clear
+OSKEY_SHIFT=2,oskeytype,OSKEY_SHIFT,Shift
+OSKEY_CONTROL=2,oskeytype,OSKEY_CONTROL,Control
+OSKEY_ALT=2,oskeytype,OSKEY_ALT,Alt
+OSKEY_PAUSE=2,oskeytype,OSKEY_PAUSE,Pause
+OSKEY_CAPSLOCK=2,oskeytype,OSKEY_CAPSLOCK,Caps Lock
+OSKEY_KANA=2,oskeytype,OSKEY_KANA,Kana
+OSKEY_HANGUL=2,oskeytype,OSKEY_HANGUL,Hangul
+OSKEY_JUNJA=2,oskeytype,OSKEY_JUNJA,Junja
+OSKEY_FINAL=2,oskeytype,OSKEY_FINAL,Final
+OSKEY_HANJA=2,oskeytype,OSKEY_HANJA,Hanja
+OSKEY_KANJI=2,oskeytype,OSKEY_KANJI,Kanji
+OSKEY_ESCAPE=2,oskeytype,OSKEY_ESCAPE,Escape
+OSKEY_CONVERT=2,oskeytype,OSKEY_CONVERT,Convert
+OSKEY_NONCONVERT=2,oskeytype,OSKEY_NONCONVERT,Non-Convert
+OSKEY_ACCEPT=2,oskeytype,OSKEY_ACCEPT,Accept
+OSKEY_MODECHANGE=2,oskeytype,OSKEY_MODECHANGE,Mode Change
+OSKEY_SPACE=2,oskeytype,OSKEY_SPACE,Space
+OSKEY_PAGEUP=2,oskeytype,OSKEY_PAGEUP,Page Up
+OSKEY_PAGEDOWN=2,oskeytype,OSKEY_PAGEDOWN,Page DOwn
+OSKEY_END=2,oskeytype,OSKEY_END,End
+OSKEY_HOME=2,oskeytype,OSKEY_HOME,Home
+OSKEY_LEFT=2,oskeytype,OSKEY_LEFT,Left
+OSKEY_UP=2,oskeytype,OSKEY_UP,Up
+OSKEY_RIGHT=2,oskeytype,OSKEY_RIGHT,Right
+OSKEY_DOWN=2,oskeytype,OSKEY_DOWN,Down
+OSKEY_SELECT=2,oskeytype,OSKEY_SELECT,Select
+OSKEY_PRINT=2,oskeytype,OSKEY_PRINT,Print
+OSKEY_EXECUTE=2,oskeytype,OSKEY_EXECUTE,Execute
+OSKEY_PRINTSCREEN=2,oskeytype,OSKEY_PRINTSCREEN,Print Screen
+OSKEY_INSERT=2,oskeytype,OSKEY_INSERT,Insert
+OSKEY_DELETE=2,oskeytype,OSKEY_DELETE,Delete
+OSKEY_HELP=2,oskeytype,OSKEY_HELP,Help
+OSKEY_0=2,oskeytype,OSKEY_0,0
+OSKEY_1=2,oskeytype,OSKEY_1,1
+OSKEY_2=2,oskeytype,OSKEY_2,2
+OSKEY_3=2,oskeytype,OSKEY_3,3
+OSKEY_4=2,oskeytype,OSKEY_4,4
+OSKEY_5=2,oskeytype,OSKEY_5,5
+OSKEY_6=2,oskeytype,OSKEY_6,6
+OSKEY_7=2,oskeytype,OSKEY_7,7
+OSKEY_8=2,oskeytype,OSKEY_8,8
+OSKEY_9=2,oskeytype,OSKEY_9,9
+OSKEY_A=2,oskeytype,OSKEY_A,A
+OSKEY_B=2,oskeytype,OSKEY_B,B
+OSKEY_C=2,oskeytype,OSKEY_C,C
+OSKEY_D=2,oskeytype,OSKEY_D,D
+OSKEY_E=2,oskeytype,OSKEY_E,E
+OSKEY_F=2,oskeytype,OSKEY_F,F
+OSKEY_G=2,oskeytype,OSKEY_G,G
+OSKEY_H=2,oskeytype,OSKEY_H,H
+OSKEY_I=2,oskeytype,OSKEY_I,I
+OSKEY_J=2,oskeytype,OSKEY_J,J
+OSKEY_K=2,oskeytype,OSKEY_K,K
+OSKEY_L=2,oskeytype,OSKEY_L,L
+OSKEY_M=2,oskeytype,OSKEY_M,M
+OSKEY_N=2,oskeytype,OSKEY_N,N
+OSKEY_O=2,oskeytype,OSKEY_O,O
+OSKEY_P=2,oskeytype,OSKEY_P,P
+OSKEY_Q=2,oskeytype,OSKEY_Q,Q
+OSKEY_R=2,oskeytype,OSKEY_R,R
+OSKEY_S=2,oskeytype,OSKEY_S,S
+OSKEY_T=2,oskeytype,OSKEY_T,T
+OSKEY_U=2,oskeytype,OSKEY_U,U
+OSKEY_V=2,oskeytype,OSKEY_V,V
+OSKEY_W=2,oskeytype,OSKEY_W,W
+OSKEY_X=2,oskeytype,OSKEY_X,X
+OSKEY_Y=2,oskeytype,OSKEY_Y,Y
+OSKEY_Z=2,oskeytype,OSKEY_Z,Z
+OSKEY_LMETA=2,oskeytype,OSKEY_LMETA,Left Meta
+OSKEY_RMETA=2,oskeytype,OSKEY_RMETA,Right Meta
+OSKEY_APPS=2,oskeytype,OSKEY_APPS,Apps
+OSKEY_SLEEP=2,oskeytype,OSKEY_SLEEP,Sleep
+OSKEY_NUMPAD0=2,oskeytype,OSKEY_NUMPAD0,NUMPAD 0
+OSKEY_NUMPAD1=2,oskeytype,OSKEY_NUMPAD1,NUMPAD 1
+OSKEY_NUMPAD2=2,oskeytype,OSKEY_NUMPAD2,NUMPAD 2
+OSKEY_NUMPAD3=2,oskeytype,OSKEY_NUMPAD3,NUMPAD 3
+OSKEY_NUMPAD4=2,oskeytype,OSKEY_NUMPAD4,NUMPAD 4
+OSKEY_NUMPAD5=2,oskeytype,OSKEY_NUMPAD5,NUMPAD 5
+OSKEY_NUMPAD6=2,oskeytype,OSKEY_NUMPAD6,NUMPAD 6
+OSKEY_NUMPAD7=2,oskeytype,OSKEY_NUMPAD7,NUMPAD 7
+OSKEY_NUMPAD8=2,oskeytype,OSKEY_NUMPAD8,NUMPAD 8
+OSKEY_NUMPAD9=2,oskeytype,OSKEY_NUMPAD9,NUMPAD 9
+OSKEY_MULTIPLY=2,oskeytype,OSKEY_MULTIPLY,Multiply
+OSKEY_ADD=2,oskeytype,OSKEY_ADD,Add
+OSKEY_SEPARATOR=2,oskeytype,OSKEY_SEPARATOR,Separator
+OSKEY_SUBTRACT=2,oskeytype,OSKEY_SUBTRACT,Subtract
+OSKEY_DECIMAL=2,oskeytype,OSKEY_DECIMAL,Decimal
+OSKEY_DIVIDE=2,oskeytype,OSKEY_DIVIDE,Divide
+OSKEY_F1=2,oskeytype,OSKEY_F1,F1
+OSKEY_F2=2,oskeytype,OSKEY_F2,F2
+OSKEY_F3=2,oskeytype,OSKEY_F3,F3
+OSKEY_F4=2,oskeytype,OSKEY_F4,F4
+OSKEY_F5=2,oskeytype,OSKEY_F5,F5
+OSKEY_F6=2,oskeytype,OSKEY_F6,F6
+OSKEY_F7=2,oskeytype,OSKEY_F7,F7
+OSKEY_F8=2,oskeytype,OSKEY_F8,F8
+OSKEY_F9=2,oskeytype,OSKEY_F9,F9
+OSKEY_F10=2,oskeytype,OSKEY_F10,F10
+OSKEY_F11=2,oskeytype,OSKEY_F11,F11
+OSKEY_F12=2,oskeytype,OSKEY_F12,F12
+OSKEY_F13=2,oskeytype,OSKEY_F13,F13
+OSKEY_F14=2,oskeytype,OSKEY_F14,F14
+OSKEY_F15=2,oskeytype,OSKEY_F15,F15
+OSKEY_F16=2,oskeytype,OSKEY_F16,F16
+OSKEY_F17=2,oskeytype,OSKEY_F17,F17
+OSKEY_F18=2,oskeytype,OSKEY_F18,F18
+OSKEY_F19=2,oskeytype,OSKEY_F19,F19
+OSKEY_F20=2,oskeytype,OSKEY_F20,F20
+OSKEY_F21=2,oskeytype,OSKEY_F21,F21
+OSKEY_F22=2,oskeytype,OSKEY_F22,F22
+OSKEY_F23=2,oskeytype,OSKEY_F23,F23
+OSKEY_F24=2,oskeytype,OSKEY_F24,F24
+OSKEY_NUMLOCK=2,oskeytype,OSKEY_NUMLOCK,Num Lock
+OSKEY_SCROLLLOCK=2,oskeytype,OSKEY_SCROLLLOCK,Scroll Lock
+OSKEY_OEM_NEC_EQUAL=2,oskeytype,OSKEY_OEM_NEC_EQUAL,Nec Equal
+OSKEY_OEM_FJ_JISHO=2,oskeytype,OSKEY_OEM_FJ_JISHO,Jisho
+OSKEY_OEM_FJ_MASSHOU=2,oskeytype,OSKEY_OEM_FJ_MASSHOU,Masshou
+OSKEY_OEM_FJ_TOUROKU=2,oskeytype,OSKEY_OEM_FJ_TOUROKU,Touroku
+OSKEY_OEM_FJ_LOYA=2,oskeytype,OSKEY_OEM_FJ_LOYA,Loya
+OSKEY_OEM_FJ_ROYA=2,oskeytype,OSKEY_OEM_FJ_ROYA,Roya
+OSKEY_LSHIFT=2,oskeytype,OSKEY_LSHIFT,Left Shift
+OSKEY_RSHIFT=2,oskeytype,OSKEY_RSHIFT,Right Shift
+OSKEY_LCONTROL=2,oskeytype,OSKEY_LCONTROL,Left Control
+OSKEY_RCONTROL=2,oskeytype,OSKEY_RCONTROL,Right Control
+OSKEY_LALT=2,oskeytype,OSKEY_LALT,Left Alt
+OSKEY_RALT=2,oskeytype,OSKEY_RALT,Right Alt
+OSKEY_BROWSER_BACK=2,oskeytype,OSKEY_BROWSER_BACK,Browser Back
+OSKEY_BROWSER_FORWARD=2,oskeytype,OSKEY_BROWSER_FORWARD,Browser Forward
+OSKEY_BROWSER_REFRESH=2,oskeytype,OSKEY_BROWSER_REFRESH,Browser Refresh
+OSKEY_BROWSER_STOP=2,oskeytype,OSKEY_BROWSER_STOP,Browser Stop
+OSKEY_BROWSER_SEARCH=2,oskeytype,OSKEY_BROWSER_SEARCH,Browser Search
+OSKEY_BROWSER_FAVORITES=2,oskeytype,OSKEY_BROWSER_FAVORITES,Browser Favorites
+OSKEY_BROWSER_HOME=2,oskeytype,OSKEY_BROWSER_HOME,Browser Home
+OSKEY_VOLUME_MUTE=2,oskeytype,OSKEY_VOLUME_MUTE,Volume Mute
+OSKEY_VOLUME_DOWN=2,oskeytype,OSKEY_VOLUME_DOWN,Volume Down
+OSKEY_VOLUME_UP=2,oskeytype,OSKEY_VOLUME_UP,Volume Up
+OSKEY_MEDIA_NEXT_TRACK=2,oskeytype,OSKEY_MEDIA_NEXT_TRACK,Media Next Track
+OSKEY_MEDIA_PREV_TRACK=2,oskeytype,OSKEY_MEDIA_PREV_TRACK,Media Previous Track
+OSKEY_MEDIA_STOP=2,oskeytype,OSKEY_MEDIA_STOP,Media Stop
+OSKEY_MEDIA_PLAY_PAUSE=2,oskeytype,OSKEY_MEDIA_PLAY_PAUSE,Media Play/Pause
+OSKEY_LAUNCH_MAIL=2,oskeytype,OSKEY_LAUNCH_MAIL,Launch Mail
+OSKEY_LAUNCH_MEDIA_SELECT=2,oskeytype,OSKEY_LAUNCH_MEDIA_SELECT,Launch Media Select
+OSKEY_LAUNCH_APP1=2,oskeytype,OSKEY_LAUNCH_APP1,App 1
+OSKEY_LAUNCH_APP2=2,oskeytype,OSKEY_LAUNCH_APP2,App 2
+OSKEY_OEM_1=2,oskeytype,OSKEY_OEM_1,OEM 1
+OSKEY_OEM_PLUS=2,oskeytype,OSKEY_OEM_PLUS,OEM Plus
+OSKEY_OEM_COMMA=2,oskeytype,OSKEY_OEM_COMMA,OEM Comma
+OSKEY_OEM_MINUS=2,oskeytype,OSKEY_OEM_MINUS,OEM Minus
+OSKEY_OEM_PERIOD=2,oskeytype,OSKEY_OEM_PERIOD,OEM Period
+OSKEY_OEM_2=2,oskeytype,OSKEY_OEM_2,OEM 2
+OSKEY_OEM_3=2,oskeytype,OSKEY_OEM_3,OEM 3
+OSKEY_OEM_4=2,oskeytype,OSKEY_OEM_4,OEM 4
+OSKEY_OEM_5=2,oskeytype,OSKEY_OEM_5,OEM 5
+OSKEY_OEM_6=2,oskeytype,OSKEY_OEM_6,OEM 6
+OSKEY_OEM_7=2,oskeytype,OSKEY_OEM_7,OEM 7
+OSKEY_OEM_8=2,oskeytype,OSKEY_OEM_8,OEM 8
+OSKEY_OEM_AX=2,oskeytype,OSKEY_OEM_AX,OEM AX
+OSKEY_OEM_102=2,oskeytype,OSKEY_OEM_102,OEM 102
+OSKEY_ICO_HELP=2,oskeytype,OSKEY_ICO_HELP,ICO Help
+OSKEY_ICO_00=2,oskeytype,OSKEY_ICO_00,ICO 00
+OSKEY_PROCESSKEY=2,oskeytype,OSKEY_PROCESSKEY,Process Key
+OSKEY_ICO_CLEAR=2,oskeytype,OSKEY_ICO_CLEAR,ICO Clear 
+OSKEY_PACKET=2,oskeytype,OSKEY_PACKET,Packet
+OSKEY_OEM_RESET=2,oskeytype,OSKEY_OEM_RESET,OEM Reset
+OSKEY_OEM_JUMP=2,oskeytype,OSKEY_OEM_JUMP,OEM Jump
+OSKEY_OEM_PA1=2,oskeytype,OSKEY_OEM_PA1,OEM PA1
+OSKEY_OEM_PA2=2,oskeytype,OSKEY_OEM_PA2,OEM PA2
+OSKEY_OEM_PA3=2,oskeytype,OSKEY_OEM_PA3,OEM PA3
+OSKEY_OEM_WSCTRL=2,oskeytype,OSKEY_OEM_WSCTRL,OEM WSCTRL
+OSKEY_OEM_CUSEL=2,oskeytype,OSKEY_OEM_CUSEL,OEM CUSEL
+OSKEY_OEM_ATTN=2,oskeytype,OSKEY_OEM_ATTN,OEM ATTN
+OSKEY_OEM_FINISH=2,oskeytype,OSKEY_OEM_FINISH,OEM Finish
+OSKEY_OEM_COPY=2,oskeytype,OSKEY_OEM_COPY,OEM Copy
+OSKEY_OEM_AUTO=2,oskeytype,OSKEY_OEM_AUTO,OEM Auto
+OSKEY_OEM_ENLW=2,oskeytype,OSKEY_OEM_ENLW,OEM ENLW
+OSKEY_OEM_BACKTAB=2,oskeytype,OSKEY_OEM_BACKTAB,OEM Backtab
+OSKEY_ATTN=2,oskeytype,OSKEY_ATTN,ATTN
+OSKEY_CRSEL=2,oskeytype,OSKEY_CRSEL,CRSEL
+OSKEY_EXSEL=2,oskeytype,OSKEY_EXSEL,EXSEL
+OSKEY_EREOF=2,oskeytype,OSKEY_EREOF,EREOF
+OSKEY_PLAY=2,oskeytype,OSKEY_PLAY,Play
+OSKEY_ZOOM=2,oskeytype,OSKEY_ZOOM,Zoom
+OSKEY_NONAME=2,oskeytype,OSKEY_NONAME,No Name
+OSKEY_PA1=2,oskeytype,OSKEY_PA1,PA1
+OSKEY_OEM_CLEAR=2,oskeytype,OSKEY_OEM_CLEAR,OEM Clear
+
+OSKEYMETA_NONE=2,oskeytypemeta,0,None
+OSKEYMETA_SHIFT=2,oskeytypemeta,1,Shift
+OSKEYMETA_CONTROL=2,oskeytypemeta,2,Control
+OSKEYMETA_ALT=2,oskeytypemeta,4,Alt
+OSKEYMETA_WINDOWS=2,oskeytypemeta,8,Windows
+
+OSKEY_KEYDOWN=2,oskeydown,true,Pressed
+OSKEY_KEYUP=2,oskeydown,false,Released
+
+TextChannelAll=2,textchannel,0,All
+TextChannelAllies=2,textchannel,1,Allies
+TextChannelObservers=2,textchannel,2,Observers
+TextChannelPrivate=2,textchannel,3,Private
+
 FrameEventClick=2,frameeventtype,FRAMEEVENT_CONTROL_CLICK,WE_STRING_FRAMEEVENT_CONTROL_CLICK
 FrameEventMouseEnter=2,frameeventtype,FRAMEEVENT_MOUSE_ENTER,WE_STRING_FRAMEEVENT_MOUSE_ENTER
 FrameEventMouseLeave=2,frameeventtype,FRAMEEVENT_MOUSE_LEAVE,WE_STRING_FRAMEEVENT_MOUSE_LEAVE
@@ -89,8 +292,42 @@ FramePointBottomRight=2,framepointtype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPOI
 // Note that the first argument is always a `trigger`, and is excluded here
 
 BlzTriggerRegisterFrameEvent=2,framehandle,frameeventtype
-_BlzTriggerRegisterFrameEvent_DisplayName="Generic frame event"
+_BlzTriggerRegisterFrameEvent_DisplayName="Generic Frame Event"
+_BlzTriggerRegisterFrameEvent_Parameters="Register ,~Frame, ,~Event,"
 _BlzTriggerRegisterFrameEvent_Category=TC_FRAMEHANDLE
+
+BlzTriggerRegisterPlayerSyncEvent=2,player,string,boolean
+_BlzTriggerRegisterPlayerSyncEvent_DisplayName="Register Synchronization Event"
+_BlzTriggerRegisterPlayerSyncEvent_Parameters="Register synchronization event by ,~Player, prefix ,~Prefix, from server ,~Boolean,"
+_BlzTriggerRegisterPlayerSyncEvent_Defaults=_,_,false
+_BlzTriggerRegisterPlayerSyncEvent_Category=TC_PLAYER
+
+BlzTriggerRegisterPlayerKeyEvent=2,player,oskeytype,oskeytypemeta,oskeydown
+_BlzTriggerRegisterPlayerKeyEvent_DisplayName="Keyboard Event (New)"
+_BlzTriggerRegisterPlayerKeyEvent_Parameters=",~Player, uses ,~Key, with modifier ,~Modifier, and key was ,~Key Action,"
+_BlzTriggerRegisterPlayerKeyEvent_Defaults=_,_,OSKEYMETA_NONE,OSKEY_KEYDOWN
+_BlzTriggerRegisterPlayerKeyEvent_Category=TC_PLAYER
+
+
+//***************************************************************************
+[TriggerConditions]
+// Defines boolean condition functions
+// Key: condition function name
+// Value 0: first game version in which this function is valid
+// Value 1+: argument types
+
+OperatorCompareKey=2,oskeytype,EqualNotEqualOperator,oskeytype
+_OperatorCompareKey_DisplayName="Key Type Comparison"
+_OperatorCompareKey_Parameters=~Value," ",~Operator," ",~Value
+_OperatorCompareKey_Defaults=BlzGetTriggerPlayerKey,OperatorEqualENE,_
+_OperatorCompareKey_Category=TC_CONDITION
+
+OperatorCompareKeyMeta=2,oskeytypemeta,EqualNotEqualOperator,oskeytypemeta
+_OperatorCompareKeyMeta_DisplayName="Modifier Key Type Comparison"
+_OperatorCompareKeyMeta_Parameters=~Value," ",~Operator," ",~Value
+_OperatorCompareKeyMeta_Defaults=BlzGetTriggerPlayerMetaKey,OperatorEqualENE,_
+_OperatorCompareKeyMeta_Category=TC_CONDITION
+
 
 //***************************************************************************
 [TriggerActions]
@@ -288,6 +525,80 @@ _BlzFrameSetVertexColor_Parameters="Change vertext color of ,~Simple Frame, to ,
 _BlzFrameSetVertexColor_Defaults=_,BlzConvertColor
 _BlzFrameSetVertexColor_Category=TC_FRAMEHANDLE
 
+BlzFrameSetLevel=2,framehandle,integer
+_BlzFrameSetLevel_DisplayName="Change Level"
+_BlzFrameSetLevel_Parameters="Change level of ,~Frame, to ,~Level,"
+_BlzFrameSetLevel_Defaults=_,0
+_BlzFrameSetLevel_Category=TC_FRAMEHANDLE
+
+BlzFrameSetParent=2,framehandle,framehandle
+_BlzFrameSetParent_DisplayName="Change Parent"
+_BlzFrameSetParent_Parameters="Change parent of ,~Frame, to ,~Frame,"
+_BlzFrameSetParent_Defaults=
+_BlzFrameSetParent_Category=TC_FRAMEHANDLE
+
+BlzFrameSetFont=2,framehandle,string,real,integer
+_BlzFrameSetFont_DisplayName="Change Font"
+_BlzFrameSetFont_Parameters="Change font of ,~Frame, to ,~Filename, with height ,~Number, and flag ,~Number,"
+_BlzFrameSetFont_Defaults=_,_,0,0
+_BlzFrameSetFont_Category=TC_FRAMEHANDLE
+
+BlzFrameSetTextAlignment=2,framehandle,textaligntype,textaligntype
+_BlzFrameSetTextAlignment_DisplayName="Change Text Alignment"
+_BlzFrameSetTextAlignment_Parameters="Change text alignment of ,~Frame, to vertical ,~Vertical, and horizontal ,~Horizontal,"
+_BlzFrameSetTextAlignment_Defaults=
+_BlzFrameSetTextAlignment_Category=TC_FRAMEHANDLE
+
+BlzSendSyncData=2,string,string
+_BlzSendSyncData_DisplayName="Send Synchronization Data"
+_BlzSendSyncData_Parameters="Send synchronization data with prefix ,~Prefix, and data ,~String,"
+_BlzSendSyncData_Defaults=
+_BlzSendSyncData_Category=TC_PLAYER
+
+BlzEnableCursor=2,enabledisableoption
+_BlzEnableCursor_DisplayName="Enable/Disable Cursor"
+_BlzEnableCursor_Parameters=",~Enable/Disable, cursor"
+_BlzEnableCursor_Defaults=EnableDisableEnable
+_BlzEnableCursor_Category=TC_PLAYER
+
+BlzSetMousePos=2,integer,integer
+_BlzSetMousePos_DisplayName="Change Mouse Position"
+_BlzSetMousePos_Parameters="Change mouse position X: ,~X, Y: ,~Y,"
+_BlzSetMousePos_Defaults=400,300
+_BlzSetMousePos_Category=TC_PLAYER
+
+TODO: take imports
+BlzChangeMinimapTerrainTex=2,string
+_BlzChangeMinimapTerrainTex_DisplayName="Change Minimap Image"
+_BlzChangeMinimapTerrainTex_Parameters="Change minimap image to ,~image,"
+_BlzChangeMinimapTerrainTex_Defaults=
+_BlzChangeMinimapTerrainTex_Category=TC_GAME
+
+BlzSetSpecialEffectMatrixScale=2,effect,real,real,real
+_BlzSetSpecialEffectMatrixScale_DisplayName="Change 3D Scale"
+_BlzSetSpecialEffectMatrixScale_Parameters="Change ,~Special Effect, scale to (X: ,~X,, Y: ,~Y,, Z: ,~Z,)"
+_BlzSetSpecialEffectMatrixScale_Defaults=_,1.0,1.0,1.0
+_BlzSetSpecialEffectMatrixScale_Category=TC_SPECIALEFFECT
+
+BlzResetSpecialEffectMatrix=2,effect
+_BlzResetSpecialEffectMatrix_DisplayName="Reset 3D Scale"
+_BlzResetSpecialEffectMatrix_Parameters="Reset 3D scale of ,~Special Effect,"
+_BlzResetSpecialEffectMatrix_Defaults=
+_BlzResetSpecialEffectMatrix_Category=TC_FRAMEHANDLE
+
+BlzDisplayChatMessage=2,player,textchannel,string
+_BlzDisplayChatMessage_DisplayName="Display Chat Message"
+_BlzDisplayChatMessage_Parameters="Display message from ,~Player, in ,~Channel, channel with text: ,~Text,"
+_BlzDisplayChatMessage_Defaults=_,TextChannelAll,_
+_BlzDisplayChatMessage_Category=TC_PLAYER
+
+// TODO: Test this native ingame
+BlzPauseUnitEx=2,unit,boolean
+_BlzPauseUnitEx_DisplayName="Pause"
+_BlzPauseUnitEx_Parameters=""
+_BlzPauseUnitEx_Defaults=
+_BlzPauseUnitEx_Category=TC_UNIT
+
 
 //***************************************************************************
 [TriggerCalls]
@@ -326,25 +637,25 @@ _BlzFrameIsVisible_Category=TC_FRAMEHANDLE
 
 BlzGetFrameByName=2,1,framehandle,string,integer
 _BlzGetFrameByName_DisplayName="Get Frame By Name"
-_BlzGetFrameByName_Parameters="Get frame ,~Frame Name, context ,~Integer,"
+_BlzGetFrameByName_Parameters=",~Frame Name, context ,~Integer,"
 _BlzGetFrameByName_Defaults=_,0
 _BlzGetFrameByName_Category=TC_FRAMEHANDLE
 
 BlzFrameGetName=2,1,string,framehandle
 _BlzFrameGetName_DisplayName="Get Frame Name"
-_BlzFrameGetName_Parameters="Get ,~Frame, name"
+_BlzFrameGetName_Parameters=",~Frame, name"
 _BlzFrameGetName_Defaults=
 _BlzFrameGetName_Category=TC_FRAMEHANDLE
 
 BlzFrameGetText=2,1,string,framehandle
 _BlzFrameGetText_DisplayName="Get Text Of Frame"
-_BlzFrameGetText_Parameters="Get text of ,~Frame,"
+_BlzFrameGetText_Parameters="Text of ,~Frame,"
 _BlzFrameGetText_Defaults=
 _BlzFrameGetText_Category=TC_FRAMEHANDLE
 
 BlzFrameGetTextSizeLimit=2,1,framehandle
 _BlzFrameGetTextSizeLimit_DisplayName="Get Text Size Limit"
-_BlzFrameGetTextSizeLimit_Parameters="Get text size limit of ,~Frame,"
+_BlzFrameGetTextSizeLimit_Parameters="Text size limit of ,~Frame,"
 _BlzFrameGetTextSizeLimit_Defaults=
 _BlzFrameGetTextSizeLimit_Category=TC_FRAMEHANDLE
 
@@ -356,12 +667,138 @@ _BlzFrameGetEnable_Category=TC_FRAMEHANDLE
 
 BlzFrameGetAlpha=2,1,integer,framehandle
 _BlzFrameGetAlpha_DisplayName="Get Alpha"
-_BlzFrameGetAlpha_Parameters="Get ,~Frame, alpha"
+_BlzFrameGetAlpha_Parameters=",~Frame, alpha"
 _BlzFrameGetAlpha_Defaults=
 _BlzFrameGetAlpha_Category=TC_FRAMEHANDLE
 
 BlzFrameGetValue=2,1,real,framehandle
 _BlzFrameGetValue_DisplayName="Get Value"
-_BlzFrameGetValue_Parameters="Get value of ,~Frame,"
+_BlzFrameGetValue_Parameters="Value of ,~Frame,"
 _BlzFrameGetValue_Defaults=
 _BlzFrameGetValue_Category=TC_FRAMEHANDLE
+
+BlzFrameGetParent=2,1,framehandle
+_BlzFrameGetParent_DisplayName="Get Parent"
+_BlzFrameGetParent_Parameters="Parent frame of ,~Frame,"
+_BlzFrameGetParent_Defaults=
+_BlzFrameGetParent_Category=TC_FRAMEHANDLE
+
+BlzFrameGetHeight=2,1,real,framehandle
+_BlzFrameGetHeight_DisplayName="Get Height"
+_BlzFrameGetHeight_Parameters="Height of ,~Frame,"
+_BlzFrameGetHeight_Defaults=
+_BlzFrameGetHeight_Category=TC_FRAMEHANDLE
+
+BlzFrameGetWidth=2,1,real,framehandle
+_BlzFrameGetWidth_DisplayName="Get Width"
+_BlzFrameGetWidth_Parameters="Width of ,~Frame,"
+_BlzFrameGetWidth_Defaults=
+_BlzFrameGetWidth_Category=TC_FRAMEHANDLE
+
+BlzFrameGetChildrenCount=2,1,integer,framehandle
+_BlzFrameGetChildrenCount_DisplayName="Children count of Frame"
+_BlzFrameGetChildrenCount_Parameters="Children count of ,~Frame,"
+_BlzFrameGetChildrenCount_Defaults=
+_BlzFrameGetChildrenCount_Category=TC_FRAMEHANDLE
+
+BlzFrameGetChild=2,1,framehandle,framehandle,integer
+_BlzFrameGetChild_DisplayName="Get Child"
+_BlzFrameGetChild_Parameters="Child of ,~Frame, at index ,~Index,"
+_BlzFrameGetChild_Defaults=_,0
+_BlzFrameGetChild_Category=TC_FRAMEHANDLE
+
+BlzGetTriggerFrame=2,1,framehandle,nothing
+_BlzGetTriggerFrame_DisplayName="Triggering Frame"
+_BlzGetTriggerFrame_Parameters="Triggering frame"
+_BlzGetTriggerFrame_Defaults=
+_BlzGetTriggerFrame_Category=TC_FRAMEHANDLE
+
+BlzGetTriggerFrameEvent=2,1,frameeventtype,nothing
+_BlzGetTriggerFrameEvent_DisplayName="Frame Event"
+_BlzGetTriggerFrameEvent_Parameters="Frame event"
+_BlzGetTriggerFrameEvent_Defaults=
+_BlzGetTriggerFrameEvent_Category=TC_FRAMEHANDLE
+
+BlzGetTriggerFrameValue=2,1,real,nothing
+_BlzGetTriggerFrameValue_DisplayName="Triggering Frame Value"
+_BlzGetTriggerFrameValue_Parameters="Triggering frame value"
+_BlzGetTriggerFrameValue_Defaults=
+_BlzGetTriggerFrameValue_Category=TC_FRAMEHANDLE
+
+BlzGetTriggerFrameText=2,1,string,nothing
+_BlzGetTriggerFrameText_DisplayName="Triggering Frame String"
+_BlzGetTriggerFrameText_Parameters="Triggering frame string"
+_BlzGetTriggerFrameText_Defaults=
+_BlzGetTriggerFrameText_Category=TC_FRAMEHANDLE
+
+BlzGetTriggerSyncPrefix=2,1,string,nothing
+_BlzGetTriggerSyncPrefix_DisplayName="Synchronization Prefix"
+_BlzGetTriggerSyncPrefix_Parameters="Synchronization prefix"
+_BlzGetTriggerSyncPrefix_Defaults=
+_BlzGetTriggerSyncPrefix_Category=TC_PLAYER
+
+BlzGetTriggerSyncData=2,1,string,nothing
+_BlzGetTriggerSyncData_DisplayName="Synchronization Data"
+_BlzGetTriggerSyncData_Parameters="Synchronization data"
+_BlzGetTriggerSyncData_Defaults=
+_BlzGetTriggerSyncData_Category=TC_PLAYER
+
+BlzGetTriggerPlayerKey=2,1,oskeytype,nothing
+_BlzGetTriggerPlayerKey_DisplayName="Used Key"
+_BlzGetTriggerPlayerKey_Parameters="Used key"
+_BlzGetTriggerPlayerKey_Defaults=
+_BlzGetTriggerPlayerKey_Category=TC_PLAYER
+
+BlzGetTriggerPlayerMetaKey=2,1,oskeytypemeta,nothing
+_BlzGetTriggerPlayerMetaKey_DisplayName="Used Modifier Key"
+_BlzGetTriggerPlayerMetaKey_Parameters="Used modifier key"
+_BlzGetTriggerPlayerMetaKey_Defaults=
+_BlzGetTriggerPlayerMetaKey_Category=TC_PLAYER
+
+BlzGetTriggerPlayerIsKeyDown=2,1,boolean,nothing
+_BlzGetTriggerPlayerIsKeyDown_DisplayName="Is Key Down"
+_BlzGetTriggerPlayerIsKeyDown_Parameters="Is key down"
+_BlzGetTriggerPlayerIsKeyDown_Defaults=
+_BlzGetTriggerPlayerIsKeyDown_Category=TC_PLAYER
+
+BlzGetLocalClientHeight=2,1,integer,nothing
+_BlzGetLocalClientHeight_DisplayName="Game Window Height"
+_BlzGetLocalClientHeight_Parameters="Game window height"
+_BlzGetLocalClientHeight_Defaults=
+_BlzGetLocalClientHeight_Category=TC_PLAYER
+
+BlzGetLocalClientWidth=2,1,integer,nothing
+_BlzGetLocalClientWidth_DisplayName="Game Window Width"
+_BlzGetLocalClientWidth_Parameters="Game window width"
+_BlzGetLocalClientWidth_Defaults=
+_BlzGetLocalClientWidth_Category=TC_PLAYER
+
+BlzIsLocalClientActive=2,1,boolean,nothing
+_BlzIsLocalClientActive_DisplayName="Is Client Active"
+_BlzIsLocalClientActive_Parameters="Is client active"
+_BlzIsLocalClientActive_Defaults=
+_BlzIsLocalClientActive_Category=TC_PLAYER
+
+BlzGetMouseFocusUnit=2,1,unit,nothing
+_BlzGetMouseFocusUnit_DisplayName="Unit At Mouse Position"
+_BlzGetMouseFocusUnit_Parameters="Unit at mouse position"
+_BlzGetMouseFocusUnit_Defaults=
+_BlzGetMouseFocusUnit_Category=TC_UNIT
+
+BlzGetLocale=2,1,string,nothing
+_BlzGetLocale_DisplayName="Game Locale"
+_BlzGetLocale_Parameters="Game Locale"
+_BlzGetLocale_Defaults=
+_BlzGetLocale_Category=TC_PLAYER
+
+BlzGetSpecialEffectScale=2,1,real,effect
+_BlzGetSpecialEffectScale_DisplayName="Special Effect Scale"
+_BlzGetSpecialEffectScale_Parameters="Scale of ,~Special Effect,"
+_BlzGetSpecialEffectScale_Defaults=
+_BlzGetSpecialEffectScale_Category=TC_SPECIALEFFECT
+
+BlzGetUnitAbilityByIndex=2,1,ability,unit,integer
+_BlzGetUnitAbilityByIndex_DisplayName="Unit Ability Index"
+_BlzGetUnitAbilityByIndex_Parameters=",~Unit,'s ability index ,~Number,"
+_BlzGetUnitAbilityByIndex_Defaults=_,0
+_BlzGetUnitAbilityByIndex_Category=TC_UNIT
