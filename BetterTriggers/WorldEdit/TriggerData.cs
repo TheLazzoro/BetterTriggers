@@ -132,10 +132,10 @@ namespace BetterTriggers.WorldEdit
                 Category.Create(TriggerCategory.TC_CONDITION_NEW, img, "???", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
-                Category.Create(TriggerCategory.TC_EVENT, img, "???", false);
+                Category.Create(TriggerCategory.TC_EVENT, img, "Event", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
-                Category.Create(TriggerCategory.TC_ERROR, img, "???", false);
+                Category.Create(TriggerCategory.TC_ERROR, img, "Error", false);
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
                 Category.Create(TriggerCategory.TC_INVALID, img, "???", false);
@@ -240,7 +240,7 @@ namespace BetterTriggers.WorldEdit
                 string key = preset.KeyName;
 
                 string variableType = values[1];
-                string codeText = values[2].Replace("\"", "").Replace("`", "");
+                string codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
                 string displayText = Locale.Translate(values[3]);
 
                 ConstantTemplate constant = new ConstantTemplate()
@@ -300,6 +300,7 @@ namespace BetterTriggers.WorldEdit
                 template.parameters = defaults;
             }
         }
+
 
         private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary)
         {
@@ -476,7 +477,8 @@ namespace BetterTriggers.WorldEdit
 
             FunctionTemplate functionTemplate;
             FunctionsAll.TryGetValue(f.value, out functionTemplate);
-            functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
+            if(functionTemplate != null)
+                functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
 
             return list;
         }
@@ -522,6 +524,16 @@ namespace BetterTriggers.WorldEdit
         {
             ConstantTemplate temp;
             bool exists = ConstantTemplates.TryGetValue(value, out temp);
+            return exists;
+        }
+
+        internal static bool FunctionExists(Function function)
+        {
+            if (function == null)
+                return false;
+
+            bool exists = false;
+            exists = FunctionsAll.ContainsKey(function.value);
             return exists;
         }
     }

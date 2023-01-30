@@ -230,22 +230,24 @@ TextChannelAllies=2,textchannel,1,Allies
 TextChannelObservers=2,textchannel,2,Observers
 TextChannelPrivate=2,textchannel,3,Private
 
-FrameEventClick=2,frameeventtype,FRAMEEVENT_CONTROL_CLICK,WE_STRING_FRAMEEVENT_CONTROL_CLICK
-FrameEventMouseEnter=2,frameeventtype,FRAMEEVENT_MOUSE_ENTER,WE_STRING_FRAMEEVENT_MOUSE_ENTER
-FrameEventMouseLeave=2,frameeventtype,FRAMEEVENT_MOUSE_LEAVE,WE_STRING_FRAMEEVENT_MOUSE_LEAVE
-FrameEventMouseUp=2,frameeventtype,FRAMEEVENT_MOUSE_UP,WE_STRING_FRAMEEVENT_MOUSE_UP
-FrameEventMouseDown=2,frameeventtype,FRAMEEVENT_MOUSE_DOWN,WE_STRING_FRAMEEVENT_MOUSE_DOWN
-FrameEventMouseWheel=2,frameeventtype,FRAMEEVENT_MOUSE_WHEEL,WE_STRING_FRAMEEVENT_MOUSE_WHEEL
-FrameEventCheckboxChecked=2,frameeventtype,FRAMEEVENT_CHECKBOX_CHECKED,WE_STRING_FRAMEEVENT_CHECKBOX_CHECKED
-FrameEventCheckboxUnchecked=2,frameeventtype,FRAMEEVENT_CHECKBOX_UNCHECKED,WE_STRING_FRAMEEVENT_CHECKBOX_UNCHECKED
-FrameEventEditboxTextChanged=2,frameeventtype,FRAMEEVENT_EDITBOX_TEXT_CHANGED,WE_STRING_FRAMEEVENT_EDITBOX_TEXT_CHANGED
-FrameEventPopupMenuItemChanged=2,frameeventtype,FRAMEEVENT_POPUPMENU_ITEM_CHANGED,WE_STRING_FRAMEEVENT_POPUPMENU_ITEM_CHANGED
-FrameEventMouseDoubleClick=2,frameeventtype,FRAMEEVENT_MOUSE_DOUBLECLICK,WE_STRING_FRAMEEVENT_MOUSE_DOUBLECLICK
-FrameEventSpriteAnimUpdate=2,frameeventtype,FRAMEEVENT_SPRITE_ANIM_UPDATE,WE_STRING_FRAMEEVENT_SPRITE_ANIM_UPDATE
-FrameEventSliderValueChanged=2,frameeventtype,FRAMEEVENT_SLIDER_VALUE_CHANGED,WE_STRING_FRAMEEVENT_SLIDER_VALUE_CHANGED
-FrameEventDialogCancel=2,frameeventtype,FRAMEEVENT_DIALOG_CANCEL,WE_STRING_FRAMEEVENT_DIALOG_CANCEL
-FrameEventDialogAccept=2,frameeventtype,FRAMEEVENT_DIALOG_ACCEPT,WE_STRING_FRAMEEVENT_DIALOG_ACCEPT
-FrameEventEditboxEnter=2,frameeventtype,FRAMEEVENT_EDITBOX_ENTER,WE_STRING_FRAMEEVENT_EDITBOX_ENTER
+GenFrameEventVar=2,frameeventvar,|bt_genericFrameEvent|,YouShouldNotSeeThis
+
+GenFrameEventClick=2,genericframeeventtype,1.0,WE_STRING_FRAMEEVENT_CONTROL_CLICK
+GenFrameEventMouseEnter=2,genericframeeventtype,2.0,WE_STRING_FRAMEEVENT_MOUSE_ENTER
+GenFrameEventMouseLeave=2,genericframeeventtype,3.0,WE_STRING_FRAMEEVENT_MOUSE_LEAVE
+GenFrameEventMouseUp=2,genericframeeventtype,4.0,WE_STRING_FRAMEEVENT_MOUSE_UP
+GenFrameEventMouseDown=2,genericframeeventtype,5.0,WE_STRING_FRAMEEVENT_MOUSE_DOWN
+GenFrameEventMouseWheel=2,genericframeeventtype,6.0,WE_STRING_FRAMEEVENT_MOUSE_WHEEL
+GenFrameEventCheckboxChecked=2,genericframeeventtype,7.0,WE_STRING_FRAMEEVENT_CHECKBOX_CHECKED
+GenFrameEventCheckboxUnchecked=2,genericframeeventtype,8.0,WE_STRING_FRAMEEVENT_CHECKBOX_UNCHECKED
+GenFrameEventEditboxTextChanged=2,genericframeeventtype,9.0,WE_STRING_FRAMEEVENT_EDITBOX_TEXT_CHANGED
+GenFrameEventPopupMenuItemChanged=2,genericframeeventtype,10.0,WE_STRING_FRAMEEVENT_POPUPMENU_ITEM_CHANGED
+GenFrameEventMouseDoubleClick=2,genericframeeventtype,11.0,WE_STRING_FRAMEEVENT_MOUSE_DOUBLECLICK
+GenFrameEventSpriteAnimUpdate=2,genericframeeventtype,12.0,WE_STRING_FRAMEEVENT_SPRITE_ANIM_UPDATE
+GenFrameEventSliderValueChanged=2,genericframeeventtype,13.0,WE_STRING_FRAMEEVENT_SLIDER_VALUE_CHANGED
+GenFrameEventDialogCancel=2,genericframeeventtype,14.0,WE_STRING_FRAMEEVENT_DIALOG_CANCEL
+GenFrameEventDialogAccept=2,genericframeeventtype,15.0,WE_STRING_FRAMEEVENT_DIALOG_ACCEPT
+GenFrameEventEditboxEnter=2,genericframeeventtype,16.0,WE_STRING_FRAMEEVENT_EDITBOX_ENTER
 
 OriginFrameGameUI=2,originframetype,ORIGIN_FRAME_GAME_UI,WE_STRING_ORIGIN_FRAME_GAME_UI
 OriginFrameCommandButton=2,originframetype,ORIGIN_FRAME_COMMAND_BUTTON,WE_STRING_ORIGIN_FRAME_COMMAND_BUTTON
@@ -291,11 +293,6 @@ FramePointBottomRight=2,framepointtype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPOI
 // Value 1+: argument types
 // Note that the first argument is always a `trigger`, and is excluded here
 
-BlzTriggerRegisterFrameEvent=2,framehandle,frameeventtype
-_BlzTriggerRegisterFrameEvent_DisplayName="Generic Frame Event"
-_BlzTriggerRegisterFrameEvent_Parameters="Register ,~Frame, ,~Event,"
-_BlzTriggerRegisterFrameEvent_Category=TC_FRAMEHANDLE
-
 BlzTriggerRegisterPlayerSyncEvent=2,player,string,boolean
 _BlzTriggerRegisterPlayerSyncEvent_DisplayName="Register Synchronization Event"
 _BlzTriggerRegisterPlayerSyncEvent_Parameters="Register synchronization event by ,~Player, prefix ,~Prefix, from server ,~Boolean,"
@@ -307,6 +304,14 @@ _BlzTriggerRegisterPlayerKeyEvent_DisplayName="Keyboard Event (New)"
 _BlzTriggerRegisterPlayerKeyEvent_Parameters=",~Player, uses ,~Key, with modifier ,~Modifier, and key was ,~Key Action,"
 _BlzTriggerRegisterPlayerKeyEvent_Defaults=_,_,OSKEYMETA_NONE,OSKEY_KEYDOWN
 _BlzTriggerRegisterPlayerKeyEvent_Category=TC_PLAYER
+
+BTRegisterGenericFrameEvent=2,genericframeeventtype,limitop,frameeventvar
+_BTRegisterGenericFrameEvent_DisplayName="Generic Frame Event"
+_BTRegisterGenericFrameEvent_Parameters="Register frame ,~Event,"
+_BTRegisterGenericFrameEvent_Defaults=GenFrameEventClick,LimitOpEqual,GenFrameEventVar
+_BTRegisterGenericFrameEvent_Category=TC_FRAMEHANDLE
+_BTRegisterGenericFrameEvent_ScriptName=TriggerRegisterGenericFrameEventBT
+
 
 
 //***************************************************************************
@@ -357,7 +362,7 @@ _BlzLoadTOCFile_Category=TC_FRAMEHANDLE
 BlzCreateFrame=2,string,framehandle,integer,integer
 _BlzCreateFrame_DisplayName="Create Frame"
 _BlzCreateFrame_Parameters="Create a ,~Frame type, frame with parent ,~Parent, with priority ,~Priority, and context ,~Context,"
-_BlzCreateFrame_Defaults=
+_BlzCreateFrame_Defaults=_,BlzGetOriginFrame,0,0
 _BlzCreateFrame_Category=TC_FRAMEHANDLE
 _BlzCreateFrame_ScriptName=BlzCreateFrameBT
 
@@ -379,15 +384,16 @@ _BlzDestroyFrame_Parameters="Destroy ,~Frame,"
 _BlzDestroyFrame_Defaults=
 _BlzDestroyFrame_Category=TC_FRAMEHANDLE
 
+// TODO: Test this native
 BlzFrameSetPoint=2,framehandle,framepointtype,framehandle,framepointtype,real,real
-_BlzFrameSetPoint_DisplayName="Set Point"
-_BlzFrameSetPoint_Parameters="Set ,~Frame, ,~Point Type, relative to ,~Frame, ,~Relative Point, with coordinates X: ,~Number, Y: ,~Number,"
+_BlzFrameSetPoint_DisplayName="Change Screen Position"
+_BlzFrameSetPoint_Parameters="Change ,~Frame, anchor point to ,~Point Type, relative to ,~Frame, ,~Relative Point, with coordinates X: ,~Number, Y: ,~Number,"
 _BlzFrameSetPoint_Defaults=_,FramePointTopLeft,_,0.4,0.3
 _BlzFrameSetPoint_Category=TC_FRAMEHANDLE
 
 BlzFrameSetAbsPoint=2,framehandle,framepointtype,real,real
-_BlzFrameSetAbsPoint_DisplayName="Set Absolute Point"
-_BlzFrameSetAbsPoint_Parameters="Set ,~Frame, to ,~Point Type, with coordinates X: ,~Number, Y: ,~Number,"
+_BlzFrameSetAbsPoint_DisplayName="Change Absolute Screen Position"
+_BlzFrameSetAbsPoint_Parameters="Change ,~Frame, anchor point to ,~Point Type, and absolute screen coordinates X: ,~Number, Y: ,~Number,"
 _BlzFrameSetAbsPoint_Defaults=_,FramePointTopLeft,0.4,0.3
 _BlzFrameSetAbsPoint_Category=TC_FRAMEHANDLE
 
@@ -620,7 +626,7 @@ _BlzConvertColor_Category=TC_CONVERSION
 BlzGetOriginFrame=2,1,framehandle,originframetype,integer
 _BlzGetOriginFrame_DisplayName="Get Origin Frame"
 _BlzGetOriginFrame_Parameters="Get origin frame ,~Type, at index ,~Index,"
-_BlzGetOriginFrame_Defaults=ORIGIN_FRAME_GAME_UI,0
+_BlzGetOriginFrame_Defaults=OriginFrameGameUI,0
 _BlzGetOriginFrame_Category=TC_FRAMEHANDLE
 
 GetLastCreatedFrame=2,1,framehandle
@@ -713,7 +719,7 @@ _BlzGetTriggerFrame_Parameters="Triggering frame"
 _BlzGetTriggerFrame_Defaults=
 _BlzGetTriggerFrame_Category=TC_FRAMEHANDLE
 
-BlzGetTriggerFrameEvent=2,1,frameeventtype,nothing
+BlzGetTriggerFrameEvent=2,1,genericframeeventtype,nothing
 _BlzGetTriggerFrameEvent_DisplayName="Frame Event"
 _BlzGetTriggerFrameEvent_Parameters="Frame event"
 _BlzGetTriggerFrameEvent_Defaults=

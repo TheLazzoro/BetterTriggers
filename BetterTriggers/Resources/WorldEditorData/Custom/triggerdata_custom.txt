@@ -37,7 +37,11 @@
 // Value 1+: argument types
 // Note that the first argument is always a `trigger`, and is excluded here
 
-
+InvalidECA=0,nothing
+_InvalidECA_DisplayName="Invalid Trigger Element"
+_InvalidECA_Parameters="Invalid trigger element"
+_InvalidECA_Defaults=
+_InvalidECA_Category=TC_ERROR
 
 //***************************************************************************
 [TriggerActions]

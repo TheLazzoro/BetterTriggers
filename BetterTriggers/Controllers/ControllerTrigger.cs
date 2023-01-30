@@ -217,66 +217,72 @@ namespace BetterTriggers.Controllers
                     continue;
                 }
 
-                var triggerElement = (ECA)triggerElements[i];
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(triggerElement.function);
-                removeCount += VerifyParametersAndRemove(trig, triggerElement.function.parameters, returnTypes);
-
-
-                if (triggerElement is IfThenElse)
+                var eca = (ECA)triggerElements[i];
+                bool ecaExists = TriggerData.FunctionExists(eca.function);
+                if(!ecaExists)
                 {
-                    var special = (IfThenElse)triggerElement;
+                    triggerElements[i] = new InvalidECA();
+                    removeCount += 1;
+                }
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
+                removeCount += VerifyParametersAndRemove(trig, eca.function.parameters, returnTypes);
+
+
+                if (eca is IfThenElse)
+                {
+                    var special = (IfThenElse)eca;
                     removeCount += RemoveInvalidReferences(trig, special.If);
                     removeCount += RemoveInvalidReferences(trig, special.Then);
                     removeCount += RemoveInvalidReferences(trig, special.Else);
                 }
-                else if (triggerElement is AndMultiple)
+                else if (eca is AndMultiple)
                 {
-                    var special = (AndMultiple)triggerElement;
+                    var special = (AndMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.And);
                 }
-                else if (triggerElement is ForForceMultiple)
+                else if (eca is ForForceMultiple)
                 {
-                    var special = (ForForceMultiple)triggerElement;
+                    var special = (ForForceMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
-                else if (triggerElement is ForGroupMultiple)
+                else if (eca is ForGroupMultiple)
                 {
-                    var special = (ForGroupMultiple)triggerElement;
+                    var special = (ForGroupMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
-                else if (triggerElement is ForLoopAMultiple)
+                else if (eca is ForLoopAMultiple)
                 {
-                    var special = (ForLoopAMultiple)triggerElement;
+                    var special = (ForLoopAMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
-                else if (triggerElement is ForLoopBMultiple)
+                else if (eca is ForLoopBMultiple)
                 {
-                    var special = (ForLoopBMultiple)triggerElement;
+                    var special = (ForLoopBMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
-                else if (triggerElement is ForLoopVarMultiple)
+                else if (eca is ForLoopVarMultiple)
                 {
-                    var special = (ForLoopVarMultiple)triggerElement;
+                    var special = (ForLoopVarMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
-                else if (triggerElement is OrMultiple)
+                else if (eca is OrMultiple)
                 {
-                    var special = (OrMultiple)triggerElement;
+                    var special = (OrMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Or);
                 }
-                else if (triggerElement is EnumDestructablesInRectAllMultiple)
+                else if (eca is EnumDestructablesInRectAllMultiple)
                 {
-                    var special = (EnumDestructablesInRectAllMultiple)triggerElement;
+                    var special = (EnumDestructablesInRectAllMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
-                else if (triggerElement is EnumDestructiblesInCircleBJMultiple)
+                else if (eca is EnumDestructiblesInCircleBJMultiple)
                 {
-                    var special = (EnumDestructiblesInCircleBJMultiple)triggerElement;
+                    var special = (EnumDestructiblesInCircleBJMultiple)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
-                else if (triggerElement is EnumItemsInRectBJ)
+                else if (eca is EnumItemsInRectBJ)
                 {
-                    var special = (EnumItemsInRectBJ)triggerElement;
+                    var special = (EnumItemsInRectBJ)eca;
                     removeCount += RemoveInvalidReferences(trig, special.Actions);
                 }
             }
@@ -295,9 +301,11 @@ namespace BetterTriggers.Controllers
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                if (parameter is VariableRef)
+                
+
+                if (parameter is VariableRef varRef)
                 {
-                    Variable variable = ControllerVariable.GetByReference(parameter as VariableRef, trig);
+                    Variable variable = ControllerVariable.GetByReference(varRef, trig);
                     if (variable == null)
                     {
                         removeCount++;
@@ -313,10 +321,10 @@ namespace BetterTriggers.Controllers
                         parameters[i] = new Parameter();
                     }
                 }
-                else if (parameter is Value)
+                else if (parameter is Value value)
                 {
-                    bool exists = ControllerMapData.ReferencedDataExists(parameter as Value, returnTypes[i]);
-                    if (!exists)
+                    bool refExists = ControllerMapData.ReferencedDataExists(value, returnTypes[i]);
+                    if (!refExists)
                     {
                         removeCount++;
                         parameters[i] = new Parameter();
@@ -324,11 +332,26 @@ namespace BetterTriggers.Controllers
 
                 }
 
-                if (parameter is Function)
+                if (parameter is Function function)
                 {
-                    var function = (Function)parameter;
+                    bool functionExists = TriggerData.FunctionExists(function);
+                    if (!functionExists)
+                    {
+                        parameters[i] = new Parameter();
+                        removeCount++;
+                    }
+
                     List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
                     removeCount += VerifyParametersAndRemove(trig, function.parameters, _returnTypes);
+                }
+                else if(parameter is Constant constant)
+                {
+                    bool constantExists = TriggerData.ConstantExists(constant.value);
+                    if (!constantExists)
+                    {
+                        parameters[i] = new Parameter();
+                        removeCount++;
+                    }
                 }
             }
 

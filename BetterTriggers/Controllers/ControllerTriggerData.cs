@@ -26,7 +26,8 @@ namespace BetterTriggers.Controllers
             while (enumerator.MoveNext())
             {
                 var template = enumerator.Current.Value;
-                list.Add(template.Clone());
+                if(template.value != "InvalidECA")
+                    list.Add(template.Clone());
             }
             return list;
         }
@@ -101,7 +102,8 @@ namespace BetterTriggers.Controllers
             while (enumerator.MoveNext())
             {
                 var template = enumerator.Current.Value;
-                list.Add(template.Clone());
+                if (template.value != "InvalidECA")
+                    list.Add(template.Clone());
             }
             return list;
         }
@@ -113,7 +115,8 @@ namespace BetterTriggers.Controllers
             while (enumerator.MoveNext())
             {
                 var template = enumerator.Current.Value;
-                list.Add(template.Clone());
+                if (template.value != "InvalidECA")
+                    list.Add(template.Clone());
             }
             return list;
         }
@@ -125,7 +128,8 @@ namespace BetterTriggers.Controllers
             while (enumerator.MoveNext())
             {
                 var template = enumerator.Current.Value;
-                list.Add(template.Clone());
+                if (template.value != "InvalidECA")
+                    list.Add(template.Clone());
             }
             return list;
         }
@@ -192,9 +196,6 @@ namespace BetterTriggers.Controllers
             }
             else if (triggerElement is LocalVariable)
                 category = TriggerCategory.TC_LOCAL_VARIABLE;
-
-            if (category == null || category == string.Empty)
-                throw new Exception("Category was null");
 
             return category;
         }

@@ -1677,7 +1677,7 @@ end
 
             foreach (ECA e in t.trigger.Events)
             {
-                if (!e.isEnabled)
+                if (!e.isEnabled || e is InvalidECA)
                     continue;
 
                 if (e.function.value == "MapInitializationEvent")
@@ -1762,7 +1762,7 @@ end
 
         private string ConvertTriggerElementToJass(ECA t, PreActions pre_actions, bool nested)
         {
-            if (!t.isEnabled)
+            if (!t.isEnabled || t is InvalidECA)
                 return "";
             if (ControllerTrigger.VerifyParameters(t.function.parameters) > 0)
                 return "";
