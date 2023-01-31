@@ -122,6 +122,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 case "scriptcode":
                     this.valueControl = new ValueControlScript();
                     break;
+                case "frameevents":
+                    this.valueControl = new ValueControlFrameEvents();
+                    break;
                 default:
                     break;
             }

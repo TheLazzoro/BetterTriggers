@@ -2,4 +2,10 @@
 // Key: Preset name
 // Value 0: Return type
 
+bt_genericFrameEvent=real
 bt_lastCreatedFrame=framehandle
+bt_triggerFrame=framehandle
+bt_triggerFramePlayer=player
+bt_triggerFrameEvent=frameeventtype
+bt_triggerFrameValue=real
+bt_triggerFrameText=string

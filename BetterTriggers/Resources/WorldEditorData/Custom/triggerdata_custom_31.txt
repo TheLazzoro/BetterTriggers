@@ -12,6 +12,7 @@
 // Trigger Variable Types
 // These are sorted so that they appear as such in the Variables dialog.
 framehandle=2,1,1,WESTRING_TRIGTYPE_framehandle
+frameevents=2,0,1,Frame Event,string
 
 
 //***************************************************************************
@@ -238,16 +239,16 @@ GenFrameEventMouseLeave=2,genericframeeventtype,3.0,WE_STRING_FRAMEEVENT_MOUSE_L
 GenFrameEventMouseUp=2,genericframeeventtype,4.0,WE_STRING_FRAMEEVENT_MOUSE_UP
 GenFrameEventMouseDown=2,genericframeeventtype,5.0,WE_STRING_FRAMEEVENT_MOUSE_DOWN
 GenFrameEventMouseWheel=2,genericframeeventtype,6.0,WE_STRING_FRAMEEVENT_MOUSE_WHEEL
-GenFrameEventCheckboxChecked=2,genericframeeventtype,7.0,WE_STRING_FRAMEEVENT_CHECKBOX_CHECKED
-GenFrameEventCheckboxUnchecked=2,genericframeeventtype,8.0,WE_STRING_FRAMEEVENT_CHECKBOX_UNCHECKED
-GenFrameEventEditboxTextChanged=2,genericframeeventtype,9.0,WE_STRING_FRAMEEVENT_EDITBOX_TEXT_CHANGED
-GenFrameEventPopupMenuItemChanged=2,genericframeeventtype,10.0,WE_STRING_FRAMEEVENT_POPUPMENU_ITEM_CHANGED
-GenFrameEventMouseDoubleClick=2,genericframeeventtype,11.0,WE_STRING_FRAMEEVENT_MOUSE_DOUBLECLICK
-GenFrameEventSpriteAnimUpdate=2,genericframeeventtype,12.0,WE_STRING_FRAMEEVENT_SPRITE_ANIM_UPDATE
-GenFrameEventSliderValueChanged=2,genericframeeventtype,13.0,WE_STRING_FRAMEEVENT_SLIDER_VALUE_CHANGED
-GenFrameEventDialogCancel=2,genericframeeventtype,14.0,WE_STRING_FRAMEEVENT_DIALOG_CANCEL
-GenFrameEventDialogAccept=2,genericframeeventtype,15.0,WE_STRING_FRAMEEVENT_DIALOG_ACCEPT
-GenFrameEventEditboxEnter=2,genericframeeventtype,16.0,WE_STRING_FRAMEEVENT_EDITBOX_ENTER
+GenFrameEventMouseDoubleClick=2,genericframeeventtype,7.0,WE_STRING_FRAMEEVENT_MOUSE_DOUBLECLICK
+GenFrameEventCheckboxChecked=2,genericframeeventtype,8.0,WE_STRING_FRAMEEVENT_CHECKBOX_CHECKED
+GenFrameEventCheckboxUnchecked=2,genericframeeventtype,9.0,WE_STRING_FRAMEEVENT_CHECKBOX_UNCHECKED
+GenFrameEventEditboxTextChanged=2,genericframeeventtype,10.0,WE_STRING_FRAMEEVENT_EDITBOX_TEXT_CHANGED
+GenFrameEventEditboxEnter=2,genericframeeventtype,11.0,WE_STRING_FRAMEEVENT_EDITBOX_ENTER
+GenFrameEventPopupMenuItemChanged=2,genericframeeventtype,12.0,WE_STRING_FRAMEEVENT_POPUPMENU_ITEM_CHANGED
+GenFrameEventSpriteAnimUpdate=2,genericframeeventtype,13.0,WE_STRING_FRAMEEVENT_SPRITE_ANIM_UPDATE
+GenFrameEventSliderValueChanged=2,genericframeeventtype,14.0,WE_STRING_FRAMEEVENT_SLIDER_VALUE_CHANGED
+GenFrameEventDialogCancel=2,genericframeeventtype,15.0,WE_STRING_FRAMEEVENT_DIALOG_CANCEL
+GenFrameEventDialogAccept=2,genericframeeventtype,16.0,WE_STRING_FRAMEEVENT_DIALOG_ACCEPT
 
 OriginFrameGameUI=2,originframetype,ORIGIN_FRAME_GAME_UI,WE_STRING_ORIGIN_FRAME_GAME_UI
 OriginFrameCommandButton=2,originframetype,ORIGIN_FRAME_COMMAND_BUTTON,WE_STRING_ORIGIN_FRAME_COMMAND_BUTTON
@@ -359,12 +360,11 @@ _BlzLoadTOCFile_Parameters="Load TOC ,~Filename,"
 _BlzLoadTOCFile_Defaults=
 _BlzLoadTOCFile_Category=TC_FRAMEHANDLE
 
-BlzCreateFrame=2,string,framehandle,integer,integer
-_BlzCreateFrame_DisplayName="Create Frame"
-_BlzCreateFrame_Parameters="Create a ,~Frame type, frame with parent ,~Parent, with priority ,~Priority, and context ,~Context,"
-_BlzCreateFrame_Defaults=_,BlzGetOriginFrame,0,0
-_BlzCreateFrame_Category=TC_FRAMEHANDLE
-_BlzCreateFrame_ScriptName=BlzCreateFrameBT
+BlzCreateFrameBT=2,string,framehandle,integer,integer,frameevents
+_BlzCreateFrameBT_DisplayName="Create Frame"
+_BlzCreateFrameBT_Parameters="Create a ,~Frame type, frame with parent ,~Parent,, priority ,~Priority,, context ,~Context,, and enable events ,~Events,"
+_BlzCreateFrameBT_Defaults=_,BlzGetOriginFrame,0,0
+_BlzCreateFrameBT_Category=TC_FRAMEHANDLE
 
 BlzCreateSimpleFrame=2,string,framehandle,integer
 _BlzCreateSimpleFrame_DisplayName="Create Simple Frame"
@@ -372,11 +372,11 @@ _BlzCreateSimpleFrame_Parameters="Create a simple frame ,~Frame type, with paren
 _BlzCreateSimpleFrame_Defaults=
 _BlzCreateSimpleFrame_Category=TC_FRAMEHANDLE
 
-BlzCreateFrameByType=2,string,string,framehandle,string,integer
-_BlzCreateFrameByType_DisplayName="Create Frame By Type"
-_BlzCreateFrameByType_Parameters="Create a ,~Frame Type, ,~Name, frame with parent ,~Parent, with priority ,~Priority, and context ,~Context,"
-_BlzCreateFrameByType_Defaults=
-_BlzCreateFrameByType_Category=TC_FRAMEHANDLE
+BlzCreateFrameByTypeBT=2,string,string,framehandle,string,integer,frameevents
+_BlzCreateFrameByTypeBT_DisplayName="Create Frame By Type"
+_BlzCreateFrameByTypeBT_Parameters="Create a ,~Frame Type, ,~Name, frame with parent ,~Parent, inherits ,~Number, context ,~Context,, and enable events ,~Events,"
+_BlzCreateFrameByTypeBT_Defaults=
+_BlzCreateFrameByTypeBT_Category=TC_FRAMEHANDLE
 
 BlzDestroyFrame=2,framehandle
 _BlzDestroyFrame_DisplayName="Destroy Frame"
@@ -629,11 +629,11 @@ _BlzGetOriginFrame_Parameters="Get origin frame ,~Type, at index ,~Index,"
 _BlzGetOriginFrame_Defaults=OriginFrameGameUI,0
 _BlzGetOriginFrame_Category=TC_FRAMEHANDLE
 
-GetLastCreatedFrame=2,1,framehandle
-_GetLastCreatedFrame_DisplayName="Last Created Frame"
-_GetLastCreatedFrame_Parameters="Last created frame"
-_GetLastCreatedFrame_Defaults=
-_GetLastCreatedFrame_Category=TC_FRAMEHANDLE
+GetLastCreatedFrameBT=2,1,framehandle
+_GetLastCreatedFrameBT_DisplayName="Last Created Frame"
+_GetLastCreatedFrameBT_Parameters="Last created frame"
+_GetLastCreatedFrameBT_Defaults=
+_GetLastCreatedFrameBT_Category=TC_FRAMEHANDLE
 
 BlzFrameIsVisible=2,1,boolean,framehandle
 _BlzFrameIsVisible_DisplayName="Is Frame Visible"
@@ -713,29 +713,35 @@ _BlzFrameGetChild_Parameters="Child of ,~Frame, at index ,~Index,"
 _BlzFrameGetChild_Defaults=_,0
 _BlzFrameGetChild_Category=TC_FRAMEHANDLE
 
-BlzGetTriggerFrame=2,1,framehandle,nothing
-_BlzGetTriggerFrame_DisplayName="Triggering Frame"
-_BlzGetTriggerFrame_Parameters="Triggering frame"
-_BlzGetTriggerFrame_Defaults=
-_BlzGetTriggerFrame_Category=TC_FRAMEHANDLE
+GetTriggerFrameBT=2,1,framehandle,nothing
+_GetTriggerFrameBT_DisplayName="Triggering Frame"
+_GetTriggerFrameBT_Parameters="Triggering frame"
+_GetTriggerFrameBT_Defaults=
+_GetTriggerFrameBT_Category=TC_FRAMEHANDLE
 
-BlzGetTriggerFrameEvent=2,1,genericframeeventtype,nothing
-_BlzGetTriggerFrameEvent_DisplayName="Frame Event"
-_BlzGetTriggerFrameEvent_Parameters="Frame event"
-_BlzGetTriggerFrameEvent_Defaults=
-_BlzGetTriggerFrameEvent_Category=TC_FRAMEHANDLE
+GetTriggerFramePlayerBT=2,1,player,nothing
+_GetTriggerFramePlayerBT_DisplayName="Triggering Frame Player"
+_GetTriggerFramePlayerBT_Parameters="Triggering frame player"
+_GetTriggerFramePlayerBT_Defaults=
+_GetTriggerFramePlayerBT_Category=TC_PLAYER
 
-BlzGetTriggerFrameValue=2,1,real,nothing
-_BlzGetTriggerFrameValue_DisplayName="Triggering Frame Value"
-_BlzGetTriggerFrameValue_Parameters="Triggering frame value"
-_BlzGetTriggerFrameValue_Defaults=
-_BlzGetTriggerFrameValue_Category=TC_FRAMEHANDLE
+GetTriggerFrameEventBT=2,0,genericframeeventtype,nothing
+_GetTriggerFrameEventBT_DisplayName="Frame Event"
+_GetTriggerFrameEventBT_Parameters="Frame event"
+_GetTriggerFrameEventBT_Defaults=
+_GetTriggerFrameEventBT_Category=TC_FRAMEHANDLE
 
-BlzGetTriggerFrameText=2,1,string,nothing
-_BlzGetTriggerFrameText_DisplayName="Triggering Frame String"
-_BlzGetTriggerFrameText_Parameters="Triggering frame string"
-_BlzGetTriggerFrameText_Defaults=
-_BlzGetTriggerFrameText_Category=TC_FRAMEHANDLE
+GetTriggerFrameValueBT=2,1,real,nothing
+_GetTriggerFrameValueBT_DisplayName="Triggering Frame Value"
+_GetTriggerFrameValueBT_Parameters="Triggering frame value"
+_GetTriggerFrameValueBT_Defaults=
+_GetTriggerFrameValueBT_Category=TC_FRAMEHANDLE
+
+GetTriggerFrameTextBT=2,1,string,nothing
+_GetTriggerFrameTextBT_DisplayName="Triggering Frame String"
+_GetTriggerFrameTextBT_Parameters="Triggering frame string"
+_GetTriggerFrameTextBT_Defaults=
+_GetTriggerFrameTextBT_Category=TC_FRAMEHANDLE
 
 BlzGetTriggerSyncPrefix=2,1,string,nothing
 _BlzGetTriggerSyncPrefix_DisplayName="Synchronization Prefix"

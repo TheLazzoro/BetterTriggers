@@ -191,6 +191,9 @@ namespace BetterTriggers.WorldEdit
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadCustomBlizzardJ(dataCustom);
+
+                customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt"));
+                customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt"));
             }
             if (Casc.GameVersion.Minor >= 33)
             {

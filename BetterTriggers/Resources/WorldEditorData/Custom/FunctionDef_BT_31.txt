@@ -1,0 +1,303 @@
+﻿function TriggerRegisterGenericFrameEventBT takes trigger trig, real frameEvent, limitop opcode, string varName returns nothing
+    call TriggerRegisterVariableEvent(trig, varName, opcode, frameEvent)
+endfunction
+
+function GetLastCreatedFrameBT takes nothing returns framehandle
+    return bt_lastCreatedFrame
+endfunction
+
+function GetTriggerFrameBT takes nothing returns framehandle
+    return bt_triggerFrame
+endfunction
+
+function GetTriggerFramePlayerBT takes nothing returns player
+    return bt_triggerFramePlayer
+endfunction
+
+function GetTriggerFrameEventBT takes nothing returns frameeventtype
+    return bt_triggerFrameEvent
+endfunction
+
+function GetTriggerFrameValueBT takes nothing returns real
+    return bt_triggerFrameValue
+endfunction
+
+function GetTriggerFrameTextBT takes nothing returns string
+    return bt_triggerFrameText
+endfunction
+
+function TriggerAddFrameClickBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_CONTROL_CLICK
+    set bt_genericFrameEvent = 1.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameMouseEnterBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_MOUSE_ENTER
+    set bt_genericFrameEvent = 2.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameMouseLeaveBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_MOUSE_LEAVE
+    set bt_genericFrameEvent = 3.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameMouseUpBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_MOUSE_UP
+    set bt_genericFrameEvent = 4.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameMouseDownBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_MOUSE_DOWN
+    set bt_genericFrameEvent = 5.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameMouseWheelBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_MOUSE_WHEEL
+    set bt_genericFrameEvent = 6.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameMouseDoubleClickBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_MOUSE_DOUBLECLICK
+    set bt_genericFrameEvent = 7.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameCheckboxCheckedBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_CHECKBOX_CHECKED
+    set bt_genericFrameEvent = 8.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameCheckboxUnCheckedBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_CHECKBOX_UNCHECKED
+    set bt_genericFrameEvent = 9.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameEditboxTextChangedBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_EDITBOX_TEXT_CHANGED
+    set bt_genericFrameEvent = 10.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameEditboxEnterBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_EDITBOX_ENTER
+    set bt_genericFrameEvent = 11.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFramePopupMenuItemChangedBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_POPUPMENU_ITEM_CHANGED
+    set bt_genericFrameEvent = 12.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameSpriteAnimUpdateBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_SPRITE_ANIM_UPDATE
+    set bt_genericFrameEvent = 13.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameSliderValueChangedBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_SLIDER_VALUE_CHANGED
+    set bt_genericFrameEvent = 14.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameDialogCancelBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_DIALOG_CANCEL
+    set bt_genericFrameEvent = 15.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function TriggerAddFrameDialogAcceptBT takes nothing returns nothing
+    set bt_triggerFrame = BlzGetTriggerFrame()
+    set bt_triggerFramePlayer = GetTriggerPlayer()
+    set bt_triggerFrameValue = BlzGetTriggerFrameValue()
+    set bt_triggerFrameText = BlzGetTriggerFrameText()
+    set bt_triggerFrameEvent = FRAMEEVENT_DIALOG_ACCEPT
+    set bt_genericFrameEvent = 16.0
+    set bt_genericFrameEvent = 0.0
+endfunction
+
+function FrameAttachEvents takes string attachEvents returns nothing
+    local integer array events
+    local trigger trig
+    local integer i = 0
+
+    if(StringLength(attachEvents) != 16) then
+        call BJDebugMsg("Internal Error: 'BlzCreateFrameBT' received invalid event string.")
+        return
+    endif
+
+    if(bt_lastCreatedFrame == null) then
+        call BJDebugMsg("Internal Error: 'Last Created Frame' was null.")
+        return
+    endif
+
+    loop
+        exitwhen i > 16
+        set events[i] = S2I(SubString(attachEvents, i, i + 1))
+        set i = i + 1
+    endloop
+
+    if(events[0] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_CONTROL_CLICK)
+        call TriggerAddAction(trig, function TriggerAddFrameClickBT)
+    endif
+    if(events[1] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_MOUSE_ENTER)
+        call TriggerAddAction(trig, function TriggerAddFrameMouseEnterBT)
+    endif
+    if(events[2] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_MOUSE_LEAVE)
+        call TriggerAddAction(trig, function TriggerAddFrameMouseLeaveBT)
+    endif
+    if(events[3] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_MOUSE_UP)
+        call TriggerAddAction(trig, function TriggerAddFrameMouseUpBT)
+    endif
+    if(events[4] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_MOUSE_DOWN)
+        call TriggerAddAction(trig, function TriggerAddFrameMouseDownBT)
+    endif
+    if(events[5] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_MOUSE_WHEEL)
+        call TriggerAddAction(trig, function TriggerAddFrameMouseWheelBT)
+    endif
+    if(events[6] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_MOUSE_DOUBLECLICK)
+        call TriggerAddAction(trig, function TriggerAddFrameMouseDoubleClickBT)
+    endif
+    if(events[7] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_CHECKBOX_CHECKED)
+        call TriggerAddAction(trig, function TriggerAddFrameCheckboxCheckedBT)
+    endif
+    if(events[8] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_CHECKBOX_UNCHECKED)
+        call TriggerAddAction(trig, function TriggerAddFrameCheckboxUnCheckedBT)
+    endif
+    if(events[9] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_EDITBOX_TEXT_CHANGED)
+        call TriggerAddAction(trig, function TriggerAddFrameEditboxTextChangedBT)
+    endif
+    if(events[10] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_EDITBOX_ENTER)
+        call TriggerAddAction(trig, function TriggerAddFrameEditboxEnterBT)
+    endif
+    if(events[11] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_POPUPMENU_ITEM_CHANGED)
+        call TriggerAddAction(trig, function TriggerAddFramePopupMenuItemChangedBT)
+    endif
+    if(events[12] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_SPRITE_ANIM_UPDATE)
+        call TriggerAddAction(trig, function TriggerAddFrameSpriteAnimUpdateBT)
+    endif
+    if(events[13] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_SLIDER_VALUE_CHANGED)
+        call TriggerAddAction(trig, function TriggerAddFrameSliderValueChangedBT)
+    endif
+    if(events[14] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_DIALOG_CANCEL)
+        call TriggerAddAction(trig, function TriggerAddFrameDialogCancelBT)
+    endif
+    if(events[15] > 0) then
+        set trig = CreateTrigger()
+        call BlzTriggerRegisterFrameEvent(trig, bt_lastCreatedFrame, FRAMEEVENT_DIALOG_ACCEPT)
+        call TriggerAddAction(trig, function TriggerAddFrameDialogAcceptBT)
+    endif
+
+    set trig = null
+endfunction
+
+function BlzCreateFrameBT takes string name, framehandle owner, integer priority, integer createContext, string attachEvents returns nothing
+    set bt_lastCreatedFrame = BlzCreateFrame(name, owner, priority, createContext)
+    call FrameAttachEvents(attachEvents)
+endfunction
+
+function BlzCreateFrameByTypeBT takes string typeName, string name, framehandle owner, string inherits, integer createContext, string attachEvents returns nothing
+    set bt_lastCreatedFrame = BlzCreateFrameByType(typeName, name, owner, inherits, createContext)
+    call FrameAttachEvents(attachEvents)
+endfunction
+

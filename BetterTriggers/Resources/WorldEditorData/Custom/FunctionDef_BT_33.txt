@@ -1,8 +1,4 @@
-﻿globals
-    real bt_genericFrameEvent = 0.0
-endglobals
-
-function BlzQueueImmediateOrderByIdBT takes unit whichUnit, string order returns nothing
+﻿function BlzQueueImmediateOrderByIdBT takes unit whichUnit, string order returns nothing
     call BlzQueueImmediateOrderById(whichUnit, OrderId(order))
 endfunction
 
@@ -14,16 +10,4 @@ endfunction
 
 function BlzQueueTargetOrderByIdBT takes unit whichUnit, string order, widget targetWidget returns nothing
     call BlzQueueTargetOrderById(whichUnit, OrderId(order), targetWidget)
-endfunction
-
-function TriggerRegisterGenericFrameEventBT takes trigger trig, real frameEvent, limitop opcode, string varName returns nothing
-    call TriggerRegisterVariableEvent(trig, varName, opcode, frameEvent)
-endfunction
-
-function GetLastCreatedFrame takes nothing returns framehandle
-    return bt_lastCreatedFrame
-endfunction
-
-function BlzCreateFrameBT takes string name, framehandle owner, integer priority, integer createContext returns nothing
-    set bt_lastCreatedFrame = BlzCreateFrame(name, owner, priority, createContext)
 endfunction
