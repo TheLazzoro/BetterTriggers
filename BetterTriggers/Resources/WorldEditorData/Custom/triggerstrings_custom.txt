@@ -14,7 +14,9 @@
 //***************************************************************************
 [TriggerEventStrings]
 
+BlzTriggerRegisterPlayerSyncEventHint="Create an event that listens to messages with a given prefix sent by a player. (see: 'Send Synchronization Data' action). The data and prefix being sent is limited to 255 bytes. 'Triggering Player' is the message source."
 
+BTRegisterGenericFrameEventHint="Registers a frame event. Use 'Event Response - Triggering Frame' to refer to the frame raising the event. Use 'Event Response - Triggering Frame Player' to refer to the player who interacted with the frame. 'Event Response - Triggering Player' does not work with this event."
 
 //***************************************************************************
 [TriggerConditionStrings]
@@ -24,16 +26,92 @@
 //***************************************************************************
 [TriggerActionStrings]
 
+BlzEnableUIAutoPositionHint="Disabling auto position will prevent the game from using default positions for changed hidden frames as soon they reappear/their state is changed."
 
+BlzHideOriginFramesHint="(De)Activates some auto-repositioning of default frames (see: 'Enable/Disable Auto Position')."
+
+BlzLoadTOCFileHint="Loads in a TOCFile (Table of Contents) to add/define Frame-Blueprints or localized strings. A TOC file contains a list. Each line is a path to a FDF (Frame Definition File) and is not case sensitve. @bug The TOC needs to end with one or two empty lines."
+
+BlzCreateFrameBTHint="Create a new frame using a Frame-BluePrint name (fdf) as child of owner. BluePrint needs to be loaded over TOC & FDF. Owner and BluePrint have to be from the Frame family. Created frames are stored into the game's Frame-Storage, 'Get Frame By Name'. Overwrites occupied slots."
+
+BlzCreateSimpleFrameBTHint="Like 'Create Frame' but for the SimpleFrame family, Frame 'SIMPLExxxx'. Only Frames loaded by used TOCs are valid names."
+
+BlzCreateFrameByTypeBTHint="Create and define a new frame. Can use a root-Frame-BluePrint with inherits, when that is done it needs to be a loaded BluePrint."
+
+BlzFrameClearAllPointsHint="Unbinds all points of a frame. Useful to move frames with the next 'Attach Frame to Frame'."
+
+BlzFrameClickHint="Ignores visibility. Triggers a 'Click' event."
+
+BlzFrameSetTextHint="Supports formatting codes (example: |cffffcc00)."
+
+BlzFrameSetTextColorHint="Four byte integer of the form 0xaarrggbb. You can also use 'Convert Color' to create such an integer."
+
+BlzFrameSetEnableBTHint="Turns on/off interactivity/events of frame. A disabled frame is transparent to the mouse (can click on things behind it) and can have a different color/texture/frame than in enabled state. The frame's tooltip is still shown on hover. Removes keyboard focus when disabled."
+
+BlzFrameSetAlphaHint="Also affects child-frames when they don't have their own alpha."
+
+BlzFrameSetTextureHint="Overwrites some FDF setups."
+
+BlzFrameSetScaleHint="Also affects child-frames when they don't have their own scale."
+
+BlzFrameSetTooltipHint="A tooltip frame is visible when hovered with the mouse. Otherwise the tooltip will be hidden. A tooltip is limited to 4:3 screen space, but not it's children. A tooltip frame can only serve one frame. @bug Frames should not be used as tooltips for simple frames (Crash on WC3 v1.31)."
+
+BlzFrameCageMouseHint="The mouse cursor is forced into the frame and cannot leave it. New 'cages' will overwrite old ones. Some frames cannot be used to cage the mouse."
+
+BlzFrameSetValueHint="Changes the current value of a frame. Only for frametypes that use this feature: POPUPMENU, SLIDER, SIMPLESTATUSBAR, STATUSBAR."
+
+BlzFrameSetStepSizeHint="Changes the step accuracy for SLIDER frames."
+
+BlzFrameSetVertexColorHint="SimpleFrames only."
+
+BlzFrameSetLevelHint="Changes the Z position of a frame. A higher value puts a frame in front of lower level frames (Default: 0). A value of -3 puts the frame behind the rendered game, disappearing from view. Simpleframes have fixed internal layers which only contain string/textures. For Simpleframes, level sets them higher/lower to all other Simpleframes."
+
+BlzEnableCursorHint="Sets cursor visibility."
+
+BlzSetMousePosHint="X & Y are pixels up to the used resolution 'Game Window Width' 'Game Window Height'."
+
+BlzSendSyncDataHint="Data and prefix limited to 255 bytes each. Should be used inside a 'Local Player'-if-statement"
+
+BlzDisplayChatMessageHint="Displays a message in chat as if it was sent by the specified player. The message does not appear in Log (F12)."
 
 //***************************************************************************
 [TriggerCallStrings]
 
-GetLocalPlayer="Parse String with Tags"
-GetLocalPlayer="Parse ",~String
-GetLocalPlayerHint="|cffff5500Warning:|r This will run code for only the local player. Inappropriate use will cause desyncs. Use with caution."
+GetLocalPlayerHint="|cffff5500Warning:|r This will run code for only the local player. Inappropriate use will cause desyncs in multiplayer. Use with caution."
 
+GetTriggerFramePlayerBTHint="When responding to a 'Generic Frame Event' event, this refers to the player who triggered the event."
 
+BlzFrameIsVisibleHint="Returns visibility status of frame. |cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzFrameGetEnableHint="|cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzFrameGetAlphaHint="|cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzFrameGetValueHint="|cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzFrameGetHeightHint="|cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzFrameGetWidthHint="|cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzGetFrameByNameHint="Requires a string for the frame name that you want to retrieve, and an integer (which in most cases should be 0) that specifies the index of the frame that you want to get (for example for inventory slots you have 6, from 0-5). Refer to FDF files for frame names."
+
+BlzFrameGetNameHint="Returns the string representation of frame name. Inherited Frames lose their name. SimpleFrames return an empty string."
+
+BlzFrameGetTextHint="Gets the text of a frame. For user input frames this text probably differs between them. For some frames the child frame contains the text. |cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzGetTriggerFrameValueHint="Returns the user input value of the triggered frame (Slider, popupmenu, scrollbar...). One has to use this native to sync user input, if that is needed."
+
+BlzGetTriggerFrameTextHint="Returns the user input text of the triggered frame (EditBox). One has to use this native to sync user input, if that is needed."
+
+BlzIsLocalClientActiveHint="Returns true if the Warcraft 3 window is in focus. |cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzGetMouseFocusUnitHint="Returns the unit that is currently hovered by the mouse of the local player. |cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzGetLocalClientHeightHint="Gets the height (pixels) of the Warcraft 3 window. |cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzGetLocalClientWidthHint="Gets the width (pixels) of the Warcraft 3 window. |cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
+
+BlzGetLocaleHint="|cffff5500Warning:|r Inappropriate use will cause desyncs in multiplayer. Value must be synced."
 
 //***************************************************************************
 [AIFunctionStrings]

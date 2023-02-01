@@ -703,6 +703,9 @@ namespace BetterTriggers.Controllers
                     if (key == string.Empty)
                         text = "<Empty String>";
                     break;
+                case "frameevents":
+                    text = "Events...";
+                    break;
                 default:
                     break;
             }

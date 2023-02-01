@@ -26,6 +26,18 @@ function GetTriggerFrameTextBT takes nothing returns string
     return bt_triggerFrameText
 endfunction
 
+function BlzFrameSetPointBT takes framehandle frame, real x, real y, framepointtype point, framehandle relative, framepointtype relativePoint returns nothing
+    call BlzFrameSetPoint(frame, point, relative, relativePoint, x, y)
+endfunction
+
+function BlzFrameSetAbsPointBT takes framehandle frame, real x, real y, framepointtype point returns nothing
+    call BlzFrameSetAbsPoint(frame, point, x, y)
+endfunction
+
+function BlzFrameSetEnableBT takes boolean enabled, framehandle frame returns nothing
+    call BlzFrameSetEnable(frame, enabled)
+endfunction
+
 function TriggerAddFrameClickBT takes nothing returns nothing
     set bt_triggerFrame = BlzGetTriggerFrame()
     set bt_triggerFramePlayer = GetTriggerPlayer()
@@ -293,6 +305,11 @@ endfunction
 
 function BlzCreateFrameBT takes string name, framehandle owner, integer priority, integer createContext, string attachEvents returns nothing
     set bt_lastCreatedFrame = BlzCreateFrame(name, owner, priority, createContext)
+    call FrameAttachEvents(attachEvents)
+endfunction
+
+function BlzCreateSimpleFrameBT takes string name, framehandle owner, integer createContext, string attachEvents returns nothing
+    set bt_lastCreatedFrame = BlzCreateSimpleFrame(name, owner, createContext)
     call FrameAttachEvents(attachEvents)
 endfunction
 

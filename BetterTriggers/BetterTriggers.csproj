@@ -53,6 +53,7 @@
     <None Remove="Resources\WorldEditorData\Custom\Globals_custom_31.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom_31.txt" />
+    <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom_32.txt" />
     <None Remove="Resources\WorldEditorData\Custom\triggerdata_custom_33.txt" />
     <None Remove="Resources\WorldEditorData\Custom\worldeditstrings_custom.txt" />
     <None Remove="Resources\WorldEditorData\destructableskinstrings.txt" />
@@ -214,6 +215,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom_32.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom_33.txt">

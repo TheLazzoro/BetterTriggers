@@ -1,0 +1,75 @@
+﻿[TriggerTypes]
+// Defines all trigger variable types to be used by the Script Editor
+// Key: type name
+// Value 0: first game version in which this type is valid
+// Value 1: flag (0 or 1) indicating if this type can be a global variable
+// Value 2: flag (0 or 1) indicating if this type can be used with comparison operators
+// Value 3: string to display in the editor
+// Value 4: base type, used only for custom types
+// Value 5: import type, for strings which represent files (optional)
+// Value 6: flag (0 or 1) indicating to treat this type as the base type in the editor
+
+// Trigger Variable Types
+// These are sorted so that they appear as such in the Variables dialog.
+
+
+//***************************************************************************
+[TriggerParams]
+// Defines possible values for variable types
+// Key: arbitrary text
+// Value 0: first game version in which this parameter is valid
+// Value 1: variable type
+// Value 2: code text (used in script)
+// Value 3: display text
+//
+// Note: If the code text is a literal string, surround it with backward single quotes (`),
+//       and they will be converted to double quotes in the script.
+//
+
+
+
+
+//***************************************************************************
+[TriggerEvents]
+// Defines events available in the editor
+// Key: script event function
+// Value 0: first game version in which this function is valid
+// Value 1+: argument types
+// Note that the first argument is always a `trigger`, and is excluded here
+
+
+
+//***************************************************************************
+[TriggerActions]
+// Defines action functions
+// Key: action function name
+// Value 0: first game version in which this function is valid
+// Value 1+: argument types
+
+
+// We need to create our own 'BJ' functions here because of the integer order id thing.
+// It needs order 'Presets' (e.g. unitorderutarg) instead.
+
+
+//***************************************************************************
+[TriggerCalls]
+// Defines function calls which may be used as parameter values
+// Key: Function name
+// Value 0: first game version in which this function is valid
+// Value 1: flag (0 or 1) indicating if the call can be used in events
+// Value 2: return type
+// Value 3+: argument types
+//
+// Note: Operators are specially handled by the editor
+
+BlzFrameGetChildrenCount=2,1,integer,framehandle
+_BlzFrameGetChildrenCount_DisplayName="Children count of Frame"
+_BlzFrameGetChildrenCount_Parameters="Children count of ,~Frame,"
+_BlzFrameGetChildrenCount_Defaults=
+_BlzFrameGetChildrenCount_Category=TC_FRAMEHANDLE
+
+BlzFrameGetChild=2,1,framehandle,framehandle,integer
+_BlzFrameGetChild_DisplayName="Child Frame"
+_BlzFrameGetChild_Parameters="Child of ,~Frame, at index ,~Index,"
+_BlzFrameGetChild_Defaults=_,0
+_BlzFrameGetChild_Category=TC_FRAMEHANDLE
