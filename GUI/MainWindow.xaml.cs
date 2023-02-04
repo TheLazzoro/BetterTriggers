@@ -806,5 +806,43 @@ namespace GUI
             window.Show();
             this.Close();
         }
+
+
+        TabItem tabItem_rightClicked;
+        private void tabControl_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            var item = e.OriginalSource as DependencyObject;
+            while(item != null)
+            {
+                if (item is TabItem)
+                    break;
+
+                item = VisualTreeHelper.GetParent(item);
+            }
+
+            if(item == null || item is not TabItem)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Gets here if valid tabitem found
+            tabItem_rightClicked = (TabItem)item;
+        }
+
+        private void tabitem_Menu_CloseAll_Click(object sender, RoutedEventArgs e)
+        {
+            vmd.Tabs.Clear();
+        }
+
+        private void tabitem_Menu_Close_Click(object sender, RoutedEventArgs e)
+        {
+            if(tabItem_rightClicked != null)
+            {
+                var header = tabItem_rightClicked.Header as TabItemBT;
+                int index = tabControl.Items.IndexOf(header);
+                vmd.Tabs.RemoveAt(index);
+            }
+        }
     }
 }

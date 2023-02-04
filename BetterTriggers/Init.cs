@@ -19,6 +19,7 @@ namespace BetterTriggers
             Settings.Load();
             Locale.Load();
             TriggerData.Load();
+            ScriptData.Load();
 
             hasLoaded = true;
         }

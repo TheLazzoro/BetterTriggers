@@ -36,6 +36,9 @@ namespace BetterTriggers.WorldEdit
         internal static string customBJFunctions_Jass;
         internal static string customBJFunctions_Lua;
 
+        public static string pathCommonJ;
+        public static string pathBlizzardJ;
+
         public static void LoadForTest()
         {
             Load(true);
@@ -76,8 +79,8 @@ namespace BetterTriggers.WorldEdit
             else
             {
                 string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
-                string pathCommonJ = baseDir + "common.j";
-                string pathBlizzardJ = baseDir + "Blizzard.j";
+                pathCommonJ = baseDir + "common.j";
+                pathBlizzardJ = baseDir + "Blizzard.j";
                 ScriptGenerator.PathCommonJ = pathCommonJ;
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
                 ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
@@ -88,6 +91,7 @@ namespace BetterTriggers.WorldEdit
                 units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
                 CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
                 Casc.SaveFile(blizzardJ, pathBlizzardJ);
+
 
                 var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
                 CASCFile triggerData = (CASCFile)ui.Entries["triggerdata.txt"];

@@ -43,7 +43,6 @@ namespace GUI.Components
             this.textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
             this.textEditor.FontFamily = new FontFamily("Consolas");
             this.textEditor.ShowLineNumbers = true;
-            new AutoComplete(this.textEditor);
 
             // Sets syntax highlighting in the comment field
             using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)

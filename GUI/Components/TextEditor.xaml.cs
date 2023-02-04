@@ -1,12 +1,16 @@
-﻿using GUI.Components.TextEditorExtensions;
+﻿using BetterTriggers.WorldEdit;
+using GUI.Components.TextEditorExtensions;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
+using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +28,9 @@ namespace GUI.Components
 {
     public partial class TextEditor : UserControl
     {
+        CompletionWindow completionWindow;
+        static CompletionDataCollection completionCollection;
+
         public TextEditor(string content, ScriptLanguage language)
         {
             InitializeComponent();
@@ -33,7 +40,6 @@ namespace GUI.Components
             this.avalonEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
             this.avalonEditor.FontFamily = new FontFamily("Consolas");
             this.avalonEditor.ShowLineNumbers = true;
-            // new AutoComplete(this.textEditor); TODO:
 
             string uri = language == ScriptLanguage.Jass ?
                 "Resources/SyntaxHighlighting/JassHighlighting.xml" :
@@ -49,8 +55,92 @@ namespace GUI.Components
             }
 
             var searchPanel = SearchPanel.Install(avalonEditor);
-
             avalonEditor.Text = content;
+
+            // Autocomplete
+            avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
+            avalonEditor.TextArea.Document.Changed += Document_Changed;
+
+            if (completionCollection == null)
+            {
+                List<MyCompletionData> completionData = new List<MyCompletionData>();
+                ScriptData.Natives.ForEach(n =>
+                {
+                    completionData.Add(new MyCompletionData(n.displayText, n.description));
+                });
+                completionCollection = new CompletionDataCollection(completionData);
+            }
+        }
+
+        private void TextArea_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                ShowAutoCompletion();
+                e.Handled = true; // prevents a space from being entered when opening autocomplete menu
+            }
+        }
+
+        private void Document_Changed(object sender, ICSharpCode.AvalonEdit.Document.DocumentChangeEventArgs e)
+        {
+            if (completionWindow == null)
+                ShowAutoCompletion();
+        }
+
+        private void ShowAutoCompletion()
+        {
+            var caret = avalonEditor.TextArea.Caret;
+            int caretPos = caret.Offset - 1;
+            int i = caretPos;
+            string word = string.Empty;
+            bool wordFound = false;
+            while (i > 0 && !wordFound)
+            {
+                char c = avalonEditor.Document.GetCharAt(i);
+                if (c == ' ' || c == '\t' || c == '\n')
+                {
+                    wordFound = true;
+                }
+                else
+                {
+                    word += c;
+                    i--;
+                }
+            }
+
+            // flip word
+            char[] charArray = word.ToCharArray();
+            Array.Reverse(charArray);
+            word = new string(charArray);
+
+            // open completion window
+            completionWindow = new CompletionWindow(avalonEditor.TextArea);
+            completionWindow.ResizeMode = ResizeMode.NoResize;
+            completionWindow.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+            completionWindow.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#333");
+            completionWindow.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
+            completionWindow.BorderThickness = new Thickness(0.3);
+            IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+            var items = completionCollection.Search(word);
+            data.AddRange(items);
+            if (items.Count == 0)
+            {
+                completionWindow = null;
+                return;
+            }
+
+            completionWindow.Show();
+            completionWindow.Closed += delegate
+            {
+                completionWindow = null;
+            };
+            completionWindow.CompletionList.SizeChanged += delegate
+            {
+                if (completionWindow.CompletionList.ListBox.Items.Count == 0)
+                {
+                    completionWindow.Close();
+                }
+            };
         }
     }
 }

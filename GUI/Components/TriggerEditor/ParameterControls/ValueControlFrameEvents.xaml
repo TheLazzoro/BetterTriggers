@@ -11,11 +11,14 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel>
+
+        <Rectangle Fill="#282828" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            
+        <StackPanel Margin="8">
             <StackPanel.Resources>
                 <Style TargetType="CheckBox">
                     <Setter Property="Margin" Value="0,8,0,0"/>
@@ -39,6 +42,7 @@
             <CheckBox x:Name="checkBoxDialogCancel" Content="Dialog Cancel" />
             <CheckBox x:Name="checkBoxDialogAccept" Content="Dialog Accept" />
         </StackPanel>
+        </ScrollViewer>
 
     </Grid>
 </UserControl>

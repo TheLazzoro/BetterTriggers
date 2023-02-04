@@ -10,9 +10,10 @@ namespace GUI.Components.TextEditorExtensions
 {
     public class MyCompletionData : ICompletionData
     {
-        public MyCompletionData(string text)
+        public MyCompletionData(string text, string description)
         {
             this.Text = text;
+            this.description = description;
         }
 
         public System.Windows.Media.ImageSource Image
@@ -21,6 +22,7 @@ namespace GUI.Components.TextEditorExtensions
         }
 
         public string Text { get; private set; }
+        public string description { get; private set; }
 
         // Use this property if you want to show a fancy UIElement in the list.
         public object Content
@@ -30,7 +32,7 @@ namespace GUI.Components.TextEditorExtensions
 
         public object Description
         {
-            get { return "Description for " + this.Text; }
+            get { return this.description; }
         }
 
         public double Priority => 0;
