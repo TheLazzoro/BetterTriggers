@@ -15,18 +15,45 @@ namespace BetterTriggers.WorldEdit
     public class AbilityTypes
     {
         private static Dictionary<string, AbilityType> abilities;
-        private static Dictionary<string, AbilityType> abilitiesBase;
+        private static Dictionary<string, AbilityType> abilitiesBaseEdited;
         private static Dictionary<string, AbilityType> abilitiesCustom;
 
         internal static List<AbilityType> GetAll()
         {
-            return abilities.Select(kvp => kvp.Value).ToList();
+            List<AbilityType> list = new List<AbilityType>();
+            var enumerator = abilities.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                AbilityType abilityType;
+                var key = enumerator.Current.Key;
+                if (abilitiesBaseEdited.ContainsKey(key))
+                {
+                    abilitiesBaseEdited.TryGetValue(key, out abilityType);
+                    list.Add(abilityType);
+                }
+                else
+                {
+                    abilities.TryGetValue(key, out abilityType);
+                    list.Add(abilityType);
+                }
+            }
+
+            list.AddRange(abilitiesCustom.Select(kvp => kvp.Value).ToList());
+
+            return list;
         }
 
         public static AbilityType GetAbilityType(string abilcode)
         {
             AbilityType abilType;
-            abilities.TryGetValue(abilcode, out abilType);
+            abilitiesCustom.TryGetValue(abilcode, out abilType);
+
+            if (abilType == null)
+                abilitiesBaseEdited.TryGetValue(abilcode, out abilType);
+
+            if (abilType == null)
+                abilities.TryGetValue(abilcode, out abilType);
+
             return abilType;
         }
 
@@ -43,14 +70,11 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void LoadFromCASC(bool isTest)
         {
             abilities = new Dictionary<string, AbilityType>();
-            abilitiesBase = new Dictionary<string, AbilityType>();
-            abilitiesCustom = new Dictionary<string, AbilityType>();
 
             Stream abilitydata;
-
             if (isTest)
             {
                 abilitydata = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/abilitydata.slk"), FileMode.Open);
@@ -65,9 +89,7 @@ namespace BetterTriggers.WorldEdit
                 */
                 CASCFile abilityData = (CASCFile)units.Entries["abilitydata.slk"];
                 abilitydata = Casc.GetCasc().OpenFile(abilityData.FullName);
-
             }
-
 
             SylkParser sylkParser = new SylkParser();
             SylkTable table = sylkParser.Parse(abilitydata);
@@ -87,8 +109,13 @@ namespace BetterTriggers.WorldEdit
                     continue;
 
                 abilities.TryAdd(ability.AbilCode, ability);
-                abilitiesBase.TryAdd(ability.AbilCode, ability);
             }
+        }
+
+        internal static void Load()
+        {
+            abilitiesCustom = new Dictionary<string, AbilityType>();
+            abilitiesBaseEdited = new Dictionary<string, AbilityType>();
 
             string filePath = "war3map.w3a";
             if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
@@ -108,9 +135,17 @@ namespace BetterTriggers.WorldEdit
                 for (int i = 0; i < customAbilities.BaseAbilities.Count; i++)
                 {
                     var baseAbility = customAbilities.BaseAbilities[i];
+                    AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(baseAbility.OldId));
+                    var ability = new AbilityType()
+                    {
+                        AbilCode = baseAbility.ToString().Substring(0, 4),
+                        DisplayName = baseAbil.DisplayName,
+                        EditorSuffix = baseAbil.EditorSuffix,
+                    };
+                    abilitiesBaseEdited.TryAdd(ability.AbilCode, ability);
                     SetCustomFields(baseAbility, Int32Extensions.ToRawcode(baseAbility.OldId));
                 }
-                
+
                 for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
                 {
                     var customAbility = customAbilities.NewAbilities[i];
@@ -123,7 +158,6 @@ namespace BetterTriggers.WorldEdit
                         DisplayName = name,
                         EditorSuffix = editorSuffix,
                     };
-                    abilities.TryAdd(ability.AbilCode, ability);
                     abilitiesCustom.TryAdd(ability.AbilCode, ability);
                     SetCustomFields(customAbility, ability.AbilCode);
                 }

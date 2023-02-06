@@ -93,7 +93,7 @@ namespace BetterTriggers.Controllers
 
 
         /// <summary>
-        /// 
+        /// TODO: This function is hella expensive.
         /// </summary>
         /// <param name="value">Reference to map data.</param>
         /// <returns></returns>

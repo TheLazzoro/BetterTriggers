@@ -20,28 +20,50 @@ namespace BetterTriggers.WorldEdit
     public class DestructibleTypes
     {
         private static Dictionary<string, DestructibleType> destructibles;
-        private static Dictionary<string, DestructibleType> destructiblesBase;
+        private static Dictionary<string, DestructibleType> destructiblesBaseEdited;
         private static Dictionary<string, DestructibleType> destructiblesCustom;
 
         internal static List<DestructibleType> GetAll()
         {
-            return destructibles.Select(kvp => kvp.Value).ToList();
+            List<DestructibleType> list = new List<DestructibleType>();
+            var enumerator = destructibles.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                DestructibleType destType;
+                var key = enumerator.Current.Key;
+                if (destructiblesBaseEdited.ContainsKey(key))
+                {
+                    destructiblesBaseEdited.TryGetValue(key, out destType);
+                    list.Add(destType);
+                }
+                else
+                {
+                    destructibles.TryGetValue(key, out destType);
+                    list.Add(destType);
+                }
+            }
+
+            list.AddRange(destructiblesCustom.Select(kvp => kvp.Value).ToList());
+
+            return list;
         }
 
         internal static List<DestructibleType> GetBase()
         {
-            return destructiblesBase.Select(kvp => kvp.Value).ToList();
+            return destructibles.Select(kvp => kvp.Value).ToList();
         }
 
-        internal static List<DestructibleType> GetCustom()
-        {
-            return destructiblesCustom.Select(kvp => kvp.Value).ToList();
-        }
-
-        public static DestructibleType GetDestType(string unitcode)
+        public static DestructibleType GetDestType(string destcode)
         {
             DestructibleType destType;
-            destructibles.TryGetValue(unitcode, out destType);
+            destructiblesCustom.TryGetValue(destcode, out destType);
+
+            if (destType == null)
+                destructiblesBaseEdited.TryGetValue(destcode, out destType);
+
+            if (destType == null)
+                destructibles.TryGetValue(destcode, out destType);
+
             return destType;
         }
 
@@ -59,11 +81,9 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void LoadFromCASC(bool isTest)
         {
             destructibles = new Dictionary<string, DestructibleType>();
-            destructiblesBase = new Dictionary<string, DestructibleType>();
-            destructiblesCustom = new Dictionary<string, DestructibleType>();
 
             SylkParser sylkParser = new SylkParser();
             SylkTable table;
@@ -107,7 +127,6 @@ namespace BetterTriggers.WorldEdit
                 };
 
                 destructibles.TryAdd(destType.DestCode, destType);
-                destructiblesBase.TryAdd(destType.DestCode, destType);
             }
 
             // Add 'model' from 'destructableskin.txt'
@@ -121,6 +140,12 @@ namespace BetterTriggers.WorldEdit
                 string model = section["file"];
                 destType.Model = model;
             }
+        }
+
+        internal static void Load(bool isTest = false)
+        {
+            destructiblesBaseEdited = new Dictionary<string, DestructibleType>();
+            destructiblesCustom = new Dictionary<string, DestructibleType>();
 
 
             // Read custom destructible definition data
@@ -140,8 +165,16 @@ namespace BetterTriggers.WorldEdit
 
                 for (int i = 0; i < customDestructibles.BaseDestructables.Count; i++)
                 {
-                    var baseDest = customDestructibles.BaseDestructables[i];
-                    SetCustomFields(baseDest, Int32Extensions.ToRawcode(baseDest.OldId));
+                    var dest = customDestructibles.BaseDestructables[i];
+                    DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
+                    string name = baseDest.DisplayName;
+                    DestructibleType destructible = new DestructibleType()
+                    {
+                        DestCode = dest.ToString().Substring(0, 4),
+                        DisplayName = name,
+                    };
+                    destructiblesBaseEdited.TryAdd(destructible.DestCode, destructible);
+                    SetCustomFields(dest, Int32Extensions.ToRawcode(dest.OldId));
                 }
 
                 for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
@@ -154,7 +187,6 @@ namespace BetterTriggers.WorldEdit
                         DestCode = dest.ToString().Substring(0, 4),
                         DisplayName = name,
                     };
-                    destructibles.TryAdd(destructible.DestCode, destructible);
                     destructiblesCustom.TryAdd(destructible.DestCode, destructible);
                     SetCustomFields(dest, destructible.DestCode);
                 }

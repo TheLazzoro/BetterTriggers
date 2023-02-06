@@ -17,28 +17,45 @@ namespace BetterTriggers.WorldEdit
     public class BuffTypes
     {
         private static Dictionary<string, BuffType> buffs;
-        private static Dictionary<string, BuffType> buffsBase;
+        private static Dictionary<string, BuffType> buffsBaseEdited;
         private static Dictionary<string, BuffType> buffsCustom;
 
         internal static List<BuffType> GetAll()
         {
-            return buffs.Select(kvp => kvp.Value).ToList();
-        }
+            List<BuffType> list = new List<BuffType>();
+            var enumerator = buffs.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                BuffType buffType;
+                var key = enumerator.Current.Key;
+                if (buffsBaseEdited.ContainsKey(key))
+                {
+                    buffsBaseEdited.TryGetValue(key, out buffType);
+                    list.Add(buffType);
+                }
+                else
+                {
+                    buffs.TryGetValue(key, out buffType);
+                    list.Add(buffType);
+                }
+            }
 
-        internal static List<BuffType> GetBase()
-        {
-            return buffsBase.Select(kvp => kvp.Value).ToList();
-        }
+            list.AddRange(buffsCustom.Select(kvp => kvp.Value).ToList());
 
-        internal static List<BuffType> GetCustom()
-        {
-            return buffsCustom.Select(kvp => kvp.Value).ToList();
+            return list;
         }
 
         public static BuffType GetBuffType(string buffcode)
         {
             BuffType buffType;
-            buffs.TryGetValue(buffcode, out buffType);
+            buffsCustom.TryGetValue(buffcode, out buffType);
+
+            if (buffType == null)
+                buffsBaseEdited.TryGetValue(buffcode, out buffType);
+
+            if (buffType == null)
+                buffs.TryGetValue(buffcode, out buffType);
+
             return buffType;
         }
 
@@ -55,11 +72,9 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void LoadFromCASC(bool isTest)
         {
             buffs = new Dictionary<string, BuffType>();
-            buffsBase = new Dictionary<string, BuffType>();
-            buffsCustom = new Dictionary<string, BuffType>();
 
             Stream buffdata;
 
@@ -97,8 +112,15 @@ namespace BetterTriggers.WorldEdit
                     continue;
 
                 buffs.TryAdd(buff.BuffCode, buff);
-                buffsBase.TryAdd(buff.BuffCode, buff);
             }
+
+            buffdata.Close();
+        }
+
+        internal static void Load(bool isTest = false)
+        {
+            buffsBaseEdited = new Dictionary<string, BuffType>();
+            buffsCustom = new Dictionary<string, BuffType>();
 
             string filePath = "war3map.w3h";
             if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
@@ -117,8 +139,15 @@ namespace BetterTriggers.WorldEdit
 
                 for (int i = 0; i < customBuffs.BaseBuffs.Count; i++)
                 {
-                    var baseBuff = customBuffs.BaseBuffs[i];
-                    SetCustomFields(baseBuff, Int32Extensions.ToRawcode(baseBuff.OldId));
+                    var buff = customBuffs.BaseBuffs[i];
+                    BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(buff.OldId));
+                    var b = new BuffType()
+                    {
+                        BuffCode = baseBuff.ToString().Substring(0, 4),
+                        DisplayName = baseBuff.DisplayName,
+                    };
+                    buffsBaseEdited.TryAdd(b.BuffCode, b);
+                    SetCustomFields(buff, b.BuffCode);
                 }
                 
                 for (int i = 0; i < customBuffs.NewBuffs.Count; i++)
@@ -131,7 +160,6 @@ namespace BetterTriggers.WorldEdit
                         BuffCode = customBuff.ToString().Substring(0, 4),
                         DisplayName = name,
                     };
-                    buffs.TryAdd(buff.BuffCode, buff);
                     buffsCustom.TryAdd(buff.BuffCode, buff);
                     SetCustomFields(customBuff, buff.BuffCode);
                 }

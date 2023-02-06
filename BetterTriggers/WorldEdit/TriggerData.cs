@@ -39,34 +39,25 @@ namespace BetterTriggers.WorldEdit
         public static string pathCommonJ;
         public static string pathBlizzardJ;
 
-        public static void LoadForTest()
-        {
-            Load(true);
-        }
-
-        internal static void Load()
-        {
-            Load(false);
-        }
-
-        private static void Load(bool isTest)
+        public static void Load(bool isTest)
         {
             IniData data = null;
 
+            Types.Clear();
+            ConstantTemplates.Clear();
+            EventTemplates.Clear();
+            ConditionTemplates.Clear();
+            ActionTemplates.Clear();
+            CallTemplates.Clear();
+            FunctionsAll.Clear();
+            ParamDisplayNames.Clear();
+            ParamCodeText.Clear();
+            FunctionCategories.Clear();
+            customConstants.Clear();
+            Category.Clear();
+
             if (isTest)
             {
-                Types.Clear();
-                ConstantTemplates.Clear();
-                EventTemplates.Clear();
-                ConditionTemplates.Clear();
-                ActionTemplates.Clear();
-                CallTemplates.Clear();
-                FunctionsAll.Clear();
-                ParamDisplayNames.Clear();
-                ParamCodeText.Clear();
-                FunctionCategories.Clear();
-                customConstants.Clear();
-
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/triggerdata.txt");
                 string triggerdata = File.ReadAllText(path);
                 data = IniFileConverter.GetIniData(triggerdata);

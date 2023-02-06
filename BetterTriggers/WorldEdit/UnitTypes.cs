@@ -22,29 +22,51 @@ namespace BetterTriggers.WorldEdit
     public class UnitTypes
     {
         private static Dictionary<string, UnitType> unitTypes;
-        private static Dictionary<string, UnitType> unitTypesBase;
+        private static Dictionary<string, UnitType> unitTypesBaseEdited;
         private static Dictionary<string, UnitType> unitTypesCustom;
         private static bool IsTest = false;
 
         internal static List<UnitType> GetAll()
         {
-            return unitTypes.Select(kvp => kvp.Value).ToList();
+            List<UnitType> list = new List<UnitType>();
+            var enumerator = unitTypes.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                UnitType unitType;
+                var key = enumerator.Current.Key;
+                if (unitTypesBaseEdited.ContainsKey(key))
+                {
+                    unitTypesBaseEdited.TryGetValue(key, out unitType);
+                    list.Add(unitType);
+                }
+                else
+                {
+                    unitTypes.TryGetValue(key, out unitType);
+                    list.Add(unitType);
+                }
+            }
+
+            list.AddRange(unitTypesCustom.Select(kvp => kvp.Value).ToList());
+
+            return list;
         }
 
         internal static List<UnitType> GetBase()
         {
-            return unitTypesBase.Select(kvp => kvp.Value).ToList();
-        }
-
-        internal static List<UnitType> GetUnitTypesCustom()
-        {
-            return unitTypesCustom.Select(kvp => kvp.Value).ToList();
+            return unitTypes.Select(kvp => kvp.Value).ToList();
         }
 
         public static UnitType GetUnitType(string unitcode)
         {
             UnitType unitType;
             unitTypes.TryGetValue(unitcode, out unitType);
+
+            if (unitType == null)
+                unitTypesBaseEdited.TryGetValue(unitcode, out unitType);
+
+            if (unitType == null)
+                unitTypesCustom.TryGetValue(unitcode, out unitType);
+
             return unitType;
         }
 
@@ -65,23 +87,21 @@ namespace BetterTriggers.WorldEdit
             else
                 name = unitName.Name;
 
-            if(!string.IsNullOrEmpty(unitName.EditorSuffix))
+            if (!string.IsNullOrEmpty(unitName.EditorSuffix))
                 name = name + " " + unitName.EditorSuffix;
 
             return name;
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void LoadFromCASC(bool isTest)
         {
             unitTypes = new Dictionary<string, UnitType>();
-            unitTypesBase = new Dictionary<string, UnitType>();
-            unitTypesCustom = new Dictionary<string, UnitType>();
-            IsTest = isTest;
 
             SylkParser sylkParser = new SylkParser();
             SylkTable table;
             StreamReader reader;
             string text;
+            IsTest = isTest;
 
             if (isTest)
             {
@@ -92,7 +112,6 @@ namespace BetterTriggers.WorldEdit
                     reader = new StreamReader(unitSkin);
                     text = reader.ReadToEnd();
                 }
-
             }
             else
             {
@@ -109,6 +128,7 @@ namespace BetterTriggers.WorldEdit
             }
 
 
+
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
@@ -121,7 +141,6 @@ namespace BetterTriggers.WorldEdit
                 };
 
                 unitTypes.TryAdd(unitType.Id, unitType);
-                unitTypesBase.TryAdd(unitType.Id, unitType);
             }
 
 
@@ -145,9 +164,15 @@ namespace BetterTriggers.WorldEdit
                 unitType.Model = model;
                 unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
 
-                if (!isTest)
-                    unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
+                unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
             }
+        }
+
+        internal static void Load(bool isTest = false)
+        {
+            unitTypesBaseEdited = new Dictionary<string, UnitType>();
+            unitTypesCustom = new Dictionary<string, UnitType>();
+            IsTest = isTest;
 
             string filePath = "war3map.w3u";
             if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
@@ -169,6 +194,22 @@ namespace BetterTriggers.WorldEdit
                 // Base units
                 foreach (var baseUnit in customUnits.BaseUnits)
                 {
+                    UnitType unit = GetUnitType(Int32Extensions.ToRawcode(baseUnit.OldId));
+                    UnitName name = unit.Name.Clone();
+                    string sort = unit.Sort;
+                    string race = unit.Race;
+                    string icon = unit.Icon;
+                    Bitmap image = unit.Image;
+                    var unitType = new UnitType()
+                    {
+                        Id = baseUnit.ToString().Substring(0, 4),
+                        Name = name,
+                        Sort = sort,
+                        Race = race,
+                        Icon = icon,
+                        Image = image
+                    };
+                    unitTypesBaseEdited.Add(unitType.Id, unitType);
                     SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId));
                 }
 
@@ -194,9 +235,7 @@ namespace BetterTriggers.WorldEdit
                         Image = image
                     };
 
-                    unitTypes.TryAdd(unitType.Id, unitType);
                     unitTypesCustom.TryAdd(unitType.Id, unitType);
-
                     SetCustomFields(customUnit, unitType.Id);
                 }
             }

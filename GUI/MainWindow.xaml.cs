@@ -39,7 +39,6 @@ namespace GUI
             vmd = new TabViewModel();
             tabControl.ItemsSource = vmd.Tabs;
 
-            BetterTriggers.Init.Initialize();
             CustomMapData.OnSaving += CustomMapData_OnSaving;
 
             btnNewMap.ToolTip = Locale.Translate(btnNewMap.ToolTip as string);

@@ -17,28 +17,45 @@ namespace BetterTriggers.WorldEdit
     public class UpgradeTypes
     {
         private static Dictionary<string, UpgradeType> upgrades;
-        private static Dictionary<string, UpgradeType> upgradesBase;
+        private static Dictionary<string, UpgradeType> upgradesBaseEdited;
         private static Dictionary<string, UpgradeType> upgradesCustom;
 
         internal static List<UpgradeType> GetAll()
         {
-            return upgrades.Select(kvp => kvp.Value).ToList();
-        }
+            List<UpgradeType> list = new List<UpgradeType>();
+            var enumerator = upgrades.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                UpgradeType upgradeType;
+                var key = enumerator.Current.Key;
+                if (upgradesBaseEdited.ContainsKey(key))
+                {
+                    upgradesBaseEdited.TryGetValue(key, out upgradeType);
+                    list.Add(upgradeType);
+                }
+                else
+                {
+                    upgrades.TryGetValue(key, out upgradeType);
+                    list.Add(upgradeType);
+                }
+            }
 
-        internal static List<UpgradeType> GetUpgradesBase()
-        {
-            return upgradesBase.Select(kvp => kvp.Value).ToList();
-        }
+            list.AddRange(upgradesCustom.Select(kvp => kvp.Value).ToList());
 
-        internal static List<UpgradeType> GetUpgradesCustom()
-        {
-            return upgradesCustom.Select(kvp => kvp.Value).ToList();
+            return list;
         }
 
         public static UpgradeType GetUpgradeType(string upgradecode)
         {
             UpgradeType upgradeType;
-            upgrades.TryGetValue(upgradecode, out upgradeType);
+            upgradesCustom.TryGetValue(upgradecode, out upgradeType);
+
+            if (upgradeType == null)
+                upgradesBaseEdited.TryGetValue(upgradecode, out upgradeType);
+
+            if (upgradeType == null)
+                upgrades.TryGetValue(upgradecode, out upgradeType);
+
             return upgradeType;
         }
 
@@ -55,14 +72,10 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void LoadFromCASC(bool isTest)
         {
             upgrades = new Dictionary<string, UpgradeType>();
-            upgradesBase = new Dictionary<string, UpgradeType>();
-            upgradesCustom = new Dictionary<string, UpgradeType>();
-
             Stream upgradedata;
-
             if (isTest)
             {
                 upgradedata = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/upgradedata.slk"), FileMode.Open);
@@ -96,8 +109,13 @@ namespace BetterTriggers.WorldEdit
                     continue;
 
                 upgrades.TryAdd(upgrade.UpgradeCode, upgrade);
-                upgradesBase.TryAdd(upgrade.UpgradeCode, upgrade);
             }
+        }
+
+        internal static void Load(bool isTest = false)
+        {
+            upgradesBaseEdited = new Dictionary<string, UpgradeType>();
+            upgradesCustom = new Dictionary<string, UpgradeType>();
 
             string filePath = "war3map.w3q";
             if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
@@ -116,8 +134,15 @@ namespace BetterTriggers.WorldEdit
 
                 for (int i = 0; i < customUpgrades.BaseUpgrades.Count; i++)
                 {
-                    var baseUpgrade = customUpgrades.BaseUpgrades[i];
-                    SetCustomFields(baseUpgrade, Int32Extensions.ToRawcode(baseUpgrade.OldId));
+                    var upgrade = customUpgrades.BaseUpgrades[i];
+                    UpgradeType baseUpgrade = GetUpgradeType(Int32Extensions.ToRawcode(upgrade.OldId));
+                    var u = new UpgradeType()
+                    {
+                        UpgradeCode = upgrade.ToString().Substring(0, 4),
+                        DisplayName = baseUpgrade.DisplayName,
+                    };
+                    upgradesBaseEdited.TryAdd(baseUpgrade.UpgradeCode, u);
+                    SetCustomFields(upgrade, u.UpgradeCode);
                 }
 
                 for (int i = 0; i < customUpgrades.NewUpgrades.Count; i++)
@@ -137,7 +162,6 @@ namespace BetterTriggers.WorldEdit
                         UpgradeCode = customUpgrade.ToString().Substring(0, 4),
                         DisplayName = name,
                     };
-                    upgrades.TryAdd(upgrade.UpgradeCode, upgrade);
                     upgradesCustom.TryAdd(upgrade.UpgradeCode, upgrade);
                     SetCustomFields(customUpgrade, upgrade.UpgradeCode);
                 }

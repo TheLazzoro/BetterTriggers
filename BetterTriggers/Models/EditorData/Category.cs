@@ -35,5 +35,10 @@ namespace BetterTriggers.Models.EditorData
             categories.TryGetValue(key, out category);
             return category;
         }
+
+        internal static void Clear()
+        {
+            categories.Clear();
+        }
     }
 }

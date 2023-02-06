@@ -22,6 +22,7 @@ namespace BetterTriggers.WorldEdit
             return assetModels;
         }
 
+
         internal static void Load(bool isTest = false)
         {
             assetModels.Clear();
@@ -47,6 +48,7 @@ namespace BetterTriggers.WorldEdit
 
             StreamReader reader = new StreamReader(abilityskin);
             string text = reader.ReadToEnd();
+            abilityskin.Close();
 
             var data = IniFileConverter.GetIniData(text);
 

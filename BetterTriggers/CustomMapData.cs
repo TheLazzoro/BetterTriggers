@@ -19,8 +19,6 @@ namespace BetterTriggers
     public class CustomMapData
     {
         public static string mapPath;
-        //public static string mapPath = @"D:\Test\Another Test Project\map\TestMap.w3x"; // 1.32 map
-        //public static string mapPath = @"...\Desktop\Direct Strike Reforged (JASS).w3x"; // 1.33 map
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
 
@@ -40,8 +38,6 @@ namespace BetterTriggers
             watcher.Path = Path.GetDirectoryName(mapPath);
             watcher.EnableRaisingEvents = true;
             watcher.Created += Watcher_Created;
-
-            Load(isTest);
         }
 
         private static void Watcher_Created(object sender, FileSystemEventArgs e)
@@ -61,8 +57,6 @@ namespace BetterTriggers
         }
 
 
-        // TODO: Optimize to only reload custom map data
-        // Right now this is re-run when new map data is detected.
         public static void Load(bool isTest = false)
         {
             while (IsMapSaving())
@@ -76,7 +70,7 @@ namespace BetterTriggers
             ItemTypes.Load(isTest);
             DestructibleTypes.Load(isTest);
             DoodadTypes.Load(isTest);
-            AbilityTypes.Load(isTest);
+            AbilityTypes.Load();
             BuffTypes.Load(isTest);
             UpgradeTypes.Load(isTest);
             SkinFiles.Load();

@@ -36,6 +36,10 @@ namespace GUI
                 window.Show();
                 this.Close();
             }
+            else if (e.ProgressPercentage == 50)
+            {
+                lblInfo.Content = "Loading Warcraft III data...";
+            }
             else if(e.ProgressPercentage == 100)
             {
                 MainWindow window = new MainWindow();
@@ -49,7 +53,8 @@ namespace GUI
             isCascValid = Casc.Load();
             if(isCascValid)
             {
-                BetterTriggers.Init.Initialize();
+                (sender as BackgroundWorker).ReportProgress(50);
+                BetterTriggers.Init.Initialize(false);
                 (sender as BackgroundWorker).ReportProgress(100);
             }
             else

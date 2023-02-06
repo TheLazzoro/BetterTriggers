@@ -6,22 +6,30 @@ namespace BetterTriggers
 {
     public class Init
     {
-        private static bool hasLoaded;
+        public static bool HasLoaded { get; set; }
 
         /// <summary>
         /// Loads all War3 data from CASC.
         /// </summary>
-        public static void Initialize()
+        public static void Initialize(bool isTest)
         {
-            if (hasLoaded)
+            if (HasLoaded)
                 return;
 
             Settings.Load();
             Locale.Load();
-            TriggerData.Load();
-            ScriptData.Load();
+            TriggerData.Load(isTest);
+            ScriptData.Load(isTest);
 
-            hasLoaded = true;
+            UnitTypes.LoadFromCASC(isTest);
+            AbilityTypes.LoadFromCASC(isTest);
+            BuffTypes.LoadFromCASC(isTest);
+            DestructibleTypes.LoadFromCASC(isTest);
+            DoodadTypes.LoadFromCASC(isTest);
+            ItemTypes.LoadFromCASC(isTest);
+            UpgradeTypes.LoadFromCASC(isTest);
+
+            HasLoaded = true;
         }
     }
 }

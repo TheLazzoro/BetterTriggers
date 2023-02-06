@@ -15,6 +15,7 @@ namespace GUI
 
             Settings settings = Settings.Load();
             textBoxRoot.Text = settings.war3root;
+            Init.HasLoaded = false;
         }
 
         private void btnSelectWar3Dir_Click(object sender, RoutedEventArgs e)

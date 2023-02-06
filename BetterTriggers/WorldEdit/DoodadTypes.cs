@@ -20,28 +20,50 @@ namespace BetterTriggers.WorldEdit
     internal class DoodadTypes
     {
         private static Dictionary<string, DoodadType> doodads;
-        private static Dictionary<string, DoodadType> doodadsBase;
+        private static Dictionary<string, DoodadType> doodadsBaseEdited;
         private static Dictionary<string, DoodadType> doodadsCustom;
 
         internal static List<DoodadType> GetAll()
         {
-            return doodads.Select(kvp => kvp.Value).ToList();
+            List<DoodadType> list = new List<DoodadType>();
+            var enumerator = doodads.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                DoodadType doodadType;
+                var key = enumerator.Current.Key;
+                if (doodadsBaseEdited.ContainsKey(key))
+                {
+                    doodadsBaseEdited.TryGetValue(key, out doodadType);
+                    list.Add(doodadType);
+                }
+                else
+                {
+                    doodads.TryGetValue(key, out doodadType);
+                    list.Add(doodadType);
+                }
+            }
+
+            list.AddRange(doodadsCustom.Select(kvp => kvp.Value).ToList());
+
+            return list;
         }
 
         internal static List<DoodadType> GetBase()
         {
-            return doodadsBase.Select(kvp => kvp.Value).ToList();
-        }
-
-        internal static List<DoodadType> GetCustom()
-        {
-            return doodadsCustom.Select(kvp => kvp.Value).ToList();
+            return doodads.Select(kvp => kvp.Value).ToList();
         }
 
         internal static DoodadType GetDoodadType(string doodcode) 
         {
             DoodadType doodad;
-            doodads.TryGetValue(doodcode, out doodad);
+            doodadsCustom.TryGetValue(doodcode, out doodad);
+
+            if (doodad == null)
+                doodadsBaseEdited.TryGetValue(doodcode, out doodad);
+
+            if (doodad == null)
+                doodads.TryGetValue(doodcode, out doodad);
+
             return doodad;
         }
 
@@ -54,11 +76,9 @@ namespace BetterTriggers.WorldEdit
             return doodType.DisplayName;
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void LoadFromCASC(bool isTest)
         {
             doodads = new Dictionary<string, DoodadType>();
-            doodadsBase = new Dictionary<string, DoodadType>();
-            doodadsCustom = new Dictionary<string, DoodadType>();
 
             string text;
 
@@ -99,8 +119,13 @@ namespace BetterTriggers.WorldEdit
                     Model = model,
                 };
                 doodads.Add(id, doodad);
-                doodadsBase.Add(id, doodad);
             }
+        }
+
+        internal static void Load(bool isTest = false)
+        {
+            doodadsBaseEdited = new Dictionary<string, DoodadType>();
+            doodadsCustom = new Dictionary<string, DoodadType>();
 
 
             // Read custom doodad definition data
@@ -120,8 +145,15 @@ namespace BetterTriggers.WorldEdit
 
                 for (int i = 0; i < customDoodads.BaseDoodads.Count; i++)
                 {
-                    var baseDood = customDoodads.BaseDoodads[i];
-                    SetCustomFields(baseDood, Int32Extensions.ToRawcode(baseDood.OldId));
+                    var dood = customDoodads.BaseDoodads[i];
+                    DoodadType baseDood = GetDoodadType(Int32Extensions.ToRawcode(dood.OldId));
+                    DoodadType doodad = new DoodadType()
+                    {
+                        DoodCode = dood.ToString().Substring(0, 4),
+                        DisplayName = baseDood.DisplayName,
+                    };
+                    doodadsBaseEdited.Add(doodad.DoodCode, doodad);
+                    SetCustomFields(dood, Int32Extensions.ToRawcode(dood.OldId));
                 }
 
                 for (int i = 0; i < customDoodads.NewDoodads.Count; i++)
@@ -133,7 +165,6 @@ namespace BetterTriggers.WorldEdit
                         DoodCode = dood.ToString().Substring(0, 4),
                         DisplayName = baseDood.DisplayName,
                     };
-                    doodads.Add(doodad.DoodCode, doodad);
                     doodadsCustom.Add(doodad.DoodCode, doodad);
                     SetCustomFields(dood, doodad.DoodCode);
                 }

@@ -35,8 +35,7 @@ namespace Tests
             Console.WriteLine("-----------");
             Console.WriteLine("");
 
-            Locale.Load();
-            TriggerData.LoadForTest();
+            BetterTriggers.Init.Initialize(true);
         }
 
         [ClassCleanup]

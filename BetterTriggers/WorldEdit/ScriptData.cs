@@ -23,8 +23,11 @@ namespace BetterTriggers.WorldEdit
 
         public static List<Native> Natives = new List<Native>();
 
-        internal static void Load()
+        internal static void Load(bool isTest)
         {
+            if (isTest)
+                return;
+
             string[] commonJ = File.ReadAllLines(TriggerData.pathCommonJ);
             List<string> types = new List<string>();
             List<string> constantNatives = new List<string>();

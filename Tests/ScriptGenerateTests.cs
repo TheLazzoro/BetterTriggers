@@ -33,8 +33,7 @@ namespace Tests
             Console.WriteLine("-----------");
             Console.WriteLine("");
 
-            Locale.Load();
-            TriggerData.LoadForTest();
+            BetterTriggers.Init.Initialize(true);
 
 
             string[] testMaps = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/"));
@@ -212,6 +211,7 @@ namespace Tests
 
             project = controllerProject.LoadProject(projectFile);
             CustomMapData.Init(mapDir, true); // TODO: CustomMapData init should be run by the controller.
+            CustomMapData.Load();
             success = controllerProject.GenerateScript();
         }
     }

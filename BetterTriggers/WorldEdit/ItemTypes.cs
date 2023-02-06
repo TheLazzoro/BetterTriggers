@@ -16,28 +16,51 @@ namespace BetterTriggers.WorldEdit
     public class ItemTypes
     {
         private static Dictionary<string, ItemType> items;
-        private static Dictionary<string, ItemType> itemsBase;
+        private static Dictionary<string, ItemType> itemsBaseEdited;
         private static Dictionary<string, ItemType> itemsCustom;
 
         internal static List<ItemType> GetAll()
         {
-            return items.Select(kvp => kvp.Value).ToList();
+            List<ItemType> list = new List<ItemType>();
+            var enumerator = items.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                ItemType itemType;
+                var key = enumerator.Current.Key;
+                if (itemsBaseEdited.ContainsKey(key))
+                {
+                    itemsBaseEdited.TryGetValue(key, out itemType);
+                    list.Add(itemType);
+                }
+                else
+                {
+                    items.TryGetValue(key, out itemType);
+                    list.Add(itemType);
+                }
+            }
 
+            list.AddRange(itemsCustom.Select(kvp => kvp.Value).ToList());
+
+            return list;
         }
+
         internal static List<ItemType> GetBase()
         {
-            return itemsBase.Select(kvp => kvp.Value).ToList();
-        }
-        internal static List<ItemType> GetCustom()
-        {
-            return itemsCustom.Select(kvp => kvp.Value).ToList();
+            return items.Select(kvp => kvp.Value).ToList();
         }
 
         public static ItemType GetItemType(string itemcode)
         {
-            ItemType destType;
-            items.TryGetValue(itemcode, out destType);
-            return destType;
+            ItemType itemType;
+            itemsCustom.TryGetValue(itemcode, out itemType);
+
+            if (itemType == null)
+                itemsBaseEdited.TryGetValue(itemcode, out itemType);
+
+            if (itemType == null)
+                items.TryGetValue(itemcode, out itemType);
+
+            return itemType;
         }
 
         internal static string GetName(string itemcode)
@@ -49,11 +72,9 @@ namespace BetterTriggers.WorldEdit
             return itemType.DisplayName;
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void LoadFromCASC(bool isTest)
         {
             items = new Dictionary<string, ItemType>();
-            itemsBase = new Dictionary<string, ItemType>();
-            itemsCustom = new Dictionary<string, ItemType>();
 
             Stream itemskin;
 
@@ -89,8 +110,15 @@ namespace BetterTriggers.WorldEdit
                     Model = model,
                 };
                 items.TryAdd(item.ItemCode, item);
-                itemsBase.TryAdd(item.ItemCode, item);
             }
+
+            itemskin.Close();
+        }
+
+        internal static void Load(bool isTest = false)
+        {
+            itemsBaseEdited = new Dictionary<string, ItemType>();
+            itemsCustom = new Dictionary<string, ItemType>();
 
             string filePath = "war3map.w3t";
             if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
@@ -109,6 +137,14 @@ namespace BetterTriggers.WorldEdit
                 for (int i = 0; i < customItems.BaseItems.Count; i++)
                 {
                     var baseItem = customItems.BaseItems[i];
+                    ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(baseItem.OldId));
+                    string name = baseAbil.DisplayName;
+                    var item = new ItemType()
+                    {
+                        ItemCode = baseItem.ToString().Substring(0, 4),
+                        DisplayName = name,
+                    };
+                    itemsBaseEdited.TryAdd(item.ItemCode, item);
                     SetCustomFields(baseItem, Int32Extensions.ToRawcode(baseItem.OldId));
                 }
 
@@ -122,7 +158,6 @@ namespace BetterTriggers.WorldEdit
                         ItemCode = customItem.ToString().Substring(0, 4),
                         DisplayName = name,
                     };
-                    items.TryAdd(item.ItemCode, item);
                     itemsCustom.TryAdd(item.ItemCode, item);
                     SetCustomFields(customItem, item.ItemCode);
                 }
