@@ -115,7 +115,7 @@ namespace BetterTriggers.WorldEdit
             itemskin.Close();
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void Load()
         {
             itemsBaseEdited = new Dictionary<string, ItemType>();
             itemsCustom = new Dictionary<string, ItemType>();

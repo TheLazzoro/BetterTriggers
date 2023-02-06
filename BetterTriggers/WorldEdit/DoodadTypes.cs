@@ -122,7 +122,7 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void Load()
         {
             doodadsBaseEdited = new Dictionary<string, DoodadType>();
             doodadsCustom = new Dictionary<string, DoodadType>();

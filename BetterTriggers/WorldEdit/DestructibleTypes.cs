@@ -142,7 +142,7 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void Load()
         {
             destructiblesBaseEdited = new Dictionary<string, DestructibleType>();
             destructiblesCustom = new Dictionary<string, DestructibleType>();

@@ -112,7 +112,7 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void Load()
         {
             upgradesBaseEdited = new Dictionary<string, UpgradeType>();
             upgradesCustom = new Dictionary<string, UpgradeType>();

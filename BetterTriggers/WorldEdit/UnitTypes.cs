@@ -169,11 +169,10 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void Load()
         {
             unitTypesBaseEdited = new Dictionary<string, UnitType>();
             unitTypesCustom = new Dictionary<string, UnitType>();
-            IsTest = isTest;
 
             string filePath = "war3map.w3u";
             if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
@@ -268,8 +267,11 @@ namespace BetterTriggers.WorldEdit
                 {
                     string iconPath = modification.Value as string;
                     Stream stream = null;
-                    if (!IsTest && Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds")))
-                        stream = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds"));
+                    if (!IsTest)
+                    {
+                        if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds")))
+                            stream = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds"));
+                    }
 
                     if (stream == null)
                     {

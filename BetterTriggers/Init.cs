@@ -29,6 +29,8 @@ namespace BetterTriggers
             ItemTypes.LoadFromCASC(isTest);
             UpgradeTypes.LoadFromCASC(isTest);
 
+            ModelData.Load(isTest); // requires above
+
             HasLoaded = true;
         }
     }

@@ -57,7 +57,7 @@ namespace BetterTriggers
         }
 
 
-        public static void Load(bool isTest = false)
+        public static void Load()
         {
             while (IsMapSaving())
             {
@@ -66,13 +66,13 @@ namespace BetterTriggers
 
             Info.Load();
             MapStrings.Load();
-            UnitTypes.Load(isTest);
-            ItemTypes.Load(isTest);
-            DestructibleTypes.Load(isTest);
-            DoodadTypes.Load(isTest);
+            UnitTypes.Load();
+            ItemTypes.Load();
+            DestructibleTypes.Load();
+            DoodadTypes.Load();
             AbilityTypes.Load();
-            BuffTypes.Load(isTest);
-            UpgradeTypes.Load(isTest);
+            BuffTypes.Load();
+            UpgradeTypes.Load();
             SkinFiles.Load();
 
             Cameras.Load();
@@ -80,8 +80,6 @@ namespace BetterTriggers
             Regions.Load();
             Sounds.Load();
             Units.Load();
-
-            ModelData.Load(isTest); // requires above
         }
 
         /// <summary>

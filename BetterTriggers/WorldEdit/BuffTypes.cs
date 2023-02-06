@@ -117,7 +117,7 @@ namespace BetterTriggers.WorldEdit
             buffdata.Close();
         }
 
-        internal static void Load(bool isTest = false)
+        internal static void Load()
         {
             buffsBaseEdited = new Dictionary<string, BuffType>();
             buffsCustom = new Dictionary<string, BuffType>();
