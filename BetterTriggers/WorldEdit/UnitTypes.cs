@@ -164,7 +164,8 @@ namespace BetterTriggers.WorldEdit
                 unitType.Model = model;
                 unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
 
-                unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
+                if(isTest)
+                    unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
             }
         }
 
