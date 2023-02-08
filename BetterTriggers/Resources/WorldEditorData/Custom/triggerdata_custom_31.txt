@@ -284,6 +284,13 @@ FramePointBottomLeft=2,framepointtype,FRAMEPOINT_BOTTOMLEFT,WE_STRING_FRAMEPOINT
 FramePointBottom=2,framepointtype,FRAMEPOINT_BOTTOM,WE_STRING_FRAMEPOINT_BOTTOM
 FramePointBottomRight=2,framepointtype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPOINT_BOTTOMRIGHT
 
+TextJustifyTop=2,textaligntype,TEXT_JUSTIFY_TOP,Top
+TextJustifyBottom=2,textaligntype,TEXT_JUSTIFY_BOTTOM,Bottom
+TextJustifyMiddle=2,textaligntype,TEXT_JUSTIFY_MIDDLE,Middle
+TextJustifyCenter=2,textaligntype,TEXT_JUSTIFY_CENTER,Center
+TextJustifyLeft=2,textaligntype,TEXT_JUSTIFY_LEFT,Left
+TextJustifyRight=2,textaligntype,TEXT_JUSTIFY_RIGHT,Right
+
 FrameTextureStretch=2,frametexturemode,0,Stretch
 FrameTextureTile=2,frametexturemode,1,Tile
 
@@ -376,7 +383,7 @@ _BlzCreateFrameBT_Category=TC_FRAMEHANDLE
 BlzCreateSimpleFrameBT=2,string,framehandle,integer,frameevents
 _BlzCreateSimpleFrameBT_DisplayName="Create Simple Frame"
 _BlzCreateSimpleFrameBT_Parameters="Create a simple frame ,~Frame type, with parent ,~Parent,, context ,~Context,, and enable events ,~Events,"
-_BlzCreateSimpleFrameBT_Defaults=SIMPLEBUTTON,_,0,_
+_BlzCreateSimpleFrameBT_Defaults=SIMPLEBUTTON,BlzGetOriginFrame,0,_
 _BlzCreateSimpleFrameBT_Category=TC_FRAMEHANDLE
 
 BlzCreateFrameByTypeBT=2,string,string,framehandle,string,integer,frameevents
@@ -409,18 +416,17 @@ _BlzFrameClearAllPoints_Parameters="Clear all points for ,~Frame,"
 _BlzFrameClearAllPoints_Defaults=
 _BlzFrameClearAllPoints_Category=TC_FRAMEHANDLE
 
-// TODO: Unclear what this is 
 BlzFrameSetAllPoints=2,framehandle,framehandle
 _BlzFrameSetAllPoints_DisplayName="Copy Position And Size"
 _BlzFrameSetAllPoints_Parameters="Copy position and size to ,~Frame, from ,~Frame,"
 _BlzFrameSetAllPoints_Defaults=_,_
 _BlzFrameSetAllPoints_Category=TC_FRAMEHANDLE
 
-BlzFrameSetVisible=2,framehandle,enableddisabledoption
-_BlzFrameSetVisible_DisplayName="Set Visibility"
-_BlzFrameSetVisible_Parameters="Set ,~Frame, visibility ,~Boolean,"
-_BlzFrameSetVisible_Defaults=_,EnabledDisabledEnabled
-_BlzFrameSetVisible_Category=TC_FRAMEHANDLE
+BlzFrameSetVisibleBT=2,showhideoption,framehandle
+_BlzFrameSetVisibleBT_DisplayName="Show/Hide"
+_BlzFrameSetVisibleBT_Parameters=",~ShowHide, ,~Frame,"
+_BlzFrameSetVisibleBT_Defaults=ShowHideShow,_
+_BlzFrameSetVisibleBT_Category=TC_FRAMEHANDLE
 
 BlzFrameClick=2,framehandle
 _BlzFrameClick_DisplayName="Click Frame"
@@ -458,8 +464,7 @@ _BlzFrameSetFocus_Parameters="Set focus of ,~Frame, to ,~Boolean,"
 _BlzFrameSetFocus_Defaults=_,false
 _BlzFrameSetFocus_Category=TC_FRAMEHANDLE
 
-// TODO: Use model parameter instead of string
-BlzFrameSetModel=2,framehandle,string,integer
+BlzFrameSetModel=2,framehandle,modelfile,integer
 _BlzFrameSetModel_DisplayName="Change Model"
 _BlzFrameSetModel_Parameters="Change model of ,~Frame, to ,~Model, using camera index ,~Camera Index,"
 _BlzFrameSetModel_Defaults=_,_,0
@@ -483,7 +488,7 @@ _BlzFrameSetSpriteAnimate_Parameters="Change ,~Frame, sprite animation primary p
 _BlzFrameSetSpriteAnimate_Defaults=_,0,0
 _BlzFrameSetSpriteAnimate_Category=TC_FRAMEHANDLE
 
-BlzFrameSetTexture=2,framehandle,string,frametexturemode,boolean
+BlzFrameSetTexture=2,framehandle,imagefile,frametexturemode,boolean
 _BlzFrameSetTexture_DisplayName="Change Texture"
 _BlzFrameSetTexture_Parameters="Change texture of ,~Frame, to ,~Texture, with mode ,~Mode, and do blend ,~Boolean,"
 _BlzFrameSetTexture_Defaults=_,_,FrameTextureStretch,true
@@ -579,8 +584,7 @@ _BlzSetMousePos_Parameters="Change mouse position X: ,~X, Y: ,~Y,"
 _BlzSetMousePos_Defaults=400,300
 _BlzSetMousePos_Category=TC_PLAYER
 
-TODO: take imports
-BlzChangeMinimapTerrainTex=2,string
+BlzChangeMinimapTerrainTex=2,imagefile
 _BlzChangeMinimapTerrainTex_DisplayName="Change Minimap Image"
 _BlzChangeMinimapTerrainTex_Parameters="Change minimap image to ,~image,"
 _BlzChangeMinimapTerrainTex_Defaults=
@@ -605,11 +609,11 @@ _BlzDisplayChatMessage_Defaults=_,TextChannelAll,_
 _BlzDisplayChatMessage_Category=TC_PLAYER
 
 // TODO: Test this native ingame
-BlzPauseUnitEx=2,unit,boolean
-_BlzPauseUnitEx_DisplayName="Pause"
-_BlzPauseUnitEx_Parameters=""
-_BlzPauseUnitEx_Defaults=
-_BlzPauseUnitEx_Category=TC_UNIT
+//BlzPauseUnitEx=2,unit,boolean
+//_BlzPauseUnitEx_DisplayName="Pause"
+//_BlzPauseUnitEx_Parameters=""
+//_BlzPauseUnitEx_Defaults=
+//_BlzPauseUnitEx_Category=TC_UNIT
 
 
 //***************************************************************************
@@ -689,7 +693,7 @@ _BlzFrameGetValue_Parameters="Value of ,~Frame,"
 _BlzFrameGetValue_Defaults=
 _BlzFrameGetValue_Category=TC_FRAMEHANDLE
 
-BlzFrameGetParent=2,1,framehandle
+BlzFrameGetParent=2,1,framehandle,framehandle
 _BlzFrameGetParent_DisplayName="Parent Frame"
 _BlzFrameGetParent_Parameters="Parent frame of ,~Frame,"
 _BlzFrameGetParent_Defaults=

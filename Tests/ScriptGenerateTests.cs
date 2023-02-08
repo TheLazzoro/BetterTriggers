@@ -33,6 +33,7 @@ namespace Tests
             Console.WriteLine("-----------");
             Console.WriteLine("");
 
+            Casc.GameVersion = new Version(1, 35, 1); // hack. We need the newest version to load our custom frame definition script.
             BetterTriggers.Init.Initialize(true);
 
 
@@ -190,6 +191,21 @@ namespace Tests
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
             ControllerProject controllerProject = new ControllerProject();
             CustomMapData.Init(mapDir, true); // TODO: CustomMapData init should be run by the controller.
+            CustomMapData.Load();
+            controllerProject.LoadProject(projectDir);
+            success = controllerProject.GenerateScript();
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void GenerateScript_CustomProject_FramesMap()
+        {
+            string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/Frames_Map.json");
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/map/Map.w3x");
+            ControllerProject controllerProject = new ControllerProject();
+            CustomMapData.Init(mapDir, true); // TODO: CustomMapData init should be run by the controller.
+            CustomMapData.Load();
             controllerProject.LoadProject(projectDir);
             success = controllerProject.GenerateScript();
 

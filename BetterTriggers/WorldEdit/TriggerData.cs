@@ -174,9 +174,6 @@ namespace BetterTriggers.WorldEdit
 
             // --- Loads depending on version --- //
 
-            if (isTest)
-                return;
-
             if (Casc.GameVersion.Minor >= 31)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));

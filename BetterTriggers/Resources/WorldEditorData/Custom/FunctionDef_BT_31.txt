@@ -38,6 +38,10 @@ function BlzFrameSetEnableBT takes boolean enabled, framehandle frame returns no
     call BlzFrameSetEnable(frame, enabled)
 endfunction
 
+function BlzFrameSetVisibleBT takes boolean show, framehandle frame returns nothing
+    call BlzFrameSetVisible(frame, show)
+endfunction
+
 function TriggerAddFrameClickBT takes nothing returns nothing
     set bt_triggerFrame = BlzGetTriggerFrame()
     set bt_triggerFramePlayer = GetTriggerPlayer()

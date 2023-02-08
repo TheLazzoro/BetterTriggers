@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -554,14 +555,6 @@ namespace GUI
             DragMove();
         }
 
-        private void menuItemTriggerConverter_Click(object sender, RoutedEventArgs e)
-        {
-            ConvertTriggersWindow window = new ConvertTriggersWindow();
-            window.ShowDialog();
-            if (window.doOpen && DoCloseProject())
-                OpenProject(window.ProjectLocation);
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             bool doClose = DoCloseProject();
@@ -813,6 +806,9 @@ namespace GUI
             var item = e.OriginalSource as DependencyObject;
             while(item != null)
             {
+                if (item is TextElement)
+                    break;
+
                 if (item is TabItem)
                     break;
 

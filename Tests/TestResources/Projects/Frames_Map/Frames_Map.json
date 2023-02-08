@@ -1,0 +1,18 @@
+{
+  "Name": "Frames_Map",
+  "Version": 2,
+  "GameVersion": "1.35.0.19887",
+  "Language": "jass",
+  "Comment": null,
+  "Header": "",
+  "War3MapDirectory": "C:\\Users\\Lasse Dam\\Desktop\\Frames_Map\\map\\Map.w3x",
+  "Files": [
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "All Frame Natives.trg",
+      "Files": []
+    }
+  ]
+}
