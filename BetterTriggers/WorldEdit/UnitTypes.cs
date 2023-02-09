@@ -98,19 +98,25 @@ namespace BetterTriggers.WorldEdit
             unitTypes = new Dictionary<string, UnitType>();
 
             SylkParser sylkParser = new SylkParser();
-            SylkTable table;
             StreamReader reader;
+            SylkTable table;
             string text;
+            IniData campaignFunc;
+
             IsTest = isTest;
 
             if (isTest)
             {
                 using (Stream unitDataSlk = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitdata.slk"), FileMode.Open))
                 using (Stream unitSkin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/unitskin.txt"), FileMode.Open))
+                using (Stream campaignFuncs = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/campaignunitfunc.txt"), FileMode.Open))
                 {
                     table = sylkParser.Parse(unitDataSlk);
                     reader = new StreamReader(unitSkin);
                     text = reader.ReadToEnd();
+
+                    StreamReader sr = new StreamReader(campaignFuncs);
+                    campaignFunc = IniFileConverter.GetIniData(sr.ReadToEnd());
                 }
             }
             else
@@ -118,12 +124,17 @@ namespace BetterTriggers.WorldEdit
                 var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
                 CASCFile cascFile = (CASCFile)units.Entries["unitdata.slk"];
                 CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
+                CASCFile campaignFuncFile = (CASCFile)units.Entries["campaignunitfunc.txt"];
                 using (Stream unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName))
                 using (Stream unitSkin = Casc.GetCasc().OpenFile(unitSkins.FullName))
+                using (Stream campaignFuncStream = Casc.GetCasc().OpenFile(campaignFuncFile.FullName))
                 {
                     reader = new StreamReader(unitSkin);
                     text = reader.ReadToEnd();
                     table = sylkParser.Parse(unitDataSlk);
+
+                    StreamReader sr = new StreamReader(campaignFuncStream);
+                    campaignFunc = IniFileConverter.GetIniData(sr.ReadToEnd());
                 }
             }
 
@@ -164,8 +175,25 @@ namespace BetterTriggers.WorldEdit
                 unitType.Model = model;
                 unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
 
+                new Icon(icon, UnitTypes.GetName(unitType.Id), "Unit");
+
                 if(!isTest)
                     unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
+            }
+
+            var campaignSections = campaignFunc.Sections;
+            var enumerator = campaignSections.GetEnumerator();
+            while(enumerator.MoveNext())
+            {
+                var section = enumerator.Current;
+                string sectionName = section.SectionName;
+                var keys = section.Keys.GetEnumerator();
+                while (keys.MoveNext())
+                {
+                    var key = keys.Current;
+                    if (key.KeyName == "ScoreScreenIcon")
+                        new Icon(key.Value, UnitTypes.GetName(sectionName), "Unit - Special");
+                }
             }
         }
 

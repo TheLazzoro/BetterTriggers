@@ -276,6 +276,9 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlFrameEvents.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlIcons.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlModels.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -343,6 +346,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ValueControlFrameEvents.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ValueControlIcons.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -15,8 +15,8 @@ namespace BetterTriggers.WorldEdit
     public class AbilityTypes
     {
         private static Dictionary<string, AbilityType> abilities;
-        private static Dictionary<string, AbilityType> abilitiesBaseEdited;
-        private static Dictionary<string, AbilityType> abilitiesCustom;
+        private static Dictionary<string, AbilityType> abilitiesBaseEdited = new();
+        private static Dictionary<string, AbilityType> abilitiesCustom = new();
 
         internal static List<AbilityType> GetAll()
         {
@@ -61,7 +61,9 @@ namespace BetterTriggers.WorldEdit
         {
             AbilityType abilityType = GetAbilityType(abilcode);
             if (abilityType == null)
-                return null;
+                return "<Empty Name>";
+            else if (abilityType.DisplayName == null)
+                return "<Empty Name>";
 
             string name = abilityType.DisplayName;
             if (abilityType.EditorSuffix != null)

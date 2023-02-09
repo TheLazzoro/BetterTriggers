@@ -16,8 +16,8 @@ namespace BetterTriggers.WorldEdit
     public class ItemTypes
     {
         private static Dictionary<string, ItemType> items;
-        private static Dictionary<string, ItemType> itemsBaseEdited;
-        private static Dictionary<string, ItemType> itemsCustom;
+        private static Dictionary<string, ItemType> itemsBaseEdited = new ();
+        private static Dictionary<string, ItemType> itemsCustom = new();
 
         internal static List<ItemType> GetAll()
         {
@@ -67,7 +67,10 @@ namespace BetterTriggers.WorldEdit
         {
             ItemType itemType = GetItemType(itemcode);
             if (itemType == null)
-                return null;
+                return "<Empty Name>";
+
+            if (string.IsNullOrEmpty(itemType.DisplayName))
+                return "<Empty Name>";
 
             return itemType.DisplayName;
         }
@@ -77,23 +80,25 @@ namespace BetterTriggers.WorldEdit
             items = new Dictionary<string, ItemType>();
 
             Stream itemskin;
+            Stream itemfunc;
 
             if (isTest)
             {
                 itemskin = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/itemskin.txt"), FileMode.Open);
+                itemfunc = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/itemfunc.txt"), FileMode.Open);
             }
             else
             {
                 var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
                 CASCFile itemSkins = (CASCFile)units.Entries["itemskin.txt"];
+                CASCFile itemfuncs = (CASCFile)units.Entries["itemfunc.txt"];
                 itemskin = Casc.GetCasc().OpenFile(itemSkins.FullName);
+                itemfunc = Casc.GetCasc().OpenFile(itemfuncs.FullName);
             }
 
 
-            // Parse ini file
             var reader = new StreamReader(itemskin);
             var text = reader.ReadToEnd();
-
             var data = IniFileConverter.GetIniData(text);
 
             var sections = data.Sections.GetEnumerator();
@@ -113,6 +118,24 @@ namespace BetterTriggers.WorldEdit
             }
 
             itemskin.Close();
+
+            // --- Itemfunc (art) --- //
+
+            reader = new StreamReader(itemfunc);
+            text = reader.ReadToEnd();
+            data = IniFileConverter.GetIniData(text);
+            sections = data.Sections.GetEnumerator();
+            while (sections.MoveNext())
+            {
+                string sectionName = sections.Current.SectionName;
+                var keys = sections.Current.Keys;
+                string path = keys["Art"];
+                if(path != null)
+                    new Icon(path, ItemTypes.GetName(sectionName), "Item");
+            }
+
+            itemfunc.Close();
+
         }
 
         internal static void Load()

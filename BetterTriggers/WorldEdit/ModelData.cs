@@ -61,6 +61,11 @@ namespace BetterTriggers.WorldEdit
                 while (enumKeys.MoveNext())
                 {
                     var key = enumKeys.Current;
+                    if (key.KeyName == "Art" || key.KeyName == "Researchart")
+                        new Icon(key.Value, AbilityTypes.GetName(section.SectionName), "Ability");
+                    else if(key.KeyName == "Buffart")
+                        new Icon(key.Value, BuffTypes.GetName(section.SectionName), "Buff");
+
                     if (key.KeyName == "skinType")
                         category = key.Value;
                     if (key.KeyName == "Targetart" ||

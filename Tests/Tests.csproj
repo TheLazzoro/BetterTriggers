@@ -18,9 +18,11 @@
     <None Remove="TestResources\abilitybuffdata.slk" />
     <None Remove="TestResources\abilitydata.slk" />
     <None Remove="TestResources\abilityskin.txt" />
+    <None Remove="TestResources\campaignunitfunc.txt" />
     <None Remove="TestResources\destructabledata.slk" />
     <None Remove="TestResources\destructableskin.txt" />
     <None Remove="TestResources\doodadskins.txt" />
+    <None Remove="TestResources\itemfunc.txt" />
     <None Remove="TestResources\itemskin.txt" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\conversation.json" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3map.doo" />
@@ -393,6 +395,9 @@
     <Content Include="TestResources\abilityskin.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\campaignunitfunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\destructabledata.slk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -400,6 +405,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\doodadskins.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\itemfunc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\itemskin.txt">

@@ -39,7 +39,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 case "aiscript":
                 case "anyfile":
                 case "preloadfile":
-                case "imagefile":
                     this.valueControl = new ValueControlString(returnType);
                     break;
                 case "unitcode":
@@ -113,6 +112,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     break;
                 case "modelfile": // TODO:
                     this.valueControl = new ValueControlModels();
+                    break;
+                case "imagefile": // TODO:
+                    this.valueControl = new ValueControlIcons();
                     break;
                 case "trigger":
                     var triggers = ControllerTrigger.GetTriggersAll();

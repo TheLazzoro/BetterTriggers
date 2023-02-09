@@ -17,8 +17,8 @@ namespace BetterTriggers.WorldEdit
     public class BuffTypes
     {
         private static Dictionary<string, BuffType> buffs;
-        private static Dictionary<string, BuffType> buffsBaseEdited;
-        private static Dictionary<string, BuffType> buffsCustom;
+        private static Dictionary<string, BuffType> buffsBaseEdited = new();
+        private static Dictionary<string, BuffType> buffsCustom = new();
 
         internal static List<BuffType> GetAll()
         {
@@ -63,7 +63,9 @@ namespace BetterTriggers.WorldEdit
         {
             BuffType buffType = GetBuffType(buffcode);
             if (buffType == null)
-                return null;
+                return "<Empty Name>";
+            else if (buffType.DisplayName == null)
+                return "<Empty Name>";
 
             string name = buffType.DisplayName;
             if (buffType.EditorSuffix != null)

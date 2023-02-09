@@ -1,5 +1,7 @@
 ﻿using BetterTriggers.Models.War3Data;
+using BetterTriggers.Utility;
 using CASCLib;
+using IniParser.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,8 +19,8 @@ namespace BetterTriggers.WorldEdit
     public class UpgradeTypes
     {
         private static Dictionary<string, UpgradeType> upgrades;
-        private static Dictionary<string, UpgradeType> upgradesBaseEdited;
-        private static Dictionary<string, UpgradeType> upgradesCustom;
+        private static Dictionary<string, UpgradeType> upgradesBaseEdited = new();
+        private static Dictionary<string, UpgradeType> upgradesCustom = new();
 
         internal static List<UpgradeType> GetAll()
         {
@@ -63,7 +65,9 @@ namespace BetterTriggers.WorldEdit
         {
             UpgradeType upgradeType = GetUpgradeType(upgradecode);
             if (upgradeType == null)
-                return null;
+                return "<Empty Name>";
+            else if(upgradeType.DisplayName == null)
+                return "<Empty Name>";
 
             string name = upgradeType.DisplayName;
             if (!string.IsNullOrEmpty(upgradeType.EditorSuffix))
@@ -76,9 +80,19 @@ namespace BetterTriggers.WorldEdit
         {
             upgrades = new Dictionary<string, UpgradeType>();
             Stream upgradedata;
+            IniData upgradeFunc;
+
             if (isTest)
             {
                 upgradedata = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/upgradedata.slk"), FileMode.Open);
+                
+                StringBuilder text = new StringBuilder();
+                text.Append(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/humanupgradefunc.txt")));
+                text.Append(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/nightelfupgradefunc.txt")));
+                text.Append(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/orcupgradefunc.txt")));
+                text.Append(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/undeadupgradefunc.txt")));
+                text.Append(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/campaignupgradefunc.txt")));
+                upgradeFunc = IniFileConverter.GetIniData(text.ToString());
             }
             else
             {
@@ -90,6 +104,25 @@ namespace BetterTriggers.WorldEdit
                 */
                 CASCFile abilityData = (CASCFile)units.Entries["upgradedata.slk"];
                 upgradedata = Casc.GetCasc().OpenFile(abilityData.FullName);
+
+                CASCFile humanUp = (CASCFile)units.Entries["humanupgradefunc.txt"];
+                CASCFile orcUp = (CASCFile)units.Entries["orcupgradefunc.txt"];
+                CASCFile undeadUp = (CASCFile)units.Entries["undeadupgradefunc.txt"];
+                CASCFile nightelfUp = (CASCFile)units.Entries["nightelfupgradefunc.txt"];
+                CASCFile campaignUp = (CASCFile)units.Entries["campaignupgradefunc.txt"];
+                StreamReader sr;
+                StringBuilder text = new StringBuilder();
+                sr = new StreamReader(Casc.GetCasc().OpenFile(humanUp.FullName));
+                text.Append(sr.ReadToEnd());
+                sr = new StreamReader(Casc.GetCasc().OpenFile(orcUp.FullName));
+                text.Append(sr.ReadToEnd());
+                sr = new StreamReader(Casc.GetCasc().OpenFile(undeadUp.FullName));
+                text.Append(sr.ReadToEnd());
+                sr = new StreamReader(Casc.GetCasc().OpenFile(nightelfUp.FullName));
+                text.Append(sr.ReadToEnd());
+                sr = new StreamReader(Casc.GetCasc().OpenFile(campaignUp.FullName));
+                text.Append(sr.ReadToEnd());
+                upgradeFunc = IniFileConverter.GetIniData(text.ToString());
             }
 
             SylkParser sylkParser = new SylkParser();
@@ -109,6 +142,28 @@ namespace BetterTriggers.WorldEdit
                     continue;
 
                 upgrades.TryAdd(upgrade.UpgradeCode, upgrade);
+            }
+
+            // --- upgrade icon art --- //
+            var upgradeSections = upgradeFunc.Sections;
+            var enumerator = upgradeSections.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var section = enumerator.Current;
+                string sectionName = section.SectionName;
+                var keys = section.Keys.GetEnumerator();
+                while (keys.MoveNext())
+                {
+                    var key = keys.Current;
+                    if (key.KeyName == "Art")
+                    {
+                        string[] split = key.Value.Split(",");
+                        for (int i = 0; i < split.Length; i++)
+                        {
+                            new Icon(split[i], UpgradeTypes.GetName(sectionName), "Upgrade");
+                        }
+                    }
+                }
             }
         }
 
