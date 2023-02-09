@@ -19,9 +19,11 @@
     <None Remove="TestResources\abilitydata.slk" />
     <None Remove="TestResources\abilityskin.txt" />
     <None Remove="TestResources\campaignunitfunc.txt" />
+    <None Remove="TestResources\campaignupgradefunc.txt" />
     <None Remove="TestResources\destructabledata.slk" />
     <None Remove="TestResources\destructableskin.txt" />
     <None Remove="TestResources\doodadskins.txt" />
+    <None Remove="TestResources\humanupgradefunc.txt" />
     <None Remove="TestResources\itemfunc.txt" />
     <None Remove="TestResources\itemskin.txt" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\conversation.json" />
@@ -337,6 +339,8 @@
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\nightelfupgradefunc.txt" />
+    <None Remove="TestResources\orcupgradefunc.txt" />
     <None Remove="TestResources\Projects\Frames_Map\Frames_Map.json" />
     <None Remove="TestResources\Projects\Frames_Map\map\Map.w3x\war3map.doo" />
     <None Remove="TestResources\Projects\Frames_Map\map\Map.w3x\war3map.mmp" />
@@ -368,6 +372,7 @@
     <None Remove="TestResources\Projects\LocalVarMap\map\Map.w3x\war3mapUnits.doo" />
     <None Remove="TestResources\Projects\LocalVarMap\src\Untitled Trigger.trg" />
     <None Remove="TestResources\triggerdata.txt" />
+    <None Remove="TestResources\undeadupgradefunc.txt" />
     <None Remove="TestResources\unitdata.slk" />
     <None Remove="TestResources\unitskin.txt" />
     <None Remove="TestResources\upgradedata.slk" />
@@ -398,6 +403,9 @@
     <Content Include="TestResources\campaignunitfunc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\campaignupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\destructabledata.slk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -405,6 +413,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\doodadskins.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\humanupgradefunc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\itemfunc.txt">
@@ -1349,6 +1360,12 @@
     <Content Include="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\nightelfupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\orcupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\Projects\Frames_Map\Frames_Map.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1440,6 +1457,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\triggerdata.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\undeadupgradefunc.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\unitdata.slk">
