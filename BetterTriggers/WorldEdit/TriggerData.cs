@@ -64,8 +64,10 @@ namespace BetterTriggers.WorldEdit
                 data = IniFileConverter.GetIniData(triggerdata);
 
                 string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
-                ScriptGenerator.PathCommonJ = Path.Combine(baseDir, "common.txt");
-                ScriptGenerator.PathBlizzardJ = Path.Combine(baseDir, "Blizzardj.txt");
+                pathCommonJ = Path.Combine(baseDir, "common.txt");
+                pathBlizzardJ = Path.Combine(baseDir, "Blizzardj.txt");
+                ScriptGenerator.PathCommonJ = pathCommonJ;
+                ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
                 ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/clijasshelper.exe";
             }
             else
