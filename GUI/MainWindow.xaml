@@ -654,12 +654,14 @@
         <GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="#00404040" Margin="0,4,0,0" DragCompleted="GridSplitter_DragCompleted"/>
 
         <TabControl x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF202020" BorderThickness="0" Padding="0" SelectionChanged="tabControl_SelectionChanged" ContextMenuOpening="tabControl_ContextMenuOpening" >
+                
             <TabControl.ContextMenu>
                 <ContextMenu x:Name="contextMenu" Foreground="#eee" BorderBrush="#0000" Background="#FF282828">
                     <MenuItem x:Name="tabitem_Menu_Close" Header="Close" Click="tabitem_Menu_Close_Click" />
                     <MenuItem x:Name="tabitem_Menu_CloseAll" Header="Close All" Click="tabitem_Menu_CloseAll_Click" />
                 </ContextMenu>
             </TabControl.ContextMenu>
+
             
             <TabControl.Template>
                 <ControlTemplate TargetType="TabControl">

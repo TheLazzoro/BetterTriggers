@@ -817,7 +817,10 @@ namespace GUI
 
             if(item == null || item is not TabItem)
             {
-                e.Handled = true;
+                // TODO: We need to find a way to prevent the opening of this context menu
+                // while still not preventing the opening of the context menu in the trigger editor.
+                // e.Handled = true will just prevent all other consecutive events from firing.
+                //e.Handled = true;
                 return;
             }
 
@@ -839,5 +842,6 @@ namespace GUI
                 vmd.Tabs.RemoveAt(index);
             }
         }
+
     }
 }

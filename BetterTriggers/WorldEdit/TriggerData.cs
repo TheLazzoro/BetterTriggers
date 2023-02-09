@@ -14,6 +14,7 @@ using System.IO;
 using System.Text;
 using War3Net.Build.Info;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -207,6 +208,34 @@ namespace BetterTriggers.WorldEdit
                 customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33.txt"));
                 customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33_Lua.txt"));
             }
+
+
+            // --- Adds extends to types --- //
+
+            Types.Create("agent", false, false, "Agent", string.Empty); // hack
+
+
+            string[] commonJfile = File.ReadAllLines(pathCommonJ);
+            List<string> types = new List<string>();
+            for (int i = 0; i < commonJfile.Length; i++)
+            {
+                commonJfile[i] = Regex.Replace(commonJfile[i], @"\s+", " ");
+                if (commonJfile[i].StartsWith("type"))
+                {
+                    types.Add(commonJfile[i]);
+                }
+            }
+
+            types.ForEach(line =>
+            {
+                string[] split = line.Split(" ");
+                string type = split[1];
+                string extends = split[3];
+
+                var _type = Types.Get(type);
+                if(_type != null)
+                    Types.Get(type).Extends = extends;
+            });
         }
 
         private static void LoadTriggerDataFromIni(IniData data)

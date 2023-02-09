@@ -36,6 +36,21 @@ namespace BetterTriggers.Controllers
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
 
+            if(returnType == "handle")
+            {
+                var enumerator = TriggerData.CallTemplates.GetEnumerator();
+                while(enumerator.MoveNext())
+                {
+                    var template = enumerator.Current.Value;
+                    if(Types.IsHandle(template.returnType))
+                    {
+                        list.Add(template);
+                    }
+                }
+
+                return list;
+            }
+
             // Special case for for GUI "Matching" parameter
             bool wasBoolCall = false;
             if (returnType == "boolcall")

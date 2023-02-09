@@ -15,6 +15,7 @@ namespace BetterTriggers.WorldEdit
         public bool CanBeCompared { get; }
         public string DisplayName { get; }
         public string BaseType { get; }
+        public string Extends { get; internal set; } = string.Empty;
 
         public Types(string key, bool canBeGlobal, bool canBeCompared, string displayName, string baseType)
         {
@@ -37,6 +38,37 @@ namespace BetterTriggers.WorldEdit
             types.Add(key, variableType);
         }
 
+        public static Types Get(string type)
+        {
+            Types t;
+            types.TryGetValue(type, out t);
+            return t;
+        }
+
+        public static bool IsHandle(string type)
+        {
+            if(type == "unit")
+            {
+
+            }
+
+            bool isHandle = false;
+            Types t;
+            types.TryGetValue(type, out t);
+            while(t != null)
+            {
+                if (t.Extends == "handle")
+                {
+                    isHandle = true;
+                    break;
+                }
+
+                types.TryGetValue(t.Extends, out t);
+            }
+
+            return isHandle;
+        }
+        
         public static List<Types> GetGlobalTypes()
         {
             return types.
