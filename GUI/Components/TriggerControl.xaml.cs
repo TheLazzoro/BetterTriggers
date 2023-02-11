@@ -290,6 +290,20 @@ namespace GUI.Components
 
         public void RefreshBottomControls()
         {
+            Settings settings = Settings.Load();
+            if (settings.triggerEditorMode == 1)
+            {
+                bottomControl.Visibility = Visibility.Hidden;
+                bottomSplitter.Visibility = Visibility.Hidden;
+                Grid.SetRowSpan(treeViewTriggers, 3);
+            }
+            else
+            {
+                bottomControl.Visibility = Visibility.Visible;
+                bottomSplitter.Visibility = Visibility.Visible;
+                Grid.SetRowSpan(treeViewTriggers, 1);
+            }
+
             var item = treeViewTriggers.SelectedItem as TreeViewTriggerElement;
             textblockParams.Inlines.Clear();
             textblockDescription.Text = string.Empty;

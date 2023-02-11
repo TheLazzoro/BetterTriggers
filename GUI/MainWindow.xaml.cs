@@ -1,6 +1,7 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
@@ -426,6 +427,11 @@ namespace GUI
             settings.Top = this.Top + this.Height / 2 - settings.Height / 2;
             settings.Left = this.Left + this.Width / 2 - settings.Width / 2;
             settings.ShowDialog();
+            for (int i = 0; i < vmd.Tabs.Count; i++)
+            {
+                if (vmd.Tabs[i].explorerElement.Ielement is ExplorerElementTrigger)
+                    vmd.Tabs[i].explorerElement.Reload();
+            }
         }
 
         private void NewProject()

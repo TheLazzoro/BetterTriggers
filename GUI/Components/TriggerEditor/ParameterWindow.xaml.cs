@@ -174,7 +174,26 @@ namespace GUI
                 radioButtonList.Items.Remove(radioBtnValue);
             if (returnType != "modelfile" && returnType != "skymodelstring" && returnType != "musictheme")
                 radioButtonList.Items.Remove(radioBtnImported);
+            if (functionControl.GetElementCount() == 0)
+                radioButtonList.Items.Remove(radioBtnFunction);
+            if (constantControl.GetElementCount() == 0)
+                radioButtonList.Items.Remove(radioBtnPreset);
+            if (variableControl.GetElementCount() == 0)
+                radioButtonList.Items.Remove(radioBtnVariable);
 
+            // Forces a radionbutton selection if none are selected by previous logic.
+            bool isChecked = false;
+            for (int i = 0; i < radioButtonList.Items.Count; i++)
+            {
+                RadioButton radioButton = (RadioButton)radioButtonList.Items[i];
+                if ((bool)radioButton.IsChecked)
+                    isChecked = true;
+            }
+            if(!isChecked && radioButtonList.Items.Count > 0)
+            {
+                RadioButton radioButton = (RadioButton)radioButtonList.Items[0];
+                radioButton.IsChecked = true;
+            }
         }
 
 
