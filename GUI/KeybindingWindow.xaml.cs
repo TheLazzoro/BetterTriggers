@@ -45,11 +45,13 @@ namespace GUI
                 RowDefinition rowDefinition = new RowDefinition() { Height = new GridLength(30) };
                 ColumnDefinition columnDefinition0 = new ColumnDefinition() { Width = new GridLength(50, GridUnitType.Star) };
                 ColumnDefinition columnDefinition1 = new ColumnDefinition() { Width = new GridLength(110) };
-                ColumnDefinition columnDefinition2 = new ColumnDefinition() { Width = new GridLength(100) };
+                ColumnDefinition columnDefinition2 = new ColumnDefinition() { Width = new GridLength(110) };
+                ColumnDefinition columnDefinition3 = new ColumnDefinition() { Width = new GridLength(100) };
                 grid.RowDefinitions.Add(rowDefinition);
                 grid.ColumnDefinitions.Add(columnDefinition0);
                 grid.ColumnDefinitions.Add(columnDefinition1);
                 grid.ColumnDefinitions.Add(columnDefinition2);
+                grid.ColumnDefinitions.Add(columnDefinition3);
                 stackPanelVertical.Children.Add(grid);
                 if (stackPanelVertical.Children.Count % 2 == 0)
                     grid.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
@@ -59,6 +61,22 @@ namespace GUI
                 label.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
                 label.Content = GetKeybindingName(property.Name);
                 grid.Children.Add(label);
+
+                if(property.Name == "BuildMap" || property.Name == "TestMap" || property.Name == "ValidateTriggers")
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Content = "Global Key";
+                    checkBox.IsChecked = keybinding.global;
+                    checkBox.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+                    checkBox.VerticalAlignment = VerticalAlignment.Center;
+                    checkBox.ToolTip = "Hotkey presses register without the window being in focus.";
+                    Grid.SetColumn(checkBox, 1);
+                    grid.Children.Add(checkBox);
+                    checkBox.Click += delegate
+                    {
+                        keybinding.global = (bool)checkBox.IsChecked;
+                    };
+                }
 
                 ComboBox comboBox = new ComboBox();
                 var keybindTag = new ComboBoxKeybindTag();
@@ -76,7 +94,7 @@ namespace GUI
                 }
                 comboBox.Height = 22;
                 comboBox.Tag = keybindTag;
-                Grid.SetColumn(comboBox, 1);
+                Grid.SetColumn(comboBox, 2);
                 grid.Children.Add(comboBox);
                 comboBoxes.Add(comboBox);
                 comboBox.SelectionChanged += new SelectionChangedEventHandler(delegate (object sender, SelectionChangedEventArgs e)
@@ -110,7 +128,7 @@ namespace GUI
                 button.Width = 75;
                 button.Content = keybinding.key.ToString();
                 button.Tag = keybinding;
-                Grid.SetColumn(button, 2);
+                Grid.SetColumn(button, 3);
                 grid.Children.Add(button);
                 buttons.Add(button);
                 button.Click += delegate
@@ -188,6 +206,9 @@ namespace GUI
                     break;
                 case "NewAction":
                     memberName = "New Action";
+                    break;
+                case "ValidateTriggers":
+                    memberName = "Validate Map Triggers";
                     break;
                 case "TestMap":
                     memberName = "Test Map";

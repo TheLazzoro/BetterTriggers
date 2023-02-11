@@ -21,6 +21,7 @@
 
         <Label x:Name="lblInfo" Content="Verifying CASC..." Grid.Column="1" VerticalAlignment="Bottom" Foreground="White"/>
         <ProgressBar Grid.Column="1" Grid.Row="1" IsIndeterminate="True" />
+        <Label x:Name="lblInfo2" Content="" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Foreground="White"/>
         
     </Grid>
 </Window>

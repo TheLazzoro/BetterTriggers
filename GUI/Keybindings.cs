@@ -14,6 +14,7 @@ namespace GUI
     {
         public Key key;
         public ModifierKeys modifier;
+        public bool global;
     }
 
     /// <summary>
@@ -35,6 +36,7 @@ namespace GUI
         public Keybinding NewCondition { get; set; } = new Keybinding() { key = Key.D, modifier = ModifierKeys.Control };
         public Keybinding NewAction { get; set; } = new Keybinding() { key = Key.W, modifier = ModifierKeys.Control };
         public Keybinding NewLocalVariable { get; set; } = new Keybinding() { key = Key.K, modifier = ModifierKeys.Control };
+        public Keybinding ValidateTriggers { get; set; } = new Keybinding() { key = Key.F10, modifier = ModifierKeys.Control };
         public Keybinding TestMap { get; set; } = new Keybinding() { key = Key.F9, modifier = ModifierKeys.Control };
         public Keybinding BuildMap { get; set; } = new Keybinding() { key = Key.B, modifier = ModifierKeys.Control };
 

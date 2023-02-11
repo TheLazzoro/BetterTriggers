@@ -144,6 +144,8 @@ namespace GUI
             keybindingNewAction.Modifiers = keybindings.NewAction.modifier;
             keybindingNewLocalVariable.Key = keybindings.NewLocalVariable.key;
             keybindingNewLocalVariable.Modifiers = keybindings.NewLocalVariable.modifier;
+            keybindingValidateTriggers.Key = keybindings.ValidateTriggers.key;
+            keybindingValidateTriggers.Modifiers = keybindings.ValidateTriggers.modifier;
             keybindingTestMap.Key = keybindings.TestMap.key;
             keybindingTestMap.Modifiers = keybindings.TestMap.modifier;
             keybindingBuildMap.Key = keybindings.BuildMap.key;
@@ -162,6 +164,53 @@ namespace GUI
             menuNewCondition.InputGestureText = Keybindings.GetModifierText(keybindingNewCondition.Modifiers) + "+" + keybindingNewCondition.Key;
             menuNewAction.InputGestureText = Keybindings.GetModifierText(keybindingNewAction.Modifiers) + "+" + keybindingNewAction.Key;
             menuNewLocalVariable.InputGestureText = Keybindings.GetModifierText(keybindingNewLocalVariable.Modifiers) + "+" + keybindingNewLocalVariable.Key;
+
+
+            if (globalValidateTriggers != null)
+            {
+                globalValidateTriggers.Dispose();
+                globalValidateTriggers = null;
+            }
+            if (globalTestMap != null)
+            {
+                globalTestMap.Dispose();
+                globalTestMap = null;
+            }
+            if (globalBuildMap != null)
+            {
+                globalBuildMap.Dispose();
+                globalBuildMap = null;
+            }
+
+            if (keybindings.ValidateTriggers.global)
+                globalValidateTriggers = new HotKey(keybindingValidateTriggers.Key, keybindingValidateTriggers.Modifiers, GlobalHotkeyValidateTriggers);
+            if (keybindings.TestMap.global)
+                globalTestMap = new HotKey(keybindingTestMap.Key, keybindingTestMap.Modifiers, GlobalHotkeyTestMap);
+            if (keybindings.BuildMap.global)
+                globalBuildMap = new HotKey(keybindingBuildMap.Key, keybindingBuildMap.Modifiers, GlobalHotkeyBuildMap);
+        }
+
+        HotKey globalValidateTriggers;
+        HotKey globalTestMap;
+        HotKey globalBuildMap;
+
+        private void GlobalHotkeyValidateTriggers(HotKey hotKey)
+        {
+            if(IsProjectActive())
+            {
+                ControllerProject controller = new ControllerProject();
+                controller.GenerateScript();
+            }
+        }
+        private void GlobalHotkeyTestMap(HotKey hotKey)
+        {
+            if (IsProjectActive())
+                TestMap();
+        }
+        private void GlobalHotkeyBuildMap(HotKey hotKey)
+        {
+            if (IsProjectActive())
+                BuildMap();
         }
 
         public Keybindings GetKeybindings()
@@ -181,8 +230,9 @@ namespace GUI
             keybindings.NewCondition = new Keybinding() { key = keybindingNewCondition.Key, modifier = keybindingNewCondition.Modifiers };
             keybindings.NewAction = new Keybinding() { key = keybindingNewAction.Key, modifier = keybindingNewAction.Modifiers };
             keybindings.NewLocalVariable = new Keybinding() { key = keybindingNewLocalVariable.Key, modifier = keybindingNewLocalVariable.Modifiers };
-            keybindings.TestMap = new Keybinding() { key = keybindingTestMap.Key, modifier = keybindingTestMap.Modifiers };
-            keybindings.BuildMap = new Keybinding() { key = keybindingBuildMap.Key, modifier = keybindingBuildMap.Modifiers };
+            keybindings.ValidateTriggers = new Keybinding() { key = keybindingValidateTriggers.Key, modifier = keybindingValidateTriggers.Modifiers, global = globalValidateTriggers != null };
+            keybindings.TestMap = new Keybinding() { key = keybindingTestMap.Key, modifier = keybindingTestMap.Modifiers, global = globalTestMap != null };
+            keybindings.BuildMap = new Keybinding() { key = keybindingBuildMap.Key, modifier = keybindingBuildMap.Modifiers, global = globalBuildMap != null };
 
             return keybindings;
         }
@@ -721,6 +771,12 @@ namespace GUI
             triggerControl.CreateLocalVariable();
         }
 
+        private void CommandBinding_Executed_ValidateTriggers(object sender, ExecutedRoutedEventArgs e)
+        {
+            ControllerProject controller = new ControllerProject();
+            controller.GenerateScript();
+        }
+
         private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
         {
             var controller = new ControllerProject();
@@ -804,7 +860,7 @@ namespace GUI
         private void tabControl_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             var item = e.OriginalSource as DependencyObject;
-            while(item != null)
+            while (item != null)
             {
                 if (item is TextElement)
                     break;
@@ -815,7 +871,7 @@ namespace GUI
                 item = VisualTreeHelper.GetParent(item);
             }
 
-            if(item == null || item is not TabItem)
+            if (item == null || item is not TabItem)
             {
                 // TODO: We need to find a way to prevent the opening of this context menu
                 // while still not preventing the opening of the context menu in the trigger editor.
@@ -835,7 +891,7 @@ namespace GUI
 
         private void tabitem_Menu_Close_Click(object sender, RoutedEventArgs e)
         {
-            if(tabItem_rightClicked != null)
+            if (tabItem_rightClicked != null)
             {
                 var header = tabItem_rightClicked.Header as TabItemBT;
                 int index = tabControl.Items.IndexOf(header);

@@ -410,6 +410,7 @@
         <RoutedUICommand x:Key="NewLocalVariable"></RoutedUICommand>
         <RoutedUICommand x:Key="NewAction"></RoutedUICommand>
 
+        <RoutedUICommand x:Key="ValidateTriggers"></RoutedUICommand>
         <RoutedUICommand x:Key="TestMap"></RoutedUICommand>
         <RoutedUICommand x:Key="BuildMap"></RoutedUICommand>
         
@@ -435,6 +436,7 @@
         <CommandBinding Command="{StaticResource NewLocalVariable}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewLocalVariable"/>
         <CommandBinding Command="{StaticResource NewAction}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewAction"/>
 
+        <CommandBinding Command="{StaticResource ValidateTriggers}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_ValidateTriggers" />
         <CommandBinding Command="{StaticResource TestMap}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_TestMap"/>
         <CommandBinding Command="{StaticResource BuildMap}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_BuildMap"/>
         
@@ -457,6 +459,7 @@
         <KeyBinding x:Name="keybindingNewLocalVariable" Command="{StaticResource NewLocalVariable}" Key="K" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewAction" Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
 
+        <KeyBinding x:Name="keybindingValidateTriggers" Command="{StaticResource ValidateTriggers}" Key="F10" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingTestMap" Command="{StaticResource TestMap}" Key="F9" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingBuildMap" Command="{StaticResource BuildMap}" Key="B" Modifiers="Ctrl"/>
         
