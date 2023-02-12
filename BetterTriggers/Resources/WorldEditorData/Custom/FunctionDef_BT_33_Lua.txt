@@ -2,7 +2,7 @@
     BlzQueueImmediateOrderById(whichUnit, OrderId(order))
 end
 
-function BlzQueuePointOrderByIdBT (order, whichUnit, loc)
+function BlzQueuePointOrderByIdBT (whichUnit, order, loc)
     BlzQueuePointOrderById(whichUnit, OrderId(order), GetLocationX(loc), GetLocationY(loc))
 end
 
