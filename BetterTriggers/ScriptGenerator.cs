@@ -526,8 +526,10 @@ end
 
             if (returnType == "boolean")
                 value = "false";
-            else if (returnType == "integer" || returnType == "real")
+            else if (returnType == "integer")
                 value = "0";
+            else if(returnType == "real")
+                value = "0.00";
 
             return value;
         }
