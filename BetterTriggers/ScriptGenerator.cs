@@ -390,11 +390,24 @@ end
             script.Append(ContainerProject.project.Header + newline + newline);
 
 
+
+            GenerateLuaGlobals(script);
+
+
+
             // Init global variables
             script.Append($"function InitGlobals {functionReturnsNothing}" + newline);
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
+                
+                string luaGlobalPrefix = string.Empty;
+                if(language == ScriptLanguage.Lua) {
+                    if(realVarEventVariables.ContainsKey(variable.Name)){
+                        luaGlobalPrefix = "globals.";
+                    }
+                }
+
                 string initialValue = ConvertParametersToJass(variable.InitialValue, variable.Type, new PreActions() /* hack */ );
                 if (string.IsNullOrEmpty(initialValue))
                     initialValue = GetTypeInitialValue(variable.Type);
@@ -404,19 +417,19 @@ end
 
 
                 if (!variable.IsArray && !string.IsNullOrEmpty(initialValue))
-                    script.Append($"\t{set} {variable.GetIdentifierName()} =" + initialValue + newline);
+                    script.Append($"\t{set} {luaGlobalPrefix}{variable.GetIdentifierName()} =" + initialValue + newline);
                 else if (variable.IsArray && !variable.IsTwoDimensions && !string.IsNullOrEmpty(initialValue))
                 {
                     for (int j = 0; j <= variable.ArraySize[0]; j++)
                     {
-                        script.Append($"\t{set} {variable.GetIdentifierName()}[{j}] = {initialValue}{newline}");
+                        script.Append($"\t{set} {luaGlobalPrefix}{variable.GetIdentifierName()}[{j}] = {initialValue}{newline}");
                     }
                 }
                 else if (variable.IsArray && variable.IsTwoDimensions)
                 {
                     if (language == ScriptLanguage.Lua)
                     {
-                        script.Append($"\t{variable.GetIdentifierName()} = array2DLua({variable.ArraySize[0]}, {variable.ArraySize[1]}, {initialValue}){newline}");
+                        script.Append($"\t{luaGlobalPrefix}{variable.GetIdentifierName()} = array2DLua({variable.ArraySize[0]}, {variable.ArraySize[1]}, {initialValue}){newline}");
                         continue;
                     }
 
@@ -424,7 +437,7 @@ end
                     {
                         for (int k = 0; k <= variable.ArraySize[1]; k++)
                         {
-                            script.Append($"\t{set} {variable.GetIdentifierName()}[{j}][{k}] = {initialValue}{newline}");
+                            script.Append($"\t{set} {luaGlobalPrefix}{variable.GetIdentifierName()}[{j}][{k}] = {initialValue}{newline}");
                         }
                     }
                 }
@@ -460,10 +473,6 @@ end
             return script;
         }
 
-        /// <summary> TODO:
-        /// Functions for frame natives etc.
-        /// </summary>
-        /// <param name="script"></param>
         private void GenerateBetterTriggersFunctions(StringBuilder script)
         {
             script.Append(separator);
@@ -472,13 +481,42 @@ end
             script.Append($"{comment}{newline}");
             script.Append(separator);
 
-            //script.Append($"function BlzLoadTOCFile {functionReturnsNothing}");
-
             if (language == ScriptLanguage.Jass)
                 script.Append(TriggerData.customBJFunctions_Jass);
             else
                 script.Append(TriggerData.customBJFunctions_Lua);
 
+        }
+
+        /// <summary>
+        /// Lua mode requires variables to be wrapped inside of a special "class" like structure
+        /// when being used for 'TriggerRegisterVariableEvent'.
+        /// </summary>
+        private Dictionary<string, Variable> realVarEventVariables = new Dictionary<string, Variable>();
+        private void GenerateLuaGlobals(StringBuilder script)
+        {
+            if (language != ScriptLanguage.Lua)
+                return;
+
+            var functions = ControllerTrigger.GetFunctionsAll();
+            for (int i = 0; i < functions.Count; i++)
+            {
+                var function = functions[i];
+                if(function.value != "TriggerRegisterVariableEvent")
+                    continue;
+
+                VariableRef varRef = (VariableRef)function.parameters[0];
+                Variable variable = Variables.GetVariableById(varRef.VariableId);
+                realVarEventVariables.TryAdd(variable.Name, variable);
+            }
+            script.Append(separator);
+            script.Append($"globals(function(_ENV){newline}");
+            script.Append($"bt_genericFrameEvent = 0.0 {newline}"); // HACK. Hardcoded
+            realVarEventVariables.ToList().ForEach(v => {
+                script.Append($"{v.Value.GetIdentifierName()} = {GetGlobalsStartValue(v.Value.Type)}{newline}");
+            });
+            script.Append($"end){newline}");
+            script.Append($"{newline}");
         }
 
 
@@ -2336,9 +2374,14 @@ end
 
                 bool isVarAsString_Real = returnType == "VarAsString_Real";
                 if (isVarAsString_Real)
+                {
                     output += "\"";
-
-                output += variable.GetIdentifierName();
+                    output += variable.GetIdentifierName();
+                }
+                else if(realVarEventVariables.ContainsValue(variable))
+                    output += "globals." + variable.GetIdentifierName();
+                else
+                    output += variable.GetIdentifierName();
 
                 if (variable.IsArray)
                 {

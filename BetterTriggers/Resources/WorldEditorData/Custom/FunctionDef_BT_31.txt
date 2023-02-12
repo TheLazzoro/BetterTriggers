@@ -208,12 +208,12 @@ function FrameAttachEvents takes string attachEvents returns nothing
     local integer i = 0
 
     if(StringLength(attachEvents) != 16) then
-        call BJDebugMsg("Internal Error: 'BlzCreateFrameBT' received invalid event string.")
+        call BJDebugMsg("Frame Error: 'BlzCreateFrameBT' received invalid event string.")
         return
     endif
 
     if(bt_lastCreatedFrame == null) then
-        call BJDebugMsg("Internal Error: 'Last Created Frame' was null.")
+        call BJDebugMsg("Frame Error: 'Last Created Frame' was null.")
         return
     endif
 
