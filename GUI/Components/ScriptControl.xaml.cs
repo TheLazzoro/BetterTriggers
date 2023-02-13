@@ -99,5 +99,9 @@ namespace GUI.Components
             OnStateChange();
         }
 
+        public void RefreshFontSize()
+        {
+            textEditor.ChangeFontSize();
+        }
     }
 }

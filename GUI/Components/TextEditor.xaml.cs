@@ -1,6 +1,9 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.WorldEdit;
 using GUI.Components.TextEditorExtensions;
 using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
@@ -35,11 +38,13 @@ namespace GUI.Components
         {
             InitializeComponent();
 
+            Settings settings = Settings.Load();
             this.avalonEditor.Margin = new Thickness(0, 0, 0, 0);
             this.avalonEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             this.avalonEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
             this.avalonEditor.FontFamily = new FontFamily("Consolas");
             this.avalonEditor.ShowLineNumbers = true;
+            this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
 
             string uri = language == ScriptLanguage.Jass ?
                 "Resources/SyntaxHighlighting/JassHighlighting.xml" :
@@ -70,6 +75,51 @@ namespace GUI.Components
                 });
                 completionCollection = new CompletionDataCollection(completionData);
             }
+
+            // change font size
+            this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
+        }
+
+        private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                Settings settings = Settings.Load();
+                double change;
+                if (e.Delta > 0)
+                    change = 1;
+                else
+                    change = -1;
+
+                if ((settings.textEditorFontSize + change) != 0)
+                {
+                    settings.textEditorFontSize += change;
+                    Settings.Save(settings);
+
+                    var mainWindow = MainWindow.GetMainWindow();
+                    var tabs = mainWindow.vmd.Tabs.GetEnumerator();
+                    while(tabs.MoveNext())
+                    {
+                        var tab = tabs.Current;
+                        if(tab.explorerElement.editor is ScriptControl scriptControl)
+                        {
+                            scriptControl. RefreshFontSize();
+                        }
+                        else if(tab.explorerElement.editor is RootControl rootControl)
+                        {
+                            rootControl.RefreshFontSize();
+                        }
+                    }
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        public void ChangeFontSize()
+        {
+            Settings settings = Settings.Load();
+            this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
         }
 
         private void TextArea_KeyDown(object sender, KeyEventArgs e)
@@ -83,8 +133,7 @@ namespace GUI.Components
 
         private void Document_Changed(object sender, ICSharpCode.AvalonEdit.Document.DocumentChangeEventArgs e)
         {
-            if (completionWindow == null)
-                ShowAutoCompletion();
+
         }
 
         private void ShowAutoCompletion()

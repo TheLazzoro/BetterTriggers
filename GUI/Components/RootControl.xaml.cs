@@ -21,12 +21,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using War3Net.Build.Info;
 
 namespace GUI.Components
 {
     public partial class RootControl : UserControl, IEditor
     {
-        public ICSharpCode.AvalonEdit.TextEditor textEditor;
+        public TextEditor textEditor;
         private ExplorerElementRoot explorerElementRoot;
         List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
@@ -34,30 +35,19 @@ namespace GUI.Components
         {
             InitializeComponent();
 
-            this.textEditor = new ICSharpCode.AvalonEdit.TextEditor();
+            this.explorerElementRoot = explorerElementRoot;
+            string extension = System.IO.Path.GetExtension(explorerElementRoot.GetPath());
+            this.textEditor = new TextEditor(explorerElementRoot.project.Header, ScriptLanguage.Jass);
             this.grid.Children.Add(textEditor);
             Grid.SetColumn(textEditor, 0);
             Grid.SetRow(textEditor, 3);
-            this.textEditor.Margin = new Thickness(0, 0, 0, 0);
-            this.textEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
-            this.textEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
-            this.textEditor.FontFamily = new FontFamily("Consolas");
-            this.textEditor.ShowLineNumbers = true;
 
-            // Sets syntax highlighting in the comment field
-            using (Stream s = Application.GetResourceStream(new Uri("Resources/SyntaxHighlighting/JassHighlighting.xml", UriKind.Relative)).Stream)
+
+            textEditor.avalonEditor.TextChanged += delegate
             {
-                using (XmlTextReader reader = new XmlTextReader(s))
-                {
-                    this.textEditor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
-                }
-            }
-
-            this.explorerElementRoot = explorerElementRoot;
-            textBoxComment.Text = explorerElementRoot.project.Comment;
-            textEditor.Text = explorerElementRoot.project.Header;
-
-            textEditor.TextChanged += TextEditor_TextChanged;
+                this.explorerElementRoot.project.Header = textEditor.avalonEditor.Text;
+                OnStateChange();
+            };
         }
 
         public void SetElementEnabled(bool isEnabled)
@@ -94,15 +84,14 @@ namespace GUI.Components
             OnStateChange();
         }
 
-        private void TextEditor_TextChanged(object sender, EventArgs e)
-        {
-            explorerElementRoot.project.Header = textEditor.Text;
-            OnStateChange();
-        }
-
         public void OnRemoteChange()
         {
             throw new NotImplementedException();
+        }
+
+        internal void RefreshFontSize()
+        {
+            textEditor.ChangeFontSize();
         }
     }
 }

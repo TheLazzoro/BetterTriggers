@@ -42,6 +42,7 @@ namespace BetterTriggers
         public int parameterWindowHeight   = 450;
 
         public int triggerEditorMode       = 0;
+        public double textEditorFontSize   = 12;
 
         private Settings() { }
 

@@ -20,10 +20,10 @@ namespace GUI
 {
     public partial class MainWindow : Window
     {
-        static Window instance;
+        static MainWindow instance;
         TriggerExplorer triggerExplorer;
         TreeItemExplorerElement selectedExplorerItem;
-        TabViewModel vmd;
+        public TabViewModel vmd;
 
         public MainWindow()
         {
@@ -109,7 +109,7 @@ namespace GUI
         /// This function only exists because of WPF wizardry.
         /// With a debug build 'Application.Current.MainWindow' works, but not in release.
         /// </summary>
-        public static Window GetMainWindow()
+        public static MainWindow GetMainWindow()
         {
             return instance;
         }
@@ -616,6 +616,14 @@ namespace GUI
             bool doClose = DoCloseProject();
             Settings.Save(Settings.Load());
             Keybindings.Save(GetKeybindings());
+
+            if(globalBuildMap != null)
+                globalBuildMap.Dispose();
+            if (globalTestMap != null)
+                globalTestMap.Dispose();
+            if (globalValidateTriggers != null)
+                globalValidateTriggers.Dispose();
+
             e.Cancel = !doClose;
         }
 
