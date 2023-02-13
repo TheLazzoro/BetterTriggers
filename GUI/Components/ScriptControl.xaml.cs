@@ -103,5 +103,11 @@ namespace GUI.Components
         {
             textEditor.ChangeFontSize();
         }
+
+
+        internal void RefreshFontStyle()
+        {
+            textEditor.ChangeFontStyle();
+        }
     }
 }

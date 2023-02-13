@@ -42,7 +42,7 @@ namespace GUI.Components
             this.avalonEditor.Margin = new Thickness(0, 0, 0, 0);
             this.avalonEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
             this.avalonEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
-            this.avalonEditor.FontFamily = new FontFamily("Consolas");
+            this.avalonEditor.FontFamily = new FontFamily(settings.textEditorFontStyle);
             this.avalonEditor.ShowLineNumbers = true;
             this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
 
@@ -120,6 +120,12 @@ namespace GUI.Components
         {
             Settings settings = Settings.Load();
             this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
+        }
+
+        internal void ChangeFontStyle()
+        {
+            Settings settings = Settings.Load();
+            this.avalonEditor.TextArea.FontFamily = new FontFamily(settings.textEditorFontStyle);
         }
 
         private void TextArea_KeyDown(object sender, KeyEventArgs e)

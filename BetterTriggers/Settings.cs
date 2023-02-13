@@ -43,6 +43,7 @@ namespace BetterTriggers
 
         public int triggerEditorMode       = 0;
         public double textEditorFontSize   = 12;
+        public string textEditorFontStyle  = "Consolas";
 
         private Settings() { }
 
