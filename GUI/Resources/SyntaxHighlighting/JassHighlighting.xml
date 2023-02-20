@@ -71,7 +71,8 @@
             <Word>true</Word>
             <Word>false</Word>
             <Word>and</Word>
-            <Word>or</Word>
+			<Word>or</Word>
+			<Word>not</Word>
             <Word>local</Word>
             <Word>array</Word>
             <Word>takes</Word>

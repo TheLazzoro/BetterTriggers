@@ -69,7 +69,7 @@ namespace GUI.Components
             if (completionCollection == null)
             {
                 List<MyCompletionData> completionData = new List<MyCompletionData>();
-                ScriptData.Natives.ForEach(n =>
+                ScriptData.Get(language).ForEach(n =>
                 {
                     completionData.Add(new MyCompletionData(n.displayText, n.description));
                 });

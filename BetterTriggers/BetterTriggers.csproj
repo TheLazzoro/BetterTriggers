@@ -25,6 +25,8 @@
     <None Remove="Resources\JassHelper\jasshelper.exe" />
     <None Remove="Resources\JassHelper\pjass.exe" />
     <None Remove="Resources\JassHelper\sfmpq.dll" />
+    <None Remove="Resources\KeywordsJass.txt" />
+    <None Remove="Resources\KeywordsLua.txt" />
     <None Remove="Resources\MapTemplate\war3map.doo" />
     <None Remove="Resources\MapTemplate\war3map.mmp" />
     <None Remove="Resources\MapTemplate\war3map.shd" />
@@ -137,6 +139,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\JassHelper\sfmpq.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\KeywordsJass.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\KeywordsLua.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\MapTemplate\war3map.doo">

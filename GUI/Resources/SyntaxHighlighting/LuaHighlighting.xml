@@ -65,9 +65,6 @@
 			<Word>else</Word>
 			<Word>elseif</Word>
             <Word>end</Word>
-            <Word>loop</Word>
-            <Word>exitwhen</Word>
-			<Word>endloop</Word>
 			<Word>break</Word>
 			<Word>repeat</Word>
 			<Word>return</Word>
@@ -86,7 +83,6 @@
             <Word>false</Word>
 			<Word>and</Word>
 			<Word>or</Word>
-			<Word>not</Word>
 			<Word>not</Word>
         </Keywords>
 
