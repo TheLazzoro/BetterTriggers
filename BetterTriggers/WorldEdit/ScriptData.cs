@@ -20,7 +20,7 @@ namespace BetterTriggers.WorldEdit
             {
                 switch (type)
                 {
-                    case ScriptItemType.Native:
+                    case ScriptItemType.All:
                         Natives.Add(this);
                         break;
                     case ScriptItemType.Jass:
@@ -38,7 +38,7 @@ namespace BetterTriggers.WorldEdit
 
         public enum ScriptItemType
         {
-            Native,
+            All,
             Jass,
             Lua
         }
@@ -66,6 +66,7 @@ namespace BetterTriggers.WorldEdit
 
             LoadKeywords();
             LoadCommon();
+            LoadBlizzardJ();
         }
 
         private static void LoadKeywords()
@@ -99,7 +100,7 @@ namespace BetterTriggers.WorldEdit
             List<string> natives = new List<string>();
             for (int i = 0; i < commonJ.Length; i++)
             {
-                commonJ[i] = Regex.Replace(commonJ[i], @"\s+", " ");
+                commonJ[i] = Regex.Replace(commonJ[i], @"\s+", " ").Trim();
                 if (commonJ[i].StartsWith("type"))
                 {
                     types.Add(commonJ[i]);
@@ -133,7 +134,7 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < constantNatives.Count; i++)
             {
                 string[] constantNative = constantNatives[i].Split(" ");
-                new ScriptItem(ScriptItemType.Native)
+                new ScriptItem(ScriptItemType.All)
                 {
                     displayText = constantNative[2],
                     description = constantNatives[i],
@@ -144,9 +145,9 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < constants.Count; i++)
             {
                 string[] constant = constants[i].Split(" ");
-                new ScriptItem(ScriptItemType.Native)
+                new ScriptItem(ScriptItemType.All)
                 {
-                    displayText = constant[1],
+                    displayText = constant[2],
                     description = constants[i],
                 };
             }
@@ -155,10 +156,51 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < natives.Count; i++)
             {
                 string[] native = natives[i].Split(" ");
-                new ScriptItem(ScriptItemType.Native)
+                new ScriptItem(ScriptItemType.All)
                 {
                     displayText = native[1],
                     description = natives[i],
+                };
+            }
+        }
+
+        private static void LoadBlizzardJ()
+        {
+            string[] blizzardJ = File.ReadAllLines(TriggerData.pathBlizzardJ);
+            List<string> constants = new List<string>();
+            List<string> functions = new List<string>();
+            for (int i = 0; i < blizzardJ.Length; i++)
+            {
+                blizzardJ[i] = Regex.Replace(blizzardJ[i], @"\s+", " ").Trim();
+                if (blizzardJ[i].StartsWith("constant"))
+                {
+                    constants.Add(blizzardJ[i]);
+                }
+                else if (blizzardJ[i].StartsWith("function"))
+                {
+                    functions.Add(blizzardJ[i]);
+                }
+            }
+
+            // Constants
+            for (int i = 0; i < constants.Count; i++)
+            {
+                string[] constant = constants[i].Split(" ");
+                new ScriptItem(ScriptItemType.All)
+                {
+                    displayText = constant[2],
+                    description = constants[i],
+                };
+            }
+
+            // Functions
+            for (int i = 0; i < functions.Count; i++)
+            {
+                string[] function = functions[i].Split(" ");
+                new ScriptItem(ScriptItemType.All)
+                {
+                    displayText = function[1],
+                    description = functions[i],
                 };
             }
         }
