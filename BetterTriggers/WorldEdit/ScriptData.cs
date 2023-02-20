@@ -16,18 +16,19 @@ namespace BetterTriggers.WorldEdit
             public string displayText { get; internal set; }
             public string description { get; internal set; }
 
-            public ScriptItem(ScriptItemType type)
+            public ScriptItem(string keyword, ScriptItemType type)
             {
+                this.displayText = keyword;
                 switch (type)
                 {
                     case ScriptItemType.All:
-                        Natives.Add(this);
+                        Natives.Add(keyword, this);
                         break;
                     case ScriptItemType.Jass:
-                        KeywordsJass.Add(this);
+                        KeywordsJass.Add(keyword, this);
                         break;
                     case ScriptItemType.Lua:
-                        KeywordsLua.Add(this);
+                        KeywordsLua.Add(keyword, this);
                         break;
                     default:
                         break;
@@ -43,20 +44,33 @@ namespace BetterTriggers.WorldEdit
             Lua
         }
 
-        private static List<ScriptItem> KeywordsJass = new List<ScriptItem>();
-        private static List<ScriptItem> KeywordsLua = new List<ScriptItem>();
-        private static List<ScriptItem> Natives = new List<ScriptItem>();
+        private static Dictionary<string, ScriptItem> KeywordsJass = new ();
+        private static Dictionary<string, ScriptItem> KeywordsLua = new ();
+        private static Dictionary<string, ScriptItem> Natives = new ();
 
-        public static List<ScriptItem> Get(ScriptLanguage language)
+        public static List<ScriptItem> GetAll(ScriptLanguage language)
         {
             List<ScriptItem> list = new List<ScriptItem>();
             if (language == ScriptLanguage.Jass)
-                list.AddRange(KeywordsJass);
+                list.AddRange(KeywordsJass.Select(x => x.Value).ToList());
             else
-                list.AddRange(KeywordsLua);
+                list.AddRange(KeywordsLua.Select(x => x.Value).ToList());
 
-            list.AddRange(Natives);
+            list.AddRange(Natives.Select(x => x.Value).ToList());
             return list;
+        }
+
+        public static string GetDescription(string key)
+        {
+            ScriptItem item;
+            if (Natives.TryGetValue(key, out item))
+                return item.description;
+            else if (KeywordsJass.TryGetValue(key, out item))
+                return item.description;
+            else if (KeywordsLua.TryGetValue(key, out item))
+                return item.description;
+
+            return string.Empty;
         }
 
         internal static void Load(bool isTest)
@@ -77,17 +91,11 @@ namespace BetterTriggers.WorldEdit
             string[] keywordsLua = File.ReadAllLines(pathLua);
             for (int i = 0; i < keywordsJass.Length; i++)
             {
-                new ScriptItem(ScriptItemType.Jass)
-                {
-                    displayText = keywordsJass[i]
-                };
+                new ScriptItem(keywordsJass[i], ScriptItemType.Jass);
             }
             for (int i = 0; i < keywordsLua.Length; i++)
             {
-                new ScriptItem(ScriptItemType.Lua)
-                {
-                    displayText = keywordsLua[i]
-                };
+                new ScriptItem(keywordsLua[i], ScriptItemType.Lua);
             }
         }
 
@@ -123,9 +131,8 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < types.Count; i++)
             {
                 string[] type = types[i].Split(" ");
-                new ScriptItem(ScriptItemType.Jass)
+                new ScriptItem(type[1], ScriptItemType.Jass)
                 {
-                    displayText = type[1],
                     description = types[i],
                 };
             }
@@ -134,9 +141,8 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < constantNatives.Count; i++)
             {
                 string[] constantNative = constantNatives[i].Split(" ");
-                new ScriptItem(ScriptItemType.All)
+                new ScriptItem(constantNative[2], ScriptItemType.All)
                 {
-                    displayText = constantNative[2],
                     description = constantNatives[i],
                 };
             }
@@ -145,9 +151,8 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < constants.Count; i++)
             {
                 string[] constant = constants[i].Split(" ");
-                new ScriptItem(ScriptItemType.All)
+                new ScriptItem(constant[2], ScriptItemType.All)
                 {
-                    displayText = constant[2],
                     description = constants[i],
                 };
             }
@@ -156,9 +161,8 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < natives.Count; i++)
             {
                 string[] native = natives[i].Split(" ");
-                new ScriptItem(ScriptItemType.All)
+                new ScriptItem(native[1], ScriptItemType.All)
                 {
-                    displayText = native[1],
                     description = natives[i],
                 };
             }
@@ -186,9 +190,8 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < constants.Count; i++)
             {
                 string[] constant = constants[i].Split(" ");
-                new ScriptItem(ScriptItemType.All)
+                new ScriptItem(constant[2], ScriptItemType.All)
                 {
-                    displayText = constant[2],
                     description = constants[i],
                 };
             }
@@ -197,9 +200,8 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < functions.Count; i++)
             {
                 string[] function = functions[i].Split(" ");
-                new ScriptItem(ScriptItemType.All)
+                new ScriptItem(function[1], ScriptItemType.All)
                 {
-                    displayText = function[1],
                     description = functions[i],
                 };
             }

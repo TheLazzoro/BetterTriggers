@@ -559,6 +559,18 @@
             </Style>
 
 
+            <!-- TOOLTIP -->
+            <Style TargetType="ToolTip" >
+                <Setter Property="Background" Value="#282828"/>
+                <Setter Property="Foreground" Value="#ccc"/>
+                <Setter Property="BorderBrush" Value="#555"/>
+                <Style.Resources>
+                    <Style TargetType="{x:Type Border}">
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+
 
             <!-- LISTVIEW HEADER -->
             <!--

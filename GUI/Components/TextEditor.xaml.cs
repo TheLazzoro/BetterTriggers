@@ -24,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml;
 using War3Net.Build.Info;
 
@@ -33,6 +34,7 @@ namespace GUI.Components
     {
         CompletionWindow completionWindow;
         static CompletionDataCollection completionCollection;
+        ToolTip tooltip;
 
         public TextEditor(string content, ScriptLanguage language)
         {
@@ -45,6 +47,8 @@ namespace GUI.Components
             this.avalonEditor.FontFamily = new FontFamily(settings.textEditorFontStyle);
             this.avalonEditor.ShowLineNumbers = true;
             this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
+            this.tooltip = new ToolTip();
+            this.tooltip.FontFamily = new FontFamily(settings.textEditorFontStyle);
 
             string uri = language == ScriptLanguage.Jass ?
                 "Resources/SyntaxHighlighting/JassHighlighting.xml" :
@@ -69,12 +73,16 @@ namespace GUI.Components
             if (completionCollection == null)
             {
                 List<MyCompletionData> completionData = new List<MyCompletionData>();
-                ScriptData.Get(language).ForEach(n =>
+                ScriptData.GetAll(language).ForEach(n =>
                 {
                     completionData.Add(new MyCompletionData(n.displayText, n.description));
                 });
                 completionCollection = new CompletionDataCollection(completionData);
             }
+
+            // Hover over text
+            this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
+            this.avalonEditor.MouseHoverStopped += AvalonEditor_MouseHoverStopped;
 
             // change font size
             this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
@@ -98,14 +106,14 @@ namespace GUI.Components
 
                     var mainWindow = MainWindow.GetMainWindow();
                     var tabs = mainWindow.vmd.Tabs.GetEnumerator();
-                    while(tabs.MoveNext())
+                    while (tabs.MoveNext())
                     {
                         var tab = tabs.Current;
-                        if(tab.explorerElement.editor is ScriptControl scriptControl)
+                        if (tab.explorerElement.editor is ScriptControl scriptControl)
                         {
-                            scriptControl. RefreshFontSize();
+                            scriptControl.RefreshFontSize();
                         }
-                        else if(tab.explorerElement.editor is RootControl rootControl)
+                        else if (tab.explorerElement.editor is RootControl rootControl)
                         {
                             rootControl.RefreshFontSize();
                         }
@@ -152,7 +160,7 @@ namespace GUI.Components
             while (i > 0 && !wordFound)
             {
                 char c = avalonEditor.Document.GetCharAt(i);
-                if (c == ' ' || c == '\t' || c == '\n')
+                if (!Char.IsLetterOrDigit(c))
                 {
                     wordFound = true;
                 }
@@ -169,12 +177,15 @@ namespace GUI.Components
             word = new string(charArray);
 
             // open completion window
+            Settings settings = Settings.Load();
             completionWindow = new CompletionWindow(avalonEditor.TextArea);
             completionWindow.ResizeMode = ResizeMode.NoResize;
             completionWindow.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
             completionWindow.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#333");
             completionWindow.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
             completionWindow.BorderThickness = new Thickness(0.3);
+            completionWindow.Width = 400;
+            completionWindow.FontFamily = new FontFamily(settings.textEditorFontStyle);
             IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
             var items = completionCollection.Search(word);
             data.AddRange(items);
@@ -197,5 +208,72 @@ namespace GUI.Components
                 }
             };
         }
+
+        private void AvalonEditor_MouseHover(object sender, MouseEventArgs e)
+        {
+            var pos = avalonEditor.GetPositionFromPoint(e.GetPosition(avalonEditor));
+            if (pos != null)
+            {
+                // determine word
+                string hoveredWord = string.Empty;
+                int offset = 0;
+                for (int i = 0; i < pos.Value.Line - 1; i++)
+                {
+                    // Need to append 2 to length per line. Probably because of '\n\r' characters when jumping to new line.
+                    offset += avalonEditor.Document.Lines[i].Length + 2;
+                }
+                offset += pos.Value.VisualColumn;
+                bool lookback = true;
+
+                // first looks behind the cursor position, then in front.
+                while (offset < avalonEditor.Document.TextLength)
+                {
+                    char c = avalonEditor.Document.GetCharAt(offset);
+                    if (!lookback && (!Char.IsLetterOrDigit(c) || offset == avalonEditor.Document.TextLength))
+                    {
+                        break;
+                    }
+                    else if (!Char.IsLetterOrDigit(c) || offset == 0)
+                    {
+                        lookback = false;
+                        if (offset == 0)
+                        {
+                            hoveredWord = hoveredWord.Insert(0, c.ToString());
+                            offset += hoveredWord.Length;
+                        }
+                        else
+                            offset += hoveredWord.Length + 1;
+
+                        continue;
+                    }
+
+                    if (lookback)
+                    {
+                        hoveredWord = hoveredWord.Insert(0, c.ToString());
+                        offset--;
+                    }
+                    else
+                    {
+                        hoveredWord += c;
+                        offset++;
+                    }
+                }
+
+                string description = ScriptData.GetDescription(hoveredWord);
+                tooltip.PlacementTarget = this; // required for property inheritance
+                tooltip.Content = hoveredWord + "\n\n" + description;
+                if (!string.IsNullOrEmpty(description))
+                {
+                    tooltip.IsOpen = true;
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void AvalonEditor_MouseHoverStopped(object sender, MouseEventArgs e)
+        {
+            tooltip.IsOpen = false;
+        }
+
     }
 }
