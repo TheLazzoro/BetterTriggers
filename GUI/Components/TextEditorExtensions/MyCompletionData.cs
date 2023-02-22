@@ -50,7 +50,13 @@ namespace GUI.Components.TextEditorExtensions
 
         public object Description
         {
-            get { return this.description; }
+            get
+            {
+                if (description.Inlines.Count == 0)
+                    return null;
+
+                return this.description;
+            }
         }
 
         public double Priority => 0;

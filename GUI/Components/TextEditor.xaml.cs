@@ -11,6 +11,7 @@ using ICSharpCode.AvalonEdit.Search;
 using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -71,6 +72,13 @@ namespace GUI.Components
             avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
             avalonEditor.TextArea.Document.Changed += Document_Changed;
 
+            // Hover over text
+            this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
+            this.avalonEditor.MouseHoverStopped += AvalonEditor_MouseHoverStopped;
+
+            // change font size
+            this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
+
             if (completionCollection == null)
             {
                 List<MyCompletionData> completionData = new List<MyCompletionData>();
@@ -80,13 +88,6 @@ namespace GUI.Components
                 });
                 completionCollection = new CompletionDataCollection(completionData);
             }
-
-            // Hover over text
-            this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
-            this.avalonEditor.MouseHoverStopped += AvalonEditor_MouseHoverStopped;
-
-            // change font size
-            this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
         }
 
         private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
