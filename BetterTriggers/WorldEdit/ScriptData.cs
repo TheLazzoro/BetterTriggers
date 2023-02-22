@@ -96,6 +96,12 @@ namespace BetterTriggers.WorldEdit
             if (isTest)
                 return;
 
+            Natives.Clear();
+            Constants.Clear();
+            TypewordsJass.Clear();
+            KeywordsJass.Clear();
+            KeywordsLua.Clear();
+
             LoadJassPrimitives();
             LoadKeywords();
             LoadCommon();
