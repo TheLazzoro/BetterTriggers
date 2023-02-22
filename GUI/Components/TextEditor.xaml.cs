@@ -161,7 +161,7 @@ namespace GUI.Components
             while (i > 0 && !wordFound)
             {
                 char c = avalonEditor.Document.GetCharAt(i);
-                if (!Char.IsLetterOrDigit(c))
+                if (!Char.IsLetterOrDigit(c) && c != '_')
                 {
                     wordFound = true;
                 }
@@ -228,15 +228,15 @@ namespace GUI.Components
                 offset += pos.Value.VisualColumn;
                 bool lookback = true;
 
-                // first looks behind the cursor position, then in front.
+                // first looks at letters behind the cursor position, then in front.
                 while (offset < avalonEditor.Document.TextLength)
                 {
                     char c = avalonEditor.Document.GetCharAt(offset);
-                    if (!lookback && (!Char.IsLetterOrDigit(c) || offset == avalonEditor.Document.TextLength))
+                    if (!lookback && ((!Char.IsLetterOrDigit(c) && c != '_') || offset == avalonEditor.Document.TextLength))
                     {
                         break;
                     }
-                    else if (!Char.IsLetterOrDigit(c) || offset == 0)
+                    else if ((!Char.IsLetterOrDigit(c) && c != '_') || offset == 0)
                     {
                         lookback = false;
                         if (offset == 0)
