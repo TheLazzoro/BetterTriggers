@@ -141,7 +141,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private void textBoxString_TextChanged(object sender, TextChangedEventArgs e)
         {
             textBlockPreview.Inlines.Clear();
-            textBlockPreview.Inlines.AddRange(TextFormatter.Format(textBoxString.Text));
+            textBlockPreview.Inlines.AddRange(TextFormatter.War3ColoredText(textBoxString.Text));
         }
 
         private void btnApplyColor0_Click(object sender, RoutedEventArgs e)

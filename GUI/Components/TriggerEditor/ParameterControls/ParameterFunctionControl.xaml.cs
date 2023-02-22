@@ -113,7 +113,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             var function = selectedItem.Tag as FunctionTemplate;
             textBoxDescription.Inlines.Clear();
-            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.Format(Locale.Translate(function.value)));
+            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.War3ColoredText(Locale.Translate(function.value)));
         }
 
     }

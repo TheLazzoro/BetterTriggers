@@ -2,6 +2,7 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
 using GUI.Components.TextEditorExtensions;
+using GUI.Utility;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -186,6 +187,7 @@ namespace GUI.Components
             completionWindow.BorderThickness = new Thickness(0.3);
             completionWindow.Width = 400;
             completionWindow.FontFamily = new FontFamily(settings.textEditorFontStyle);
+            completionWindow.UseLayoutRounding = true;
             IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
             var items = completionCollection.Search(word);
             data.AddRange(items);
@@ -196,6 +198,7 @@ namespace GUI.Components
             }
 
             completionWindow.Show();
+            completionWindow.CompletionList.SelectItem(word);
             completionWindow.Closed += delegate
             {
                 completionWindow = null;
@@ -260,8 +263,15 @@ namespace GUI.Components
                 }
 
                 string description = ScriptData.GetDescription(hoveredWord);
+                TextBlock tooltipContent = new TextBlock();
+                Run title = new Run(hoveredWord);
+                title.FontWeight = FontWeights.Bold;
+                tooltipContent.Inlines.Add(title);
+                tooltipContent.Inlines.Add(new Run(Environment.NewLine));
+                tooltipContent.Inlines.Add(new Run(Environment.NewLine));
+                tooltipContent.Inlines.AddRange(TextFormatter.CodeColor(description, ScriptLanguage.Jass));
                 tooltip.PlacementTarget = this; // required for property inheritance
-                tooltip.Content = hoveredWord + "\n\n" + description;
+                tooltip.Content = tooltipContent;
                 if (!string.IsNullOrEmpty(description))
                 {
                     tooltip.IsOpen = true;

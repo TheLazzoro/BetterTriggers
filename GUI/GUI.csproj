@@ -43,6 +43,7 @@
     <None Remove="Resources\Icons\actions-unitselection.png" />
     <None Remove="Resources\Icons\actions-visibility.png" />
     <None Remove="Resources\Icons\actions-wait.png" />
+    <None Remove="Resources\Icons\Class_16x.png" />
     <None Remove="Resources\Icons\close-tab.png" />
     <None Remove="Resources\Icons\code.ico" />
     <None Remove="Resources\Icons\code_blue.ico" />
@@ -52,6 +53,8 @@
     <None Remove="Resources\Icons\editor-toolbar-mapvalidation.png" />
     <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\Icons\green-check.png" />
+    <None Remove="Resources\Icons\Keyword_16x.png" />
+    <None Remove="Resources\Icons\Method_16x.png" />
     <None Remove="Resources\Icons\redo.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_copy.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_cut.png" />
@@ -61,6 +64,7 @@
     <None Remove="Resources\Icons\ui-editoricon-triggercategories_dialog.png" />
     <None Remove="Resources\Icons\ui-editoricon-triggercategories_localvariable.png" />
     <None Remove="Resources\Icons\undo.png" />
+    <None Remove="Resources\Icons\Variable_16x.png" />
     <None Remove="Resources\Icons\Warcraft_III_World_Editor.png" />
     <None Remove="Resources\map.png" />
     <None Remove="Resources\Orc.png" />
@@ -73,6 +77,9 @@
 
   <ItemGroup>
     <Content Include="Resources\Icons\actions-setvariables-alpha.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\Class_16x.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\close-tab.png">
@@ -195,7 +202,13 @@
     <Content Include="Resources\Icons\green-check.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Icons\Keyword_16x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\Method_16x.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\redo.png">
@@ -235,6 +248,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\undo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\Variable_16x.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\Warcraft_III_World_Editor.png">

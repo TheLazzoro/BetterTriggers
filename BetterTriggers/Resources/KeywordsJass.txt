@@ -37,3 +37,6 @@ static
 create
 allocate
 readonly
+constant
+type
+extends

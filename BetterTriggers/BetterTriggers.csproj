@@ -40,6 +40,7 @@
     <None Remove="Resources\MapTemplate\war3map.wts" />
     <None Remove="Resources\MapTemplate\war3mapMap.blp" />
     <None Remove="Resources\MapTemplate\war3mapUnits.doo" />
+    <None Remove="Resources\PrimitiveTypesJass.txt" />
     <None Remove="Resources\WorldEditorData\abilityskinstrings.txt" />
     <None Remove="Resources\WorldEditorData\campaignabilitystrings.txt" />
     <None Remove="Resources\WorldEditorData\campaignunitstrings.txt" />
@@ -139,6 +140,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\JassHelper\sfmpq.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\PrimitiveTypesJass.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\KeywordsJass.txt">

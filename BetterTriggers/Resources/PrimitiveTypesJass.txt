@@ -1,0 +1,6 @@
+﻿boolean
+integer
+real
+string
+nothing
+handle
