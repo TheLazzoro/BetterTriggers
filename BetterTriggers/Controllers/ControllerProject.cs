@@ -296,28 +296,28 @@ namespace BetterTriggers.Controllers
                 if (File.Exists(path) || Directory.Exists(path))
                 {
                     fileCheckList.Remove(path);
-
                     // Add item to appropriate container
-                    switch (Path.GetExtension(entryChild.path))
+                    if (Directory.Exists(path))
                     {
-                        case "":
-                            if (Directory.Exists(Path.Combine(src, entryChild.path)))
-                                explorerElementChild = new ExplorerElementFolder(path);
-                            else
+                        explorerElementChild = new ExplorerElementFolder(path);
+                    }
+                    else
+                    {
+                        switch (Path.GetExtension(entryChild.path))
+                        {
+                            case ".trg":
+                                explorerElementChild = new ExplorerElementTrigger(path);
+                                break;
+                            case ".j":
+                            case ".lua":
+                                explorerElementChild = new ExplorerElementScript(path);
+                                break;
+                            case ".var":
+                                explorerElementChild = new ExplorerElementVariable(path);
+                                break;
+                            default:
                                 continue;
-                            break;
-                        case ".trg":
-                            explorerElementChild = new ExplorerElementTrigger(path);
-                            break;
-                        case ".j":
-                        case ".lua":
-                            explorerElementChild = new ExplorerElementScript(path);
-                            break;
-                        case ".var":
-                            explorerElementChild = new ExplorerElementVariable(path);
-                            break;
-                        default:
-                            continue;
+                        }
                     }
 
                     explorerElementChild.SetEnabled(entryChild.isEnabled);
@@ -503,27 +503,27 @@ namespace BetterTriggers.Controllers
         private void RecurseCreateElement(IExplorerElement parent, string fullPath, bool doRecurse)
         {
             IExplorerElement explorerElement = null;
-
-            switch (Path.GetExtension(fullPath))
+            if (Directory.Exists(fullPath))
             {
-                case "":
-                    if (Directory.Exists(fullPath))
-                        explorerElement = new ExplorerElementFolder(fullPath);
-                    else
+                explorerElement = new ExplorerElementFolder(fullPath);
+            }
+            else
+            {
+                switch (Path.GetExtension(fullPath))
+                {
+                    case ".trg":
+                        explorerElement = new ExplorerElementTrigger(fullPath);
+                        break;
+                    case ".j":
+                    case ".lua":
+                        explorerElement = new ExplorerElementScript(fullPath);
+                        break;
+                    case ".var":
+                        explorerElement = new ExplorerElementVariable(fullPath);
+                        break;
+                    default:
                         return;
-                    break;
-                case ".trg":
-                    explorerElement = new ExplorerElementTrigger(fullPath);
-                    break;
-                case ".j":
-                case ".lua":
-                    explorerElement = new ExplorerElementScript(fullPath);
-                    break;
-                case ".var":
-                    explorerElement = new ExplorerElementVariable(fullPath);
-                    break;
-                default:
-                    return;
+                }
             }
             AddElementToContainer(explorerElement);
             ContainerProject.lastCreated = explorerElement;

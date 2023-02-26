@@ -32,7 +32,7 @@ namespace BetterTriggers.Models.EditorData
 
         public string GetName()
         {
-            return Path.GetFileNameWithoutExtension(path);
+            return Path.GetFileName(path);
         }
 
         public string GetPath()

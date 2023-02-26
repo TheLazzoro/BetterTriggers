@@ -233,6 +233,7 @@ namespace BetterTriggers.WorldEdit
                 i++;
             }
             name = name.TrimStart().TrimEnd();
+            name = name.TrimEnd('.'); // files/dirs cannot end with '.'
             string suffix = string.Empty;
             bool ok = false;
             i = 0;

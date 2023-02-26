@@ -185,6 +185,15 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ConvertMap_GenerateScript_Metastasis_Reclassic_135()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Metastasis Reclassic 1.0H.120.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
         public void GenerateScript_CustomProject_LocalVarMap()
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");

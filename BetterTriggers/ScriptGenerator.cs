@@ -400,10 +400,12 @@ end
             for (int i = 0; i < InitGlobals.Count; i++)
             {
                 var variable = InitGlobals[i];
-                
+
                 string luaGlobalPrefix = string.Empty;
-                if(language == ScriptLanguage.Lua) {
-                    if(realVarEventVariables.ContainsKey(variable.Name)){
+                if (language == ScriptLanguage.Lua)
+                {
+                    if (realVarEventVariables.ContainsKey(variable.Name))
+                    {
                         luaGlobalPrefix = "globals.";
                     }
                 }
@@ -502,7 +504,7 @@ end
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];
-                if(function.value != "TriggerRegisterVariableEvent")
+                if (function.value != "TriggerRegisterVariableEvent")
                     continue;
 
                 VariableRef varRef = (VariableRef)function.parameters[0];
@@ -512,7 +514,8 @@ end
             script.Append(separator);
             script.Append($"globals(function(_ENV){newline}");
             script.Append($"bt_genericFrameEvent = 0.0 {newline}"); // HACK. Hardcoded
-            realVarEventVariables.ToList().ForEach(v => {
+            realVarEventVariables.ToList().ForEach(v =>
+            {
                 script.Append($"{v.Value.GetIdentifierName()} = {GetGlobalsStartValue(v.Value.Type)}{newline}");
             });
             script.Append($"end){newline}");
@@ -528,7 +531,7 @@ end
                 value = "false";
             else if (returnType == "integer")
                 value = "0";
-            else if(returnType == "real")
+            else if (returnType == "real")
                 value = "0.00";
 
             return value;
@@ -1069,7 +1072,8 @@ end
                     script.Append($"\t\t{call} RandomDistReset(){newline}");
                     foreach (var item in itemSet.Items)
                     {
-                        script.Append($"\t\t{call} RandomDistAddItem({fourCCStart}'{Int32Extensions.ToRawcode(item.ItemId)}'{fourCCEnd}, {item.Chance}){newline}");
+                        if (item.ItemId != 0)
+                            script.Append($"\t\t{call} RandomDistAddItem({fourCCStart}'{Int32Extensions.ToRawcode(item.ItemId)}'{fourCCEnd}, {item.Chance}){newline}");
                     }
 
                     if (language == ScriptLanguage.Jass)
@@ -1166,7 +1170,8 @@ end
                     script.Append($"\t\t{call} RandomDistReset(){newline}");
                     foreach (var item in itemSets.Items)
                     {
-                        script.Append($"\t\t{call} RandomDistAddItem({fourCCStart}'{Int32Extensions.ToRawcode(item.ItemId)}'{fourCCEnd}, {item.Chance}){newline}");
+                        if (item.ItemId != 0)
+                            script.Append($"\t\t{call} RandomDistAddItem({fourCCStart}'{Int32Extensions.ToRawcode(item.ItemId)}'{fourCCEnd}, {item.Chance}){newline}");
                     }
 
                     if (language == ScriptLanguage.Jass)
@@ -1874,7 +1879,6 @@ end
             {
                 IfThenElse ifThenElse = (IfThenElse)t;
 
-                script.Append("if (");
                 List<ECA> conditions = new List<ECA>();
                 ifThenElse.If.ForEach(c =>
                 {
@@ -1883,19 +1887,75 @@ end
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
-                foreach (var condition in conditions)
+
+                string function_name = generate_function_name(triggerName);
+                string pre = string.Empty;
+                pre += $"function If_{function_name} {functionReturnsBoolean}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
+                conditions.ForEach(cond =>
                 {
-                    if (!condition.isEnabled)
-                        continue;
+                    var condition = (ECA)cond;
+                    string c = ConvertTriggerElementToJass(condition, pre_actions, true);
+                    /*
+                        Omega edge case.
+                        Maps converted from WEU to vanilla WE can have GUI custom script elements
+                        in conditions! The vanilla WE can read these and they're
+                        even valid elements when generating the script...
+                        So... it's also supported here.
 
-                    script.Append($"{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
-                    if (conditions.IndexOf(condition) != conditions.Count - 1)
-                        script.Append("and ");
-                }
-                if (conditions.Count == 0)
-                    script.Append("(true)");
+                        Actions are probably also supported in WEU,
+                        but I cannot be bothered to check and add support for those.
+                        With the way things work in this editor, many things would
+                        need to get re-written.
+                    */
+                    if (condition.function.value == "CustomScriptCode")  
+                    {
+                        pre += condition.function.parameters[0].value + newline;
+                    }
+                    else if (c != "")
+                    {
+                        pre += $"\tif (not ({c})) then{newline}";
+                        pre += $"\t\treturn false{newline}";
+                        pre += $"\t{endif}{newline}";
+                    }
+                });
+                //pre += CarryLocals(); // conditions cannot modify locals
+                pre += NullLocals();
+                pre += $"\treturn true{newline}";
+                pre += $"{newline}{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
+                
+                script.Append(CarryLocals());
+                script.Append($"if(If_{function_name}()) then{newline}");
 
-                script.Append($") then{newline}");
+                //
+                // OLD IF-CONDITIONS
+                //
+
+                //script.Append("if (");
+                //List<ECA> conditions = new List<ECA>();
+                //ifThenElse.If.ForEach(c =>
+                //{
+                //    ECA cond = (ECA)c;
+                //    int emptyParams = ControllerTrigger.VerifyParameters(cond.function.parameters);
+                //    if (cond.isEnabled && emptyParams == 0)
+                //        conditions.Add(cond);
+                //});
+                //foreach (var condition in conditions)
+                //{
+                //    if (!condition.isEnabled)
+                //        continue;
+
+                //    script.Append($"{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
+                //    if (conditions.IndexOf(condition) != conditions.Count - 1)
+                //        script.Append("and ");
+                //}
+                //if (conditions.Count == 0)
+                //    script.Append("(true)");
+
+                //script.Append($") then{newline}");
+
                 foreach (ECA action in ifThenElse.Then)
                 {
                     if (!action.isEnabled)
@@ -2040,61 +2100,145 @@ end
             else if (t is AndMultiple)
             {
                 AndMultiple andMultiple = (AndMultiple)t;
-                var verifiedTriggerElements = new List<ECA>();
-                foreach (ECA element in andMultiple.And)
+                List<ECA> conditions = new List<ECA>();
+                andMultiple.And.ForEach(c =>
                 {
-                    if (!element.isEnabled)
-                        continue;
+                    ECA cond = (ECA)c;
+                    int emptyParams = ControllerTrigger.VerifyParameters(cond.function.parameters);
+                    if (cond.isEnabled && emptyParams == 0)
+                        conditions.Add(cond);
+                });
 
-                    int emptyParams = ControllerTrigger.VerifyParameters(element.function.parameters);
-                    if (emptyParams == 0)
-                        verifiedTriggerElements.Add(element);
-                }
-
-                if (verifiedTriggerElements.Count == 0)
-                    return "(true)";
-
-                script.Append("(");
-                foreach (var condition in verifiedTriggerElements)
+                string function_name = generate_function_name(triggerName);
+                string pre = string.Empty;
+                pre += $"function And_{function_name} {functionReturnsBoolean}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
+                conditions.ForEach(cond =>
                 {
-                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
-
-                    if (verifiedTriggerElements.IndexOf(condition) != verifiedTriggerElements.Count - 1)
-                        script.Append("and ");
-                }
-                script.Append(")");
+                    var condition = (ECA)cond;
+                    string c = ConvertTriggerElementToJass(condition, pre_actions, true);
+                    if (condition.function.value == "CustomScriptCode")
+                    {
+                        pre += condition.function.parameters[0].value + newline;
+                    }
+                    else if (c != "")
+                    {
+                        pre += $"\tif (not ({c})) then{newline}";
+                        pre += $"\t\treturn false{newline}";
+                        pre += $"\t{endif}{newline}";
+                    }
+                });
+                pre += $"\treturn true{newline}";
+                pre += CarryLocals();
+                pre += NullLocals();
+                pre += $"{newline}{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
+                script.Append($"And_{function_name}()");
 
                 return script.ToString();
+
+                //
+                // OLD AND-CONDITION
+                //
+
+                //var verifiedTriggerElements = new List<ECA>();
+                //foreach (ECA element in andMultiple.And)
+                //{
+                //    if (!element.isEnabled)
+                //        continue;
+
+                //    int emptyParams = ControllerTrigger.VerifyParameters(element.function.parameters);
+                //    if (emptyParams == 0)
+                //        verifiedTriggerElements.Add(element);
+                //}
+
+                //if (verifiedTriggerElements.Count == 0)
+                //    return "(true)";
+
+                //script.Append("(");
+                //foreach (var condition in verifiedTriggerElements)
+                //{
+                //    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
+
+                //    if (verifiedTriggerElements.IndexOf(condition) != verifiedTriggerElements.Count - 1)
+                //        script.Append("and ");
+                //}
+                //script.Append(")");
+
+                //return script.ToString();
             }
 
             else if (t is OrMultiple)
             {
                 OrMultiple orMultiple = (OrMultiple)t;
-                var verifiedTriggerElements = new List<ECA>();
-                foreach (ECA element in orMultiple.Or)
+                List<ECA> conditions = new List<ECA>();
+                orMultiple.Or.ForEach(c =>
                 {
-                    if (!element.isEnabled)
-                        continue;
+                    ECA cond = (ECA)c;
+                    int emptyParams = ControllerTrigger.VerifyParameters(cond.function.parameters);
+                    if (cond.isEnabled && emptyParams == 0)
+                        conditions.Add(cond);
+                });
 
-                    int emptyParams = ControllerTrigger.VerifyParameters(element.function.parameters);
-                    if (emptyParams == 0)
-                        verifiedTriggerElements.Add(element);
-                }
-
-                if (verifiedTriggerElements.Count == 0)
-                    return "(true)";
-
-                script.Append("(");
-                foreach (var condition in verifiedTriggerElements)
+                string function_name = generate_function_name(triggerName);
+                string pre = string.Empty;
+                pre += $"function Or_{function_name} {functionReturnsBoolean}{newline}";
+                pre += localVariableDecl.ToString();
+                pre += SetLocals();
+                conditions.ForEach(cond =>
                 {
-                    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
-
-                    if (verifiedTriggerElements.IndexOf(condition) != verifiedTriggerElements.Count - 1)
-                        script.Append("or ");
-                }
-                script.Append(")");
+                    var condition = (ECA)cond;
+                    string c = ConvertTriggerElementToJass(condition, pre_actions, true);
+                    if (condition.function.value == "CustomScriptCode")
+                    {
+                        pre += condition.function.parameters[0].value + newline;
+                    }
+                    else if (c != "")
+                    {
+                        pre += $"\tif ({c}) then{newline}";
+                        pre += $"\t\treturn true{newline}";
+                        pre += $"\t{endif}{newline}";
+                    }
+                });
+                pre += $"\treturn false{newline}";
+                pre += CarryLocals();
+                pre += NullLocals();
+                pre += $"{newline}{endfunction}{newline}{newline}";
+                pre_actions.Add(pre);
+                script.Append($"Or_{function_name}()");
 
                 return script.ToString();
+
+                //
+                // OLD OR-CONDITION
+                //
+
+                //var verifiedTriggerElements = new List<ECA>();
+                //foreach (ECA element in orMultiple.Or)
+                //{
+                //    if (!element.isEnabled)
+                //        continue;
+
+                //    int emptyParams = ControllerTrigger.VerifyParameters(element.function.parameters);
+                //    if (emptyParams == 0)
+                //        verifiedTriggerElements.Add(element);
+                //}
+
+                //if (verifiedTriggerElements.Count == 0)
+                //    return "(true)";
+
+                //script.Append("(");
+                //foreach (var condition in verifiedTriggerElements)
+                //{
+                //    script.Append($"\t{ConvertTriggerElementToJass(condition, pre_actions, true)} ");
+
+                //    if (verifiedTriggerElements.IndexOf(condition) != verifiedTriggerElements.Count - 1)
+                //        script.Append("or ");
+                //}
+                //script.Append(")");
+
+                //return script.ToString();
             }
             else
 
@@ -2380,7 +2524,7 @@ end
                     output += "\"";
                     output += variable.GetIdentifierName();
                 }
-                else if(realVarEventVariables.ContainsValue(variable))
+                else if (realVarEventVariables.ContainsValue(variable))
                     output += "globals." + variable.GetIdentifierName();
                 else
                     output += variable.GetIdentifierName();
