@@ -24,22 +24,12 @@ namespace BetterTriggers.WorldEdit
         {
             cameras.Clear();
 
-            string filePath = "war3map.w3c";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            MapCameras mapCameras;
+            mapCameras = CustomMapData.MPQMap.Cameras;
+            if (mapCameras == null)
                 return;
 
-            while(CustomMapData.IsMapSaving())
-            {
-                Thread.Sleep(1000);
-            }
-
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                var mapCameras = BinaryReaderExtensions.ReadMapCameras(reader);
-
-                mapCameras.Cameras.ForEach(c => cameras.Add(c));
-            }
+            mapCameras.Cameras.ForEach(c => cameras.Add(c));
         }
     }
 }

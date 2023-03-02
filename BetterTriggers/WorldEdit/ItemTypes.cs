@@ -16,7 +16,7 @@ namespace BetterTriggers.WorldEdit
     public class ItemTypes
     {
         private static Dictionary<string, ItemType> items;
-        private static Dictionary<string, ItemType> itemsBaseEdited = new ();
+        private static Dictionary<string, ItemType> itemsBaseEdited = new();
         private static Dictionary<string, ItemType> itemsCustom = new();
 
         internal static List<ItemType> GetAll()
@@ -130,7 +130,7 @@ namespace BetterTriggers.WorldEdit
                 string sectionName = sections.Current.SectionName;
                 var keys = sections.Current.Keys;
                 string path = keys["Art"];
-                if(path != null)
+                if (path != null)
                     new Icon(path, ItemTypes.GetName(sectionName), "Item");
             }
 
@@ -143,47 +143,37 @@ namespace BetterTriggers.WorldEdit
             itemsBaseEdited = new Dictionary<string, ItemType>();
             itemsCustom = new Dictionary<string, ItemType>();
 
-            string filePath = "war3map.w3t";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            ItemObjectData customItems;
+            customItems = CustomMapData.MPQMap.ItemObjectData;
+            if (customItems == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            for (int i = 0; i < customItems.BaseItems.Count; i++)
             {
-                Thread.Sleep(1000);
+                var baseItem = customItems.BaseItems[i];
+                ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(baseItem.OldId));
+                string name = baseAbil.DisplayName;
+                var item = new ItemType()
+                {
+                    ItemCode = baseItem.ToString().Substring(0, 4),
+                    DisplayName = name,
+                };
+                itemsBaseEdited.TryAdd(item.ItemCode, item);
+                SetCustomFields(baseItem, Int32Extensions.ToRawcode(baseItem.OldId));
             }
 
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            for (int i = 0; i < customItems.NewItems.Count; i++)
             {
-                BinaryReader bReader = new BinaryReader(s);
-                var customItems = bReader.ReadItemObjectData();
-
-                for (int i = 0; i < customItems.BaseItems.Count; i++)
+                var customItem = customItems.NewItems[i];
+                ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(customItem.OldId));
+                string name = baseAbil.DisplayName;
+                var item = new ItemType()
                 {
-                    var baseItem = customItems.BaseItems[i];
-                    ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(baseItem.OldId));
-                    string name = baseAbil.DisplayName;
-                    var item = new ItemType()
-                    {
-                        ItemCode = baseItem.ToString().Substring(0, 4),
-                        DisplayName = name,
-                    };
-                    itemsBaseEdited.TryAdd(item.ItemCode, item);
-                    SetCustomFields(baseItem, Int32Extensions.ToRawcode(baseItem.OldId));
-                }
-
-                for (int i = 0; i < customItems.NewItems.Count; i++)
-                {
-                    var customItem = customItems.NewItems[i];
-                    ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(customItem.OldId));
-                    string name = baseAbil.DisplayName;
-                    var item = new ItemType()
-                    {
-                        ItemCode = customItem.ToString().Substring(0, 4),
-                        DisplayName = name,
-                    };
-                    itemsCustom.TryAdd(item.ItemCode, item);
-                    SetCustomFields(customItem, item.ItemCode);
-                }
+                    ItemCode = customItem.ToString().Substring(0, 4),
+                    DisplayName = name,
+                };
+                itemsCustom.TryAdd(item.ItemCode, item);
+                SetCustomFields(customItem, item.ItemCode);
             }
         }
 

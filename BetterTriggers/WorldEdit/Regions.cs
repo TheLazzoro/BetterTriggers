@@ -23,23 +23,11 @@ namespace BetterTriggers.WorldEdit
         internal static void Load()
         {
             regions.Clear();
-
-            string filePath = "war3map.w3r";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            MapRegions mapRegions = CustomMapData.MPQMap.Regions;
+            if (mapRegions == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
-            {
-                Thread.Sleep(1000);
-            }
-
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                var mapRegions = BinaryReaderExtensions.ReadMapRegions(reader);
-
-                mapRegions.Regions.ForEach(r => regions.Add(r));
-            }
+            mapRegions.Regions.ForEach(r => regions.Add(r));
         }
     }
 }

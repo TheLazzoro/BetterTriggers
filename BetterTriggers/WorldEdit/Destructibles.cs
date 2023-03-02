@@ -30,33 +30,22 @@ namespace BetterTriggers.WorldEdit
             destructibles.Clear();
             var destructibleData = DestructibleTypes.GetAll();
 
-            string filePath = "war3map.doo";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            MapDoodads doodads;
+            doodads = CustomMapData.MPQMap.Doodads;
+            if (doodads == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            // TODO: ugly loop
+            for (int i = 0; i < doodads.Doodads.Count; i++)
             {
-                Thread.Sleep(1000);
-            }
+                var doodad = doodads.Doodads[i];
 
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                var doodads = BinaryReaderExtensions.ReadMapDoodads(reader);
-
-                // TODO: ugly loop
-                for (int i = 0; i < doodads.Doodads.Count; i++)
+                for (int j = 0; j < destructibleData.Count; j++)
                 {
-                    var doodad = doodads.Doodads[i];
-
-                    for (int j = 0; j < destructibleData.Count; j++)
+                    if (doodad.ToString() == destructibleData[j].DestCode)
                     {
-                        if (doodad.ToString() == destructibleData[j].DestCode)
-                        {
-                            destructibles.Add(doodad);
-                            break;
-                        }
-
+                        destructibles.Add(doodad);
+                        break;
                     }
                 }
             }

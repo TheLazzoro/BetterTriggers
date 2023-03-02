@@ -138,36 +138,35 @@ namespace BetterTriggers.WorldEdit
                 Thread.Sleep(1000);
             }
 
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            DoodadObjectData customDoodads;
+            customDoodads = CustomMapData.MPQMap.DoodadObjectData;
+            if (customDoodads == null)
+                return;
+
+            for (int i = 0; i < customDoodads.BaseDoodads.Count; i++)
             {
-                BinaryReader binaryReader = new BinaryReader(s);
-                var customDoodads = binaryReader.ReadDoodadObjectData();
-
-                for (int i = 0; i < customDoodads.BaseDoodads.Count; i++)
+                var dood = customDoodads.BaseDoodads[i];
+                DoodadType baseDood = GetDoodadType(Int32Extensions.ToRawcode(dood.OldId));
+                DoodadType doodad = new DoodadType()
                 {
-                    var dood = customDoodads.BaseDoodads[i];
-                    DoodadType baseDood = GetDoodadType(Int32Extensions.ToRawcode(dood.OldId));
-                    DoodadType doodad = new DoodadType()
-                    {
-                        DoodCode = dood.ToString().Substring(0, 4),
-                        DisplayName = baseDood.DisplayName,
-                    };
-                    doodadsBaseEdited.Add(doodad.DoodCode, doodad);
-                    SetCustomFields(dood, Int32Extensions.ToRawcode(dood.OldId));
-                }
+                    DoodCode = dood.ToString().Substring(0, 4),
+                    DisplayName = baseDood.DisplayName,
+                };
+                doodadsBaseEdited.Add(doodad.DoodCode, doodad);
+                SetCustomFields(dood, Int32Extensions.ToRawcode(dood.OldId));
+            }
 
-                for (int i = 0; i < customDoodads.NewDoodads.Count; i++)
+            for (int i = 0; i < customDoodads.NewDoodads.Count; i++)
+            {
+                var dood = customDoodads.NewDoodads[i];
+                DoodadType baseDood = GetDoodadType(Int32Extensions.ToRawcode(dood.OldId));
+                DoodadType doodad = new DoodadType()
                 {
-                    var dood = customDoodads.NewDoodads[i];
-                    DoodadType baseDood = GetDoodadType(Int32Extensions.ToRawcode(dood.OldId));
-                    DoodadType doodad = new DoodadType()
-                    {
-                        DoodCode = dood.ToString().Substring(0, 4),
-                        DisplayName = baseDood.DisplayName,
-                    };
-                    doodadsCustom.Add(doodad.DoodCode, doodad);
-                    SetCustomFields(dood, doodad.DoodCode);
-                }
+                    DoodCode = dood.ToString().Substring(0, 4),
+                    DisplayName = baseDood.DisplayName,
+                };
+                doodadsCustom.Add(doodad.DoodCode, doodad);
+                SetCustomFields(dood, doodad.DoodCode);
             }
         }
 

@@ -35,27 +35,16 @@ namespace BetterTriggers.WorldEdit
             sounds.Clear();
             music.Clear();
 
-            string filePath = "war3map.w3s";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            MapSounds mapSounds = CustomMapData.MPQMap.Sounds;
+            if (mapSounds == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            for (int i = 0; i < mapSounds.Sounds.Count; i++)
             {
-                Thread.Sleep(1000);
-            }
-
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                var mapSounds = BinaryReaderExtensions.ReadMapSounds(reader);
-
-                for (int i = 0; i < mapSounds.Sounds.Count; i++)
-                {
-                    if (mapSounds.Sounds[i].Flags.HasFlag(SoundFlags.Music))
-                        music.Add(mapSounds.Sounds[i]);
-                    else
-                        sounds.Add(mapSounds.Sounds[i]);
-                }
+                if (mapSounds.Sounds[i].Flags.HasFlag(SoundFlags.Music))
+                    music.Add(mapSounds.Sounds[i]);
+                else
+                    sounds.Add(mapSounds.Sounds[i]);
             }
         }
 

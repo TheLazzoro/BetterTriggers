@@ -66,7 +66,7 @@ namespace BetterTriggers.WorldEdit
             UpgradeType upgradeType = GetUpgradeType(upgradecode);
             if (upgradeType == null)
                 return "<Empty Name>";
-            else if(upgradeType.DisplayName == null)
+            else if (upgradeType.DisplayName == null)
                 return "<Empty Name>";
 
             string name = upgradeType.DisplayName;
@@ -85,7 +85,7 @@ namespace BetterTriggers.WorldEdit
             if (isTest)
             {
                 upgradedata = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/upgradedata.slk"), FileMode.Open);
-                
+
                 StringBuilder text = new StringBuilder();
                 text.Append(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/humanupgradefunc.txt")));
                 text.Append(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/nightelfupgradefunc.txt")));
@@ -172,54 +172,43 @@ namespace BetterTriggers.WorldEdit
             upgradesBaseEdited = new Dictionary<string, UpgradeType>();
             upgradesCustom = new Dictionary<string, UpgradeType>();
 
-            string filePath = "war3map.w3q";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            UpgradeObjectData customUpgrades = CustomMapData.MPQMap.UpgradeObjectData;
+            if (customUpgrades == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            // Custom upgrades
+            for (int i = 0; i < customUpgrades.BaseUpgrades.Count; i++)
             {
-                Thread.Sleep(1000);
+                var upgrade = customUpgrades.BaseUpgrades[i];
+                UpgradeType baseUpgrade = GetUpgradeType(Int32Extensions.ToRawcode(upgrade.OldId));
+                var u = new UpgradeType()
+                {
+                    UpgradeCode = upgrade.ToString().Substring(0, 4),
+                    DisplayName = baseUpgrade.DisplayName,
+                };
+                upgradesBaseEdited.TryAdd(baseUpgrade.UpgradeCode, u);
+                SetCustomFields(upgrade, u.UpgradeCode);
             }
 
-            // Custom upgrades
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            for (int i = 0; i < customUpgrades.NewUpgrades.Count; i++)
             {
-                BinaryReader reader = new BinaryReader(s);
-                var customUpgrades = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUpgradeObjectData(reader);
+                var customUpgrade = customUpgrades.NewUpgrades[i];
 
-                for (int i = 0; i < customUpgrades.BaseUpgrades.Count; i++)
+                UpgradeType baseUpgrade = GetUpgradeType(Int32Extensions.ToRawcode(customUpgrade.OldId));
+                string name = baseUpgrade.DisplayName;
+                foreach (var modified in customUpgrade.Modifications)
                 {
-                    var upgrade = customUpgrades.BaseUpgrades[i];
-                    UpgradeType baseUpgrade = GetUpgradeType(Int32Extensions.ToRawcode(upgrade.OldId));
-                    var u = new UpgradeType()
-                    {
-                        UpgradeCode = upgrade.ToString().Substring(0, 4),
-                        DisplayName = baseUpgrade.DisplayName,
-                    };
-                    upgradesBaseEdited.TryAdd(baseUpgrade.UpgradeCode, u);
-                    SetCustomFields(upgrade, u.UpgradeCode);
+                    if (Int32Extensions.ToRawcode(modified.Id) == "gnam")
+                        name = MapStrings.GetString(modified.ValueAsString);
                 }
 
-                for (int i = 0; i < customUpgrades.NewUpgrades.Count; i++)
+                var upgrade = new UpgradeType()
                 {
-                    var customUpgrade = customUpgrades.NewUpgrades[i];
-
-                    UpgradeType baseUpgrade = GetUpgradeType(Int32Extensions.ToRawcode(customUpgrade.OldId));
-                    string name = baseUpgrade.DisplayName;
-                    foreach (var modified in customUpgrade.Modifications)
-                    {
-                        if (Int32Extensions.ToRawcode(modified.Id) == "gnam")
-                            name = MapStrings.GetString(modified.ValueAsString);
-                    }
-
-                    var upgrade = new UpgradeType()
-                    {
-                        UpgradeCode = customUpgrade.ToString().Substring(0, 4),
-                        DisplayName = name,
-                    };
-                    upgradesCustom.TryAdd(upgrade.UpgradeCode, upgrade);
-                    SetCustomFields(customUpgrade, upgrade.UpgradeCode);
-                }
+                    UpgradeCode = customUpgrade.ToString().Substring(0, 4),
+                    DisplayName = name,
+                };
+                upgradesCustom.TryAdd(upgrade.UpgradeCode, upgrade);
+                SetCustomFields(customUpgrade, upgrade.UpgradeCode);
             }
         }
 

@@ -35,32 +35,22 @@ namespace BetterTriggers.WorldEdit
             units.Clear();
             items.Clear();
 
-            string filePath = "war3mapUnits.doo";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            MapUnits mapUnits = CustomMapData.MPQMap.Units;
+            if (mapUnits == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            for (int i = 0; i < mapUnits.Units.Count; i++)
             {
-                Thread.Sleep(1000);
-            }
-
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                var mapUnits = BinaryReaderExtensions.ReadMapUnits(reader);
-                for (int i = 0; i < mapUnits.Units.Count; i++)
+                if (mapUnits.Units[i].ToString() == "sloc")
                 {
-                    if (mapUnits.Units[i].ToString() == "sloc")
-                    {
-                        startLocations.Add(mapUnits.Units[i]);
-                        continue;
-                    }
-
-                    if (mapUnits.Units[i].IsItem())
-                        items.Add(mapUnits.Units[i]);
-                    else
-                        units.Add(mapUnits.Units[i]);
+                    startLocations.Add(mapUnits.Units[i]);
+                    continue;
                 }
+
+                if (mapUnits.Units[i].IsItem())
+                    items.Add(mapUnits.Units[i]);
+                else
+                    units.Add(mapUnits.Units[i]);
             }
         }
 

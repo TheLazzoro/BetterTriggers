@@ -19,21 +19,7 @@ namespace BetterTriggers.WorldEdit
 
         internal static void Load()
         {
-            string filePath = "war3map.w3i";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
-                throw new Exception($"'{filePath}' does not exist!");
-
-            while (CustomMapData.IsMapSaving())
-            {
-                Thread.Sleep(1000);
-            }
-
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                MapInfo = BinaryReaderExtensions.ReadMapInfo(reader);
-            }
+            MapInfo = CustomMapData.MPQMap.Info;
         }
-
     }
 }

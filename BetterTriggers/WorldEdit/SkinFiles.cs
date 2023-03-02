@@ -19,22 +19,9 @@ namespace BetterTriggers.WorldEdit
     {
         public static void Load()
         {
-            string abilitySkinFileName = "war3mapSkin.w3a";
-            string buffSkinFileName = "war3mapSkin.w3h";
-            string destSkinFileName = "war3mapSkin.w3h";
-            string doodSkinFileName = "war3mapSkin.w3d";
-            string itemSkinFileName = "war3mapSkin.w3t";
-            string unitSkinFileName = "war3mapSkin.w3u";
-            string upgradeSkinFileName = "war3mapSkin.w3q";
-
-            while (CustomMapData.IsMapSaving())
-                Thread.Sleep(1000);
-
-            if (File.Exists(Path.Combine(CustomMapData.mapPath, abilitySkinFileName)))
+            if (CustomMapData.MPQMap.AbilitySkinObjectData != null)
             {
-                using var fileStream = File.OpenRead(Path.Combine(CustomMapData.mapPath, abilitySkinFileName));
-                using var reader = new BinaryReader(fileStream);
-                var abilitySkinObjectData = reader.ReadAbilityObjectData();
+                var abilitySkinObjectData = CustomMapData.MPQMap.AbilitySkinObjectData;
 
                 List<LevelObjectModification> abilities = new();
                 abilities.AddRange(abilitySkinObjectData.BaseAbilities);
@@ -66,14 +53,9 @@ namespace BetterTriggers.WorldEdit
                 });
             }
 
-            while (CustomMapData.IsMapSaving())
-                Thread.Sleep(1000);
-
-            if (File.Exists(Path.Combine(CustomMapData.mapPath, buffSkinFileName)))
+            if (CustomMapData.MPQMap.BuffSkinObjectData != null)
             {
-                using var fileStream = File.OpenRead(Path.Combine(CustomMapData.mapPath, buffSkinFileName));
-                using var reader = new BinaryReader(fileStream);
-                var buffSkinObjectData = reader.ReadBuffObjectData();
+                var buffSkinObjectData = CustomMapData.MPQMap.BuffSkinObjectData;
 
                 List<SimpleObjectModification> buffs = new();
                 buffs.AddRange(buffSkinObjectData.BaseBuffs);
@@ -118,14 +100,9 @@ namespace BetterTriggers.WorldEdit
                 });
             }
 
-            while (CustomMapData.IsMapSaving())
-                Thread.Sleep(1000);
-
-            if (File.Exists(Path.Combine(CustomMapData.mapPath, destSkinFileName)))
+            if (CustomMapData.MPQMap.DestructableSkinObjectData != null)
             {
-                using var fileStream = File.OpenRead(Path.Combine(CustomMapData.mapPath, destSkinFileName));
-                using var reader = new BinaryReader(fileStream);
-                var destSkinObjectData = reader.ReadDestructableObjectData();
+                var destSkinObjectData = CustomMapData.MPQMap.DestructableSkinObjectData;
 
                 List<SimpleObjectModification> dests = new();
                 dests.AddRange(destSkinObjectData.BaseDestructables);
@@ -157,14 +134,9 @@ namespace BetterTriggers.WorldEdit
                 });
             }
 
-            while (CustomMapData.IsMapSaving())
-                Thread.Sleep(1000);
-
-            if (File.Exists(Path.Combine(CustomMapData.mapPath, doodSkinFileName)))
+            if (CustomMapData.MPQMap.DoodadSkinObjectData != null)
             {
-                using var fileStream = File.OpenRead(Path.Combine(CustomMapData.mapPath, doodSkinFileName));
-                using var reader = new BinaryReader(fileStream);
-                var doodSkinObjectData = reader.ReadDoodadObjectData();
+                var doodSkinObjectData = CustomMapData.MPQMap.DoodadSkinObjectData;
 
                 List<VariationObjectModification> doods = new();
                 doods.AddRange(doodSkinObjectData.BaseDoodads);
@@ -190,14 +162,9 @@ namespace BetterTriggers.WorldEdit
                 });
             }
 
-            while (CustomMapData.IsMapSaving())
-                Thread.Sleep(1000);
-
-            if (File.Exists(Path.Combine(CustomMapData.mapPath, itemSkinFileName)))
+            if (CustomMapData.MPQMap.ItemSkinObjectData != null)
             {
-                using var fileStream = File.OpenRead(Path.Combine(CustomMapData.mapPath, itemSkinFileName));
-                using var reader = new BinaryReader(fileStream);
-                var itemSkinObjectData = reader.ReadItemObjectData();
+                var itemSkinObjectData = CustomMapData.MPQMap.ItemSkinObjectData;
 
                 List<SimpleObjectModification> items = new();
                 items.AddRange(itemSkinObjectData.BaseItems);
@@ -223,14 +190,9 @@ namespace BetterTriggers.WorldEdit
                 });
             }
 
-            while (CustomMapData.IsMapSaving())
-                Thread.Sleep(1000);
-
-            if (File.Exists(Path.Combine(CustomMapData.mapPath, unitSkinFileName)))
+            if (CustomMapData.MPQMap.UnitSkinObjectData != null)
             {
-                using var fileStream = File.OpenRead(Path.Combine(CustomMapData.mapPath, unitSkinFileName));
-                using var reader = new BinaryReader(fileStream);
-                var unitSkinObjectData = reader.ReadUnitObjectData();
+                var unitSkinObjectData = CustomMapData.MPQMap.UnitSkinObjectData;
 
                 List<SimpleObjectModification> unitTypes = new();
                 unitTypes.AddRange(unitSkinObjectData.BaseUnits);
@@ -266,14 +228,9 @@ namespace BetterTriggers.WorldEdit
                 });
             }
 
-            while (CustomMapData.IsMapSaving())
-                Thread.Sleep(1000);
-
-            if (File.Exists(Path.Combine(CustomMapData.mapPath, upgradeSkinFileName)))
+            if (CustomMapData.MPQMap.UpgradeSkinObjectData != null)
             {
-                using var fileStream = File.OpenRead(Path.Combine(CustomMapData.mapPath, upgradeSkinFileName));
-                using var reader = new BinaryReader(fileStream);
-                var upgradeSkinObjectData = reader.ReadUpgradeObjectData();
+                var upgradeSkinObjectData = CustomMapData.MPQMap.UpgradeSkinObjectData;
 
                 List<LevelObjectModification> upgrades = new();
                 upgrades.AddRange(upgradeSkinObjectData.BaseUpgrades);

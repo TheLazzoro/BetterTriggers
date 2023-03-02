@@ -19,6 +19,16 @@ namespace BetterTriggers.Utility
         public static string ReplaceNonASCII(string text, bool isScriptGenerate = false)
         {
             string output = Regex.Replace(text, @"[^\u0000-\u007F]+", "__");
+            //string output = string.Empty;
+            for (int i = 0; i < output.Length; i++)
+            {
+                char c = output[i];
+                if(!char.IsLetterOrDigit(c)) {
+                    output = output.Remove(i, 1);
+                    output = output.Insert(i, "_");
+                }
+
+            }
             if (isScriptGenerate && output != text)
                 output = output + "u";
             while(isScriptGenerate && output.EndsWith("_"))

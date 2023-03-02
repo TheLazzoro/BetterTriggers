@@ -119,50 +119,38 @@ namespace BetterTriggers.WorldEdit
             abilitiesCustom = new Dictionary<string, AbilityType>();
             abilitiesBaseEdited = new Dictionary<string, AbilityType>();
 
-            string filePath = "war3map.w3a";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            var customAbilities = CustomMapData.MPQMap.AbilityObjectData;
+            if (customAbilities == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            for (int i = 0; i < customAbilities.BaseAbilities.Count; i++)
             {
-                Thread.Sleep(1000);
+                var baseAbility = customAbilities.BaseAbilities[i];
+                AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(baseAbility.OldId));
+                var ability = new AbilityType()
+                {
+                    AbilCode = baseAbility.ToString().Substring(0, 4),
+                    DisplayName = baseAbil.DisplayName,
+                    EditorSuffix = baseAbil.EditorSuffix,
+                };
+                abilitiesBaseEdited.TryAdd(ability.AbilCode, ability);
+                SetCustomFields(baseAbility, Int32Extensions.ToRawcode(baseAbility.OldId));
             }
 
-            // Custom abilities
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
             {
-                BinaryReader reader = new BinaryReader(s);
-                var customAbilities = War3Net.Build.Extensions.BinaryReaderExtensions.ReadAbilityObjectData(reader);
-
-                for (int i = 0; i < customAbilities.BaseAbilities.Count; i++)
+                var customAbility = customAbilities.NewAbilities[i];
+                AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(customAbility.OldId));
+                string name = baseAbil.DisplayName;
+                string editorSuffix = baseAbil.EditorSuffix;
+                var ability = new AbilityType()
                 {
-                    var baseAbility = customAbilities.BaseAbilities[i];
-                    AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(baseAbility.OldId));
-                    var ability = new AbilityType()
-                    {
-                        AbilCode = baseAbility.ToString().Substring(0, 4),
-                        DisplayName = baseAbil.DisplayName,
-                        EditorSuffix = baseAbil.EditorSuffix,
-                    };
-                    abilitiesBaseEdited.TryAdd(ability.AbilCode, ability);
-                    SetCustomFields(baseAbility, Int32Extensions.ToRawcode(baseAbility.OldId));
-                }
-
-                for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
-                {
-                    var customAbility = customAbilities.NewAbilities[i];
-                    AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(customAbility.OldId));
-                    string name = baseAbil.DisplayName;
-                    string editorSuffix = baseAbil.EditorSuffix;
-                    var ability = new AbilityType()
-                    {
-                        AbilCode = customAbility.ToString().Substring(0, 4),
-                        DisplayName = name,
-                        EditorSuffix = editorSuffix,
-                    };
-                    abilitiesCustom.TryAdd(ability.AbilCode, ability);
-                    SetCustomFields(customAbility, ability.AbilCode);
-                }
+                    AbilCode = customAbility.ToString().Substring(0, 4),
+                    DisplayName = name,
+                    EditorSuffix = editorSuffix,
+                };
+                abilitiesCustom.TryAdd(ability.AbilCode, ability);
+                SetCustomFields(customAbility, ability.AbilCode);
             }
         }
 

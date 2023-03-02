@@ -48,7 +48,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.mapPath = mapPath;
+            CustomMapData.Init(mapPath);
             Regions.Load();
             Cameras.Load();
             Sounds.Load();

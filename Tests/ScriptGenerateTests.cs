@@ -199,7 +199,7 @@ namespace Tests
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
             ControllerProject controllerProject = new ControllerProject();
-            CustomMapData.Init(mapDir, true); // TODO: CustomMapData init should be run by the controller.
+            CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
             CustomMapData.Load();
             controllerProject.LoadProject(projectDir);
             success = controllerProject.GenerateScript();
@@ -213,7 +213,7 @@ namespace Tests
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/Frames_Map.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/map/Map.w3x");
             ControllerProject controllerProject = new ControllerProject();
-            CustomMapData.Init(mapDir, true); // TODO: CustomMapData init should be run by the controller.
+            CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
             CustomMapData.Load();
             controllerProject.LoadProject(projectDir);
             success = controllerProject.GenerateScript();
@@ -235,7 +235,7 @@ namespace Tests
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(project));
 
             project = controllerProject.LoadProject(projectFile);
-            CustomMapData.Init(mapDir, true); // TODO: CustomMapData init should be run by the controller.
+            CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
             CustomMapData.Load();
             success = controllerProject.GenerateScript();
         }

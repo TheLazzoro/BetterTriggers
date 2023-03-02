@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using War3Net.Build;
 using War3Net.Build.Environment;
 using War3Net.Build.Extensions;
 using War3Net.Build.Object;
@@ -19,6 +20,7 @@ namespace BetterTriggers
     public class CustomMapData
     {
         public static string mapPath;
+        internal static Map MPQMap;
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
 
@@ -28,10 +30,16 @@ namespace BetterTriggers
                 OnSaving(sender, e);
         }
 
-        public static void Init(string _mapPath, bool isTest = false)
+        public static void Init(string _mapPath)
         {
             mapPath = _mapPath;
-            if(watcher != null)
+            while (IsMapSaving())
+            {
+                Thread.Sleep(1000);
+            }
+            MPQMap = Map.Open(mapPath);
+
+            if (watcher != null)
                 watcher.Created -= Watcher_Created;
 
             watcher = new System.IO.FileSystemWatcher();
@@ -42,7 +50,7 @@ namespace BetterTriggers
 
         private static void Watcher_Created(object sender, FileSystemEventArgs e)
         {
-            if(e.Name == Path.GetFileName(mapPath) + "Temp")
+            if (e.Name == Path.GetFileName(mapPath) + "Temp")
                 InvokeOnSaving(sender, e);
         }
 

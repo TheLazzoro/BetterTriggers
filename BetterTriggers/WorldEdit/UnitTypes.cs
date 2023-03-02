@@ -177,13 +177,13 @@ namespace BetterTriggers.WorldEdit
 
                 new Icon(icon, UnitTypes.GetName(unitType.Id), "Unit");
 
-                if(!isTest)
+                if (!isTest)
                     unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
             }
 
             var campaignSections = campaignFunc.Sections;
             var enumerator = campaignSections.GetEnumerator();
-            while(enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
                 var section = enumerator.Current;
                 string sectionName = section.SectionName;
@@ -202,70 +202,56 @@ namespace BetterTriggers.WorldEdit
             unitTypesBaseEdited = new Dictionary<string, UnitType>();
             unitTypesCustom = new Dictionary<string, UnitType>();
 
-            string filePath = "war3map.w3u";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            UnitObjectData customUnits = CustomMapData.MPQMap.UnitObjectData;
+            if (customUnits == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            // Base units
+            foreach (var baseUnit in customUnits.BaseUnits)
             {
-                Thread.Sleep(1000);
+                UnitType unit = GetUnitType(Int32Extensions.ToRawcode(baseUnit.OldId));
+                UnitName name = unit.Name.Clone();
+                string sort = unit.Sort;
+                string race = unit.Race;
+                string icon = unit.Icon;
+                Bitmap image = unit.Image;
+                var unitType = new UnitType()
+                {
+                    Id = baseUnit.ToString().Substring(0, 4),
+                    Name = name,
+                    Sort = sort,
+                    Race = race,
+                    Icon = icon,
+                    Image = image
+                };
+                unitTypesBaseEdited.Add(unitType.Id, unitType);
+                SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId));
             }
 
-
-            // Custom data
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            // custom units
+            for (int i = 0; i < customUnits.NewUnits.Count; i++)
             {
-                BinaryReader bReader = new BinaryReader(s);
-                var customUnits = War3Net.Build.Extensions.BinaryReaderExtensions.ReadUnitObjectData(bReader);
+                var customUnit = customUnits.NewUnits[i];
 
+                UnitType baseUnit = GetUnitType(Int32Extensions.ToRawcode(customUnit.OldId));
+                UnitName name = baseUnit.Name.Clone();
+                string sort = baseUnit.Sort;
+                string race = baseUnit.Race;
+                string icon = baseUnit.Icon;
+                Bitmap image = baseUnit.Image;
 
-                // Base units
-                foreach (var baseUnit in customUnits.BaseUnits)
+                var unitType = new UnitType()
                 {
-                    UnitType unit = GetUnitType(Int32Extensions.ToRawcode(baseUnit.OldId));
-                    UnitName name = unit.Name.Clone();
-                    string sort = unit.Sort;
-                    string race = unit.Race;
-                    string icon = unit.Icon;
-                    Bitmap image = unit.Image;
-                    var unitType = new UnitType()
-                    {
-                        Id = baseUnit.ToString().Substring(0, 4),
-                        Name = name,
-                        Sort = sort,
-                        Race = race,
-                        Icon = icon,
-                        Image = image
-                    };
-                    unitTypesBaseEdited.Add(unitType.Id, unitType);
-                    SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId));
-                }
+                    Id = customUnit.ToString().Substring(0, 4),
+                    Name = name,
+                    Sort = sort,
+                    Race = race,
+                    Icon = icon,
+                    Image = image
+                };
 
-                // custom units
-                for (int i = 0; i < customUnits.NewUnits.Count; i++)
-                {
-                    var customUnit = customUnits.NewUnits[i];
-
-                    UnitType baseUnit = GetUnitType(Int32Extensions.ToRawcode(customUnit.OldId));
-                    UnitName name = baseUnit.Name.Clone();
-                    string sort = baseUnit.Sort;
-                    string race = baseUnit.Race;
-                    string icon = baseUnit.Icon;
-                    Bitmap image = baseUnit.Image;
-
-                    var unitType = new UnitType()
-                    {
-                        Id = customUnit.ToString().Substring(0, 4),
-                        Name = name,
-                        Sort = sort,
-                        Race = race,
-                        Icon = icon,
-                        Image = image
-                    };
-
-                    unitTypesCustom.TryAdd(unitType.Id, unitType);
-                    SetCustomFields(customUnit, unitType.Id);
-                }
+                unitTypesCustom.TryAdd(unitType.Id, unitType);
+                SetCustomFields(customUnit, unitType.Id);
             }
         }
 

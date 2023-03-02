@@ -124,47 +124,36 @@ namespace BetterTriggers.WorldEdit
             buffsBaseEdited = new Dictionary<string, BuffType>();
             buffsCustom = new Dictionary<string, BuffType>();
 
-            string filePath = "war3map.w3h";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            BuffObjectData customBuffs;
+            customBuffs = CustomMapData.MPQMap.BuffObjectData;
+            if (customBuffs == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            for (int i = 0; i < customBuffs.BaseBuffs.Count; i++)
             {
-                Thread.Sleep(1000);
+                var buff = customBuffs.BaseBuffs[i];
+                BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(buff.OldId));
+                var b = new BuffType()
+                {
+                    BuffCode = baseBuff.ToString().Substring(0, 4),
+                    DisplayName = baseBuff.DisplayName,
+                };
+                buffsBaseEdited.TryAdd(b.BuffCode, b);
+                SetCustomFields(buff, b.BuffCode);
             }
 
-            // Custom buffs
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            for (int i = 0; i < customBuffs.NewBuffs.Count; i++)
             {
-                BinaryReader reader = new BinaryReader(s);
-                var customBuffs = War3Net.Build.Extensions.BinaryReaderExtensions.ReadBuffObjectData(reader);
-
-                for (int i = 0; i < customBuffs.BaseBuffs.Count; i++)
+                var customBuff = customBuffs.NewBuffs[i];
+                BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(customBuff.OldId));
+                string name = baseBuff.DisplayName;
+                var buff = new BuffType()
                 {
-                    var buff = customBuffs.BaseBuffs[i];
-                    BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(buff.OldId));
-                    var b = new BuffType()
-                    {
-                        BuffCode = baseBuff.ToString().Substring(0, 4),
-                        DisplayName = baseBuff.DisplayName,
-                    };
-                    buffsBaseEdited.TryAdd(b.BuffCode, b);
-                    SetCustomFields(buff, b.BuffCode);
-                }
-                
-                for (int i = 0; i < customBuffs.NewBuffs.Count; i++)
-                {
-                    var customBuff = customBuffs.NewBuffs[i];
-                    BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(customBuff.OldId));
-                    string name = baseBuff.DisplayName;
-                    var buff = new BuffType()
-                    {
-                        BuffCode = customBuff.ToString().Substring(0, 4),
-                        DisplayName = name,
-                    };
-                    buffsCustom.TryAdd(buff.BuffCode, buff);
-                    SetCustomFields(customBuff, buff.BuffCode);
-                }
+                    BuffCode = customBuff.ToString().Substring(0, 4),
+                    DisplayName = name,
+                };
+                buffsCustom.TryAdd(buff.BuffCode, buff);
+                SetCustomFields(customBuff, buff.BuffCode);
             }
         }
 

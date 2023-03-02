@@ -147,49 +147,37 @@ namespace BetterTriggers.WorldEdit
             destructiblesBaseEdited = new Dictionary<string, DestructibleType>();
             destructiblesCustom = new Dictionary<string, DestructibleType>();
 
-
-            // Read custom destructible definition data
-            string filePath = "war3map.w3b";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            DestructableObjectData customDestructibles;
+            customDestructibles = CustomMapData.MPQMap.DestructableObjectData;
+            if (customDestructibles == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            for (int i = 0; i < customDestructibles.BaseDestructables.Count; i++)
             {
-                Thread.Sleep(1000);
+                var dest = customDestructibles.BaseDestructables[i];
+                DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
+                string name = baseDest.DisplayName;
+                DestructibleType destructible = new DestructibleType()
+                {
+                    DestCode = dest.ToString().Substring(0, 4),
+                    DisplayName = name,
+                };
+                destructiblesBaseEdited.TryAdd(destructible.DestCode, destructible);
+                SetCustomFields(dest, Int32Extensions.ToRawcode(dest.OldId));
             }
 
-            using (Stream s = new FileStream(Path.Combine(CustomMapData.mapPath, filePath), FileMode.Open, FileAccess.Read))
+            for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
             {
-                BinaryReader binaryReader = new BinaryReader(s);
-                var customDestructibles = binaryReader.ReadDestructableObjectData();
-
-                for (int i = 0; i < customDestructibles.BaseDestructables.Count; i++)
+                var dest = customDestructibles.NewDestructables[i];
+                DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
+                string name = baseDest.DisplayName;
+                DestructibleType destructible = new DestructibleType()
                 {
-                    var dest = customDestructibles.BaseDestructables[i];
-                    DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
-                    string name = baseDest.DisplayName;
-                    DestructibleType destructible = new DestructibleType()
-                    {
-                        DestCode = dest.ToString().Substring(0, 4),
-                        DisplayName = name,
-                    };
-                    destructiblesBaseEdited.TryAdd(destructible.DestCode, destructible);
-                    SetCustomFields(dest, Int32Extensions.ToRawcode(dest.OldId));
-                }
-
-                for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
-                {
-                    var dest = customDestructibles.NewDestructables[i];
-                    DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
-                    string name = baseDest.DisplayName;
-                    DestructibleType destructible = new DestructibleType()
-                    {
-                        DestCode = dest.ToString().Substring(0, 4),
-                        DisplayName = name,
-                    };
-                    destructiblesCustom.TryAdd(destructible.DestCode, destructible);
-                    SetCustomFields(dest, destructible.DestCode);
-                }
+                    DestCode = dest.ToString().Substring(0, 4),
+                    DisplayName = name,
+                };
+                destructiblesCustom.TryAdd(destructible.DestCode, destructible);
+                SetCustomFields(dest, destructible.DestCode);
             }
         }
 
