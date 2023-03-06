@@ -21,7 +21,7 @@
 
         <TextBlock Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom" TextWrapping="Wrap" >Could not locate the map for this project. Please select map location.</TextBlock>
 
-        <Label Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom" Grid.Row="1"  >Select Warcraft III map (folder mode)</Label>
+        <Label Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom" Grid.Row="1"  >Select Warcraft III map</Label>
         <Button x:Name="btnSelect" Width="50" Height="22" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="210,0,0,0" Click="btnSelect_Click">Select</Button>
 
         <Label x:Name="lblPath" Foreground="#eee" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top"  >Path: &lt;Empty&gt;</Label>
