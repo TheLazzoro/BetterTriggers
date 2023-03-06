@@ -443,6 +443,7 @@ namespace GUI
 
         private void OpenMap()
         {
+            
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.DefaultExt = ".json";
             dialog.Filter = "JSON Files (*.json)|*.json";

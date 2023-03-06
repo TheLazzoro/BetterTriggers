@@ -194,6 +194,51 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ConvertMap_GenerateScript_MpqMap_135()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/MpqMap_135.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_warquest()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/warquest.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_Chimney_Isles()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Chimney Isles.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_MechaDefenders()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/MechaDefenders 1.1.0.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_DeadlockNE25()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/DeadlockNE25.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
         public void GenerateScript_CustomProject_LocalVarMap()
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
@@ -202,7 +247,8 @@ namespace Tests
             CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
             CustomMapData.Load();
             controllerProject.LoadProject(projectDir);
-            success = controllerProject.GenerateScript();
+            string script;
+            (success, script) = controllerProject.GenerateScript();
 
             Assert.IsTrue(success, failedMsg);
         }
@@ -216,7 +262,8 @@ namespace Tests
             CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
             CustomMapData.Load();
             controllerProject.LoadProject(projectDir);
-            success = controllerProject.GenerateScript();
+            string script;
+            (success, script) = controllerProject.GenerateScript();
 
             Assert.IsTrue(success, failedMsg);
         }
@@ -237,7 +284,8 @@ namespace Tests
             project = controllerProject.LoadProject(projectFile);
             CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
             CustomMapData.Load();
-            success = controllerProject.GenerateScript();
+            string script;
+            (success, script) = controllerProject.GenerateScript();
         }
     }
 }

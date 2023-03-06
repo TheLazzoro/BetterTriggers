@@ -26,6 +26,7 @@
     <None Remove="TestResources\humanupgradefunc.txt" />
     <None Remove="TestResources\itemfunc.txt" />
     <None Remove="TestResources\itemskin.txt" />
+    <None Remove="TestResources\Maps\%2812%29Chimney Isles.w3x" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\conversation.json" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3map.imp" />
@@ -51,6 +52,8 @@
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3mapMap.blp" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\Chimney Isles.w3x" />
+    <None Remove="TestResources\Maps\DeadlockNE25.w3x" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\conversation.json" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\war3map.imp" />
@@ -218,6 +221,7 @@
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapPreview.tga" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\MechaDefenders 1.1.0.w3x" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\conversation.json" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3map.imp" />
@@ -252,6 +256,7 @@
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3mapSkin.w3t" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3mapSkin.w3u" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\MpqMap_135.w3x" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\conversation.json" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3map.imp" />
@@ -347,6 +352,7 @@
     <None Remove="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\warquest.w3x" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\conversation.json" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.imp" />
@@ -528,6 +534,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\AAE REBORN V0.5b (beta) UNPROTECTED.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Chimney Isles.w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\DeadlockNE25.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\conversation.json">
@@ -1031,6 +1043,9 @@
     <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\Maps\MechaDefenders 1.1.0.w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\conversation.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1131,6 +1146,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\MpqMap_135.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\MZA 2.41.w3x\conversation.json">
@@ -1416,6 +1434,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\warquest.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\conversation.json">
@@ -1709,6 +1730,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="TestResources\Maps\(12)Chimney Isles.w3x" />
     <Resource Include="TestResources\Maps\empty_132.w3m\war3map.doo" />
     <Resource Include="TestResources\Maps\empty_132.w3m\war3map.mmp" />
     <Resource Include="TestResources\Maps\empty_132.w3m\war3map.shd" />

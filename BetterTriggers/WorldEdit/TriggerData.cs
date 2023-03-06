@@ -152,6 +152,9 @@ namespace BetterTriggers.WorldEdit
 
                 img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
                 Category.Create(TriggerCategory.TC_FRAMEHANDLE, img, "Frame", true);
+
+                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/drive.png");
+                Category.Create(TriggerCategory.TC_DRIVE, img, "???", false);
             }
 
 

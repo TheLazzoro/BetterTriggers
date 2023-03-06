@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using BetterTriggers.Models.SaveableData;
+using War3Net.IO.Mpq;
+using War3Net.Build;
 
 namespace BetterTriggers.Controllers
 {
@@ -11,22 +13,45 @@ namespace BetterTriggers.Controllers
     {
         public static List<Value> GetImportsByReturnType(string returnType)
         {
+            bool isMapMPQ = File.Exists(CustomMapData.mapPath);
             List<Value> imports = new List<Value>();
+            List<string> files = new List<string>();
             string mapDir = CustomMapData.mapPath + "/";
-            string[] files = Directory.GetFiles(mapDir, "*", SearchOption.AllDirectories);
+
+            if (isMapMPQ)
+            {
+                var mpqFiles = CustomMapData.MPQMap.ImportedFiles.Files;
+                mpqFiles.ForEach(f =>
+                {
+                    files.Add(f.FullPath);
+                });
+            }
+            else
+            {
+                string[] entries = Directory.GetFiles(mapDir, "*", SearchOption.AllDirectories);
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    files.Add(entries[i]);
+                }
+            }
 
             foreach (var file in files)
             {
-                if (returnType == "skymodelstring" && (file.ToLower().EndsWith(".mdx") || file.ToLower().EndsWith(".mdl")))
+                string fileName = string.Empty;
+                if (
+                    (returnType == "modelfile" || returnType == "skymodelstring") && (file.ToLower().EndsWith(".mdx") || file.ToLower().EndsWith(".mdl") ||
+                    (returnType == "musictheme" && (file.ToLower().EndsWith(".mp3") || file.ToLower().EndsWith(".wav") || file.ToLower().EndsWith(".flac")))
+                   ))
+                {
+                    fileName = file;
+                    if (!isMapMPQ)
+                        fileName = file.Substring(mapDir.Length, file.Length - mapDir.Length);
+
                     imports.Add(new Value()
                     {
-                        value = file.Substring(mapDir.Length, file.Length - mapDir.Length),
+                        value = fileName
                     });
-                else if(returnType == "musictheme" && (file.ToLower().EndsWith(".mp3") || file.ToLower().EndsWith(".wav") || file.ToLower().EndsWith(".flac")))
-                    imports.Add(new Value()
-                    {
-                        value = file.Substring(mapDir.Length, file.Length - mapDir.Length),
-                    });
+                }
             }
 
             return imports;

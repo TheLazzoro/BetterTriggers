@@ -32,24 +32,23 @@ namespace GUI
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
             ControllerProject controller = new ControllerProject();
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
-            {
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                controller.SetWar3MapDir(dialog.SelectedPath);
-                lblPath.Content = "Path: " + dialog.SelectedPath;
+            OpenWar3MapWindow window = new OpenWar3MapWindow();
+            window.ShowDialog();
+            if (!window.OK)
+                return;
 
-                if (controller.War3MapDirExists())
-                {
-                    mapDir = dialog.SelectedPath;
-                    btnOK.IsEnabled = true;
-                    lblError.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    mapDir = null;
-                    btnOK.IsEnabled = false;
-                    lblError.Visibility = Visibility.Visible;
-                }
+            controller.SetWar3MapDir(window.SelectedPath);
+            if (controller.War3MapDirExists())
+            {
+                mapDir = window.SelectedPath;
+                btnOK.IsEnabled = true;
+                lblError.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                mapDir = null;
+                btnOK.IsEnabled = false;
+                lblError.Visibility = Visibility.Visible;
             }
         }
 

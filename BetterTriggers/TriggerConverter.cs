@@ -58,46 +58,25 @@ namespace BetterTriggers.WorldEdit
             string pathCustomText = "war3map.wct";
             string pathInfo = "war3map.w3i";
             string pathTriggerStrings = "war3map.wts";
-            if (!File.Exists(Path.Combine(mapPath, pathTriggers)))
+            if (CustomMapData.MPQMap.Triggers == null)
                 return;
 
-            while (CustomMapData.IsMapSaving())
+            triggers = CustomMapData.MPQMap.Triggers;
+            var customTextTriggers = CustomMapData.MPQMap.CustomTextTriggers;
+            rootComment = customTextTriggers.GlobalCustomScriptComment;
+            if (customTextTriggers.GlobalCustomScriptCode != null)
             {
-                Thread.Sleep(1000);
+                if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
+                    rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
             }
-
-            using (Stream s = new FileStream(Path.Combine(mapPath, pathTriggers), FileMode.Open, FileAccess.Read))
+            customTextTriggers.CustomTextTriggers.ForEach(item =>
             {
-                BinaryReader reader = new BinaryReader(s);
-                triggers = BinaryReaderExtensions.ReadMapTriggers(reader);
-            }
-            using (Stream s = new FileStream(Path.Combine(mapPath, pathCustomText), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                var customTextTriggers = BinaryReaderExtensions.ReadMapCustomTextTriggers(reader, System.Text.Encoding.UTF8);
-                rootComment = customTextTriggers.GlobalCustomScriptComment;
-                if (customTextTriggers.GlobalCustomScriptCode != null)
-                {
-                    if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
-                        rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
-                }
-                customTextTriggers.CustomTextTriggers.ForEach(item =>
-                {
-                    wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
-                });
-            }
-            using (Stream s = new FileStream(Path.Combine(mapPath, pathInfo), FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader reader = new BinaryReader(s);
-                mapInfo = BinaryReaderExtensions.ReadMapInfo(reader);
-                language = mapInfo.ScriptLanguage;
-            }
-            using (Stream s = new FileStream(Path.Combine(mapPath, pathTriggerStrings), FileMode.Open, FileAccess.Read))
-            {
-                StreamReader sr = new StreamReader(s);
-                var wts = StreamReaderExtensions.ReadTriggerStrings(sr);
-                wts.Strings.ForEach(trigStr => triggerStrings.TryAdd(trigStr.Key, trigStr.Value));
-            }
+                wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
+            });
+            mapInfo = CustomMapData.MPQMap.Info;
+            language = mapInfo.ScriptLanguage;
+            var wts = CustomMapData.MPQMap.TriggerStrings;
+            wts.Strings.ForEach(trigStr => triggerStrings.TryAdd(trigStr.Key, trigStr.Value));
         }
 
         /// <returns>Project file path.</returns>

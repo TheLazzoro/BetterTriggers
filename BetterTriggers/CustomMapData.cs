@@ -14,6 +14,7 @@ using War3Net.Build.Environment;
 using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Build.Widget;
+using War3Net.IO.Mpq;
 
 namespace BetterTriggers
 {
@@ -116,5 +117,6 @@ namespace BetterTriggers
 
             return modified;
         }
+
     }
 }

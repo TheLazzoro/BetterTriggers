@@ -72,11 +72,30 @@ namespace BetterTriggers.Controllers
         public bool War3MapDirExists()
         {
             bool exists = false;
-            string dir = ContainerProject.project.War3MapDirectory;
-            if (dir != null && dir != "" && Directory.Exists(dir) && File.Exists(Path.Combine(dir, "war3map.w3i")))
+            string path = ContainerProject.project.War3MapDirectory;
+            if (path != null && Directory.Exists(path) && File.Exists(Path.Combine(path, "war3map.w3i")))
+                exists = true;
+            else if (path != null && File.Exists(path) && (Path.HasExtension(".w3x") || Path.HasExtension(".w3m")))
                 exists = true;
 
             return exists;
+        }
+
+        public static bool VerfiyMapPath(string path)
+        {
+            bool verified = false;
+            if (File.Exists(path))
+            {
+                if (Path.HasExtension(".w3x") || Path.HasExtension(".w3m"))
+                    verified = true;
+            }
+            else if (Directory.Exists(path))
+            {
+                if (File.Exists(Path.Combine(path, "war3map.w3i")))
+                    verified = true;
+            }
+
+            return verified;
         }
 
         // TODO: Why do we use two paths?
@@ -86,18 +105,18 @@ namespace BetterTriggers.Controllers
             CustomMapData.mapPath = mapDir;
         }
 
-        public bool GenerateScript()
+        public (bool, string) GenerateScript()
         {
             War3Project project = ContainerProject.project;
             if (project == null)
-                return false;
+                return (false, null);
 
             ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
 
             ScriptGenerator scriptGenerator = new ScriptGenerator(language);
             bool success = scriptGenerator.GenerateScript();
 
-            return success;
+            return (success, scriptGenerator.GeneratedScript);
         }
 
         string archivePath;
@@ -107,7 +126,7 @@ namespace BetterTriggers.Controllers
         /// <returns>Full path of the archive.</returns>
         public bool BuildMap(string destinationDir = null)
         {
-            bool wasVerified = GenerateScript();
+            (bool wasVerified, string script) = GenerateScript();
             if (!wasVerified)
                 return false;
 
@@ -119,7 +138,20 @@ namespace BetterTriggers.Controllers
             map.Info.ScriptLanguage = language;
 
             MapBuilder builder = new MapBuilder(map);
-            builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
+            builder.Map.Script = script;
+            if (Directory.Exists(mapDir))
+                builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
+            else
+            {
+                // We need to add all arbitrary files back to the generated w3x for some reason.
+                using (Stream s = new FileStream(mapDir, FileMode.Open))
+                {
+                    MpqArchive mpq = new MpqArchive(s);
+                    builder.AddFiles(mpq);
+                }
+            }
+
+
             var archiveCreateOptions = new MpqArchiveCreateOptions
             {
                 ListFileCreateMode = MpqFileCreateMode.Overwrite,

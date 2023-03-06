@@ -14,4 +14,5 @@
     public static readonly string TC_LOCAL_VARIABLE = "TC_LOCAL_VARIABLE";
     public static readonly string TC_SETVARIABLE = "TC_SETVARIABLE";
     public static readonly string TC_FRAMEHANDLE = "TC_FRAMEHANDLE";
+    public static readonly string TC_DRIVE = "TC_DRIVE";
 }

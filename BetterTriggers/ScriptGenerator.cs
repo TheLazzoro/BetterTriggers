@@ -46,6 +46,7 @@ namespace BetterTriggers
         public static string PathCommonJ { get; set; }
         public static string PathBlizzardJ { get; set; }
         public static string JassHelper { get; set; }
+        public string GeneratedScript{ get; private set; }
 
         ScriptLanguage language;
         List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
@@ -134,13 +135,12 @@ end
             if (ContainerProject.project == null)
                 return false;
 
-            if (language == ScriptLanguage.Lua && File.Exists(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j")))
-                File.Delete(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.j"));
-            if (language == ScriptLanguage.Jass && File.Exists(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.lua")))
-                File.Delete(Path.Combine(ContainerProject.project.War3MapDirectory, "war3map.lua"));
-
             string scriptFile = language == ScriptLanguage.Jass ? "war3map.j" : "war3map.lua";
-            string outputPath = Path.Combine(ContainerProject.project.War3MapDirectory, scriptFile);
+            string outputDir = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+            if(!Directory.Exists(outputDir))
+                Directory.CreateDirectory(outputDir);
+
+            string outputPath = Path.Combine(outputDir, scriptFile);
             var inMemoryFiles = ContainerProject.projectFiles;
 
             SortTriggerElements(inMemoryFiles[0]); // root node.
@@ -162,6 +162,10 @@ end
                 p.WaitForExit();
                 success = p.ExitCode == 0;
                 p.Kill();
+                if(File.Exists(outputPath))
+                    GeneratedScript = File.ReadAllText(outputPath);
+                else
+                    throw new Exception($"Script does not exists in temp output '{outputPath}'");
             }
             else
             {
@@ -548,8 +552,10 @@ end
 
             if (returnType == "boolean")
                 value = "false";
-            else if (returnType == "integer" || returnType == "real")
+            else if (returnType == "integer")
                 value = "0";
+            else if (returnType == "real")
+                value = "0.00";
             else if (returnType == "group")
                 value = "CreateGroup()";
             else if (returnType == "force")

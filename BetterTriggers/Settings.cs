@@ -45,6 +45,12 @@ namespace BetterTriggers
         public double textEditorFontSize   = 12;
         public string textEditorFontStyle  = "Consolas";
 
+        public string lastOpenedFileLocation = string.Empty;
+        public int selectMapWindowX        = 100;
+        public int selectMapWindowY        = 100;
+        public int selectMapWindowWidth    = 800;
+        public int selectMapWindowHeight   = 450;
+
         private Settings() { }
 
         public static Settings Load()

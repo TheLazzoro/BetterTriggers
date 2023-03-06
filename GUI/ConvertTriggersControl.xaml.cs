@@ -1,4 +1,5 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.Controllers;
+using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,14 +44,13 @@ namespace GUI
 
         private void btnSelectMap_Click(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
-            {
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                if (dialog.SelectedPath != "")
-                    lblMap.Text = dialog.SelectedPath;
+            OpenWar3MapWindow window = new OpenWar3MapWindow();
+            window.ShowDialog();
+            if (!window.OK)
+                return;
 
-                VerifyPaths();
-            }
+            lblMap.Text = window.SelectedPath;
+            VerifyPaths();
         }
 
         private void btnDestination_Click(object sender, RoutedEventArgs e)
@@ -69,7 +69,7 @@ namespace GUI
         {
             bool ok;
             FinalPath = System.IO.Path.Combine(lblDestination.Text, System.IO.Path.GetFileNameWithoutExtension(lblMap.Text));
-            MapExists = File.Exists(System.IO.Path.Combine(lblMap.Text, "war3map.w3i"));
+            MapExists = ControllerProject.VerfiyMapPath(lblMap.Text);
             DestinationDirectoryExists = Directory.Exists(lblDestination.Text);
             FinalPathAlreadyExists = Directory.Exists(FinalPath);
 
