@@ -66,7 +66,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelected()
         {
-            return  new Value()
+            return new Value()
             {
                 value = textBoxAsset.Text,
             };
@@ -95,11 +95,18 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void textBoxAsset_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bitmap = Icon.Get(textBoxAsset.Text);
-            imgPreview.Source = BitmapConverter.ToBitmapImage(bitmap);
-
-            EventHandler handler = SelectionChanged;
-            handler?.Invoke(this, e);
+            try
+            {
+                var bitmap = Icon.Get(textBoxAsset.Text);
+                imgPreview.Source = BitmapConverter.ToBitmapImage(bitmap);
+                EventHandler handler = SelectionChanged;
+                handler?.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox messageBox = new MessageBox("Error", ex.Message);
+                messageBox.ShowDialog();
+            }
         }
     }
 }

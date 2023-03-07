@@ -136,9 +136,9 @@ namespace BetterTriggers.Controllers
             string mapDir = project.War3MapDirectory;
             var map = Map.Open(mapDir);
             map.Info.ScriptLanguage = language;
+            map.Script = script;
 
             MapBuilder builder = new MapBuilder(map);
-            builder.Map.Script = script;
             if (Directory.Exists(mapDir))
                 builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
             else

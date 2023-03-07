@@ -78,7 +78,7 @@ namespace BetterTriggers.WorldEdit
                     {
                         if (key.Value != "")
                         {
-                            string displayName = Locale.Translate(section.SectionName);
+                            string displayName = Locale.GetDisplayName(section.SectionName);
                             if (displayName == null)
                                 displayName = "";
 

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using War3Net.IO.Mpq;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -25,6 +26,7 @@ namespace BetterTriggers.WorldEdit
             icons.TryAdd(path, this);
         }
 
+        /// <exception cref="IOException">When MPQ archive is in use by another process.</exception>
         public static Bitmap Get(string path)
         {
             string filePath = Path.Combine(CustomMapData.mapPath, path);
@@ -33,6 +35,21 @@ namespace BetterTriggers.WorldEdit
                 using (Stream fs = new FileStream(filePath, FileMode.Open))
                 {
                     return Images.ReadImage(fs);
+                }
+            }
+            if(File.Exists(CustomMapData.mapPath))
+            {
+                var imports = CustomMapData.MPQMap.ImportedFiles.Files;
+                var pathFormatted = path.Replace('/', '\\');
+                for (int i = 0; i < imports.Count; i++)
+                {
+                    if(imports[i].FullPath.ToLower() == pathFormatted.ToLower())
+                    {
+                        MpqArchive mpq = MpqArchive.Open(CustomMapData.mapPath);
+                        Stream stream = MpqFile.OpenRead(mpq, pathFormatted);
+                        mpq.Dispose();
+                        return Images.ReadImage(stream);
+                    }
                 }
             }
 
