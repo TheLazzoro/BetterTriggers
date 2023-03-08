@@ -53,6 +53,7 @@
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\war3mapUnits.doo" />
     <None Remove="TestResources\Maps\Chimney Isles.w3x" />
+    <None Remove="TestResources\Maps\Dark Planet 1.06.w3x" />
     <None Remove="TestResources\Maps\DeadlockNE25.w3x" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\conversation.json" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\war3map.doo" />
@@ -221,6 +222,7 @@
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapPreview.tga" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\KingsAndCursesTD-V1.198.w3x" />
     <None Remove="TestResources\Maps\MechaDefenders 1.1.0.w3x" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\conversation.json" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3map.doo" />
@@ -257,6 +259,8 @@
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3mapSkin.w3u" />
     <None Remove="TestResources\Maps\Metastasis Reclassic 1.0H.120.w3x\war3mapUnits.doo" />
     <None Remove="TestResources\Maps\MpqMap_135.w3x" />
+    <None Remove="TestResources\Maps\Myth01.CrowsBridge.w3m" />
+    <None Remove="TestResources\Maps\Myth02.WillowCreek.w3m" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\conversation.json" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3map.imp" />
@@ -283,6 +287,8 @@
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\Risk Forever %282.5.7%29.w3x" />
+    <None Remove="TestResources\Maps\Sailor Moon Castle Defence v2.7.w3x" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.imp" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.mmp" />
@@ -352,6 +358,8 @@
     <None Remove="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\Universe Of Warcraft 1.7.w3x" />
+    <None Remove="TestResources\Maps\WarCard_B_1.1.24.w3m" />
     <None Remove="TestResources\Maps\warquest.w3x" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\conversation.json" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3map.doo" />
@@ -379,6 +387,7 @@
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\ZombieHunt1.10R.w3x" />
     <None Remove="TestResources\nightelfupgradefunc.txt" />
     <None Remove="TestResources\orcupgradefunc.txt" />
     <None Remove="TestResources\Projects\Frames_Map\Frames_Map.json" />
@@ -537,6 +546,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Chimney Isles.w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Dark Planet 1.06.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\DeadlockNE25.w3x">
@@ -1043,6 +1055,9 @@
     <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\Maps\KingsAndCursesTD-V1.198.w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\Maps\MechaDefenders 1.1.0.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1151,6 +1166,12 @@
     <Content Include="TestResources\Maps\MpqMap_135.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\Maps\Myth01.CrowsBridge.w3m">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Myth02.WillowCreek.w3m">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\Maps\MZA 2.41.w3x\conversation.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1227,6 +1248,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\MZA 2.41.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Risk Forever (2.5.7).w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Sailor Moon Castle Defence v2.7.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Sheol_131.w3x\war3map.doo">
@@ -1436,6 +1463,12 @@
     <Content Include="TestResources\Maps\The Legend of Ergl_1.31.w3x\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestResources\Maps\Universe Of Warcraft 1.7.w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\WarCard_B_1.1.24.w3m">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestResources\Maps\warquest.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1515,6 +1548,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\WoW Dungeons Classic 3.9.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\ZombieHunt1.10R.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\nightelfupgradefunc.txt">

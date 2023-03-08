@@ -60,6 +60,13 @@ namespace BetterTriggers.WorldEdit
             if (itemType == null)
                 items.TryGetValue(itemcode, out itemType);
 
+            if (itemType == null)
+                itemType = new ItemType()
+                {
+                    ItemCode = itemcode,
+                    DisplayName = "<Unknown Doodad>"
+                };
+
             return itemType;
         }
 

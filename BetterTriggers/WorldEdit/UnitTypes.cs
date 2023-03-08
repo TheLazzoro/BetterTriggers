@@ -67,6 +67,16 @@ namespace BetterTriggers.WorldEdit
             if (unitType == null)
                 unitTypesCustom.TryGetValue(unitcode, out unitType);
 
+            if (unitType == null)
+                unitType = new UnitType()
+                {
+                    Id = unitcode,
+                    Name = new UnitName()
+                    {
+                        Name = "<Unknown Unit>"
+                    }
+                };
+
             return unitType;
         }
 

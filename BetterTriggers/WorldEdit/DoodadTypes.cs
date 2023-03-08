@@ -64,6 +64,13 @@ namespace BetterTriggers.WorldEdit
             if (doodad == null)
                 doodads.TryGetValue(doodcode, out doodad);
 
+            if (doodad == null)
+                doodad = new DoodadType()
+                {
+                    DoodCode = doodcode,
+                    DisplayName = "<Unknown Doodad>"
+                };
+
             return doodad;
         }
 

@@ -64,6 +64,13 @@ namespace BetterTriggers.WorldEdit
             if (destType == null)
                 destructibles.TryGetValue(destcode, out destType);
 
+            if (destType == null)
+                destType = new DestructibleType()
+                {
+                    DestCode = destcode,
+                    DisplayName = "<Unknown Destructible>"
+                };
+
             return destType;
         }
 

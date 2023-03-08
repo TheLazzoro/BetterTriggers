@@ -58,6 +58,13 @@ namespace BetterTriggers.WorldEdit
             if (upgradeType == null)
                 upgrades.TryGetValue(upgradecode, out upgradeType);
 
+            if (upgradeType == null)
+                upgradeType = new UpgradeType()
+                {
+                    UpgradeCode = upgradecode,
+                    DisplayName = "<Unknown Upgrade>"
+                };
+
             return upgradeType;
         }
 

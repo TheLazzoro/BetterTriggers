@@ -54,6 +54,13 @@ namespace BetterTriggers.WorldEdit
             if (abilType == null)
                 abilities.TryGetValue(abilcode, out abilType);
 
+            if (abilType == null)
+                abilType = new AbilityType()
+                {
+                    AbilCode = abilcode,
+                    DisplayName = "<Unknown Ability>"
+                };
+
             return abilType;
         }
 

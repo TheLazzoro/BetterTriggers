@@ -56,6 +56,13 @@ namespace BetterTriggers.WorldEdit
             if (buffType == null)
                 buffs.TryGetValue(buffcode, out buffType);
 
+            if(buffType == null)
+                buffType = new BuffType()
+                {
+                    BuffCode = buffcode,
+                    DisplayName = "<Unknown Buff>"
+                };
+
             return buffType;
         }
 

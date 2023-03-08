@@ -612,9 +612,9 @@ end
 
                 var id = u.ToString();
                 var owner = u.OwnerId.ToString();
-                var x = u.Position.X.ToString(enUS);
-                var y = u.Position.Y.ToString(enUS);
-                var angle = ((180 / Math.PI) * u.Rotation).ToString(enUS); // radians to degrees
+                var x = u.Position.X.ToString("0.000", enUS);
+                var y = u.Position.Y.ToString("0.000", enUS);
+                var angle = ((180 / Math.PI) * u.Rotation).ToString("0.000", enUS); // radians to degrees
                 var skinId = Int32Extensions.ToRawcode(u.SkinId);
 
                 if (owner == "24")
