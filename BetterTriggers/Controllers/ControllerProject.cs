@@ -99,10 +99,10 @@ namespace BetterTriggers.Controllers
         }
 
         // TODO: Why do we use two paths?
-        public void SetWar3MapDir(string mapDir)
+        public void SetWar3MapPath(string path)
         {
-            ContainerProject.project.War3MapDirectory = mapDir;
-            CustomMapData.mapPath = mapDir;
+            ContainerProject.project.War3MapDirectory = path;
+            CustomMapData.mapPath = path;
         }
 
         public (bool, string) GenerateScript()
@@ -138,17 +138,14 @@ namespace BetterTriggers.Controllers
             map.Info.ScriptLanguage = language;
             map.Script = script;
 
+            // We need to add all arbitrary files into to the builder.
             MapBuilder builder = new MapBuilder(map);
             if (Directory.Exists(mapDir))
                 builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
             else
             {
-                // We need to add all arbitrary files back to the generated w3x for some reason.
-                using (Stream s = new FileStream(mapDir, FileMode.Open))
-                {
-                    MpqArchive mpq = new MpqArchive(s);
-                    builder.AddFiles(mpq);
-                }
+                var mpqArchive = MpqArchive.Open(mapDir, true);
+                builder.AddFiles(mpqArchive);
             }
 
 

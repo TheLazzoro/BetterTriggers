@@ -37,7 +37,7 @@ namespace GUI
             if (!window.OK)
                 return;
 
-            controller.SetWar3MapDir(window.SelectedPath);
+            controller.SetWar3MapPath(window.SelectedPath);
             if (controller.War3MapDirExists())
             {
                 mapDir = window.SelectedPath;
@@ -55,7 +55,7 @@ namespace GUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             ControllerProject controller = new();
-            controller.SetWar3MapDir(mapDir);
+            controller.SetWar3MapPath(mapDir);
             OK = true;
             this.Close();
         }
