@@ -51,6 +51,8 @@ namespace BetterTriggers
         public int selectMapWindowWidth    = 800;
         public int selectMapWindowHeight   = 450;
 
+        public bool GUINewElementIcon      = false;
+
         private Settings() { }
 
         public static Settings Load()

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <None Remove="Resources\Icons\actions-setvariables-alpha.png" />
-    <None Remove="Resources\Icons\drive.png" />
     <None Remove="Resources\Icons\trigger-error.png" />
     <None Remove="Resources\Icons\trigger-invalid.png" />
     <None Remove="Resources\Icons\ui-editoricon-triggercategories_localvariable.png" />
@@ -90,9 +89,6 @@
 
   <ItemGroup>
     <Content Include="Resources\Icons\actions-setvariables-alpha.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\drive.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\trigger-error.png">

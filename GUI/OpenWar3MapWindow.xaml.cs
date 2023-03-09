@@ -7,6 +7,11 @@ using System.IO;
 using GUI.Components.Shared;
 using System.Windows.Controls;
 using BetterTriggers;
+using System.Runtime.InteropServices;
+using GUI.Utility;
+using BetterTriggers.Utility;
+using BetterTriggers.Controllers;
+using System.Windows.Media;
 
 namespace GUI
 {
@@ -39,9 +44,53 @@ namespace GUI
             this.Left = settings.selectMapWindowX;
             this.Top = settings.selectMapWindowY;
 
+            string[] paths = new string[6];
+            string[] names = new string[6];
+            int[] icons = new int[6];
+            paths[0] = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            paths[1] = KnownFolders.GetPath(KnownFolder.Downloads);
+            paths[2] = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            paths[3] = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            paths[4] = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            paths[5] = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+            names[0] = "Desktop";
+            names[1] = "Downloads";
+            names[2] = "Documents";
+            names[3] = "Pictures";
+            names[4] = "Music";
+            names[5] = "Videos";
+            icons[0] = 105;
+            icons[1] = 175;
+            icons[2] = 85;
+            icons[3] = 67;
+            icons[4] = 103;
+            icons[5] = 18;
+
+            for (int i = 0; i < paths.Length; i++)
+            {
+                int index = i;
+                ListViewItem item = new ListViewItem();
+                HeaderItemIcon header = new HeaderItemIcon(names[i], icons[i]);
+                item.Content = header;
+                item.Selected += delegate {
+                    GoToDirectory(paths[index]);
+                };
+                listViewDrives.Items.Add(item);
+            }
+
+            Separator separator = new Separator();
+            separator.Height = 10;
+            separator.Background = new SolidColorBrush(Colors.Transparent);
+            listViewDrives.Items.Add(separator);
+
             foreach (var drive in DriveInfo.GetDrives())
             {
-                TreeItemHeader header = new TreeItemHeader(drive.Name, TriggerCategory.TC_DRIVE);
+                string label = drive.VolumeLabel;
+                if (string.IsNullOrEmpty(label))
+                {
+                    label = "Local Disk";
+                }
+                HeaderItemIcon header = new HeaderItemIcon(label + $" ({drive.Name.Replace("\\", "")})", 30);
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = header;
                 listItem.Selected += delegate
@@ -58,6 +107,8 @@ namespace GUI
 
             RefreshFileList(path);
         }
+
+
 
         private void GoBack()
         {
@@ -256,6 +307,7 @@ namespace GUI
 
         private void treeViewFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            listViewDrives.SelectedItem = null;
             TreeViewItem treeItem = treeViewFiles.SelectedItem as TreeViewItem;
             if (treeItem == null)
             {
@@ -265,6 +317,12 @@ namespace GUI
 
             ListItemData data = (ListItemData)treeItem.Tag;
             SelectedPath = data.path;
+            if(!ControllerProject.VerfiyMapPath(SelectedPath))
+            {
+                btnOK.IsEnabled = false;
+                return;
+            }
+
             btnOK.IsEnabled = true;
         }
 
@@ -276,6 +334,15 @@ namespace GUI
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             OnOk();
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Escape)
+            {
+                this.Close();
+                e.Handled = true;
+            }
         }
     }
 }

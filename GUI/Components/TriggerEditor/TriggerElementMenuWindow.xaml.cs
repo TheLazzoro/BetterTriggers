@@ -38,6 +38,35 @@ namespace GUI.Components.TriggerEditor
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            listControl.ListViewChanged += delegate
+            {
+                btnOK.IsEnabled = selected != null && listControl.GetItemsCount() > 0;
+            };
+            listControl.listView.SelectionChanged += delegate
+            {
+                ListViewItem item = (ListViewItem)listControl.listView.SelectedItem;
+                if (item == null)
+                    return;
+
+                selected = (ECA)item.Tag;
+                textBoxDescription.Text = Locale.Translate(selected.function.value);
+            };
+            listControl.listView.MouseDoubleClick += delegate
+            {
+                createdTriggerElement = selected;
+                this.Close();
+            };
+            listControl.ShowIconsChanged += ListControl_ShowIconsChanged;
+
+
+            Init();
+        }
+
+        private void Init()
+        {
+            Settings settings = Settings.Load();
+            
+
             var templates = new List<FunctionTemplate>();
             if (triggerElementType == TriggerElementType.Event)
             {
@@ -57,12 +86,20 @@ namespace GUI.Components.TriggerEditor
             {
                 Category category = Category.Get(templates[i].category);
                 string categoryStr = Locale.Translate(category.Name);
-                if(categoryStr != "")
+                if (categoryStr != "")
                     categoryStr += " - ";
                 string name = templates[i].name != "" ? templates[i].name : templates[i].value;
                 string content = categoryStr + name;
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = content;
+                if (settings.GUINewElementIcon)
+                {
+                    HeaderItemIcon header = new HeaderItemIcon(content, category);
+                    listItem.Content = header;
+                }
+                else
+                {
+                    listItem.Content = content;
+                }
                 listItem.Tag = templates[i].ToTriggerElement();
                 objects.Add(new Searchable()
                 {
@@ -87,24 +124,7 @@ namespace GUI.Components.TriggerEditor
 
             var searchables = new Searchables(objects);
             listControl.SetSearchableList(searchables);
-            listControl.ListViewChanged += delegate
-            {
-                btnOK.IsEnabled = selected != null && listControl.GetItemsCount() > 0;
-            };
-            listControl.listView.SelectionChanged += delegate
-            {
-                ListViewItem item = (ListViewItem)listControl.listView.SelectedItem;
-                if (item == null)
-                    return;
-
-                selected = (ECA)item.Tag;
-                textBoxDescription.Text = Locale.Translate(selected.function.value);
-            };
-            listControl.listView.MouseDoubleClick += delegate
-            {
-                createdTriggerElement = selected;
-                this.Close();
-            };
+            
 
             if (selected == null)
             {
@@ -114,6 +134,7 @@ namespace GUI.Components.TriggerEditor
 
             listControl.listView.ScrollIntoView(defaultSelected);
             defaultSelected.Focus();
+            listControl.checkBoxShowIcons.Visibility = Visibility.Visible;
 
             var categoryControl = new GenericCategoryControl(searchables);
             categoryControl.Margin = new Thickness(0, 0, 4, 0);
@@ -132,6 +153,13 @@ namespace GUI.Components.TriggerEditor
         {
             this.Close();
         }
+
+
+        private void ListControl_ShowIconsChanged()
+        {
+            Init();
+        }
+
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {

@@ -17,8 +17,6 @@ namespace GUI.Utility
 
     public static class UIUtility
     {
-        
-
         public static bool IsCircularParent(TreeViewItem dragItem, TreeViewItem dropTarget)
         {
             bool IsCircularParent = false;

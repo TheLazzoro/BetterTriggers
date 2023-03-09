@@ -551,6 +551,7 @@
                 <Setter Property="Background" Value="#282828"/>
                 <Setter Property="Foreground" Value="#0f3"/>
                 <Setter Property="BorderBrush" Value="#222"/>
+                <Setter Property="Height" Value="12"/>
                 <Style.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3"/>

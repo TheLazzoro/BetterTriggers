@@ -43,6 +43,9 @@
     <None Remove="Resources\Icons\actions-unitselection.png" />
     <None Remove="Resources\Icons\actions-visibility.png" />
     <None Remove="Resources\Icons\actions-wait.png" />
+    <None Remove="Resources\Icons\arrow-left.png" />
+    <None Remove="Resources\Icons\arrow-right.png" />
+    <None Remove="Resources\Icons\arrow-up.png" />
     <None Remove="Resources\Icons\Class_16x.png" />
     <None Remove="Resources\Icons\close-tab.png" />
     <None Remove="Resources\Icons\code.ico" />
@@ -77,6 +80,15 @@
 
   <ItemGroup>
     <Content Include="Resources\Icons\actions-setvariables-alpha.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\arrow-left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\arrow-right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\arrow-up.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\Class_16x.png">

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers;
+using BetterTriggers.Utility;
 using System;
 using System.Windows.Controls;
 
@@ -7,16 +8,21 @@ namespace GUI.Components.Shared
     public partial class SearchableListControl : UserControl, ISearchablesObserverList
     {
         public EventHandler ListViewChanged;
+        public event Action ShowIconsChanged;
         private Searchables searchObjects;
 
-       
+
         public SearchableListControl()
         {
             InitializeComponent();
+            Settings settings = Settings.Load();
+            checkBoxShowIcons.IsChecked = settings.GUINewElementIcon;
+            checkBoxShowIcons.Click += checkBoxShowIcons_Click;
         }
 
         public void SetSearchableList(Searchables searchObjects)
         {
+            this.listView.Items.Clear();
             this.searchObjects = searchObjects;
             searchObjects.AttachList(this);
             Search("");
@@ -53,6 +59,14 @@ namespace GUI.Components.Shared
             {
                 listView.Items.Add(objects[i].Object);
             }
+        }
+
+        private void checkBoxShowIcons_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Settings settings = Settings.Load();
+            settings.GUINewElementIcon = (bool)checkBoxShowIcons.IsChecked;
+            ShowIconsChanged?.Invoke();
+            InvokeListViewChanged(sender, e);
         }
     }
 }
