@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Confirmation" WindowStartupLocation="CenterOwner" Height="145" Width="300" Background="#FF202020" ResizeMode="NoResize">
+        Title="Confirmation" WindowStartupLocation="CenterOwner" Height="145" Width="300" Background="{DynamicResource BackgroundDarker}" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
@@ -14,7 +14,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="lblMessage" Foreground="#EEE" Grid.Row="1" HorizontalAlignment="Center" TextTrimming="WordEllipsis">Save changes to [INSERT NAME]?</TextBlock>
+        <TextBlock x:Name="lblMessage" Foreground="{DynamicResource TextBrush2}" Grid.Row="1" HorizontalAlignment="Center" TextTrimming="WordEllipsis">Save changes to [INSERT NAME]?</TextBlock>
 
         <Button x:Name="btnYes" Content="Yes" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,175,0" Click="btnYes_Click" />
         <Button x:Name="btnOK" Content="No" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />

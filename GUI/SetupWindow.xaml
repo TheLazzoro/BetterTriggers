@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Setup" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Height="450" Width="375" Background="#FF202020">
+        Title="Setup" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Height="450" Width="375" Background="{DynamicResource BackgroundDarker}">
         <!--Title="Setup" ResizeMode="NoResize" Height="525" Width="375" Background="#FF202020">-->
     <Grid>
         <Grid.RowDefinitions>
@@ -31,12 +31,12 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Label Content="Better Triggers" Grid.Column="1" Grid.Row="2" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontFamily="Bahnschrift" Height="34" />
+        <Label Content="Better Triggers" Grid.Column="1" Grid.Row="2" Foreground="{DynamicResource TextBrush2}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontFamily="Bahnschrift" Height="34" />
 
-        <Label Content="Select Warcraft III installation directory:" Grid.Column="1" Grid.Row="4" Foreground="White" />
-        <TextBox x:Name="textBoxRoot" Grid.Column="1" Grid.Row="5" Margin="0,0,70,0" Background="#FF323232" Foreground="White"/>
+        <Label Content="Select Warcraft III installation directory:" Grid.Column="1" Grid.Row="4" Foreground="{DynamicResource TextBrush2}" />
+        <TextBox x:Name="textBoxRoot" Grid.Column="1" Grid.Row="5" Margin="0,0,70,0" Foreground="{DynamicResource TextBrush2}"/>
         <Button x:Name="btnSelectWar3Dir" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right" Width="60" Content="Select..." Click="btnSelectWar3Dir_Click" />
-        <Label x:Name="lblError" Content="Invalid directory" Visibility="Hidden" Grid.Column="1" Grid.Row="6" VerticalAlignment="Top" Foreground="#FFFF6262" />
+        <Label x:Name="lblError" Content="Invalid directory" Visibility="Hidden" Grid.Column="1" Grid.Row="6" VerticalAlignment="Top" Foreground="{DynamicResource TextErrorBrush}" />
 
         <!--<Label Content="Select language:" Grid.Column="1" Grid.Row="7" Foreground="White" />
         <ComboBox x:Name="comboBoxLanguage" Grid.Column="1" Grid.Row="8" Width="125" HorizontalAlignment="Left" Foreground="White" Background="#FF323232" BorderBrush="#FF9B0707">

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="About" WindowStartupLocation="CenterOwner" Height="190" Width="350" Background="#FF282826" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+        Title="About" WindowStartupLocation="CenterOwner" Height="190" Width="350" Background="{DynamicResource BackgroundDark}" KeyDown="Window_KeyDown" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Foreground="#ccc" FontSize="18" FontWeight="Bold"  Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" >Better Triggers</TextBlock>
+        <TextBlock Foreground="{DynamicResource TextBrush}" FontSize="18" FontWeight="Bold"  Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" >Better Triggers</TextBlock>
 
         <Rectangle Grid.Row="0" Grid.RowSpan="2" Margin="0,12,0,0">
             <Rectangle.Fill>
@@ -27,13 +27,13 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <TextBlock x:Name="txtVersion" Grid.Row="1" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">
+        <TextBlock x:Name="txtVersion" Grid.Row="1" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
             Version: 1.0.1
         </TextBlock>
-        <TextBlock Grid.Row="2" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">
+        <TextBlock Grid.Row="2" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
             Copyright © 2023
         </TextBlock>
-        <TextBlock Grid.Row="3" Foreground="#ccc" Margin="10,0,0,0" Grid.Column="1">
+        <TextBlock Grid.Row="3" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
             Author: LazZ
         </TextBlock>
 

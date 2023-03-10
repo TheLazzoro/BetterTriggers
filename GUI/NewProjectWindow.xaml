@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="New Project" Height="350" Width="545" Background="#FF303030" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" KeyDown="Window_KeyDown">
+        Title="New Project" Height="350" Width="545" Background="{DynamicResource BackgroundMenu}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <Style x:Key="FocusVisual">
@@ -41,13 +41,13 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#555"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource ButtonSignificantHighlight}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource BorderBrush}"/>
                                 <Setter Property="Border.CornerRadius" TargetName="border" Value="2"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#777"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource ButtonSignificantClicked}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource BorderBrush}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Opacity" Value="0.2"/>
@@ -73,17 +73,17 @@
 
 
 
-        <TextBlock Text="Create a new project" Grid.Row="0" Foreground="#eee" FontSize="24" Grid.ColumnSpan="2" Margin="5,5,0,25" />
-        
-        <Label Content="Empty Project" Grid.Row="1" Foreground="#eee" HorizontalAlignment="Center" />
-        <Button x:Name="btnEmptyProject" Background="#444" Width="128" Height="128" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnEmptyProject_Click" >
+        <TextBlock Text="Create a new project" Grid.Row="0" Foreground="{DynamicResource TextBrush2}" FontSize="24" Grid.ColumnSpan="2" Margin="5,5,0,25" />
+
+        <Label Content="Empty Project" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" HorizontalAlignment="Center" />
+        <Button x:Name="btnEmptyProject" Background="{DynamicResource TopMenuButtonHighlight}" Width="128" Height="128" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnEmptyProject_Click" >
             <Button.Content>
                 <Image Source="Resources/Icons/code_blue.ico" Width="48" />
             </Button.Content>
         </Button>
 
-        <Label Content="Copy Triggers From Map" Grid.Row="1" Grid.Column="1" Foreground="#eee" HorizontalAlignment="Center" />
-        <Button x:Name="btnConvert" Background="#444" Width="128" Height="128" Grid.Column="1" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnConvert_Click"  >
+        <Label Content="Copy Triggers From Map" Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource TextBrush2}" HorizontalAlignment="Center" />
+        <Button x:Name="btnConvert" Background="{DynamicResource TopMenuButtonHighlight}" Width="128" Height="128" Grid.Column="1" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnConvert_Click"  >
             <Button.Content>
                 <Image Source="Resources/Icons/convert.png" Stretch="Fill" />
             </Button.Content>

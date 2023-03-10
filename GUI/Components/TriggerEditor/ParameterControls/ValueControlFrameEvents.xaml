@@ -15,14 +15,14 @@
         </Grid.RowDefinitions>
 
 
-        <Rectangle Fill="#282828" />
+        <Rectangle Fill="{DynamicResource BackgroundDark}" />
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             
         <StackPanel Margin="8">
             <StackPanel.Resources>
                 <Style TargetType="CheckBox">
                     <Setter Property="Margin" Value="0,8,0,0"/>
-                    <Setter Property="Foreground" Value="#CCC"/>
+                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
                 </Style>
             </StackPanel.Resources>
             <CheckBox x:Name="checkBoxClick" Content="Click" />

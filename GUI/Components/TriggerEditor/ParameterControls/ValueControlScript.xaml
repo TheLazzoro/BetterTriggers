@@ -15,7 +15,7 @@
             <RowDefinition Height="22"/>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="textBoxString" Background="#222" Foreground="White" TextChanged="textBoxString_TextChanged" ></TextBox>
+        <TextBox x:Name="textBoxString" TextChanged="textBoxString_TextChanged" ></TextBox>
 
     </Grid>
 </UserControl>

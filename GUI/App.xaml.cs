@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace GUI
 {
@@ -23,6 +24,12 @@ namespace GUI
             System.Windows.MessageBox.Show(e.Exception.Message + "\n\nError log saved.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
             Application.Current.Shutdown();
             e.Handled = true;
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            //var normalBrush = (SolidColorBrush)FindResource("NormalBrush");
+            //normalBrush.Color = Color.FromArgb(255, 255, 0, 0);
         }
     }
 

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Set Key" Height="147" Width="309" Background="#FF353535" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" WindowStyle="None" KeyDown="Window_KeyDown">
+        Title="Set Key" Height="147" Width="309" Background="{DynamicResource BackgroundPanel}" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" WindowStyle="None" KeyDown="Window_KeyDown">
     <Grid>
         <Border BorderBrush="Orange" BorderThickness="2"></Border>
-        <Label Foreground="#CCC" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">Press key to bind to command</Label>
+        <Label Foreground="{DynamicResource TextBrush}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center">Press key to bind to command</Label>
     </Grid>
 </Window>

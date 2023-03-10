@@ -15,12 +15,15 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
-        
-        <Label Content="Search:" Grid.Row="0" HorizontalAlignment="Left" Foreground="White"/>
+
+        <Label Content="Search:" Grid.Row="0" HorizontalAlignment="Left" Foreground="{DynamicResource TextBrush2}"/>
         <CheckBox x:Name="checkBoxShowIcons" Content="Show Icons" Visibility="Hidden" Foreground="White" Grid.Column="1" VerticalAlignment="Center" Margin="15,0,0,0" />
-        <TextBox x:Name="textBoxSearch" Height="20" Margin="60,0,5,0" BorderBrush="#FF0A0A0A" Background="#FF1E1E1E" Foreground="White" TextChanged="textBoxSearch_TextChanged" />
+        <TextBox x:Name="textBoxSearch" Height="20" Grid.ColumnSpan="2" Margin="60,0,5,0" BorderBrush="#FF0A0A0A" Background="#FF1E1E1E" Foreground="{DynamicResource TextBrush2}" TextChanged="textBoxSearch_TextChanged" />
 
-        <ListView x:Name="listView"  Grid.Row="1" Grid.ColumnSpan="2" Foreground="#CCC" BorderBrush="#00ABADB3" Background="#FF282828" Margin="0,0,0,5" />
+        <ListView x:Name="listView"  Grid.Row="1" Grid.ColumnSpan="2" Foreground="{DynamicResource TextBrush}" BorderBrush="#00ABADB3" Background="{DynamicResource BackgroundDark}" Margin="0,0,0,5" />
 
+        
+        
     </Grid>
+
 </UserControl>

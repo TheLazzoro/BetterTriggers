@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <CheckBox x:Name="checkBox" Content="True" Foreground="White" />
+        <CheckBox x:Name="checkBox" Content="True" Foreground="{DynamicResource TextBrush2}" />
 
     </Grid>
 </UserControl>

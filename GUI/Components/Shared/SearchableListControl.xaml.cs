@@ -18,6 +18,7 @@ namespace GUI.Components.Shared
             Settings settings = Settings.Load();
             checkBoxShowIcons.IsChecked = settings.GUINewElementIcon;
             checkBoxShowIcons.Click += checkBoxShowIcons_Click;
+            checkBoxShowIcons.IsVisibleChanged += CheckBoxShowIcons_IsVisibleChanged;
         }
 
         public void SetSearchableList(Searchables searchObjects)
@@ -68,5 +69,14 @@ namespace GUI.Components.Shared
             ShowIconsChanged?.Invoke();
             InvokeListViewChanged(sender, e);
         }
+
+        private void CheckBoxShowIcons_IsVisibleChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            if(checkBoxShowIcons.IsVisible)
+                Grid.SetColumnSpan(textBoxSearch, 1);
+            else
+                Grid.SetColumnSpan(textBoxSearch, 2);
+        }
+
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Loading" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Height="150" Width="350" Background="#FF202020" Loaded="Window_Loaded">
+        Title="Loading" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Height="150" Width="350" Background="{DynamicResource BackgroundDarker}" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label x:Name="lblInfo" Content="Verifying Triggers..." Grid.Column="1" VerticalAlignment="Bottom" Foreground="White"/>
+        <Label x:Name="lblInfo" Content="Verifying Triggers..." Grid.Column="1" VerticalAlignment="Bottom" Foreground="{DynamicResource TextBrush2}"/>
         <ProgressBar Grid.Column="1" Grid.Row="1" IsIndeterminate="True" />
         
     </Grid>

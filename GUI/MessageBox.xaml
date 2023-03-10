@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="DialogBox" WindowStartupLocation="CenterOwner" Height="auto" Width="351" SizeToContent="Height" Background="#FF282826" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+        Title="DialogBox" WindowStartupLocation="CenterOwner" Height="auto" Width="351" SizeToContent="Height" Background="{DynamicResource BackgroundDark}" KeyDown="Window_KeyDown" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -14,7 +14,7 @@
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="textBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Foreground="White" TextWrapping="Wrap" Margin="15,0,15,0" />
+        <TextBlock x:Name="textBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" TextWrapping="Wrap" Margin="15,0,15,0" />
         <Button Content="OK" Click="CancelButton_Click" HorizontalAlignment="Right" Margin="0,0,5,10" Grid.Row="3" Width="70" Height="25"/>
     </Grid>
 </Window>

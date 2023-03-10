@@ -23,6 +23,10 @@ namespace GUI
         private List<Button> buttons = new List<Button>();
         private List<ComboBox> comboBoxes = new List<ComboBox>();
 
+        // Styles
+        SolidColorBrush textColor;
+        SolidColorBrush backgroundLight;
+
         class ComboBoxKeybindTag
         {
             public Keybinding keybinding;
@@ -34,6 +38,8 @@ namespace GUI
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+            textColor = (SolidColorBrush)Application.Current.FindResource("TextBrush");
+            backgroundLight = (SolidColorBrush)Application.Current.FindResource("BackgroundLight");
 
             this.keybindings = keybindings;
             foreach (PropertyInfo property in keybindings.GetType().GetProperties())
@@ -54,11 +60,11 @@ namespace GUI
                 grid.ColumnDefinitions.Add(columnDefinition3);
                 stackPanelVertical.Children.Add(grid);
                 if (stackPanelVertical.Children.Count % 2 == 0)
-                    grid.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
+                    grid.Background = backgroundLight;
 
                 Label label = new Label();
                 Grid.SetColumn(label, 0);
-                label.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+                label.Foreground = textColor;
                 label.Content = GetKeybindingName(property.Name);
                 grid.Children.Add(label);
 
@@ -67,7 +73,7 @@ namespace GUI
                     CheckBox checkBox = new CheckBox();
                     checkBox.Content = "Global Key";
                     checkBox.IsChecked = keybinding.global;
-                    checkBox.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+                    checkBox.Foreground = textColor;
                     checkBox.VerticalAlignment = VerticalAlignment.Center;
                     checkBox.ToolTip = "Hotkey presses register without the window being in focus.";
                     Grid.SetColumn(checkBox, 1);

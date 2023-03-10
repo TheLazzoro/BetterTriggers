@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:GUI"
              mc:Ignorable="d"
              TextOptions.TextFormattingMode="Ideal"
-             d:DesignHeight="450" d:DesignWidth="800"  Background="#363636">
+             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource BackgroundPanel}">
     
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="#ccc" Margin="10,5,0,0" Click="checkBoxIsEnabled_Click" />
+        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Margin="10,5,0,0" Click="checkBoxIsEnabled_Click" />
 
     </Grid>
 </UserControl>

@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <!-- Background -->
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
-            <StackPanel Margin="-2,0,0,0" Background="#333333"/>
+            <StackPanel Margin="-2,0,0,0" Background="{DynamicResource BackgroundMenu}"/>
         </ItemsPanelTemplate>
 
         <!-- Item customization -->
@@ -46,49 +46,6 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-            <!--<Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/> -->
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Width" Value="24" />
-            <Setter Property="Height" Value="24" />
-            <Setter Property="BorderBrush" Value="#00000000" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#555"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
-                                <Setter Property="Border.CornerRadius" TargetName="border" Value="2"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#777"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Opacity" Value="0.2"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-
         <!-- Extra styles -->
         <Style x:Key="MyMenuItemStyle" TargetType="MenuItem">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -120,14 +77,14 @@
 
     <Grid>
 
-        <TreeView x:Name="treeViewTriggerExplorer" Background="#282828" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" KeyDown="treeViewTriggerExplorer_KeyDown" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewTriggerExplorer_MouseDoubleClick" >
+        <TreeView x:Name="treeViewTriggerExplorer" Background="{DynamicResource BackgroundDark}" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" KeyDown="treeViewTriggerExplorer_KeyDown" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewTriggerExplorer_MouseDoubleClick" >
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                Color="#357EC7" />
+                Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                       Color="Black" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="#55FFFFFF" />
+                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                       Color="Black" />
             </TreeView.Resources>
@@ -144,13 +101,13 @@
             </TreeView.ItemContainerStyle>
 
             <TreeView.ContextMenu>
-                <ContextMenu Name="contextMenu" Background="#333" Foreground="#EEE">
+                <ContextMenu Name="contextMenu" Background="{DynamicResource BackgroundMenu}" Foreground="#EEE">
                     <MenuItem x:Name="menuCut" Header="Cut" Click="menuCut_Click"></MenuItem>
                     <MenuItem x:Name="menuCopy" Header="Copy" Click="menuCopy_Click"></MenuItem>
                     <MenuItem x:Name="menuPaste" Header="Paste" Click="menuPaste_Click"></MenuItem>
                     <MenuItem x:Name="menuRename" Header="Rename" Click="menuRename_Click"></MenuItem>
                     <MenuItem x:Name="menuDelete" Header="Delete" Click="menuDelete_Click"></MenuItem>
-                    <Separator Background="#555555"></Separator>
+                    <Separator Background="{DynamicResource SeparatorBrush}"></Separator>
                     <MenuItem x:Name="menuNewCategory" Header="New Category" Click="menuNewCategory_Click">
                         <MenuItem.Icon>
                             <Image Source="/Resources/Icons/ui-editoricon-triggercategories_folder.png" />
@@ -171,10 +128,10 @@
                             <Image Source="/Resources/Icons/actions-setvariables.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <Separator Background="#555555"></Separator>
+                    <Separator Background="{DynamicResource SeparatorBrush}"></Separator>
                     <MenuItem x:Name="menuElementEnabled" Header="Enable Trigger" IsCheckable="True" Click="menuElementEnabled_Click"/>
                     <MenuItem x:Name="menuElementInitiallyOn" Header="Initially On" IsCheckable="True" Click="menuElementInitiallyOn_Click"/>
-                    <Separator Background="#555555"></Separator>
+                    <Separator Background="{DynamicResource SeparatorBrush}"/>
                     <MenuItem x:Name="menuOpenInExplorer" Header="Open Containing Folder" Click="menuOpenInExplorer_Click"></MenuItem>
 
                 </ContextMenu>
@@ -188,22 +145,22 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Rectangle Fill="#444"></Rectangle>
+            <Rectangle Fill="{DynamicResource BackgroundLight}"></Rectangle>
             <Label Content="Search:" Foreground="#ccc" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" />
             <TextBox x:Name="searchBox" Height="22" Margin="60,0,25,0" TextChanged="searchBox_TextChanged" />
-            <Button x:Name="btnCloseSearchMenu" Margin="0,0,2,0" Width="20" Height="20" Style="{DynamicResource ButtonStyle1}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="btnCloseSearchMenu_Click"  >
+            <Button x:Name="btnCloseSearchMenu" Margin="0,0,2,0" Width="20" Height="20" Style="{DynamicResource IconButton}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="btnCloseSearchMenu_Click"  >
                 <Button.Content>
                     <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
                 </Button.Content>
             </Button>
-            <TreeView x:Name="treeViewSearch" Background="#282828" Grid.Row="1" BorderBrush="#282828" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewSearch_MouseDoubleClick" KeyDown="treeViewSearch_KeyDown" >
+            <TreeView x:Name="treeViewSearch" Background="{DynamicResource BackgroundDark}" Grid.Row="1" BorderBrush="{DynamicResource BackgroundDark}" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewSearch_MouseDoubleClick" KeyDown="treeViewSearch_KeyDown" >
                 <TreeView.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                      Color="#357EC7" />
+                      Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                       Color="Black" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="#55FFFFFF" />
+                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                       Color="Black" />
                 </TreeView.Resources>
@@ -211,8 +168,8 @@
             </TreeView>
         </Grid>
 
-        <!-- Search Field -->
-        <Border x:Name="searchField" Visibility="Hidden" Width="225" Height="45" Background="#444" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,22,0">
+        <!-- Search Field DISABLED -->
+        <Border x:Name="searchField" Visibility="Hidden" Width="225" Height="45" Background="{DynamicResource BackgroundLight}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,22,0">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" Direction="-90"
                               RenderingBias="Quality" ShadowDepth="2"/>
@@ -233,10 +190,10 @@
                     <RowDefinition Height="10" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="1" Grid.Column="1" Foreground="#CCC">Search:</Label>
+                <Label Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource TextBrush}">Search:</Label>
                 <TextBox x:Name="searchTextBox" Grid.Row="1" Grid.Column="1" KeyDown="searchTextBox_KeyDown" ></TextBox>
                 <Button x:Name="btnSearch" Grid.Row="1" Grid.Column="3" Click="btnSearch_Click" >Search</Button>
-                <Button x:Name="btnCloseSearchField" Width="20" Height="20" Style="{DynamicResource ButtonStyle1}" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCloseSearchField_Click"  >
+                <Button x:Name="btnCloseSearchField" Width="20" Height="20" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCloseSearchField_Click"  >
                     <Button.Content>
                         <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
                     </Button.Content>

@@ -334,9 +334,6 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlBoolean.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlAbilities.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterValueControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -414,10 +411,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ValueControlBoolean.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Components\TriggerEditor\ParameterControls\ValueControlAbilities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

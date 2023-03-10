@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
-             mc:Ignorable="d" Background="#363636">
+             mc:Ignorable="d" Background="{DynamicResource BackgroundPanel}">
     <UserControl.Resources>
         <!-- Background -->
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
-            <StackPanel Margin="-2,0,0,0" Background="#333333"/>
+            <StackPanel Margin="-2,0,0,0" Background="{DynamicResource BackgroundMenu}"/>
         </ItemsPanelTemplate>
 
         <!-- Item customization -->
@@ -96,30 +96,30 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
 
-            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
-            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
-            <CheckBox x:Name="checkBoxIsCustomScript" Content="Custom Script" IsChecked="false" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxIsCustomScript_Click"/>
-            <CheckBox x:Name="checkBoxRunOnMapInit" Content="Run on Map Initialization" Foreground="#ccc" Margin="10,0,0,0" Click="checkBoxRunOnMapInit_Click"/>
+            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
+            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
+            <CheckBox x:Name="checkBoxIsCustomScript" Content="Custom Script" IsChecked="false" Margin="10,0,0,0" Click="checkBoxIsCustomScript_Click"/>
+            <CheckBox x:Name="checkBoxRunOnMapInit" Content="Run on Map Initialization" Margin="10,0,0,0" Click="checkBoxRunOnMapInit_Click"/>
 
         </ItemsControl>
 
-        <Label Content="Trigger Comment:" VerticalAlignment="Top" Foreground="#ccc" Margin="0,24,0,0"/>
+        <Label Content="Trigger Comment:" VerticalAlignment="Top" Margin="0,24,0,0"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <TextBox x:Name="textBoxComment" Background="#FF282828" Foreground="#6A9955" BorderBrush="#00828790" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="textBoxComment_TextChanged"/>
+            <TextBox x:Name="textBoxComment" Background="#FF282828" Foreground="{DynamicResource CodeComment}" BorderBrush="#00828790" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="textBoxComment_TextChanged"/>
         </ScrollViewer>
 
         <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#00F0F0F0" Margin="0,3,0,0" />
-        <Label Content="Trigger Functions:" VerticalAlignment="Top" Foreground="#ccc" Margin="0,10,0,0" Grid.Row="2"/>
+        <Label Content="Trigger Functions:" VerticalAlignment="Top" Margin="0,10,0,0" Grid.Row="2"/>
 
-        <TreeView x:Name="treeViewTriggers" Background="#282828" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" AllowDrop="True" SelectedItemChanged="treeViewTriggers_SelectedItemChanged" Drop="treeViewTriggers_Drop" KeyDown="treeViewTriggers_KeyDown" MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp" ContextMenuOpening="treeViewTriggers_ContextMenuOpening" PreviewKeyDown="treeViewTriggers_PreviewKeyDown">
+        <TreeView x:Name="treeViewTriggers" Background="{DynamicResource BackgroundDark}" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" AllowDrop="True" SelectedItemChanged="treeViewTriggers_SelectedItemChanged" Drop="treeViewTriggers_Drop" KeyDown="treeViewTriggers_KeyDown" MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp" ContextMenuOpening="treeViewTriggers_ContextMenuOpening" PreviewKeyDown="treeViewTriggers_PreviewKeyDown">
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                Color="#aa357EC7" />
+                Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
                       Color="Black" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="#44FFFFFF" />
+                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                       Color="Black" />
             </TreeView.Resources>
@@ -138,15 +138,15 @@
             </TreeView.ItemContainerStyle>
 
             <TreeView.ContextMenu>
-                <ContextMenu Name="contextMenu" Background="#FF282828" Foreground="#EEE">
+                <ContextMenu Name="contextMenu" Background="{DynamicResource BackgroundDark}" Foreground="{DynamicResource TextBrush2}">
                     <MenuItem x:Name="menuCut" Header="Cut" Click="menuCut_Click"></MenuItem>
                     <MenuItem x:Name="menuCopy" Header="Copy" Click="menuCopy_Click"></MenuItem>
                     <MenuItem  x:Name="menuCopyAsText" Header="Copy As Text" Click="menuCopyAsText_Click"></MenuItem>
                     <MenuItem x:Name="menuPaste" Header="Paste" Click="menuPaste_Click"></MenuItem>
                     <MenuItem x:Name="menuDelete" Header="Delete" Click="menuDelete_Click"></MenuItem>
-                    <Separator Background="#555555"></Separator>
+                    <Separator Background="{DynamicResource SeparatorBrush}"></Separator>
                     <MenuItem x:Name="menuRename" Header="Rename" Click="menuRename_Click" ></MenuItem>
-                    <Separator Background="#555555"></Separator>
+                    <Separator Background="{DynamicResource SeparatorBrush}"></Separator>
                     <MenuItem x:Name="menuEvent" Header="New Event" Click="menuEvent_Click">
                         <MenuItem.Icon>
                             <Image Source="/Resources/Icons/editor-triggerevent.png" />
@@ -167,7 +167,7 @@
                             <Image Source="/Resources/Icons/editor-triggeraction.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <Separator Background="#555555"></Separator>
+                    <Separator Background="{DynamicResource SeparatorBrush}"></Separator>
                     <!--<MenuItem Header="Enable Function" IsCheckable="True" Style="{StaticResource MyMenuItemStyle}"/>-->
                     <MenuItem x:Name="menuFunctionEnabled" Header="Enable Function" IsCheckable="True" Click="menuFunctionEnabled_Click"/>
                 </ContextMenu>
@@ -181,9 +181,9 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                
-                <TextBlock x:Name="textblockParams" Panel.ZIndex="2" FontSize="18" TextOptions.TextFormattingMode="Ideal" TextWrapping="Wrap" Foreground="#eee" Margin="5,0,5,0" />
-                <TextBlock x:Name="textblockDescription" Grid.Row="1" TextWrapping="Wrap" Foreground="#aaa" Background="#282828" Margin="5,0,5,5" />
+
+                <TextBlock x:Name="textblockParams" Panel.ZIndex="2" FontSize="18" TextOptions.TextFormattingMode="Ideal" TextWrapping="Wrap" Foreground="{DynamicResource TextBrush2}" Margin="5,0,5,0" />
+                <TextBlock x:Name="textblockDescription" Grid.Row="1" TextWrapping="Wrap" Foreground="{DynamicResource TextBlockBrush}" Background="{DynamicResource BackgroundDark}" Margin="5,0,5,5" />
             </Grid>
         </ScrollViewer>
 

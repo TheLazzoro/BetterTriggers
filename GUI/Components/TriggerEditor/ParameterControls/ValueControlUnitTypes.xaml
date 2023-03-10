@@ -25,8 +25,8 @@
             <ComboBoxItem Content="Neutral"/>
             <ComboBoxItem Content="Neutral - Naga"/>
         </ComboBox>
-        <Label x:Name="lblSearch" Content="Search:" Grid.Row="1" Foreground="White" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="50,5,0,5" TextChanged="textBoxSearch_TextChanged" Background="#FF202020" Foreground="White" BorderBrush="#FF0A0A0A"/>
+        <Label x:Name="lblSearch" Content="Search:" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBoxSearch" Grid.Row="1" Margin="50,5,0,5" TextChanged="textBoxSearch_TextChanged" />
 
         <ScrollViewer Grid.Row="2" Grid.ColumnSpan="3" VerticalScrollBarVisibility="auto">
             <StackPanel>
@@ -48,7 +48,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Rectangle Grid.Row="1" Grid.RowSpan="9" Fill="#333"/>
-                    <Label x:Name="lblUnits" Content="Units" Grid.Row="1" Foreground="White" />
+                    <Label x:Name="lblUnits" Content="Units" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" />
                     <ItemsControl x:Name="itemControlUnits" Grid.Row="2" Grid.ColumnSpan="3" >
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -61,7 +61,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <Label x:Name="lblHeroes" Content="Heroes" Grid.Row="3" Foreground="White" />
+                    <Label x:Name="lblHeroes" Content="Heroes" Grid.Row="3" Foreground="{DynamicResource TextBrush2}" />
                     <ItemsControl x:Name="itemControlHeroes" Grid.Row="4" Grid.ColumnSpan="3">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -74,7 +74,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <Label x:Name="lblBuildings" Content="Buildings" Grid.Row="5" Foreground="White" />
+                    <Label x:Name="lblBuildings" Content="Buildings" Grid.Row="5" Foreground="{DynamicResource TextBrush2}" />
                     <ItemsControl x:Name="itemControlBuildings" Grid.Row="6" Grid.ColumnSpan="3">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -87,7 +87,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <Label x:Name="lblSpecial" Content="Special" Grid.Row="7" Foreground="White" />
+                    <Label x:Name="lblSpecial" Content="Special" Grid.Row="7" Foreground="{DynamicResource TextBrush2}" />
                     <ItemsControl x:Name="itemControlSpecial" Grid.Row="8" Grid.ColumnSpan="3">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

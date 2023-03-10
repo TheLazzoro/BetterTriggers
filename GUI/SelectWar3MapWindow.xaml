@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Select Map" WindowStartupLocation="CenterOwner" Height="250" Width="400" Background="#FF202020" ResizeMode="NoResize">
+        Title="Select Map" WindowStartupLocation="CenterOwner" Height="250" Width="400" Background="{DynamicResource BackgroundDarker}" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
@@ -19,14 +19,14 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom" TextWrapping="Wrap" >Could not locate the map for this project. Please select map location.</TextBlock>
+        <TextBlock Foreground="{DynamicResource TextBrush2}" Grid.Column="1" VerticalAlignment="Bottom" TextWrapping="Wrap" >Could not locate the map for this project. Please select map location.</TextBlock>
 
-        <Label Foreground="#eee" Grid.Column="1" VerticalAlignment="Bottom" Grid.Row="1"  >Select Warcraft III map</Label>
+        <Label Foreground="{DynamicResource TextBrush2}" Grid.Column="1" VerticalAlignment="Bottom" Grid.Row="1"  >Select Warcraft III map</Label>
         <Button x:Name="btnSelect" Width="50" Height="22" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="210,0,0,0" Click="btnSelect_Click">Select</Button>
 
-        <Label x:Name="lblPath" Foreground="#eee" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top"  >Path: &lt;Empty&gt;</Label>
-        
-        <Label x:Name="lblError" Foreground="#f66" Grid.Column="1" Grid.Row="3" Visibility="Hidden" >Invalid map directory</Label>
+        <Label x:Name="lblPath" Foreground="{DynamicResource TextBrush2}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top"  >Path: &lt;Empty&gt;</Label>
+
+        <Label x:Name="lblError" Foreground="{DynamicResource TextErrorBrush}" Grid.Column="1" Grid.Row="3" Visibility="Hidden" >Invalid map directory</Label>
         <Button x:Name="btnOK" Width="50" Height="22" IsEnabled="False" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,0" Click="btnOK_Click">OK</Button>
     </Grid>
 </Window>

@@ -18,8 +18,8 @@
         </Grid.RowDefinitions>
 
         <shared:SearchableListControl x:Name="listControl" Grid.Column="1" Grid.RowSpan="2" Margin="2,0,0,5"/>
-        <Label Content="Asset:" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Foreground="White"  />
-        <TextBox x:Name="textBoxAsset" Margin="50,0,0,0" Height="22" Grid.Column="1" Grid.Row="2" Background="#FF202020" Foreground="White" BorderBrush="#FF0A0A0A"/>
+        <Label Content="Asset:" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}"  />
+        <TextBox x:Name="textBoxAsset" Margin="50,0,0,0" Height="22" Grid.Column="1" Grid.Row="2" Background="#FF202020" Foreground="{DynamicResource TextBrush2}" BorderBrush="#FF0A0A0A"/>
 
     </Grid>
 </UserControl>
