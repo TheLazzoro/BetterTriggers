@@ -39,6 +39,7 @@ namespace GUI
             checkBoxNoWFPause.IsChecked             = settings.NoWindowsFocusPause;
             textBoxCopiedMapFile.Text               = settings.CopyLocation;
             comboboxTriggerStyle.SelectedIndex      = settings.triggerEditorMode;
+            comboboxEditorAppearance.SelectedIndex  = settings.editorApperance;
 
             foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
             {
@@ -74,6 +75,11 @@ namespace GUI
                 if(tabs.Tabs[i].explorerElement.editor is ScriptControl scriptControl)
                     scriptControl.RefreshFontStyle();
             }
+        }
+
+        private void comboboxEditorAppearance_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EditorTheme.Change((EditorThemeUnion)comboboxEditorAppearance.SelectedIndex);
         }
     }
 }

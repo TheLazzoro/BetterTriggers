@@ -146,9 +146,9 @@ namespace GUI.Components.Shared
             if (state == TreeItemState.HasErrors)
                 DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#C66");
             else if (isEnabled && state == TreeItemState.Normal)
-                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+                this.SetResourceReference(TextBlock.ForegroundProperty, EditorTheme.TreeItemTextColor());
             else if (isEnabled && state != TreeItemState.Normal)
-                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+                this.SetResourceReference(TextBlock.ForegroundProperty, EditorTheme.TreeItemTextColor());
             else
                 DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#888");
         }

@@ -52,7 +52,7 @@ namespace GUI.Components.TriggerEditor
 
         private void HyperlinkBT_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            this.Background = new SolidColorBrush(Color.FromRgb(80, 80, 80));
+            this.SetResourceReference(Hyperlink.BackgroundProperty, EditorTheme.HyperlinkHoverColor());
         }
 
         private void HyperlinkBT_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
@@ -96,9 +96,10 @@ namespace GUI.Components.TriggerEditor
                      parameter is TriggerRef ||
                      parameter is Value
                      )
-                this.Foreground = new SolidColorBrush(Color.FromRgb(r, g, b));
+                this.SetResourceReference(Hyperlink.ForegroundProperty, EditorTheme.HyperlinkColor());
             else
                 this.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));
+
         }
     }
 }

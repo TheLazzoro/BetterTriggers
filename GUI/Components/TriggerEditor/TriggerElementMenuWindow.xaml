@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI" xmlns:shared="clr-namespace:GUI.Components.Shared"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Trigger Element Menu" Height="450" Width="800" Background="#FF404040" Loaded="Window_Loaded" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
+        Title="Trigger Element Menu" Height="450" Width="800" Background="{DynamicResource BackgroundLight}" Loaded="Window_Loaded" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="175"/>
@@ -20,12 +20,12 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Category" Foreground="White" />
+        <Label Content="Category" Foreground="{DynamicResource TextBrush2}" />
         <GridSplitter Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Width="5" Background="Transparent" />
 
         <shared:SearchableListControl x:Name="listControl" Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" />
 
-        <TextBlock x:Name="textBoxDescription" Grid.Row="3" TextWrapping="Wrap" Grid.Column="2" Background="#FF282828" Margin="1,0,1,1" Foreground="#aaa" />
+        <TextBlock x:Name="textBoxDescription" Grid.Row="3" TextWrapping="Wrap" Grid.Column="2" Background="{DynamicResource BackgroundDark}" Margin="1,0,1,1" Foreground="{DynamicResource TextBrush2}" />
 
         <Button x:Name="btnOK" Content="OK" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,90,0" Click="btnOK_Click" />
         <Button x:Name="btnCancel" Content="Cancel" Grid.Row="5" Grid.Column="2" Width="75" Height="20" HorizontalAlignment="Right" Margin="0,0,5,0" IsCancel="True" Click="btnCancel_Click" />

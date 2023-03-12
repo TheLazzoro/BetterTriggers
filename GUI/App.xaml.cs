@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTriggers;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -28,9 +29,16 @@ namespace GUI
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //var normalBrush = (SolidColorBrush)FindResource("NormalBrush");
-            //normalBrush.Color = Color.FromArgb(255, 255, 0, 0);
+            Settings settings = Settings.Load();
+            EditorTheme.Change((EditorThemeUnion) settings.editorApperance);
         }
-    }
 
+        public void ChangeTheme(Uri uri)
+        {
+            Resources.MergedDictionaries.Clear();
+            var dict = new ResourceDictionary() { Source = uri };
+            Resources.MergedDictionaries.Add(dict);
+        }
+
+    }
 }

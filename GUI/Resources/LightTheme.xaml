@@ -1,0 +1,120 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="textColor">#000</Color>
+    <Color x:Key="textColor2">#000</Color>
+    <Color x:Key="textColorDim">#111</Color>
+    <Color x:Key="textErrorColor">#FFFF5454</Color>
+    <Color x:Key="textBlockColor">#333</Color>
+    <Color x:Key="separatorColor">#ccc</Color>
+    <Color x:Key="backgroundDarkColor">#fff</Color>
+    <Color x:Key="backgroundDarkerColor">#eee</Color>
+    <Color x:Key="backgroundDarkestColor">#aaa</Color>
+    <Color x:Key="backgroundLightColor">#999</Color>
+    <Color x:Key="backgroundPanelColor">#eee</Color>
+    <Color x:Key="backgroundMenuColor">#eee</Color>
+    <Color x:Key="topMenuBackgroundColor">#eee</Color>
+    <Color x:Key="topMenuButtonHighlightColor">#bbb</Color>
+    <Color x:Key="topMenuButtonClickedColor">#ccc</Color>
+    <Color x:Key="borderColor">#595959</Color>
+    <Color x:Key="menuBackgroundColor">#aaa</Color>
+    <Color x:Key="buttonDisabledColor">#a0a0a0</Color>
+    <Color x:Key="buttonSignificantBackgroundColor">#999</Color>
+    <Color x:Key="buttonSignificantHighlightColor">#aaa</Color>
+    <Color x:Key="buttonSignificantClickedColor">#ccc</Color>
+    <Color x:Key="treeItemHighlightColor">#aa357EC7</Color>
+    <Color x:Key="treeItemHighlightInactiveColor">#55FFFFFF</Color>
+    <Color x:Key="codeCommentColor">#6A9955</Color>
+
+    <Color x:Key="comboBoxBorderColor">#ccc</Color>
+    <Color x:Key="comboBoxBackgroundColor">#ddd</Color>
+    <Color x:Key="comboBoxDisabledForegroundColor">#aaa</Color>
+    <Color x:Key="comboBoxDisabledBackgroundColor">#0000</Color>
+    <Color x:Key="comboBoxDisabledBorderColor">#0000</Color>
+
+    <Color x:Key="scrollbarButtonColor">#ddd</Color>
+    <Color x:Key="scrollbarButtonDownColor">#888</Color>
+    <Color x:Key="scrollbarBarColor">#999</Color>
+    <Color x:Key="scrollbarBackgroundColor">#ddd</Color>
+
+    <Color x:Key="hyperlinkDefaultColor">#0000FA</Color>
+    <Color x:Key="hyperlinkCliCliColor">#0000FA</Color>
+    <Color x:Key="hyperlinkHoverColor">#ccc</Color>
+
+    <Color x:Key="buttonColor0">#ddd</Color>
+    <Color x:Key="buttonColor1">#ccc</Color>
+    <Color x:Key="buttonHighlightColor0">#ccc</Color>
+    <Color x:Key="buttonHighlightColor1">#bbb</Color>
+    <Color x:Key="buttonBorderColor">#aaa</Color>
+    <Color x:Key="buttonPressColor">#999</Color>
+
+    <Color x:Key="listItemForegroundColor">#000</Color>
+    <Color x:Key="listItemForegroundSelectedColor">#119</Color>
+    <Color x:Key="listItemBackgroundHoverColor">#eee</Color>
+    <Color x:Key="listItemBackgroundSelectedColor">#ccc</Color>
+
+
+
+    <!-- Color Brush definitions -->
+    <SolidColorBrush x:Key="TextBrush" Color="{DynamicResource textColor}" />
+    <SolidColorBrush x:Key="TextBrush2" Color="{DynamicResource textColor2}" />
+    <SolidColorBrush x:Key="TextBrushDim" Color="{DynamicResource textColorDim}" />
+    <SolidColorBrush x:Key="TextErrorBrush" Color="{DynamicResource textErrorColor}" />
+    <SolidColorBrush x:Key="TextBlockBrush" Color="{DynamicResource textBlockColor}" />
+    <SolidColorBrush x:Key="SeparatorBrush" Color="{DynamicResource separatorColor}" />
+    <SolidColorBrush x:Key="BackgroundDark" Color="{DynamicResource backgroundDarkColor}" />
+    <SolidColorBrush x:Key="BackgroundDarker" Color="{DynamicResource backgroundDarkerColor}" />
+    <SolidColorBrush x:Key="BackgroundDarkest" Color="{DynamicResource backgroundDarkestColor}" />
+    <SolidColorBrush x:Key="BackgroundLight" Color="{DynamicResource backgroundLightColor}" />
+    <SolidColorBrush x:Key="BackgroundPanel" Color="{DynamicResource backgroundPanelColor}" />
+    <SolidColorBrush x:Key="BackgroundMenu" Color="{DynamicResource backgroundMenuColor}" />
+    <SolidColorBrush x:Key="TopMenuBackground" Color="{DynamicResource topMenuBackgroundColor}" />
+    <SolidColorBrush x:Key="TopMenuButtonHighlight" Color="{DynamicResource topMenuButtonHighlightColor}" />
+    <SolidColorBrush x:Key="TopMenuButtonClicked" Color="{DynamicResource topMenuButtonClickedColor}" />
+    <SolidColorBrush x:Key="BorderBrush" Color="{DynamicResource borderColor}" />
+    <SolidColorBrush x:Key="MenuBackground" Color="{DynamicResource menuBackgroundColor}" />
+    <SolidColorBrush x:Key="ButtonDisabled" Color="{DynamicResource buttonDisabledColor}" />
+    <SolidColorBrush x:Key="ButtonSignificantBackground" Color="{DynamicResource buttonSignificantBackgroundColor}" />
+    <SolidColorBrush x:Key="ButtonSignificantHighlight" Color="{DynamicResource buttonSignificantHighlightColor}" />
+    <SolidColorBrush x:Key="ButtonSignificantClicked" Color="{DynamicResource buttonSignificantClickedColor}" />
+    <SolidColorBrush x:Key="TreeItemHighlight" Color="{DynamicResource treeItemHighlightColor}" />
+    <SolidColorBrush x:Key="TreeItemHighlightInactive" Color="{DynamicResource treeItemHighlightInactiveColor}" />
+    <SolidColorBrush x:Key="CodeComment" Color="{DynamicResource codeCommentColor}" />
+
+    <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{DynamicResource comboBoxBorderColor}" />
+    <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{DynamicResource comboBoxBackgroundColor}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="{DynamicResource comboBoxDisabledForegroundColor}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="{DynamicResource comboBoxDisabledBackgroundColor}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="{DynamicResource comboBoxDisabledBorderColor}" />
+
+    <SolidColorBrush x:Key="ScrollbarButtonBrush" Color="{DynamicResource scrollbarButtonColor}" />
+    <SolidColorBrush x:Key="ScrollbarButtonDownBrush" Color="{DynamicResource scrollbarButtonDownColor}" />
+    <SolidColorBrush x:Key="ScrollbarBarBrush" Color="{DynamicResource scrollbarBarColor}" />
+    <SolidColorBrush x:Key="ScrollbarBackground" Color="{DynamicResource scrollbarBackgroundColor}" />
+
+    <SolidColorBrush x:Key="HyperlinkDefaultBrush" Color="{DynamicResource hyperlinkDefaultColor}" />
+    <SolidColorBrush x:Key="HyperlinkCliCliBrush" Color="{DynamicResource hyperlinkCliCliColor}" />
+    <SolidColorBrush x:Key="HyperlinkHoverBrush" Color="{DynamicResource hyperlinkHoverColor}" />
+
+    <LinearGradientBrush x:Key="ButtonGradient" StartPoint="0.5,0" EndPoint="0.5,1" >
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.5" Color="{DynamicResource buttonColor0}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource buttonColor1}" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonGradientHighlight" StartPoint="0.5,0" EndPoint="0.5,1" >
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.5" Color="{DynamicResource buttonHighlightColor0}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource buttonHighlightColor1}" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource buttonBorderColor}" />
+    <SolidColorBrush x:Key="ButtonPressBrush" Color="{DynamicResource buttonPressColor}" />
+
+    <SolidColorBrush x:Key="ListItemForeground" Color="{DynamicResource listItemForegroundColor}" />
+    <SolidColorBrush x:Key="ListItemForegroundSelected" Color="{DynamicResource listItemForegroundSelectedColor}" />
+    <SolidColorBrush x:Key="ListItemBackgroundHover" Color="{DynamicResource listItemBackgroundHoverColor}" />
+    <SolidColorBrush x:Key="ListItemBackgroundSelected" Color="{DynamicResource listItemBackgroundSelectedColor}" />
+
+
+</ResourceDictionary>

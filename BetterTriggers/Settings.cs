@@ -41,6 +41,7 @@ namespace BetterTriggers
         public int parameterWindowWidth    = 800;
         public int parameterWindowHeight   = 450;
 
+        public int editorApperance         = 0;
         public int triggerEditorMode       = 0;
         public double textEditorFontSize   = 12;
         public string textEditorFontStyle  = "Consolas";
