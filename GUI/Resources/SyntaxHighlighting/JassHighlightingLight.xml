@@ -2,7 +2,7 @@
         xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
     <Color name="Comment" foreground="#008000" />
   <Color name="String" foreground="#A31515" />
-  <Color name="Numbers" foreground="#000" />
+  <Color name="Numbers" foreground="#3400FF" />
 
     <!-- This is the main ruleset. -->
     <RuleSet>
@@ -100,7 +100,7 @@
         </Keywords>
 
         <!-- TYPES -->
-        <Keywords foreground="#2B91AF">
+        <Keywords foreground="#126c87">
             <Word>nothing</Word>
             <Word>boolean</Word>
             <Word>integer</Word>
@@ -243,23 +243,23 @@
         </Keywords>
 
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
-        <Rule foreground="#A4534B">
+        <Rule foreground="#a14106">
             (?&lt;=\bfunction\s)(\w+)
         </Rule>
-        <Rule foreground="#A4534B">
+        <Rule foreground="#a14106">
             (?&lt;=\binitializer\s)(\w+)
         </Rule>
-        <Rule foreground="#BA731F">
+        <Rule foreground="#a14106">
           (?&lt;=\bnative\s)(\w+)
         </Rule>
 
         <!-- FUNCTION NAMES (uses regex lookahead) -->
-        <Rule foreground="#BA731F">
+        <Rule foreground="#a14106">
           (\w+)(?=\()
         </Rule>
 
         <!-- Digits -->
-        <Rule foreground="#000">
+        <Rule foreground="#3400FF">
             \b0[xX][0-9a-fA-F]+  # hex number
         |    \b
             (    \d+(\.[0-9]+)?   #number with optional floating point

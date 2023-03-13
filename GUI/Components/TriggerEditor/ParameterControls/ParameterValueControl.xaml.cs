@@ -39,6 +39,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 case "aiscript":
                 case "anyfile":
                 case "preloadfile":
+                case "frametype":
                     this.valueControl = new ValueControlString(returnType);
                     break;
                 case "unitcode":

@@ -98,7 +98,7 @@ namespace GUI.Components.TriggerEditor
                      )
                 this.SetResourceReference(Hyperlink.ForegroundProperty, EditorTheme.HyperlinkColor());
             else
-                this.Foreground = new SolidColorBrush(Color.FromRgb(255, 75, 75));
+                this.SetResourceReference(Hyperlink.ForegroundProperty, "HyperlinkErrorBrush");
 
         }
     }

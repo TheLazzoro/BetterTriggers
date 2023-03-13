@@ -76,7 +76,10 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             previousValue = textBox.Text;
-            
+            if (e.Text == "," || (e.Text == "." && textBox.Text.Contains(".")))
+            {
+                e.Handled = true;
+            }
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)

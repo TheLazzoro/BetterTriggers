@@ -13,6 +13,7 @@
 // These are sorted so that they appear as such in the Variables dialog.
 framehandle=2,1,1,WESTRING_TRIGTYPE_framehandle
 frameevents=2,0,1,Frame Event,string
+frametype=2,0,1,Frame Type,string
 
 
 //***************************************************************************
@@ -284,6 +285,37 @@ FramePointBottomLeft=2,framepointtype,FRAMEPOINT_BOTTOMLEFT,WE_STRING_FRAMEPOINT
 FramePointBottom=2,framepointtype,FRAMEPOINT_BOTTOM,WE_STRING_FRAMEPOINT_BOTTOM
 FramePointBottomRight=2,framepointtype,FRAMEPOINT_BOTTOMRIGHT,WE_STRING_FRAMEPOINT_BOTTOMRIGHT
 
+FrameTypeBACKDROP=2,frametype,BACKDROP,Backdrop
+FrameTypeBUTTON=2,frametype,BUTTON,Button
+FrameTypeCHATDISPLAY=2,frametype,CHATDISPLAY,Chat Display
+FrameTypeCHECKBOX=2,frametype,CHECKBOX,Checkbox
+FrameTypeCONTROL=2,frametype,CONTROL,Control
+FrameTypeDIALOG=2,frametype,DIALOG,Dialog
+FrameTypeEDITBOX=2,frametype,EDITBOX,Editbox
+FrameTypeFRAME=2,frametype,FRAME,Frame
+FrameTypeGLUEBUTTON=2,frametype,GLUEBUTTON,Glue Button
+FrameTypeGLUECHECKBOX=2,frametype,GLUECHECKBOX,Glue Checkbox
+FrameTypeGLUEEDITBOX=2,frametype,GLUEEDITBOX,Glue Editbox
+FrameTypeGLUEPOPUPMENU=2,frametype,GLUEPOPUPMENU,Glue Popup Menu
+FrameTypeGLUETEXTBUTTON=2,frametype,GLUETEXTBUTTON,Glue Text Button
+FrameTypeHIGHLIGHT=2,frametype,HIGHLIGHT,Highlight
+FrameTypeLISTBOX=2,frametype,LISTBOX,Listbox
+FrameTypeMENU=2,frametype,MENU,Menu
+FrameTypeMODEL=2,frametype,MODEL,Model
+FrameTypePOPUPMENU=2,frametype,POPUPMENU,Popup Menu
+FrameTypeSCROLLBAR=2,frametype,SCROLLBAR,Scrollbar
+FrameTypeSIMPLEBUTTON=2,frametype,SIMPLEBUTTON,Simple Button
+FrameTypeSIMPLECHECKBOX=2,frametype,SIMPLECHECKBOX,Simple Checkbox
+FrameTypeSIMPLEFRAME=2,frametype,SIMPLEFRAME,Simple Frame
+FrameTypeSIMPLESTATUSBAR=2,frametype,SIMPLESTATUSBAR,Simple Statusbar
+FrameTypeSLASHCHATBOX=2,frametype,SLASHCHATBOX,Slash Chatbox
+FrameTypeSLIDER=2,frametype,SLIDER,Slider
+FrameTypeSPRITE=2,frametype,SPRITE,Sprite
+FrameTypeTEXT=2,frametype,TEXT,Text
+FrameTypeTEXTAREA=2,frametype,TEXTAREA,Text Area
+FrameTypeTEXTBUTTON=2,frametype,TEXTBUTTON,Text Button
+FrameTypeTIMERTEXT=2,frametype,TIMERTEXT,Timer Text
+
 TextJustifyTop=2,textaligntype,TEXT_JUSTIFY_TOP,Top
 TextJustifyBottom=2,textaligntype,TEXT_JUSTIFY_BOTTOM,Bottom
 TextJustifyMiddle=2,textaligntype,TEXT_JUSTIFY_MIDDLE,Middle
@@ -386,10 +418,10 @@ _BlzCreateSimpleFrameBT_Parameters="Create a simple frame ,~Frame type, with par
 _BlzCreateSimpleFrameBT_Defaults=SIMPLEBUTTON,BlzGetOriginFrame,0,_
 _BlzCreateSimpleFrameBT_Category=TC_FRAMEHANDLE
 
-BlzCreateFrameByTypeBT=2,string,string,framehandle,string,integer,frameevents
+BlzCreateFrameByTypeBT=2,frametype,string,framehandle,string,integer,frameevents
 _BlzCreateFrameByTypeBT_DisplayName="Create Frame By Type"
 _BlzCreateFrameByTypeBT_Parameters="Create a ,~Frame Type, frame name ,~Name, with parent ,~Parent, inherits ,~Frame Name, context ,~Context,, and enable ,~Events,"
-_BlzCreateFrameByTypeBT_Defaults=BACKDROP,,BlzGetOriginFrame,EscMenuBackdrop,0,_
+_BlzCreateFrameByTypeBT_Defaults=FrameTypeBACKDROP,,BlzGetOriginFrame,EscMenuBackdrop,0,_
 _BlzCreateFrameByTypeBT_Category=TC_FRAMEHANDLE
 
 BlzDestroyFrame=2,framehandle

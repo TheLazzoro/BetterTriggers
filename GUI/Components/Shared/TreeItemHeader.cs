@@ -144,13 +144,13 @@ namespace GUI.Components.Shared
         public void SetTextEnabled(TreeItemState state, bool isEnabled)
         {
             if (state == TreeItemState.HasErrors)
-                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#C66");
+                DisplayText.SetResourceReference(TextBlock.ForegroundProperty, "HyperlinkErrorBrush");
             else if (isEnabled && state == TreeItemState.Normal)
-                this.SetResourceReference(TextBlock.ForegroundProperty, EditorTheme.TreeItemTextColor());
+                DisplayText.SetResourceReference(TextBlock.ForegroundProperty, EditorTheme.TreeItemTextColor());
             else if (isEnabled && state != TreeItemState.Normal)
-                this.SetResourceReference(TextBlock.ForegroundProperty, EditorTheme.TreeItemTextColor());
+                DisplayText.SetResourceReference(TextBlock.ForegroundProperty, EditorTheme.TreeItemTextColor());
             else
-                DisplayText.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#888");
+                DisplayText.SetResourceReference(TextBlock.ForegroundProperty, "TreeItemDisabled");
         }
 
         public string GetRenameText()

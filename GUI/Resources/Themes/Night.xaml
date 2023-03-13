@@ -10,7 +10,7 @@
     <Color x:Key="backgroundDarkColor">#28282f</Color>
     <Color x:Key="backgroundDarkerColor">#202028</Color>
     <Color x:Key="backgroundDarkestColor">#13131a</Color>
-    <Color x:Key="backgroundLightColor">#444448</Color>
+    <Color x:Key="backgroundLightColor">#44444f</Color>
     <Color x:Key="backgroundPanelColor">#36363f</Color>
     <Color x:Key="backgroundMenuColor">#303038</Color>
     <Color x:Key="topMenuBackgroundColor">#28282f</Color>
@@ -24,6 +24,7 @@
     <Color x:Key="buttonSignificantClickedColor">#77777f</Color>
     <Color x:Key="treeItemHighlightColor">#aa357EC7</Color>
     <Color x:Key="treeItemHighlightInactiveColor">#55FFFFFF</Color>
+    <Color x:Key="treeItemDisabledColor">#888</Color>
     <Color x:Key="codeCommentColor">#6A9955</Color>
 
     <Color x:Key="buttonIconHoverColor">#55555f</Color>
@@ -43,6 +44,7 @@
     <Color x:Key="scrollbarBackgroundColor">#19191f</Color>
 
     <Color x:Key="hyperlinkDefaultColor">#00C8FF</Color>
+    <Color x:Key="hyperlinkErrorColor">#ff4b4b</Color>
     <Color x:Key="hyperlinkCliCliColor">#69AC41</Color>
     <Color x:Key="hyperlinkHoverColor">#505058</Color>
 
@@ -96,6 +98,7 @@
     <SolidColorBrush x:Key="ButtonSignificantClicked" Color="{DynamicResource buttonSignificantClickedColor}" />
     <SolidColorBrush x:Key="TreeItemHighlight" Color="{DynamicResource treeItemHighlightColor}" />
     <SolidColorBrush x:Key="TreeItemHighlightInactive" Color="{DynamicResource treeItemHighlightInactiveColor}" />
+    <SolidColorBrush x:Key="TreeItemDisabled" Color="{DynamicResource treeItemDisabledColor}" />
     <SolidColorBrush x:Key="CodeComment" Color="{DynamicResource codeCommentColor}" />
 
     <SolidColorBrush x:Key="ButtonIconHover" Color="{DynamicResource buttonIconHoverColor}" />
@@ -115,6 +118,7 @@
     <SolidColorBrush x:Key="ScrollbarBackground" Color="{DynamicResource scrollbarBackgroundColor}" />
 
     <SolidColorBrush x:Key="HyperlinkDefaultBrush" Color="{DynamicResource hyperlinkDefaultColor}" />
+    <SolidColorBrush x:Key="HyperlinkErrorBrush" Color="{DynamicResource hyperlinkErrorColor}" />
     <SolidColorBrush x:Key="HyperlinkCliCliBrush" Color="{DynamicResource hyperlinkCliCliColor}" />
     <SolidColorBrush x:Key="HyperlinkHoverBrush" Color="{DynamicResource hyperlinkHoverColor}" />
 

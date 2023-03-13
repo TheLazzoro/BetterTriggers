@@ -87,17 +87,17 @@
         </Keywords>
 
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
-        <Rule foreground="#BA731F">
+        <Rule foreground="#a14106">
             (?&lt;=\bfunction\s)(\w+)
         </Rule>
 
         <!-- FUNCTION NAMES (uses regex lookahead) -->
-        <Rule foreground="#BA731F">
+        <Rule foreground="#a14106">
           (\w+)(?=\()
         </Rule>
 
         <!-- Digits -->
-        <Rule foreground="#000">
+        <Rule foreground="#3400FF">
             \b0[xX][0-9a-fA-F]+  # hex number
         |    \b
             (    \d+(\.[0-9]+)?   #number with optional floating point

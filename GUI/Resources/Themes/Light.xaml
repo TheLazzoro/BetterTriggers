@@ -10,7 +10,7 @@
     <Color x:Key="backgroundDarkColor">#fff</Color>
     <Color x:Key="backgroundDarkerColor">#eee</Color>
     <Color x:Key="backgroundDarkestColor">#aaa</Color>
-    <Color x:Key="backgroundLightColor">#999</Color>
+    <Color x:Key="backgroundLightColor">#ccc</Color>
     <Color x:Key="backgroundPanelColor">#eee</Color>
     <Color x:Key="backgroundMenuColor">#eee</Color>
     <Color x:Key="topMenuBackgroundColor">#eee</Color>
@@ -23,7 +23,8 @@
     <Color x:Key="buttonSignificantHighlightColor">#aaa</Color>
     <Color x:Key="buttonSignificantClickedColor">#ccc</Color>
     <Color x:Key="treeItemHighlightColor">#aa357EC7</Color>
-    <Color x:Key="treeItemHighlightInactiveColor">#55FFFFFF</Color>
+    <Color x:Key="treeItemHighlightInactiveColor">#33000000</Color>
+    <Color x:Key="treeItemDisabledColor">#777</Color>
     <Color x:Key="codeCommentColor">#6A9955</Color>
 
     <Color x:Key="buttonIconHoverColor">#ccc</Color>
@@ -43,6 +44,7 @@
     <Color x:Key="scrollbarBackgroundColor">#ddd</Color>
 
     <Color x:Key="hyperlinkDefaultColor">#0000FA</Color>
+    <Color x:Key="hyperlinkErrorColor">#ff1717</Color>
     <Color x:Key="hyperlinkCliCliColor">#0000FA</Color>
     <Color x:Key="hyperlinkHoverColor">#ccc</Color>
 
@@ -50,7 +52,7 @@
     <Color x:Key="buttonColor1">#ccc</Color>
     <Color x:Key="buttonHighlightColor0">#ccc</Color>
     <Color x:Key="buttonHighlightColor1">#bbb</Color>
-    <Color x:Key="buttonBorderColor">#aaa</Color>
+    <Color x:Key="buttonBorderColor">#666</Color>
     <Color x:Key="buttonPressColor">#999</Color>
 
     <Color x:Key="listItemForegroundColor">#000</Color>
@@ -62,8 +64,8 @@
     <Color x:Key="texteditorForegroundColor">#000</Color>
     <Color x:Key="texteditorBackgroundAutocompleteColor">#eee</Color>
     <Color x:Key="jassKeywordColor">#3400FF</Color>
-    <Color x:Key="jassTypewordColor">#2B91AF</Color>
-    <Color x:Key="jassFunctionColor">#BA731F</Color>
+    <Color x:Key="jassTypewordColor">#126c87</Color>
+    <Color x:Key="jassFunctionColor">#a14106</Color>
     <Color x:Key="jassVariableColor">#000</Color>
     <Color x:Key="luaKeywordColor">#8F08C4</Color>
 
@@ -96,6 +98,7 @@
     <SolidColorBrush x:Key="ButtonSignificantClicked" Color="{DynamicResource buttonSignificantClickedColor}" />
     <SolidColorBrush x:Key="TreeItemHighlight" Color="{DynamicResource treeItemHighlightColor}" />
     <SolidColorBrush x:Key="TreeItemHighlightInactive" Color="{DynamicResource treeItemHighlightInactiveColor}" />
+    <SolidColorBrush x:Key="TreeItemDisabled" Color="{DynamicResource treeItemDisabledColor}" />
     <SolidColorBrush x:Key="CodeComment" Color="{DynamicResource codeCommentColor}" />
 
     <SolidColorBrush x:Key="ButtonIconHover" Color="{DynamicResource buttonIconHoverColor}" />
@@ -115,6 +118,7 @@
     <SolidColorBrush x:Key="ScrollbarBackground" Color="{DynamicResource scrollbarBackgroundColor}" />
 
     <SolidColorBrush x:Key="HyperlinkDefaultBrush" Color="{DynamicResource hyperlinkDefaultColor}" />
+    <SolidColorBrush x:Key="HyperlinkErrorBrush" Color="{DynamicResource hyperlinkErrorColor}" />
     <SolidColorBrush x:Key="HyperlinkCliCliBrush" Color="{DynamicResource hyperlinkCliCliColor}" />
     <SolidColorBrush x:Key="HyperlinkHoverBrush" Color="{DynamicResource hyperlinkHoverColor}" />
 
