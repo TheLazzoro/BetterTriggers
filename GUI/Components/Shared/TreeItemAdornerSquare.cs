@@ -29,9 +29,10 @@ namespace GUI.Components.Shared
             adornedElementRect.Height = 16;
 
             // Some arbitrary drawing implements.
-            SolidColorBrush renderBrush = new SolidColorBrush(Colors.AliceBlue);
+            var color = (Color)Application.Current.Resources["treeItemAdornerSquareColor"];
+            SolidColorBrush renderBrush = new SolidColorBrush(color);
             renderBrush.Opacity = 0.2;
-            Pen renderPen = new Pen(new SolidColorBrush(Color.FromArgb(100, 255, 255, 255)), 1);
+            Pen renderPen = new Pen(new SolidColorBrush(color), 1);
             double renderRadius = 5.0;
 
             // Draw a circle at each corner.

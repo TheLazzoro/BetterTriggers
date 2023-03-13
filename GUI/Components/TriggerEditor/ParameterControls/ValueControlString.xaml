@@ -26,10 +26,10 @@
         </ScrollViewer>
 
         <xctk:ColorPicker x:Name="colorPicker0" Grid.Row="1" Height="22"
-                          DropDownBackground="{DynamicResource BackgroundLight}"
+                          DropDownBackground="{DynamicResource BackgroundPanel}"
                           DropDownBorderThickness="0"
                           BorderThickness="0"
-                          TabBackground="{DynamicResource BackgroundLight}"
+                          TabBackground="{DynamicResource BackgroundPanel}"
                           Foreground="{DynamicResource TextBrush2}"
                           TabForeground="{DynamicResource TextBrush2}"
                           SelectedColorChanged="colorPicker0_SelectedColorChanged" />
@@ -37,10 +37,10 @@
         <Button x:Name="btnApplyColor0" Content="Apply Color" Grid.Row="2" Height="22" Click="btnApplyColor0_Click"></Button>
 
         <xctk:ColorPicker x:Name="colorPicker1" Grid.Row="1" Grid.Column="2" Height="22"
-                          DropDownBackground="{DynamicResource BackgroundLight}"
+                          DropDownBackground="{DynamicResource BackgroundPanel}"
                           DropDownBorderThickness="0"
                           BorderThickness="0"
-                          TabBackground="{DynamicResource BackgroundLight}"
+                          TabBackground="{DynamicResource BackgroundPanel}"
                           Foreground="{DynamicResource TextBrush2}"
                           TabForeground="{DynamicResource TextBrush2}"
                           SelectedColorChanged="colorPicker1_SelectedColorChanged"></xctk:ColorPicker>

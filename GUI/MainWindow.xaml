@@ -44,7 +44,7 @@
 
                     <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="1" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                     <Popup x:Name="PART_Popup"  AllowsTransparency="True" Focusable="False" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Bottom">
-                        <Border x:Name="SubMenuBorder" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Background="{DynamicResource MenuBackground}" Padding="2">
+                        <Border x:Name="SubMenuBorder" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Background="{DynamicResource BackgroundPanel}" Padding="2">
                             <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
                                 <Grid RenderOptions.ClearTypeHint="Enabled">
                                     <Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
@@ -219,8 +219,8 @@
                        PopupAnimation="Fade">
                         <Border Name="SubmenuBorder"
                             SnapsToDevicePixels="True"
-                            Background="#333"
-                            BorderBrush="#555"
+                            Background="{DynamicResource BackgroundPanel}"
+                            BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1">
                             <StackPanel IsItemsHost="True"
                                     KeyboardNavigation.DirectionalNavigation="Cycle" />
@@ -358,7 +358,7 @@
                 <MenuItem Name="menuNewEvent" Command="{StaticResource NewEvent}" InputGestureText="Ctrl+E" Header="WESTRING_MENU_EVENT" />
                 <MenuItem Name="menuNewCondition" Command="{StaticResource NewCondition}" InputGestureText="Ctrl+D" Header="WESTRING_MENU_CONDITION" />
                 <MenuItem Name="menuNewLocalVariable" Command="{StaticResource NewLocalVariable}" InputGestureText="Ctrl+K" Header="Local Variable..." />
-                <MenuItem Name="menuNewAction" Command="{StaticResource NewCondition}" InputGestureText="Ctrl+W" Header="WESTRING_MENU_ACTION" />
+                <MenuItem Name="menuNewAction" Command="{StaticResource NewAction}" InputGestureText="Ctrl+W" Header="WESTRING_MENU_ACTION" />
             </MenuItem>
             <!--<MenuItem x:Name="menuJassHelper" Header="WESTRING_MENU_JASSHELPER" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
                 <MenuItem Name="menuEnableJassHelper" Header="WESTRING_MENU_JASSHELPER_TOGGLE" />
@@ -553,7 +553,7 @@
                         <TextBlock Width="auto" Text="{Binding Header}" ToolTip="{Binding Header}" VerticalAlignment="Center" />
                         <Button Style="{DynamicResource IconButton}" Width="20" Height="20" Click="ButtonTabItem_Click" >
                             <Button.Content>
-                                <Image Source="Resources/Icons/close-tab.png" Stretch="None"/>
+                                <Image Source="{DynamicResource TabItemCloseImg}" Stretch="None"/>
                             </Button.Content>
                         </Button>
                     </StackPanel>

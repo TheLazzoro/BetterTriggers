@@ -8,7 +8,7 @@
         <ResourceDictionary>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/LightTheme.xaml" />
+                <ResourceDictionary Source="/Resources/Themes/Dark.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             
@@ -128,13 +128,13 @@
                                     <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" TargetName="border" Value="#555"/>
-                                    <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
+                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource ButtonIconHover}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource ButtonIconHoverBorder}"/>
                                     <Setter Property="Border.CornerRadius" TargetName="border" Value="2"/>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="true">
-                                    <Setter Property="Background" TargetName="border" Value="#777"/>
-                                    <Setter Property="BorderBrush" TargetName="border" Value="#222"/>
+                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource ButtonIconHoverPressed}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource ButtonIconHoverBorderPressed}"/>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="false">
                                     <Setter Property="Opacity" Value="0.2"/>
@@ -162,13 +162,13 @@
           Name="Border"
           Margin="1"
           CornerRadius="1"
-          Background="{StaticResource ScrollbarButtonBrush}"
-          BorderBrush="{StaticResource ScrollbarButtonBrush}"
+          Background="{DynamicResource ScrollbarButtonBrush}"
+          BorderBrush="{DynamicResource ScrollbarButtonBrush}"
           BorderThickness="1">
                                 <Path
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Fill="{StaticResource GlyphBrush}"
+            Fill="{DynamicResource GlyphBrush}"
             Data="{Binding Path=Content,
                 RelativeSource={RelativeSource TemplatedParent}}" />
                             </Border>
@@ -232,7 +232,7 @@
                     <Border
       Grid.RowSpan="3"
       CornerRadius="1"
-      Background="{StaticResource ScrollbarBackground}" />
+      Background="{DynamicResource ScrollbarBackground}" />
                     <RepeatButton
       Grid.Row="0"
       Style="{StaticResource ScrollBarLineButton}"
@@ -252,8 +252,8 @@
                             <Thumb
           Style="{StaticResource ScrollBarThumb}"
           Margin="1,0,1,0"
-          Background="{StaticResource ScrollbarBarBrush}"
-          BorderBrush="{StaticResource ScrollbarBarBrush}" />
+          Background="{DynamicResource ScrollbarBarBrush}"
+          BorderBrush="{DynamicResource ScrollbarBarBrush}" />
                         </Track.Thumb>
                         <Track.IncreaseRepeatButton>
                             <RepeatButton
@@ -281,7 +281,7 @@
                     <Border
       Grid.ColumnSpan="3"
       CornerRadius="2"
-      Background="{StaticResource ScrollbarBackground}" />
+      Background="{DynamicResource ScrollbarBackground}" />
                     <RepeatButton
       Grid.Column="0"
       Style="{StaticResource ScrollBarLineButton}"
@@ -301,8 +301,8 @@
                             <Thumb
           Style="{StaticResource ScrollBarThumb}"
           Margin="0,1,0,1"
-          Background="{StaticResource ScrollbarBarBrush}"
-          BorderBrush="{StaticResource ScrollbarBarBrush}" />
+          Background="{DynamicResource ScrollbarBarBrush}"
+          BorderBrush="{DynamicResource ScrollbarBarBrush}" />
                         </Track.Thumb>
                         <Track.IncreaseRepeatButton>
                             <RepeatButton
@@ -608,6 +608,11 @@
 
             <!-- LABEL -->
             <Style TargetType="Label">
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            </Style>
+
+            <!-- RADIOBUTTON -->
+            <Style TargetType="RadioButton">
                 <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
             </Style>
 

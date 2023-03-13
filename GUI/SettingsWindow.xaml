@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Options" WindowStartupLocation="CenterOwner" Height="420" MinHeight="420" Width="420" MinWidth="420" Background="{DynamicResource BackgroundPanel}">
+        Title="Options" WindowStartupLocation="CenterOwner" Height="450" MinHeight="450" Width="420" MinWidth="420" Background="{DynamicResource BackgroundPanel}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -75,6 +75,7 @@
         <ComboBox x:Name="comboboxEditorAppearance" Grid.Row="10" Grid.Column="2" Margin="0,2,0,2" SelectionChanged="comboboxEditorAppearance_SelectionChanged">
             <ComboBoxItem>Dark</ComboBoxItem>
             <ComboBoxItem>Light</ComboBoxItem>
+            <ComboBoxItem>Night</ComboBoxItem>
         </ComboBox>
         
         <ComboBox x:Name="comboboxTriggerStyle" Grid.Row="11" Grid.Column="2" Margin="0,2,0,2">
@@ -84,8 +85,8 @@
 
         <ComboBox x:Name="comboboxScriptFont" Grid.Row="12" Grid.Column="2" Margin="0,2,0,2" />
 
-        <Button x:Name="btnOK" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="13" Grid.Column="3" Margin="0,9,85,9" Click="btnOK_Click">OK</Button>
-        <Button x:Name="btnCancel" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="13" Grid.Column="3" Margin="0,9,15,9" IsCancel="True" >Cancel</Button>
+        <Button x:Name="btnOK" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="14" Grid.Column="3" Margin="0,9,85,9" Click="btnOK_Click">OK</Button>
+        <Button x:Name="btnCancel" Height="22" Width="60" HorizontalAlignment="Right" Grid.Row="14" Grid.Column="3" Margin="0,9,15,9" IsCancel="True" >Cancel</Button>
 
     </Grid>
 </Window>

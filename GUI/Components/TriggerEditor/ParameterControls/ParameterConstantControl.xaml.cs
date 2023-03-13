@@ -118,7 +118,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             var constant = selectedItem.Tag as ConstantTemplate;
 
             textBoxDescription.Inlines.Clear();
-            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.War3ColoredText(Locale.Translate(constant.value)));
+            var brush = (SolidColorBrush)Application.Current.FindResource("TextBrush");
+            string colorCode = brush.Color.ToString().Replace("#", "");
+            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.War3ColoredText(Locale.Translate(constant.value), colorCode));
         }
     }
 }

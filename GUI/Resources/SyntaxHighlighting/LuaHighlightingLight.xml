@@ -1,7 +1,7 @@
 <SyntaxDefinition name="Lua"
         xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-    <Color name="Comment" foreground="#6A9955" />
-    <Color name="String" foreground="#CE9178" />
+    <Color name="Comment" foreground="#008000" />
+    <Color name="String" foreground="#A31515" />
 
     <!-- This is the main ruleset. -->
     <RuleSet>
@@ -27,7 +27,7 @@
       </Span>
 
         <!-- TOKENS -->
-        <Keywords foreground="#D4D4D4">
+        <Keywords foreground="#000">
             <Word>&lt;</Word>
             <Word>></Word>
             <Word>=</Word>
@@ -56,7 +56,7 @@
         </Keywords>
 
         <!-- BLOCKS -->
-        <Keywords foreground="#C586C0">
+        <Keywords foreground="#8F08C4">
 			<Word>function</Word>
 			<Word>do</Word>
 			<Word>for</Word>
@@ -76,7 +76,7 @@
         </Keywords>
 
         <!-- KEYWORDS -->
-        <Keywords foreground="#569CD6">
+        <Keywords foreground="#3400FF">
 			<Word>nil</Word>
             <Word>local</Word>
             <Word>true</Word>
@@ -87,17 +87,17 @@
         </Keywords>
 
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
-        <Rule foreground="#DCDCAA">
+        <Rule foreground="#BA731F">
             (?&lt;=\bfunction\s)(\w+)
         </Rule>
 
         <!-- FUNCTION NAMES (uses regex lookahead) -->
-        <Rule foreground="#DCDCAA">
+        <Rule foreground="#BA731F">
           (\w+)(?=\()
         </Rule>
 
         <!-- Digits -->
-        <Rule foreground="#B5CEA8">
+        <Rule foreground="#000">
             \b0[xX][0-9a-fA-F]+  # hex number
         |    \b
             (    \d+(\.[0-9]+)?   #number with optional floating point

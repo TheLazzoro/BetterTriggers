@@ -30,7 +30,7 @@
 
         <Label Grid.Column="1" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" VerticalAlignment="Top" >Locate map:</Label>
         <Button x:Name="btnSelectMap" Width="80" Height="25" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="btnSelectMap_Click">Select...</Button>
-        <TextBlock x:Name="lblMap" Grid.Column="1" Grid.Row="1" Foreground="#eee" VerticalAlignment="Bottom" Margin="100,0,0,0" TextTrimming="WordEllipsis" >N/A</TextBlock>
+        <TextBlock x:Name="lblMap" Grid.Column="1" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" VerticalAlignment="Bottom" Margin="100,0,0,0" TextTrimming="WordEllipsis" >N/A</TextBlock>
 
         <Label Grid.Column="1" Grid.Row="3" Foreground="{DynamicResource TextBrush2}" VerticalAlignment="Top" >Select project destination:</Label>
         <Button x:Name="btnDestination" Width="80" Height="25" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="btnDestination_Click">Select...</Button>

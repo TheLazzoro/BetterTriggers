@@ -30,7 +30,7 @@ namespace GUI
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Settings settings = Settings.Load();
-            EditorTheme.Change((EditorThemeUnion) settings.editorApperance);
+            EditorTheme.Change((EditorThemeUnion) settings.editorAppearance);
         }
 
         public void ChangeTheme(Uri uri)

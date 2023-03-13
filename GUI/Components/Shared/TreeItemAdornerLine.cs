@@ -32,7 +32,8 @@ namespace GUI.Components.Shared
             // Some arbitrary drawing implements.
             SolidColorBrush renderBrush = new SolidColorBrush(Colors.Green);
             renderBrush.Opacity = 0.2;
-            Pen renderPen = new Pen(new SolidColorBrush(Colors.White), 1.5);
+            var color = (Color)Application.Current.Resources["treeItemAdornerColor"];
+            Pen renderPen = new Pen(new SolidColorBrush(color), 1.5);
             double renderRadius = 5.0;
 
             // Draw a circle at each corner.

@@ -1,8 +1,8 @@
 <SyntaxDefinition name="vJass"
         xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-    <Color name="Comment" foreground="#6A9955" />
-  <Color name="String" foreground="#CE9178" />
-  <Color name="Numbers" foreground="#B5CEA8" />
+    <Color name="Comment" foreground="#008000" />
+  <Color name="String" foreground="#A31515" />
+  <Color name="Numbers" foreground="#000" />
 
     <!-- This is the main ruleset. -->
     <RuleSet>
@@ -29,7 +29,7 @@
 
         <!-- OPERATORS -->
         <!--<Keywords fontWeight="bold" foreground="#D4D4D4">-->
-        <Keywords foreground="#D4D4D4">
+        <Keywords foreground="#000">
             <Word>&lt;</Word>
             <Word>></Word>
             <Word>=</Word>
@@ -50,7 +50,7 @@
 
         <!-- BLOCKS -->
         <!--<Keywords fontWeight="bold" foreground="#C586C0"> -->
-        <Keywords foreground="#C586C0">
+        <Keywords foreground="#8F08C4">
             <Word>if</Word>
             <Word>then</Word>
             <Word>else</Word>
@@ -64,7 +64,7 @@
         </Keywords>
 
         <!-- KEYWORDS -->
-        <Keywords foreground="#569CD6">
+        <Keywords foreground="#3400FF">
             <Word>null</Word>
             <Word>call</Word>
             <Word>set</Word>
@@ -100,7 +100,7 @@
         </Keywords>
 
         <!-- TYPES -->
-        <Keywords foreground="#4EC9B0">
+        <Keywords foreground="#2B91AF">
             <Word>nothing</Word>
             <Word>boolean</Word>
             <Word>integer</Word>
@@ -243,23 +243,23 @@
         </Keywords>
 
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
-        <Rule foreground="#DCDCAA">
+        <Rule foreground="#A4534B">
             (?&lt;=\bfunction\s)(\w+)
         </Rule>
-        <Rule foreground="#DCDCAA">
+        <Rule foreground="#A4534B">
             (?&lt;=\binitializer\s)(\w+)
         </Rule>
-        <Rule foreground="#DCDCAA">
+        <Rule foreground="#BA731F">
           (?&lt;=\bnative\s)(\w+)
         </Rule>
 
         <!-- FUNCTION NAMES (uses regex lookahead) -->
-        <Rule foreground="#DCDCAA">
+        <Rule foreground="#BA731F">
           (\w+)(?=\()
         </Rule>
 
         <!-- Digits -->
-        <Rule foreground="#B5CEA8">
+        <Rule foreground="#000">
             \b0[xX][0-9a-fA-F]+  # hex number
         |    \b
             (    \d+(\.[0-9]+)?   #number with optional floating point

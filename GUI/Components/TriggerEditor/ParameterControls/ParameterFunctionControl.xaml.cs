@@ -8,6 +8,7 @@ using GUI.Components.Shared;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -113,7 +114,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             var function = selectedItem.Tag as FunctionTemplate;
             textBoxDescription.Inlines.Clear();
-            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.War3ColoredText(Locale.Translate(function.value)));
+            var brush = (SolidColorBrush)Application.Current.FindResource("TextBrush");
+            string colorCode = brush.Color.ToString().Replace("#", "");
+            textBoxDescription.Inlines.AddRange(Utility.TextFormatter.War3ColoredText(Locale.Translate(function.value), colorCode));
         }
 
     }

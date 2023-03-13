@@ -1,0 +1,155 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="textColor">#ccc</Color>
+    <Color x:Key="textColor2">#eee</Color>
+    <Color x:Key="textColorDim">#999</Color>
+    <Color x:Key="textErrorColor">#FFFF5454</Color>
+    <Color x:Key="textBlockColor">#aab</Color>
+    <Color x:Key="separatorColor">#556</Color>
+    <Color x:Key="backgroundDarkColor">#28282f</Color>
+    <Color x:Key="backgroundDarkerColor">#202028</Color>
+    <Color x:Key="backgroundDarkestColor">#13131a</Color>
+    <Color x:Key="backgroundLightColor">#444448</Color>
+    <Color x:Key="backgroundPanelColor">#36363f</Color>
+    <Color x:Key="backgroundMenuColor">#303038</Color>
+    <Color x:Key="topMenuBackgroundColor">#28282f</Color>
+    <Color x:Key="topMenuButtonHighlightColor">#444448</Color>
+    <Color x:Key="topMenuButtonClickedColor">#333339</Color>
+    <Color x:Key="borderColor">#59595f</Color>
+    <Color x:Key="menuBackgroundColor">#3A3A46</Color>
+    <Color x:Key="buttonDisabledColor">#838389</Color>
+    <Color x:Key="buttonSignificantBackgroundColor">#555564</Color>
+    <Color x:Key="buttonSignificantHighlightColor">#58585f</Color>
+    <Color x:Key="buttonSignificantClickedColor">#77777f</Color>
+    <Color x:Key="treeItemHighlightColor">#aa357EC7</Color>
+    <Color x:Key="treeItemHighlightInactiveColor">#55FFFFFF</Color>
+    <Color x:Key="codeCommentColor">#6A9955</Color>
+
+    <Color x:Key="buttonIconHoverColor">#55555f</Color>
+    <Color x:Key="buttonIconHoverPressedColor">#77777f</Color>
+    <Color x:Key="buttonIconHoverBorderColor">#222</Color>
+    <Color x:Key="buttonIconHoverBorderPressedColor">#222</Color>
+
+    <Color x:Key="comboBoxBorderColor">#181818</Color>
+    <Color x:Key="comboBoxBackgroundColor">#33333f</Color>
+    <Color x:Key="comboBoxDisabledForegroundColor">#88888f</Color>
+    <Color x:Key="comboBoxDisabledBackgroundColor">#0000</Color>
+    <Color x:Key="comboBoxDisabledBorderColor">#0000</Color>
+
+    <Color x:Key="scrollbarButtonColor">#37373f</Color>
+    <Color x:Key="scrollbarButtonDownColor">#45454f</Color>
+    <Color x:Key="scrollbarBarColor">#40404a</Color>
+    <Color x:Key="scrollbarBackgroundColor">#19191f</Color>
+
+    <Color x:Key="hyperlinkDefaultColor">#00C8FF</Color>
+    <Color x:Key="hyperlinkCliCliColor">#69AC41</Color>
+    <Color x:Key="hyperlinkHoverColor">#505058</Color>
+
+    <Color x:Key="buttonColor0">#44444f</Color>
+    <Color x:Key="buttonColor1">#33333f</Color>
+    <Color x:Key="buttonHighlightColor0">#55555f</Color>
+    <Color x:Key="buttonHighlightColor1">#44444f</Color>
+    <Color x:Key="buttonBorderColor">Black</Color>
+    <Color x:Key="buttonPressColor">#333339</Color>
+
+    <Color x:Key="listItemForegroundColor">#ddd</Color>
+    <Color x:Key="listItemForegroundSelectedColor">#9dF</Color>
+    <Color x:Key="listItemBackgroundHoverColor">#445</Color>
+    <Color x:Key="listItemBackgroundSelectedColor">#667</Color>
+
+    <Color x:Key="texteditorBackgroundColor">#1E1E24</Color>
+    <Color x:Key="texteditorForegroundColor">#9CDCFE</Color>
+    <Color x:Key="texteditorBackgroundAutocompleteColor">#303039</Color>
+    <Color x:Key="jassKeywordColor">#569CD6</Color>
+    <Color x:Key="jassTypewordColor">#4EC9B0</Color>
+    <Color x:Key="jassFunctionColor">#DCDCAA</Color>
+    <Color x:Key="jassVariableColor">#9CDCFE</Color>
+    <Color x:Key="luaKeywordColor">#C586C0</Color>
+
+    <Color x:Key="treeItemAdornerColor">#fff</Color>
+    <Color x:Key="treeItemAdornerSquareColor">#64ffffff</Color>
+
+
+
+    <!-- Color Brush definitions -->
+    <SolidColorBrush x:Key="TextBrush" Color="{DynamicResource textColor}" />
+    <SolidColorBrush x:Key="TextBrush2" Color="{DynamicResource textColor2}" />
+    <SolidColorBrush x:Key="TextBrushDim" Color="{DynamicResource textColorDim}" />
+    <SolidColorBrush x:Key="TextErrorBrush" Color="{DynamicResource textErrorColor}" />
+    <SolidColorBrush x:Key="TextBlockBrush" Color="{DynamicResource textBlockColor}" />
+    <SolidColorBrush x:Key="SeparatorBrush" Color="{DynamicResource separatorColor}" />
+    <SolidColorBrush x:Key="BackgroundDark" Color="{DynamicResource backgroundDarkColor}" />
+    <SolidColorBrush x:Key="BackgroundDarker" Color="{DynamicResource backgroundDarkerColor}" />
+    <SolidColorBrush x:Key="BackgroundDarkest" Color="{DynamicResource backgroundDarkestColor}" />
+    <SolidColorBrush x:Key="BackgroundLight" Color="{DynamicResource backgroundLightColor}" />
+    <SolidColorBrush x:Key="BackgroundPanel" Color="{DynamicResource backgroundPanelColor}" />
+    <SolidColorBrush x:Key="BackgroundMenu" Color="{DynamicResource backgroundMenuColor}" />
+    <SolidColorBrush x:Key="TopMenuBackground" Color="{DynamicResource topMenuBackgroundColor}" />
+    <SolidColorBrush x:Key="TopMenuButtonHighlight" Color="{DynamicResource topMenuButtonHighlightColor}" />
+    <SolidColorBrush x:Key="TopMenuButtonClicked" Color="{DynamicResource topMenuButtonClickedColor}" />
+    <SolidColorBrush x:Key="BorderBrush" Color="{DynamicResource borderColor}" />
+    <SolidColorBrush x:Key="MenuBackground" Color="{DynamicResource menuBackgroundColor}" />
+    <SolidColorBrush x:Key="ButtonDisabled" Color="{DynamicResource buttonDisabledColor}" />
+    <SolidColorBrush x:Key="ButtonSignificantBackground" Color="{DynamicResource buttonSignificantBackgroundColor}" />
+    <SolidColorBrush x:Key="ButtonSignificantHighlight" Color="{DynamicResource buttonSignificantHighlightColor}" />
+    <SolidColorBrush x:Key="ButtonSignificantClicked" Color="{DynamicResource buttonSignificantClickedColor}" />
+    <SolidColorBrush x:Key="TreeItemHighlight" Color="{DynamicResource treeItemHighlightColor}" />
+    <SolidColorBrush x:Key="TreeItemHighlightInactive" Color="{DynamicResource treeItemHighlightInactiveColor}" />
+    <SolidColorBrush x:Key="CodeComment" Color="{DynamicResource codeCommentColor}" />
+
+    <SolidColorBrush x:Key="ButtonIconHover" Color="{DynamicResource buttonIconHoverColor}" />
+    <SolidColorBrush x:Key="ButtonIconHoverPressed" Color="{DynamicResource buttonIconHoverPressedColor}" />
+    <SolidColorBrush x:Key="ButtonIconHoverBorder" Color="{DynamicResource buttonIconHoverBorderColor}" />
+    <SolidColorBrush x:Key="ButtonIconHoverBorderPressed" Color="{DynamicResource buttonIconHoverBorderPressedColor}" />
+
+    <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{DynamicResource comboBoxBorderColor}" />
+    <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{DynamicResource comboBoxBackgroundColor}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="{DynamicResource comboBoxDisabledForegroundColor}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="{DynamicResource comboBoxDisabledBackgroundColor}" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="{DynamicResource comboBoxDisabledBorderColor}" />
+
+    <SolidColorBrush x:Key="ScrollbarButtonBrush" Color="{DynamicResource scrollbarButtonColor}" />
+    <SolidColorBrush x:Key="ScrollbarButtonDownBrush" Color="{DynamicResource scrollbarButtonDownColor}" />
+    <SolidColorBrush x:Key="ScrollbarBarBrush" Color="{DynamicResource scrollbarBarColor}" />
+    <SolidColorBrush x:Key="ScrollbarBackground" Color="{DynamicResource scrollbarBackgroundColor}" />
+
+    <SolidColorBrush x:Key="HyperlinkDefaultBrush" Color="{DynamicResource hyperlinkDefaultColor}" />
+    <SolidColorBrush x:Key="HyperlinkCliCliBrush" Color="{DynamicResource hyperlinkCliCliColor}" />
+    <SolidColorBrush x:Key="HyperlinkHoverBrush" Color="{DynamicResource hyperlinkHoverColor}" />
+
+    <LinearGradientBrush x:Key="ButtonGradient" StartPoint="0.5,0" EndPoint="0.5,1" >
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.5" Color="{DynamicResource buttonColor0}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource buttonColor1}" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ButtonGradientHighlight" StartPoint="0.5,0" EndPoint="0.5,1" >
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Offset="0.5" Color="{DynamicResource buttonHighlightColor0}" />
+            <GradientStop Offset="1.0" Color="{DynamicResource buttonHighlightColor1}" />
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource buttonBorderColor}" />
+    <SolidColorBrush x:Key="ButtonPressBrush" Color="{DynamicResource buttonPressColor}" />
+
+    <SolidColorBrush x:Key="ListItemForeground" Color="{DynamicResource listItemForegroundColor}" />
+    <SolidColorBrush x:Key="ListItemForegroundSelected" Color="{DynamicResource listItemForegroundSelectedColor}" />
+    <SolidColorBrush x:Key="ListItemBackgroundHover" Color="{DynamicResource listItemBackgroundHoverColor}" />
+    <SolidColorBrush x:Key="ListItemBackgroundSelected" Color="{DynamicResource listItemBackgroundSelectedColor}" />
+
+    <SolidColorBrush x:Key="TexteditorBackground" Color="{DynamicResource texteditorBackgroundColor}" />
+    <SolidColorBrush x:Key="TexteditorForeground" Color="{DynamicResource texteditorForegroundColor}" />
+    <SolidColorBrush x:Key="TexteditorBackgroundAutocomplete" Color="{DynamicResource texteditorBackgroundAutocompleteColor}" />
+    <SolidColorBrush x:Key="JassKeywordBrush" Color="{DynamicResource jassKeywordColor}" />
+    <SolidColorBrush x:Key="JassTypewordBrush" Color="{DynamicResource jassTypewordColor}" />
+    <SolidColorBrush x:Key="JassFunctionBrush" Color="{DynamicResource jassFunctionColor}" />
+    <SolidColorBrush x:Key="JassVariableBrush" Color="{DynamicResource jassVariableColor}" />
+    <SolidColorBrush x:Key="LuaKeywordBrush" Color="{DynamicResource luaKeywordColor}" />
+
+    <BitmapImage x:Key="TabItemCloseImg" UriSource="../Icons/close-tab.png"/>
+    <BitmapImage x:Key="ImgArrowUp" UriSource="../Icons/arrow-up.png"/>
+    <BitmapImage x:Key="ImgArrowLeft" UriSource="../Icons/arrow-left.png"/>
+    <BitmapImage x:Key="ImgArrowRight" UriSource="../Icons/arrow-right.png"/>
+
+</ResourceDictionary>

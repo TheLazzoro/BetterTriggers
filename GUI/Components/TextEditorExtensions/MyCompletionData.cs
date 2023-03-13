@@ -1,4 +1,5 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers;
+using BetterTriggers.WorldEdit;
 using GUI.Utility;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
@@ -18,10 +19,18 @@ namespace GUI.Components.TextEditorExtensions
     {
         public MyCompletionData(string text, string description)
         {
+            Settings settings = Settings.Load();
             this.Text = text;
             this.header = new TextBlock();
             this.description = new TextBlock();
-            this.header.Inlines.AddRange(TextFormatter.CodeColor(text, Info.GetLanguage()));
+            if(settings.editorAppearance == 1)
+            {
+                this.header.Inlines.Add(text);
+            }
+            else
+            {
+                this.header.Inlines.AddRange(TextFormatter.CodeColor(text, Info.GetLanguage()));
+            }
             this.description.Inlines.AddRange(TextFormatter.CodeColor(description, ScriptLanguage.Jass));
 
             BitmapImage b = new BitmapImage();

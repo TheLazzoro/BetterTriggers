@@ -23,27 +23,27 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" FlowDirection="LeftToRight" Margin="5,5,10,5" >
             <Button x:Name="btnBack" Style="{DynamicResource IconButton}" Width="25" IsEnabled="false" Height="25" Margin="0,0,10,0" Click="btnBack_Click">
                 <Button.Content>
-                    <Image Source="Resources/Icons/arrow-left.png" Stretch="None"/>
+                    <Image Source="{DynamicResource ImgArrowLeft}" Stretch="None"/>
                 </Button.Content>
             </Button>
             <Button x:Name="btnForward" Style="{DynamicResource IconButton}" Width="25" IsEnabled="false" Height="25" Margin="0,0,10,0" Click="btnForward_Click">
                 <Button.Content>
-                    <Image Source="Resources/Icons/arrow-right.png" Stretch="None"/>
+                    <Image Source="{DynamicResource ImgArrowRight}" Stretch="None"/>
                 </Button.Content>
             </Button>
             <Separator Width="20" Background="Transparent"/>
             <Button x:Name="btnLevelUp" Style="{DynamicResource IconButton}" Width="25" IsEnabled="true" Height="25" Margin="0,0,10,0" Click="btnLevelUp_Click">
                 <Button.Content>
-                    <Image Source="Resources/Icons/arrow-up.png" Stretch="None"/>
+                    <Image Source="{DynamicResource ImgArrowUp}" Stretch="None"/>
                 </Button.Content>
             </Button>
         </StackPanel>
         <TextBox x:Name="textBox" Grid.Row="0" Height="25" Grid.Column="1" Grid.ColumnSpan="3" KeyDown="textBox_KeyDown" />
-        <Rectangle Grid.Row="0" Fill="{DynamicResource BackgroundDarker}" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
+        <Separator Grid.Row="0" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
 
         <ListView x:Name="listViewDrives" Grid.Row="1" Background="{DynamicResource BackgroundLight}" BorderThickness="0" />
-        <TreeView x:Name="treeViewFiles" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Background="Transparent" BorderThickness="0" SelectedItemChanged="treeViewFiles_SelectedItemChanged" />
-        <Rectangle Grid.Row="2" Fill="{DynamicResource BackgroundDarker}" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Top"/>
+        <TreeView x:Name="treeViewFiles" Background="{DynamicResource BackgroundPanel}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" BorderThickness="0" SelectedItemChanged="treeViewFiles_SelectedItemChanged" />
+        <Separator Grid.Row="2" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Top"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="3" FlowDirection="RightToLeft" Margin="0,5,10,5">
             <Button x:Name="btnCancel" Width="75" Margin="0,0,10,0" Click="btnCancel_Click">Cancel</Button>
             <Button x:Name="btnOK" Width="75" IsEnabled="False" Click="btnOK_Click">OK</Button>

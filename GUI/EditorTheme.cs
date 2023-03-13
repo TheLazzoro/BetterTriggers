@@ -13,6 +13,7 @@ namespace GUI
     {
         Default,
         Light,
+        Night,
     }
 
     public static class EditorTheme
@@ -20,7 +21,7 @@ namespace GUI
         public static void Change(EditorThemeUnion theme)
         {
             Settings settings = Settings.Load();
-            settings.editorApperance = (int)theme;
+            settings.editorAppearance = (int)theme;
             switch (theme)
             {
                 case EditorThemeUnion.Default:
@@ -28,6 +29,9 @@ namespace GUI
                     break;
                 case EditorThemeUnion.Light:
                     LightTheme();
+                    break;
+                case EditorThemeUnion.Night:
+                    NightTheme();
                     break;
                 default:
                     DefaultTheme();
@@ -57,14 +61,21 @@ namespace GUI
         private static void DefaultTheme()
         {
             var app = (App)Application.Current;
-            var uri = new Uri("Resources/DarkTheme.xaml", UriKind.Relative);
+            var uri = new Uri("Resources/Themes/Dark.xaml", UriKind.Relative);
             app.ChangeTheme(uri);
         }
 
         private static void LightTheme()
         {
             var app = (App)Application.Current;
-            var uri = new Uri("Resources/LightTheme.xaml", UriKind.Relative);
+            var uri = new Uri("Resources/Themes/Light.xaml", UriKind.Relative);
+            app.ChangeTheme(uri);
+        }
+
+        private static void NightTheme()
+        {
+            var app = (App)Application.Current;
+            var uri = new Uri("Resources/Themes/Night.xaml", UriKind.Relative);
             app.ChangeTheme(uri);
         }
     }

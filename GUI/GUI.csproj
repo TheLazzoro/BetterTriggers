@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Icons\code_blue.ico</ApplicationIcon>
     <AssemblyName>Better Triggers</AssemblyName>
-    <Version>1.2.2</Version>
+    <Version>1.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,10 +43,14 @@
     <None Remove="Resources\Icons\actions-unitselection.png" />
     <None Remove="Resources\Icons\actions-visibility.png" />
     <None Remove="Resources\Icons\actions-wait.png" />
+    <None Remove="Resources\Icons\arrow-left-light.png" />
     <None Remove="Resources\Icons\arrow-left.png" />
+    <None Remove="Resources\Icons\arrow-right-light.png" />
     <None Remove="Resources\Icons\arrow-right.png" />
+    <None Remove="Resources\Icons\arrow-up-light.png" />
     <None Remove="Resources\Icons\arrow-up.png" />
     <None Remove="Resources\Icons\Class_16x.png" />
+    <None Remove="Resources\Icons\close-tab-light.png" />
     <None Remove="Resources\Icons\close-tab.png" />
     <None Remove="Resources\Icons\code.ico" />
     <None Remove="Resources\Icons\code_blue.ico" />
@@ -72,7 +76,9 @@
     <None Remove="Resources\map.png" />
     <None Remove="Resources\Orc.png" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
+    <None Remove="Resources\SyntaxHighlighting\JassHighlightingLight.xml" />
     <None Remove="Resources\SyntaxHighlighting\LuaHighlighting.xml" />
+    <None Remove="Resources\SyntaxHighlighting\LuaHighlightingLight.xml" />
     <None Remove="Resources\ui-editoricon-triggercategories_element.png" />
     <None Remove="Resources\ui-editoricon-triggercategories_folder.png" />
     <None Remove="Resources\ui-editoricon-triggercategories_folderopen.png" />
@@ -82,16 +88,28 @@
     <Content Include="Resources\Icons\actions-setvariables-alpha.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Icons\arrow-left-light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\arrow-left.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Icons\arrow-right-light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\arrow-right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\arrow-up-light.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\arrow-up.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\Class_16x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\close-tab-light.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\close-tab.png">
@@ -287,6 +305,8 @@
     <Content Include="Resources\Icons\ui-editoricon-triggercategories_dialog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\SyntaxHighlighting\JassHighlightingLight.xml" />
+    <Resource Include="Resources\SyntaxHighlighting\LuaHighlightingLight.xml" />
     <Resource Include="Resources\SyntaxHighlighting\LuaHighlighting.xml" />
     <Resource Include="Resources\SyntaxHighlighting\JassHighlighting.xml" />
   </ItemGroup>
@@ -422,7 +442,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Resources\LightTheme.xaml">
+    <Page Update="Resources\Themes\Night.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Themes\Light.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -44,18 +44,27 @@ namespace GUI.Components
 
             Settings settings = Settings.Load();
             this.avalonEditor.Margin = new Thickness(0, 0, 0, 0);
-            this.avalonEditor.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#1E1E1E");
-            this.avalonEditor.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#9CDCFE");
+            this.avalonEditor.SetResourceReference(TextEditor.BackgroundProperty, "TexteditorBackground");
+            this.avalonEditor.SetResourceReference(TextEditor.ForegroundProperty, "TexteditorForeground");
             this.avalonEditor.FontFamily = new FontFamily(settings.textEditorFontStyle);
             this.avalonEditor.ShowLineNumbers = true;
             this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
             this.tooltip = new ToolTip();
             this.tooltip.FontFamily = new FontFamily(settings.textEditorFontStyle);
 
-            string uri = language == ScriptLanguage.Jass ?
-                "Resources/SyntaxHighlighting/JassHighlighting.xml" :
-                "Resources/SyntaxHighlighting/LuaHighlighting.xml";
-
+            string uri = string.Empty;
+            if (settings.editorAppearance == 1)
+            {
+                uri = language == ScriptLanguage.Jass ?
+                    "Resources/SyntaxHighlighting/JassHighlightingLight.xml" :
+                    "Resources/SyntaxHighlighting/LuaHighlightingLight.xml";
+            }
+            else
+            {
+                uri = language == ScriptLanguage.Jass ?
+                    "Resources/SyntaxHighlighting/JassHighlighting.xml" :
+                    "Resources/SyntaxHighlighting/LuaHighlighting.xml";
+            }
             // Sets syntax highlighting in the comment field
             using (Stream s = Application.GetResourceStream(new Uri(uri, UriKind.Relative)).Stream)
             {
@@ -182,9 +191,9 @@ namespace GUI.Components
             Settings settings = Settings.Load();
             completionWindow = new CompletionWindow(avalonEditor.TextArea);
             completionWindow.ResizeMode = ResizeMode.NoResize;
-            completionWindow.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
-            completionWindow.Background = (SolidColorBrush)new BrushConverter().ConvertFromString("#333");
-            completionWindow.BorderBrush = (SolidColorBrush)new BrushConverter().ConvertFromString("#444");
+            //completionWindow.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
+            completionWindow.Background = (SolidColorBrush)Application.Current.Resources["TexteditorBackgroundAutocomplete"];
+            completionWindow.BorderBrush = (SolidColorBrush)Application.Current.Resources["BorderBrush"];
             completionWindow.BorderThickness = new Thickness(0.3);
             completionWindow.Width = 400;
             completionWindow.FontFamily = new FontFamily(settings.textEditorFontStyle);

@@ -7,7 +7,7 @@
         UseLayoutRounding="True"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="ParameterWindow" Height="450" Width="800" Background="#FF404040" KeyDown="Window_KeyDown" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" >
+        Title="ParameterWindow" Height="450" Width="800" Background="{DynamicResource BackgroundLight}" KeyDown="Window_KeyDown" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" >
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
@@ -19,7 +19,7 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Source:" Foreground="White" Grid.Row="0" Grid.ColumnSpan="2" />
+        <Label Content="Source:" Grid.Row="0" Grid.ColumnSpan="2" />
 
         <ItemsControl x:Name="radioButtonList" Grid.ColumnSpan="2" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" BorderThickness="0">
             <ItemsControl.ItemsPanel>
@@ -33,12 +33,12 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
 
-            <RadioButton x:Name="radioBtnFunction" Content="Function" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Checked="radioBtnFunction_Checked"/>
-            <RadioButton x:Name="radioBtnPreset" Content="Preset" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnPreset_Checked"/>
-            <RadioButton x:Name="radioBtnVariable" Content="Variable" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnVariable_Checked"/>
-            <RadioButton x:Name="radioBtnValue" Content="Value" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnValue_Checked"/>
-            <RadioButton x:Name="radioBtnTrigger" Content="Trigger" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnTrigger_Checked"/>
-            <RadioButton x:Name="radioBtnImported" Content="Imported" Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnImported_Checked"/>
+            <RadioButton x:Name="radioBtnFunction" Content="Function" VerticalAlignment="Center" Margin="10,0,0,0" Checked="radioBtnFunction_Checked"/>
+            <RadioButton x:Name="radioBtnPreset" Content="Preset"  VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnPreset_Checked"/>
+            <RadioButton x:Name="radioBtnVariable" Content="Variable"  VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnVariable_Checked"/>
+            <RadioButton x:Name="radioBtnValue" Content="Value"  VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnValue_Checked"/>
+            <RadioButton x:Name="radioBtnTrigger" Content="Trigger"  VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnTrigger_Checked"/>
+            <RadioButton x:Name="radioBtnImported" Content="Imported"  VerticalAlignment="Center" Margin="10,0,0,0" Grid.ColumnSpan="2" Checked="radioBtnImported_Checked"/>
 
         </ItemsControl>
 
