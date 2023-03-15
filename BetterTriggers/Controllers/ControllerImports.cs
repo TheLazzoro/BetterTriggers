@@ -20,11 +20,14 @@ namespace BetterTriggers.Controllers
 
             if (isMapMPQ)
             {
-                var mpqFiles = CustomMapData.MPQMap.ImportedFiles.Files;
-                mpqFiles.ForEach(f =>
+                if (CustomMapData.MPQMap.ImportedFiles != null)
                 {
-                    files.Add(f.FullPath);
-                });
+                    var mpqFiles = CustomMapData.MPQMap.ImportedFiles.Files;
+                    mpqFiles.ForEach(f =>
+                    {
+                        files.Add(f.FullPath);
+                    });
+                }
             }
             else
             {

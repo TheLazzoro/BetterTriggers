@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Icons\code_blue.ico</ApplicationIcon>
     <AssemblyName>Better Triggers</AssemblyName>
-    <Version>1.3.0</Version>
+    <Version>1.2.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
