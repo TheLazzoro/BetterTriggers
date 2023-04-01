@@ -156,7 +156,7 @@ end
                 ProcessStartInfo startInfo = new();
                 startInfo.CreateNoWindow = true;
                 startInfo.FileName = JassHelper;
-                startInfo.Arguments = $"--scriptonly {PathCommonJ} {PathBlizzardJ} \"{scriptFileToInput}\" \"{outputPath}\"";
+                startInfo.Arguments = $"--scriptonly \"{PathCommonJ}\" \"{PathBlizzardJ}\" \"{scriptFileToInput}\" \"{outputPath}\"";
                 p.StartInfo = startInfo;
                 p.Start();
                 p.WaitForExit();
