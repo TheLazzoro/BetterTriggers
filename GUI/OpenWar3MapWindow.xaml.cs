@@ -85,19 +85,26 @@ namespace GUI
 
             foreach (var drive in DriveInfo.GetDrives())
             {
-                string label = drive.VolumeLabel;
-                if (string.IsNullOrEmpty(label))
-                {
-                    label = "Local Disk";
-                }
-                HeaderItemIcon header = new HeaderItemIcon(label + $" ({drive.Name.Replace("\\", "")})", 30);
-                ListViewItem listItem = new ListViewItem();
-                listItem.Content = header;
-                listItem.Selected += delegate
-                {
-                    GoToDirectory(drive.RootDirectory.FullName);
-                };
-                listViewDrives.Items.Add(listItem);
+	            try
+	            {
+		            string label = drive.VolumeLabel;
+		            if (string.IsNullOrEmpty(label))
+		            {
+			            label = "Local Disk";
+		            }
+		            HeaderItemIcon header = new HeaderItemIcon(label + $" ({drive.Name.Replace("\\", "")})", 30);
+		            ListViewItem listItem = new ListViewItem();
+		            listItem.Content = header;
+		            listItem.Selected += delegate
+		            {
+			            GoToDirectory(drive.RootDirectory.FullName);
+		            };
+		            listViewDrives.Items.Add(listItem);
+	            }
+				catch (Exception e)
+	            {
+                    //skip drives which are inaccessible, such as DVD drives with no disk
+	            }
             }
 
             string path = settings.lastOpenedFileLocation;
