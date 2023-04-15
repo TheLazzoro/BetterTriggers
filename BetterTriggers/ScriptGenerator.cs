@@ -164,12 +164,11 @@ end
                 p.Kill();
                 if(File.Exists(outputPath))
                     GeneratedScript = File.ReadAllText(outputPath);
-                else
-                    throw new Exception($"Script does not exists in temp output '{outputPath}'");
             }
             else
             {
                 File.WriteAllText(outputPath, script.ToString());
+                GeneratedScript = script.ToString();
             }
 
             return success;
