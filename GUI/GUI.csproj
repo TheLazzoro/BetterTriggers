@@ -7,6 +7,7 @@
     <ApplicationIcon>Resources\Icons\code_blue.ico</ApplicationIcon>
     <AssemblyName>Better Triggers</AssemblyName>
     <Version>1.2.3</Version>
+	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
   <ItemGroup>
