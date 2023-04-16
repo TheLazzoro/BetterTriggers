@@ -168,7 +168,8 @@ end
             else
             {
                 File.WriteAllText(outputPath, script.ToString());
-                GeneratedScript = script.ToString();
+                if (File.Exists(outputPath))
+                    GeneratedScript = File.ReadAllText(outputPath);
             }
 
             return success;
@@ -682,7 +683,7 @@ end
                 {
                     for (uint k = 0; k < j.HeroAbilityLevel; k++)
                     {
-                        script.Append($"\t{call} SelectHeroSkill({varName}, '{j.ToString()}'){newline}");
+                        script.Append($"\t{call} SelectHeroSkill({varName}, {fourCCStart}'{j.ToString()}'{fourCCEnd}){newline}");
                     }
 
                     ModifiedAbilityDataExtensions.TryGetOrderOffString(j, out string orderOffString);
@@ -810,7 +811,7 @@ end
                 if (r.WeatherType == War3Net.Build.WeatherType.None)
                     continue;
 
-                script.Append($"{set} we = AddWeatherEffect({varName}, '{Int32Extensions.ToRawcode((int)r.WeatherType)}'){newline}");
+                script.Append($"{set} we = AddWeatherEffect({varName}, {fourCCStart}'{Int32Extensions.ToRawcode((int)r.WeatherType)}'{fourCCEnd}){newline}");
                 script.Append($"{call} EnableWeatherEffect(we, true){newline}");
             }
 
