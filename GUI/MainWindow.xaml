@@ -253,6 +253,7 @@
         <RoutedUICommand x:Key="OpenProject"></RoutedUICommand>
         <RoutedUICommand x:Key="SaveProject"></RoutedUICommand>
         <RoutedUICommand x:Key="CloseProject"></RoutedUICommand>
+        <RoutedUICommand x:Key="ImportTriggers"></RoutedUICommand>
 
         <RoutedUICommand x:Key="Undo"></RoutedUICommand>
         <RoutedUICommand x:Key="Redo"></RoutedUICommand>
@@ -279,6 +280,7 @@
         <CommandBinding Command="{StaticResource OpenProject}" CanExecute="CommandBinding_CanExecute_OpenProject" Executed="CommandBinding_Executed_OpenProject"/>
         <CommandBinding Command="{StaticResource SaveProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_Save"/>
         <CommandBinding Command="{StaticResource CloseProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_CloseProject"/>
+        <CommandBinding Command="{StaticResource ImportTriggers}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_ImportTriggers"/>
 
         <CommandBinding Command="{StaticResource Undo}" CanExecute="CommandBinding_CanExecute_Undo" Executed="CommandBinding_Executed_Undo"/>
         <CommandBinding Command="{StaticResource Redo}" CanExecute="CommandBinding_CanExecute_Redo" Executed="CommandBinding_Executed_Redo"/>
@@ -342,7 +344,9 @@
                 <MenuItem Name="menuOpen" Command="{StaticResource OpenProject}" InputGestureText="Ctrl+O" Header="Open Project..." />
                 <MenuItem Name="menuSave" Command="{StaticResource SaveProject}" InputGestureText="Ctrl+S" Header="Save All" />
                 <MenuItem Name="menuClose" Command="{StaticResource CloseProject}" Header="Close Project" />
-                <Separator />
+                <Separator Margin="0,5,0,4" />
+                <MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />
+                <Separator Margin="0,5,0,4" />
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
             </MenuItem>
             <MenuItem x:Name="menuEdit" Header="WESTRING_MENU_EDIT" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" SubmenuOpened="MenuItem_SubmenuOpened">

@@ -694,6 +694,11 @@ namespace GUI
             controller.CloseProject();
         }
 
+        private void CommandBinding_Executed_ImportTriggers(object sender, ExecutedRoutedEventArgs e)
+        {
+            
+        }
+
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = BetterTriggers.Commands.CommandManager.CanUndo();
