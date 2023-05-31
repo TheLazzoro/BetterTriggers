@@ -10,10 +10,11 @@ namespace BetterTriggers.Utility
 {
     public static class IniFileConverter
     {
+        private static IniDataParser parser = new IniDataParser();
+
         public static IniData GetIniData(string fileContent, bool allowDuplicateSections = true, bool allowDuplicateKeys = true)
         {
             var iniFile = Convert(fileContent);
-            IniDataParser parser = new IniDataParser();
             parser.Configuration.AllowDuplicateSections = allowDuplicateSections;
             parser.Configuration.AllowDuplicateKeys = allowDuplicateKeys;
             IniData data = parser.Parse(iniFile);

@@ -46,6 +46,11 @@ namespace BetterTriggers.Controllers
             if (isTest)
                 return;
 
+            if(recentFiles.Count == 0)
+            {
+                GetRecentFiles(); // Loads there are no recent files.
+            }
+
             if (recentFiles.Contains(projectFilePath))
             {
                 recentFiles.Remove(projectFilePath);
