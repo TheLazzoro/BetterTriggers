@@ -696,7 +696,8 @@ namespace GUI
 
         private void CommandBinding_Executed_ImportTriggers(object sender, ExecutedRoutedEventArgs e)
         {
-            
+            ImportTriggersWindow window = new ImportTriggersWindow();
+            window.ShowDialog();
         }
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
