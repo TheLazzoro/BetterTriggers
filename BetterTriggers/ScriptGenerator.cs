@@ -46,7 +46,7 @@ namespace BetterTriggers
         public static string PathCommonJ { get; set; }
         public static string PathBlizzardJ { get; set; }
         public static string JassHelper { get; set; }
-        public string GeneratedScript{ get; private set; }
+        public string GeneratedScript { get; private set; }
 
         ScriptLanguage language;
         List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
@@ -137,7 +137,7 @@ end
 
             string scriptFile = language == ScriptLanguage.Jass ? "war3map.j" : "war3map.lua";
             string outputDir = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
-            if(!Directory.Exists(outputDir))
+            if (!Directory.Exists(outputDir))
                 Directory.CreateDirectory(outputDir);
 
             string outputPath = Path.Combine(outputDir, scriptFile);
@@ -162,7 +162,7 @@ end
                 p.WaitForExit();
                 success = p.ExitCode == 0;
                 p.Kill();
-                if(File.Exists(outputPath))
+                if (File.Exists(outputPath))
                     GeneratedScript = File.ReadAllText(outputPath);
             }
             else
@@ -762,6 +762,10 @@ end
             script.Append(separator);
 
             script.Append($"function CreateAllItems {functionReturnsNothing}{newline}");
+            if (language == ScriptLanguage.Jass)
+                script.Append($"\tlocal item i = {_null}{newline}");
+            else
+                script.Append($"\tlocal i = {_null}{newline}");
 
             var items = Units.GetMapItemsAll();
             foreach (var i in items)
@@ -774,8 +778,13 @@ end
                 var y = i.Position.Y.ToString(enUS);
                 var skinId = Int32Extensions.ToRawcode(i.SkinId);
 
+                var varName = $"gg_item_{i.ToString()}_{i.CreationNumber.ToString("D4")}";
 
-                script.Append($"{call} BlzCreateItemWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
+                Tuple<Parameter, string> value;
+                if (!generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
+                    varName = "i";
+
+                script.Append($"\t{set} {varName} = BlzCreateItemWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
             }
 
             script.Append($"{endfunction}{newline}{newline}");
@@ -1915,7 +1924,7 @@ end
                         With the way things work in this editor, many things would
                         need to get re-written.
                     */
-                    if (condition.function.value == "CustomScriptCode")  
+                    if (condition.function.value == "CustomScriptCode")
                     {
                         pre += condition.function.parameters[0].value + newline;
                     }
@@ -1931,7 +1940,7 @@ end
                 pre += $"\treturn true{newline}";
                 pre += $"{newline}{endfunction}{newline}{newline}";
                 pre_actions.Add(pre);
-                
+
                 script.Append(CarryLocals());
                 script.Append($"if(If_{function_name}()) then{newline}");
 
