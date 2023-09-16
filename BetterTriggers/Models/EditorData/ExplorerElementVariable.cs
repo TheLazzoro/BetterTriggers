@@ -109,7 +109,7 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public int GetId()
+        public long GetId()
         {
             return variable.Id;
         }

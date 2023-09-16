@@ -121,8 +121,8 @@ namespace Tests
             {
                 var copiedLv = (LocalVariable) element1.trigger.LocalVariables[i];
                 var pastedLv = (LocalVariable)pasted.trigger.LocalVariables[i];
-                int notEqualId = copiedLv.variable.Id;
-                int actualId = pastedLv.variable.Id;
+                long notEqualId = copiedLv.variable.Id;
+                long actualId = pastedLv.variable.Id;
 
                 Assert.AreNotEqual(notEqualId, actualId);
             }

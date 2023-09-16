@@ -8,7 +8,7 @@ namespace BetterTriggers.Models.EditorData
 {
     public interface IExplorerElement
     {
-        int GetId();
+        long GetId();
         string GetPath();
         string GetSaveablePath(); // Used in the project file.
         void SetPath(string newPath);

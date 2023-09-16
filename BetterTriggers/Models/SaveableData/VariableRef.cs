@@ -8,7 +8,7 @@ namespace BetterTriggers.Models.SaveableData
     public class VariableRef : Parameter
     {
         public readonly int ParamType = 3; // DO NOT CHANGE
-        public int VariableId;
+        public long VariableId;
         public List<Parameter> arrayIndexValues = new List<Parameter>();
 
 

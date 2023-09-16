@@ -35,7 +35,7 @@ namespace GUI
             if (e.ProgressPercentage == 100 && project != null)
                 this.Close();
 
-            if(e.ProgressPercentage == -1)
+            if (e.ProgressPercentage == -1)
             {
                 MessageBox message = new MessageBox("Error", errorMsg);
                 message.ShowDialog();
