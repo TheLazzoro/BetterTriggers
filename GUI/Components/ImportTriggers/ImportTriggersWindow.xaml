@@ -20,6 +20,6 @@
         <Label VerticalAlignment="Bottom" HorizontalAlignment="Center">Select Map:</Label>
         <Button x:Name="btnSelect" Height="25" Width="75" Grid.Row="1" Click="btnSelect_Click" >Select</Button>
 
-        <TreeView Background="{DynamicResource BackgroundDarker}" Grid.Row="2" Grid.ColumnSpan="2"></TreeView>
+        <TreeView x:Name="treeView" Background="{DynamicResource BackgroundDarker}" Grid.Row="2" Grid.ColumnSpan="2"></TreeView>
     </Grid>
 </Window>
