@@ -5,6 +5,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
+using GUI.Components.Shared;
 using GUI.Components.TriggerExplorer;
 using GUI.Components.VariableEditor;
 using GUI.Controllers;
@@ -48,6 +49,21 @@ namespace GUI.Components
             previousText1 = variable.ArraySize[1].ToString();
 
             InitializeComponent();
+
+            var usedByList = ControllerReferences.GetReferrers(variable);
+            if(usedByList.Count == 0)
+            {
+                listViewUsedBy.Visibility = Visibility.Hidden;
+                lblUsedBy.Visibility = Visibility.Hidden;
+            }
+            usedByList.ForEach(r => {
+                TreeItemHeader header = new TreeItemHeader(r.GetName(), "TC_TRIGGER_NEW");
+                ListViewItem item = new ListViewItem
+                {
+                    Content = header
+                };
+                listViewUsedBy.Items.Add(item);
+            });
 
             if (variable._isLocal)
             {

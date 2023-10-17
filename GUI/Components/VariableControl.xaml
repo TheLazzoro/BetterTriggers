@@ -21,18 +21,19 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="307*"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition MaxWidth="250"/>
             </Grid.ColumnDefinitions>
 
             <Label Content="Identifier:" Grid.Row="1" Grid.Column="0" />
-            <TextBox x:Name="textBlockVariableNameUDG" Text="placeholder" Grid.Row="1" IsReadOnly="True" Grid.Column="1" Margin="5,5,5,5" HorizontalAlignment="Left" Width="200"/>
+            <TextBox x:Name="textBlockVariableNameUDG" Text="placeholder" Grid.Row="1" IsReadOnly="True" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Left" Width="200"/>
 
             <Label Content="Variable Type:" Grid.Row="2" Grid.Column="0" />
-            <ComboBox x:Name="comboBoxVariableType" Grid.Row="2" Grid.Column="1" Margin="5,4,5,4" HorizontalAlignment="Left" Width="200" SelectionChanged="comboBoxVariableType_SelectionChanged" Loaded="comboBoxVariableType_Loaded" />
+            <ComboBox x:Name="comboBoxVariableType" Grid.Row="2" Grid.Column="1" Margin="5,4,0,4" HorizontalAlignment="Left" Width="200" SelectionChanged="comboBoxVariableType_SelectionChanged" Loaded="comboBoxVariableType_Loaded" />
 
             <CheckBox x:Name="checkBoxIsArray" Width="75" Content="Array" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Click="checkBoxIsArray_Click" />
 
-            <Label x:Name="lblDimensions" Content="Dimensions:" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            <Label x:Name="lblDimensions" Content="Dimensions:" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0" Grid.ColumnSpan="2"/>
             <ComboBox x:Name="comboBoxArrayDimensions" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="85,0,0,0" Width="50" SelectionChanged="comboBoxArrayDimensions_SelectionChanged">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="2"/>
@@ -44,7 +45,17 @@
             <TextBox x:Name="textBoxArraySize1" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" TextChanged="textBoxArraySize1_TextChanged"/>
 
             <Label x:Name="lblInitialValue" Content="Initial Value:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBlock x:Name="textblockInitialValue" Grid.Row="8" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center"></TextBlock>
+            <TextBlock x:Name="textblockInitialValue" Grid.Row="8" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBlock>
+
+            <Label x:Name="lblUsedBy" Grid.Column="2" Grid.Row="1">Used By:</Label>
+            <ListView
+                x:Name="listViewUsedBy"
+                Background="{DynamicResource BackgroundDark}"
+                Grid.Column="2"
+                Grid.Row="2"
+                Grid.RowSpan="7"
+                />
+
         </Grid>
     </ScrollViewer>
 </UserControl>
