@@ -1777,7 +1777,15 @@ end
                 globalCarry.IsArray = localVar.variable.IsArray;
                 globalLocalCarries.Add(globalCarry);
                 events.Insert(0, $"{endglobals}{newline}");
-                events.Insert(0, $"{type} {globalCarry.Name}{newline}");
+                if (language == ScriptLanguage.Lua)
+                {
+                    events.Insert(0, $" = nil{newline}");
+                }
+                else
+                {
+                    events.Insert(0, $"{newline}");
+                }
+                events.Insert(0, $"{type} {globalCarry.Name}");
                 events.Insert(0, $"{globals}{newline}");
             }
 
