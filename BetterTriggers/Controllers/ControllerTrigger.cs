@@ -81,12 +81,12 @@ namespace BetterTriggers.Controllers
             return generatedName + ".trg";
         }
 
-        public static string GetTriggerName(int triggerId)
+        public static string GetTriggerName(long triggerId)
         {
             return Triggers.GetName(triggerId);
         }
 
-        public static Trigger GetById(int id)
+        public static Trigger GetById(long id)
         {
             return Triggers.FindById(id).trigger;
         }
