@@ -84,7 +84,7 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public long GetId()
+        public int GetId()
         {
             throw new NotImplementedException();
         }

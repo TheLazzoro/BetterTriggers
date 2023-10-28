@@ -159,22 +159,22 @@ namespace BetterTriggers.Controllers
             return list;
         }
 
-        public static string GetVariableNameById(long id)
+        public static string GetVariableNameById(int id)
         {
             return Variables.GetVariableNameById(id);
         }
 
-        public static Variable GetById(long id)
+        public static Variable GetById(int id)
         {
             return Variables.GetVariableById(id);
         }
 
-        public static Variable GetById(long id, Trigger trig)
+        public static Variable GetById(int id, Trigger trig)
         {
             return Variables.GetVariableById(id, trig);
         }
 
-        public static Variable GetById_AllLocals(long id)
+        public static Variable GetById_AllLocals(int id)
         {
             return Variables.GetVariableById_AllLocals(id);
         }

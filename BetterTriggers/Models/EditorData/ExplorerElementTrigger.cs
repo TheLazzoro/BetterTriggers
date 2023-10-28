@@ -108,7 +108,7 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public long GetId()
+        public int GetId()
         {
             return trigger.Id;
         }

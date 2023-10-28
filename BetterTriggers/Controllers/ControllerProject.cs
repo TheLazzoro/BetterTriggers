@@ -916,14 +916,14 @@ namespace BetterTriggers.Controllers
 
 
                 // Adjusts local variable ids
-                List<long> blacklistedIds = new List<long>();
+                List<int> blacklistedIds = new List<int>();
                 ControllerTrigger controller = new ControllerTrigger();
                 var varRefs = controller.GetVariableRefsFromTrigger(element);
                 element.trigger.LocalVariables.ForEach(v =>
                 {
                     var lv = (LocalVariable)v;
-                    long oldId = lv.variable.Id;
-                    long newId = Variables.GenerateId(blacklistedIds);
+                    int oldId = lv.variable.Id;
+                    int newId = Variables.GenerateId(blacklistedIds);
                     Variables.AddLocalVariable(lv);
                     lv.variable.Id = newId;
                     blacklistedIds.Add(newId);

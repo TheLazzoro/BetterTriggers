@@ -1,13 +1,11 @@
 ﻿using BetterTriggers.Containers;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
     public class Trigger : IReferable
     {
-        public long Id;
+        public int Id;
         public string Comment;
         public bool IsScript;
         public bool RunOnMapInit;

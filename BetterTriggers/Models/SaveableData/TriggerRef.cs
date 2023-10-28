@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.JsonBaseConverter;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
@@ -8,7 +7,7 @@ namespace BetterTriggers.Models.SaveableData
     public class TriggerRef : Parameter
     {
         public readonly int ParamType = 4; // DO NOT CHANGE
-        public long TriggerId;
+        public int TriggerId;
 
         public override TriggerRef Clone()
         {

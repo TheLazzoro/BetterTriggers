@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using BetterTriggers.Utility;
 
 namespace BetterTriggers.Containers
 {
@@ -19,9 +18,9 @@ namespace BetterTriggers.Containers
             lastCreated = trigger;
         }
 
-        public static long GenerateId()
+        public static int GenerateId()
         {
-            long generatedId = 0;
+            int generatedId = 0;
             bool isIdValid = false;
             while (!isIdValid)
             {
@@ -36,7 +35,7 @@ namespace BetterTriggers.Containers
                 if (!doesIdExist)
                     isIdValid = true;
                 else
-                    generatedId = RandomUtil.GenerateLong();
+                    generatedId++;
             }
 
             return generatedId;
@@ -67,13 +66,13 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        internal static string GetName(long triggerId)
+        internal static string GetName(int triggerId)
         {
             var element = FindById(triggerId);
             return element.GetName();
         }
 
-        public static ExplorerElementTrigger FindById(long id)
+        public static ExplorerElementTrigger FindById(int id)
         {
             ExplorerElementTrigger trigger = null;
             var enumerator = triggerElementContainer.GetEnumerator();

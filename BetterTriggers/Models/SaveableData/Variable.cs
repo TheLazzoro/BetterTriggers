@@ -6,7 +6,7 @@ namespace BetterTriggers.Models.SaveableData
 {
     public class Variable : IReferable
     {
-        public long Id;
+        public int Id;
 
         public string Name { get { return _name; } set { _name = value; OnValuesChanged(); } }
         public string Type { get { return _type; } set { _type = value; OnValuesChanged(); } }

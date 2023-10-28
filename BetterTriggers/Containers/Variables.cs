@@ -1,7 +1,6 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
-using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,9 +64,9 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="blacklist">Id's that cannot be used.</param>
         /// <returns></returns>
-        public static long GenerateId(List<long> blacklist = null)
+        public static int GenerateId(List<int> blacklist = null)
         {
-            long generatedId = 0;
+            int generatedId = 0;
             bool isIdValid = false;
             while (!isIdValid)
             {
@@ -94,7 +93,7 @@ namespace BetterTriggers.Containers
                 if (!doesIdExist)
                     isIdValid = true;
                 else
-                    generatedId = RandomUtil.GenerateLong();
+                    generatedId++;
             }
 
             return generatedId;
@@ -138,7 +137,7 @@ namespace BetterTriggers.Containers
             return variableContainer.ToList();
         }
 
-        internal static Variable GetVariableById(long Id, Trigger trig = null)
+        internal static Variable GetVariableById(int Id, Trigger trig = null)
         {
             Variable var = null;
 
@@ -175,7 +174,7 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Should only be used for script generation.
         /// </summary>
-        internal static Variable GetVariableById_AllLocals(long Id)
+        internal static Variable GetVariableById_AllLocals(int Id)
         {
             Variable var = null;
 
@@ -202,7 +201,7 @@ namespace BetterTriggers.Containers
             return var;
         }
 
-        public static string GetVariableNameById(long Id)
+        public static string GetVariableNameById(int Id)
         {
             string name = string.Empty;
 
