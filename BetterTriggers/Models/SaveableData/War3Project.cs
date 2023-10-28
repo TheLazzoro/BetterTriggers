@@ -10,6 +10,7 @@ namespace BetterTriggers.Models.SaveableData
         public int Version;
         public Version GameVersion;
         public string Language;
+        public bool UseRelativeMapDirectory;
         public string Comment;
         public string Header;
         public string War3MapDirectory;

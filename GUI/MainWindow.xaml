@@ -253,6 +253,7 @@
         <RoutedUICommand x:Key="OpenProject"></RoutedUICommand>
         <RoutedUICommand x:Key="SaveProject"></RoutedUICommand>
         <RoutedUICommand x:Key="CloseProject"></RoutedUICommand>
+        <RoutedUICommand x:Key="OpenProjectSettings"></RoutedUICommand>
 
         <RoutedUICommand x:Key="Undo"></RoutedUICommand>
         <RoutedUICommand x:Key="Redo"></RoutedUICommand>
@@ -279,6 +280,7 @@
         <CommandBinding Command="{StaticResource OpenProject}" CanExecute="CommandBinding_CanExecute_OpenProject" Executed="CommandBinding_Executed_OpenProject"/>
         <CommandBinding Command="{StaticResource SaveProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_Save"/>
         <CommandBinding Command="{StaticResource CloseProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_CloseProject"/>
+        <CommandBinding Command="{StaticResource OpenProjectSettings}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_OpenProjectSettings"/>
 
         <CommandBinding Command="{StaticResource Undo}" CanExecute="CommandBinding_CanExecute_Undo" Executed="CommandBinding_Executed_Undo"/>
         <CommandBinding Command="{StaticResource Redo}" CanExecute="CommandBinding_CanExecute_Redo" Executed="CommandBinding_Executed_Redo"/>
@@ -342,6 +344,8 @@
                 <MenuItem Name="menuOpen" Command="{StaticResource OpenProject}" InputGestureText="Ctrl+O" Header="Open Project..." />
                 <MenuItem Name="menuSave" Command="{StaticResource SaveProject}" InputGestureText="Ctrl+S" Header="Save All" />
                 <MenuItem Name="menuClose" Command="{StaticResource CloseProject}" Header="Close Project" />
+                <Separator />
+                <MenuItem Name="menuProjectSettings" Command="{StaticResource OpenProjectSettings}" Header="Project Settings" />
                 <Separator />
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
             </MenuItem>

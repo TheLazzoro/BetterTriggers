@@ -497,7 +497,7 @@ namespace GUI
             }
 
             vmd.Tabs.Clear();
-            LoadingDataWindow loadingDataWindow = new LoadingDataWindow(project.War3MapDirectory);
+            LoadingDataWindow loadingDataWindow = new LoadingDataWindow(controllerProject.GetFullMapPath());
             loadingDataWindow.ShowDialog();
 
             if (triggerExplorer != null)
@@ -692,6 +692,12 @@ namespace GUI
 
             ControllerProject controller = new ControllerProject();
             controller.CloseProject();
+        }
+
+        private void CommandBinding_Executed_OpenProjectSettings(object sender, ExecutedRoutedEventArgs e)
+        {
+            ProjectSettingsWindow projectSettings = new ProjectSettingsWindow();
+            projectSettings.ShowDialog();
         }
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)

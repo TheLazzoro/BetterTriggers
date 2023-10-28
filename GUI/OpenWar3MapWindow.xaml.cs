@@ -13,6 +13,8 @@ using BetterTriggers.Utility;
 using BetterTriggers.Controllers;
 using System.Windows.Media;
 using System.Windows.Forms;
+using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 
 namespace GUI
 {
@@ -21,6 +23,7 @@ namespace GUI
         public string SelectedPath;
         public bool OK;
         private string currentDir;
+        private bool useRelativeMapDirectory;
 
         public OpenWar3MapWindow()
         {
@@ -31,9 +34,24 @@ namespace GUI
             this.Left = settings.selectMapWindowX;
             this.Top = settings.selectMapWindowY;
 
-            string path = settings.lastOpenedFileLocation;
-            if (!Directory.Exists(path))
-                path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string path;
+            var project = ContainerProject.project;
+            useRelativeMapDirectory = project.UseRelativeMapDirectory;
+            if (useRelativeMapDirectory)
+            {
+                var root = (ExplorerElementRoot)ContainerProject.projectFiles[0];
+                string rootDir = Path.GetDirectoryName(root.GetProjectPath());
+                path = Path.Combine(rootDir, "map");
+                btnBrowseFiles.Visibility = Visibility.Hidden;
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+            }
+            else
+            {
+                path = settings.lastOpenedFileLocation;
+                if (!Directory.Exists(path))
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
 
 
             RefreshFileList(path);
@@ -125,6 +143,10 @@ namespace GUI
 
             ListItemData data = (ListItemData)treeItem.Tag;
             SelectedPath = data.path;
+            if(useRelativeMapDirectory)
+            {
+                SelectedPath = Path.GetFileName(data.path);
+            }
             if(!ControllerProject.VerfiyMapPath(SelectedPath))
             {
                 btnOK.IsEnabled = false;
