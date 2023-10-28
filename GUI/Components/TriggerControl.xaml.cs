@@ -6,7 +6,6 @@ using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
-using GUI.Components.TriggerExplorer;
 using GUI.Container;
 using GUI.Controllers;
 using GUI.Utility;

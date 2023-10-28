@@ -3,7 +3,6 @@ using BetterTriggers.Models.EditorData;
 using GUI.Components;
 using GUI.Components.TextEditorExtensions;
 using GUI.Components.TriggerEditor;
-using GUI.Components.TriggerExplorer;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Newtonsoft.Json;

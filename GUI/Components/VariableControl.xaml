@@ -10,7 +10,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="30" MaxHeight="30"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -48,12 +48,16 @@
             <TextBlock x:Name="textblockInitialValue" Grid.Row="8" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBlock>
 
             <Label x:Name="lblUsedBy" Grid.Column="2" Grid.Row="1">Used By:</Label>
+            
             <ListView
-                x:Name="listViewUsedBy"
-                Background="{DynamicResource BackgroundDark}"
                 Grid.Column="2"
                 Grid.Row="2"
-                Grid.RowSpan="7"
+                Grid.RowSpan="6"
+                MaxHeight="250"
+                x:Name="listViewUsedBy"
+                Background="{DynamicResource BackgroundDark}"
+                MouseDoubleClick="listViewUsedBy_MouseDoubleClick"
+                
                 />
 
         </Grid>

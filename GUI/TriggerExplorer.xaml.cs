@@ -11,7 +11,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Containers;
@@ -513,7 +512,7 @@ namespace GUI
 
         private TreeItemBT SearchForElement(string searchText, TreeItemBT parent)
         {
-            if (parent.GetHeaderText().ToLower().Contains(searchText.ToLower()))
+            if (parent.GetHeaderText() == searchText)
                 return parent;
 
             TreeItemBT treeItem = null;

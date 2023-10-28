@@ -3,7 +3,6 @@ using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components;
-using GUI.Components.TriggerExplorer;
 using System;
 using System.IO;
 using System.Windows;

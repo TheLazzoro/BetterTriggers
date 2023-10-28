@@ -6,7 +6,6 @@ using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.Shared;
-using GUI.Components.TriggerExplorer;
 using GUI.Components.VariableEditor;
 using GUI.Controllers;
 using Newtonsoft.Json;
@@ -333,6 +332,19 @@ namespace GUI.Components
         internal void Dispose()
         {
             variable.ValuesChanged -= Variable_ValuesChanged;
+        }
+
+        private void listViewUsedBy_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = listViewUsedBy.SelectedItem as ListViewItem;
+            if (item == null)
+                return;
+
+            var header = item.Content as TreeItemHeader;
+            string name = header.GetDisplayText();
+            var triggerExplorer = TriggerExplorer.Current;
+
+            triggerExplorer.Search(name);
         }
     }
 }
