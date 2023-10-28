@@ -355,6 +355,7 @@ namespace Tests
             project = controllerProject.LoadProject(projectFile);
             CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
             CustomMapData.Load();
+            ControllerMapData.ReloadMapData();
             string script;
             (success, script) = controllerProject.GenerateScript();
         }

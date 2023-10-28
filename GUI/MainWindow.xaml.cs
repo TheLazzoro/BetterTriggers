@@ -197,7 +197,7 @@ namespace GUI
 
         private void GlobalHotkeyValidateTriggers(HotKey hotKey)
         {
-            if(IsProjectActive())
+            if (IsProjectActive())
             {
                 ControllerProject controller = new ControllerProject();
                 controller.GenerateScript();
@@ -255,7 +255,14 @@ namespace GUI
         private void VerifyTriggerData()
         {
             VerifyingTriggersWindow window = new VerifyingTriggersWindow();
+            window.OnCloseProject += Window_OnCloseProject;
             window.ShowDialog();
+            window.OnCloseProject -= Window_OnCloseProject;
+        }
+
+        private void Window_OnCloseProject()
+        {
+            CloseProject(true);
         }
 
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -443,7 +450,7 @@ namespace GUI
 
         private void OpenMap()
         {
-            
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.DefaultExt = ".json";
             dialog.Filter = "JSON Files (*.json)|*.json";
@@ -613,7 +620,7 @@ namespace GUI
             Settings.Save(Settings.Load());
             Keybindings.Save(GetKeybindings());
 
-            if(globalBuildMap != null)
+            if (globalBuildMap != null)
                 globalBuildMap.Dispose();
             if (globalTestMap != null)
                 globalTestMap.Dispose();
@@ -680,8 +687,16 @@ namespace GUI
 
         private void CommandBinding_Executed_CloseProject(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!DoCloseProject())
-                return;
+            CloseProject();
+        }
+
+        private void CloseProject(bool forceClose = false)
+        {
+            if (!forceClose)
+            {
+                if (!DoCloseProject())
+                    return;
+            }
 
             vmd.Tabs.Clear();
             mainGrid.Children.Remove(triggerExplorer);

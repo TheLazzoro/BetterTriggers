@@ -452,6 +452,7 @@ namespace BetterTriggers.Controllers
             ContainerProject.currentSelectedElement = null;
             CustomMapData.mapPath = null;
             CommandManager.Reset();
+            UnsavedFiles.Clear();
         }
 
 
