@@ -5,6 +5,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
+using GUI.Components.VersionCheck;
 using GUI.Controllers;
 using Microsoft.Win32;
 using System;
@@ -102,6 +103,8 @@ namespace GUI
             SetKeybindings(keybindings);
 
             ControllerRecentFiles.isTest = false; // hack
+
+            new VersionCheck();
         }
 
         /// <summary>
