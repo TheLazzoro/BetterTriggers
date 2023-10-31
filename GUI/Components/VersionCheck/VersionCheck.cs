@@ -51,7 +51,7 @@ namespace GUI.Components.VersionCheck
             {
                 Application.Current.Dispatcher.Invoke(delegate
                 {
-                    var window = new NewVersionWindow(versionDTO);
+                    var window = new NewVersionWindow(versionDTO, this.version);
                     window.ShowDialog();
                 });
             }

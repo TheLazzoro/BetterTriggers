@@ -5,33 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.Components.VersionCheck"
         mc:Ignorable="d"
-        Title="New Version" Height="237" Width="400" Background="{DynamicResource BackgroundDark}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="New Version" Height="220" Width="400" Background="{DynamicResource BackgroundDark}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="71*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
         <TextBlock
             Foreground="{DynamicResource TextBrush2}"
             Text="A new version is available!"
-            HorizontalAlignment="Center"
+            FontSize="18"
+            Grid.Column="1"
             Grid.Row="1"
         />
         <TextBlock
+            x:Name="txtNewVersion"
             Foreground="{DynamicResource TextBrush2}"
-            Text="Get it on Hive Workshop or GitHub:"
-            HorizontalAlignment="Center"
+            Text="New version:"
+            Grid.Column="1"
             Grid.Row="2"
         />
-        <StackPanel Grid.Row="3">
+        <TextBlock
+            x:Name="txtOldVersion"
+            Foreground="{DynamicResource TextBrush2}"
+            Text="Current version:"
+            Grid.Column="1"
+            Grid.Row="3"
+        />
+        <TextBlock
+            Foreground="{DynamicResource TextBrush2}"
+            Grid.Column="1"
+            Grid.Row="4"
+        >
             <TextBlock
-                HorizontalAlignment="Center"
-                Margin="0,0,0,10"
             >
+                Get it on
                 <Hyperlink
                         Foreground="{DynamicResource HyperlinkDefaultBrush}"
                         NavigateUri="https://www.hiveworkshop.com/threads/better-triggers-custom-trigger-editor.341002/" RequestNavigate="Hyperlink_RequestNavigate"
@@ -40,24 +58,26 @@
                     Hive Workshop
                 </Hyperlink>
             </TextBlock>
+            or
             <TextBlock
-                HorizontalAlignment="Center"
                 >
                 <Hyperlink
                     x:Name="textGithub"
-                        Foreground="{DynamicResource HyperlinkDefaultBrush}" RequestNavigate="Hyperlink_RequestNavigate"
+                    Foreground="{DynamicResource HyperlinkDefaultBrush}" RequestNavigate="Hyperlink_RequestNavigate"
                     >
                     GitHub
                 </Hyperlink>
             </TextBlock>
-        </StackPanel>
+            
+        </TextBlock>
 
         <Button
             x:Name="btnOK"
             Margin="5"
-            Grid.Row="4"
+            Grid.Row="6"
             Width="70"
             Content="OK"
+            Grid.Column="1"
             HorizontalAlignment="Right"
             Click="btnOK_Click"
         />

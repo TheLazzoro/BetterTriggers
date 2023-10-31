@@ -6,17 +6,17 @@ namespace GUI.Components.VersionCheck
 {
     public partial class NewVersionWindow : Window
     {
-        VersionDTO versionDTO;
-
-        public NewVersionWindow(VersionDTO versionDTO)
+        public NewVersionWindow(VersionDTO versionDTO, string currentVersion)
         {
             this.Owner = MainWindow.GetMainWindow();
 
             InitializeComponent();
 
-            this.versionDTO = versionDTO;
             textGithub.NavigateUri = new Uri(versionDTO.html_url);
             textGithub.ToolTip = versionDTO.html_url;
+
+            txtNewVersion.Text = $"New version: {versionDTO.name.Replace("Version ", "")}";
+            txtOldVersion.Text = $"Current version: {currentVersion}";
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
