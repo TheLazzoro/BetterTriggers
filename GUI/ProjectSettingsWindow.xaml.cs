@@ -1,5 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
+using BetterTriggers.WorldEdit;
+using GUI.Components;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,9 +43,13 @@ namespace GUI
         {
             var project = ContainerProject.project;
             if (comboboxMapScript.SelectedIndex == 0)
+            {
                 project.Language = "jass";
+            }
             else
+            {
                 project.Language = "lua";
+            }
 
             ControllerProject controllerProject = new ControllerProject();
             project.UseRelativeMapDirectory = (bool)checkboxRelativeMapPath.IsChecked;
@@ -57,6 +63,8 @@ namespace GUI
             ControllerExplorerElement controller = new ControllerExplorerElement();
             var root = controllerProject.GetProjectRoot();
             controller.AddToUnsaved(root);
+
+            TextEditor.ResetCompletionCollection();
 
             this.Close();
         }

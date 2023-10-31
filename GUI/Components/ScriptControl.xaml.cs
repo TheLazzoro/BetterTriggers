@@ -34,7 +34,7 @@ namespace GUI.Components
             InitializeComponent();
 
             string extension = System.IO.Path.GetExtension(explorerElementScript.GetPath());
-            textEditor = new TextEditor(explorerElementScript.script, extension == ".j" ? ScriptLanguage.Jass : ScriptLanguage.Lua);
+            textEditor = new TextEditor(explorerElementScript.script);
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
 

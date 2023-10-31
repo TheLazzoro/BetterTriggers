@@ -38,9 +38,14 @@ namespace GUI.Components
         static CompletionDataCollection completionCollection;
         ToolTip tooltip;
 
-        public TextEditor(string content, ScriptLanguage language)
+        public TextEditor(string content, ScriptLanguage? language = null)
         {
             InitializeComponent();
+
+            if (language == null)
+            {
+                language = Info.GetLanguage();
+            }
 
             Settings settings = Settings.Load();
             this.avalonEditor.Margin = new Thickness(0, 0, 0, 0);
@@ -53,6 +58,7 @@ namespace GUI.Components
             this.tooltip.FontFamily = new FontFamily(settings.textEditorFontStyle);
 
             string uri = string.Empty;
+            
             if (settings.editorAppearance == 1)
             {
                 uri = language == ScriptLanguage.Jass ?
@@ -90,13 +96,19 @@ namespace GUI.Components
 
             if (completionCollection == null)
             {
-                List<MyCompletionData> completionData = new List<MyCompletionData>();
-                ScriptData.GetAll(language).ForEach(n =>
-                {
-                    completionData.Add(new MyCompletionData(n.displayText, n.description));
-                });
-                completionCollection = new CompletionDataCollection(completionData);
+                ResetCompletionCollection();
             }
+        }
+
+        public static void ResetCompletionCollection()
+        {
+            var language = Info.GetLanguage();
+            List<MyCompletionData> completionData = new List<MyCompletionData>();
+            ScriptData.GetAll(language).ForEach(n =>
+            {
+                completionData.Add(new MyCompletionData(n.displayText, n.description));
+            });
+            completionCollection = new CompletionDataCollection(completionData);
         }
 
         private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
