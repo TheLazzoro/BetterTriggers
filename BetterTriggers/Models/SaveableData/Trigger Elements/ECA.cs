@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
+    /// <summary>
+    /// Event, Condition, Action
+    /// </summary>
     public class ECA : TriggerElement
     {
         public bool isEnabled = true;

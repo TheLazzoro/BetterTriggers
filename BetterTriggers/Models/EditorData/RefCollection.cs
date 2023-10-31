@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.EditorData
     internal class RefCollection
     {
         List<RefParent> refParents = new List<RefParent>();
-        List<ExplorerElementTrigger> triggersToUpdate = new();
+        List<IExplorerElement> sorucesToUpdate = new();
 
         internal RefCollection(Variable variable)
         {
@@ -39,7 +39,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateVarRefs(Variable variable, string newType = null)
         {
-            this.triggersToUpdate = References.GetReferreres(variable);
+            this.sorucesToUpdate = References.GetReferreres(variable);
             var functions = ControllerTrigger.GetFunctionsAll();
             functions.ForEach(f =>
             {
@@ -59,7 +59,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateTrigRefs(Trigger trigger)
         {
-            this.triggersToUpdate = References.GetReferreres(trigger);
+            this.sorucesToUpdate = References.GetReferreres(trigger);
             var functions = ControllerTrigger.GetFunctionsAll();
             functions.ForEach(f =>
             {
@@ -80,18 +80,18 @@ namespace BetterTriggers.Models.EditorData
         internal void RemoveRefsFromParent()
         {
             refParents.ForEach(r => r.RemoveFromParent());
-            triggersToUpdate.ForEach(t => t.Notify());
+            sorucesToUpdate.ForEach(t => t.Notify());
         }
 
         internal void AddRefsToParent()
         {
             refParents.ForEach(r => r.AddToParent());
-            triggersToUpdate.ForEach(t => t.Notify());
+            sorucesToUpdate.ForEach(t => t.Notify());
         }
 
         internal void Notify()
         {
-            triggersToUpdate.ForEach(t => t.Notify());
+            sorucesToUpdate.ForEach(t => t.Notify());
         }
     }
 

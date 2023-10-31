@@ -165,9 +165,9 @@ namespace BetterTriggers.Models.EditorData
             return null;
         }
 
-        public List<ExplorerElementTrigger> GetReferrers()
+        public List<IExplorerElement> GetReferrers()
         {
-            return new List<ExplorerElementTrigger>();
+            return new List<IExplorerElement>();
         }
     }
 }

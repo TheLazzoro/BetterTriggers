@@ -16,7 +16,7 @@ namespace GUI
     {
         public bool OK = false;
         
-        public DialogBoxReferences(List<ExplorerElementTrigger> references, ExplorerAction action)
+        public DialogBoxReferences(List<IExplorerElement> references, ExplorerAction action)
         {
             InitializeComponent();
 

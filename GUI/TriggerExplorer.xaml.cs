@@ -320,7 +320,7 @@ namespace GUI
                 if (selectedElement == null || selectedElement == map)
                     return;
 
-                List<ExplorerElementTrigger> refs = selectedElement.Ielement.GetReferrers();
+                List<IExplorerElement> refs = selectedElement.Ielement.GetReferrers();
                 if (refs.Count > 0)
                 {
                     DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);

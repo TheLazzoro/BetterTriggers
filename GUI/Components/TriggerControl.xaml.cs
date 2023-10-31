@@ -713,7 +713,7 @@ namespace GUI.Components
                 var localVar = v as LocalVariable;
                 if (localVar != null)
                 {
-                    List<ExplorerElementTrigger> refs = ControllerReferences.GetReferrers(localVar.variable);
+                    List<IExplorerElement> refs = ControllerReferences.GetReferrers(localVar.variable);
                     if (refs.Count > 0)
                         inUse.Add(localVar);
                 }

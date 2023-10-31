@@ -241,7 +241,7 @@ namespace GUI.Components
         private bool ResetVarRefs()
         {
             bool ok = true;
-            List<ExplorerElementTrigger> refs = ControllerReferences.GetReferrers(this.variable);
+            List<IExplorerElement> refs = ControllerReferences.GetReferrers(this.variable);
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);

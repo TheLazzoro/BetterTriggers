@@ -1,38 +1,59 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.SaveableData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Threading;
 
 namespace BetterTriggers.Models.EditorData
 {
-    public class ExplorerElementFolder : IExplorerElement
+    public class ExplorerElementActionDefinition : IExplorerElement, IExplorerSaveable
     {
         public string path;
-        public List<IExplorerElement> explorerElements = new List<IExplorerElement>();
+        public ActionDefinition actionDefinition;
+        public bool isEnabled = true;
+        public bool isInitiallyOn = true;
         public List<IExplorerElementUI> observers = new List<IExplorerElementUI>();
-        public bool isExpanded;
         private DateTime LastWrite;
         private long Size;
 
         private IExplorerElement Parent;
 
         /// <summary>Reserved for copy-pasting purposes.</summary>
-        public ExplorerElementFolder()
-        {
-        }
+        public ExplorerElementActionDefinition() { }
 
-        public ExplorerElementFolder(string path)
+        public ExplorerElementActionDefinition(string path)
         {
             this.path = path;
+            string json = string.Empty;
+            bool isReadyForRead = false;
+            int sleepTolerance = 100;
+            while (!isReadyForRead)
+            {
+                try
+                {
+                    json = File.ReadAllText(path);
+                    ActionDefinitions.Add(this);
+                    isReadyForRead = true;
+                }
+                catch (Exception ex)
+                {
+                    if (sleepTolerance < 0)
+                        throw new Exception(ex.Message);
+
+                    Thread.Sleep(100);
+                    sleepTolerance--;
+                }
+            }
+            actionDefinition = JsonConvert.DeserializeObject<ActionDefinition>(json);
+            StoreLocalVariables();
             UpdateMetadata();
-            Folders.AddFolder(this);
         }
 
         public string GetName()
         {
-            return Path.GetFileName(path);
+            return Path.GetFileNameWithoutExtension(path);
         }
 
         public string GetPath()
@@ -61,16 +82,6 @@ namespace BetterTriggers.Models.EditorData
             this.path = newPath;
         }
 
-        public void InsertIntoList(IExplorerElement element, int insertIndex)
-        {
-            explorerElements.Insert(insertIndex, element);
-        }
-
-        public void RemoveFromList(IExplorerElement element)
-        {
-            explorerElements.Remove(element);
-        }
-
         public void Attach(IExplorerElementUI observer)
         {
             this.observers.Add(observer);
@@ -83,7 +94,6 @@ namespace BetterTriggers.Models.EditorData
 
         public void Notify()
         {
-            //foreach (var observer in observers)
             for (int i = 0; i < observers.Count; i++)
             {
                 observers[i].Reload();
@@ -100,27 +110,41 @@ namespace BetterTriggers.Models.EditorData
 
         public int GetId()
         {
-            throw new NotImplementedException();
+            return actionDefinition.Id;
         }
 
         public void SetEnabled(bool isEnabled)
         {
-            //throw new NotImplementedException();
+            this.isEnabled = isEnabled;
+            foreach (var observer in observers)
+            {
+                observer.RefreshHeader();
+            }
         }
 
         public void SetInitiallyOn(bool isInitiallyOn)
         {
-            //throw new NotImplementedException();
+            this.isInitiallyOn = isInitiallyOn;
+            foreach (var observer in observers)
+            {
+                observer.RefreshHeader();
+            }
         }
 
         public bool GetEnabled()
         {
-            return true;
+            return this.isEnabled;
         }
+
 
         public bool GetInitiallyOn()
         {
-            return true;
+            return this.isInitiallyOn;
+        }
+
+        public string GetSaveableString()
+        {
+            return JsonConvert.SerializeObject(actionDefinition, Formatting.Indented);
         }
 
         public long GetSize()
@@ -135,14 +159,9 @@ namespace BetterTriggers.Models.EditorData
 
         public void UpdateMetadata()
         {
-            var info = new DirectoryInfo(path);
-            this.Size = info.EnumerateFiles().Sum(file => file.Length);
+            var info = new FileInfo(path);
+            this.Size = info.Length;
             this.LastWrite = info.LastWriteTime;
-        }
-
-        public List<IExplorerElement> GetExplorerElements()
-        {
-            return explorerElements;
         }
 
         public IExplorerElement GetParent()
@@ -164,6 +183,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void Created(int insertIndex)
         {
+            StoreLocalVariables();
             for (int i = 0; i < observers.Count; i++)
             {
                 observers[i].OnCreated(insertIndex);
@@ -172,10 +192,16 @@ namespace BetterTriggers.Models.EditorData
 
         public void Deleted()
         {
+            RemoveLocalVariables();
             for (int i = 0; i < observers.Count; i++)
             {
                 observers[i].Delete();
             }
+        }
+
+        public List<IExplorerElement> GetExplorerElements()
+        {
+            throw new Exception("'" + path + "' is not a folder.");
         }
 
         public void ChangedPosition()
@@ -188,18 +214,45 @@ namespace BetterTriggers.Models.EditorData
 
         public IExplorerElement Clone()
         {
-            ExplorerElementFolder newFolder = new ExplorerElementFolder();
-            newFolder.path = new string(this.path); // we need this path in paste command.
-            newFolder.Parent = this.Parent;
-            List<IExplorerElement> explorerElements = new List<IExplorerElement>();
-            this.explorerElements.ForEach(element => newFolder.explorerElements.Add(element.Clone()));
+            ExplorerElementActionDefinition newTrigger = new();
+            newTrigger.path = new string(this.path); // we need this path in paste command.
+            newTrigger.Parent = this.Parent;
+            newTrigger.isInitiallyOn = this.isInitiallyOn;
+            newTrigger.isEnabled = this.isEnabled;
+            newTrigger.actionDefinition = this.actionDefinition.Clone();
 
-            return newFolder;
+            return newTrigger;
+        }
+
+        public void OnSaved()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].OnSaved();
+            }
         }
 
         public List<IExplorerElement> GetReferrers()
         {
-            return new List<IExplorerElement>();
+            return References.GetReferreres(actionDefinition);
+        }
+
+        private void StoreLocalVariables()
+        {
+            actionDefinition.LocalVariables.ForEach(e =>
+            {
+                var lv = (LocalVariable)e;
+                Variables.AddLocalVariable(lv);
+            });
+        }
+
+        private void RemoveLocalVariables()
+        {
+            actionDefinition.LocalVariables.ForEach(e =>
+            {
+                var lv = (LocalVariable)e;
+                Variables.RemoveLocalVariable(lv);
+            });
         }
     }
 }

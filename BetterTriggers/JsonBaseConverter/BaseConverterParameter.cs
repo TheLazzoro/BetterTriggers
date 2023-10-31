@@ -35,6 +35,12 @@ namespace BetterTriggers.JsonBaseConverter
                         return new TriggerRef();
                     case 5:
                         return new Value();
+                    case 6:
+                        return new ActionDefinitionRef();
+                    case 7:
+                        return new ConditionDefinitionRef();
+                    case 8:
+                        return new FunctionDefinitionRef();
                     default:
                         return new Parameter();
                 }

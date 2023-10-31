@@ -226,7 +226,7 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public List<ExplorerElementTrigger> GetReferrers()
+        public List<IExplorerElement> GetReferrers()
         {
             return References.GetReferreres(variable);
         }

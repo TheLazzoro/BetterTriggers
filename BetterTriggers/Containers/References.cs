@@ -8,21 +8,25 @@ using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Containers
 {
+    /// <summary>
+    /// 'Source' in this context is either a trigger, action-, condition-, or function-definition.
+    /// They can all make references to variables and each other.
+    /// </summary>
     public class References
     {
-        private static Dictionary<ExplorerElementTrigger, HashSet<IReferable>> fromTrigger = new Dictionary<ExplorerElementTrigger, HashSet<IReferable>>();
-        private static Dictionary<IReferable, HashSet<ExplorerElementTrigger>> fromReference = new Dictionary<IReferable, HashSet<ExplorerElementTrigger>>();
+        private static Dictionary<IExplorerElement, HashSet<IReferable>> fromSource = new();
+        private static Dictionary<IReferable, HashSet<IExplorerElement>> fromReference = new();
 
         /// <summary>
-        /// Returns a list of trigger which are referencing the given referable.
+        /// Returns a list of sources which are referencing the given referable.
         /// </summary>
-        internal static List<ExplorerElementTrigger> GetReferreres(IReferable referable)
+        internal static List<IExplorerElement> GetReferreres(IReferable referable)
         {
-            HashSet<ExplorerElementTrigger> referrers = new HashSet<ExplorerElementTrigger>();
+            HashSet<IExplorerElement> referrers;
             fromReference.TryGetValue(referable, out referrers);
 
             if (referrers == null)
-                return new List<ExplorerElementTrigger>();
+                return new List<IExplorerElement>();
 
             return referrers.ToList();
         }
@@ -32,46 +36,47 @@ namespace BetterTriggers.Containers
             if (reference == null)
                 return;
 
-            // Gets a list of references, given the trigger referencing them.
-            HashSet<IReferable> references = null;
-            if (!fromTrigger.TryGetValue(source, out references)) {
-                references = new HashSet<IReferable>();
-                fromTrigger.Add(source, references);
-            }
-            references.Add(reference); // Adds the reference to the trigger's total references.
-
-            // And vice versa; Gets a list of all triggers referencing the referable.
-            HashSet<ExplorerElementTrigger> triggers = null;
-            fromReference.TryGetValue(reference, out triggers);
-            if (triggers == null)
+            // Gets a list of references, given the source referencing them.
+            HashSet<IReferable> references;
+            if (!fromSource.TryGetValue(source, out references))
             {
-                triggers = new HashSet<ExplorerElementTrigger>();
-                fromReference.Add(reference, triggers);
+                references = new HashSet<IReferable>();
+                fromSource.Add(source, references);
             }
-            triggers.Add(source); // Adds the trigger to the referable's total number of referencing triggers.
+            references.Add(reference); // Adds the reference to the source's total references.
+
+            // And vice versa; Gets a list of all sources referencing the referable.
+            HashSet<IExplorerElement> sources;
+            fromReference.TryGetValue(reference, out sources);
+            if (sources == null)
+            {
+                sources = new HashSet<IExplorerElement>();
+                fromReference.Add(reference, sources);
+            }
+            sources.Add(source); // Adds the source to the referable's total number of referencing sources.
         }
 
         /// <summary>
-        /// Removes a referrer from all variables. Used when a trigger gets deleted.
+        /// Removes a source reference from all referrers. Used when a source gets deleted.
         /// </summary>
-        internal static void RemoveReferrer(ExplorerElementTrigger source)
+        internal static void RemoveReferrer(IExplorerElement source)
         {
-            HashSet<IReferable> references = null;
-            fromTrigger.TryGetValue(source, out references);
+            HashSet<IReferable> references;
+            fromSource.TryGetValue(source, out references);
             if (references == null)
                 return;
 
             foreach (var reference in references)
             {
-                HashSet<ExplorerElementTrigger> triggers = null;
-                fromReference.TryGetValue(reference, out triggers);
-                triggers.Remove(source);
+                HashSet<IExplorerElement> sources;
+                fromReference.TryGetValue(reference, out sources);
+                sources.Remove(source);
             }
         }
 
         internal static void ResetVariableReferences(Variable variable)
         {
-            HashSet<ExplorerElementTrigger> empty = new HashSet<ExplorerElementTrigger>();
+            HashSet<IExplorerElement> empty = new();
             fromReference.Remove(variable);
             fromReference.Add(variable, empty);
         }
@@ -99,7 +104,7 @@ namespace BetterTriggers.Containers
                 {
                     TriggerRef tRef = (TriggerRef)p;
                     ExplorerElementTrigger element = Triggers.FindById(tRef.TriggerId);
-                    if(element != null)
+                    if (element != null)
                         AddReferrer(t, element.trigger);
                 }
             });
