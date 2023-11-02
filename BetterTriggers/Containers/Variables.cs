@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -93,7 +94,7 @@ namespace BetterTriggers.Containers
                 if (!doesIdExist)
                     isIdValid = true;
                 else
-                    generatedId++;
+                    generatedId = RandomUtil.GenerateInt();
             }
 
             return generatedId;

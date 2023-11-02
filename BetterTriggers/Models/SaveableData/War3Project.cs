@@ -10,6 +10,7 @@ namespace BetterTriggers.Models.SaveableData
         public int Version;
         public Version GameVersion;
         public string Language;
+        public bool UseRelativeMapDirectory;
         public string Comment;
         public string Header;
         public string War3MapDirectory;
@@ -19,6 +20,6 @@ namespace BetterTriggers.Models.SaveableData
         /// Specifies the current editor version. Increment when new features to the file format are added.
         /// </summary>
         [JsonIgnore]
-        public static readonly int EditorVersion = 2;
+        public const int EditorVersion = 3;
     }
 }

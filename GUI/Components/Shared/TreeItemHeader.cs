@@ -5,6 +5,7 @@ using GUI.Components.TriggerEditor;
 using GUI.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -20,11 +21,13 @@ using System.Windows.Shapes;
 
 namespace GUI.Components.Shared
 {
-    public class TreeItemHeader : StackPanel
+    public class TreeItemHeader : Grid
     {
         internal TextBox RenameBox;
         internal bool isRenaming { get; private set; }
+        private StackPanel stackPanel;
         private System.Windows.Shapes.Rectangle Icon;
+        private System.Windows.Shapes.Rectangle IconOverlay;
         private TextBlock DisplayText;
         private string categoryName = string.Empty;
 
@@ -38,45 +41,77 @@ namespace GUI.Components.Shared
         }
 
         public TreeItemHeader() {
-            this.Orientation = Orientation.Horizontal;
             this.Height = 18;
             this.Margin = new Thickness(-1, -1, 0, -1);
+            ColumnDefinition column0 = new ColumnDefinition();
+            ColumnDefinition column1 = new ColumnDefinition();
+            column0.Width = new GridLength(16);
+            column1.Width = GridLength.Auto;
+            this.ColumnDefinitions.Add(column0);
+            this.ColumnDefinitions.Add(column1);
 
+            int size = 16;
             Icon = new System.Windows.Shapes.Rectangle();
-            Icon.Width = 16;
-            Icon.Height = 16;
+            Icon.Width = size;
+            Icon.Height = size;
             this.Children.Add(Icon);
+            IconOverlay = new System.Windows.Shapes.Rectangle();
+            IconOverlay.Width = size;
+            IconOverlay.Height = size;
+            this.Children.Add(IconOverlay);
+
+            stackPanel = new StackPanel();
+            stackPanel.Orientation = Orientation.Horizontal;
+            this.Children.Add(stackPanel);
+            Grid.SetColumn(stackPanel, 1);
 
             DisplayText = new TextBlock();
             DisplayText.Margin = new Thickness(5, 0, 0, 0);
             DisplayText.FontFamily = TriggerEditorFont.GetTreeItemFont();
             DisplayText.FontSize = TriggerEditorFont.GetTreeItemFontSize();
-            this.Children.Add(DisplayText);
+            stackPanel.Children.Add(DisplayText);
 
             RenameBox = new TextBox();
             RenameBox.Margin = new Thickness(5, 0, 0, 0);
+            Grid.SetColumn(RenameBox, 1);
             this.RenameBox.LostFocus += RenameBox_LostFocus;
 
         }
 
         public TreeItemHeader(string text, string categoryName, TreeItemState state = TreeItemState.Normal, bool isInitiallyOn = true)
         {
-            this.Orientation = Orientation.Horizontal;
             this.Height = 18;
             this.Margin = new Thickness(-1, -1, 0, -1);
+            ColumnDefinition column0 = new ColumnDefinition();
+            ColumnDefinition column1 = new ColumnDefinition();
+            column0.Width = new GridLength(16);
+            column1.Width = GridLength.Auto;
+            this.ColumnDefinitions.Add(column0);
+            this.ColumnDefinitions.Add(column1);
 
+            int size = 16;
             Icon = new System.Windows.Shapes.Rectangle();
-            Icon.Width = 16;
-            Icon.Height = 16;
+            Icon.Width = size;
+            Icon.Height = size;
             this.Children.Add(Icon);
+            IconOverlay = new System.Windows.Shapes.Rectangle();
+            IconOverlay.Width = size;
+            IconOverlay.Height = size;
+            this.Children.Add(IconOverlay);
+
+            stackPanel = new StackPanel();
+            stackPanel.Orientation = Orientation.Horizontal;
+            this.Children.Add(stackPanel);
+            Grid.SetColumn(stackPanel, 1);
 
             DisplayText = new TextBlock();
             DisplayText.Margin = new Thickness(5, 0, 0, 0);
             DisplayText.FontFamily = new System.Windows.Media.FontFamily("Segoe UI");
-            this.Children.Add(DisplayText);
+            stackPanel.Children.Add(DisplayText);
 
             RenameBox = new TextBox();
             RenameBox.Margin = new Thickness(5, 0, 0, 0);
+            Grid.SetColumn(RenameBox, 1);
             RenameBox.LostFocus += RenameBox_LostFocus;
 
             Refresh(text, categoryName, state, isInitiallyOn);
@@ -129,7 +164,7 @@ namespace GUI.Components.Shared
             isRenaming = doShow;
             if (doShow && !this.Children.Contains(RenameBox))
             {
-                this.Children.Remove(DisplayText);
+                stackPanel.Children.Remove(DisplayText);
                 this.Children.Add(RenameBox);
                 RenameBox.Focus();
                 RenameBox.SelectAll();
@@ -137,7 +172,7 @@ namespace GUI.Components.Shared
             else
             {
                 this.Children.Remove(RenameBox);
-                this.Children.Add(DisplayText);
+                stackPanel.Children.Add(DisplayText);
             }
         }
 
@@ -170,19 +205,23 @@ namespace GUI.Components.Shared
 
         public void SetIcon(string category, TreeItemState state)
         {
-            Bitmap icon = (Bitmap) Category.Get(category).Icon.Clone();
-            Bitmap overlay = null;
-            Graphics g = Graphics.FromImage(icon);
+            BitmapImage icon = CategoryExtension.getImageByCategory(category);
+            BitmapImage overlay = null;
+            IconOverlay.Fill = null;
 
             if (state == TreeItemState.Disabled || state == TreeItemState.HasErrors)
-                overlay = Category.Get(TriggerCategory.TC_ERROR).Icon;
+                overlay = CategoryExtension.getImageByCategory(TriggerCategory.TC_ERROR);
             else if (state == TreeItemState.HasErrorsNoTextColor)
-                overlay = Category.Get(TriggerCategory.TC_INVALID).Icon;
+                overlay = CategoryExtension.getImageByCategory(TriggerCategory.TC_INVALID);
 
             if(overlay != null)
-                g.DrawImage(overlay, 0, 0, icon.Width, icon.Height);
+            {
+                var overlayFinal = overlay;
+                ImageBrush overlayBrush = new ImageBrush(overlayFinal);
+                IconOverlay.Fill = overlayBrush;
+            }
 
-            var iconFinal = BitmapConverter.ToBitmapImage(icon);
+            var iconFinal = icon;
 
             ImageBrush brush = new ImageBrush(iconFinal);
             Icon.Fill = brush;

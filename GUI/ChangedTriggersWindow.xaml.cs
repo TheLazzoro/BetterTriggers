@@ -26,10 +26,23 @@ namespace GUI
 
             for (int i = 0; i < explorerElements.Count; i++)
             {
+                var element = explorerElements[i];
+
                 ListViewItem item = new ListViewItem();
-                item.Content = explorerElements[i].GetName();
+                item.Content = element.GetName();
                 listView.Items.Add(item);
+
+                item.Selected += Item_Selected;
             }
+        }
+
+        private void Item_Selected(object sender, RoutedEventArgs e)
+        {
+            var item = e.Source as ListViewItem;
+            string name = item.Content as string;
+            var triggerExplorer = TriggerExplorer.Current;
+
+            triggerExplorer.Search(name);
         }
     }
 }

@@ -84,15 +84,9 @@ namespace BetterTriggers.Controllers
 
         public static void OpenInExplorer(string fullPath)
         {
-            if (Directory.Exists(Path.GetDirectoryName(fullPath)))
+            if (File.Exists(fullPath) || Directory.Exists(fullPath))
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    Arguments = Path.GetDirectoryName(fullPath),
-                    FileName = "explorer.exe"
-                };
-
-                Process.Start(startInfo);
+                Process.Start("explorer.exe", "/select, " + fullPath);
             }
         }
 

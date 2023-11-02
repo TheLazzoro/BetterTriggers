@@ -72,7 +72,7 @@ namespace BetterTriggers.Controllers
         public bool War3MapDirExists()
         {
             bool exists = false;
-            string path = ContainerProject.project.War3MapDirectory;
+            string path = GetFullMapPath();
             if (path != null && Directory.Exists(path) && File.Exists(Path.Combine(path, "war3map.w3i")))
                 exists = true;
             else if (path != null && File.Exists(path) && (Path.HasExtension(".w3x") || Path.HasExtension(".w3m")))
@@ -83,6 +83,13 @@ namespace BetterTriggers.Controllers
 
         public static bool VerfiyMapPath(string path)
         {
+            bool useRelativeMapDir = ContainerProject.project.UseRelativeMapDirectory;
+            if (useRelativeMapDir)
+            {
+                ControllerProject controller = new ControllerProject();
+                path = controller.GetFullMapPath();
+            }
+
             bool verified = false;
             if (File.Exists(path))
             {
@@ -133,7 +140,7 @@ namespace BetterTriggers.Controllers
             War3Project project = ContainerProject.project;
             ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
 
-            string mapDir = project.War3MapDirectory;
+            string mapDir = GetFullMapPath();
             var map = Map.Open(mapDir);
             map.Info.ScriptLanguage = language;
             map.Script = script;
@@ -445,12 +452,28 @@ namespace BetterTriggers.Controllers
             ContainerProject.currentSelectedElement = null;
             CustomMapData.mapPath = null;
             CommandManager.Reset();
+            UnsavedFiles.Clear();
         }
 
 
         public ExplorerElementRoot GetProjectRoot()
         {
             return (ExplorerElementRoot)ContainerProject.projectFiles[0];
+        }
+
+        public string GetFullMapPath()
+        {
+            var project = ContainerProject.project;
+            string path = project.War3MapDirectory;
+            if(project.UseRelativeMapDirectory)
+            {
+                string mapFileName = Path.GetFileName(project.War3MapDirectory);
+                var root = GetProjectRoot();
+                string rootDir = Path.GetDirectoryName(root.GetPath());
+                path = Path.Combine(rootDir, "map/" + mapFileName);
+            }
+
+            return path;
         }
 
         public void SetElementEnabled(IExplorerElement element, bool isEnabled)

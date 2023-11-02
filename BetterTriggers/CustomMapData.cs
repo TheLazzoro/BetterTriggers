@@ -38,7 +38,6 @@ namespace BetterTriggers
             {
                 Thread.Sleep(1000);
             }
-            MPQMap = Map.Open(mapPath);
 
             if (watcher != null)
                 watcher.Created -= Watcher_Created;
@@ -72,6 +71,7 @@ namespace BetterTriggers
             {
                 Thread.Sleep(1000);
             }
+            MPQMap = Map.Open(mapPath);
 
             Info.Load();
             MapStrings.Load();

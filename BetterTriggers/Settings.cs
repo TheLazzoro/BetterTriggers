@@ -13,7 +13,7 @@ namespace BetterTriggers
         private static Settings instance;
         private static string filePath;
 
-        public string war3root;
+        public string war3root             = "C:/Program Files (x86)/Warcraft III";
         public string CopyLocation         = "BetterTriggersTestMap";
         public int Difficulty              = 0;
         public bool FixedRandomSeed        = false;

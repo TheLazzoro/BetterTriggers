@@ -5,7 +5,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
-using GUI.Components.TriggerExplorer;
+using GUI.Components.VersionCheck;
 using GUI.Controllers;
 using Microsoft.Win32;
 using System;
@@ -103,6 +103,8 @@ namespace GUI
             SetKeybindings(keybindings);
 
             ControllerRecentFiles.isTest = false; // hack
+
+            new VersionCheck();
         }
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace GUI
 
         private void GlobalHotkeyValidateTriggers(HotKey hotKey)
         {
-            if(IsProjectActive())
+            if (IsProjectActive())
             {
                 ControllerProject controller = new ControllerProject();
                 controller.GenerateScript();
@@ -255,7 +257,14 @@ namespace GUI
         private void VerifyTriggerData()
         {
             VerifyingTriggersWindow window = new VerifyingTriggersWindow();
+            window.OnCloseProject += Window_OnCloseProject;
             window.ShowDialog();
+            window.OnCloseProject -= Window_OnCloseProject;
+        }
+
+        private void Window_OnCloseProject()
+        {
+            CloseProject(true);
         }
 
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -443,7 +452,7 @@ namespace GUI
 
         private void OpenMap()
         {
-            
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.DefaultExt = ".json";
             dialog.Filter = "JSON Files (*.json)|*.json";
@@ -497,7 +506,7 @@ namespace GUI
             }
 
             vmd.Tabs.Clear();
-            LoadingDataWindow loadingDataWindow = new LoadingDataWindow(project.War3MapDirectory);
+            LoadingDataWindow loadingDataWindow = new LoadingDataWindow(controllerProject.GetFullMapPath());
             loadingDataWindow.ShowDialog();
 
             if (triggerExplorer != null)
@@ -613,7 +622,7 @@ namespace GUI
             Settings.Save(Settings.Load());
             Keybindings.Save(GetKeybindings());
 
-            if(globalBuildMap != null)
+            if (globalBuildMap != null)
                 globalBuildMap.Dispose();
             if (globalTestMap != null)
                 globalTestMap.Dispose();
@@ -680,8 +689,16 @@ namespace GUI
 
         private void CommandBinding_Executed_CloseProject(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!DoCloseProject())
-                return;
+            CloseProject();
+        }
+
+        private void CloseProject(bool forceClose = false)
+        {
+            if (!forceClose)
+            {
+                if (!DoCloseProject())
+                    return;
+            }
 
             vmd.Tabs.Clear();
             mainGrid.Children.Remove(triggerExplorer);
@@ -698,6 +715,12 @@ namespace GUI
         {
             ImportTriggersWindow window = new ImportTriggersWindow();
             window.ShowDialog();
+        }
+
+        private void CommandBinding_Executed_OpenProjectSettings(object sender, ExecutedRoutedEventArgs e)
+        {
+            ProjectSettingsWindow projectSettings = new ProjectSettingsWindow();
+            projectSettings.ShowDialog();
         }
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)

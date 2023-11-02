@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
@@ -243,6 +244,38 @@ namespace BetterTriggers.Controllers
 
         public static List<IExplorerElement> ReloadMapData()
         {
+            // Check for ID collisions
+            List<Tuple<ExplorerElementTrigger, ExplorerElementTrigger>> triggersWithIdCollision = new();
+            List<Tuple<ExplorerElementVariable, ExplorerElementVariable>> variablesWithIdCollision = new();
+            List<ExplorerElementTrigger> checkedTriggers = new List<ExplorerElementTrigger>();
+            List<ExplorerElementVariable> checkedVariables = new List<ExplorerElementVariable>();
+            var triggers = Triggers.GetAll();
+            var variables = Variables.GetGlobals();
+            triggers.ForEach(t =>
+            {
+                checkedTriggers.ForEach(check =>
+                {
+                    if (t.GetId() == check.GetId())
+                        triggersWithIdCollision.Add(new Tuple<ExplorerElementTrigger, ExplorerElementTrigger>(t, check));
+                });
+
+                checkedTriggers.Add(t);
+            });
+            variables.ForEach(v =>
+            {
+                checkedVariables.ForEach(check =>
+                {
+                    if (v.GetId() == check.GetId())
+                        variablesWithIdCollision.Add(new Tuple<ExplorerElementVariable, ExplorerElementVariable>(v, check));
+                });
+
+                checkedVariables.Add(v);
+            });
+            if(triggersWithIdCollision.Count > 0 || variablesWithIdCollision.Count > 0)
+            {
+                throw new IdCollisionException(triggersWithIdCollision, variablesWithIdCollision);
+            }
+
             Commands.CommandManager.Reset();
             CustomMapData.Load();
             var changed = CustomMapData.RemoveInvalidReferences();

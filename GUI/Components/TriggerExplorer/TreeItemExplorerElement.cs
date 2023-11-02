@@ -13,7 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using static GUI.Components.Shared.TreeItemHeader;
 
-namespace GUI.Components.TriggerExplorer
+namespace GUI.Components
 {
     public class TreeItemExplorerElement : TreeItemBT, IExplorerElementUI
     {

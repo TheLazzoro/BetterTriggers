@@ -41,6 +41,7 @@ namespace GUI
             if (controller.War3MapDirExists())
             {
                 mapDir = window.SelectedPath;
+                lblPath.Content = mapDir;
                 btnOK.IsEnabled = true;
                 lblError.Visibility = Visibility.Hidden;
             }

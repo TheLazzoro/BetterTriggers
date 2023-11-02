@@ -11,7 +11,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GUI.Components.TriggerExplorer;
 using GUI.Controllers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Containers;
@@ -480,20 +479,23 @@ namespace GUI
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            Search();
+            Search(searchTextBox.Text);
         }
 
         private void searchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                Search();
+                Search(searchTextBox.Text);
             else if (e.Key == Key.Escape)
                 CloseSearchField();
         }
 
-        private void Search()
+        /// <summary>
+        /// Searches for a trigger element with the specified text, and brings the first matching result into view in the trigger explorer.
+        /// </summary>
+        internal void Search(string searchText)
         {
-            TreeItemBT treeItem = SearchForElement(treeViewTriggerExplorer.Items[0] as TreeItemBT);
+            TreeItemBT treeItem = SearchForElement(searchText, treeViewTriggerExplorer.Items[0] as TreeItemBT);
             if (treeItem != null)
             {
                 TreeItemBT parent = treeItem.Parent as TreeItemBT;
@@ -504,13 +506,13 @@ namespace GUI
                 }
                 treeItem.IsSelected = true;
                 treeItem.BringIntoView();
-                treeItem.Focus();
+                //treeItem.Focus();
             }
         }
 
-        private TreeItemBT SearchForElement(TreeItemBT parent)
+        private TreeItemBT SearchForElement(string searchText, TreeItemBT parent)
         {
-            if (parent.GetHeaderText().ToLower().Contains(searchTextBox.Text.ToLower()))
+            if (parent.GetHeaderText() == searchText)
                 return parent;
 
             TreeItemBT treeItem = null;
@@ -518,7 +520,7 @@ namespace GUI
             {
                 foreach (var item in parent.Items)
                 {
-                    treeItem = SearchForElement(item as TreeItemBT);
+                    treeItem = SearchForElement(searchText, item as TreeItemBT);
                     if (treeItem != null)
                         break;
                 }

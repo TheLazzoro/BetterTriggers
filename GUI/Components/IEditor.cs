@@ -1,4 +1,4 @@
-﻿using GUI.Components.TriggerExplorer;
+﻿using GUI.Components;
 
 namespace GUI.Components
 {

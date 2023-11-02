@@ -253,6 +253,7 @@
         <RoutedUICommand x:Key="OpenProject"></RoutedUICommand>
         <RoutedUICommand x:Key="SaveProject"></RoutedUICommand>
         <RoutedUICommand x:Key="CloseProject"></RoutedUICommand>
+        <RoutedUICommand x:Key="OpenProjectSettings"></RoutedUICommand>
         <RoutedUICommand x:Key="ImportTriggers"></RoutedUICommand>
 
         <RoutedUICommand x:Key="Undo"></RoutedUICommand>
@@ -281,6 +282,7 @@
         <CommandBinding Command="{StaticResource SaveProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_Save"/>
         <CommandBinding Command="{StaticResource CloseProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_CloseProject"/>
         <CommandBinding Command="{StaticResource ImportTriggers}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_ImportTriggers"/>
+        <CommandBinding Command="{StaticResource OpenProjectSettings}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_OpenProjectSettings"/>
 
         <CommandBinding Command="{StaticResource Undo}" CanExecute="CommandBinding_CanExecute_Undo" Executed="CommandBinding_Executed_Undo"/>
         <CommandBinding Command="{StaticResource Redo}" CanExecute="CommandBinding_CanExecute_Redo" Executed="CommandBinding_Executed_Redo"/>
@@ -347,6 +349,9 @@
                 <Separator Margin="0,5,0,4" />
                 <MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />
                 <Separator Margin="0,5,0,4" />
+                <Separator />
+                <MenuItem Name="menuProjectSettings" Command="{StaticResource OpenProjectSettings}" Header="Project Settings" />
+                <Separator />
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
             </MenuItem>
             <MenuItem x:Name="menuEdit" Header="WESTRING_MENU_EDIT" Height="25" Template="{DynamicResource MenuItemControlTemplate1}" SubmenuOpened="MenuItem_SubmenuOpened">

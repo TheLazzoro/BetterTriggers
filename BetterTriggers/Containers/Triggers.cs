@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using BetterTriggers.Utility;
 
 namespace BetterTriggers.Containers
 {
@@ -35,7 +36,7 @@ namespace BetterTriggers.Containers
                 if (!doesIdExist)
                     isIdValid = true;
                 else
-                    generatedId++;
+                    generatedId = RandomUtil.GenerateInt();
             }
 
             return generatedId;
