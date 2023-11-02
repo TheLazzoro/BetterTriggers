@@ -3,6 +3,7 @@ using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.VersionCheck;
@@ -201,8 +202,8 @@ namespace GUI
         {
             if (IsProjectActive())
             {
-                ControllerProject controller = new ControllerProject();
-                controller.GenerateScript();
+                Builder builder = new();
+                builder.GenerateScript();
             }
         }
         private void GlobalHotkeyTestMap(HotKey hotKey)
@@ -273,7 +274,7 @@ namespace GUI
             if (selected == null)
                 return;
 
-            ContainerProject.currentSelectedElement = selected.Ielement.GetPath();
+            Project.currentSelectedElement = selected.Ielement.GetPath();
         }
 
         private void TriggerExplorer_OnOpenExplorerElement(TreeItemExplorerElement opened)
@@ -354,7 +355,7 @@ namespace GUI
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFolder.Create();
+            Folders.Create();
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
@@ -392,8 +393,8 @@ namespace GUI
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.GenerateScript();
+            Builder builder = new Builder();
+            builder.GenerateScript();
         }
 
         private void btnTestMap_Click(object sender, RoutedEventArgs e)
@@ -506,9 +507,6 @@ namespace GUI
             }
 
             vmd.Tabs.Clear();
-            LoadingDataWindow loadingDataWindow = new LoadingDataWindow(controllerProject.GetFullMapPath());
-            loadingDataWindow.ShowDialog();
-
             if (triggerExplorer != null)
             {
                 var parent = (Grid)triggerExplorer.Parent;
@@ -543,6 +541,7 @@ namespace GUI
 
         private void TestMap()
         {
+            Builder builder = new Builder();
             ControllerProject controller = new ControllerProject();
             if (!controller.War3MapDirExists())
             {
@@ -555,7 +554,7 @@ namespace GUI
             }
             try
             {
-                controller.TestMap();
+                builder.TestMap();
             }
             catch (Exception ex)
             {
@@ -566,6 +565,7 @@ namespace GUI
 
         private void BuildMap()
         {
+            Builder builder = new Builder();
             ControllerProject controller = new ControllerProject();
             if (!controller.War3MapDirExists())
             {
@@ -578,7 +578,7 @@ namespace GUI
             }
             try
             {
-                controller.BuildMap();
+                builder.BuildMap();
             }
             catch (Exception ex)
             {
@@ -642,7 +642,7 @@ namespace GUI
             onCloseWindow.ShowDialog();
             if (onCloseWindow.Yes)
             {
-                controller.SetEnableFileEvents(false);
+                Project.EnableFileEvents(false);
                 controller.SaveProject();
                 return true;
             }
@@ -707,8 +707,7 @@ namespace GUI
             EnableToolbar(false);
             EnableECAButtons(false);
 
-            ControllerProject controller = new ControllerProject();
-            controller.CloseProject();
+            Project.Close();
         }
 
         private void CommandBinding_Executed_OpenProjectSettings(object sender, ExecutedRoutedEventArgs e)
@@ -747,7 +746,7 @@ namespace GUI
 
         private void CommandBinding_Executed_NewCategory(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerFolder.Create();
+            Folders.Create();
         }
 
         private void CommandBinding_Executed_NewTrigger(object sender, ExecutedRoutedEventArgs e)
@@ -806,20 +805,20 @@ namespace GUI
 
         private void CommandBinding_Executed_ValidateTriggers(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.GenerateScript();
+            Builder builder = new Builder();
+            builder.GenerateScript();
         }
 
         private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerProject();
-            controller.TestMap();
+            Builder builder = new Builder();
+            builder.TestMap();
         }
 
         private void CommandBinding_Executed_BuildMap(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerProject();
-            controller.BuildMap();
+            Builder builder = new Builder();
+            builder.BuildMap();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)

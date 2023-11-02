@@ -10,6 +10,36 @@ namespace BetterTriggers.Containers
     {
         private static HashSet<ExplorerElementFolder> folderContainer = new HashSet<ExplorerElementFolder>();
 
+        /// <summary>
+        /// Creates a folder at the current selected 'destination' folder.
+        /// </summary>
+        public static string Create()
+        {
+            string directory = Project.currentSelectedElement;
+            if (!Directory.Exists(directory))
+                directory = Path.GetDirectoryName(directory);
+
+            string name = "Untitled Category";
+            bool ok = false;
+            int i = 0;
+            while (!ok)
+            {
+                if (!Directory.Exists(directory + @"\" + name))
+                    ok = true;
+                else
+                {
+                    name = "Untitled Category " + i;
+                }
+
+                i++;
+            }
+
+            string path = Path.Combine(directory, name);
+            Directory.CreateDirectory(path);
+
+            return path;
+        }
+
         public static void Clear()
         {
             folderContainer.Clear();

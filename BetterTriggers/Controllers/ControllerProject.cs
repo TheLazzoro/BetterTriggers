@@ -72,7 +72,7 @@ namespace BetterTriggers.Controllers
         public bool War3MapDirExists()
         {
             bool exists = false;
-            string path = GetFullMapPath();
+            string path = Project.GetFullMapPath();
             if (path != null && Directory.Exists(path) && File.Exists(Path.Combine(path, "war3map.w3i")))
                 exists = true;
             else if (path != null && File.Exists(path) && (Path.HasExtension(".w3x") || Path.HasExtension(".w3m")))
@@ -81,13 +81,12 @@ namespace BetterTriggers.Controllers
             return exists;
         }
 
-        public static bool VerfiyMapPath(string path)
+        public static bool VerifyMapPath(string path)
         {
-            bool useRelativeMapDir = ContainerProject.project.UseRelativeMapDirectory;
+            bool useRelativeMapDir = Project.project.UseRelativeMapDirectory;
             if (useRelativeMapDir)
             {
-                ControllerProject controller = new ControllerProject();
-                path = controller.GetFullMapPath();
+                path = Project.GetFullMapPath();
             }
 
             bool verified = false;
@@ -108,134 +107,8 @@ namespace BetterTriggers.Controllers
         // TODO: Why do we use two paths?
         public void SetWar3MapPath(string path)
         {
-            ContainerProject.project.War3MapDirectory = path;
-            CustomMapData.mapPath = path;
+            Project.project.War3MapDirectory = path;
         }
-
-        public (bool, string) GenerateScript()
-        {
-            War3Project project = ContainerProject.project;
-            if (project == null)
-                return (false, null);
-
-            ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
-
-            ScriptGenerator scriptGenerator = new ScriptGenerator(language);
-            bool success = scriptGenerator.GenerateScript();
-
-            return (success, scriptGenerator.GeneratedScript);
-        }
-
-        string archivePath;
-        /// <summary>
-        /// Builds an MPQ archive.
-        /// </summary>
-        /// <returns>Full path of the archive.</returns>
-        public bool BuildMap(string destinationDir = null)
-        {
-            (bool wasVerified, string script) = GenerateScript();
-            if (!wasVerified)
-                return false;
-
-            War3Project project = ContainerProject.project;
-            ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
-
-            string mapDir = GetFullMapPath();
-            var map = Map.Open(mapDir);
-            map.Info.ScriptLanguage = language;
-            map.Script = script;
-
-            // We need to add all arbitrary files into to the builder.
-            MapBuilder builder = new MapBuilder(map);
-            if (Directory.Exists(mapDir))
-                builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
-            else
-            {
-                var mpqArchive = MpqArchive.Open(mapDir, true);
-                builder.AddFiles(mpqArchive);
-            }
-
-
-            var archiveCreateOptions = new MpqArchiveCreateOptions
-            {
-                ListFileCreateMode = MpqFileCreateMode.Overwrite,
-                AttributesCreateMode = MpqFileCreateMode.Prune,
-                //BlockSize = 3,
-            };
-
-            string src = Path.GetDirectoryName(ContainerProject.src);
-            if (destinationDir == null)
-                archivePath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
-            else
-            {
-                Settings settings = Settings.Load();
-                archivePath = Path.Combine(destinationDir, settings.CopyLocation + ".w3x");
-            }
-
-            bool didWrite = false;
-            int attemptLimit = 1000;
-            while (attemptLimit > 0 && !didWrite)
-            {
-                try
-                {
-                    builder.Build(archivePath, archiveCreateOptions);
-                    didWrite = true;
-                }
-                catch (Exception ex)
-                {
-                    Thread.Sleep(5);
-                    attemptLimit--;
-                }
-            }
-            if (!didWrite)
-                throw new Exception("Could not write to map.");
-
-
-            return true;
-        }
-
-        public void TestMap()
-        {
-            string destinationDir = Path.GetTempPath();
-            bool success = BuildMap(destinationDir);
-            if (!success)
-                return;
-
-            Settings settings = Settings.Load();
-            string war3Exe = Path.Combine(settings.war3root, "_retail_/x86_64/Warcraft III.exe");
-
-            int difficulty = settings.Difficulty;
-            string windowMode;
-            switch (settings.WindowMode)
-            {
-                case 0:
-                    windowMode = "windowed";
-                    break;
-                case 1:
-                    windowMode = "windowedfullscreen";
-                    break;
-                default:
-                    windowMode = "fullscreen";
-                    break;
-            }
-            int hd = settings.HD;
-            int teen = settings.Teen;
-            string playerProfile = settings.PlayerProfile;
-            int fixedseed = settings.FixedRandomSeed == true ? 1 : 0;
-            string nowfpause = settings.NoWindowsFocusPause == true ? "-nowfpause " : "";
-
-            string launchArgs = $"-launch " +
-                $"-mapdiff {difficulty} " +
-                $"-windowmode {windowMode} " +
-                $"-hd {hd} " +
-                $"-teen {teen} " +
-                $"-testmapprofile {playerProfile} " +
-                $"-fixedseed {fixedseed} " +
-                $"{nowfpause}";
-
-            Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{archivePath}\"");
-        }
-
 
         private string src;
         public event Action<int, int> FileLoadEvent;
@@ -267,7 +140,7 @@ namespace BetterTriggers.Controllers
             project.Version = War3Project.EditorVersion; // updates version.
             project.GameVersion = Casc.GameVersion; // updates game version.
             src = Path.Combine(Path.GetDirectoryName(filepath), "src");
-            ContainerProject container = new ContainerProject();
+            Project container = new Project();
             container.LoadProject(project, filepath, src);
             var projectRootEntry = new War3ProjectFileEntry()
             {
@@ -291,7 +164,7 @@ namespace BetterTriggers.Controllers
             fileCheckList.AddRange(files);
 
             // Recurse through elements found in the project file
-            RecurseLoad(projectRootEntry, ContainerProject.projectFiles[0], fileCheckList);
+            RecurseLoad(projectRootEntry, Project.projectFiles[0], fileCheckList);
 
             // Loop through elements not found
             for (int i = 0; i < fileCheckList.Count; i++)
@@ -371,10 +244,10 @@ namespace BetterTriggers.Controllers
 
         public void SaveProject()
         {
-            if (ContainerProject.projectFiles == null)
+            if (Project.projectFiles == null)
                 return;
 
-            SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
 
             // Write to unsaved
             var unsaved = UnsavedFiles.GetAllUnsaved();
@@ -393,8 +266,8 @@ namespace BetterTriggers.Controllers
             UnsavedFiles.Clear();
 
             // Write to project file
-            var root = (ExplorerElementRoot)ContainerProject.projectFiles[0];
-            var project = ContainerProject.project;
+            var root = (ExplorerElementRoot)Project.projectFiles[0];
+            var project = Project.project;
             project.Files = new List<War3ProjectFileEntry>();
 
             for (int i = 0; i < root.explorerElements.Count; i++)
@@ -414,7 +287,7 @@ namespace BetterTriggers.Controllers
                 }
             }
 
-            SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
 
             var json = JsonConvert.SerializeObject(project, Formatting.Indented);
             File.WriteAllText(root.GetProjectPath(), json);
@@ -442,57 +315,6 @@ namespace BetterTriggers.Controllers
                     RecurseSaveFileEntries((ExplorerElementFolder)element, fileEntryChild);
                 }
             }
-        }
-
-        public void CloseProject()
-        {
-            SetEnableFileEvents(false);
-            ContainerProject.project = null;
-            ContainerProject.projectFiles = null;
-            ContainerProject.currentSelectedElement = null;
-            CustomMapData.mapPath = null;
-            CommandManager.Reset();
-            UnsavedFiles.Clear();
-        }
-
-
-        public ExplorerElementRoot GetProjectRoot()
-        {
-            return (ExplorerElementRoot)ContainerProject.projectFiles[0];
-        }
-
-        public string GetFullMapPath()
-        {
-            var project = ContainerProject.project;
-            string path = project.War3MapDirectory;
-            if(project.UseRelativeMapDirectory)
-            {
-                string mapFileName = Path.GetFileName(project.War3MapDirectory);
-                var root = GetProjectRoot();
-                string rootDir = Path.GetDirectoryName(root.GetPath());
-                path = Path.Combine(rootDir, "map/" + mapFileName);
-            }
-
-            return path;
-        }
-
-        public void SetElementEnabled(IExplorerElement element, bool isEnabled)
-        {
-            element.SetEnabled(isEnabled);
-        }
-
-        public void SetElementInitiallyOn(IExplorerElement element, bool isInitiallyOn)
-        {
-            element.SetInitiallyOn(isInitiallyOn);
-        }
-
-        /// <summary>
-        /// Prevents the system from responding to file changes.
-        /// </summary>
-        /// <param name="doEnable"></param>
-        public void SetEnableFileEvents(bool doEnable)
-        {
-            ContainerProject.fileSystemWatcher.EnableRaisingEvents = doEnable;
         }
 
         /// <summary>
@@ -546,7 +368,7 @@ namespace BetterTriggers.Controllers
         {
             string directory = Path.GetDirectoryName(fullPath);
 
-            ExplorerElementRoot root = ContainerProject.projectFiles[0] as ExplorerElementRoot;
+            ExplorerElementRoot root = Project.projectFiles[0] as ExplorerElementRoot;
             IExplorerElement parent = FindExplorerElementFolder(root, directory);
 
             RecurseCreateElement(parent, fullPath, doRecurse);
@@ -578,7 +400,7 @@ namespace BetterTriggers.Controllers
                 }
             }
             AddElementToContainer(explorerElement);
-            ContainerProject.lastCreated = explorerElement;
+            Project.lastCreated = explorerElement;
 
             CommandExplorerElementCreate command = new CommandExplorerElementCreate(explorerElement, parent, parent.GetExplorerElements().Count);
             command.Execute();
@@ -629,7 +451,7 @@ namespace BetterTriggers.Controllers
 
         public IExplorerElement OnRenameElement(string oldFullPath, string newFullPath)
         {
-            var rootNode = ContainerProject.projectFiles[0];
+            var rootNode = Project.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
             if (elementToRename == null)
                 return null;
@@ -648,7 +470,7 @@ namespace BetterTriggers.Controllers
         /// <param name="newFullPath"></param>
         public void OnMoveElement(string oldFullPath, string newFullPath, int insertIndex)
         {
-            var rootNode = ContainerProject.projectFiles[0];
+            var rootNode = Project.projectFiles[0];
             IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
 
             CommandExplorerElementMove command = new CommandExplorerElementMove(elementToRename, newFullPath, insertIndex);
@@ -697,7 +519,7 @@ namespace BetterTriggers.Controllers
 
         public void OnDeleteElement(string fullPath)
         {
-            var rootNode = ContainerProject.projectFiles[0];
+            var rootNode = Project.projectFiles[0];
             IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
             if (elementToDelete == null)
                 return;
@@ -722,7 +544,7 @@ namespace BetterTriggers.Controllers
 
         public void OnElementChanged(string fullPath)
         {
-            var rootNode = ContainerProject.projectFiles[0];
+            var rootNode = Project.projectFiles[0];
             IExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
 
             if (elementToChange != null)
@@ -800,21 +622,21 @@ namespace BetterTriggers.Controllers
             // Returns root if no matching parent node was found.
             // Usually only need when loading a new project.
             if (matching == null)
-                return ContainerProject.projectFiles[0];
+                return Project.projectFiles[0];
 
             return matching;
         }
 
         public bool WasFileMoved(string oldFullPath)
         {
-            var explorerElement = FindExplorerElement(ContainerProject.projectFiles[0], oldFullPath);
+            var explorerElement = FindExplorerElement(Project.projectFiles[0], oldFullPath);
             if (explorerElement == null)
                 return false;
 
             var exPath = explorerElement.GetPath();
 
             bool wasMoved = false;
-            var files = Directory.GetFileSystemEntries(Path.GetDirectoryName(ContainerProject.projectFiles[0].GetPath()), "*", SearchOption.AllDirectories);
+            var files = Directory.GetFileSystemEntries(Path.GetDirectoryName(Project.projectFiles[0].GetPath()), "*", SearchOption.AllDirectories);
             int i = 0;
             while (i < files.Length && !wasMoved)
             {
@@ -867,7 +689,7 @@ namespace BetterTriggers.Controllers
                 formattedName = renameText + ".var";
             }
 
-            ContainerProject.insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
+            Project.insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
             ControllerFileSystem.Rename(oldPath, formattedName);
         }
 
@@ -916,7 +738,7 @@ namespace BetterTriggers.Controllers
 
             CommandExplorerElementPaste command = new CommandExplorerElementPaste(pasted, parent, insertIndex);
             command.Execute();
-            ContainerProject.lastCreated = pasted;
+            Project.lastCreated = pasted;
 
             return pasted;
         }

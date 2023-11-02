@@ -43,26 +43,25 @@ namespace Tests
             ControllerProject controllerProject = new ControllerProject();
             projectPath = controllerProject.CreateProject(language, name, directory);
             project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
             string fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
-            element1 = ContainerProject.lastCreated as ExplorerElementVariable;
+            element1 = Project.lastCreated as ExplorerElementVariable;
 
             fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
-            element2 = ContainerProject.lastCreated as ExplorerElementVariable;
+            element2 = Project.lastCreated as ExplorerElementVariable;
 
             fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
-            element3 = ContainerProject.lastCreated as ExplorerElementVariable;
+            element3 = Project.lastCreated as ExplorerElementVariable;
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new();
-            controller.CloseProject();
+            Project.Close();
         }
 
 
@@ -73,7 +72,7 @@ namespace Tests
             ControllerVariable controllerVariable = new ControllerVariable();
             string fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
-            var element = ContainerProject.lastCreated as ExplorerElementVariable;
+            var element = Project.lastCreated as ExplorerElementVariable;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -99,7 +98,7 @@ namespace Tests
             string expectedType = element1.variable.Type;
             string actualType = element.variable.Type;
 
-            Assert.AreEqual(element, ContainerProject.lastCreated);
+            Assert.AreEqual(element, Project.lastCreated);
             Assert.AreEqual(expectedArray0, actualArray0);
             Assert.AreEqual(expectedArray1, actualArray1);
             Assert.AreEqual(expectedType, actualType);

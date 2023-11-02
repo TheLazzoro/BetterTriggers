@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using System.Collections.Generic;
 
@@ -32,9 +33,9 @@ namespace BetterTriggers.Commands
             createdElement.Created(insertIndex);
 
             ControllerProject controllerProject = new ControllerProject();
-            controllerProject.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             controllerProject.RecurseCreateElementsWithContent(createdElement);
-            controllerProject.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
         }
 
         public void Undo()
@@ -42,10 +43,9 @@ namespace BetterTriggers.Commands
             createdElement.RemoveFromParent();
             createdElement.Deleted();
 
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             ControllerFileSystem.Delete(createdElement.GetPath());
-            controllerProject.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
         }
 
         public string GetCommandName()

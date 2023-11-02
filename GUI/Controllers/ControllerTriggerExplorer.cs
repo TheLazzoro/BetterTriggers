@@ -14,8 +14,7 @@ namespace GUI.Controllers
     {
         public void Populate(TriggerExplorer te)
         {
-            ControllerProject controllerProject = new ControllerProject();
-            var root = controllerProject.GetProjectRoot() as ExplorerElementRoot;
+            var root = Project.GetRoot();
             for (int i = 0; i < root.explorerElements.Count; i++)
             {
                 RecursePopulate(te, te.map, root.explorerElements[i]);
@@ -122,7 +121,7 @@ namespace GUI.Controllers
                 return;
 
             ControllerProject controllerProject = new ControllerProject();
-            var explorerElement = controllerProject.FindExplorerElement(controllerProject.GetProjectRoot(), fullPath);
+            var explorerElement = controllerProject.FindExplorerElement(Project.GetRoot(), fullPath);
             int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
 
             TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);

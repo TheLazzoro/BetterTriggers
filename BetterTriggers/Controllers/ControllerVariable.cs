@@ -22,7 +22,7 @@ namespace BetterTriggers.Controllers
         /// <returns>Full path.</returns>
         public static string Create()
         {
-            string directory = ContainerProject.currentSelectedElement;
+            string directory = Project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 

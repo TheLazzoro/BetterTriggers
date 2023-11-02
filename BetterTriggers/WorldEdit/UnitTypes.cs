@@ -1,18 +1,12 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using CASCLib;
 using IniParser.Model;
-using IniParser.Parser;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using War3Net.Build;
-using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
@@ -207,7 +201,7 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load()
+        internal static void Load(string fullMapPath)
         {
             unitTypesBaseEdited = new Dictionary<string, UnitType>();
             unitTypesCustom = new Dictionary<string, UnitType>();
@@ -235,7 +229,7 @@ namespace BetterTriggers.WorldEdit
                     Image = image
                 };
                 unitTypesBaseEdited.Add(unitType.Id, unitType);
-                SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId));
+                SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId), fullMapPath);
             }
 
             // custom units
@@ -261,11 +255,11 @@ namespace BetterTriggers.WorldEdit
                 };
 
                 unitTypesCustom.TryAdd(unitType.Id, unitType);
-                SetCustomFields(customUnit, unitType.Id);
+                SetCustomFields(customUnit, unitType.Id, fullMapPath);
             }
         }
 
-        private static void SetCustomFields(SimpleObjectModification modified, string unitId)
+        private static void SetCustomFields(SimpleObjectModification modified, string unitId, string fullMapPath)
         {
             UnitType unitType = GetUnitType(unitId);
             UnitName unitName = unitType.Name;
@@ -300,7 +294,7 @@ namespace BetterTriggers.WorldEdit
                     if (stream == null)
                     {
                         // WE accepts paths with no extensions, so we need to work around that.
-                        iconPath = Path.Combine(CustomMapData.mapPath, Path.Combine(Path.GetDirectoryName(iconPath), Path.GetFileNameWithoutExtension(iconPath)));
+                        iconPath = Path.Combine(fullMapPath, Path.Combine(Path.GetDirectoryName(iconPath), Path.GetFileNameWithoutExtension(iconPath)));
                         string finalIconPath = string.Empty;
                         string[] extensions = { ".blp", ".tga", ".dds" };
                         int i = 0;

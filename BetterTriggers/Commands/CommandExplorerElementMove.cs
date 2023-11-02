@@ -19,7 +19,7 @@ namespace BetterTriggers.Commands
         public CommandExplorerElementMove(IExplorerElement explorerElement, string newFullPath, int NewInsertIndex)
         {
             ControllerProject controller = new ControllerProject();
-            var rootNode = ContainerProject.projectFiles[0];
+            var rootNode = Project.projectFiles[0];
             newParent = controller.FindExplorerElementFolder(rootNode, Path.GetDirectoryName(newFullPath));
             this.oldFullPath = explorerElement.GetPath();
             this.newFullPath = newFullPath;
@@ -47,9 +47,9 @@ namespace BetterTriggers.Commands
             explorerElement.SetParent(newParent, NewInsertIndex);
 
             ControllerProject controller = new ControllerProject();
-            controller.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             ControllerFileSystem.Move(explorerElement.GetPath(), newParent.GetPath(), NewInsertIndex);
-            controller.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
 
 
             controller.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
@@ -63,9 +63,9 @@ namespace BetterTriggers.Commands
             explorerElement.SetParent(oldParent, OldInsertIndex);
 
             ControllerProject controller = new ControllerProject();
-            controller.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             ControllerFileSystem.Move(explorerElement.GetPath(), oldParent.GetPath(), OldInsertIndex);
-            controller.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
 
             controller.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 

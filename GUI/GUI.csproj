@@ -364,9 +364,6 @@
     <Compile Update="VerifyingTriggersWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="LoadingDataWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="AboutBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -452,10 +449,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="VerifyingTriggersWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="LoadingDataWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

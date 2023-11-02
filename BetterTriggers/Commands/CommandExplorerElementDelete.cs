@@ -41,11 +41,10 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             deletedElement.RemoveFromParent();
             deletedElement.Deleted();
-            ControllerProject controllerProject = new ControllerProject();
-            
-            controllerProject.SetEnableFileEvents(false);
+
+            Project.EnableFileEvents(false);
             ControllerFileSystem.Delete(deletedElement.GetPath());
-            controllerProject.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
 
             
             
@@ -58,14 +57,14 @@ namespace BetterTriggers.Commands
             deletedElement.SetParent(parent, index);
             deletedElement.Created(index);
             ControllerProject controller = new ControllerProject();
-            controller.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
 
             controller.RecurseCreateElementsWithContent(deletedElement);
             controller.AddElementToContainer(deletedElement);
             deletedElement.UpdateMetadata(); // this is important because we do a pseudo-undo (create the file from scratch)
             // We may want to do the same 
 
-            controller.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
             refCollection.AddRefsToParent();
         }
 

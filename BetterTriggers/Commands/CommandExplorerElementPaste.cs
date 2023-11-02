@@ -37,8 +37,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             CreatePastedElements(toPaste, pasteParent);
 
             if (toCut != null)
@@ -51,7 +50,7 @@ namespace BetterTriggers.Commands
             toPaste.SetParent(pasteParent, pastedIndex);
             toPaste.Created(pastedIndex);
 
-            controllerProject.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
 
 
             CommandManager.AddCommand(this);
@@ -59,8 +58,7 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             CreatePastedElements(toPaste, pasteParent);
 
             if (toCut != null)
@@ -72,13 +70,13 @@ namespace BetterTriggers.Commands
             toPaste.SetParent(pasteParent, pastedIndex);
             toPaste.Created(pastedIndex);
 
-            controllerProject.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
         }
 
         public void Undo()
         {
             ControllerProject controllerProject = new ControllerProject();
-            controllerProject.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             ControllerFileSystem.Delete(toPaste.GetPath());
             RemovePastedElements(toPaste);
 
@@ -91,7 +89,7 @@ namespace BetterTriggers.Commands
             toPaste.RemoveFromParent();
             toPaste.Deleted();
 
-            controllerProject.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
         }
 
         public string GetCommandName()

@@ -17,7 +17,7 @@ namespace BetterTriggers.Controllers
         /// <returns>Full file path.</returns>
         public static string Create()
         {
-            string directory = ContainerProject.currentSelectedElement;
+            string directory = Project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -36,7 +36,7 @@ namespace BetterTriggers.Controllers
                 i++;
             }
 
-            string extension = ContainerProject.project.Language == "lua" ? ".lua" : ".j";
+            string extension = Project.project.Language == "lua" ? ".lua" : ".j";
             string fullPath = Path.Combine(directory, name + extension);
             File.WriteAllText(fullPath, "");
 

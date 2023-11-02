@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public string GetPath()
         {
-            return ContainerProject.src;
+            return Project.src;
         }
 
         public string GetSaveablePath()

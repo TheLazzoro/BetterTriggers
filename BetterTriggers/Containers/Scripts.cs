@@ -51,7 +51,7 @@ namespace BetterTriggers.Containers
             string path = script.GetPath();
             string folder = Path.GetDirectoryName(path);
             string filename = Path.GetFileNameWithoutExtension(path);
-            string extension = ContainerProject.project.Language == "lua" ? ".lua" : ".j";
+            string extension = Project.project.Language == "lua" ? ".lua" : ".j";
             int i = 0;
             bool exists = true;
             while (exists)

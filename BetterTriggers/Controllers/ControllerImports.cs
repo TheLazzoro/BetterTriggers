@@ -6,6 +6,7 @@ using System.IO;
 using BetterTriggers.Models.SaveableData;
 using War3Net.IO.Mpq;
 using War3Net.Build;
+using BetterTriggers.Containers;
 
 namespace BetterTriggers.Controllers
 {
@@ -13,10 +14,11 @@ namespace BetterTriggers.Controllers
     {
         public static List<Value> GetImportsByReturnType(string returnType)
         {
-            bool isMapMPQ = File.Exists(CustomMapData.mapPath);
+            string fullMapPath = Project.GetFullMapPath();
+            bool isMapMPQ = File.Exists(fullMapPath);
             List<Value> imports = new List<Value>();
             List<string> files = new List<string>();
-            string mapDir = CustomMapData.mapPath + "/";
+            string mapDir = fullMapPath + "/";
 
             if (isMapMPQ)
             {

@@ -35,9 +35,9 @@ namespace BetterTriggers.Commands
         public void Redo()
         {
             ControllerProject controller = new ControllerProject();
-            controller.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             ControllerFileSystem.RenameElementPath(explorerElement.GetPath(), newFullPath);
-            controller.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
 
             controller.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
@@ -48,9 +48,9 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             ControllerProject controller = new ControllerProject();
-            controller.SetEnableFileEvents(false);
+            Project.EnableFileEvents(false);
             ControllerFileSystem.RenameElementPath(explorerElement.GetPath(), oldFullPath);
-            controller.SetEnableFileEvents(true);
+            Project.EnableFileEvents(true);
 
             controller.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 

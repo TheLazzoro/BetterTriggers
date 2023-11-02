@@ -132,7 +132,7 @@ end
         internal bool GenerateScript()
         {
             bool success = true;
-            if (ContainerProject.project == null)
+            if (Project.project == null)
                 return false;
 
             string scriptFile = language == ScriptLanguage.Jass ? "war3map.j" : "war3map.lua";
@@ -141,7 +141,7 @@ end
                 Directory.CreateDirectory(outputDir);
 
             string outputPath = Path.Combine(outputDir, scriptFile);
-            var inMemoryFiles = ContainerProject.projectFiles;
+            var inMemoryFiles = Project.projectFiles;
 
             SortTriggerElements(inMemoryFiles[0]); // root node.
             StringBuilder script = Generate();
@@ -391,7 +391,7 @@ end
             script.Append(newline);
 
             // Map header
-            script.Append(ContainerProject.project.Header + newline + newline);
+            script.Append(Project.project.Header + newline + newline);
 
 
 

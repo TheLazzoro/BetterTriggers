@@ -63,8 +63,7 @@ namespace GUI.Components
         public void SetElementEnabled(bool isEnabled)
         {
             checkBoxIsEnabled.IsChecked = isEnabled;
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementEnabled(explorerElementScript, (bool)checkBoxIsEnabled.IsChecked);
+            explorerElementScript.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
             OnStateChange();
         }
 
@@ -93,8 +92,7 @@ namespace GUI.Components
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementEnabled(explorerElementScript, (bool)checkBoxIsEnabled.IsChecked);
+            explorerElementScript.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
             OnStateChange();
         }
 

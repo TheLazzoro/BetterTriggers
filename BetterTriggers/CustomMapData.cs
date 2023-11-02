@@ -20,7 +20,6 @@ namespace BetterTriggers
 {
     public class CustomMapData
     {
-        public static string mapPath;
         internal static Map MPQMap;
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
@@ -31,54 +30,56 @@ namespace BetterTriggers
                 OnSaving(sender, e);
         }
 
-        public static void Init(string _mapPath)
-        {
-            mapPath = _mapPath;
-            while (IsMapSaving())
-            {
-                Thread.Sleep(1000);
-            }
-
-            if (watcher != null)
-                watcher.Created -= Watcher_Created;
-
-            watcher = new System.IO.FileSystemWatcher();
-            watcher.Path = Path.GetDirectoryName(mapPath);
-            watcher.EnableRaisingEvents = true;
-            watcher.Created += Watcher_Created;
-        }
-
         private static void Watcher_Created(object sender, FileSystemEventArgs e)
         {
-            if (e.Name == Path.GetFileName(mapPath) + "Temp")
-                InvokeOnSaving(sender, e);
+            // this try-block is only here because of the TriggerConverter.
+            try
+            {
+                var mapPath = Project.GetFullMapPath();
+                if (e.Name == Path.GetFileName(mapPath) + "Temp")
+                    InvokeOnSaving(sender, e);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
-        public static bool IsMapSaving()
+        public static bool IsMapSaving(string fullMapPath = null)
         {
-            if (Directory.Exists(mapPath + "Temp"))
+            if (string.IsNullOrEmpty(fullMapPath))
+            {
+                fullMapPath = Project.GetFullMapPath();
+            }
+
+            if (Directory.Exists(fullMapPath + "Temp"))
                 return true;
-            else if (Directory.Exists(mapPath + "Backup"))
+            else if (Directory.Exists(fullMapPath + "Backup"))
                 return true;
             else
                 return false;
         }
 
 
-        public static void Load()
+        public static void Load(string fullMapPath = null)
         {
-            while (IsMapSaving())
+            if (string.IsNullOrEmpty(fullMapPath))
+            {
+                fullMapPath = Project.GetFullMapPath();
+            }
+
+            while (IsMapSaving(fullMapPath))
             {
                 Thread.Sleep(1000);
             }
-            MPQMap = Map.Open(mapPath);
+            MPQMap = Map.Open(fullMapPath);
 
             Info.Load();
             MapStrings.Load();
-            UnitTypes.Load();
+            UnitTypes.Load(fullMapPath);
             ItemTypes.Load();
             DestructibleTypes.Load();
-            DoodadTypes.Load();
+            DoodadTypes.Load(fullMapPath);
             AbilityTypes.Load();
             BuffTypes.Load();
             UpgradeTypes.Load();
@@ -89,6 +90,14 @@ namespace BetterTriggers
             Regions.Load();
             Sounds.Load();
             Units.Load();
+
+            if (watcher != null)
+                watcher.Created -= Watcher_Created;
+
+            watcher = new System.IO.FileSystemWatcher();
+            watcher.Path = Path.GetDirectoryName(fullMapPath);
+            watcher.EnableRaisingEvents = true;
+            watcher.Created += Watcher_Created;
         }
 
         /// <summary>

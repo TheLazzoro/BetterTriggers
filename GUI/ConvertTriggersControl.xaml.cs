@@ -69,7 +69,7 @@ namespace GUI
         {
             bool ok;
             FinalPath = System.IO.Path.Combine(lblDestination.Text, System.IO.Path.GetFileNameWithoutExtension(lblMap.Text));
-            MapExists = ControllerProject.VerfiyMapPath(lblMap.Text);
+            MapExists = ControllerProject.VerifyMapPath(lblMap.Text);
             DestinationDirectoryExists = Directory.Exists(lblDestination.Text);
             FinalPathAlreadyExists = Directory.Exists(FinalPath);
 

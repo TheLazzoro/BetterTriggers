@@ -807,16 +807,14 @@ namespace GUI.Components
         public void SetElementEnabled(bool isEnabled)
         {
             checkBoxIsEnabled.IsChecked = isEnabled;
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementEnabled(explorerElementTrigger, (bool)checkBoxIsEnabled.IsChecked);
+            explorerElementTrigger.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
             OnStateChange();
         }
 
         public void SetElementInitiallyOn(bool isInitiallyOn)
         {
             checkBoxIsInitiallyOn.IsChecked = isInitiallyOn;
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementInitiallyOn(explorerElementTrigger, (bool)checkBoxIsInitiallyOn.IsChecked);
+            explorerElementTrigger.SetEnabled((bool)checkBoxIsInitiallyOn.IsChecked);
             OnStateChange();
         }
 

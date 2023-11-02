@@ -49,7 +49,7 @@ namespace Tests
             ControllerProject controllerProject = new ControllerProject();
             projectPath = controllerProject.CreateProject(language, name, directory);
             project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
             string fullPath = ControllerTrigger.Create();
             controllerProject.OnCreateElement(fullPath); // Force OnCreate 'event'.
@@ -67,8 +67,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new ControllerProject();
-            controller.CloseProject();
+            Project.Close();
         }
 
 

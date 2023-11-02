@@ -48,8 +48,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.Init(mapPath);
-            CustomMapData.Load();
+            CustomMapData.Load(mapPath);
 
 
             string pathTriggers = "war3map.wtg";

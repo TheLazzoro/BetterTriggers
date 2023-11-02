@@ -12,7 +12,7 @@ namespace BetterTriggers.Controllers
     {
         public static void Move(string elementToMove, string targetDir, int insertIndex)
         {
-            ContainerProject.insertIndex = insertIndex;
+            Project.insertIndex = insertIndex;
             string directory = targetDir;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(targetDir);

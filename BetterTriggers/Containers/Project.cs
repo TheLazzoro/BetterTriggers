@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
@@ -8,7 +9,7 @@ using System.IO;
 
 namespace BetterTriggers.Containers
 {
-    public class ContainerProject
+    public class Project
     {
         public static string src;
         public static War3Project project;
@@ -27,8 +28,8 @@ namespace BetterTriggers.Containers
 
         public void LoadProject(War3Project project, string projectPath, string src)
         {
-            ContainerProject.src = src;
-            ContainerProject.project = project;
+            Project.src = src;
+            Project.project = project;
             projectFiles = new List<IExplorerElement>();
             projectFiles.Add(new ExplorerElementRoot(project, projectPath));
             currentSelectedElement = src; // defaults to here when nothing has been selected yet.
@@ -47,6 +48,45 @@ namespace BetterTriggers.Containers
             fileSystemWatcher.EnableRaisingEvents = true;
             fileSystemWatcher.IncludeSubdirectories = true;
             fileSystemWatcher.InternalBufferSize = 32768; // 32 KB. 64 KB is the limit according to Microsoft.
+        }
+
+        public static void Close()
+        {
+            EnableFileEvents(false);
+            project = null;
+            projectFiles = null;
+            currentSelectedElement = null;
+            CommandManager.Reset();
+            UnsavedFiles.Clear();
+        }
+
+        /// <returns>The top level explorer element in the project.</returns>
+        public static ExplorerElementRoot GetRoot()
+        {
+            return (ExplorerElementRoot)projectFiles[0];
+        }
+
+        public static string GetFullMapPath()
+        {
+            string path = project.War3MapDirectory;
+            if (project.UseRelativeMapDirectory)
+            {
+                string mapFileName = Path.GetFileName(project.War3MapDirectory);
+                var root = GetRoot();
+                string rootDir = Path.GetDirectoryName(root.GetPath());
+                path = Path.Combine(rootDir, "map/" + mapFileName);
+            }
+
+            return path;
+        }
+
+        /// <summary>
+        /// Prevents the system from responding to file changes.
+        /// </summary>
+        /// <param name="doEnable"></param>
+        public static void EnableFileEvents(bool doEnable)
+        {
+            fileSystemWatcher.EnableRaisingEvents = doEnable;
         }
 
         private void InvokeCreate(object sender, FileSystemEventArgs e)

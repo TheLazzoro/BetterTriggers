@@ -50,7 +50,7 @@ namespace GUI
         {
             InitializeComponent();
 
-            ContainerProject.OnCreated += ContainerProject_OnElementCreated;
+            Project.OnCreated += ContainerProject_OnElementCreated;
             searchWorker = new BackgroundWorker();
             searchWorker.WorkerReportsProgress = true;
             searchWorker.WorkerSupportsCancellation = true;
@@ -62,7 +62,7 @@ namespace GUI
 
         public void Dispose()
         {
-            ContainerProject.OnCreated -= ContainerProject_OnElementCreated;
+            Project.OnCreated -= ContainerProject_OnElementCreated;
         }
 
         // This function is invoked by a method in the container when a new file is created.
@@ -71,7 +71,7 @@ namespace GUI
             Application.Current.Dispatcher.Invoke(delegate
             {
                 ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                controller.OnCreateElement(this, ContainerProject.createdPath); // hack
+                controller.OnCreateElement(this, Project.createdPath); // hack
             });
         }
 
@@ -141,7 +141,7 @@ namespace GUI
 
         public void CreateRootItem()
         {
-            this.map = new TreeItemExplorerElement(ContainerProject.projectFiles[0]);
+            this.map = new TreeItemExplorerElement(Project.projectFiles[0]);
             treeViewTriggerExplorer.Items.Add(this.map);
             this.map.IsExpanded = true;
             this.map.IsSelected = true;
@@ -417,7 +417,7 @@ namespace GUI
 
         private void menuNewCategory_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFolder.Create();
+            Folders.Create();
         }
 
         private void menuNewTrigger_Click(object sender, RoutedEventArgs e)
@@ -438,16 +438,14 @@ namespace GUI
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
         {
             // TODO: This will not update the checkmark in the editor view.
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementEnabled(currentElement.Ielement, !currentElement.Ielement.GetEnabled());
+            currentElement.Ielement.SetEnabled(!currentElement.Ielement.GetEnabled());
             if (currentElement.editor != null)
                 currentElement.editor.OnStateChange();
         }
 
         private void menuElementInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.SetElementInitiallyOn(currentElement.Ielement, !currentElement.Ielement.GetInitiallyOn());
+            currentElement.Ielement.SetInitiallyOn(!currentElement.Ielement.GetInitiallyOn());
             if (currentElement.editor != null)
                 currentElement.editor.OnStateChange();
         }

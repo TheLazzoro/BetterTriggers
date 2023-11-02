@@ -43,12 +43,12 @@ namespace Tests
             ControllerProject controllerProject = new ControllerProject();
             projectPath = controllerProject.CreateProject(language, name, directory);
             project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = ControllerFolder.Create();
+            string fullPath = Folders.Create();
             controllerProject.OnCreateElement(fullPath);
-            element1 = ContainerProject.lastCreated as ExplorerElementFolder;
-            ContainerProject.currentSelectedElement = element1.GetPath();
+            element1 = Project.lastCreated as ExplorerElementFolder;
+            Project.currentSelectedElement = element1.GetPath();
 
             fullPath = ControllerVariable.Create();
             controllerProject.OnCreateElement(fullPath);
@@ -61,7 +61,7 @@ namespace Tests
         public void AfterEach()
         {
             ControllerProject controller = new();
-            controller.CloseProject();
+            Project.Close();
         }
 
 
@@ -69,9 +69,9 @@ namespace Tests
         public void OnCreateFolder()
         {
             ControllerProject controllerProject = new ControllerProject();
-            string fullPath = ControllerFolder.Create();
+            string fullPath = Folders.Create();
             controllerProject.OnCreateElement(fullPath);
-            var element = ContainerProject.lastCreated as ExplorerElementFolder;
+            var element = Project.lastCreated as ExplorerElementFolder;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -82,7 +82,7 @@ namespace Tests
         [TestMethod]
         public void OnPasteFolder()
         {
-            var root = ContainerProject.projectFiles[0];
+            var root = Project.projectFiles[0];
             ControllerProject controllerProject = new ControllerProject();
             controllerProject.CopyExplorerElement(element1);
             var element = controllerProject.PasteExplorerElement(root) as ExplorerElementFolder;
@@ -90,7 +90,7 @@ namespace Tests
             int expectedElements = element1.explorerElements.Count;
             int actualElements = element.explorerElements.Count;
 
-            Assert.AreEqual(element, ContainerProject.lastCreated);
+            Assert.AreEqual(element, Project.lastCreated);
             Assert.AreEqual(expectedElements, actualElements);
             Assert.AreNotEqual(element.GetName(), element1.GetName());
 

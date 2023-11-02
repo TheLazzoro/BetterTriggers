@@ -43,26 +43,25 @@ namespace Tests
             ControllerProject controllerProject = new ControllerProject();
             projectPath = controllerProject.CreateProject(language, name, directory);
             project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
             string fullPath = ControllerScript.Create();
             controllerProject.OnCreateElement(fullPath);
-            element1 = ContainerProject.lastCreated as ExplorerElementScript;
+            element1 = Project.lastCreated as ExplorerElementScript;
 
             fullPath = ControllerScript.Create();
             controllerProject.OnCreateElement(fullPath);
-            element2 = ContainerProject.lastCreated as ExplorerElementScript;
+            element2 = Project.lastCreated as ExplorerElementScript;
 
             fullPath = ControllerScript.Create();
             controllerProject.OnCreateElement(fullPath);
-            element3 = ContainerProject.lastCreated as ExplorerElementScript;
+            element3 = Project.lastCreated as ExplorerElementScript;
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new();
-            controller.CloseProject();
+            Project.Close();
         }
 
 
@@ -72,7 +71,7 @@ namespace Tests
             ControllerProject controllerProject = new ControllerProject();
             string fullPath = ControllerScript.Create();
             controllerProject.OnCreateElement(fullPath);
-            var element = ContainerProject.lastCreated as ExplorerElementScript;
+            var element = Project.lastCreated as ExplorerElementScript;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -97,7 +96,7 @@ namespace Tests
             string expectedPath = Path.Combine(dir, name + extension);
             string actualPath = element.GetPath();
 
-            Assert.AreEqual(element, ContainerProject.lastCreated);
+            Assert.AreEqual(element, Project.lastCreated);
             Assert.AreEqual(expectedName, actualName);
             Assert.AreEqual(expectedPath, actualPath);
         }

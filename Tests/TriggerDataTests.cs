@@ -54,19 +54,18 @@ namespace Tests
             ControllerProject controllerProject = new ControllerProject();
             projectPath = controllerProject.CreateProject(language, name, directory);
             project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
             string fullPath = ControllerVariable.Create();
             variablePath = fullPath;
             controllerProject.OnCreateElement(fullPath); // Force OnCreate 'event'.
-            variable = ContainerProject.lastCreated as ExplorerElementVariable;
+            variable = Project.lastCreated as ExplorerElementVariable;
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new();
-            controller.CloseProject();
+            Project.Close();
         }
 
 

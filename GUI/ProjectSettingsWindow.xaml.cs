@@ -28,7 +28,7 @@ namespace GUI
 
             InitializeComponent();
 
-            var project = ContainerProject.project;
+            var project = Project.project;
             if (project.Language == "jass")
                 comboboxMapScript.SelectedIndex = 0;
             else
@@ -39,23 +39,22 @@ namespace GUI
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            var project = ContainerProject.project;
+            var project = Project.project;
             if (comboboxMapScript.SelectedIndex == 0)
                 project.Language = "jass";
             else
                 project.Language = "lua";
 
-            ControllerProject controllerProject = new ControllerProject();
             project.UseRelativeMapDirectory = (bool)checkboxRelativeMapPath.IsChecked;
             if(project.UseRelativeMapDirectory)
                 project.War3MapDirectory = Path.GetFileName(project.War3MapDirectory);
             else
             {
-                project.War3MapDirectory = controllerProject.GetFullMapPath();
+                project.War3MapDirectory = Project.GetFullMapPath();
             }
 
             ControllerExplorerElement controller = new ControllerExplorerElement();
-            var root = controllerProject.GetProjectRoot();
+            var root = Project.GetRoot();
             controller.AddToUnsaved(root);
 
             this.Close();
