@@ -411,10 +411,19 @@ namespace GUI
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            bool canUndo = Project.CurrentProject.CommandManager.CanUndo();
-            bool canRedo = Project.CurrentProject.CommandManager.CanRedo();
-            string nameCommandToUndo = Project.CurrentProject.CommandManager.GetNameCommandToUndo();
-            string nameCommandToRedo = Project.CurrentProject.CommandManager.GetNameCommandToRedo();
+            bool isProjectOpen = Project.CurrentProject != null;
+
+            bool canUndo = false;
+            bool canRedo = false;
+            string nameCommandToUndo = string.Empty;
+            string nameCommandToRedo = string.Empty;
+            if (isProjectOpen)
+            {
+                canUndo = Project.CurrentProject.CommandManager.CanUndo();
+                canRedo = Project.CurrentProject.CommandManager.CanRedo();
+                nameCommandToUndo = Project.CurrentProject.CommandManager.GetNameCommandToUndo();
+                nameCommandToRedo = Project.CurrentProject.CommandManager.GetNameCommandToRedo();
+            }
 
             menuItemUndo.IsEnabled = canUndo;
             menuItemRedo.IsEnabled = canRedo;
@@ -632,6 +641,9 @@ namespace GUI
 
         private bool DoCloseProject()
         {
+            if (Project.CurrentProject == null)
+                return true;
+
             if (Project.CurrentProject.GetUnsavedFileCount() == 0)
                 return true;
 
@@ -712,8 +724,8 @@ namespace GUI
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = Project.CurrentProject.CommandManager.CanUndo();
-
+            if(Project.CurrentProject != null)
+                e.CanExecute = Project.CurrentProject.CommandManager.CanUndo();
         }
 
         private void CommandBinding_Executed_Undo(object sender, ExecutedRoutedEventArgs e)
@@ -723,8 +735,8 @@ namespace GUI
 
         private void CommandBinding_CanExecute_Redo(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = Project.CurrentProject.CommandManager.CanRedo();
-
+            if(Project.CurrentProject != null)
+                e.CanExecute = Project.CurrentProject.CommandManager.CanRedo();
         }
 
         private void CommandBinding_Executed_Redo(object sender, ExecutedRoutedEventArgs e)

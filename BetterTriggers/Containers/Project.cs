@@ -236,6 +236,7 @@ namespace BetterTriggers.Containers
 
 
             Project project = new Project();
+            CurrentProject = project;
             project.war3project = war3project;
 
             war3project.Version = War3Project.EditorVersion; // updates version.
@@ -290,8 +291,6 @@ namespace BetterTriggers.Containers
 
             project.References.UpdateReferencesAll();
             ControllerRecentFiles.AddProjectToRecent(projectPath);
-
-            CurrentProject = project;
 
             return project;
         }
@@ -801,8 +800,6 @@ namespace BetterTriggers.Containers
             project.fileSystemWatcher.Changed -= project.FileSystemWatcher_Changed;
             project.fileSystemWatcher.Renamed -= project.FileSystemWatcher_Renamed;
             project.fileSystemWatcher.Error -= project.FileSystemWatcher_Error;
-
-
         }
 
         /// <returns>The top level explorer element in the project.</returns>
