@@ -36,7 +36,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            ControllerTrigger.RemoveInvalidReferences(to.trigger, listToPaste);
+            Project.CurrentProject.Triggers.RemoveInvalidReferences(to.trigger, listToPaste);
             for (int i = 0; i < listToCut.Count; i++)
             {
                 listToCut[i].RemoveFromParent();
@@ -51,11 +51,11 @@ namespace BetterTriggers.Commands
                 listToPaste[i].SetParent(pasteParent, pastedIndex + i);
             }
 
-            References.UpdateReferences(from);
-            References.UpdateReferences(to);
+            Project.CurrentProject.References.UpdateReferences(from);
+            Project.CurrentProject.References.UpdateReferences(to);
             CopiedElements.CutTriggerElements = null; // Reset
 
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -71,8 +71,8 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Created(pastedIndex + i);
             }
 
-            References.UpdateReferences(from);
-            References.UpdateReferences(to);
+            Project.CurrentProject.References.UpdateReferences(from);
+            Project.CurrentProject.References.UpdateReferences(to);
         }
 
         public void Undo()
@@ -88,8 +88,8 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Deleted();
             }
 
-            References.UpdateReferences(from);
-            References.UpdateReferences(to);
+            Project.CurrentProject.References.UpdateReferences(from);
+            Project.CurrentProject.References.UpdateReferences(to);
         }
 
         public string GetCommandName()

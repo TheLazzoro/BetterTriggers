@@ -22,10 +22,12 @@ namespace GUI.Controllers
 
         StringBuilder stringBuilder = new StringBuilder();
         private Settings settings;
+        private Project project;
 
         public ControllerParamText()
         {
             settings = Settings.Load();
+            project = Project.CurrentProject;
         }
 
         public string GenerateTreeItemText(TreeViewTriggerElement treeItem)
@@ -79,7 +81,7 @@ namespace GUI.Controllers
                 else if (parameters[paramIndex] is VariableRef)
                 {
                     var variableRef = (VariableRef)parameters[paramIndex];
-                    var variable = ControllerVariable.GetByReference(variableRef);
+                    var variable = project.Variables.GetByReference(variableRef);
                     string varName = string.Empty;
 
                     string expectedType = null;
@@ -94,7 +96,7 @@ namespace GUI.Controllers
                     if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
                         varName = "null";
                     else
-                        varName = Variables.GetVariableNameById(variable.Id);
+                        varName = project.Variables.GetVariableNameById(variable.Id);
 
                     sb.Append(varName);
 
@@ -115,21 +117,21 @@ namespace GUI.Controllers
                 else if (parameters[paramIndex] is TriggerRef)
                 {
                     var triggerRef = (TriggerRef)parameters[paramIndex];
-                    var trigger = ControllerTrigger.GetByReference(triggerRef);
+                    var trigger = project.Triggers.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
                         triggerName = "null";
                     else
-                        triggerName = ControllerTrigger.GetTriggerName(trigger.Id);
+                        triggerName = project.Triggers.GetName(trigger.trigger.Id);
 
                     sb.Append(triggerName);
                 }
                 else if (parameters[paramIndex] is Value)
                 {
                     var value = (Value)parameters[paramIndex];
-                    var name = ControllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
+                    var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     //if (name == null || name == "")
@@ -277,7 +279,7 @@ namespace GUI.Controllers
                 else if (parameters[paramIndex] is VariableRef)
                 {
                     var variableRef = (VariableRef)parameters[paramIndex];
-                    var variable = ControllerVariable.GetByReference(variableRef);
+                    var variable = project.Variables.GetByReference(variableRef);
                     string varName = string.Empty;
 
                     string expectedType = null;
@@ -292,7 +294,7 @@ namespace GUI.Controllers
                     if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
                         varName = "null";
                     else
-                        varName = Variables.GetVariableNameById(variable.Id);
+                        varName = project.Variables.GetVariableNameById(variable.Id);
 
                     inlines.Add(AddHyperlink(parameterFacade, varName, parameters, paramIndex, returnTypes[paramIndex]));
                     List<string> _returnTypes = new List<string>();
@@ -306,21 +308,21 @@ namespace GUI.Controllers
                 else if (parameters[paramIndex] is TriggerRef)
                 {
                     var triggerRef = (TriggerRef)parameters[paramIndex];
-                    var trigger = ControllerTrigger.GetByReference(triggerRef);
+                    var trigger = project.Triggers.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
                         triggerName = "null";
                     else
-                        triggerName = ControllerTrigger.GetTriggerName(trigger.Id);
+                        triggerName = project.Triggers.GetName(trigger.trigger.Id);
 
                     inlines.Add(AddHyperlink(parameterFacade, triggerName, parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is Value)
                 {
                     var value = (Value)parameters[paramIndex];
-                    var name = ControllerTrigger.GetValueName(value.value, returnTypes[paramIndex]);
+                    var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
 
                     // This exists in case a variable has been changed
                     //if (name == null || name == "")

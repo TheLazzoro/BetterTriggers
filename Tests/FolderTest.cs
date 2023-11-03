@@ -40,27 +40,27 @@ namespace Tests
             if (File.Exists(Path.Combine(directory, name + ".json")))
                 File.Delete(Path.Combine(directory, name + ".json"));
 
+            Project project = Project.CurrentProject;
             ControllerProject controllerProject = new ControllerProject();
-            projectPath = controllerProject.CreateProject(language, name, directory);
-            project = controllerProject.LoadProject(projectPath);
-            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            projectPath = Project.Create(language, name, directory);
+            project = Project.Load(projectPath);
+            project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = Folders.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element1 = Project.lastCreated as ExplorerElementFolder;
-            Project.currentSelectedElement = element1.GetPath();
+            string fullPath = project.Folders.Create();
+            project.OnCreateElement(fullPath);
+            element1 = project.lastCreated as ExplorerElementFolder;
+            project.currentSelectedElement = element1.GetPath();
 
-            fullPath = ControllerVariable.Create();
-            controllerProject.OnCreateElement(fullPath);
+            fullPath = project.Variables.Create();
+            project.OnCreateElement(fullPath);
 
-            fullPath = ControllerTrigger.Create();
-            controllerProject.OnCreateElement(fullPath);
+            fullPath = project.Triggers.Create();
+            project.OnCreateElement(fullPath);
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new();
             Project.Close();
         }
 
@@ -68,10 +68,9 @@ namespace Tests
         [TestMethod]
         public void OnCreateFolder()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            string fullPath = Folders.Create();
-            controllerProject.OnCreateElement(fullPath);
-            var element = Project.lastCreated as ExplorerElementFolder;
+            string fullPath = Project.CurrentProject.Folders.Create();
+            Project.CurrentProject.OnCreateElement(fullPath);
+            var element = Project.CurrentProject.lastCreated as ExplorerElementFolder;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -82,15 +81,15 @@ namespace Tests
         [TestMethod]
         public void OnPasteFolder()
         {
-            var root = Project.projectFiles[0];
+            var root = Project.CurrentProject.projectFiles[0];
             ControllerProject controllerProject = new ControllerProject();
-            controllerProject.CopyExplorerElement(element1);
-            var element = controllerProject.PasteExplorerElement(root) as ExplorerElementFolder;
+            Project.CurrentProject.CopyExplorerElement(element1);
+            var element = Project.CurrentProject.PasteExplorerElement(root) as ExplorerElementFolder;
 
             int expectedElements = element1.explorerElements.Count;
             int actualElements = element.explorerElements.Count;
 
-            Assert.AreEqual(element, Project.lastCreated);
+            Assert.AreEqual(element, Project.CurrentProject.lastCreated);
             Assert.AreEqual(expectedElements, actualElements);
             Assert.AreNotEqual(element.GetName(), element1.GetName());
 

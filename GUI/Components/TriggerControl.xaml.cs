@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Commands;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
@@ -221,7 +222,7 @@ namespace GUI.Components
             {
                 insertIndex = categoryLocalVariable.GetTriggerElements().Count;
                 LocalVariable localVariable = new LocalVariable(explorerElementTrigger.trigger); // TODO: This is probably not supposed to be here.
-                ControllerVariable.CreateLocalVariable(explorerElementTrigger.trigger, localVariable, categoryLocalVariable.GetTriggerElements(), insertIndex);
+                Project.CurrentProject.Variables.CreateLocalVariable(explorerElementTrigger.trigger, localVariable, categoryLocalVariable.GetTriggerElements(), insertIndex);
                 TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(localVariable);
                 this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
 
@@ -713,7 +714,7 @@ namespace GUI.Components
                 var localVar = v as LocalVariable;
                 if (localVar != null)
                 {
-                    List<ExplorerElementTrigger> refs = ControllerReferences.GetReferrers(localVar.variable);
+                    List<ExplorerElementTrigger> refs = Project.CurrentProject.References.GetReferrers(localVar.variable);
                     if (refs.Count > 0)
                         inUse.Add(localVar);
                 }
@@ -726,8 +727,8 @@ namespace GUI.Components
                 if (!window.OK)
                     return;
 
-                inUse.ForEach(v => ControllerVariable.RemoveLocalVariable(v));
-                ControllerTrigger.RemoveInvalidReferences(explorerElementTrigger);
+                inUse.ForEach(v => Project.CurrentProject.Variables.RemoveLocalVariable(v));
+                Project.CurrentProject.Triggers.RemoveInvalidReferences(explorerElementTrigger);
             }
 
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
@@ -745,7 +746,7 @@ namespace GUI.Components
             {
                 triggerElements.Add(selectedItems[i].triggerElement);
             }
-            ControllerTrigger.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
+            Project.CurrentProject.Triggers.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
 
             ContainerCopiedElementsGUI.copiedElementParent = (INode)selected.Parent;
         }
@@ -772,7 +773,7 @@ namespace GUI.Components
             if (attachTarget.GetType() != ContainerCopiedElementsGUI.copiedElementParent.GetType()) // reject if TriggerElement types don't match. 
                 return;
 
-            var pasted = ControllerTrigger.PasteTriggerElements(explorerElementTrigger, attachTarget.GetTriggerElements(), insertIndex);
+            var pasted = Project.CurrentProject.Triggers.PasteTriggerElements(explorerElementTrigger, attachTarget.GetTriggerElements(), insertIndex);
 
             for (int i = 0; i < pasted.Count; i++)
             {

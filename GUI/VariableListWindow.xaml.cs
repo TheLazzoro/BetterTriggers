@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
@@ -38,10 +39,10 @@ namespace GUI
             List<ListItemVariable> list = new List<ListItemVariable>();
             List<Searchable> objects = new List<Searchable>();
             
-            var variables = ControllerVariable.GetGlobals();
+            var variables = Project.CurrentProject.Variables.GetGlobals();
             variables.ForEach(v =>
             {
-                var item = new ListItemVariable { Content = v.Name, variable = v };
+                var item = new ListItemVariable { Content = v.variable.Name, variable = v.variable };
                 objects.Add(new Searchable()
                 {
                     Object = item,

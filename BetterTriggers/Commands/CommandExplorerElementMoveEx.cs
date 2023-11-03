@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Commands
@@ -27,7 +28,7 @@ namespace BetterTriggers.Commands
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, NewInsertIndex);
             explorerElement.ChangedPosition();
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()

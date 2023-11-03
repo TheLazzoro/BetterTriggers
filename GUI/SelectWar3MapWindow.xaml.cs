@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Utility;
 using Microsoft.Win32;
 using System;
@@ -31,14 +32,14 @@ namespace GUI
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
             OpenWar3MapWindow window = new OpenWar3MapWindow();
             window.ShowDialog();
             if (!window.OK)
                 return;
 
-            controller.SetWar3MapPath(window.SelectedPath);
-            if (controller.War3MapDirExists())
+            var project = Project.CurrentProject;
+            project.SetWar3MapPath(window.SelectedPath);
+            if (project.War3MapDirExists())
             {
                 mapDir = window.SelectedPath;
                 lblPath.Content = mapDir;
@@ -55,8 +56,7 @@ namespace GUI
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new();
-            controller.SetWar3MapPath(mapDir);
+            Project.CurrentProject.SetWar3MapPath(mapDir);
             OK = true;
             this.Close();
         }

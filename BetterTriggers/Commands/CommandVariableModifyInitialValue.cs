@@ -26,7 +26,7 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             variable.InitialValue = newParameter;
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()

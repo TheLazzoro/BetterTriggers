@@ -28,15 +28,15 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            ControllerTrigger.RemoveInvalidReferences(explorerElement.trigger, listToPaste);
+            Project.CurrentProject.Triggers.RemoveInvalidReferences(explorerElement.trigger, listToPaste);
             for (int i = 0; i < listToPaste.Count; i++)
             {
                 listToPaste[i].SetParent(parent, pastedIndex + i);
                 listToPaste[i].Created(pastedIndex + i);
             }
 
-            References.UpdateReferences(explorerElement);
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -48,7 +48,7 @@ namespace BetterTriggers.Commands
             }
 
 
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
         }
 
         public void Undo()
@@ -59,7 +59,7 @@ namespace BetterTriggers.Commands
                 listToPaste[i].Deleted();
             }
 
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
         }
 
         public string GetCommandName()

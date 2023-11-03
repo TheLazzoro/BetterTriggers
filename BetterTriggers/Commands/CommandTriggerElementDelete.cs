@@ -45,9 +45,9 @@ namespace BetterTriggers.Commands
             }
 
             refCollections.ForEach(r => r.RemoveRefsFromParent());
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
 
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -59,7 +59,7 @@ namespace BetterTriggers.Commands
             }
 
             refCollections.ForEach(r => r.RemoveRefsFromParent());
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
         }
 
         public void Undo()
@@ -71,7 +71,7 @@ namespace BetterTriggers.Commands
             }
 
             refCollections.ForEach(r => r.AddRefsToParent());
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
         }
 
         public string GetCommandName()

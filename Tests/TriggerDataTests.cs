@@ -20,7 +20,7 @@ namespace Tests
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
         static string projectPath;
-        static War3Project project;
+        static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
         static ExplorerElementVariable variable;
@@ -52,14 +52,14 @@ namespace Tests
                 File.Delete(directory + @"/" + name + ".json");
 
             ControllerProject controllerProject = new ControllerProject();
-            projectPath = controllerProject.CreateProject(language, name, directory);
-            project = controllerProject.LoadProject(projectPath);
-            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            projectPath = Project.Create(language, name, directory);
+            project = Project.Load(projectPath);
+            project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = ControllerVariable.Create();
+            string fullPath = project.Variables.Create();
             variablePath = fullPath;
-            controllerProject.OnCreateElement(fullPath); // Force OnCreate 'event'.
-            variable = Project.lastCreated as ExplorerElementVariable;
+            project.OnCreateElement(fullPath); // Force OnCreate 'event'.
+            variable = project.lastCreated as ExplorerElementVariable;
         }
 
         [TestCleanup]
@@ -72,7 +72,7 @@ namespace Tests
         [TestMethod]
         public void GetValueName()
         {
-            string valueName = ControllerTrigger.GetValueName(null, "placeholder");
+            string valueName = project.Triggers.GetValueName(null, "placeholder");
 
             Assert.IsNotNull(valueName);
         }
@@ -144,8 +144,7 @@ namespace Tests
             // When deleting a variable we should expect the reference to be deleted also,
             // which is what happens in @GetParameterReturnTypes.
 
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.OnDeleteElement(variablePath);
+            project.OnDeleteElement(variablePath);
 
             expected.Clear();
             expected.Add("null");

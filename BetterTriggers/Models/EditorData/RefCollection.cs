@@ -39,8 +39,8 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateVarRefs(Variable variable, string newType = null)
         {
-            this.triggersToUpdate = References.GetReferreres(variable);
-            var functions = ControllerTrigger.GetFunctionsAll();
+            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(variable);
+            var functions = Project.CurrentProject.Triggers.GetFunctionsAll();
             functions.ForEach(f =>
             {
                 f.parameters.ForEach(p =>
@@ -59,8 +59,8 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateTrigRefs(Trigger trigger)
         {
-            this.triggersToUpdate = References.GetReferreres(trigger);
-            var functions = ControllerTrigger.GetFunctionsAll();
+            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(trigger);
+            var functions = Project.CurrentProject.Triggers.GetFunctionsAll();
             functions.ForEach(f =>
             {
                 f.parameters.ForEach(p =>
@@ -109,7 +109,7 @@ namespace BetterTriggers.Models.EditorData
             if (newType != null && parent.value == "SetVariable" && parameter == parent.parameters[0])
             {
                 var varRef = (VariableRef)parameter;
-                var variable = Variables.GetVariableById(varRef.VariableId);
+                var variable = Project.CurrentProject.Variables.GetByReference(varRef);
                 if (variable.Type != newType)
                     setvarOldValue = parent.parameters[1];
             }

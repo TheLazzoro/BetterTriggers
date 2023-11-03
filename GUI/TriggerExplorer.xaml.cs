@@ -20,6 +20,7 @@ using GUI.Utility;
 using BetterTriggers.Models.EditorData;
 using System.ComponentModel;
 using System.Threading;
+using BetterTriggers.Utility;
 
 namespace GUI
 {
@@ -50,7 +51,7 @@ namespace GUI
         {
             InitializeComponent();
 
-            Project.OnCreated += ContainerProject_OnElementCreated;
+            Project.CurrentProject.OnCreated += ContainerProject_OnElementCreated;
             searchWorker = new BackgroundWorker();
             searchWorker.WorkerReportsProgress = true;
             searchWorker.WorkerSupportsCancellation = true;
@@ -62,7 +63,7 @@ namespace GUI
 
         public void Dispose()
         {
-            Project.OnCreated -= ContainerProject_OnElementCreated;
+            Project.CurrentProject.OnCreated -= ContainerProject_OnElementCreated;
         }
 
         // This function is invoked by a method in the container when a new file is created.
@@ -71,7 +72,7 @@ namespace GUI
             Application.Current.Dispatcher.Invoke(delegate
             {
                 ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                controller.OnCreateElement(this, Project.createdPath); // hack
+                controller.OnCreateElement(this, Project.CurrentProject.createdPath); // hack
             });
         }
 
@@ -141,7 +142,7 @@ namespace GUI
 
         public void CreateRootItem()
         {
-            this.map = new TreeItemExplorerElement(Project.projectFiles[0]);
+            this.map = new TreeItemExplorerElement(Project.CurrentProject.projectFiles[0]);
             treeViewTriggerExplorer.Items.Add(this.map);
             this.map.IsExpanded = true;
             this.map.IsSelected = true;
@@ -265,15 +266,14 @@ namespace GUI
             var dragItemParent = (TreeItemExplorerElement)dragItem.Parent;
             if (dragItemParent == parentDropTarget)
             {
-                ControllerProject controllerProject = new ControllerProject();
-                controllerProject.RearrangeElement(dragItem.Ielement, insertIndex);
+                Project.CurrentProject.RearrangeElement(dragItem.Ielement, insertIndex);
                 return;
             }
 
             var dropTarget = (TreeItemExplorerElement)parentDropTarget;
             try
             {
-                ControllerFileSystem.Move(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
+                FileSystemUtil.Move(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
             }
             catch (Exception ex)
             {
@@ -329,25 +329,22 @@ namespace GUI
                         return;
                 }
 
-                ControllerFileSystem.Delete(selectedElement.Ielement.GetPath());
+                FileSystemUtil.Delete(selectedElement.Ielement.GetPath());
             }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                ControllerProject controllerProject = new ControllerProject();
-                controllerProject.CopyExplorerElement(selectedElement.Ielement);
+                Project.CurrentProject.CopyExplorerElement(selectedElement.Ielement);
             }
             else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                ControllerProject controllerProject = new ControllerProject();
-                controllerProject.CopyExplorerElement(selectedElement.Ielement, true);
+                Project.CurrentProject.CopyExplorerElement(selectedElement.Ielement, true);
             }
             else if (e.Key == Key.V && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                ControllerProject controllerProject = new ControllerProject();
-                IExplorerElement pasted = controllerProject.PasteExplorerElement(selectedElement.Ielement);
+                IExplorerElement pasted = Project.CurrentProject.PasteExplorerElement(selectedElement.Ielement);
 
                 ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
                 var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
@@ -370,9 +367,7 @@ namespace GUI
             rightClickedElement.IsSelected = true;
             rightClickedElement.ContextMenu = contextMenu;
 
-            ControllerProject controller = new ControllerProject();
-
-            menuPaste.IsEnabled = controller.GetCopiedElement() != null;
+            menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
             menuElementEnabled.IsChecked = rightClickedElement.Ielement.GetEnabled();
             menuElementInitiallyOn.IsChecked = rightClickedElement.Ielement.GetInitiallyOn();
             menuElementEnabled.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger || rightClickedElement.Ielement is ExplorerElementScript;
@@ -385,20 +380,20 @@ namespace GUI
 
         private void menuCut_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.CopyExplorerElement(currentElement.Ielement, true);
+            Project project = Project.CurrentProject;
+            project.CopyExplorerElement(currentElement.Ielement, true);
         }
 
         private void menuCopy_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.CopyExplorerElement(currentElement.Ielement);
+            Project project = Project.CurrentProject;
+            project.CopyExplorerElement(currentElement.Ielement);
         }
 
         private void menuPaste_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            IExplorerElement pasted = controller.PasteExplorerElement(currentElement.Ielement);
+            Project project = Project.CurrentProject;
+            IExplorerElement pasted = project.PasteExplorerElement(currentElement.Ielement);
 
             ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
             var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
@@ -412,27 +407,27 @@ namespace GUI
 
         private void menuDelete_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFileSystem.Delete(currentElement.Ielement.GetPath());
+            FileSystemUtil.Delete(currentElement.Ielement.GetPath());
         }
 
         private void menuNewCategory_Click(object sender, RoutedEventArgs e)
         {
-            Folders.Create();
+            Project.CurrentProject.Folders.Create();
         }
 
         private void menuNewTrigger_Click(object sender, RoutedEventArgs e)
         {
-            ControllerTrigger.Create();
+            Project.CurrentProject.Triggers.Create();
         }
 
         private void menuNewScript_Click(object sender, RoutedEventArgs e)
         {
-            ControllerScript.Create();
+            Project.CurrentProject.Scripts.Create();
         }
 
         private void menuNewVariable_Click(object sender, RoutedEventArgs e)
         {
-            ControllerVariable.Create();
+            Project.CurrentProject.Variables.Create();
         }
 
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
@@ -452,7 +447,7 @@ namespace GUI
 
         private void menuOpenInExplorer_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFileSystem.OpenInExplorer(currentElement.Ielement.GetPath());
+            FileSystemUtil.OpenInExplorer(currentElement.Ielement.GetPath());
         }
 
         private void OpenSearchField()

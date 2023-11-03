@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using System;
@@ -118,7 +119,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     this.valueControl = new ValueControlIcons();
                     break;
                 case "trigger":
-                    var triggers = ControllerTrigger.GetTriggersAll();
+                    var triggers = Project.CurrentProject.Triggers.GetAll();
                     values = triggers.Select(trig => new Value() { value = trig.GetId().ToString() }).ToList();
                     this.valueControl = new ValueControlGeneric(values, "trigger");
                     break;

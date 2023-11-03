@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Commands;
+using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
@@ -46,10 +47,9 @@ namespace GUI.Components
             this.variable = variable;
             previousText0 = variable.ArraySize[0].ToString();
             previousText1 = variable.ArraySize[1].ToString();
-
             InitializeComponent();
 
-            var usedByList = ControllerReferences.GetReferrers(variable);
+            var usedByList = Project.CurrentProject.References.GetReferrers(variable);
             if(usedByList.Count == 0)
             {
                 listViewUsedBy.Visibility = Visibility.Hidden;
@@ -241,7 +241,7 @@ namespace GUI.Components
         private bool ResetVarRefs()
         {
             bool ok = true;
-            List<ExplorerElementTrigger> refs = ControllerReferences.GetReferrers(this.variable);
+            List<ExplorerElementTrigger> refs = Project.CurrentProject.References.GetReferrers(this.variable);
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);

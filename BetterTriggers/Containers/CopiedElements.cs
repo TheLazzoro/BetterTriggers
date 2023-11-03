@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 namespace BetterTriggers.Containers
 {
-    internal static class CopiedElements
+    /// <summary>
+    /// This class is static so you can copy-paste across projects.
+    /// </summary>
+    public static class CopiedElements
     {
-        internal static List<TriggerElement> CopiedTriggerElements = new();
-        internal static List<TriggerElement> CutTriggerElements = new();
-        internal static ExplorerElementTrigger CopiedFromTrigger;
+        public static List<TriggerElement> CopiedTriggerElements = new();
+        public static List<TriggerElement> CutTriggerElements = new();
+        public static ExplorerElementTrigger CopiedFromTrigger;
 
-        internal static IExplorerElement CopiedExplorerElement;
-        internal static IExplorerElement CutExplorerElement;
+        public static IExplorerElement CopiedExplorerElement;
+        public static IExplorerElement CutExplorerElement;
     }
 }

@@ -248,7 +248,7 @@ namespace GUI.Components.TriggerEditor
                 text = controllerTriggerTreeItem.GenerateTreeItemText(this);
                 bool areParametersValid = true;
                 List<Parameter> parameters = eca.function.parameters;
-                areParametersValid = ControllerTrigger.VerifyParameters(parameters) == 0;
+                areParametersValid = Project.CurrentProject.Triggers.VerifyParameters(parameters) == 0;
                 isEnabled = eca.isEnabled;
                 state = areParametersValid ? TreeItemState.Normal : TreeItemState.HasErrors;
 
@@ -391,7 +391,7 @@ namespace GUI.Components.TriggerEditor
                 var localVar = (LocalVariable)triggerElement;
                 try
                 {
-                    ControllerVariable.RenameLocalVariable(GetTriggerControl().explorerElementTrigger.trigger, localVar, renameText);
+                    Project.CurrentProject.Variables.RenameLocalVariable(GetTriggerControl().explorerElementTrigger.trigger, localVar, renameText);
                     this.treeItemHeader.ShowRenameBox(false);
                     this.treeItemHeader.SetDisplayText(renameText);
                     GetTriggerControl().OnStateChange();

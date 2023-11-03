@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            List<TriggerRef> triggers = ControllerTrigger.GetTriggerRefs();
+            var project = Project.CurrentProject;
+            List<TriggerRef> triggers = project.Triggers.GetTriggerRefs();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < triggers.Count; i++)
             {
-                string triggerName = ControllerTrigger.GetTriggerName(triggers[i].TriggerId);
+                string triggerName = project.Triggers.GetName(triggers[i].TriggerId);
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = triggerName;
                 listItem.Tag = triggers[i];

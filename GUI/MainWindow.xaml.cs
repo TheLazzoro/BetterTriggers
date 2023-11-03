@@ -274,7 +274,7 @@ namespace GUI
             if (selected == null)
                 return;
 
-            Project.currentSelectedElement = selected.Ielement.GetPath();
+            Project.CurrentProject.currentSelectedElement = selected.Ielement.GetPath();
         }
 
         private void TriggerExplorer_OnOpenExplorerElement(TreeItemExplorerElement opened)
@@ -345,32 +345,32 @@ namespace GUI
 
         private void btnUndo_Click(object sender, RoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Undo();
+            Project.CurrentProject.CommandManager.Undo();
         }
 
         private void btnRedo_Click(object sender, RoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Redo();
+            Project.CurrentProject.CommandManager.Redo();
         }
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
-            Folders.Create();
+            Project.CurrentProject.Folders.Create();
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
-            ControllerTrigger.Create();
+            Project.CurrentProject.Triggers.Create();
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
-            ControllerScript.Create();
+            Project.CurrentProject.Scripts.Create();
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
-            ControllerVariable.Create();
+            Project.CurrentProject.Variables.Create();
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
@@ -411,10 +411,10 @@ namespace GUI
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            bool canUndo = BetterTriggers.Commands.CommandManager.CanUndo();
-            bool canRedo = BetterTriggers.Commands.CommandManager.CanRedo();
-            string nameCommandToUndo = BetterTriggers.Commands.CommandManager.GetNameCommandToUndo();
-            string nameCommandToRedo = BetterTriggers.Commands.CommandManager.GetNameCommandToRedo();
+            bool canUndo = Project.CurrentProject.CommandManager.CanUndo();
+            bool canRedo = Project.CurrentProject.CommandManager.CanRedo();
+            string nameCommandToUndo = Project.CurrentProject.CommandManager.GetNameCommandToUndo();
+            string nameCommandToRedo = Project.CurrentProject.CommandManager.GetNameCommandToRedo();
 
             menuItemUndo.IsEnabled = canUndo;
             menuItemRedo.IsEnabled = canRedo;
@@ -496,7 +496,7 @@ namespace GUI
             if (project == null)
                 return;
 
-            if (!controllerProject.War3MapDirExists())
+            if (!Project.CurrentProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
                 window.ShowDialog();
@@ -542,8 +542,7 @@ namespace GUI
         private void TestMap()
         {
             Builder builder = new Builder();
-            ControllerProject controller = new ControllerProject();
-            if (!controller.War3MapDirExists())
+            if (!Project.CurrentProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
                 window.ShowDialog();
@@ -566,8 +565,7 @@ namespace GUI
         private void BuildMap()
         {
             Builder builder = new Builder();
-            ControllerProject controller = new ControllerProject();
-            if (!controller.War3MapDirExists())
+            if (!Project.CurrentProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
                 window.ShowDialog();
@@ -634,22 +632,19 @@ namespace GUI
 
         private bool DoCloseProject()
         {
-            ControllerProject controller = new ControllerProject();
-            if (controller.GetUnsavedFileCount() == 0)
+            if (Project.CurrentProject.GetUnsavedFileCount() == 0)
                 return true;
 
             OnCloseWindow onCloseWindow = new OnCloseWindow();
             onCloseWindow.ShowDialog();
             if (onCloseWindow.Yes)
             {
-                Project.EnableFileEvents(false);
-                controller.SaveProject();
+                Project.CurrentProject.EnableFileEvents(false);
+                Project.CurrentProject.Save();
                 return true;
             }
             else if (!onCloseWindow.Yes && !onCloseWindow.No)
                 return false;
-
-            UnsavedFiles.Clear();
 
             return true;
         }
@@ -682,8 +677,7 @@ namespace GUI
 
         private void CommandBinding_Executed_Save(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.SaveProject();
+            Project.CurrentProject.Save();
         }
 
 
@@ -718,24 +712,24 @@ namespace GUI
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = BetterTriggers.Commands.CommandManager.CanUndo();
+            e.CanExecute = Project.CurrentProject.CommandManager.CanUndo();
 
         }
 
         private void CommandBinding_Executed_Undo(object sender, ExecutedRoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Undo();
+            Project.CurrentProject.CommandManager.Undo();
         }
 
         private void CommandBinding_CanExecute_Redo(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = BetterTriggers.Commands.CommandManager.CanRedo();
+            e.CanExecute = Project.CurrentProject.CommandManager.CanRedo();
 
         }
 
         private void CommandBinding_Executed_Redo(object sender, ExecutedRoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Redo();
+            Project.CurrentProject.CommandManager.Redo();
         }
 
         private void btnVariableMenu_Click(object sender, RoutedEventArgs e)
@@ -746,22 +740,22 @@ namespace GUI
 
         private void CommandBinding_Executed_NewCategory(object sender, ExecutedRoutedEventArgs e)
         {
-            Folders.Create();
+            Project.CurrentProject.Folders.Create();
         }
 
         private void CommandBinding_Executed_NewTrigger(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerTrigger.Create();
+            Project.CurrentProject.Triggers.Create();
         }
 
         private void CommandBinding_Executed_NewScript(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerScript.Create();
+            Project.CurrentProject.Scripts.Create();
         }
 
         private void CommandBinding_Executed_NewGlobalVariable(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerVariable.Create();
+            Project.CurrentProject.Variables.Create();
         }
 
         private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)

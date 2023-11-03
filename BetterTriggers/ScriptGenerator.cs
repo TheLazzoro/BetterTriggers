@@ -21,6 +21,7 @@ using System.Linq;
 using War3Net.Build.Environment;
 using System.Text.RegularExpressions;
 using BetterTriggers.Utility;
+using System.Transactions;
 
 namespace BetterTriggers
 {
@@ -48,6 +49,7 @@ namespace BetterTriggers
         public static string JassHelper { get; set; }
         public string GeneratedScript { get; private set; }
 
+        Project project;
         ScriptLanguage language;
         List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
         List<ExplorerElementScript> scripts = new List<ExplorerElementScript>();
@@ -131,8 +133,9 @@ end
 
         internal bool GenerateScript()
         {
+            this.project = Project.CurrentProject;
             bool success = true;
-            if (Project.project == null)
+            if (Project.CurrentProject == null || Project.CurrentProject.war3project == null)
                 return false;
 
             string scriptFile = language == ScriptLanguage.Jass ? "war3map.j" : "war3map.lua";
@@ -141,7 +144,7 @@ end
                 Directory.CreateDirectory(outputDir);
 
             string outputPath = Path.Combine(outputDir, scriptFile);
-            var inMemoryFiles = Project.projectFiles;
+            var inMemoryFiles = Project.CurrentProject.projectFiles;
 
             SortTriggerElements(inMemoryFiles[0]); // root node.
             StringBuilder script = Generate();
@@ -283,12 +286,12 @@ end
             // Generated variables
 
 
-            var functions = ControllerTrigger.GetFunctionsAll();
+            var functions = project.Triggers.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];
                 List<Parameter> parameters = function.parameters;
-                int errors = ControllerTrigger.VerifyParameters(parameters);
+                int errors = project.Triggers.VerifyParameters(parameters);
                 if (errors > 0)
                 {
                     functions.Remove(function);
@@ -313,7 +316,7 @@ end
                     }
                 }
             }
-            var all_variables = Variables.GetAll();
+            var all_variables = Project.CurrentProject.Variables.GetAll();
             for (int i = 0; i < all_variables.Count; i++)
             {
                 var variable = all_variables[i];
@@ -391,7 +394,7 @@ end
             script.Append(newline);
 
             // Map header
-            script.Append(Project.project.Header + newline + newline);
+            script.Append(Project.CurrentProject.war3project.Header + newline + newline);
 
 
 
@@ -504,7 +507,7 @@ end
             if (language != ScriptLanguage.Lua)
                 return;
 
-            var functions = ControllerTrigger.GetFunctionsAll();
+            var functions = project.Triggers.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];
@@ -512,7 +515,7 @@ end
                     continue;
 
                 VariableRef varRef = (VariableRef)function.parameters[0];
-                Variable variable = Variables.GetVariableById(varRef.VariableId);
+                Variable variable = Project.CurrentProject.Variables.GetById(varRef.VariableId);
                 realVarEventVariables.TryAdd(variable.Name, variable);
             }
             script.Append(separator);
@@ -1832,7 +1835,7 @@ end
         {
             if (!t.isEnabled || t is InvalidECA)
                 return "";
-            if (ControllerTrigger.VerifyParameters(t.function.parameters) > 0)
+            if (project.Triggers.VerifyParameters(t.function.parameters) > 0)
                 return "";
 
             StringBuilder script = new StringBuilder();
@@ -1874,7 +1877,7 @@ end
             {
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
                 VariableRef varRef = (VariableRef)loopVar.function.parameters[0];
-                var variable = Variables.GetVariableById(varRef.VariableId);
+                var variable = Project.CurrentProject.Variables.GetById(varRef.VariableId);
                 string varName = variable.GetIdentifierName();
 
                 string array0 = string.Empty;
@@ -1906,7 +1909,7 @@ end
                 ifThenElse.If.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = ControllerTrigger.VerifyParameters(cond.function.parameters);
+                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
@@ -2127,7 +2130,7 @@ end
                 andMultiple.And.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = ControllerTrigger.VerifyParameters(cond.function.parameters);
+                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
@@ -2199,7 +2202,7 @@ end
                 orMultiple.Or.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = ControllerTrigger.VerifyParameters(cond.function.parameters);
+                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
@@ -2273,7 +2276,7 @@ end
         {
             StringBuilder script = new StringBuilder();
 
-            int invalidParams = ControllerTrigger.VerifyParameters(f.parameters);
+            int invalidParams = project.Triggers.VerifyParameters(f.parameters);
             if (invalidParams > 0)
                 return "";
 
@@ -2338,7 +2341,7 @@ end
             else if (f.value == "ForLoopVar")
             {
                 VariableRef varRef = (VariableRef)f.parameters[0];
-                var variable = Variables.GetVariableById(varRef.VariableId);
+                var variable = Project.CurrentProject.Variables.GetById(varRef.VariableId);
                 string varName = variable.GetIdentifierName();
 
                 string array0 = string.Empty;
@@ -2539,7 +2542,7 @@ end
             else if (parameter is VariableRef)
             {
                 VariableRef v = (VariableRef)parameter;
-                Variable variable = ControllerVariable.GetByReference_AllLocals(v);
+                Variable variable = Project.CurrentProject.Variables.GetVariableById_AllLocals(v.VariableId);
 
                 bool isVarAsString_Real = returnType == "VarAsString_Real";
                 if (isVarAsString_Real)
@@ -2565,8 +2568,8 @@ end
             else if (parameter is TriggerRef)
             {
                 TriggerRef t = (TriggerRef)parameter;
-                Trigger trigger = ControllerTrigger.GetById(t.TriggerId);
-                string name = ControllerTrigger.GetTriggerName(trigger.Id);
+                Trigger trigger = project.Triggers.GetById(t.TriggerId).trigger;
+                string name = project.Triggers.GetName(trigger.Id);
 
                 output += "gg_trg_" + Ascii.ReplaceNonASCII(name.Replace(" ", "_"), true);
             }

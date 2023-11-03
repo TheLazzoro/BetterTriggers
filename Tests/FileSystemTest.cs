@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace Tests
             var file = sourceFolder + @"\" + "testFile";
             
             File.WriteAllText(file, "This is a test.");
-            ControllerFileSystem.Move(file, targetFolder, 0);
+            FileSystemUtil.Move(file, targetFolder, 0);
 
             var newPath = targetFolder + @"\" + "testFile";
             var expected = true;

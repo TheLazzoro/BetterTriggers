@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
@@ -20,7 +21,7 @@ namespace BetterTriggers.Commands
         {
             triggerElement.isEnabled = !triggerElement.isEnabled;
             triggerElement.ChangedEnabled();
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()

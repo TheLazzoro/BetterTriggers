@@ -85,7 +85,10 @@ namespace BetterTriggers.Models.SaveableData
         public void Created(int insertIndex)
         {
             if (this is LocalVariable localVar)
-                Variables.AddLocalVariable(localVar);
+            {
+                var variables = Project.CurrentProject.Variables;
+                variables.AddLocalVariable(localVar);
+            }
             for (int i = 0; i < triggerElementUIs.Count; i++)
             {
                 triggerElementUIs[i].OnCreated(insertIndex);
@@ -95,7 +98,10 @@ namespace BetterTriggers.Models.SaveableData
         public void Deleted()
         {
             if (this is LocalVariable localVar)
-                Variables.RemoveLocalVariable(localVar);
+            {
+                var variables = Project.CurrentProject.Variables;
+                variables.RemoveLocalVariable(localVar);
+            }
             for (int i = 0; i < triggerElementUIs.Count; i++)
             {
                 triggerElementUIs[i].OnDeleted();

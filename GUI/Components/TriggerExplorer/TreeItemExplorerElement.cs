@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components.Shared;
 using GUI.Controllers;
@@ -59,8 +60,7 @@ namespace GUI.Components
                 if (parent != null)
                 {
                     parent.Items.Remove(this);
-                    ControllerExplorerElement controller = new ControllerExplorerElement();
-                    controller.RemoveFromUnsaved(this.Ielement);
+                    Project.CurrentProject.UnsavedFiles.RemoveFromUnsaved(this.Ielement);
                 }
 
                 if (tabItem != null)
@@ -125,12 +125,11 @@ namespace GUI.Components
         private void RenameBox_KeyDown(object sender, KeyEventArgs e)
         {
             string renameText = this.treeItemHeader.GetRenameText();
-            ControllerProject controller = new ControllerProject();
             if (e.Key == Key.Enter)
             {
                 try
                 {
-                    controller.RenameElement(this.Ielement, renameText);
+                    Project.CurrentProject.RenameElement(this.Ielement, renameText);
                     this.treeItemHeader.ShowRenameBox(false);
                 }
                 catch (Exception ex)
@@ -159,7 +158,7 @@ namespace GUI.Components
                 tabItem.Header = this.Ielement.GetName() + " *";
 
             ControllerExplorerElement controller = new ControllerExplorerElement();
-            controller.AddToUnsaved(this.Ielement);
+            Project.CurrentProject.UnsavedFiles.AddToUnsaved(this.Ielement);
         }
 
         public void OnSaved()
@@ -203,7 +202,7 @@ namespace GUI.Components
             TreeItemState state = Ielement.GetEnabled() == true ? TreeItemState.Normal : TreeItemState.Disabled;
             if (Ielement is ExplorerElementTrigger)
             {
-                int invalidCount = ControllerTrigger.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
+                int invalidCount = Project.CurrentProject.Triggers.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
                 if (state != TreeItemState.Disabled && invalidCount > 0)
                     state = TreeItemState.HasErrorsNoTextColor;
             }

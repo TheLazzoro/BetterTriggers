@@ -35,11 +35,11 @@ namespace GUI
             this.Top = settings.selectMapWindowY;
 
             string path;
-            var project = Project.project;
+            var project = Project.CurrentProject.war3project;
             useRelativeMapDirectory = project.UseRelativeMapDirectory;
             if (useRelativeMapDirectory)
             {
-                var root = (ExplorerElementRoot)Project.projectFiles[0];
+                var root = (ExplorerElementRoot)Project.CurrentProject.projectFiles[0];
                 string rootDir = Path.GetDirectoryName(root.GetProjectPath());
                 path = Path.Combine(rootDir, "map");
                 btnBrowseFiles.Visibility = Visibility.Hidden;
@@ -147,7 +147,7 @@ namespace GUI
             {
                 SelectedPath = Path.GetFileName(data.path);
             }
-            if(!ControllerProject.VerifyMapPath(SelectedPath))
+            if(!Project.CurrentProject.VerifyMapPath(SelectedPath))
             {
                 btnOK.IsEnabled = false;
                 return;

@@ -30,7 +30,7 @@ namespace BetterTriggers.WorldEdit
         /// <exception cref="IOException">When MPQ archive is in use by another process.</exception>
         public static Bitmap Get(string path)
         {
-            string fullMapPath = Project.GetFullMapPath();
+            string fullMapPath = Project.CurrentProject.GetFullMapPath();
             string filePath = Path.Combine(fullMapPath, path);
             if (File.Exists(filePath))
             {

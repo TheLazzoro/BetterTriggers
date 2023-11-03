@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using GUI.Controllers;
 using System;
 using System.Collections.Generic;
@@ -58,8 +59,7 @@ namespace GUI
             else if ((bool)radBtnLua.IsChecked)
                 language = ScriptLanguage.Lua;
 
-            ControllerProject controller = new ControllerProject();
-            ProjectLocation = controller.CreateProject(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
+            ProjectLocation = Project.Create(language, textBoxProjectName.Text, lblProjectDestination.Content.ToString());
             OnOpenProject?.Invoke();
         }
 

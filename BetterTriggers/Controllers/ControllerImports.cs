@@ -14,7 +14,8 @@ namespace BetterTriggers.Controllers
     {
         public static List<Value> GetImportsByReturnType(string returnType)
         {
-            string fullMapPath = Project.GetFullMapPath();
+            var project = Project.CurrentProject;
+            string fullMapPath = project.GetFullMapPath();
             bool isMapMPQ = File.Exists(fullMapPath);
             List<Value> imports = new List<Value>();
             List<string> files = new List<string>();

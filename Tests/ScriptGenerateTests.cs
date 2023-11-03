@@ -19,7 +19,7 @@ namespace Tests
     [TestClass]
     public class ScriptGenerateTests
     {
-        static War3Project project;
+        static War3Project war3project;
         static string mapDir;
         static string projectFile;
         static bool success;
@@ -314,10 +314,9 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
-            ControllerProject controllerProject = new ControllerProject();
             Builder builder = new();
             CustomMapData.Load(mapDir);
-            controllerProject.LoadProject(projectDir);
+            Project.Load(projectDir);
             string script;
             (success, script) = builder.GenerateScript();
 
@@ -330,9 +329,8 @@ namespace Tests
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/Frames_Map.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/map/Map.w3x");
             Builder builder = new();
-            ControllerProject controllerProject = new ControllerProject();
             CustomMapData.Load(mapDir);
-            controllerProject.LoadProject(projectDir);
+            Project.Load(projectDir);
             string script;
             (success, script) = builder.GenerateScript();
 
@@ -349,11 +347,11 @@ namespace Tests
             Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);
-            project = JsonConvert.DeserializeObject<War3Project>(projectFileContent);
-            project.War3MapDirectory = mapDir;
-            File.WriteAllText(projectFile, JsonConvert.SerializeObject(project));
+            war3project = JsonConvert.DeserializeObject<War3Project>(projectFileContent);
+            war3project.War3MapDirectory = mapDir;
+            File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
-            project = controllerProject.LoadProject(projectFile);
+            Project.Load(projectFile);
             CustomMapData.Load(mapDir);
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
             string script;

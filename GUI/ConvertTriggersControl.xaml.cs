@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,7 @@ namespace GUI
         {
             bool ok;
             FinalPath = System.IO.Path.Combine(lblDestination.Text, System.IO.Path.GetFileNameWithoutExtension(lblMap.Text));
-            MapExists = ControllerProject.VerifyMapPath(lblMap.Text);
+            MapExists = Project.CurrentProject.VerifyMapPath(lblMap.Text);
             DestinationDirectoryExists = Directory.Exists(lblDestination.Text);
             FinalPathAlreadyExists = Directory.Exists(FinalPath);
 

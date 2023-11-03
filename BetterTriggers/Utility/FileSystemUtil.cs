@@ -6,13 +6,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace BetterTriggers.Controllers
+namespace BetterTriggers.Utility
 {
-    public class ControllerFileSystem
+    public class FileSystemUtil
     {
         public static void Move(string elementToMove, string targetDir, int insertIndex)
         {
-            Project.insertIndex = insertIndex;
+            Project.CurrentProject.insertIndex = insertIndex;
             string directory = targetDir;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(targetDir);

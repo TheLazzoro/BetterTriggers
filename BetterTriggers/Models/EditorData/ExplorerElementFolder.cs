@@ -27,7 +27,7 @@ namespace BetterTriggers.Models.EditorData
         {
             this.path = path;
             UpdateMetadata();
-            Folders.AddFolder(this);
+            Project.CurrentProject.Folders.AddFolder(this);
         }
 
         public string GetName()

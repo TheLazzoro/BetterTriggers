@@ -80,7 +80,7 @@ namespace BetterTriggers.WorldEdit
         private string Convert(string fullPath)
         {
             ControllerProject controller = new ControllerProject();
-            string projectPath = controller.CreateProject(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
+            string projectPath = Project.Create(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(File.ReadAllText(projectPath));
             string src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
 

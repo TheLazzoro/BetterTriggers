@@ -25,6 +25,7 @@ namespace BetterTriggers.Models.EditorData
 
         public ExplorerElementTrigger(string path)
         {
+            var triggers = Project.CurrentProject.Triggers;
             this.path = path;
             string json = string.Empty;
             bool isReadyForRead = false;
@@ -34,7 +35,7 @@ namespace BetterTriggers.Models.EditorData
                 try
                 {
                     json = File.ReadAllText(path);
-                    Triggers.AddTrigger(this);
+                    triggers.AddTrigger(this);
                     isReadyForRead = true;
                 }
                 catch (Exception ex)
@@ -234,24 +235,27 @@ namespace BetterTriggers.Models.EditorData
 
         public List<ExplorerElementTrigger> GetReferrers()
         {
-            return References.GetReferreres(trigger);
+            var references = Project.CurrentProject.References;
+            return references.GetReferrers(trigger);
         }
 
         private void StoreLocalVariables()
         {
+            var variables = Project.CurrentProject.Variables;
             trigger.LocalVariables.ForEach(e =>
             {
                 var lv = (LocalVariable)e;
-                Variables.AddLocalVariable(lv);
+                variables.AddLocalVariable(lv);
             });
         }
 
         private void RemoveLocalVariables()
         {
+            var variables = Project.CurrentProject.Variables;
             trigger.LocalVariables.ForEach(e =>
             {
                 var lv = (LocalVariable)e;
-                Variables.RemoveLocalVariable(lv);
+                variables.RemoveLocalVariable(lv);
             });
         }
     }

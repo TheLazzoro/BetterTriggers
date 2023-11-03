@@ -17,7 +17,7 @@ namespace Tests
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
         static string projectPath;
-        static War3Project project;
+        static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
         static ExplorerElementScript element1, element2, element3;
@@ -41,21 +41,21 @@ namespace Tests
                 File.Delete(Path.Combine(directory, name + ".json"));
 
             ControllerProject controllerProject = new ControllerProject();
-            projectPath = controllerProject.CreateProject(language, name, directory);
-            project = controllerProject.LoadProject(projectPath);
-            Project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            projectPath = Project.Create(language, name, directory);
+            project = Project.Load(projectPath);
+            project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = ControllerScript.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element1 = Project.lastCreated as ExplorerElementScript;
+            string fullPath = project.Scripts.Create();
+            project.OnCreateElement(fullPath);
+            element1 = project.lastCreated as ExplorerElementScript;
 
-            fullPath = ControllerScript.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element2 = Project.lastCreated as ExplorerElementScript;
+            fullPath = project.Scripts.Create();
+            project.OnCreateElement(fullPath);
+            element2 = project.lastCreated as ExplorerElementScript;
 
-            fullPath = ControllerScript.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element3 = Project.lastCreated as ExplorerElementScript;
+            fullPath = project.Scripts.Create();
+            project.OnCreateElement(fullPath);
+            element3 = project.lastCreated as ExplorerElementScript;
         }
 
         [TestCleanup]
@@ -69,9 +69,9 @@ namespace Tests
         public void OnCreateScript()
         {
             ControllerProject controllerProject = new ControllerProject();
-            string fullPath = ControllerScript.Create();
-            controllerProject.OnCreateElement(fullPath);
-            var element = Project.lastCreated as ExplorerElementScript;
+            string fullPath = project.Scripts.Create();
+            project.OnCreateElement(fullPath);
+            var element = project.lastCreated as ExplorerElementScript;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -82,9 +82,8 @@ namespace Tests
         [TestMethod]
         public void OnPasteScript()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.CopyExplorerElement(element1);
-            var element = controllerProject.PasteExplorerElement(element3) as ExplorerElementScript;
+            project.CopyExplorerElement(element1);
+            var element = project.PasteExplorerElement(element3) as ExplorerElementScript;
 
             int suffix = 0;
             string expectedName = element1.GetName() + suffix;
@@ -96,7 +95,7 @@ namespace Tests
             string expectedPath = Path.Combine(dir, name + extension);
             string actualPath = element.GetPath();
 
-            Assert.AreEqual(element, Project.lastCreated);
+            Assert.AreEqual(element, project.lastCreated);
             Assert.AreEqual(expectedName, actualName);
             Assert.AreEqual(expectedPath, actualPath);
         }

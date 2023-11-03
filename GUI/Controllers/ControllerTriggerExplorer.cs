@@ -2,6 +2,7 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
 using GUI.Components;
 using System;
 using System.IO;
@@ -14,7 +15,7 @@ namespace GUI.Controllers
     {
         public void Populate(TriggerExplorer te)
         {
-            var root = Project.GetRoot();
+            var root = Project.CurrentProject.GetRoot();
             for (int i = 0; i < root.explorerElements.Count; i++)
             {
                 RecursePopulate(te, te.map, root.explorerElements[i]);
@@ -48,8 +49,8 @@ namespace GUI.Controllers
 
         public void SaveAll()
         {
-            ControllerProject controller = new ControllerProject();
-            controller.SaveProject();
+            var project = Project.CurrentProject;
+            project.Save();
         }
 
         public void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
@@ -117,11 +118,11 @@ namespace GUI.Controllers
 
         public void OnCreateElement(TriggerExplorer te, string fullPath)
         {
-            if (!ControllerFileSystem.IsExtensionValid(Path.GetExtension(fullPath)))
+            if (!FileSystemUtil.IsExtensionValid(Path.GetExtension(fullPath)))
                 return;
 
-            ControllerProject controllerProject = new ControllerProject();
-            var explorerElement = controllerProject.FindExplorerElement(Project.GetRoot(), fullPath);
+            var project = Project.CurrentProject;
+            var explorerElement = project.FindExplorerElement(project.GetRoot(), fullPath);
             int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
 
             TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);

@@ -35,7 +35,7 @@ namespace BetterTriggers
             // this try-block is only here because of the TriggerConverter.
             try
             {
-                var mapPath = Project.GetFullMapPath();
+                var mapPath = Project.CurrentProject.GetFullMapPath();
                 if (e.Name == Path.GetFileName(mapPath) + "Temp")
                     InvokeOnSaving(sender, e);
             }
@@ -49,7 +49,7 @@ namespace BetterTriggers
         {
             if (string.IsNullOrEmpty(fullMapPath))
             {
-                fullMapPath = Project.GetFullMapPath();
+                fullMapPath = Project.CurrentProject.GetFullMapPath();
             }
 
             if (Directory.Exists(fullMapPath + "Temp"))
@@ -65,7 +65,7 @@ namespace BetterTriggers
         {
             if (string.IsNullOrEmpty(fullMapPath))
             {
-                fullMapPath = Project.GetFullMapPath();
+                fullMapPath = Project.CurrentProject.GetFullMapPath();
             }
 
             while (IsMapSaving(fullMapPath))
@@ -107,19 +107,19 @@ namespace BetterTriggers
         public static List<IExplorerElement> RemoveInvalidReferences()
         {
             List<IExplorerElement> modified = new List<IExplorerElement>();
-            var triggers = Triggers.GetAll();
+            var triggers = Project.CurrentProject.Triggers.GetAll();
             for (int i = 0; i < triggers.Count; i++)
             {
-                bool wasRemoved = ControllerTrigger.RemoveInvalidReferences(triggers[i]);
+                bool wasRemoved = Project.CurrentProject.Triggers.RemoveInvalidReferences(triggers[i]);
                 if (wasRemoved)
                     modified.Add(triggers[i]);
 
                 triggers[i].Notify();
             }
-            var variables = Variables.GetGlobals();
+            var variables = Project.CurrentProject.Variables.GetGlobals();
             for (int i = 0; i < variables.Count; i++)
             {
-                bool wasRemoved = ControllerVariable.RemoveInvalidReference(variables[i]);
+                bool wasRemoved = Project.CurrentProject.Variables.RemoveInvalidReference(variables[i]);
                 if (wasRemoved)
                     modified.Add(variables[i]);
             }

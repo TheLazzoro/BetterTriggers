@@ -26,7 +26,7 @@ namespace GUI
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
 
-            lblMessage.Text = $"Save changes to '{Project.GetRoot().GetName()}'?";
+            lblMessage.Text = $"Save changes to '{Project.CurrentProject.GetRoot().GetName()}'?";
         }
 
         private void btnYes_Click(object sender, RoutedEventArgs e)

@@ -19,7 +19,7 @@ namespace BetterTriggers.TestMap
     {
         public (bool, string) GenerateScript()
         {
-            War3Project project = Project.project;
+            War3Project project = Project.CurrentProject.war3project;
             if (project == null)
                 return (false, null);
 
@@ -42,10 +42,10 @@ namespace BetterTriggers.TestMap
             if (!wasVerified)
                 return false;
 
-            War3Project project = Project.project;
+            War3Project project = Project.CurrentProject.war3project;
             ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
 
-            string mapDir = Project.GetFullMapPath();
+            string mapDir = Project.CurrentProject.GetFullMapPath();
             var map = Map.Open(mapDir);
             map.Info.ScriptLanguage = language;
             map.Script = script;
@@ -68,7 +68,7 @@ namespace BetterTriggers.TestMap
                 //BlockSize = 3,
             };
 
-            string src = Path.GetDirectoryName(Project.src);
+            string src = Path.GetDirectoryName(Project.CurrentProject.src);
             if (destinationDir == null)
                 archivePath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
             else

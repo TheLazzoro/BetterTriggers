@@ -38,7 +38,7 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             paramCollection[paramIndex] = paramToAdd;
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
 
             // Special case
             if (triggerElement is SetVariable)
@@ -50,8 +50,8 @@ namespace BetterTriggers.Commands
                 {
                     var setVarParamRef = setVarParam as VariableRef;
                     var setVarParamRefOld = oldParameter as VariableRef;
-                    var newVar = ControllerVariable.GetByReference(setVarParamRef);
-                    var oldVar = ControllerVariable.GetByReference(setVarParamRefOld);
+                    var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef);
+                    var oldVar = Project.CurrentProject.Variables.GetByReference(setVarParamRefOld);
                     if(!Types.AreTypesEqual(newVar.Type, oldVar.Type))
                     {
                         setVarValueOld = value;
@@ -73,7 +73,7 @@ namespace BetterTriggers.Commands
 
             triggerElement.ChangedParams();
 
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -85,14 +85,14 @@ namespace BetterTriggers.Commands
             }
 
             paramCollection[paramIndex] = paramToAdd;
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
             triggerElement.ChangedParams();
         }
 
         public void Undo()
         {
             paramCollection[paramIndex] = oldParameter;
-            References.UpdateReferences(explorerElement);
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
             triggerElement.ChangedParams();
         }
 

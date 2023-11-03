@@ -249,8 +249,9 @@ namespace BetterTriggers.Controllers
             List<Tuple<ExplorerElementVariable, ExplorerElementVariable>> variablesWithIdCollision = new();
             List<ExplorerElementTrigger> checkedTriggers = new List<ExplorerElementTrigger>();
             List<ExplorerElementVariable> checkedVariables = new List<ExplorerElementVariable>();
-            var triggers = Triggers.GetAll();
-            var variables = Variables.GetGlobals();
+
+            var triggers = Project.CurrentProject.Triggers.GetAll();
+            var variables = Project.CurrentProject.Variables.GetGlobals();
             triggers.ForEach(t =>
             {
                 checkedTriggers.ForEach(check =>
@@ -276,10 +277,10 @@ namespace BetterTriggers.Controllers
                 throw new IdCollisionException(triggersWithIdCollision, variablesWithIdCollision);
             }
 
-            Commands.CommandManager.Reset();
+            Project.CurrentProject.CommandManager.Reset();
             CustomMapData.Load();
             var changed = CustomMapData.RemoveInvalidReferences();
-            changed.ForEach(trig => UnsavedFiles.AddToUnsaved(trig));
+            changed.ForEach(trig => Project.CurrentProject.UnsavedFiles.AddToUnsaved(trig));
 
             return changed;
         }

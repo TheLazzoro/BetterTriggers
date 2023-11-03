@@ -15,6 +15,7 @@ using System.Text;
 using War3Net.Build.Info;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BetterTriggers.Containers;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -487,7 +488,7 @@ namespace BetterTriggers.WorldEdit
                 VariableRef varRef = f.parameters[0] as VariableRef;
                 if (varRef != null)
                 {
-                    Variable variable = ControllerVariable.GetByReference(f.parameters[0] as VariableRef);
+                    Variable variable = Project.CurrentProject.Variables.GetByReference(f.parameters[0] as VariableRef);
                     if (variable != null)
                     {
                         list.Add(variable.Type);

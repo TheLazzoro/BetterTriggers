@@ -6,16 +6,16 @@ using System.Text;
 
 namespace BetterTriggers.Containers
 {
-    public static class Folders
+    public class Folders
     {
-        private static HashSet<ExplorerElementFolder> folderContainer = new HashSet<ExplorerElementFolder>();
+        private HashSet<ExplorerElementFolder> folderContainer = new HashSet<ExplorerElementFolder>();
 
         /// <summary>
         /// Creates a folder at the current selected 'destination' folder.
         /// </summary>
-        public static string Create()
+        public string Create()
         {
-            string directory = Project.currentSelectedElement;
+            string directory = Project.CurrentProject.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -40,12 +40,12 @@ namespace BetterTriggers.Containers
             return path;
         }
 
-        public static void Clear()
+        public void Clear()
         {
             folderContainer.Clear();
         }
         
-        public static void AddFolder(ExplorerElementFolder folder)
+        public void AddFolder(ExplorerElementFolder folder)
         {
             folderContainer.Add(folder);
         }
@@ -55,7 +55,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="name"></param>
         /// <returns>Returns true if an element with the given file name exists in the container.</returns>
-        public static bool Contains(string name)
+        public bool Contains(string name)
         {
             bool found = false;
 
@@ -70,12 +70,12 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public static void Remove(ExplorerElementFolder explorerElement)
+        public void Remove(ExplorerElementFolder explorerElement)
         {
             folderContainer.Remove(explorerElement);
         }
 
-        internal static string GenerateName(string folder)
+        internal string GenerateName(string folder)
         {
             string name = folder;
             bool exists = true;

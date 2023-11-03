@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
@@ -24,7 +25,7 @@ namespace BetterTriggers.Commands
             createdElement.SetParent(parent, insertIndex);
             createdElement.Created(insertIndex);
 
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -32,10 +33,10 @@ namespace BetterTriggers.Commands
             createdElement.SetParent(parent, insertIndex);
             createdElement.Created(insertIndex);
 
-            ControllerProject controllerProject = new ControllerProject();
-            Project.EnableFileEvents(false);
-            controllerProject.RecurseCreateElementsWithContent(createdElement);
-            Project.EnableFileEvents(true);
+            var project = Project.CurrentProject;
+            project.EnableFileEvents(false);
+            project.RecurseCreateElementsWithContent(createdElement);
+            project.EnableFileEvents(true);
         }
 
         public void Undo()
@@ -43,9 +44,9 @@ namespace BetterTriggers.Commands
             createdElement.RemoveFromParent();
             createdElement.Deleted();
 
-            Project.EnableFileEvents(false);
-            ControllerFileSystem.Delete(createdElement.GetPath());
-            Project.EnableFileEvents(true);
+            Project.CurrentProject.EnableFileEvents(false);
+            FileSystemUtil.Delete(createdElement.GetPath());
+            Project.CurrentProject.EnableFileEvents(true);
         }
 
         public string GetCommandName()

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using System.Collections.Generic;
@@ -24,12 +25,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             else if (returnType == "StringExt")
                 returnType = "string";
 
-            List<VariableRef> variables = ControllerVariable.GetVariableRefs(returnType, trig, ControllerVariable.includeLocals);
+            var project = Project.CurrentProject;
+            List<VariableRef> variables = project.Variables.GetVariableRefs(returnType, trig, ControllerVariable.includeLocals);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < variables.Count; i++)
             {
-                string varName = ControllerVariable.GetVariableNameById(variables[i].VariableId);
+                string varName = project.Variables.GetVariableNameById(variables[i].VariableId);
                 ListViewItem listItem = new ListViewItem();
                 listItem.Content = varName;
                 listItem.Tag = variables[i];
@@ -50,11 +52,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public void SetDefaultSelection(Parameter parameter)
         {
+            var project = Project.CurrentProject;
             int i = 0;
             bool found = false;
             Variable selected = null;
             if (parameter is VariableRef)
-                selected = ControllerVariable.GetByReference(parameter as VariableRef);
+                selected = project.Variables.GetByReference(parameter as VariableRef);
 
             if (selected == null)
                 return;
@@ -63,7 +66,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
                 var variableRef = item.Tag as VariableRef;
-                var variable = ControllerVariable.GetByReference(variableRef);
+                var variable = project.Variables.GetByReference(variableRef);
                 if (variable == selected)
                     found = true;
                 else

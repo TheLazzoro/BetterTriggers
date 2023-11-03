@@ -24,17 +24,18 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
+            var project = Project.CurrentProject;
             refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
+            project.References.UpdateReferences(variable);
             variable.IsArray = isArray;
 
-            CommandManager.AddCommand(this);
+            project.CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
             refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
             variable.IsArray = isArray;
         }
 
@@ -42,7 +43,7 @@ namespace BetterTriggers.Commands
         {
             variable.IsArray = !isArray;
             refCollection.AddRefsToParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
         }
 
         public string GetCommandName()

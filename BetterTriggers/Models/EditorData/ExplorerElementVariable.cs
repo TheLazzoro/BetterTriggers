@@ -48,7 +48,7 @@ namespace BetterTriggers.Models.EditorData
             UpdateMetadata();
 
             variable.Name = Path.GetFileNameWithoutExtension(GetPath());
-            Variables.AddVariable(this);
+            Project.CurrentProject.Variables.AddVariable(this);
         }
 
         public string GetName()
@@ -228,7 +228,7 @@ namespace BetterTriggers.Models.EditorData
 
         public List<ExplorerElementTrigger> GetReferrers()
         {
-            return References.GetReferreres(variable);
+            return Project.CurrentProject.References.GetReferrers(variable);
         }
     }
 }

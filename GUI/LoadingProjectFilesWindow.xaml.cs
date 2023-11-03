@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using System;
@@ -49,17 +50,19 @@ namespace GUI
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
             ControllerProject controllerProject = new ControllerProject();
-            controllerProject.FileLoadEvent += ControllerProject_FileLoadEvent;
+            Project.FileLoadEvent += ControllerProject_FileLoadEvent;
             try
             {
-                project = controllerProject.LoadProject(projectPath);
+                project = Project.Load(projectPath).war3project;
             }
             catch (Exception ex)
             {
+                Project.FileLoadEvent -= ControllerProject_FileLoadEvent;
                 errorMsg = ex.Message;
                 worker.ReportProgress(-1);
                 return;
             }
+            Project.FileLoadEvent -= ControllerProject_FileLoadEvent;
             worker.ReportProgress(100);
         }
 

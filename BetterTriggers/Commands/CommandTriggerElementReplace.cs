@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.SaveableData;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
@@ -25,7 +26,7 @@ namespace BetterTriggers.Commands
             toReplace.Deleted();
             toInsert.SetParent(parent, insertIndex);
             toInsert.Created(insertIndex);
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()

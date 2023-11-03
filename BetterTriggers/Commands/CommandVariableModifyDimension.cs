@@ -25,16 +25,16 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
             variable.IsTwoDimensions = isTwoDimensions;
 
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
             refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
             variable.IsTwoDimensions = isTwoDimensions;
         }
 
@@ -42,7 +42,7 @@ namespace BetterTriggers.Commands
         {
             variable.IsTwoDimensions = !isTwoDimensions;
             refCollection.AddRefsToParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
         }
 
         public string GetCommandName()
