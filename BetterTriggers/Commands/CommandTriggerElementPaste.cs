@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 

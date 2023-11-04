@@ -1,5 +1,4 @@
 ﻿using BetterTriggers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components.TriggerEditor;
 using GUI.Utility;

@@ -10,7 +10,6 @@ using BetterTriggers;
 using System.Runtime.InteropServices;
 using GUI.Utility;
 using BetterTriggers.Utility;
-using BetterTriggers.Controllers;
 using System.Windows.Media;
 using System.Windows.Forms;
 using BetterTriggers.Containers;

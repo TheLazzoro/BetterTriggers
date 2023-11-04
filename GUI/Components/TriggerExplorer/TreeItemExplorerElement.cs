@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components.Shared;
 using GUI.Controllers;
@@ -157,7 +156,6 @@ namespace GUI.Components
             if (this.tabItem != null)
                 tabItem.Header = this.Ielement.GetName() + " *";
 
-            ControllerExplorerElement controller = new ControllerExplorerElement();
             Project.CurrentProject.UnsavedFiles.AddToUnsaved(this.Ielement);
         }
 

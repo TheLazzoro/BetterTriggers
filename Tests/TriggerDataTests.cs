@@ -1,6 +1,5 @@
 using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
@@ -51,7 +50,6 @@ namespace Tests
             if (File.Exists(directory + @"/" + name + ".json"))
                 File.Delete(directory + @"/" + name + ".json");
 
-            ControllerProject controllerProject = new ControllerProject();
             projectPath = Project.Create(language, name, directory);
             project = Project.Load(projectPath);
             project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.

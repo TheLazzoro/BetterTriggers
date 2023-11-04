@@ -1,5 +1,4 @@
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,7 +40,6 @@ namespace Tests
                 File.Delete(Path.Combine(directory, name + ".json"));
 
             Project project = Project.CurrentProject;
-            ControllerProject controllerProject = new ControllerProject();
             projectPath = Project.Create(language, name, directory);
             project = Project.Load(projectPath);
             project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
@@ -82,7 +80,6 @@ namespace Tests
         public void OnPasteFolder()
         {
             var root = Project.CurrentProject.projectFiles[0];
-            ControllerProject controllerProject = new ControllerProject();
             Project.CurrentProject.CopyExplorerElement(element1);
             var element = Project.CurrentProject.PasteExplorerElement(root) as ExplorerElementFolder;
 

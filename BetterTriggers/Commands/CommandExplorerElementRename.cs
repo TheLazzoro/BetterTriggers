@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using System.IO;
@@ -46,7 +45,6 @@ namespace BetterTriggers.Commands
 
         public void Undo()
         {
-            ControllerProject controller = new ControllerProject();
             Project.CurrentProject.EnableFileEvents(false);
             FileSystemUtil.RenameElementPath(explorerElement.GetPath(), oldFullPath);
             Project.CurrentProject.EnableFileEvents(true);

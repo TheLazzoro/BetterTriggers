@@ -13,11 +13,11 @@ using BetterTriggers.Models.War3Data;
 
 namespace BetterTriggers.WorldEdit
 {
-    internal static class ModelData
+    public static class ModelData
     {
         private static List<AssetModel> assetModels = new List<AssetModel>();
 
-        internal static List<AssetModel> GetModelsAll()
+        public static List<AssetModel> GetModelsAll()
         {
             return assetModels;
         }

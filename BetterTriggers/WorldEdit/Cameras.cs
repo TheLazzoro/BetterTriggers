@@ -11,11 +11,11 @@ using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
-    internal class Cameras
+    public class Cameras
     {
         private static List<Camera> cameras = new List<Camera>();
 
-        internal static List<Camera> GetAll()
+        public static List<Camera> GetAll()
         {
             return cameras;
         }

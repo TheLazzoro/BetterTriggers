@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Commands;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using GUI.Controllers;
 using System;

@@ -8,9 +8,9 @@ using War3Net.IO.Mpq;
 using War3Net.Build;
 using BetterTriggers.Containers;
 
-namespace BetterTriggers.Controllers
+namespace BetterTriggers.WorldEdit
 {
-    public class ControllerImports
+    public class Imports
     {
         public static List<Value> GetImportsByReturnType(string returnType)
         {
@@ -46,7 +46,7 @@ namespace BetterTriggers.Controllers
                 string fileName = string.Empty;
                 if (
                     (returnType == "modelfile" || returnType == "skymodelstring") && (file.ToLower().EndsWith(".mdx") || file.ToLower().EndsWith(".mdl") ||
-                    (returnType == "musictheme" && (file.ToLower().EndsWith(".mp3") || file.ToLower().EndsWith(".wav") || file.ToLower().EndsWith(".flac")))
+                    returnType == "musictheme" && (file.ToLower().EndsWith(".mp3") || file.ToLower().EndsWith(".wav") || file.ToLower().EndsWith(".flac"))
                    ))
                 {
                     fileName = file;

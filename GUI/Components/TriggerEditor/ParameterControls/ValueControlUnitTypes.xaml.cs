@@ -1,5 +1,4 @@
-﻿using BetterTriggers.Controllers;
-using BetterTriggers.Utility;
+﻿using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using System.Collections.Generic;
 using System.Windows;
@@ -54,7 +53,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            unitData = ControllerMapData.GetUnitTypesAll();
+            unitData = UnitTypes.GetAll();
             comboboxRace.SelectedIndex = 0;
 
             this.KeyDown += ValueControlUnitTypes_KeyDown;

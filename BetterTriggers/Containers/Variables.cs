@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Commands;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
@@ -14,6 +13,7 @@ namespace BetterTriggers.Containers
 {
     public class Variables
     {
+        public static bool includeLocals { get; set; } = true; // hack
         public HashSet<ExplorerElementVariable> variableContainer = new HashSet<ExplorerElementVariable>();
         public HashSet<Variable> localVariableContainer = new HashSet<Variable>();
 
@@ -78,7 +78,7 @@ namespace BetterTriggers.Containers
             Variable variable = explorerElementVariable.variable;
             if (variable.InitialValue is Value value)
             {
-                bool dataExists = ControllerMapData.ReferencedDataExists(value, variable.Type);
+                bool dataExists = CustomMapData.ReferencedDataExists(value, variable.Type);
                 if (!dataExists)
                 {
                     variable.InitialValue = new Parameter();
@@ -305,7 +305,7 @@ namespace BetterTriggers.Containers
             }
 
             if (trig == null)
-                trig = ControllerTrigger.SelectedTrigger;
+                trig = Project.CurrentProject.Triggers.SelectedTrigger;
 
             if (trig != null) // for local variables
             {

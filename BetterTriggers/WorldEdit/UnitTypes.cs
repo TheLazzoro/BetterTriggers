@@ -20,7 +20,7 @@ namespace BetterTriggers.WorldEdit
         private static Dictionary<string, UnitType> unitTypesCustom;
         private static bool IsTest = false;
 
-        internal static List<UnitType> GetAll()
+        public static List<UnitType> GetAll()
         {
             List<UnitType> list = new List<UnitType>();
             var enumerator = unitTypes.GetEnumerator();

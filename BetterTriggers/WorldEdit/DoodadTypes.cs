@@ -18,13 +18,13 @@ using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
-    internal class DoodadTypes
+    public class DoodadTypes
     {
         private static Dictionary<string, DoodadType> doodads;
         private static Dictionary<string, DoodadType> doodadsBaseEdited;
         private static Dictionary<string, DoodadType> doodadsCustom;
 
-        internal static List<DoodadType> GetAll()
+        public static List<DoodadType> GetAll()
         {
             List<DoodadType> list = new List<DoodadType>();
             var enumerator = doodads.GetEnumerator();

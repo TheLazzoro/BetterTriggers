@@ -23,7 +23,7 @@ namespace BetterTriggers.WorldEdit
         private static Dictionary<string, DestructibleType> destructiblesBaseEdited;
         private static Dictionary<string, DestructibleType> destructiblesCustom;
 
-        internal static List<DestructibleType> GetAll()
+        public static List<DestructibleType> GetAll()
         {
             List<DestructibleType> list = new List<DestructibleType>();
             var enumerator = destructibles.GetEnumerator();

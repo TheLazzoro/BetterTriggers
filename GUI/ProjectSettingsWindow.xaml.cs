@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using System;
 using System.Collections.Generic;
 using System.IO;

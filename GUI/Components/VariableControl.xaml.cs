@@ -1,7 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Commands;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
@@ -75,7 +74,7 @@ namespace GUI.Components
                 grid.Children.Remove(checkBoxIsArray);
             }
 
-            List<Types> types = ControllerTriggerData.LoadAllVariableTypes();
+            List<Types> types = TriggerData.LoadAllVariableTypes();
             for (int i = 0; i < types.Count; i++)
             {
                 ComboBoxItemType item = new ComboBoxItemType();

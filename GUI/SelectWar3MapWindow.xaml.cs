@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Utility;
 using Microsoft.Win32;
 using System;

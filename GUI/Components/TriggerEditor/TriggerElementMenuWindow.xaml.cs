@@ -1,9 +1,9 @@
 ﻿using BetterTriggers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using System.Collections.Generic;
 using System.Windows;
@@ -70,15 +70,15 @@ namespace GUI.Components.TriggerEditor
             var templates = new List<FunctionTemplate>();
             if (triggerElementType == TriggerElementType.Event)
             {
-                templates = ControllerTriggerData.LoadAllEvents();
+                templates = TriggerData.LoadAllEvents();
             }
             else if (triggerElementType == TriggerElementType.Condition)
             {
-                templates = ControllerTriggerData.LoadAllConditions();
+                templates = TriggerData.LoadAllConditions();
             }
             else if (triggerElementType == TriggerElementType.Action)
             {
-                templates = ControllerTriggerData.LoadAllActions();
+                templates = TriggerData.LoadAllActions();
             }
 
             List<Searchable> objects = new List<Searchable>();

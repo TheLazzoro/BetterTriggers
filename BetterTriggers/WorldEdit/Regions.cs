@@ -11,11 +11,11 @@ using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
-    internal static class Regions
+    public static class Regions
     {
         private static List<Region> regions = new List<Region>();
 
-        internal static List<Region> GetAll()
+        public static List<Region> GetAll()
         {
             return regions;
         }

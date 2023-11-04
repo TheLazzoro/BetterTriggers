@@ -1,12 +1,11 @@
-﻿using BetterTriggers.Containers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace BetterTriggers.Controllers
+namespace BetterTriggers.Containers
 {
-    public class ControllerRecentFiles
+    public static class RecentFiles
     {
         public static bool isTest = true;
         private static List<string> recentFiles = new List<string>();
@@ -18,7 +17,7 @@ namespace BetterTriggers.Controllers
             {
                 recentFiles = new List<string>();
 
-                string[] recentFilesLoaded = null;
+                string[] recentFilesLoaded;
                 if (File.Exists(pathRecentFiles))
                 {
                     recentFilesLoaded = File.ReadAllLines(pathRecentFiles);
@@ -46,7 +45,7 @@ namespace BetterTriggers.Controllers
             if (isTest)
                 return;
 
-            if(recentFiles.Count == 0)
+            if (recentFiles.Count == 0)
             {
                 GetRecentFiles(); // Loads there are no recent files.
             }

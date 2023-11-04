@@ -1,6 +1,5 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
@@ -32,10 +31,10 @@ namespace GUI.Components.TriggerEditor
             this.treeItemHeader = new TreeItemHeader();
             this.Header = treeItemHeader;
             this.triggerElement = triggerElement;
-            this.category = ControllerTriggerData.GetCategoryTriggerElement(triggerElement);
+            this.category = TriggerData.GetCategoryTriggerElement(triggerElement);
             if (triggerElement is ECA)
             {
-                this.paramText = ControllerTriggerData.GetParamText(triggerElement);
+                this.paramText = TriggerData.GetParamText(triggerElement);
                 this.UpdateTreeItem();
                 CreateSpecialTriggerElement(this);
             }

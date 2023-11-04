@@ -12,7 +12,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GUI.Controllers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Containers;
 using GUI.Components;
 using GUI.Components.Shared;

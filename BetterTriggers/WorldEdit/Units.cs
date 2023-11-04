@@ -15,12 +15,12 @@ namespace BetterTriggers.WorldEdit
         internal static List<UnitData> items = new List<UnitData>();
         internal static List<UnitData> startLocations = new List<UnitData>();
 
-        internal static List<UnitData> GetAll()
+        public static List<UnitData> GetAll()
         {
             return units;
         }
 
-        internal static List<UnitData> GetMapItemsAll()
+        public static List<UnitData> GetMapItemsAll()
         {
             return items;
         }

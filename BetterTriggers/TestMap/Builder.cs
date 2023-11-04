@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using War3Net.Build.Info;
 using War3Net.Build;
 using War3Net.IO.Mpq;
-using BetterTriggers.Controllers;
 
 namespace BetterTriggers.TestMap
 {

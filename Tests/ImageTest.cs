@@ -1,5 +1,4 @@
-﻿using BetterTriggers.Controllers;
-using BetterTriggers.Utility;
+﻿using BetterTriggers.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

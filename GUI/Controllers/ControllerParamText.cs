@@ -1,6 +1,5 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
@@ -68,15 +67,15 @@ namespace GUI.Controllers
                     {
                         List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
                         sb.Append("(");
-                        GenerateTreeItemText(sb, function.parameters, _returnTypes, ControllerTriggerData.GetParamText(function)); // recurse
+                        GenerateTreeItemText(sb, function.parameters, _returnTypes, TriggerData.GetParamText(function)); // recurse
                     }
                     else // whole displayname gets hyperlinked
-                        sb.Append($"({ControllerTriggerData.GetParamDisplayName(function)}");
+                        sb.Append($"({TriggerData.GetParamDisplayName(function)}");
 
                     sb.Append(")");
                 }
                 else if (parameters[paramIndex] is Constant)
-                    sb.Append(ControllerTriggerData.GetParamDisplayName(parameters[paramIndex]));
+                    sb.Append(TriggerData.GetParamDisplayName(parameters[paramIndex]));
 
                 else if (parameters[paramIndex] is VariableRef)
                 {
@@ -223,7 +222,6 @@ namespace GUI.Controllers
             List<string> returnTypes = parameterFacade.GetReturnTypes();
 
             List<Inline> inlines = new List<Inline>();
-            ControllerTriggerData controller = new();
 
             int paramIndex = 0;
             for (int i = 0; i < paramText.Length; i++)
@@ -257,7 +255,7 @@ namespace GUI.Controllers
                         else
                             inlines.Add(AddHyperlink(parameterFacade, " ( ", parameters, paramIndex, returnTypes[paramIndex]));
 
-                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, function.parameters, _returnTypes, ControllerTriggerData.GetParamText(function)))); // recurse
+                        inlines.AddRange(RecurseGenerateParamText(new ParameterFacadeTrigger(treeItem, function.parameters, _returnTypes, TriggerData.GetParamText(function)))); // recurse
                     }
                     else // whole displayname gets hyperlinked
                     {
@@ -265,7 +263,7 @@ namespace GUI.Controllers
                         runFirstBracket.FontFamily = TriggerEditorFont.GetParameterFont();
                         runFirstBracket.FontSize = TriggerEditorFont.GetParameterFontSize();
                         inlines.Add(runFirstBracket);
-                        inlines.Add(AddHyperlink(parameterFacade, ControllerTriggerData.GetParamDisplayName(function), parameters, paramIndex, returnTypes[paramIndex]));
+                        inlines.Add(AddHyperlink(parameterFacade, TriggerData.GetParamDisplayName(function), parameters, paramIndex, returnTypes[paramIndex]));
                     }
                     Run run = new Run(")");
                     run.FontFamily = TriggerEditorFont.GetParameterFont();
@@ -274,7 +272,7 @@ namespace GUI.Controllers
                 }
                 else if (parameters[paramIndex] is Constant)
                 {
-                    inlines.Add(AddHyperlink(parameterFacade, ControllerTriggerData.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex, returnTypes[paramIndex]));
+                    inlines.Add(AddHyperlink(parameterFacade, TriggerData.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is VariableRef)
                 {

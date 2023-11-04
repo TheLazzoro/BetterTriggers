@@ -1,6 +1,5 @@
 using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
@@ -343,7 +342,6 @@ namespace Tests
         {
             TriggerConverter triggerConverter = new TriggerConverter();
             projectFile = triggerConverter.Convert(mapDir, Path.Combine(Path.GetDirectoryName(mapDir), Path.GetFileNameWithoutExtension(mapDir)));
-            ControllerProject controllerProject = new ControllerProject();
             Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);

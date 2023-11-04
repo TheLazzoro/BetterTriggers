@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 returnType = "string";
 
             var project = Project.CurrentProject;
-            List<VariableRef> variables = project.Variables.GetVariableRefs(returnType, trig, ControllerVariable.includeLocals);
+            List<VariableRef> variables = project.Variables.GetVariableRefs(returnType, trig, Variables.includeLocals);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < variables.Count; i++)

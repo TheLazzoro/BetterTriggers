@@ -18,7 +18,7 @@ namespace BetterTriggers.WorldEdit
         private static Dictionary<string, AbilityType> abilitiesBaseEdited = new();
         private static Dictionary<string, AbilityType> abilitiesCustom = new();
 
-        internal static List<AbilityType> GetAll()
+        public static List<AbilityType> GetAll()
         {
             List<AbilityType> list = new List<AbilityType>();
             var enumerator = abilities.GetEnumerator();

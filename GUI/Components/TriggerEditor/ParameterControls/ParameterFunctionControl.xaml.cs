@@ -1,9 +1,9 @@
 ﻿using BetterTriggers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using System.Collections.Generic;
 using System.Windows;
@@ -23,7 +23,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             if (returnType == "StringExt")
                 returnType = "string";
 
-            List<FunctionTemplate> functions = ControllerTriggerData.LoadAllCalls(returnType);
+            List<FunctionTemplate> functions = TriggerData.LoadAllCalls(returnType);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < functions.Count; i++)

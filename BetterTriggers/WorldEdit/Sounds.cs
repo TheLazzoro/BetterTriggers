@@ -12,12 +12,12 @@ namespace BetterTriggers.WorldEdit
         internal static List<Sound> sounds = new List<Sound>();
         internal static List<Sound> music = new List<Sound>();
 
-        internal static List<Sound> GetSoundsAll()
+        public static List<Sound> GetSoundsAll()
         {
             return sounds;
         }
 
-        internal static List<Sound> GetMusicAll()
+        public static List<Sound> GetMusicAll()
         {
             return music;
         }

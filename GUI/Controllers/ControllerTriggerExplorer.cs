@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using GUI.Components;
@@ -56,7 +55,7 @@ namespace GUI.Controllers
         public void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
         {
             if (selectedItem.Ielement is ExplorerElementTrigger exTrig)
-                ControllerTrigger.SelectedTrigger = exTrig.trigger;
+                Project.CurrentProject.Triggers.SelectedTrigger = exTrig.trigger;
 
             if (selectedItem.editor == null || selectedItem.tabItem == null)
             {

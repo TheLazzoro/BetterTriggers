@@ -8,13 +8,13 @@ using BetterTriggers.Utility;
 using Newtonsoft.Json;
 using System.IO;
 using BetterTriggers.Commands;
-using BetterTriggers.Controllers;
 using BetterTriggers.WorldEdit;
 
 namespace BetterTriggers.Containers
 {
     public class Triggers
     {
+        public Trigger SelectedTrigger { get; set; }
         private HashSet<ExplorerElementTrigger> triggerElementContainer = new HashSet<ExplorerElementTrigger>();
         private ExplorerElementTrigger lastCreated;
 
@@ -290,7 +290,7 @@ namespace BetterTriggers.Containers
                 {
                     if (localVar.variable.InitialValue is Value value)
                     {
-                        bool dataExists = ControllerMapData.ReferencedDataExists(value, localVar.variable.Type);
+                        bool dataExists = CustomMapData.ReferencedDataExists(value, localVar.variable.Type);
                         if (!dataExists)
                         {
                             localVar.variable.InitialValue = new Parameter();
@@ -406,7 +406,7 @@ namespace BetterTriggers.Containers
                 }
                 else if (parameter is Value value)
                 {
-                    bool refExists = ControllerMapData.ReferencedDataExists(value, returnTypes[i]);
+                    bool refExists = CustomMapData.ReferencedDataExists(value, returnTypes[i]);
                     if (!refExists)
                     {
                         removeCount++;

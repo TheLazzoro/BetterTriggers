@@ -1,5 +1,4 @@
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -61,7 +60,6 @@ namespace Tests
             var name = "TestProject2";
             var directory = System.IO.Directory.GetCurrentDirectory();
 
-            ControllerProject controller = new ControllerProject();
             projectPath = Project.Create(language, name, directory);
             project = Project.Load(projectPath);
             project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
@@ -75,7 +73,6 @@ namespace Tests
         [TestMethod]
         public void CallingLoadProject_CheckIfExists()
         {
-            ControllerProject controller = new ControllerProject();
             var loadedProject = Project.Load(projectPath);
 
             Assert.AreEqual(project.war3project.Name, loadedProject.war3project.Name);

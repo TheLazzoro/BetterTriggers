@@ -1,7 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Commands;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
@@ -127,13 +126,13 @@ namespace GUI.Components
         /// </summary>
         private void TreeViewTriggerElement_OnMouseEnter(TreeViewTriggerElement obj)
         {
-            ControllerVariable.includeLocals = IsActionOrConditionalInAction(obj);
+            Variables.includeLocals = IsActionOrConditionalInAction(obj);
         }
 
         private void bottomControl_MouseEnter(object sender, MouseEventArgs e)
         {
             if (treeViewTriggers.SelectedItem is TreeViewTriggerElement treeItem)
-                ControllerVariable.includeLocals = IsActionOrConditionalInAction(treeItem);
+                Variables.includeLocals = IsActionOrConditionalInAction(treeItem);
         }
 
         private bool IsActionOrConditionalInAction(TreeViewItem item)

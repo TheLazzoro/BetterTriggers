@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
@@ -87,7 +86,6 @@ namespace BetterTriggers
         string integer = "integer";
 
 
-        ControllerTrigger controllerTrigger = new ControllerTrigger();
 
         public ScriptGenerator(ScriptLanguage language)
         {

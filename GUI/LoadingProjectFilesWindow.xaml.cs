@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using System;
@@ -49,7 +48,6 @@ namespace GUI
         string errorMsg = string.Empty;
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            ControllerProject controllerProject = new ControllerProject();
             Project.FileLoadEvent += ControllerProject_FileLoadEvent;
             try
             {

@@ -1,6 +1,5 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
@@ -103,7 +102,7 @@ namespace GUI
             Keybindings keybindings = Keybindings.Load();
             SetKeybindings(keybindings);
 
-            ControllerRecentFiles.isTest = false; // hack
+            RecentFiles.isTest = false; // hack
 
             new VersionCheck();
         }
@@ -475,7 +474,7 @@ namespace GUI
         private void menuRecentFiles_MouseEnter(object sender, MouseEventArgs e)
         {
             menuRecentFiles.Items.Clear();
-            List<string> recentFiles = ControllerRecentFiles.GetRecentFiles();
+            List<string> recentFiles = RecentFiles.GetRecentFiles();
 
             for (int i = 0; i < recentFiles.Count; i++)
             {
@@ -497,7 +496,6 @@ namespace GUI
 
         private void OpenProject(string file)
         {
-            ControllerProject controllerProject = new ControllerProject();
             War3Project project = null;
             LoadingProjectFilesWindow loadingFilesWindow = new LoadingProjectFilesWindow(file);
             loadingFilesWindow.ShowDialog();

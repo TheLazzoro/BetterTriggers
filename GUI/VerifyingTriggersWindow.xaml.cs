@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers;
 using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
@@ -86,7 +86,7 @@ namespace GUI
         {
             try
             {
-                modifiedElements = ControllerMapData.ReloadMapData();
+                modifiedElements = CustomMapData.ReloadMapData();
             }
             catch (IdCollisionException ex)
             {

@@ -1,5 +1,4 @@
 ﻿using BetterTriggers.Commands;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
@@ -290,7 +289,7 @@ namespace BetterTriggers.Containers
             project.CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
 
             project.References.UpdateReferencesAll();
-            ControllerRecentFiles.AddProjectToRecent(projectPath);
+            RecentFiles.AddProjectToRecent(projectPath);
 
             return project;
         }
@@ -748,7 +747,6 @@ namespace BetterTriggers.Containers
 
                 // Adjusts local variable ids
                 List<int> blacklistedIds = new List<int>();
-                ControllerTrigger controller = new ControllerTrigger();
                 var varRefs = Triggers.GetVariableRefsFromTrigger(element);
                 element.trigger.LocalVariables.ForEach(v =>
                 {

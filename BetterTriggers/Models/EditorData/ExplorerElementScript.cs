@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Models.EditorData
 {
