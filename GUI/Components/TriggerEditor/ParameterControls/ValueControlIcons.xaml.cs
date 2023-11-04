@@ -103,7 +103,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             }
             catch (Exception ex)
             {
-                MessageBox messageBox = new MessageBox("Error", ex.Message);
+                Dialogs.MessageBox messageBox = new Dialogs.MessageBox("Error", ex.Message);
                 messageBox.ShowDialog();
             }
         }

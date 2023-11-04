@@ -15,7 +15,7 @@ namespace GUI.Components.Shared
         public SearchableListControl()
         {
             InitializeComponent();
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             checkBoxShowIcons.IsChecked = settings.GUINewElementIcon;
             checkBoxShowIcons.Click += checkBoxShowIcons_Click;
             checkBoxShowIcons.IsVisibleChanged += CheckBoxShowIcons_IsVisibleChanged;
@@ -64,7 +64,7 @@ namespace GUI.Components.Shared
 
         private void checkBoxShowIcons_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.GUINewElementIcon = (bool)checkBoxShowIcons.IsChecked;
             ShowIconsChanged?.Invoke();
             InvokeListViewChanged(sender, e);

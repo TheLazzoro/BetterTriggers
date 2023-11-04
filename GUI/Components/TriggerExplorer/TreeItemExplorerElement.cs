@@ -1,16 +1,13 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components.Shared;
+using GUI.Components.Tabs;
 using GUI.Controllers;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using static GUI.Components.Shared.TreeItemHeader;
 
 namespace GUI.Components
@@ -133,7 +130,7 @@ namespace GUI.Components
                 }
                 catch (Exception ex)
                 {
-                    MessageBox messageBox = new MessageBox("Error", ex.Message);
+                    Dialogs.MessageBox messageBox = new Dialogs.MessageBox("Error", ex.Message);
                     messageBox.ShowDialog();
                 }
             }

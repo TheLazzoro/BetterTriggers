@@ -1,9 +1,7 @@
 ﻿<Application x:Class="GUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:GUI"
-             StartupUri="LoadingCascWindow.xaml" DispatcherUnhandledException="Application_DispatcherUnhandledException" Startup="Application_Startup">
-             <!--StartupUri="WelcomeWindow.xaml">-->
+             StartupUri="Components/Loading/LoadingCascWindow.xaml" DispatcherUnhandledException="Application_DispatcherUnhandledException" Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
 

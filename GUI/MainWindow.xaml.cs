@@ -1,10 +1,22 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
+using GUI.Components.About;
+using GUI.Components.CloseMap;
+using GUI.Components.Dialogs;
+using GUI.Components.Keybindings;
+using GUI.Components.Loading;
+using GUI.Components.NewProject;
+using GUI.Components.SaveMap;
+using GUI.Components.SelectMap;
+using GUI.Components.Settings;
+using GUI.Components.Setup;
+using GUI.Components.Tabs;
+using GUI.Components.VariableList;
+using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
 using GUI.Controllers;
 using Microsoft.Win32;
@@ -30,7 +42,7 @@ namespace GUI
             InitializeComponent();
             instance = this;
 
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             this.Width = settings.mainWindowWidth;
             this.Height = settings.mainWindowHeight;
             this.Left = settings.mainWindowX;
@@ -564,7 +576,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                Components.Dialogs.MessageBox dialogBox = new Components.Dialogs.MessageBox("Error", ex.Message);
                 dialogBox.ShowDialog();
             }
         }
@@ -587,7 +599,7 @@ namespace GUI
             }
             catch (Exception ex)
             {
-                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                Components.Dialogs.MessageBox dialogBox = new Components.Dialogs.MessageBox("Error", ex.Message);
                 dialogBox.ShowDialog();
             }
         }
@@ -624,7 +636,7 @@ namespace GUI
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             bool doClose = DoCloseProject();
-            Settings.Save(Settings.Load());
+            EditorSettings.Save(EditorSettings.Load());
             Keybindings.Save(GetKeybindings());
 
             if (globalBuildMap != null)
@@ -827,27 +839,27 @@ namespace GUI
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.mainWindowWidth = (int)this.Width;
             settings.mainWindowHeight = (int)this.Height;
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.mainWindowX = (int)this.Left;
             settings.mainWindowY = (int)this.Top;
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.mainWindowFullscreen = this.WindowState.HasFlag(WindowState.Maximized);
         }
 
         private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.triggerExplorerWidth = (int)rowTriggerExplorer.Width.Value;
         }
 

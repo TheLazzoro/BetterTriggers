@@ -1,12 +1,7 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Models.SaveableData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GUI.Components.Settings;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -21,7 +16,7 @@ namespace GUI.Components.TriggerEditor
             this.Inlines.Add(text);
             this.parameter = parameter;
 
-            var settings = Settings.Load();
+            var settings = EditorSettings.Load();
 
             // Create an underline text decoration.
             if (settings.triggerEditorMode == 0)
@@ -83,11 +78,6 @@ namespace GUI.Components.TriggerEditor
 
         private void RecolorHyperlink()
         {
-            Settings settings = Settings.Load();
-            byte r = settings.triggerEditorMode == 0 ? (byte)0 : (byte)105;
-            byte g = settings.triggerEditorMode == 0 ? (byte)200 : (byte)172;
-            byte b = settings.triggerEditorMode == 0 ? (byte)255 : (byte)65;
-
             if (this.IsFocused)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0));
             else if (parameter is Constant ||

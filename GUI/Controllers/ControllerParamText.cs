@@ -20,12 +20,12 @@ namespace GUI.Controllers
         TreeViewTriggerElement treeItem;
 
         StringBuilder stringBuilder = new StringBuilder();
-        private Settings settings;
+        private EditorSettings settings;
         private Project project;
 
         public ControllerParamText()
         {
-            settings = Settings.Load();
+            settings = EditorSettings.Load();
             project = Project.CurrentProject;
         }
 

@@ -1,0 +1,93 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BetterTriggers
+{
+    public class EditorSettings
+    {
+        private static EditorSettings instance;
+        private static string filePath;
+
+        public string war3root             = "C:/Program Files (x86)/Warcraft III";
+        public string CopyLocation         = "BetterTriggersTestMap";
+        public int Difficulty              = 0;
+        public bool FixedRandomSeed        = false;
+        public int HD                      = 0;
+        public bool NoWindowsFocusPause    = false;
+        public string PlayerProfile        = "WorldEdit";
+        public int WindowMode              = 0;
+        public int Teen                    = 0;
+
+        public bool mainWindowFullscreen   = false;
+        public int mainWindowX             = 100;
+        public int mainWindowY             = 100;
+        public int mainWindowWidth         = 900;
+        public int mainWindowHeight        = 600;
+
+        public int triggerExplorerWidth    = 250;
+
+        public int triggerWindowX          = 100;
+        public int triggerWindowY          = 100;
+        public int triggerWindowWidth      = 800;
+        public int triggerWindowHeight     = 450;
+
+        public int parameterWindowX        = 100;
+        public int parameterWindowY        = 100;
+        public int parameterWindowWidth    = 800;
+        public int parameterWindowHeight   = 450;
+
+        public int editorAppearance        = 0;
+        public int triggerEditorMode       = 0;
+        public double textEditorFontSize   = 12;
+        public string textEditorFontStyle  = "Consolas";
+
+        public string lastOpenedFileLocation = string.Empty;
+        public int selectMapWindowX        = 100;
+        public int selectMapWindowY        = 100;
+        public int selectMapWindowWidth    = 800;
+        public int selectMapWindowHeight   = 450;
+
+        public bool GUINewElementIcon      = false;
+
+        private EditorSettings() { }
+
+        public static EditorSettings Load()
+        {
+            if (instance != null)
+                return instance;
+
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            filePath = Path.Combine(appData, "Better Triggers/settings.json");
+            EditorSettings settings;
+            if (File.Exists(filePath))
+            {
+                var file = File.ReadAllText(filePath);
+                settings = JsonConvert.DeserializeObject<EditorSettings>(file);
+            }
+            else
+            {
+                settings = new EditorSettings();
+            }
+            instance = settings;
+
+            return settings;
+        }
+
+        public static void Save(EditorSettings settings)
+        {
+            string dir = Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileName(filePath);
+
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            instance = settings;
+            File.WriteAllText(Path.Combine(dir, fileName), JsonConvert.SerializeObject(instance, Formatting.Indented));
+        }
+    }
+}

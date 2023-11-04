@@ -251,7 +251,7 @@ namespace GUI.Components.TriggerEditor
                 isEnabled = eca.isEnabled;
                 state = areParametersValid ? TreeItemState.Normal : TreeItemState.HasErrors;
 
-                Settings settings = Settings.Load();
+                EditorSettings settings = EditorSettings.Load();
                 if (settings.triggerEditorMode == 0)
                 {
                     this.treeItemHeader.Refresh(text, category, state, isEnabled);
@@ -397,7 +397,7 @@ namespace GUI.Components.TriggerEditor
                 }
                 catch (Exception ex)
                 {
-                    MessageBox messageBox = new MessageBox("Error", ex.Message);
+                    Dialogs.MessageBox messageBox = new Dialogs.MessageBox("Error", ex.Message);
                     messageBox.ShowDialog();
                 }
             }

@@ -21,7 +21,7 @@ namespace BetterTriggers
 
             NextData = "Settings";
             OnNextData?.Invoke();
-            Settings.Load();
+            EditorSettings.Load();
             NextData = "Locale";
             OnNextData?.Invoke();
             Locale.Load();

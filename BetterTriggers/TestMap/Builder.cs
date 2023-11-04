@@ -72,7 +72,7 @@ namespace BetterTriggers.TestMap
                 archivePath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
             else
             {
-                Settings settings = Settings.Load();
+                EditorSettings settings = EditorSettings.Load();
                 archivePath = Path.Combine(destinationDir, settings.CopyLocation + ".w3x");
             }
 
@@ -105,7 +105,7 @@ namespace BetterTriggers.TestMap
             if (!success)
                 return;
 
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             string war3Exe = Path.Combine(settings.war3root, "_retail_/x86_64/Warcraft III.exe");
 
             int difficulty = settings.Difficulty;

@@ -25,8 +25,8 @@ namespace GUI.Components.TriggerEditor
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
-            
-            Settings settings = Settings.Load();
+
+            EditorSettings settings = EditorSettings.Load();
             this.Width = settings.triggerWindowWidth;
             this.Height = settings.triggerWindowHeight;
             this.Left = settings.triggerWindowX;
@@ -64,7 +64,7 @@ namespace GUI.Components.TriggerEditor
 
         private void Init()
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             
 
             var templates = new List<FunctionTemplate>();
@@ -172,14 +172,14 @@ namespace GUI.Components.TriggerEditor
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.triggerWindowWidth = (int)this.Width;
             settings.triggerWindowHeight = (int)this.Height;
         }
 
         private void Window_LocationChanged(object sender, System.EventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.triggerWindowX = (int)this.Left;
             settings.triggerWindowY = (int)this.Top;
         }

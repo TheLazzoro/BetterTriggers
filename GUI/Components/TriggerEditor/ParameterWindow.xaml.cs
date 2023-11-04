@@ -40,7 +40,7 @@ namespace GUI
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
 
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             this.Width = settings.parameterWindowWidth;
             this.Height = settings.parameterWindowHeight;
             this.Left = settings.parameterWindowX;
@@ -286,14 +286,14 @@ namespace GUI
         
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.parameterWindowWidth = (int)this.Width;
             settings.parameterWindowHeight = (int)this.Height;
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.parameterWindowX = (int)this.Left;
             settings.parameterWindowY = (int)this.Top;
         }
