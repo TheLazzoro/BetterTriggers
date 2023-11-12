@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -88,15 +89,33 @@ namespace GUI.Components
             // change font size
             this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
 
+
             if (completionCollection == null)
             {
-                List<CompletionData> completionData = new List<CompletionData>();
-                ScriptData.GetAll(language).ForEach(n =>
-                {
-                    completionData.Add(new CompletionData(n.displayText, n.description));
-                });
-                completionCollection = new CompletionDataCollection(completionData);
+                this.language = language;
+                Thread newWindowThread = new Thread(AddCompletionDataThread);
+                newWindowThread.SetApartmentState(ApartmentState.STA);
+                newWindowThread.IsBackground = true;
+                newWindowThread.Start();
             }
+        }
+
+        ScriptLanguage language;
+        private delegate void AddCompletionDataDelegate();
+        private void AddCompletionDataThread()
+        {
+            this.Dispatcher.BeginInvoke(AddCompletionData, DispatcherPriority.Background);
+        }
+
+        private void AddCompletionData()
+        {
+            List<CompletionData> completionData = new List<CompletionData>();
+            ScriptData.GetAll(this.language).ForEach(n =>
+            {
+                var completionItem = new CompletionData(n.displayText, n.description);
+                completionData.Add(completionItem);
+            });
+            completionCollection = new CompletionDataCollection(completionData);
         }
 
         private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -116,7 +135,7 @@ namespace GUI.Components
                     EditorSettings.Save(settings);
 
                     var mainWindow = MainWindow.GetMainWindow();
-                    var tabs = mainWindow.vmd.Tabs.GetEnumerator();
+                    var tabs = mainWindow.tabViewModel.Tabs.GetEnumerator();
                     while (tabs.MoveNext())
                     {
                         var tab = tabs.Current;

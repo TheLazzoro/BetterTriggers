@@ -53,7 +53,7 @@ namespace GUI.Components.Settings
             this.Close();
 
             var mainWindow = MainWindow.GetMainWindow();
-            var tabs = mainWindow.vmd;
+            var tabs = mainWindow.tabViewModel;
             for (int i = 0; i < tabs.Tabs.Count; i++)
             {
                 if (tabs.Tabs[i].explorerElement.Ielement is ExplorerElementTrigger)

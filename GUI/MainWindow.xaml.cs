@@ -35,7 +35,7 @@ namespace GUI
         static MainWindow instance;
         TriggerExplorer triggerExplorer;
         TreeItemExplorerElement selectedExplorerItem;
-        public TabViewModel vmd;
+        public TabViewModel tabViewModel;
 
         public MainWindow()
         {
@@ -50,8 +50,8 @@ namespace GUI
             this.WindowState = settings.mainWindowFullscreen ? WindowState.Maximized : WindowState.Normal;
             rowTriggerExplorer.Width = new GridLength(settings.triggerExplorerWidth);
 
-            vmd = new TabViewModel();
-            tabControl.ItemsSource = vmd.Tabs;
+            tabViewModel = new TabViewModel();
+            tabControl.ItemsSource = tabViewModel.Tabs;
 
             CustomMapData.OnSaving += CustomMapData_OnSaving;
 
@@ -297,7 +297,7 @@ namespace GUI
             triggerExplorer.currentElement = selectedExplorerItem;
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectTab(selectedExplorerItem, vmd, tabControl);
+            controller.OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
             EnableTriggerElementButtons();
         }
 
@@ -311,7 +311,7 @@ namespace GUI
                 return;
 
             ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectTab(tabItem.explorerElement, vmd, tabControl);
+            controller.OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
             selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
             EnableTriggerElementButtons();
         }
@@ -525,7 +525,7 @@ namespace GUI
                 }
             }
 
-            vmd.Tabs.Clear();
+            tabViewModel.Tabs.Clear();
             if (triggerExplorer != null)
             {
                 var parent = (Grid)triggerExplorer.Parent;
@@ -555,6 +555,23 @@ namespace GUI
             controllerTriggerExplorer.Populate(triggerExplorer);
 
             VerifyTriggerData();
+            OpenLastOpenedTabs();
+        }
+
+        private void OpenLastOpenedTabs()
+        {
+            Project project = Project.CurrentProject;
+            var lastOpenedTabs = LastOpenedTabs.Load(project.GetRoot().GetName());
+            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
+            if(lastOpenedTabs.Tabs != null)
+            {
+                foreach (var item in lastOpenedTabs.Tabs)
+                {
+                    var element = controller.FindTreeNodeElement(triggerExplorer.map, item);
+                    if (element != null)
+                        controller.OnSelectTab(element, tabViewModel, tabControl);
+                }
+            }
         }
 
 
@@ -638,6 +655,7 @@ namespace GUI
             bool doClose = DoCloseProject();
             EditorSettings.Save(EditorSettings.Load());
             Keybindings.Save(GetKeybindings());
+            SaveLastOpenedTabs();
 
             if (globalBuildMap != null)
                 globalBuildMap.Dispose();
@@ -716,7 +734,8 @@ namespace GUI
                     return;
             }
 
-            vmd.Tabs.Clear();
+            SaveLastOpenedTabs();
+            tabViewModel.Tabs.Clear();
             mainGrid.Children.Remove(triggerExplorer);
             triggerExplorer.Dispose();
             triggerExplorer = null;
@@ -724,6 +743,22 @@ namespace GUI
             EnableECAButtons(false);
 
             Project.Close();
+        }
+
+        private void SaveLastOpenedTabs()
+        {
+            if (Project.CurrentProject == null)
+                return;
+
+            int tabIndex = 0;
+            string[] tabs = new string[tabViewModel.Tabs.Count];
+            var enumerator = tabViewModel.Tabs.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                tabs[tabIndex] = enumerator.Current.explorerElement.Ielement.GetPath();
+                tabIndex++;
+            }
+            LastOpenedTabs.Save(Project.CurrentProject.GetRoot().GetName(), tabs);
         }
 
         private void CommandBinding_Executed_OpenProjectSettings(object sender, ExecutedRoutedEventArgs e)
@@ -898,6 +933,7 @@ namespace GUI
             else
                 return;
 
+            SaveLastOpenedTabs();
             SetupWindow window = new SetupWindow();
             window.Show();
             this.Close();
@@ -934,7 +970,7 @@ namespace GUI
 
         private void tabitem_Menu_CloseAll_Click(object sender, RoutedEventArgs e)
         {
-            vmd.Tabs.Clear();
+            tabViewModel.Tabs.Clear();
         }
 
         private void tabitem_Menu_Close_Click(object sender, RoutedEventArgs e)
@@ -943,7 +979,7 @@ namespace GUI
             {
                 var header = tabItem_rightClicked.Header as TabItemBT;
                 int index = tabControl.Items.IndexOf(header);
-                vmd.Tabs.RemoveAt(index);
+                tabViewModel.Tabs.RemoveAt(index);
             }
         }
 
