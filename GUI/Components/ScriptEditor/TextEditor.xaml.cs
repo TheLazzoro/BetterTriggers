@@ -90,8 +90,9 @@ namespace GUI.Components
             this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
 
 
-            if (completionCollection == null)
+            if (completionCollection == null && !isLoadingScriptData)
             {
+                isLoadingScriptData = true;
                 this.language = language;
                 Thread newWindowThread = new Thread(AddCompletionDataThread);
                 newWindowThread.SetApartmentState(ApartmentState.STA);
@@ -100,6 +101,7 @@ namespace GUI.Components
             }
         }
 
+        static bool isLoadingScriptData;
         ScriptLanguage language;
         private delegate void AddCompletionDataDelegate();
         private void AddCompletionDataThread()
@@ -116,6 +118,7 @@ namespace GUI.Components
                 completionData.Add(completionItem);
             });
             completionCollection = new CompletionDataCollection(completionData);
+            isLoadingScriptData = false;
         }
 
         private void TextArea_MouseWheel(object sender, MouseWheelEventArgs e)
