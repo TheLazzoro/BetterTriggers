@@ -7,7 +7,6 @@ using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
 using GUI.Container;
-using GUI.Controllers;
 using GUI.Utility;
 using Newtonsoft.Json;
 using System;
@@ -41,7 +40,6 @@ namespace GUI.Components
         TreeViewItem parentDropTarget;
 
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
-        private ControllerTriggerControl controllerTriggerControl = new ControllerTriggerControl();
         private TreeViewTriggerElement selectedElement;
         private TreeViewTriggerElement selectedElementEnd;
         private List<TreeViewTriggerElement> selectedElements = new List<TreeViewTriggerElement>();
@@ -177,10 +175,10 @@ namespace GUI.Components
         private void LoadTrigger(BetterTriggers.Models.SaveableData.Trigger trigger)
         {
             this.textBoxComment.Text = trigger.Comment;
-            ControllerTriggerControl.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
-            ControllerTriggerControl.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
-            ControllerTriggerControl.RecurseLoadTrigger(trigger.LocalVariables, this.categoryLocalVariable);
-            ControllerTriggerControl.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
+            TreeViewTriggerElement.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
+            TreeViewTriggerElement.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
+            TreeViewTriggerElement.RecurseLoadTrigger(trigger.LocalVariables, this.categoryLocalVariable);
+            TreeViewTriggerElement.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
 
             this.categoryEvent.IsExpanded = true;
             this.categoryCondition.IsExpanded = true;
@@ -320,7 +318,7 @@ namespace GUI.Components
 
             if (item.triggerElement is ECA)
             {
-                ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
+                ParamTextBuilder controllerTriggerTreeItem = new ParamTextBuilder();
                 var inlines = controllerTriggerTreeItem.GenerateParamText(item);
                 var element = (ECA)item.triggerElement;
                 textblockParams.Inlines.AddRange(inlines);

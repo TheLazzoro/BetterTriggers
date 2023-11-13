@@ -5,7 +5,6 @@ using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
-using GUI.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;

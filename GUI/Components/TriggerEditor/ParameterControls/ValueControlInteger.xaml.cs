@@ -13,7 +13,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
-using GUI.Controllers;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {

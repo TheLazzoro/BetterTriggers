@@ -18,7 +18,6 @@ using GUI.Components.Tabs;
 using GUI.Components.VariableList;
 using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
-using GUI.Controllers;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -296,8 +295,7 @@ namespace GUI
 
             triggerExplorer.currentElement = selectedExplorerItem;
 
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
+            TriggerExplorer.Current.OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
             EnableTriggerElementButtons();
         }
 
@@ -310,8 +308,7 @@ namespace GUI
             if (tabItem == null) // it crashes when we don't do this?
                 return;
 
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
+            TriggerExplorer.Current.OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
             selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
             EnableTriggerElementButtons();
         }
@@ -350,8 +347,8 @@ namespace GUI
 
         private void btnSaveAll_Click(object sender, RoutedEventArgs e)
         {
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.SaveAll();
+            var project = Project.CurrentProject;
+            project.Save();
         }
 
         private void btnUndo_Click(object sender, RoutedEventArgs e)
@@ -551,8 +548,7 @@ namespace GUI
 
             EnableToolbar(true);
 
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            controllerTriggerExplorer.Populate(triggerExplorer);
+            triggerExplorer.Populate();
 
             VerifyTriggerData();
             OpenLastOpenedTabs();
@@ -562,14 +558,14 @@ namespace GUI
         {
             Project project = Project.CurrentProject;
             var lastOpenedTabs = LastOpenedTabs.Load(project.GetRoot().GetName());
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            if(lastOpenedTabs.Tabs != null)
+            var triggerExplorer = TriggerExplorer.Current;
+            if (lastOpenedTabs.Tabs != null)
             {
                 foreach (var item in lastOpenedTabs.Tabs)
                 {
-                    var element = controller.FindTreeNodeElement(triggerExplorer.map, item);
+                    var element = triggerExplorer.FindTreeNodeElement(this.triggerExplorer.map, item);
                     if (element != null)
-                        controller.OnSelectTab(element, tabViewModel, tabControl);
+                        triggerExplorer.OnSelectTab(element, tabViewModel, tabControl);
                 }
             }
         }

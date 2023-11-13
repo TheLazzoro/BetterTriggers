@@ -2,7 +2,6 @@
 using BetterTriggers.Models.EditorData;
 using GUI.Components.Shared;
 using GUI.Components.Tabs;
-using GUI.Controllers;
 using System;
 using System.IO;
 using System.Windows;
@@ -166,9 +165,8 @@ namespace GUI.Components
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
                 int insertIndex = Ielement.GetParent().GetExplorerElements().IndexOf(Ielement);
-                controller.OnMoveElement(controller.GetCurrentExplorer(), Ielement.GetPath(), insertIndex);
+                TriggerExplorer.Current.OnMoveElement(TriggerExplorer.Current, Ielement.GetPath(), insertIndex);
                 this.treeItemHeader.SetDisplayText(this.Ielement.GetName());
 
                 this.IsSelected = true;
@@ -178,9 +176,7 @@ namespace GUI.Components
 
         public void OnCreated(int insertIndex)
         {
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            var dir = Path.GetDirectoryName(this.Ielement.GetPath());
-            var parent = controller.FindTreeNodeDirectory(Path.GetDirectoryName(this.Ielement.GetPath()));
+            var parent = TriggerExplorer.Current.FindTreeNodeDirectory(Path.GetDirectoryName(this.Ielement.GetPath()));
             parent.Items.Insert(insertIndex, this);
 
             this.IsSelected = true;

@@ -8,7 +8,7 @@ using GUI.Components;
 using GUI.Components.Dialogs;
 using GUI.Components.Shared;
 using GUI.Components.VariableEditor;
-using GUI.Controllers;
+using GUI.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -92,7 +92,7 @@ namespace GUI.Components
             }
 
             UpdateIdentifierText();
-            ControllerParamText controllerParamText = new ControllerParamText();
+            ParamTextBuilder controllerParamText = new ParamTextBuilder();
             var inlines = controllerParamText.GenerateParamText(variable);
             this.textblockInitialValue.Inlines.AddRange(inlines);
 
@@ -131,7 +131,7 @@ namespace GUI.Components
                     }
                 }
 
-                ControllerParamText controllerParamText = new ControllerParamText();
+                ParamTextBuilder controllerParamText = new ParamTextBuilder();
                 this.textblockInitialValue.Inlines.Clear();
                 var inlines = controllerParamText.GenerateParamText(variable);
                 this.textblockInitialValue.Inlines.AddRange(inlines);
@@ -174,7 +174,7 @@ namespace GUI.Components
                 previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
                 defaultSelected = comboBoxVariableType.SelectedIndex;
 
-                ControllerParamText controllerParamText = new ControllerParamText();
+                ParamTextBuilder controllerParamText = new ParamTextBuilder();
                 this.textblockInitialValue.Inlines.Clear();
                 var inlines = controllerParamText.GenerateParamText(variable);
                 this.textblockInitialValue.Inlines.AddRange(inlines);

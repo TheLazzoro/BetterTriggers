@@ -12,9 +12,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace GUI.Controllers
+namespace GUI.Utility
 {
-    public class ControllerParamText
+    public class ParamTextBuilder
     {
         List<HyperlinkBT> hyperlinkParameters = new List<HyperlinkBT>();
         TreeViewTriggerElement treeItem;
@@ -23,7 +23,7 @@ namespace GUI.Controllers
         private EditorSettings settings;
         private Project project;
 
-        public ControllerParamText()
+        public ParamTextBuilder()
         {
             settings = EditorSettings.Load();
             project = Project.CurrentProject;
@@ -45,6 +45,9 @@ namespace GUI.Controllers
         /// This is copy-pasted from 'RecurseGenerateParamText' and uses strings instead of UI components.
         /// It is slow to pull text out of 'Inline' UI components, so this serves as an optimized way
         /// to generate the header text for TreeViewItems when loading in large quantities.
+        /// 
+        /// Because of code duplication, remember to update both methods when something changes.
+        /// 
         /// </summary>
         private void GenerateTreeItemText(StringBuilder sb, List<Parameter> parameters, List<string> returnTypes, string paramText)
         {
@@ -239,7 +242,7 @@ namespace GUI.Controllers
                 {
                     FontFamily = TriggerEditorFont.GetParameterFont(),
                     FontSize = TriggerEditorFont.GetParameterFontSize()
-            });
+                });
                 stringBuilder.Clear();
 
 
@@ -250,7 +253,7 @@ namespace GUI.Controllers
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
                         List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
-                        if(settings.triggerEditorMode == 0)
+                        if (settings.triggerEditorMode == 0)
                             inlines.Add(AddHyperlink(parameterFacade, "(", parameters, paramIndex, returnTypes[paramIndex]));
                         else
                             inlines.Add(AddHyperlink(parameterFacade, " ( ", parameters, paramIndex, returnTypes[paramIndex]));

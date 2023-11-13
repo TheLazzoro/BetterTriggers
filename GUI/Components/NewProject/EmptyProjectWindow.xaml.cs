@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Containers;
 using GUI.Components.NewProject;
-using GUI.Controllers;
 using System;
 using System.Collections.Generic;
 using System.IO;

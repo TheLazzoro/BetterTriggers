@@ -11,7 +11,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GUI.Controllers;
 using BetterTriggers.Containers;
 using GUI.Components.Shared;
 using GUI.Utility;
@@ -20,6 +19,7 @@ using System.ComponentModel;
 using System.Threading;
 using BetterTriggers.Utility;
 using GUI.Components.Dialogs;
+using GUI.Components.Tabs;
 
 namespace GUI.Components
 {
@@ -65,13 +65,190 @@ namespace GUI.Components
             Project.CurrentProject.OnCreated -= ContainerProject_OnElementCreated;
         }
 
+        public void Populate()
+        {
+            var root = Project.CurrentProject.GetRoot();
+            for (int i = 0; i < root.explorerElements.Count; i++)
+            {
+                RecursePopulate(map, root.explorerElements[i]);
+            }
+        }
+
+        private void RecursePopulate(TreeItemExplorerElement parent, IExplorerElement element)
+        {
+            var treeItem = new TreeItemExplorerElement(element);
+            element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
+            parent.Items.Add(treeItem);
+
+            if (element is ExplorerElementFolder)
+            {
+                var folder = element as ExplorerElementFolder;
+                if (folder.isExpanded)
+                    treeItem.ExpandSubtree();
+
+                for (int i = 0; i < folder.explorerElements.Count; i++)
+                {
+                    var child = folder.explorerElements[i];
+                    RecursePopulate(treeItem, child);
+                }
+            }
+        }
+
+        public void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
+        {
+            if (selectedItem.Ielement is ExplorerElementTrigger exTrig)
+                Project.CurrentProject.Triggers.SelectedTrigger = exTrig.trigger;
+
+            if (selectedItem.editor == null || selectedItem.tabItem == null)
+            {
+                if (selectedItem.Ielement is ExplorerElementRoot)
+                {
+                    var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                    rootControl.Attach(selectedItem);
+                    selectedItem.editor = rootControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementTrigger)
+                {
+                    var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
+                    triggerControl.Attach(selectedItem);
+                    selectedItem.editor = triggerControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementScript)
+                {
+                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
+                    scriptControl.Attach(selectedItem);
+                    selectedItem.editor = scriptControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementVariable)
+                {
+                    var element = (ExplorerElementVariable)selectedItem.Ielement;
+                    var variableControl = new VariableControl(element.variable);
+                    variableControl.Attach(selectedItem);
+                    selectedItem.editor = variableControl;
+                }
+
+                // select already open tab
+                for (int i = 0; i < tabViewModel.Tabs.Count; i++)
+                {
+                    var tab = tabViewModel.Tabs[i];
+                    if (tab.explorerElement.Ielement.GetPath() == selectedItem.Ielement.GetPath())
+                    {
+                        selectedItem.tabItem = tab;
+                        tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
+                        return;
+                    }
+                }
+
+                if (selectedItem.editor == null)
+                    return;
+
+                TabItemBT tabItem = new TabItemBT(selectedItem, tabViewModel);
+                tabViewModel.Tabs.Add(tabItem);
+                selectedItem.tabItem = tabItem;
+            }
+
+            if (selectedItem.tabItem != null)
+            {
+                if (!tabViewModel.Tabs.Contains(selectedItem.tabItem))
+                    tabViewModel.Tabs.Add(selectedItem.tabItem);
+
+                tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
+            }
+        }
+
+
+        public void OnCreateElement(TriggerExplorer te, string fullPath)
+        {
+            if (!FileSystemUtil.IsExtensionValid(System.IO.Path.GetExtension(fullPath)))
+                return;
+
+            var project = Project.CurrentProject;
+            var explorerElement = project.FindExplorerElement(project.GetRoot(), fullPath);
+            int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
+
+            TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);
+            explorerElement.Attach(treeItemExplorerElement);
+            treeItemExplorerElement.OnCreated(insertIndex);
+        }
+
+        internal void OnMoveElement(TriggerExplorer te, string fullPath, int insertIndex)
+        {
+            TreeItemExplorerElement elementToMove = FindTreeNodeElement(te.map, fullPath);
+            TreeItemExplorerElement oldParent = elementToMove.Parent as TreeItemExplorerElement;
+            TreeItemExplorerElement newParent = FindTreeNodeDirectory(System.IO.Path.GetDirectoryName(fullPath));
+
+            Application.Current.Dispatcher.Invoke(delegate
+            {
+                if (newParent == null) // hack. idk why it fires twice
+                    return;
+
+                oldParent.Items.Remove(elementToMove);
+                newParent.Items.Insert(insertIndex, elementToMove);
+                elementToMove.IsSelected = true;
+            });
+        }
+
+        internal TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)
+        {
+            TreeItemExplorerElement node = null;
+
+            for (int i = 0; i < parent.Items.Count; i++)
+            {
+                TreeItemExplorerElement element = parent.Items[i] as TreeItemExplorerElement;
+                if (element.Ielement.GetPath() == path)
+                {
+                    node = element;
+                    break;
+                }
+                if (Directory.Exists(element.Ielement.GetPath()) && node == null)
+                {
+                    node = FindTreeNodeElement(element, path);
+                }
+            }
+
+            return node;
+        }
+
+        internal TreeItemExplorerElement FindTreeNodeDirectory(string directory)
+        {
+            var triggerExplorer = TriggerExplorer.Current;
+            if (directory == triggerExplorer.map.Ielement.GetPath())
+                return triggerExplorer.map;
+
+            return FindTreeNodeDirectory(triggerExplorer.map, directory);
+        }
+
+        private TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)
+        {
+            TreeItemExplorerElement node = null;
+
+            for (int i = 0; i < parent.Items.Count; i++)
+            {
+                TreeItemExplorerElement element = parent.Items[i] as TreeItemExplorerElement;
+                if (Directory.Exists(element.Ielement.GetPath()) && node == null)
+                {
+                    if (element.Ielement.GetPath() == directory)
+                    {
+                        node = element;
+                        break;
+                    }
+                    else
+                    {
+                        node = FindTreeNodeDirectory(element, directory);
+                    }
+                }
+            }
+
+            return node;
+        }
+
+
         // This function is invoked by a method in the container when a new file is created.
         internal void ContainerProject_OnElementCreated(object sender, FileSystemEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-                controller.OnCreateElement(this, Project.CurrentProject.createdPath); // hack
+                OnCreateElement(this, Project.CurrentProject.createdPath); // hack
             });
         }
 
@@ -345,9 +522,8 @@ namespace GUI.Components
                 TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
                 IExplorerElement pasted = Project.CurrentProject.PasteExplorerElement(selectedElement.Ielement);
 
-                ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-                var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
-                controllerTriggerExplorer.RecursePopulate(controllerTriggerExplorer.GetCurrentExplorer(), parent, pasted);
+                var parent = FindTreeNodeDirectory(pasted.GetParent().GetPath());
+                RecursePopulate(parent, pasted);
             }
             else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
@@ -394,9 +570,8 @@ namespace GUI.Components
             Project project = Project.CurrentProject;
             IExplorerElement pasted = project.PasteExplorerElement(currentElement.Ielement);
 
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            var parent = controllerTriggerExplorer.FindTreeNodeDirectory(pasted.GetParent().GetPath());
-            controllerTriggerExplorer.RecursePopulate(controllerTriggerExplorer.GetCurrentExplorer(), parent, pasted);
+            var parent = FindTreeNodeDirectory(pasted.GetParent().GetPath());
+            RecursePopulate(parent, pasted);
         }
 
         private void menuRename_Click(object sender, RoutedEventArgs e)
@@ -649,5 +824,6 @@ namespace GUI.Components
             if (e.Key == Key.Escape)
                 searchMenu.Visibility = Visibility.Hidden;
         }
+
     }
 }

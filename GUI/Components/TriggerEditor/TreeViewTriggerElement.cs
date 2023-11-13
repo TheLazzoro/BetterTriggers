@@ -4,7 +4,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
-using GUI.Controllers;
+using GUI.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -75,9 +75,9 @@ namespace GUI.Components.TriggerEditor
                 treeViewTriggerElement.Items.Add(Then);
                 treeViewTriggerElement.Items.Add(Else);
 
-                ControllerTriggerControl.RecurseLoadTrigger(If.GetTriggerElements(), If);
-                ControllerTriggerControl.RecurseLoadTrigger(Then.GetTriggerElements(), Then);
-                ControllerTriggerControl.RecurseLoadTrigger(Else.GetTriggerElements(), Else);
+                RecurseLoadTrigger(If.GetTriggerElements(), If);
+                RecurseLoadTrigger(Then.GetTriggerElements(), Then);
+                RecurseLoadTrigger(Else.GetTriggerElements(), Else);
                 If.IsExpanded = true;
                 Then.IsExpanded = true;
                 Else.IsExpanded = true;
@@ -90,7 +90,7 @@ namespace GUI.Components.TriggerEditor
                 And.SetTriggerElements(function.And);
                 treeViewTriggerElement.Items.Add(And);
 
-                ControllerTriggerControl.RecurseLoadTrigger(And.GetTriggerElements(), And);
+                RecurseLoadTrigger(And.GetTriggerElements(), And);
                 And.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -101,7 +101,7 @@ namespace GUI.Components.TriggerEditor
                 Or.SetTriggerElements(function.Or);
                 treeViewTriggerElement.Items.Add(Or);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Or.GetTriggerElements(), Or);
+                RecurseLoadTrigger(Or.GetTriggerElements(), Or);
                 Or.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -112,7 +112,7 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -123,7 +123,7 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -134,7 +134,7 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -145,7 +145,7 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -156,7 +156,7 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -167,7 +167,7 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -178,7 +178,7 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
@@ -189,12 +189,24 @@ namespace GUI.Components.TriggerEditor
                 Actions.SetTriggerElements(function.Actions);
                 treeViewTriggerElement.Items.Add(Actions);
 
-                ControllerTriggerControl.RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
+                RecurseLoadTrigger(Actions.GetTriggerElements(), Actions);
                 Actions.IsExpanded = true;
                 treeViewTriggerElement.IsExpanded = true;
             }
         }
 
+        internal static void RecurseLoadTrigger(List<TriggerElement> triggerElements, INode parentNode)
+        {
+            parentNode.SetTriggerElements(triggerElements);
+            for (int i = 0; i < triggerElements.Count; i++)
+            {
+                var triggerElement = triggerElements[i];
+                triggerElement.SetParent(triggerElements);
+                TreeViewTriggerElement treeItem = new TreeViewTriggerElement(triggerElement);
+                triggerElement.Attach(treeItem);
+                parentNode.Add(treeItem);
+            }
+        }
 
 
         /// <summary>
@@ -238,7 +250,7 @@ namespace GUI.Components.TriggerEditor
         // TODO: Clean up.
         public void UpdateTreeItem()
         {
-            ControllerParamText controllerTriggerTreeItem = new ControllerParamText();
+            ParamTextBuilder controllerTriggerTreeItem = new ParamTextBuilder();
             string text = string.Empty;
             bool isEnabled = true;
             TreeItemState state = TreeItemState.Normal;
@@ -299,7 +311,7 @@ namespace GUI.Components.TriggerEditor
 
         public void UpdateParams()
         {
-            ControllerParamText controllerTriggerElement = new ControllerParamText();
+            ParamTextBuilder controllerTriggerElement = new ParamTextBuilder();
             controllerTriggerElement.GenerateParamText(this);
             UpdateTreeItem();
             GetTriggerControl().RefreshBottomControls();
@@ -332,7 +344,6 @@ namespace GUI.Components.TriggerEditor
 
         public void OnCreated(int insertIndex)
         {
-            ControllerTriggerControl controller = new ControllerTriggerControl();
             var triggerControl = this.GetTriggerControl();
             INode parent = null;
             for (int i = 0; i < triggerControl.treeViewTriggers.Items.Count; i++)
