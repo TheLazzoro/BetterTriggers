@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,7 +30,8 @@ namespace BetterTriggers.WorldEdit
         /// <exception cref="IOException">When MPQ archive is in use by another process.</exception>
         public static Bitmap Get(string path)
         {
-            string filePath = Path.Combine(CustomMapData.mapPath, path);
+            string fullMapPath = Project.CurrentProject.GetFullMapPath();
+            string filePath = Path.Combine(fullMapPath, path);
             if (File.Exists(filePath))
             {
                 using (Stream fs = new FileStream(filePath, FileMode.Open))
@@ -37,7 +39,7 @@ namespace BetterTriggers.WorldEdit
                     return Images.ReadImage(fs);
                 }
             }
-            if(File.Exists(CustomMapData.mapPath))
+            if(File.Exists(fullMapPath))
             {
                 var imports = CustomMapData.MPQMap.ImportedFiles.Files;
                 var pathFormatted = path.Replace('/', '\\');
@@ -45,7 +47,7 @@ namespace BetterTriggers.WorldEdit
                 {
                     if(imports[i].FullPath.ToLower() == pathFormatted.ToLower())
                     {
-                        MpqArchive mpq = MpqArchive.Open(CustomMapData.mapPath);
+                        MpqArchive mpq = MpqArchive.Open(fullMapPath);
                         Stream stream = MpqFile.OpenRead(mpq, pathFormatted);
                         mpq.Dispose();
                         return Images.ReadImage(stream);

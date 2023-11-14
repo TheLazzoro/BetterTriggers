@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 
@@ -10,13 +9,13 @@ namespace BetterTriggers.Containers
 {
     public class References
     {
-        private static Dictionary<ExplorerElementTrigger, HashSet<IReferable>> fromTrigger = new Dictionary<ExplorerElementTrigger, HashSet<IReferable>>();
-        private static Dictionary<IReferable, HashSet<ExplorerElementTrigger>> fromReference = new Dictionary<IReferable, HashSet<ExplorerElementTrigger>>();
+        private Dictionary<ExplorerElementTrigger, HashSet<IReferable>> fromTrigger = new Dictionary<ExplorerElementTrigger, HashSet<IReferable>>();
+        private Dictionary<IReferable, HashSet<ExplorerElementTrigger>> fromReference = new Dictionary<IReferable, HashSet<ExplorerElementTrigger>>();
 
         /// <summary>
         /// Returns a list of trigger which are referencing the given referable.
         /// </summary>
-        internal static List<ExplorerElementTrigger> GetReferreres(IReferable referable)
+        public List<ExplorerElementTrigger> GetReferrers(IReferable referable)
         {
             HashSet<ExplorerElementTrigger> referrers = new HashSet<ExplorerElementTrigger>();
             fromReference.TryGetValue(referable, out referrers);
@@ -27,7 +26,7 @@ namespace BetterTriggers.Containers
             return referrers.ToList();
         }
 
-        internal static void AddReferrer(ExplorerElementTrigger source, IReferable reference)
+        internal void AddReferrer(ExplorerElementTrigger source, IReferable reference)
         {
             if (reference == null)
                 return;
@@ -54,7 +53,7 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Removes a referrer from all variables. Used when a trigger gets deleted.
         /// </summary>
-        internal static void RemoveReferrer(ExplorerElementTrigger source)
+        internal void RemoveReferrer(ExplorerElementTrigger source)
         {
             HashSet<IReferable> references = null;
             fromTrigger.TryGetValue(source, out references);
@@ -69,7 +68,7 @@ namespace BetterTriggers.Containers
             }
         }
 
-        internal static void ResetVariableReferences(Variable variable)
+        internal void ResetVariableReferences(Variable variable)
         {
             HashSet<ExplorerElementTrigger> empty = new HashSet<ExplorerElementTrigger>();
             fromReference.Remove(variable);
@@ -79,26 +78,28 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Updates a trigger with all variable and trigger refs.
         /// </summary>
-        internal static void UpdateReferences(ExplorerElementTrigger t)
+        internal void UpdateReferences(ExplorerElementTrigger t)
         {
             List<ExplorerElementVariable> explorerElementVariables = new List<ExplorerElementVariable>();
 
             RemoveReferrer(t);
 
-            var parameters = ControllerTrigger.GetParametersFromTrigger(t);
+            var parameters = Project.CurrentProject.Triggers.GetParametersFromTrigger(t);
+            var variables = Project.CurrentProject.Variables;
+            var triggers = Project.CurrentProject.Triggers;
             parameters.ForEach(p =>
             {
                 if (p is VariableRef)
                 {
                     VariableRef varRef = (VariableRef)p;
-                    Variable element = Variables.GetVariableById_AllLocals(varRef.VariableId);
+                    Variable element = variables.GetVariableById_AllLocals(varRef.VariableId);
                     if (element != null)
                         AddReferrer(t, element);
                 }
                 else if (p is TriggerRef)
                 {
                     TriggerRef tRef = (TriggerRef)p;
-                    ExplorerElementTrigger element = Triggers.FindById(tRef.TriggerId);
+                    ExplorerElementTrigger element = triggers.GetById(tRef.TriggerId);
                     if(element != null)
                         AddReferrer(t, element.trigger);
                 }
@@ -108,28 +109,28 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Refreshes references for a given variable.
         /// </summary>
-        internal static void UpdateReferences(Variable variable)
+        internal void UpdateReferences(Variable variable)
         {
-            References.ResetVariableReferences(variable);
-            var triggers = ControllerTrigger.GetTriggersAll();
+            ResetVariableReferences(variable);
+            var triggers = Project.CurrentProject.Triggers.GetAll();
             triggers.ForEach(exTrig =>
             {
-                var parameters = ControllerTrigger.GetParametersFromTrigger(exTrig);
+                var parameters = Project.CurrentProject.Triggers.GetParametersFromTrigger(exTrig);
                 parameters.ForEach(p =>
                 {
                     if (p is VariableRef varRef)
                     {
                         if (varRef.VariableId == variable.Id)
-                            References.AddReferrer(exTrig, variable);
+                            AddReferrer(exTrig, variable);
                     }
                 });
             });
 
         }
 
-        internal static void UpdateReferencesAll()
+        internal void UpdateReferencesAll()
         {
-            var triggers = ControllerTrigger.GetTriggersAll();
+            var triggers = Project.CurrentProject.Triggers.GetAll();
             triggers.ForEach(trigger => UpdateReferences(trigger));
         }
     }

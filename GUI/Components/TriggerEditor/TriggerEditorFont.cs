@@ -21,7 +21,7 @@ namespace GUI.Components.TriggerEditor
 
         public static FontFamily GetParameterFont()
         {
-            var settings = Settings.Load();
+            var settings = EditorSettings.Load();
             if (settings.triggerEditorMode == 1)
                 return Default;
 
@@ -30,7 +30,7 @@ namespace GUI.Components.TriggerEditor
 
         public static double GetTreeItemFontSize()
         {
-            var settings = Settings.Load();
+            var settings = EditorSettings.Load();
             if (settings.triggerEditorMode == 1)
                 return 12;
 
@@ -39,7 +39,7 @@ namespace GUI.Components.TriggerEditor
 
         public static double GetParameterFontSize()
         {
-            var settings = Settings.Load();
+            var settings = EditorSettings.Load();
             if (settings.triggerEditorMode == 1)
                 return 12;
 

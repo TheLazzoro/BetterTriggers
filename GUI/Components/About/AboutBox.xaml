@@ -1,0 +1,43 @@
+﻿<Window x:Class="GUI.Components.About.AboutBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
+        Title="About" WindowStartupLocation="CenterOwner" Height="190" Width="350" Background="{DynamicResource BackgroundDark}" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Foreground="{DynamicResource TextBrush}" FontSize="18" FontWeight="Bold"  Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0" >Better Triggers</TextBlock>
+
+        <Rectangle Grid.Row="0" Grid.RowSpan="2" Margin="0,12,0,0">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/Resources/Icons/Warcraft_III_World_Editor.png" Stretch="Uniform" />
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <TextBlock x:Name="txtVersion" Grid.Row="1" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
+            Version: 1.0.1
+        </TextBlock>
+        <TextBlock Grid.Row="2" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
+            Copyright © 2023
+        </TextBlock>
+        <TextBlock Grid.Row="3" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
+            Author: LazZ
+        </TextBlock>
+
+
+        <Button Content="OK" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5" Grid.Row="3" Width="70" Height="25" Grid.Column="1" Click="Button_Click"/>
+    </Grid>
+</Window>

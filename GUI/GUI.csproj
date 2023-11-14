@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Icons\code_blue.ico</ApplicationIcon>
     <AssemblyName>Better Triggers</AssemblyName>
-    <Version>1.2.4.0</Version>
+    <Version>1.3.0.0</Version>
 	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
@@ -313,7 +313,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Components\RootControl.xaml.cs">
+    <Compile Update="Components\ScriptEditor\RootControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterTriggerControl.xaml.cs">
@@ -361,25 +361,22 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="VerifyingTriggersWindow.xaml.cs">
+    <Compile Update="Components\VerifyTriggers\VerifyingTriggersWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="LoadingDataWindow.xaml.cs">
+    <Compile Update="Components\About\AboutBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="AboutBox.xaml.cs">
+    <Compile Update="Components\Dialogs\MessageBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MessageBox.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="DialogBoxReferences.xaml.cs">
+    <Compile Update="Components\Dialogs\DialogBoxReferences.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Components\RootControl.xaml">
+    <Page Update="Components\ScriptEditor\RootControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -451,27 +448,23 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="VerifyingTriggersWindow.xaml">
+    <Page Update="Components\VerifyTriggers\VerifyingTriggersWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="LoadingDataWindow.xaml">
+    <Page Update="Components\About\AboutBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="AboutBox.xaml">
+    <Page Update="Components\Dialogs\MessageBox.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MessageBox.xaml">
+    <Page Update="Components\Dialogs\DialogBoxReferences.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DialogBoxReferences.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="SavingMapWindow.xaml">
+    <Page Update="Components\SaveMap\SavingMapWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>

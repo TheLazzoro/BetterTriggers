@@ -1,6 +1,4 @@
-﻿using GUI.Components;
-
-namespace GUI.Components
+﻿namespace GUI.Components
 {
     public interface IEditor
     {

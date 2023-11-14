@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -23,10 +22,11 @@ namespace BetterTriggers.Models.EditorData
 
         public ExplorerElementScript(string path)
         {
+            var project = Project.CurrentProject;
             this.path = path;
-            this.script = ControllerScript.LoadFromFile(GetPath());
+            this.script = project.Scripts.LoadFromFile(GetPath());
             UpdateMetadata();
-            Scripts.AddScript(this);
+            project.Scripts.AddScript(this);
         }
 
         public string GetName()
@@ -72,7 +72,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void Notify()
         {
-            this.script = ControllerScript.LoadFromFile(GetPath());
+            this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
             for (int i = 0; i < observers.Count; i++)
             {
                 observers[i].Reload();

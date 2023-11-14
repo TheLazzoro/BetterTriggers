@@ -1,5 +1,4 @@
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
@@ -18,7 +17,7 @@ namespace Tests
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
         static string projectPath;
-        static War3Project project;
+        static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
         static ExplorerElementTrigger element1, element2, element3;
@@ -46,40 +45,37 @@ namespace Tests
             if(File.Exists(directory + @"/" + name + ".json"))
                 File.Delete(directory + @"/" + name + ".json");
 
-            ControllerProject controllerProject = new ControllerProject();
-            projectPath = controllerProject.CreateProject(language, name, directory);
-            project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            projectPath = Project.Create(language, name, directory);
+            project = Project.Load(projectPath);
+            project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = ControllerTrigger.Create();
-            controllerProject.OnCreateElement(fullPath); // Force OnCreate 'event'.
-            element1 = Triggers.GetLastCreated();
+            string fullPath = project.Triggers.Create();
+            project.OnCreateElement(fullPath); // Force OnCreate 'event'.
+            element1 = project.Triggers.GetLastCreated();
 
-            fullPath = ControllerTrigger.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element2 = Triggers.GetLastCreated();
+            fullPath = project.Triggers.Create();
+            project.OnCreateElement(fullPath);
+            element2 = project.Triggers.GetLastCreated();
 
-            fullPath = ControllerTrigger.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element3 = Triggers.GetLastCreated();
+            fullPath = project.Triggers.Create();
+            project.OnCreateElement(fullPath);
+            element3 = project.Triggers.GetLastCreated();
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new ControllerProject();
-            controller.CloseProject();
+            Project.Close();
         }
 
 
         [TestMethod]
         public void OnCreateTrigger()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            string fullPath = ControllerTrigger.Create();
-            controllerProject.OnCreateElement(fullPath);
+            string fullPath = project.Triggers.Create();
+            project.OnCreateElement(fullPath);
 
-            var element = Triggers.GetLastCreated();
+            var element = project.Triggers.GetLastCreated();
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
 
@@ -89,19 +85,18 @@ namespace Tests
         [TestMethod]
         public void OnPasteTrigger()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.CopyExplorerElement(element1);
-            var element = controllerProject.PasteExplorerElement(element3);
+            project.CopyExplorerElement(element1);
+            var element = project.PasteExplorerElement(element3);
 
             int expectedTriggerCount = 4;
-            int actualTriggerCount = Triggers.Count();
+            int actualTriggerCount = project.Triggers.Count();
 
-            var expectedParameters = ControllerTrigger.GetParametersFromTrigger(element1);
-            var actualParameters = ControllerTrigger.GetParametersFromTrigger(element as ExplorerElementTrigger);
+            var expectedParameters = project.Triggers.GetParametersFromTrigger(element1);
+            var actualParameters = project.Triggers.GetParametersFromTrigger(element as ExplorerElementTrigger);
             int expectedParamCount = expectedParameters.Count;
             int actualParamCount = actualParameters.Count;
 
-            Assert.AreEqual(element, Triggers.GetLastCreated());
+            Assert.AreEqual(element, project.Triggers.GetLastCreated());
             Assert.AreEqual(expectedTriggerCount, actualTriggerCount);
             Assert.AreEqual(expectedParamCount, actualParamCount);
         }
@@ -109,13 +104,12 @@ namespace Tests
         [TestMethod]
         public void OnPrepareExplorerTrigger()
         {
-            ControllerProject controllerProject = new ControllerProject();
             LocalVariable localVariable = new LocalVariable();
-            ControllerVariable.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 0);
-            ControllerVariable.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 1);
-            ControllerVariable.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 2);
-            controllerProject.CopyExplorerElement(element1);
-            var pasted = (ExplorerElementTrigger) controllerProject.PasteExplorerElement(element1);
+            project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 0);
+            project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 1);
+            project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 2);
+            project.CopyExplorerElement(element1);
+            var pasted = (ExplorerElementTrigger)project.PasteExplorerElement(element1);
 
             for (int i = 0; i < pasted.trigger.LocalVariables.Count; i++)
             {

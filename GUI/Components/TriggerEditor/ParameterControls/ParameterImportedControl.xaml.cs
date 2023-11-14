@@ -1,10 +1,10 @@
-﻿using BetterTriggers.Controllers;
-using BetterTriggers.Utility;
+﻿using BetterTriggers.Utility;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -16,7 +16,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var imports = ControllerImports.GetImportsByReturnType(returnType);
+            var imports = Imports.GetImportsByReturnType(returnType);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < imports.Count; i++)

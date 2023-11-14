@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using System.Collections.Generic;
 
@@ -24,7 +25,7 @@ namespace BetterTriggers.Commands
         {
             localVariable.variable.Name = newName;
             refCollection.Notify();
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()

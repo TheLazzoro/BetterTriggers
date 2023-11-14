@@ -1,16 +1,12 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components.Shared;
-using GUI.Controllers;
+using GUI.Components.Tabs;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using static GUI.Components.Shared.TreeItemHeader;
 
 namespace GUI.Components
@@ -59,8 +55,7 @@ namespace GUI.Components
                 if (parent != null)
                 {
                     parent.Items.Remove(this);
-                    ControllerExplorerElement controller = new ControllerExplorerElement();
-                    controller.RemoveFromUnsaved(this.Ielement);
+                    Project.CurrentProject.UnsavedFiles.RemoveFromUnsaved(this.Ielement);
                 }
 
                 if (tabItem != null)
@@ -125,17 +120,16 @@ namespace GUI.Components
         private void RenameBox_KeyDown(object sender, KeyEventArgs e)
         {
             string renameText = this.treeItemHeader.GetRenameText();
-            ControllerProject controller = new ControllerProject();
             if (e.Key == Key.Enter)
             {
                 try
                 {
-                    controller.RenameElement(this.Ielement, renameText);
+                    Project.CurrentProject.RenameElement(this.Ielement, renameText);
                     this.treeItemHeader.ShowRenameBox(false);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox messageBox = new MessageBox("Error", ex.Message);
+                    Dialogs.MessageBox messageBox = new Dialogs.MessageBox("Error", ex.Message);
                     messageBox.ShowDialog();
                 }
             }
@@ -158,8 +152,7 @@ namespace GUI.Components
             if (this.tabItem != null)
                 tabItem.Header = this.Ielement.GetName() + " *";
 
-            ControllerExplorerElement controller = new ControllerExplorerElement();
-            controller.AddToUnsaved(this.Ielement);
+            Project.CurrentProject.UnsavedFiles.AddToUnsaved(this.Ielement);
         }
 
         public void OnSaved()
@@ -172,9 +165,8 @@ namespace GUI.Components
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
                 int insertIndex = Ielement.GetParent().GetExplorerElements().IndexOf(Ielement);
-                controller.OnMoveElement(controller.GetCurrentExplorer(), Ielement.GetPath(), insertIndex);
+                TriggerExplorer.Current.OnMoveElement(TriggerExplorer.Current, Ielement.GetPath(), insertIndex);
                 this.treeItemHeader.SetDisplayText(this.Ielement.GetName());
 
                 this.IsSelected = true;
@@ -184,9 +176,7 @@ namespace GUI.Components
 
         public void OnCreated(int insertIndex)
         {
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            var dir = Path.GetDirectoryName(this.Ielement.GetPath());
-            var parent = controller.FindTreeNodeDirectory(Path.GetDirectoryName(this.Ielement.GetPath()));
+            var parent = TriggerExplorer.Current.FindTreeNodeDirectory(Path.GetDirectoryName(this.Ielement.GetPath()));
             parent.Items.Insert(insertIndex, this);
 
             this.IsSelected = true;
@@ -203,7 +193,7 @@ namespace GUI.Components
             TreeItemState state = Ielement.GetEnabled() == true ? TreeItemState.Normal : TreeItemState.Disabled;
             if (Ielement is ExplorerElementTrigger)
             {
-                int invalidCount = ControllerTrigger.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
+                int invalidCount = Project.CurrentProject.Triggers.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
                 if (state != TreeItemState.Disabled && invalidCount > 0)
                     state = TreeItemState.HasErrorsNoTextColor;
             }

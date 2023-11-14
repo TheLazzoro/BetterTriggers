@@ -1,8 +1,8 @@
 using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -18,7 +18,7 @@ namespace Tests
     [TestClass]
     public class ScriptGenerateTests
     {
-        static War3Project project;
+        static War3Project war3project;
         static string mapDir;
         static string projectFile;
         static bool success;
@@ -59,8 +59,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new ControllerProject();
-            controller.CloseProject();
+            Project.Close();
             string projectDir = Path.GetDirectoryName(projectFile);
             if (success && Directory.Exists(projectDir))
                 Directory.Delete(projectDir, true);
@@ -314,12 +313,11 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
-            ControllerProject controllerProject = new ControllerProject();
-            CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
-            CustomMapData.Load();
-            controllerProject.LoadProject(projectDir);
+            Builder builder = new();
+            CustomMapData.Load(mapDir);
+            Project.Load(projectDir);
             string script;
-            (success, script) = controllerProject.GenerateScript();
+            (success, script) = builder.GenerateScript();
 
             Assert.IsTrue(success, failedMsg);
         }
@@ -329,12 +327,11 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/Frames_Map.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/map/Map.w3x");
-            ControllerProject controllerProject = new ControllerProject();
-            CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
-            CustomMapData.Load();
-            controllerProject.LoadProject(projectDir);
+            Builder builder = new();
+            CustomMapData.Load(mapDir);
+            Project.Load(projectDir);
             string script;
-            (success, script) = controllerProject.GenerateScript();
+            (success, script) = builder.GenerateScript();
 
             Assert.IsTrue(success, failedMsg);
         }
@@ -345,19 +342,18 @@ namespace Tests
         {
             TriggerConverter triggerConverter = new TriggerConverter();
             projectFile = triggerConverter.Convert(mapDir, Path.Combine(Path.GetDirectoryName(mapDir), Path.GetFileNameWithoutExtension(mapDir)));
-            ControllerProject controllerProject = new ControllerProject();
+            Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);
-            project = JsonConvert.DeserializeObject<War3Project>(projectFileContent);
-            project.War3MapDirectory = mapDir;
-            File.WriteAllText(projectFile, JsonConvert.SerializeObject(project));
+            war3project = JsonConvert.DeserializeObject<War3Project>(projectFileContent);
+            war3project.War3MapDirectory = mapDir;
+            File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
-            project = controllerProject.LoadProject(projectFile);
-            CustomMapData.Init(mapDir); // TODO: CustomMapData init should be run by the controller.
-            CustomMapData.Load();
+            Project.Load(projectFile);
+            CustomMapData.Load(mapDir);
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
             string script;
-            (success, script) = controllerProject.GenerateScript();
+            (success, script) = builder.GenerateScript();
         }
     }
 }

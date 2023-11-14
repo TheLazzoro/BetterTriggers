@@ -65,7 +65,7 @@ namespace BetterTriggers
 
         public static void Load()
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             WE_Strings = new Dictionary<string, string>();
             DisplayNames = new Dictionary<string, string>();
             EditorSuffixes = new Dictionary<string, string>();

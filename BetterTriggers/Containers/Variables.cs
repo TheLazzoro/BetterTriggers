@@ -1,7 +1,8 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Commands;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,22 +11,172 @@ using System.Text;
 
 namespace BetterTriggers.Containers
 {
-    public static class Variables
+    public class Variables
     {
-        public static HashSet<ExplorerElementVariable> variableContainer = new HashSet<ExplorerElementVariable>();
-        public static HashSet<Variable> localVariableContainer = new HashSet<Variable>();
+        public static bool includeLocals { get; set; } = true; // hack
+        public HashSet<ExplorerElementVariable> variableContainer = new HashSet<ExplorerElementVariable>();
+        public HashSet<Variable> localVariableContainer = new HashSet<Variable>();
 
-        public static void AddVariable(ExplorerElementVariable variable)
+        /// <returns>Full path.</returns>
+        public string Create()
+        {
+            var project = Project.CurrentProject;
+            string directory = project.currentSelectedElement;
+            if (!Directory.Exists(directory))
+                directory = Path.GetDirectoryName(directory);
+
+            string name = GenerateName();
+
+            // Default variable is always an integer on creation.
+            Variable variable = new Variable()
+            {
+                Id = GenerateId(),
+                Name = name,
+                Type = "integer",
+                InitialValue = new Value() { value = "0" },
+                ArraySize = new int[] { 1, 1 },
+            };
+            string json = JsonConvert.SerializeObject(variable);
+            string fullPath = Path.Combine(directory, name + ".var");
+            File.WriteAllText(fullPath, json);
+
+            return fullPath;
+        }
+
+        public void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
+        {
+            localVariable.variable.Name = GenerateLocalName(trig);
+            localVariable.variable.Id = GenerateId();
+            localVariable.variable.Type = "integer";
+            localVariable.variable.ArraySize = new int[] { 1, 1 };
+            localVariable.variable.InitialValue = new Value() { value = "0" };
+
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable, parent, insertIndex);
+            command.Execute();
+        }
+
+        public void RenameLocalVariable(Trigger trig, LocalVariable variable, string newName)
+        {
+            if (newName == variable.variable.Name)
+                return;
+
+            foreach (LocalVariable v in trig.LocalVariables)
+            {
+                if (v.variable.Name == newName)
+                    throw new Exception($"Local variable with name '{newName}' already exists.");
+            }
+
+            CommandLocalVariableRename command = new CommandLocalVariableRename(variable, newName);
+            command.Execute();
+        }
+        
+        /// <summary>
+        /// Returns true if initial value was removed.
+        /// </summary>
+        internal bool RemoveInvalidReference(ExplorerElementVariable explorerElementVariable)
+        {
+            Variable variable = explorerElementVariable.variable;
+            if (variable.InitialValue is Value value)
+            {
+                bool dataExists = CustomMapData.ReferencedDataExists(value, variable.Type);
+                if (!dataExists)
+                {
+                    variable.InitialValue = new Parameter();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private List<Variable> GetVariables(string returnType, Trigger trig, bool includeLocals)
+        {
+            List<Variable> list = new List<Variable>();
+            List<Variable> all = new List<Variable>();
+            all.AddRange(GetGlobals().Select(v => v.variable)); // globals
+            if (includeLocals)
+            {
+                trig.LocalVariables.ForEach(e =>
+                { // locals
+                    var lv = (LocalVariable)e;
+                    all.Add(lv.variable);
+                });
+            }
+
+            for (int i = 0; i < all.Count; i++)
+            {
+                if (returnType != "AnyGlobal" && all[i].Type != returnType)
+                    continue;
+
+                var variable = all[i];
+                list.Add(variable);
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Creates a list of saveable variable refs
+        /// </summary>
+        /// <param name="returnType"></param>
+        /// <returns></returns>
+        public List<VariableRef> GetVariableRefs(string returnType, Trigger trig, bool includeLocals)
+        {
+            bool wasIntegervar = false;
+            if (returnType == "integervar")
+            {
+                wasIntegervar = true;
+                returnType = "integer";
+            }
+
+            List<Variable> variables = GetVariables(returnType, trig, includeLocals);
+            List<VariableRef> list = new List<VariableRef>();
+
+            for (int i = 0; i < variables.Count; i++)
+            {
+                VariableRef varRef = new VariableRef()
+                {
+                    VariableId = variables[i].Id,
+                };
+                varRef.arrayIndexValues.Add(new Value() { value = "0" });
+                varRef.arrayIndexValues.Add(new Value() { value = "0" });
+
+                list.Add(varRef);
+            }
+
+            return list;
+        }
+
+
+        internal string GenerateName(string name = "UntitledVariable")
+        {
+            string generatedName = name;
+            bool ok = false;
+            int i = 0;
+            while (!ok)
+            {
+                if (!Contains(generatedName))
+                    ok = true;
+                else
+                {
+                    generatedName = name + i;
+                }
+
+                i++;
+            }
+            return generatedName;
+        }
+
+
+        internal void AddVariable(ExplorerElementVariable variable)
         {
             variableContainer.Add(variable);
         }
 
         /// <summary>
-        /// 
+        /// Returns true if an element with the given file name exists in the container.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns>Returns true if an element with the given file name exists in the container.</returns>
-        public static bool Contains(string name)
+        internal bool Contains(string name)
         {
             bool found = false;
 
@@ -43,7 +194,7 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Returns true if an element with the given id exists in the container.
         /// </summary>
-        public static bool Contains(int id)
+        internal bool Contains(int id)
         {
             bool found = true;
             foreach (var variable in variableContainer)
@@ -65,7 +216,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="blacklist">Id's that cannot be used.</param>
         /// <returns></returns>
-        public static int GenerateId(List<int> blacklist = null)
+        internal int GenerateId(List<int> blacklist = null)
         {
             int generatedId = 0;
             bool isIdValid = false;
@@ -100,7 +251,7 @@ namespace BetterTriggers.Containers
             return generatedId;
         }
 
-        internal static string GenerateLocalName(Trigger trig, string oldName = "UntitledVariable")
+        internal string GenerateLocalName(Trigger trig, string oldName = "UntitledVariable")
         {
             string baseName = oldName;
             string name = baseName;
@@ -122,7 +273,7 @@ namespace BetterTriggers.Containers
             return name;
         }
 
-        internal static List<Variable> GetAll()
+        internal List<Variable> GetAll()
         {
             List<Variable> list = new();
             variableContainer.ToList().ForEach(el =>
@@ -133,12 +284,12 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        internal static List<ExplorerElementVariable> GetGlobals()
+        public List<ExplorerElementVariable> GetGlobals()
         {
             return variableContainer.ToList();
         }
 
-        internal static Variable GetVariableById(int Id, Trigger trig = null)
+        public Variable GetById(int Id, Trigger trig = null)
         {
             Variable var = null;
 
@@ -154,7 +305,7 @@ namespace BetterTriggers.Containers
             }
 
             if (trig == null)
-                trig = ControllerTrigger.SelectedTrigger;
+                trig = Project.CurrentProject.Triggers.SelectedTrigger;
 
             if (trig != null) // for local variables
             {
@@ -175,7 +326,7 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Should only be used for script generation.
         /// </summary>
-        internal static Variable GetVariableById_AllLocals(int Id)
+        internal Variable GetVariableById_AllLocals(int Id)
         {
             Variable var = null;
 
@@ -202,7 +353,7 @@ namespace BetterTriggers.Containers
             return var;
         }
 
-        public static string GetVariableNameById(int Id)
+        public string GetVariableNameById(int Id)
         {
             string name = string.Empty;
 
@@ -229,25 +380,24 @@ namespace BetterTriggers.Containers
             return name;
         }
 
-        internal static void Remove(ExplorerElementVariable variable)
+        internal void Remove(ExplorerElementVariable variable)
         {
             variableContainer.Remove(variable);
         }
-
-        internal static void Clear()
-        {
-            variableContainer.Clear();
-            localVariableContainer.Clear();
-        }
-
-        internal static void AddLocalVariable(LocalVariable localVariable)
+        
+        internal void AddLocalVariable(LocalVariable localVariable)
         {
             localVariableContainer.Add(localVariable.variable);
         }
 
-        internal static void RemoveLocalVariable(LocalVariable localVariable)
+        public void RemoveLocalVariable(LocalVariable localVariable)
         {
             localVariableContainer.Remove(localVariable.variable);
+        }
+
+        public Variable GetByReference(VariableRef variableRef)
+        {
+            return GetById(variableRef.VariableId);
         }
     }
 }

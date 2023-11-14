@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 
@@ -36,9 +35,9 @@ namespace BetterTriggers.Commands
             variable.SuppressChangedEvent = false;
             variable.Type = selectedType;
             refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
 
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -48,7 +47,7 @@ namespace BetterTriggers.Commands
             variable.SuppressChangedEvent = false;
             variable.Type = selectedType;
             refCollection.RemoveRefsFromParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
         }
 
         public void Undo()
@@ -58,7 +57,7 @@ namespace BetterTriggers.Commands
             variable.SuppressChangedEvent = false;
             variable.Type = previousType;
             refCollection.AddRefsToParent();
-            References.UpdateReferences(variable);
+            Project.CurrentProject.References.UpdateReferences(variable);
         }
 
         public string GetCommandName()

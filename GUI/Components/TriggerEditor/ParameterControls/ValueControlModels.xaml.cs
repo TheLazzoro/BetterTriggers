@@ -1,5 +1,4 @@
-﻿using BetterTriggers.Controllers;
-using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
@@ -21,7 +20,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var models = ControllerMapData.GetModelData();
+            var models = ModelData.GetModelsAll();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < models.Count; i++)
             {

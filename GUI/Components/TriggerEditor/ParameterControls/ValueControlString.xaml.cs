@@ -11,10 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
-using GUI.Controllers;
 using GUI.Utility;
 using Xceed.Wpf.Toolkit;
 

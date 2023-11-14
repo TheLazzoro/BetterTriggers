@@ -20,7 +20,7 @@ namespace BetterTriggers.WorldEdit
         private static Dictionary<string, BuffType> buffsBaseEdited = new();
         private static Dictionary<string, BuffType> buffsCustom = new();
 
-        internal static List<BuffType> GetAll()
+        public static List<BuffType> GetAll()
         {
             List<BuffType> list = new List<BuffType>();
             var enumerator = buffs.GetEnumerator();

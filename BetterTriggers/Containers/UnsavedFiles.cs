@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Containers
 {
-    public static class UnsavedFiles
+    public class UnsavedFiles
     {
-        private static List<IExplorerElement> unsavedFiles = new List<IExplorerElement>();
+        private List<IExplorerElement> unsavedFiles = new List<IExplorerElement>();
 
-        internal static void AddToUnsaved(IExplorerElement element)
+        public void AddToUnsaved(IExplorerElement element)
         {
             if (unsavedFiles.Contains(element))
                 return;
@@ -19,22 +19,22 @@ namespace BetterTriggers.Containers
             unsavedFiles.Add(element);
         }
 
-        internal static void RemoveFromUnsaved(IExplorerElement element)
+        public void RemoveFromUnsaved(IExplorerElement element)
         {
             unsavedFiles.Remove(element);
         }
 
-        internal static List<IExplorerElement> GetAllUnsaved()
+        internal List<IExplorerElement> GetAllUnsaved()
         {
             return unsavedFiles;
         }
 
-        internal static int Count()
+        internal int Count()
         {
             return unsavedFiles.Count;
         }
 
-        public static void Clear()
+        public void Clear()
         {
             unsavedFiles.Clear();
         }

@@ -19,7 +19,7 @@ namespace BetterTriggers.WorldEdit
         private static Dictionary<string, ItemType> itemsBaseEdited = new();
         private static Dictionary<string, ItemType> itemsCustom = new();
 
-        internal static List<ItemType> GetAll()
+        public static List<ItemType> GetAll()
         {
             List<ItemType> list = new List<ItemType>();
             var enumerator = items.GetEnumerator();

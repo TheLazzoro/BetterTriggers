@@ -1,9 +1,11 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using War3Net.Build.Info;
 
 namespace Tests
 {
@@ -12,6 +14,7 @@ namespace Tests
     {
         static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "source";
         static string targetFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "target";
+        static string projectFolder = Path.Combine(Directory.GetCurrentDirectory(), "testProject");
 
         [ClassInitialize]
         public static void Init(TestContext context)
@@ -31,6 +34,16 @@ namespace Tests
                 Directory.Delete(targetFolder, true);
             Directory.CreateDirectory(sourceFolder);
             Directory.CreateDirectory(targetFolder);
+
+            string projectFile = Project.Create(ScriptLanguage.Jass, "test", projectFolder);
+            Project.Load(projectFile);
+        }
+
+        [TestCleanup]
+        public void AfterEach()
+        {
+            Project.Close();
+            Directory.Delete(projectFolder, true);
         }
 
         [TestMethod]
@@ -41,7 +54,7 @@ namespace Tests
             var file = sourceFolder + @"\" + "testFile";
             
             File.WriteAllText(file, "This is a test.");
-            ControllerFileSystem.Move(file, targetFolder, 0);
+            FileSystemUtil.Move(file, targetFolder, 0);
 
             var newPath = targetFolder + @"\" + "testFile";
             var expected = true;

@@ -1,6 +1,8 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
+using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,6 @@ namespace BetterTriggers
 {
     public class CustomMapData
     {
-        public static string mapPath;
         internal static Map MPQMap;
         private static FileSystemWatcher watcher;
         public static event FileSystemEventHandler OnSaving;
@@ -31,54 +32,56 @@ namespace BetterTriggers
                 OnSaving(sender, e);
         }
 
-        public static void Init(string _mapPath)
-        {
-            mapPath = _mapPath;
-            while (IsMapSaving())
-            {
-                Thread.Sleep(1000);
-            }
-
-            if (watcher != null)
-                watcher.Created -= Watcher_Created;
-
-            watcher = new System.IO.FileSystemWatcher();
-            watcher.Path = Path.GetDirectoryName(mapPath);
-            watcher.EnableRaisingEvents = true;
-            watcher.Created += Watcher_Created;
-        }
-
         private static void Watcher_Created(object sender, FileSystemEventArgs e)
         {
-            if (e.Name == Path.GetFileName(mapPath) + "Temp")
-                InvokeOnSaving(sender, e);
+            // this try-block is only here because of the TriggerConverter.
+            try
+            {
+                var mapPath = Project.CurrentProject.GetFullMapPath();
+                if (e.Name == Path.GetFileName(mapPath) + "Temp")
+                    InvokeOnSaving(sender, e);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
-        public static bool IsMapSaving()
+        public static bool IsMapSaving(string fullMapPath = null)
         {
-            if (Directory.Exists(mapPath + "Temp"))
+            if (string.IsNullOrEmpty(fullMapPath))
+            {
+                fullMapPath = Project.CurrentProject.GetFullMapPath();
+            }
+
+            if (Directory.Exists(fullMapPath + "Temp"))
                 return true;
-            else if (Directory.Exists(mapPath + "Backup"))
+            else if (Directory.Exists(fullMapPath + "Backup"))
                 return true;
             else
                 return false;
         }
 
 
-        public static void Load()
+        public static void Load(string fullMapPath = null)
         {
-            while (IsMapSaving())
+            if (string.IsNullOrEmpty(fullMapPath))
+            {
+                fullMapPath = Project.CurrentProject.GetFullMapPath();
+            }
+
+            while (IsMapSaving(fullMapPath))
             {
                 Thread.Sleep(1000);
             }
-            MPQMap = Map.Open(mapPath);
+            MPQMap = Map.Open(fullMapPath);
 
             Info.Load();
             MapStrings.Load();
-            UnitTypes.Load();
+            UnitTypes.Load(fullMapPath);
             ItemTypes.Load();
             DestructibleTypes.Load();
-            DoodadTypes.Load();
+            DoodadTypes.Load(fullMapPath);
             AbilityTypes.Load();
             BuffTypes.Load();
             UpgradeTypes.Load();
@@ -89,28 +92,80 @@ namespace BetterTriggers
             Regions.Load();
             Sounds.Load();
             Units.Load();
+
+            if (watcher != null)
+                watcher.Created -= Watcher_Created;
+
+            watcher = new System.IO.FileSystemWatcher();
+            watcher.Path = Path.GetDirectoryName(fullMapPath);
+            watcher.EnableRaisingEvents = true;
+            watcher.Created += Watcher_Created;
         }
 
         /// <summary>
         /// Removes all used map data that no longer exists in the map.
+        /// Also checks for ID collisions.
         /// </summary>
         /// <returns>A list of modified triggers.</returns>
-        public static List<IExplorerElement> RemoveInvalidReferences()
+        public static List<IExplorerElement> ReloadMapData()
+        {
+            // Check for ID collisions
+            List<Tuple<ExplorerElementTrigger, ExplorerElementTrigger>> triggersWithIdCollision = new();
+            List<Tuple<ExplorerElementVariable, ExplorerElementVariable>> variablesWithIdCollision = new();
+            List<ExplorerElementTrigger> checkedTriggers = new List<ExplorerElementTrigger>();
+            List<ExplorerElementVariable> checkedVariables = new List<ExplorerElementVariable>();
+
+            var triggers = Project.CurrentProject.Triggers.GetAll();
+            var variables = Project.CurrentProject.Variables.GetGlobals();
+            triggers.ForEach(t =>
+            {
+                checkedTriggers.ForEach(check =>
+                {
+                    if (t.GetId() == check.GetId())
+                        triggersWithIdCollision.Add(new Tuple<ExplorerElementTrigger, ExplorerElementTrigger>(t, check));
+                });
+
+                checkedTriggers.Add(t);
+            });
+            variables.ForEach(v =>
+            {
+                checkedVariables.ForEach(check =>
+                {
+                    if (v.GetId() == check.GetId())
+                        variablesWithIdCollision.Add(new Tuple<ExplorerElementVariable, ExplorerElementVariable>(v, check));
+                });
+
+                checkedVariables.Add(v);
+            });
+            if (triggersWithIdCollision.Count > 0 || variablesWithIdCollision.Count > 0)
+            {
+                throw new IdCollisionException(triggersWithIdCollision, variablesWithIdCollision);
+            }
+
+            Project.CurrentProject.CommandManager.Reset();
+            CustomMapData.Load();
+            var changed = CustomMapData.RemoveInvalidReferences();
+            changed.ForEach(trig => Project.CurrentProject.UnsavedFiles.AddToUnsaved(trig));
+
+            return changed;
+        }
+
+        private static List<IExplorerElement> RemoveInvalidReferences()
         {
             List<IExplorerElement> modified = new List<IExplorerElement>();
-            var triggers = Triggers.GetAll();
+            var triggers = Project.CurrentProject.Triggers.GetAll();
             for (int i = 0; i < triggers.Count; i++)
             {
-                bool wasRemoved = ControllerTrigger.RemoveInvalidReferences(triggers[i]);
+                bool wasRemoved = Project.CurrentProject.Triggers.RemoveInvalidReferences(triggers[i]);
                 if (wasRemoved)
                     modified.Add(triggers[i]);
 
                 triggers[i].Notify();
             }
-            var variables = Variables.GetGlobals();
+            var variables = Project.CurrentProject.Variables.GetGlobals();
             for (int i = 0; i < variables.Count; i++)
             {
-                bool wasRemoved = ControllerVariable.RemoveInvalidReference(variables[i]);
+                bool wasRemoved = Project.CurrentProject.Variables.RemoveInvalidReference(variables[i]);
                 if (wasRemoved)
                     modified.Add(variables[i]);
             }
@@ -118,5 +173,153 @@ namespace BetterTriggers
             return modified;
         }
 
+        /// <summary>
+        /// TODO: This function is hella expensive.
+        /// </summary>
+        /// <param name="value">Reference to map data.</param>
+        /// <returns></returns>
+        internal static bool ReferencedDataExists(Value value, string returnType)
+        {
+            if (returnType == "unitcode")
+            {
+                List<UnitType> unitTypes = UnitTypes.GetAll();
+                for (int i = 0; i < unitTypes.Count; i++)
+                {
+                    if (value.value == unitTypes[i].Id)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "unit")
+            {
+                var units = Units.GetAll();
+                for (int i = 0; i < units.Count; i++)
+                {
+                    if (value.value == $"{units[i].ToString()}_{units[i].CreationNumber.ToString("D4")}")
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "destructablecode")
+            {
+                List<DestructibleType> destTypes = DestructibleTypes.GetAll();
+                for (int i = 0; i < destTypes.Count; i++)
+                {
+                    if (value.value == destTypes[i].DestCode)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "destructable")
+            {
+                var dests = Destructibles.GetAll();
+                for (int i = 0; i < dests.Count; i++)
+                {
+                    if (value.value == $"{dests[i].ToString()}_{dests[i].CreationNumber.ToString("D4")}")
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "itemcode")
+            {
+                List<ItemType> itemTypes = ItemTypes.GetAll();
+                for (int i = 0; i < itemTypes.Count; i++)
+                {
+                    if (value.value == itemTypes[i].ItemCode)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "item")
+            {
+                List<UnitData> itemTypes = Units.GetMapItemsAll();
+                for (int i = 0; i < itemTypes.Count; i++)
+                {
+                    if (value.value == $"{itemTypes[i].ToString()}_{itemTypes[i].CreationNumber.ToString("D4")}")
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "doodadcode")
+            {
+                List<DoodadType> doodadTypes = DoodadTypes.GetAll();
+                for (int i = 0; i < doodadTypes.Count; i++)
+                {
+                    if (value.value == doodadTypes[i].DoodCode)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "abilcode")
+            {
+                var abilities = AbilityTypes.GetAll();
+                for (int i = 0; i < abilities.Count; i++)
+                {
+                    if (value.value == abilities[i].AbilCode)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "buffcode")
+            {
+                var buffs = BuffTypes.GetAll();
+                for (int i = 0; i < buffs.Count; i++)
+                {
+                    if (value.value == buffs[i].BuffCode)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "techcode")
+            {
+                var tech = UpgradeTypes.GetAll();
+                for (int i = 0; i < tech.Count; i++)
+                {
+                    if (value.value == tech[i].UpgradeCode)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "rect")
+            {
+                var regions = Regions.GetAll();
+                for (int i = 0; i < regions.Count; i++)
+                {
+                    /* The string Replace exists because values converted with 'TriggerConverter' from a map
+                     * have '_' in variable references, but War3Net values have spaces ' ' in them.
+                     * Same goes for 'camerasetup' below.
+                     */
+                    if (value.value.Replace(" ", "_") == regions[i].ToString().Replace(" ", "_"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (returnType == "camerasetup")
+            {
+                var cameras = Cameras.GetAll();
+                for (int i = 0; i < cameras.Count; i++)
+                {
+                    if (value.value.Replace(" ", "_") == cameras[i].ToString().Replace(" ", "_"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+                return true;
+
+            return false;
+        }
     }
 }

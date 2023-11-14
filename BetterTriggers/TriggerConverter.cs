@@ -6,7 +6,6 @@ using System.IO;
 using War3Net.Build.Extensions;
 using War3Net.Build.Script;
 using System.Threading;
-using BetterTriggers.Controllers;
 using War3Net.Build.Info;
 using BetterTriggers.Models.SaveableData;
 using Newtonsoft.Json;
@@ -48,8 +47,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.Init(mapPath);
-            CustomMapData.Load();
+            CustomMapData.Load(mapPath);
 
 
             string pathTriggers = "war3map.wtg";
@@ -80,8 +78,7 @@ namespace BetterTriggers.WorldEdit
         /// <returns>Project file path.</returns>
         private string Convert(string fullPath)
         {
-            ControllerProject controller = new ControllerProject();
-            string projectPath = controller.CreateProject(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
+            string projectPath = Project.Create(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
             War3Project project = JsonConvert.DeserializeObject<War3Project>(File.ReadAllText(projectPath));
             string src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
 

@@ -10,9 +10,10 @@ namespace BetterTriggers.Utility
             string name = nameTemplate;
             int i = 0;
             bool isValid = false;
+            var folders = Project.CurrentProject.Folders;
             while (!isValid)
             {
-                if (Folders.Contains(name))
+                if (folders.Contains(name))
                 {
                     name = nameTemplate + " " + i;
                 }
@@ -33,9 +34,10 @@ namespace BetterTriggers.Utility
             string name = nameTemplate;
             int i = 0;
             bool isValid = false;
+            var triggers = Project.CurrentProject.Triggers;
             while (!isValid)
             {
-                if (Triggers.Contains(name))
+                if (triggers.Contains(name))
                 {
                     name = nameTemplate + " " + i;
                 }
@@ -56,9 +58,10 @@ namespace BetterTriggers.Utility
             string name = nameTemplate;
             int i = 0;
             bool isValid = false;
+            var scripts = Project.CurrentProject.Scripts;
             while (!isValid)
             {
-                if (Scripts.Contains(name))
+                if (scripts.Contains(name))
                 {
                     name = nameTemplate + " " + i;
                 }
@@ -79,9 +82,10 @@ namespace BetterTriggers.Utility
             string name = nameTemplate;
             int i = 0;
             bool isValid = false;
+            var variables = Project.CurrentProject.Variables;
             while (!isValid)
             {
-                if (Variables.Contains(name))
+                if (variables.Contains(name))
                 {
                     name = nameTemplate + i;
                 }

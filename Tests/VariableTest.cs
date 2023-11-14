@@ -1,5 +1,4 @@
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +16,7 @@ namespace Tests
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
         static string projectPath;
-        static War3Project project;
+        static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
         static ExplorerElementVariable element1, element2, element3;
@@ -40,40 +39,36 @@ namespace Tests
             if (File.Exists(Path.Combine(directory, name + ".json")))
                 File.Delete(Path.Combine(directory, name + ".json"));
 
-            ControllerProject controllerProject = new ControllerProject();
-            projectPath = controllerProject.CreateProject(language, name, directory);
-            project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            projectPath = Project.Create(language, name, directory);
+            project = Project.Load(projectPath);
+            project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = ControllerVariable.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element1 = ContainerProject.lastCreated as ExplorerElementVariable;
+            string fullPath = project.Variables.Create();
+            project.OnCreateElement(fullPath);
+            element1 = project.lastCreated as ExplorerElementVariable;
 
-            fullPath = ControllerVariable.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element2 = ContainerProject.lastCreated as ExplorerElementVariable;
+            fullPath = project.Variables.Create();
+            project.OnCreateElement(fullPath);
+            element2 = project.lastCreated as ExplorerElementVariable;
 
-            fullPath = ControllerVariable.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element3 = ContainerProject.lastCreated as ExplorerElementVariable;
+            fullPath = project.Variables.Create();
+            project.OnCreateElement(fullPath);
+            element3 = project.lastCreated as ExplorerElementVariable;
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new();
-            controller.CloseProject();
+            Project.Close();
         }
 
 
         [TestMethod]
         public void OnCreateVariable()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            ControllerVariable controllerVariable = new ControllerVariable();
-            string fullPath = ControllerVariable.Create();
-            controllerProject.OnCreateElement(fullPath);
-            var element = ContainerProject.lastCreated as ExplorerElementVariable;
+            string fullPath = project.Variables.Create();
+            project.OnCreateElement(fullPath);
+            var element = project.lastCreated as ExplorerElementVariable;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -84,9 +79,8 @@ namespace Tests
         [TestMethod]
         public void OnPasteVariable()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.CopyExplorerElement(element1);
-            var element = controllerProject.PasteExplorerElement(element3) as ExplorerElementVariable;
+            project.CopyExplorerElement(element1);
+            var element = project.PasteExplorerElement(element3) as ExplorerElementVariable;
 
             string expectedName = element1.variable.Name + "2";
             string actualName = element.variable.Name;
@@ -99,7 +93,7 @@ namespace Tests
             string expectedType = element1.variable.Type;
             string actualType = element.variable.Type;
 
-            Assert.AreEqual(element, ContainerProject.lastCreated);
+            Assert.AreEqual(element, project.lastCreated);
             Assert.AreEqual(expectedArray0, actualArray0);
             Assert.AreEqual(expectedArray1, actualArray1);
             Assert.AreEqual(expectedType, actualType);
@@ -111,7 +105,7 @@ namespace Tests
         {
             var trig = new Trigger();
             LocalVariable variable = new LocalVariable();
-            ControllerVariable.CreateLocalVariable(trig, variable, trig.LocalVariables, 0);
+            project.Variables.CreateLocalVariable(trig, variable, trig.LocalVariables, 0);
 
             Assert.AreEqual("UntitledVariable", variable.variable.Name);
             Assert.AreEqual(true, variable.variable._isLocal);

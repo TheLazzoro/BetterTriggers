@@ -22,7 +22,7 @@ namespace BetterTriggers.WorldEdit
         private static Dictionary<string, UpgradeType> upgradesBaseEdited = new();
         private static Dictionary<string, UpgradeType> upgradesCustom = new();
 
-        internal static List<UpgradeType> GetAll()
+        public static List<UpgradeType> GetAll()
         {
             List<UpgradeType> list = new List<UpgradeType>();
             var enumerator = upgrades.GetEnumerator();

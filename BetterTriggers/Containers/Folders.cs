@@ -6,16 +6,46 @@ using System.Text;
 
 namespace BetterTriggers.Containers
 {
-    public static class Folders
+    public class Folders
     {
-        private static HashSet<ExplorerElementFolder> folderContainer = new HashSet<ExplorerElementFolder>();
+        private HashSet<ExplorerElementFolder> folderContainer = new HashSet<ExplorerElementFolder>();
 
-        public static void Clear()
+        /// <summary>
+        /// Creates a folder at the current selected 'destination' folder.
+        /// </summary>
+        public string Create()
+        {
+            string directory = Project.CurrentProject.currentSelectedElement;
+            if (!Directory.Exists(directory))
+                directory = Path.GetDirectoryName(directory);
+
+            string name = "Untitled Category";
+            bool ok = false;
+            int i = 0;
+            while (!ok)
+            {
+                if (!Directory.Exists(directory + @"\" + name))
+                    ok = true;
+                else
+                {
+                    name = "Untitled Category " + i;
+                }
+
+                i++;
+            }
+
+            string path = Path.Combine(directory, name);
+            Directory.CreateDirectory(path);
+
+            return path;
+        }
+
+        public void Clear()
         {
             folderContainer.Clear();
         }
         
-        public static void AddFolder(ExplorerElementFolder folder)
+        public void AddFolder(ExplorerElementFolder folder)
         {
             folderContainer.Add(folder);
         }
@@ -25,7 +55,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="name"></param>
         /// <returns>Returns true if an element with the given file name exists in the container.</returns>
-        public static bool Contains(string name)
+        public bool Contains(string name)
         {
             bool found = false;
 
@@ -40,12 +70,12 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public static void Remove(ExplorerElementFolder explorerElement)
+        public void Remove(ExplorerElementFolder explorerElement)
         {
             folderContainer.Remove(explorerElement);
         }
 
-        internal static string GenerateName(string folder)
+        internal string GenerateName(string folder)
         {
             string name = folder;
             bool exists = true;

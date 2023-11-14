@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
 using System;
 using System.Collections.Generic;
@@ -32,8 +32,8 @@ namespace BetterTriggers.Commands
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
             triggerElement.ChangedPosition();
-            ControllerTrigger.RemoveInvalidReferences(trig, new List<TriggerElement>() { triggerElement });
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.Triggers.RemoveInvalidReferences(trig, new List<TriggerElement>() { triggerElement });
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()

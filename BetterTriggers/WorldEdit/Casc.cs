@@ -31,7 +31,7 @@ namespace BetterTriggers.WorldEdit
             try
             {
                 // settings from BetterTriggers
-                Settings settings = Settings.Load();
+                EditorSettings settings = EditorSettings.Load();
 
                 CASCConfig.LoadFlags |= LoadFlags.Install;
                 CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(settings.war3root, product);

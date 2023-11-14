@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Utility;
 
 namespace BetterTriggers.Commands
 {
@@ -31,9 +31,9 @@ namespace BetterTriggers.Commands
             deletedElement.Deleted();
 
             if (deletedElement is ExplorerElementTrigger)
-                References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
+                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
 
-            CommandManager.AddCommand(this);
+            Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -41,31 +41,30 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             deletedElement.RemoveFromParent();
             deletedElement.Deleted();
-            ControllerProject controllerProject = new ControllerProject();
-            
-            controllerProject.SetEnableFileEvents(false);
-            ControllerFileSystem.Delete(deletedElement.GetPath());
-            controllerProject.SetEnableFileEvents(true);
+
+            Project.CurrentProject.EnableFileEvents(false);
+            FileSystemUtil.Delete(deletedElement.GetPath());
+            Project.CurrentProject.EnableFileEvents(true);
 
             
             
             if (deletedElement is ExplorerElementTrigger)
-                References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
+                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
         }
 
         public void Undo()
         {
             deletedElement.SetParent(parent, index);
             deletedElement.Created(index);
-            ControllerProject controller = new ControllerProject();
-            controller.SetEnableFileEvents(false);
+            var project = Project.CurrentProject;
+            project.EnableFileEvents(false);
 
-            controller.RecurseCreateElementsWithContent(deletedElement);
-            controller.AddElementToContainer(deletedElement);
+            project.RecurseCreateElementsWithContent(deletedElement);
+            project.AddElementToContainer(deletedElement);
             deletedElement.UpdateMetadata(); // this is important because we do a pseudo-undo (create the file from scratch)
             // We may want to do the same 
 
-            controller.SetEnableFileEvents(true);
+            project.EnableFileEvents(true);
             refCollection.AddRefsToParent();
         }
 

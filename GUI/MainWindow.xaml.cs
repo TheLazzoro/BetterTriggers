@@ -1,12 +1,23 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
-using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
+using GUI.Components.About;
+using GUI.Components.CloseMap;
+using GUI.Components.Dialogs;
+using GUI.Components.Keybindings;
+using GUI.Components.Loading;
+using GUI.Components.NewProject;
+using GUI.Components.SaveMap;
+using GUI.Components.SelectMap;
+using GUI.Components.Settings;
+using GUI.Components.Setup;
+using GUI.Components.Tabs;
+using GUI.Components.VariableList;
+using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
-using GUI.Controllers;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -23,14 +34,14 @@ namespace GUI
         static MainWindow instance;
         TriggerExplorer triggerExplorer;
         TreeItemExplorerElement selectedExplorerItem;
-        public TabViewModel vmd;
+        public TabViewModel tabViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
             instance = this;
 
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             this.Width = settings.mainWindowWidth;
             this.Height = settings.mainWindowHeight;
             this.Left = settings.mainWindowX;
@@ -38,8 +49,8 @@ namespace GUI
             this.WindowState = settings.mainWindowFullscreen ? WindowState.Maximized : WindowState.Normal;
             rowTriggerExplorer.Width = new GridLength(settings.triggerExplorerWidth);
 
-            vmd = new TabViewModel();
-            tabControl.ItemsSource = vmd.Tabs;
+            tabViewModel = new TabViewModel();
+            tabControl.ItemsSource = tabViewModel.Tabs;
 
             CustomMapData.OnSaving += CustomMapData_OnSaving;
 
@@ -102,7 +113,7 @@ namespace GUI
             Keybindings keybindings = Keybindings.Load();
             SetKeybindings(keybindings);
 
-            ControllerRecentFiles.isTest = false; // hack
+            RecentFiles.isTest = false; // hack
 
             new VersionCheck();
         }
@@ -201,8 +212,8 @@ namespace GUI
         {
             if (IsProjectActive())
             {
-                ControllerProject controller = new ControllerProject();
-                controller.GenerateScript();
+                Builder builder = new();
+                builder.GenerateScript();
             }
         }
         private void GlobalHotkeyTestMap(HotKey hotKey)
@@ -273,7 +284,7 @@ namespace GUI
             if (selected == null)
                 return;
 
-            ContainerProject.currentSelectedElement = selected.Ielement.GetPath();
+            Project.CurrentProject.currentSelectedElement = selected.Ielement.GetPath();
         }
 
         private void TriggerExplorer_OnOpenExplorerElement(TreeItemExplorerElement opened)
@@ -284,8 +295,7 @@ namespace GUI
 
             triggerExplorer.currentElement = selectedExplorerItem;
 
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectTab(selectedExplorerItem, vmd, tabControl);
+            TriggerExplorer.Current.OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
             EnableTriggerElementButtons();
         }
 
@@ -298,8 +308,7 @@ namespace GUI
             if (tabItem == null) // it crashes when we don't do this?
                 return;
 
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.OnSelectTab(tabItem.explorerElement, vmd, tabControl);
+            TriggerExplorer.Current.OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
             selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
             EnableTriggerElementButtons();
         }
@@ -338,38 +347,38 @@ namespace GUI
 
         private void btnSaveAll_Click(object sender, RoutedEventArgs e)
         {
-            ControllerTriggerExplorer controller = new ControllerTriggerExplorer();
-            controller.SaveAll();
+            var project = Project.CurrentProject;
+            project.Save();
         }
 
         private void btnUndo_Click(object sender, RoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Undo();
+            Project.CurrentProject.CommandManager.Undo();
         }
 
         private void btnRedo_Click(object sender, RoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Redo();
+            Project.CurrentProject.CommandManager.Redo();
         }
 
         private void btnCreateFolder_Click(object sender, RoutedEventArgs e)
         {
-            ControllerFolder.Create();
+            Project.CurrentProject.Folders.Create();
         }
 
         private void btnCreateTrigger_Click(object sender, RoutedEventArgs e)
         {
-            ControllerTrigger.Create();
+            Project.CurrentProject.Triggers.Create();
         }
 
         private void btnCreateScript_Click(object sender, RoutedEventArgs e)
         {
-            ControllerScript.Create();
+            Project.CurrentProject.Scripts.Create();
         }
 
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
-            ControllerVariable.Create();
+            Project.CurrentProject.Variables.Create();
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
@@ -392,8 +401,8 @@ namespace GUI
 
         private void btnSaveScript_Click(object sender, RoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.GenerateScript();
+            Builder builder = new Builder();
+            builder.GenerateScript();
         }
 
         private void btnTestMap_Click(object sender, RoutedEventArgs e)
@@ -410,10 +419,19 @@ namespace GUI
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            bool canUndo = BetterTriggers.Commands.CommandManager.CanUndo();
-            bool canRedo = BetterTriggers.Commands.CommandManager.CanRedo();
-            string nameCommandToUndo = BetterTriggers.Commands.CommandManager.GetNameCommandToUndo();
-            string nameCommandToRedo = BetterTriggers.Commands.CommandManager.GetNameCommandToRedo();
+            bool isProjectOpen = Project.CurrentProject != null;
+
+            bool canUndo = false;
+            bool canRedo = false;
+            string nameCommandToUndo = string.Empty;
+            string nameCommandToRedo = string.Empty;
+            if (isProjectOpen)
+            {
+                canUndo = Project.CurrentProject.CommandManager.CanUndo();
+                canRedo = Project.CurrentProject.CommandManager.CanRedo();
+                nameCommandToUndo = Project.CurrentProject.CommandManager.GetNameCommandToUndo();
+                nameCommandToRedo = Project.CurrentProject.CommandManager.GetNameCommandToRedo();
+            }
 
             menuItemUndo.IsEnabled = canUndo;
             menuItemRedo.IsEnabled = canRedo;
@@ -465,7 +483,7 @@ namespace GUI
         private void menuRecentFiles_MouseEnter(object sender, MouseEventArgs e)
         {
             menuRecentFiles.Items.Clear();
-            List<string> recentFiles = ControllerRecentFiles.GetRecentFiles();
+            List<string> recentFiles = RecentFiles.GetRecentFiles();
 
             for (int i = 0; i < recentFiles.Count; i++)
             {
@@ -487,7 +505,6 @@ namespace GUI
 
         private void OpenProject(string file)
         {
-            ControllerProject controllerProject = new ControllerProject();
             War3Project project = null;
             LoadingProjectFilesWindow loadingFilesWindow = new LoadingProjectFilesWindow(file);
             loadingFilesWindow.ShowDialog();
@@ -495,7 +512,7 @@ namespace GUI
             if (project == null)
                 return;
 
-            if (!controllerProject.War3MapDirExists())
+            if (!Project.CurrentProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
                 window.ShowDialog();
@@ -505,10 +522,7 @@ namespace GUI
                 }
             }
 
-            vmd.Tabs.Clear();
-            LoadingDataWindow loadingDataWindow = new LoadingDataWindow(controllerProject.GetFullMapPath());
-            loadingDataWindow.ShowDialog();
-
+            tabViewModel.Tabs.Clear();
             if (triggerExplorer != null)
             {
                 var parent = (Grid)triggerExplorer.Parent;
@@ -534,17 +548,33 @@ namespace GUI
 
             EnableToolbar(true);
 
-            ControllerTriggerExplorer controllerTriggerExplorer = new ControllerTriggerExplorer();
-            controllerTriggerExplorer.Populate(triggerExplorer);
+            triggerExplorer.Populate();
 
             VerifyTriggerData();
+            OpenLastOpenedTabs();
+        }
+
+        private void OpenLastOpenedTabs()
+        {
+            Project project = Project.CurrentProject;
+            var lastOpenedTabs = LastOpenedTabs.Load(project.GetRoot().GetName());
+            var triggerExplorer = TriggerExplorer.Current;
+            if (lastOpenedTabs.Tabs != null)
+            {
+                foreach (var item in lastOpenedTabs.Tabs)
+                {
+                    var element = triggerExplorer.FindTreeNodeElement(this.triggerExplorer.map, item);
+                    if (element != null)
+                        triggerExplorer.OnSelectTab(element, tabViewModel, tabControl);
+                }
+            }
         }
 
 
         private void TestMap()
         {
-            ControllerProject controller = new ControllerProject();
-            if (!controller.War3MapDirExists())
+            Builder builder = new Builder();
+            if (!Project.CurrentProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
                 window.ShowDialog();
@@ -555,19 +585,19 @@ namespace GUI
             }
             try
             {
-                controller.TestMap();
+                builder.TestMap();
             }
             catch (Exception ex)
             {
-                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                Components.Dialogs.MessageBox dialogBox = new Components.Dialogs.MessageBox("Error", ex.Message);
                 dialogBox.ShowDialog();
             }
         }
 
         private void BuildMap()
         {
-            ControllerProject controller = new ControllerProject();
-            if (!controller.War3MapDirExists())
+            Builder builder = new Builder();
+            if (!Project.CurrentProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
                 window.ShowDialog();
@@ -578,11 +608,11 @@ namespace GUI
             }
             try
             {
-                controller.BuildMap();
+                builder.BuildMap();
             }
             catch (Exception ex)
             {
-                MessageBox dialogBox = new MessageBox("Error", ex.Message);
+                Components.Dialogs.MessageBox dialogBox = new Components.Dialogs.MessageBox("Error", ex.Message);
                 dialogBox.ShowDialog();
             }
         }
@@ -619,8 +649,9 @@ namespace GUI
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             bool doClose = DoCloseProject();
-            Settings.Save(Settings.Load());
+            EditorSettings.Save(EditorSettings.Load());
             Keybindings.Save(GetKeybindings());
+            SaveLastOpenedTabs();
 
             if (globalBuildMap != null)
                 globalBuildMap.Dispose();
@@ -634,22 +665,22 @@ namespace GUI
 
         private bool DoCloseProject()
         {
-            ControllerProject controller = new ControllerProject();
-            if (controller.GetUnsavedFileCount() == 0)
+            if (Project.CurrentProject == null)
+                return true;
+
+            if (Project.CurrentProject.GetUnsavedFileCount() == 0)
                 return true;
 
             OnCloseWindow onCloseWindow = new OnCloseWindow();
             onCloseWindow.ShowDialog();
             if (onCloseWindow.Yes)
             {
-                controller.SetEnableFileEvents(false);
-                controller.SaveProject();
+                Project.CurrentProject.EnableFileEvents(false);
+                Project.CurrentProject.Save();
                 return true;
             }
             else if (!onCloseWindow.Yes && !onCloseWindow.No)
                 return false;
-
-            UnsavedFiles.Clear();
 
             return true;
         }
@@ -682,8 +713,7 @@ namespace GUI
 
         private void CommandBinding_Executed_Save(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.SaveProject();
+            Project.CurrentProject.Save();
         }
 
 
@@ -700,15 +730,31 @@ namespace GUI
                     return;
             }
 
-            vmd.Tabs.Clear();
+            SaveLastOpenedTabs();
+            tabViewModel.Tabs.Clear();
             mainGrid.Children.Remove(triggerExplorer);
             triggerExplorer.Dispose();
             triggerExplorer = null;
             EnableToolbar(false);
             EnableECAButtons(false);
 
-            ControllerProject controller = new ControllerProject();
-            controller.CloseProject();
+            Project.Close();
+        }
+
+        private void SaveLastOpenedTabs()
+        {
+            if (Project.CurrentProject == null)
+                return;
+
+            int tabIndex = 0;
+            string[] tabs = new string[tabViewModel.Tabs.Count];
+            var enumerator = tabViewModel.Tabs.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                tabs[tabIndex] = enumerator.Current.explorerElement.Ielement.GetPath();
+                tabIndex++;
+            }
+            LastOpenedTabs.Save(Project.CurrentProject.GetRoot().GetName(), tabs);
         }
 
         private void CommandBinding_Executed_ImportTriggers(object sender, ExecutedRoutedEventArgs e)
@@ -725,24 +771,24 @@ namespace GUI
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = BetterTriggers.Commands.CommandManager.CanUndo();
-
+            if(Project.CurrentProject != null)
+                e.CanExecute = Project.CurrentProject.CommandManager.CanUndo();
         }
 
         private void CommandBinding_Executed_Undo(object sender, ExecutedRoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Undo();
+            Project.CurrentProject.CommandManager.Undo();
         }
 
         private void CommandBinding_CanExecute_Redo(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = BetterTriggers.Commands.CommandManager.CanRedo();
-
+            if(Project.CurrentProject != null)
+                e.CanExecute = Project.CurrentProject.CommandManager.CanRedo();
         }
 
         private void CommandBinding_Executed_Redo(object sender, ExecutedRoutedEventArgs e)
         {
-            BetterTriggers.Commands.CommandManager.Redo();
+            Project.CurrentProject.CommandManager.Redo();
         }
 
         private void btnVariableMenu_Click(object sender, RoutedEventArgs e)
@@ -753,22 +799,22 @@ namespace GUI
 
         private void CommandBinding_Executed_NewCategory(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerFolder.Create();
+            Project.CurrentProject.Folders.Create();
         }
 
         private void CommandBinding_Executed_NewTrigger(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerTrigger.Create();
+            Project.CurrentProject.Triggers.Create();
         }
 
         private void CommandBinding_Executed_NewScript(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerScript.Create();
+            Project.CurrentProject.Scripts.Create();
         }
 
         private void CommandBinding_Executed_NewGlobalVariable(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerVariable.Create();
+            Project.CurrentProject.Variables.Create();
         }
 
         private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)
@@ -812,45 +858,45 @@ namespace GUI
 
         private void CommandBinding_Executed_ValidateTriggers(object sender, ExecutedRoutedEventArgs e)
         {
-            ControllerProject controller = new ControllerProject();
-            controller.GenerateScript();
+            Builder builder = new Builder();
+            builder.GenerateScript();
         }
 
         private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerProject();
-            controller.TestMap();
+            Builder builder = new Builder();
+            builder.TestMap();
         }
 
         private void CommandBinding_Executed_BuildMap(object sender, ExecutedRoutedEventArgs e)
         {
-            var controller = new ControllerProject();
-            controller.BuildMap();
+            Builder builder = new Builder();
+            builder.BuildMap();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.mainWindowWidth = (int)this.Width;
             settings.mainWindowHeight = (int)this.Height;
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.mainWindowX = (int)this.Left;
             settings.mainWindowY = (int)this.Top;
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.mainWindowFullscreen = this.WindowState.HasFlag(WindowState.Maximized);
         }
 
         private void GridSplitter_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             settings.triggerExplorerWidth = (int)rowTriggerExplorer.Width.Value;
         }
 
@@ -889,6 +935,7 @@ namespace GUI
             else
                 return;
 
+            SaveLastOpenedTabs();
             SetupWindow window = new SetupWindow();
             window.Show();
             this.Close();
@@ -925,7 +972,7 @@ namespace GUI
 
         private void tabitem_Menu_CloseAll_Click(object sender, RoutedEventArgs e)
         {
-            vmd.Tabs.Clear();
+            tabViewModel.Tabs.Clear();
         }
 
         private void tabitem_Menu_Close_Click(object sender, RoutedEventArgs e)
@@ -934,7 +981,7 @@ namespace GUI
             {
                 var header = tabItem_rightClicked.Header as TabItemBT;
                 int index = tabControl.Items.IndexOf(header);
-                vmd.Tabs.RemoveAt(index);
+                tabViewModel.Tabs.RemoveAt(index);
             }
         }
 

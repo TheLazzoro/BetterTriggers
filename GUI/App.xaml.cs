@@ -1,13 +1,8 @@
 ﻿using BetterTriggers;
+using GUI.Components.Settings;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 
 namespace GUI
 {
@@ -29,7 +24,7 @@ namespace GUI
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Settings settings = Settings.Load();
+            EditorSettings settings = EditorSettings.Load();
             EditorTheme.Change((EditorThemeUnion) settings.editorAppearance);
         }
 

@@ -1,5 +1,4 @@
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,38 +39,36 @@ namespace Tests
             if (File.Exists(Path.Combine(directory, name + ".json")))
                 File.Delete(Path.Combine(directory, name + ".json"));
 
-            ControllerProject controllerProject = new ControllerProject();
-            projectPath = controllerProject.CreateProject(language, name, directory);
-            project = controllerProject.LoadProject(projectPath);
-            controllerProject.SetEnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            Project project = Project.CurrentProject;
+            projectPath = Project.Create(language, name, directory);
+            project = Project.Load(projectPath);
+            project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = ControllerFolder.Create();
-            controllerProject.OnCreateElement(fullPath);
-            element1 = ContainerProject.lastCreated as ExplorerElementFolder;
-            ContainerProject.currentSelectedElement = element1.GetPath();
+            string fullPath = project.Folders.Create();
+            project.OnCreateElement(fullPath);
+            element1 = project.lastCreated as ExplorerElementFolder;
+            project.currentSelectedElement = element1.GetPath();
 
-            fullPath = ControllerVariable.Create();
-            controllerProject.OnCreateElement(fullPath);
+            fullPath = project.Variables.Create();
+            project.OnCreateElement(fullPath);
 
-            fullPath = ControllerTrigger.Create();
-            controllerProject.OnCreateElement(fullPath);
+            fullPath = project.Triggers.Create();
+            project.OnCreateElement(fullPath);
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            ControllerProject controller = new();
-            controller.CloseProject();
+            Project.Close();
         }
 
 
         [TestMethod]
         public void OnCreateFolder()
         {
-            ControllerProject controllerProject = new ControllerProject();
-            string fullPath = ControllerFolder.Create();
-            controllerProject.OnCreateElement(fullPath);
-            var element = ContainerProject.lastCreated as ExplorerElementFolder;
+            string fullPath = Project.CurrentProject.Folders.Create();
+            Project.CurrentProject.OnCreateElement(fullPath);
+            var element = Project.CurrentProject.lastCreated as ExplorerElementFolder;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -82,15 +79,14 @@ namespace Tests
         [TestMethod]
         public void OnPasteFolder()
         {
-            var root = ContainerProject.projectFiles[0];
-            ControllerProject controllerProject = new ControllerProject();
-            controllerProject.CopyExplorerElement(element1);
-            var element = controllerProject.PasteExplorerElement(root) as ExplorerElementFolder;
+            var root = Project.CurrentProject.projectFiles[0];
+            Project.CurrentProject.CopyExplorerElement(element1);
+            var element = Project.CurrentProject.PasteExplorerElement(root) as ExplorerElementFolder;
 
             int expectedElements = element1.explorerElements.Count;
             int actualElements = element.explorerElements.Count;
 
-            Assert.AreEqual(element, ContainerProject.lastCreated);
+            Assert.AreEqual(element, Project.CurrentProject.lastCreated);
             Assert.AreEqual(expectedElements, actualElements);
             Assert.AreNotEqual(element.GetName(), element1.GetName());
 

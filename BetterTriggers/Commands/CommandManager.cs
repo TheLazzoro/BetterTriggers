@@ -2,14 +2,17 @@
 
 namespace BetterTriggers.Commands
 {
-    public static class CommandManager
+    /// <summary>
+    /// Tracks all undo- and redoable actions made in a project.
+    /// </summary>
+    public class CommandManager
     {
-        private static Stack<ICommand> undoStack = new Stack<ICommand>();
-        private static Stack<ICommand> redoStack = new Stack<ICommand>();
-        private static string nameCommandToUndo;
-        private static string nameCommandToRedo;
+        private Stack<ICommand> undoStack = new Stack<ICommand>();
+        private Stack<ICommand> redoStack = new Stack<ICommand>();
+        private string nameCommandToUndo;
+        private string nameCommandToRedo;
 
-        public static void AddCommand(ICommand command)
+        public void AddCommand(ICommand command)
         {
             undoStack.Push(command);
             redoStack.Clear();
@@ -17,13 +20,13 @@ namespace BetterTriggers.Commands
             nameCommandToUndo = command.GetCommandName();
         }
 
-        public static void Reset()
+        public void Reset()
         {
             undoStack.Clear();
             redoStack.Clear();
         }
 
-        public static void Undo()
+        public void Undo()
         {
             if (undoStack.Count > 0)
             {
@@ -36,7 +39,7 @@ namespace BetterTriggers.Commands
             SetCommandNames();
         }
 
-        public static void Redo()
+        public void Redo()
         {
             if (redoStack.Count > 0)
             {
@@ -49,27 +52,27 @@ namespace BetterTriggers.Commands
             SetCommandNames();
         }
 
-        public static bool CanUndo()
+        public bool CanUndo()
         {
             return undoStack.Count > 0;
         }
 
-        public static bool CanRedo()
+        public bool CanRedo()
         {
             return redoStack.Count > 0;
         }
 
-        public static string GetNameCommandToUndo()
+        public string GetNameCommandToUndo()
         {
             return nameCommandToUndo;
         }
 
-        public static string GetNameCommandToRedo()
+        public string GetNameCommandToRedo()
         {
             return nameCommandToRedo;
         }
 
-        private static void SetCommandNames()
+        private void SetCommandNames()
         {
             if (undoStack.Count > 0)
                 nameCommandToUndo = undoStack.Peek().GetCommandName();

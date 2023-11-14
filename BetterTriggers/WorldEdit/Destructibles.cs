@@ -12,11 +12,11 @@ using War3Net.Build.Widget;
 
 namespace BetterTriggers.WorldEdit
 {
-    internal class Destructibles
+    public class Destructibles
     {
         private static List<DoodadData> destructibles = new List<DoodadData>();
 
-        internal static List<DoodadData> GetAll()
+        public static List<DoodadData> GetAll()
         {
             return destructibles;
         }

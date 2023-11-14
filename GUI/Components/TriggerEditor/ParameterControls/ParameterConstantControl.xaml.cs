@@ -1,11 +1,10 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Controllers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
-using GUI.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,7 +31,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var constants = ControllerTriggerData.LoadAllConstants();
+            var constants = TriggerData.LoadAllConstants();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < constants.Count; i++)
             {

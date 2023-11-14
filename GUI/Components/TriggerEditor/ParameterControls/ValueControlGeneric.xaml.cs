@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Controllers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using System;
@@ -19,18 +19,19 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            Project project = Project.CurrentProject;
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < values.Count; i++)
             {
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = $"{ControllerTrigger.GetFourCCDisplay(values[i].value, returnType)}{ControllerTrigger.GetValueName(values[i].value, returnType)}";
+                listItem.Content = $"{BetterTriggers.Containers.Triggers.GetFourCCDisplay(values[i].value, returnType)}{project.Triggers.GetValueName(values[i].value, returnType)}";
                 listItem.Tag = values[i];
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
                     Words = new List<string>()
                     {
-                        ControllerTrigger.GetValueName(values[i].value, returnType).ToLower(),
+                        project.Triggers.GetValueName(values[i].value, returnType).ToLower(),
                         values[i].value.ToLower()
                     },
                 });

@@ -1,0 +1,26 @@
+﻿<Window x:Class="GUI.Components.Loading.LoadingProjectFilesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
+        Title="Loading" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Height="150" Width="350" Background="{DynamicResource BackgroundDarker}" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="lblInfo" Content="Loading Project Files..." Grid.Column="1" VerticalAlignment="Bottom" Foreground="{DynamicResource TextBrush2}"/>
+        <ProgressBar x:Name="progressBar" Grid.Column="1" Grid.Row="1" />
+        
+    </Grid>
+</Window>

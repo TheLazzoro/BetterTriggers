@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using CASCLib;
 using IniParser.Model;
@@ -17,13 +18,13 @@ using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
-    internal class DoodadTypes
+    public class DoodadTypes
     {
         private static Dictionary<string, DoodadType> doodads;
         private static Dictionary<string, DoodadType> doodadsBaseEdited;
         private static Dictionary<string, DoodadType> doodadsCustom;
 
-        internal static List<DoodadType> GetAll()
+        public static List<DoodadType> GetAll()
         {
             List<DoodadType> list = new List<DoodadType>();
             var enumerator = doodads.GetEnumerator();
@@ -129,7 +130,7 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load()
+        internal static void Load(string fullMapPath)
         {
             doodadsBaseEdited = new Dictionary<string, DoodadType>();
             doodadsCustom = new Dictionary<string, DoodadType>();
@@ -137,13 +138,8 @@ namespace BetterTriggers.WorldEdit
 
             // Read custom doodad definition data
             string filePath = "war3map.w3d";
-            if (!File.Exists(Path.Combine(CustomMapData.mapPath, filePath)))
+            if (!File.Exists(Path.Combine(fullMapPath, filePath)))
                 return;
-
-            while (CustomMapData.IsMapSaving())
-            {
-                Thread.Sleep(1000);
-            }
 
             DoodadObjectData customDoodads;
             customDoodads = CustomMapData.MPQMap.DoodadObjectData;
