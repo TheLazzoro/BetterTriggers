@@ -820,12 +820,15 @@ namespace BetterTriggers.Containers
             return path;
         }
 
-        public bool VerifyMapPath(string path)
+        public static bool VerifyMapPath(string path)
         {
-            bool useRelativeMapDir = war3project.UseRelativeMapDirectory;
-            if (useRelativeMapDir)
+            if(CurrentProject != null)
             {
-                path = GetFullMapPath();
+                bool useRelativeMapDir = CurrentProject.war3project.UseRelativeMapDirectory;
+                if (useRelativeMapDir)
+                {
+                    path = CurrentProject.GetFullMapPath();
+                }
             }
 
             bool verified = false;

@@ -97,5 +97,19 @@ namespace Tests
 
             Assert.AreEqual(expectedPath, actualPath);
         }
+
+        [TestMethod]
+        public void VerifyMapPath()
+        {
+            string dir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/");
+            string[] maps = Directory.GetFileSystemEntries(dir, "*", SearchOption.TopDirectoryOnly);
+
+            for (int i = 0; i < maps.Length; i++)
+            {
+                string fullPath = maps[i];
+                bool doesMapExist = Project.VerifyMapPath(fullPath);
+                Assert.IsTrue(doesMapExist);
+            }
+        }
     }
 }

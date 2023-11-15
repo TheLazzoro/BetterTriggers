@@ -61,6 +61,31 @@
     <None Remove="TestResources\Maps\Chimney Isles.w3x" />
     <None Remove="TestResources\Maps\Dark Planet 1.06.w3x" />
     <None Remove="TestResources\Maps\DeadlockNE25.w3x" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.doo" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.imp" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.j" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.mmp" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.shd" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3a" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3b" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3c" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3d" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3e" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3h" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3i" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3q" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3r" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3s" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3t" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3u" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wct" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wpm" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wtg" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wts" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapMap.blp" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapMisc.txt" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapSkin.txt" />
+    <None Remove="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapUnits.doo" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\conversation.json" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\war3map.imp" />
@@ -576,6 +601,81 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\DeadlockNE25.w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.imp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.j">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.mmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.shd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3a">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3b">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3d">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3e">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3h">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3i">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3q">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3s">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3t">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.w3u">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wct">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wpm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wtg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3map.wts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapMap.blp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapMisc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapSkin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\Direct_Strike_Reforged.w3x\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\conversation.json">
@@ -1714,6 +1814,18 @@
     <Folder Include="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\_Locales\ruRU.w3mod\" />
     <Folder Include="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\_Locales\zhCN.w3mod\" />
     <Folder Include="TestResources\Maps\AAE REBORN V0.5b %28beta%29 UNPROTECTED.w3x\_Locales\zhTW.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\deDE.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\enUS.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\esES.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\esMX.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\frFR.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\itIT.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\koKR.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\plPL.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\ptBR.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\ruRU.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\zhCN.w3mod\" />
+    <Folder Include="TestResources\Maps\Direct_Strike_Reforged.w3x\_Locales\zhTW.w3mod\" />
     <Folder Include="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\war3mapImported\" />
     <Folder Include="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\_Locales\deDE.w3mod\" />
     <Folder Include="TestResources\Maps\Direct_Strike_Reforged_Open_Source.w3x\_Locales\enUS.w3mod\" />

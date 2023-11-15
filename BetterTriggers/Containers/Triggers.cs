@@ -397,8 +397,8 @@ namespace BetterTriggers.Containers
                 }
                 else if (parameter is TriggerRef)
                 {
-                    Trigger trigger = GetByReference(parameter as TriggerRef).trigger;
-                    if (trigger == null)
+                    var trigger = GetByReference(parameter as TriggerRef);
+                    if (trigger == null || trigger.trigger == null)
                     {
                         removeCount++;
                         parameters[i] = new Parameter();
