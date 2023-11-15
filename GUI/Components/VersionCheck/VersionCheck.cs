@@ -31,29 +31,36 @@ namespace GUI.Components.VersionCheck
 
         private async Task GetNewestVersionAsync()
         {
-            HttpRequestMessage message = new HttpRequestMessage
+            try
             {
-                RequestUri = new Uri(url),
-            };
-            message.Headers.Add("accept", accept);
-            message.Headers.Add("User-Agent", userAgent);
-            HttpClient client = new HttpClient();
-            var response = await client.SendAsync(message);
-            string content = await response.Content.ReadAsStringAsync();
-            VersionDTO versionDTO = JsonConvert.DeserializeObject<VersionDTO>(content);
-            
-            if(!response.IsSuccessStatusCode || versionDTO == null || string.IsNullOrEmpty(versionDTO.name))
-            {
-                return;
-            }
-
-            if(!versionDTO.html_url.EndsWith(this.version))
-            {
-                Application.Current.Dispatcher.Invoke(delegate
+                HttpRequestMessage message = new HttpRequestMessage
                 {
-                    var window = new NewVersionWindow(versionDTO, this.version);
-                    window.ShowDialog();
-                });
+                    RequestUri = new Uri(url),
+                };
+                message.Headers.Add("accept", accept);
+                message.Headers.Add("User-Agent", userAgent);
+                HttpClient client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(30);
+                var response = await client.SendAsync(message);
+                string content = await response.Content.ReadAsStringAsync();
+                VersionDTO versionDTO = JsonConvert.DeserializeObject<VersionDTO>(content);
+
+                if (!response.IsSuccessStatusCode || versionDTO == null || string.IsNullOrEmpty(versionDTO.name))
+                {
+                    return;
+                }
+
+                if (!versionDTO.html_url.EndsWith(this.version))
+                {
+                    Application.Current.Dispatcher.Invoke(delegate
+                    {
+                        var window = new NewVersionWindow(versionDTO, this.version);
+                        window.ShowDialog();
+                    });
+                }
+            } catch (Exception)
+            {
+
             }
         }
 

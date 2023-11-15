@@ -35,7 +35,7 @@ namespace GUI.Components.NewProject
 
         private void btnSelectMap_Click(object sender, RoutedEventArgs e)
         {
-            OpenWar3MapWindow window = new OpenWar3MapWindow();
+            OpenWar3MapWindowHotfix window = new OpenWar3MapWindowHotfix();
             window.ShowDialog();
             if (!window.OK)
                 return;
@@ -60,7 +60,7 @@ namespace GUI.Components.NewProject
         {
             bool ok;
             FinalPath = System.IO.Path.Combine(lblDestination.Text, System.IO.Path.GetFileNameWithoutExtension(lblMap.Text));
-            MapExists = Project.CurrentProject.VerifyMapPath(lblMap.Text);
+            MapExists = Project.VerifyMapPath(lblMap.Text);
             DestinationDirectoryExists = Directory.Exists(lblDestination.Text);
             FinalPathAlreadyExists = Directory.Exists(FinalPath);
 

@@ -1,0 +1,36 @@
+﻿<Window x:Class="GUI.Components.OpenMap.OpenWar3MapWindowHotfix"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        UseLayoutRounding="True"
+        Background="{DynamicResource BackgroundMenu}"
+        Title="Select Map" Height="435" Width="414" LocationChanged="Window_LocationChanged" SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="70"/>
+        </Grid.ColumnDefinitions>
+
+        <Label VerticalAlignment="Center">Directory:</Label>
+        <TextBlock x:Name="textBox" Background="{DynamicResource BackgroundLight}" Foreground="{DynamicResource TextBrush}" Height="25" Grid.Column="1" />
+        <Button x:Name="btnBrowseFiles" Height="25" Grid.Column="3" Margin="5,0,5,0" Click="btnBrowseFiles_Click">Browse</Button>
+        <Separator Grid.Row="0" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
+
+        <TreeView x:Name="treeViewFiles" Background="{DynamicResource BackgroundPanel}" Grid.Row="1"  Grid.ColumnSpan="3" BorderThickness="0" SelectedItemChanged="treeViewFiles_SelectedItemChanged" />
+        <Separator Grid.Row="2" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Top"/>
+        <Label x:Name="lblFound" Grid.Row="3">Maps found: 0</Label>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="3" FlowDirection="RightToLeft" Margin="0,5,10,5">
+            <Button x:Name="btnCancel" Width="75" Margin="0,0,10,0" Click="btnCancel_Click">Cancel</Button>
+            <Button x:Name="btnOK" Width="75" IsEnabled="False" Click="btnOK_Click">OK</Button>
+        </StackPanel>
+    </Grid>
+</Window>

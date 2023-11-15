@@ -1,23 +1,27 @@
-﻿using BetterTriggers;
-using BetterTriggers.Containers;
-using BetterTriggers.Models.EditorData;
-using GUI.Components.Shared;
-using System;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
+using System.IO;
+using GUI.Components.Shared;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using BetterTriggers;
+using System.Runtime.InteropServices;
+using GUI.Utility;
+using BetterTriggers.Utility;
+using System.Windows.Media;
+using BetterTriggers.Containers;
 
 namespace GUI.Components.OpenMap
 {
-    public partial class OpenWar3MapWindow : Window
+    public partial class OpenWar3MapWindowHotfix : Window
     {
         public string SelectedPath;
         public bool OK;
         private string currentDir;
-        private bool useRelativeMapDirectory;
 
-        public OpenWar3MapWindow()
+        public OpenWar3MapWindowHotfix()
         {
             InitializeComponent();
             EditorSettings settings = EditorSettings.Load();
@@ -26,24 +30,9 @@ namespace GUI.Components.OpenMap
             this.Left = settings.selectMapWindowX;
             this.Top = settings.selectMapWindowY;
 
-            string path;
-            var project = Project.CurrentProject.war3project;
-            useRelativeMapDirectory = project.UseRelativeMapDirectory;
-            if (useRelativeMapDirectory)
-            {
-                var root = (ExplorerElementRoot)Project.CurrentProject.projectFiles[0];
-                string rootDir = Path.GetDirectoryName(root.GetProjectPath());
-                path = Path.Combine(rootDir, "map");
-                btnBrowseFiles.Visibility = Visibility.Hidden;
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-            }
-            else
-            {
-                path = settings.lastOpenedFileLocation;
-                if (!Directory.Exists(path))
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            }
+            string path = settings.lastOpenedFileLocation;
+            if (!Directory.Exists(path))
+                path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 
             RefreshFileList(path);
@@ -135,11 +124,7 @@ namespace GUI.Components.OpenMap
 
             ListItemData data = (ListItemData)treeItem.Tag;
             SelectedPath = data.path;
-            if(useRelativeMapDirectory)
-            {
-                SelectedPath = Path.GetFileName(data.path);
-            }
-            if(!Project.VerifyMapPath(SelectedPath))
+            if (!Project.VerifyMapPath(SelectedPath))
             {
                 btnOK.IsEnabled = false;
                 return;
