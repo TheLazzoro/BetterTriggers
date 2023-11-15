@@ -37,12 +37,32 @@ namespace BetterTriggers.WorldEdit
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
 
+        /// <summary>
+        /// Converts an entire map's triggers to a Better Triggers project.
+        /// </summary>
         /// <returns>Project file path.</returns>
         public string Convert(string mapPath, string projectDestinationDir)
         {
             this.mapPath = mapPath;
             Load(mapPath);
-            return Convert(projectDestinationDir);
+            return ConvertAllTriggers(projectDestinationDir);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mapPath"></param>
+        /// <exception cref="Exception"></exception>
+        public void ImportIntoCurrentProject(string mapPath, List<TriggerItem> itemsToImport)
+        {
+            if (Project.CurrentProject == null)
+            {
+                throw new Exception("Cannot import when no project is open.");
+            }
+
+            this.mapPath = mapPath;
+            Load(mapPath);
+            ConvertSelectedTriggers(itemsToImport);
         }
 
         private void Load(string mapPath)
@@ -73,23 +93,10 @@ namespace BetterTriggers.WorldEdit
             language = mapInfo.ScriptLanguage;
             var wts = CustomMapData.MPQMap.TriggerStrings;
             wts.Strings.ForEach(trigStr => triggerStrings.TryAdd(trigStr.Key, trigStr.Value));
-        }
 
-        /// <returns>Project file path.</returns>
-        private string Convert(string fullPath)
-        {
-            string projectPath = Project.Create(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
-            War3Project project = JsonConvert.DeserializeObject<War3Project>(File.ReadAllText(projectPath));
-            string src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
-
-            project.War3MapDirectory = mapPath;
-            project.Comment = rootComment;
-            project.Header = rootHeader;
-            triggerPaths.Add(0, src);
-
+            // Prepare all trigger items
             if (triggers != null)
             {
-
                 // First, gather all variables names and ids
                 for (int i = 0; i < triggers.Variables.Count; i++)
                 {
@@ -110,42 +117,95 @@ namespace BetterTriggers.WorldEdit
 
                     triggerIds.TryAdd("gg_trg_" + triggerItem.Name.Replace(" ", "_"), triggerItem.Id);
                 }
+            }
+        }
 
-                for (int i = 0; i < triggers.TriggerItems.Count; i++)
+        private void ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
+        {
+            var project = Project.CurrentProject;
+            if(project == null)
+            {
+                throw new Exception("Cannot import when no project is active.");
+            }
+
+            var root = project.GetRoot();
+            string targetDir = Path.Combine(root.GetPath(), mapInfo.MapName);
+            if (!Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+
+            for (int i = 0; i < selectedTriggers.Count; i++)
+            {
+                var triggerItem = selectedTriggers[i];
+                if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
+                    continue;
+
+                IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
+                //explorerElement.SetPath(Path.Combine())
+                if (explorerElement == null)
+                    continue;
+
+                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
+                if (explorerElement is ExplorerElementFolder)
+                    Directory.CreateDirectory(explorerElement.GetPath());
+                else
                 {
-                    var triggerItem = triggers.TriggerItems[i];
-                    if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
-                        continue;
-
-                    IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
-                    if (explorerElement == null)
-                        continue;
-
-                    triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
-                    if (explorerElement is ExplorerElementFolder)
-                        Directory.CreateDirectory(explorerElement.GetPath());
-                    else
-                    {
-                        var saveable = (IExplorerSaveable)explorerElement;
-                        File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
-                    }
-
-                    War3ProjectFileEntry entry = new War3ProjectFileEntry()
-                    {
-                        isEnabled = explorerElement.GetEnabled(),
-                        isInitiallyOn = explorerElement.GetInitiallyOn(),
-                        path = explorerElement.GetSaveablePath(),
-                    };
-
-                    War3ProjectFileEntry parentEnty;
-                    projectFilesEntries.TryGetValue(triggerItem.ParentId, out parentEnty);
-                    if (parentEnty == null)
-                        project.Files.Add(entry);
-                    else
-                        parentEnty.Files.Add(entry);
-
-                    projectFilesEntries.TryAdd(triggerItem.Id, entry);
+                    var saveable = (IExplorerSaveable)explorerElement;
+                    File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
                 }
+
+            }
+        }
+
+
+        private string ConvertAllTriggers(string fullPath)
+        {
+            string projectPath = Project.Create(language, Path.GetFileName(fullPath), Path.GetDirectoryName(fullPath), false);
+            War3Project project = JsonConvert.DeserializeObject<War3Project>(File.ReadAllText(projectPath));
+            string src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
+
+            project.War3MapDirectory = mapPath;
+            project.Comment = rootComment;
+            project.Header = rootHeader;
+            triggerPaths.Add(0, src);
+
+
+            List<IExplorerElement> filesToWrite = new List<IExplorerElement>();
+            for (int i = 0; i < triggers.TriggerItems.Count; i++)
+            {
+                var triggerItem = triggers.TriggerItems[i];
+                if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
+                    continue;
+
+                IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
+                if (explorerElement == null)
+                    continue;
+
+                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
+                if (explorerElement is ExplorerElementFolder)
+                    Directory.CreateDirectory(explorerElement.GetPath());
+                else
+                {
+                    var saveable = (IExplorerSaveable)explorerElement;
+                    File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
+                }
+
+                War3ProjectFileEntry entry = new War3ProjectFileEntry()
+                {
+                    isEnabled = explorerElement.GetEnabled(),
+                    isInitiallyOn = explorerElement.GetInitiallyOn(),
+                    path = explorerElement.GetSaveablePath(),
+                };
+
+                War3ProjectFileEntry parentEnty;
+                projectFilesEntries.TryGetValue(triggerItem.ParentId, out parentEnty);
+                if (parentEnty == null)
+                    project.Files.Add(entry);
+                else
+                    parentEnty.Files.Add(entry);
+
+                projectFilesEntries.TryAdd(triggerItem.Id, entry);
             }
 
             File.WriteAllText(projectPath, JsonConvert.SerializeObject(project, Formatting.Indented));

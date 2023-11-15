@@ -15,6 +15,7 @@ using War3Net.Build.Script;
 using War3Net.Build;
 using GUI.Components.ImportTriggers;
 using Xceed.Wpf.AvalonDock.Controls;
+using GUI.Components.OpenMap;
 
 namespace GUI
 {
