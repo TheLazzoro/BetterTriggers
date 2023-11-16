@@ -16,6 +16,8 @@ using War3Net.Build;
 using GUI.Components.ImportTriggers;
 using Xceed.Wpf.AvalonDock.Controls;
 using GUI.Components.OpenMap;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace GUI
 {
@@ -30,15 +32,25 @@ namespace GUI
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            OpenWar3MapWindow window = new();
+            OpenWar3MapWindowHotfix window = new();
             window.ShowDialog();
             if (!string.IsNullOrEmpty(window.SelectedPath))
             {
-                LoadTriggers(window.SelectedPath);
+                mapPath = window.SelectedPath;
+                Thread newWindowThread = new Thread(LoadTriggersThread);
+                newWindowThread.SetApartmentState(ApartmentState.STA);
+                newWindowThread.IsBackground = true;
+                newWindowThread.Start();
             }
         }
 
-        private void LoadTriggers(string mapPath)
+        string mapPath;
+        private void LoadTriggersThread()
+        {
+            this.Dispatcher.BeginInvoke(LoadTriggers, DispatcherPriority.Background);
+        }
+
+        private void LoadTriggers()
         {
             treeView.Items.Clear();
             var map = Map.Open(mapPath);

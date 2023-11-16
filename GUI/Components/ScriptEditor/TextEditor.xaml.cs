@@ -103,7 +103,6 @@ namespace GUI.Components
 
         static bool isLoadingScriptData;
         ScriptLanguage language;
-        private delegate void AddCompletionDataDelegate();
         private void AddCompletionDataThread()
         {
             this.Dispatcher.BeginInvoke(AddCompletionData, DispatcherPriority.Background);

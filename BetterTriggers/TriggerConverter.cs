@@ -120,10 +120,11 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
+        List<IExplorerElement> triggerElementsToImport;
         private void ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
         {
             var project = Project.CurrentProject;
-            if(project == null)
+            if (project == null)
             {
                 throw new Exception("Cannot import when no project is active.");
             }
@@ -135,6 +136,7 @@ namespace BetterTriggers.WorldEdit
                 Directory.CreateDirectory(targetDir);
             }
 
+            triggerElementsToImport = new List<IExplorerElement>();
             for (int i = 0; i < selectedTriggers.Count; i++)
             {
                 var triggerItem = selectedTriggers[i];
@@ -146,17 +148,102 @@ namespace BetterTriggers.WorldEdit
                 if (explorerElement == null)
                     continue;
 
-                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
-                if (explorerElement is ExplorerElementFolder)
-                    Directory.CreateDirectory(explorerElement.GetPath());
-                else
-                {
-                    var saveable = (IExplorerSaveable)explorerElement;
-                    File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
-                }
+                triggerElementsToImport.Add(explorerElement);
 
             }
+
+            // Resolve collisions
+            for (int i = 0; i < triggerElementsToImport.Count; i++)
+            {
+                var element = triggerElementsToImport[i];
+
+                // Resolve name collision
+
+                string dirLocation = Path.GetDirectoryName(element.GetPath());
+                switch (element)
+                {
+                    case ExplorerElementTrigger:
+                        string triggerName = project.Triggers.GenerateTriggerName(element.GetName());
+                        element.SetPath(Path.Combine(dirLocation, triggerName));
+                        break;
+                    case ExplorerElementVariable:
+                        string variableName = project.Variables.GenerateName(element.GetName());
+                        element.SetPath(Path.Combine(dirLocation, variableName));
+                        break;
+                    case ExplorerElementFolder:
+                        string folderName = project.Folders.GenerateName(element.GetName());
+                        element.SetPath(Path.Combine(dirLocation, folderName));
+                        break;
+                    default:
+                        break;
+                }
+
+                // Resolve id-collisions
+
+                int id = element.GetId();
+                bool doesIdExist = false;
+                bool isVariable = false;
+                switch (element)
+                {
+                    case ExplorerElementTrigger:
+                        doesIdExist = project.Triggers.Contains(id);
+                        break;
+                    case ExplorerElementVariable:
+                        doesIdExist = project.Variables.Contains(id);
+                        isVariable = true;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (doesIdExist)
+                {
+                    int oldId = id;
+                    int newId = isVariable ? project.Variables.GenerateId() : project.Triggers.GenerateId();
+                    foreach (var trigger in triggerElementsToImport)
+                    {
+                        if (trigger is ExplorerElementTrigger trig)
+                        {
+                            var functions = Triggers.GetFunctionsFromTrigger(trig);
+                            foreach (var function in functions)
+                            {
+                                foreach (var parameter in function.parameters)
+                                {
+                                    if (!isVariable && parameter is TriggerRef triggerRef)
+                                    {
+                                        if (triggerRef.TriggerId == oldId)
+                                        {
+                                            triggerRef.TriggerId = newId;
+                                        }
+                                    }
+                                    else if (isVariable && parameter is VariableRef variableRef)
+                                    {
+                                        if (variableRef.VariableId == oldId)
+                                        {
+                                            variableRef.VariableId = newId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Write to disk
+            for (int i = 0; i < triggerElementsToImport.Count; i++)
+            {
+                var element = triggerElementsToImport[i];
+                if (element is ExplorerElementFolder)
+                    Directory.CreateDirectory(element.GetPath());
+                else
+                {
+                    var saveable = (IExplorerSaveable)element;
+                    File.WriteAllText(element.GetPath(), saveable.GetSaveableString());
+                }
+            }
         }
+
 
 
         private string ConvertAllTriggers(string fullPath)
