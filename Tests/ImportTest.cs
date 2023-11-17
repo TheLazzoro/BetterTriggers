@@ -32,6 +32,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
+            Project.Close();
             Directory.Delete(projectDir, true);
         }
 

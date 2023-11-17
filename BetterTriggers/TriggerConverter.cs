@@ -211,11 +211,11 @@ namespace BetterTriggers.WorldEdit
                 {
                     int oldId = id;
                     int newId = isVariable ? project.Variables.GenerateId() : project.Triggers.GenerateId();
-                    if(element is ExplorerElementTrigger t)
+                    if (element is ExplorerElementTrigger t)
                     {
                         t.trigger.Id = newId;
                     }
-                    else if(element is ExplorerElementVariable v)
+                    else if (element is ExplorerElementVariable v)
                     {
                         v.variable.Id = newId;
                     }
@@ -315,41 +315,43 @@ namespace BetterTriggers.WorldEdit
             project.Header = rootHeader;
             triggerPaths.Add(0, src);
 
-
-            for (int i = 0; i < triggers.TriggerItems.Count; i++)
+            if (triggers != null)
             {
-                var triggerItem = triggers.TriggerItems[i];
-                if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
-                    continue;
-
-                IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
-                if (explorerElement == null)
-                    continue;
-
-                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
-                if (explorerElement is ExplorerElementFolder)
-                    Directory.CreateDirectory(explorerElement.GetPath());
-                else
+                for (int i = 0; i < triggers.TriggerItems.Count; i++)
                 {
-                    var saveable = (IExplorerSaveable)explorerElement;
-                    File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
+                    var triggerItem = triggers.TriggerItems[i];
+                    if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
+                        continue;
+
+                    IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
+                    if (explorerElement == null)
+                        continue;
+
+                    triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
+                    if (explorerElement is ExplorerElementFolder)
+                        Directory.CreateDirectory(explorerElement.GetPath());
+                    else
+                    {
+                        var saveable = (IExplorerSaveable)explorerElement;
+                        File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
+                    }
+
+                    War3ProjectFileEntry entry = new War3ProjectFileEntry()
+                    {
+                        isEnabled = explorerElement.GetEnabled(),
+                        isInitiallyOn = explorerElement.GetInitiallyOn(),
+                        path = explorerElement.GetSaveablePath(),
+                    };
+
+                    War3ProjectFileEntry parentEnty;
+                    projectFilesEntries.TryGetValue(triggerItem.ParentId, out parentEnty);
+                    if (parentEnty == null)
+                        project.Files.Add(entry);
+                    else
+                        parentEnty.Files.Add(entry);
+
+                    projectFilesEntries.TryAdd(triggerItem.Id, entry);
                 }
-
-                War3ProjectFileEntry entry = new War3ProjectFileEntry()
-                {
-                    isEnabled = explorerElement.GetEnabled(),
-                    isInitiallyOn = explorerElement.GetInitiallyOn(),
-                    path = explorerElement.GetSaveablePath(),
-                };
-
-                War3ProjectFileEntry parentEnty;
-                projectFilesEntries.TryGetValue(triggerItem.ParentId, out parentEnty);
-                if (parentEnty == null)
-                    project.Files.Add(entry);
-                else
-                    parentEnty.Files.Add(entry);
-
-                projectFilesEntries.TryAdd(triggerItem.Id, entry);
             }
 
             File.WriteAllText(projectPath, JsonConvert.SerializeObject(project, Formatting.Indented));
@@ -399,7 +401,7 @@ namespace BetterTriggers.WorldEdit
 
             string parentPath;
             triggerPaths.TryGetValue(triggerItem.ParentId, out parentPath);
-            if(parentPath == null) // could not find the element's location, put it in root.
+            if (parentPath == null) // could not find the element's location, put it in root.
             {
                 triggerPaths.TryGetValue(0, out parentPath);
             }
