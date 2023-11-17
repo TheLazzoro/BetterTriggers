@@ -155,6 +155,7 @@ namespace BetterTriggers.WorldEdit
 
             }
 
+            List<IExplorerElement> dummyElements = new List<IExplorerElement>();
             // Resolve collisions
             for (int i = 0; i < triggerElementsToImport.Count; i++)
             {
@@ -248,7 +249,13 @@ namespace BetterTriggers.WorldEdit
                     }
                 }
 
-                // We add the elements to the container AFTER checking for duplicate id's
+                /*  hack
+                    We add the elements to the container AFTER checking for duplicate id's
+                    However, this will cause bugs when writing to files afterwards,
+                    since they will be added twice into the container.
+                    Therefore, we need to remove these dummy elements after generating all id's.
+                */
+                dummyElements.Add(element);
                 if (element is ExplorerElementVariable variable)
                 {
                     project.Variables.AddVariable(variable);
@@ -269,6 +276,12 @@ namespace BetterTriggers.WorldEdit
                     throw new Exception($"Could not properly rename file or folder for conversion.{Environment.NewLine}'{path}' already exists in the project.{Environment.NewLine}{Environment.NewLine}Import cancelled.");
                 }
             }
+
+            // remove dummy elements
+            dummyElements.ForEach(el =>
+            {
+                project.RemoveElementFromContainer(el);
+            });
 
             // Write to disk
             project.EnableFileEvents(false);

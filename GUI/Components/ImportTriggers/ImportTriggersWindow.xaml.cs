@@ -130,6 +130,7 @@ namespace GUI
                 TriggerConverter triggerConverter = new TriggerConverter();
                 triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
                 triggerConverter.ImportIntoCurrentProject(mapPath, triggerItems);
+                worker.ReportProgress(100);
             }
             catch (Exception ex)
             {
@@ -145,7 +146,7 @@ namespace GUI
             worker.ReportProgress((int)percent);
         }
 
-
+        bool didComplete = false;
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (e.ProgressPercentage == -1)
@@ -153,8 +154,9 @@ namespace GUI
                 Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", errorMsg);
                 messageBox.ShowDialog();
             }
-            else if (e.ProgressPercentage == 100)
+            else if (e.ProgressPercentage == 100 && !didComplete)
             {
+                didComplete = true; // hack. In some cases it reports 100% twice. Don't question it :)
                 foreach (string fullPath in itemsImported)
                 {
                     TriggerExplorer.Current.OnCreateElement(fullPath);
@@ -169,12 +171,12 @@ namespace GUI
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if(e.Error != null)
+            if (e.Error != null)
             {
                 Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", e.Error.Message);
                 messageBox.ShowDialog();
             }
-            
+
             this.Close();
         }
 
@@ -182,8 +184,7 @@ namespace GUI
         {
             if (parent.treeItemHeader.checkbox.IsChecked == true)
             {
-                if (parent.triggerItem.Type != TriggerItemType.RootCategory)
-                    triggerItems.Add(parent.triggerItem);
+                triggerItems.Add(parent.triggerItem);
             }
             if (parent.Items.Count > 0)
             {
