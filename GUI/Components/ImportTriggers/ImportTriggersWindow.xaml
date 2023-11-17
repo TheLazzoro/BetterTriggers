@@ -5,21 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Import Triggers" Height="450" Width="800" Background="{DynamicResource BackgroundDark}">
+        Title="Import Triggers" Height="450" Width="800" MinWidth="250" Background="{DynamicResource BackgroundDark}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="109*"/>
-            <ColumnDefinition Width="691*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="15"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label VerticalAlignment="Bottom" HorizontalAlignment="Center">Select Map:</Label>
-        <Button x:Name="btnSelect" Height="25" Width="75" Grid.Row="1" Click="btnSelect_Click" >Select</Button>
+        <Button
+            x:Name="btnSelect"
+            Height="25"
+            Width="95"
+            Grid.Row="1"
+            Click="btnSelect_Click"
+            Margin="20,0,0,0">Select Map</Button>
+        <Button
+            x:Name="btnImport"
+            IsEnabled="False"
+            Height="25"
+            Width="75"
+            Grid.Row="1"
+            Grid.Column="2"
+            Click="btnImport_Click"
+            HorizontalAlignment="Right"
+            Margin="20,0,20,0">Import</Button>
 
-        <TreeView x:Name="treeView" Background="{DynamicResource BackgroundDarker}" Grid.Row="2" Grid.ColumnSpan="2"></TreeView>
+        <TreeView x:Name="treeView" Background="{DynamicResource BackgroundDarker}" Grid.Row="2" Grid.ColumnSpan="3"></TreeView>
     </Grid>
 </Window>

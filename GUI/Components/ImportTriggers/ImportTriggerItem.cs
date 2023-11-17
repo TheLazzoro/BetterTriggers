@@ -19,7 +19,7 @@ namespace GUI.Components.ImportTriggers
         internal bool IsValid { get; }
         internal List<ImportTriggerItem> Children;
 
-        private TreeItemHeaderCheckbox treeItemHeader;
+        internal TreeItemHeaderCheckbox treeItemHeader;
 
         public ImportTriggerItem(TriggerItem triggerItem)
         {

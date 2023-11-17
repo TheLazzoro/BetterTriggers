@@ -209,6 +209,7 @@ namespace BetterTriggers.Containers
 
 
         public static event Action<int, int> FileLoadEvent;
+        public static event Action LoadingUnknownFilesEvent;
         private int totalFiles;
         private int loadedFiles;
         /// <summary>
@@ -281,9 +282,12 @@ namespace BetterTriggers.Containers
             project.RecurseLoad(projectRootEntry, project.projectFiles[0], fileCheckList);
 
             // Loop through elements not found
+            LoadingUnknownFilesEvent?.Invoke();
             for (int i = 0; i < fileCheckList.Count; i++)
             {
                 project.OnCreateElement(fileCheckList[i], false);
+                project.loadedFiles++;
+                FileLoadEvent?.Invoke(project.loadedFiles, project.totalFiles);
             }
 
             project.CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
@@ -627,6 +631,8 @@ namespace BetterTriggers.Containers
                     else
                     {
                         matching = FindExplorerElementFolder((ExplorerElementFolder)element, directory);
+                        if (matching != null)
+                            break;
                     }
                 }
             }

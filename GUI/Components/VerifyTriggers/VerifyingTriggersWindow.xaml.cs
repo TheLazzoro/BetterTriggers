@@ -41,28 +41,26 @@ namespace GUI.Components.VerifyTriggers
             }
             if (collisionError != null)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append($"{collisionError.Message}{Environment.NewLine}");
-                sb.Append($"You need to resolve these manually.{Environment.NewLine}");
-                sb.Append($"{Environment.NewLine}");
+                int index = 0;
+                string[] items = new string[collisionError.triggers.Count + collisionError.variables.Count];
                 if (collisionError.triggers.Count > 0)
                 {
-                    sb.Append($"Triggers:{Environment.NewLine}");
                     collisionError.triggers.ForEach(t =>
                     {
-                        sb.Append($"{t.Item1.GetName()} <-> {t.Item2.GetName()}{Environment.NewLine}");
+                        items[index] = $"{t.Item1.GetName()} <-> {t.Item2.GetName()}{Environment.NewLine}";
+                        index++;
                     });
                 }
                 if (collisionError.variables.Count > 0)
                 {
-                    sb.Append($"{Environment.NewLine}");
-                    sb.Append($"Variables:{Environment.NewLine}");
                     collisionError.variables.ForEach(v =>
                     {
-                        sb.Append($"{v.Item1.GetName()} <-> {v.Item2.GetName()}{Environment.NewLine}");
+                        items[index] = $"{v.Item1.GetName()} <-> {v.Item2.GetName()}{Environment.NewLine}";
+                        index++;
                     });
                 }
-                Dialogs.MessageBox messageBox = new Dialogs.MessageBox("ID Collisions", sb.ToString());
+                string message = $"{collisionError.Message}{Environment.NewLine}{Environment.NewLine}You need to resolve these manually.{Environment.NewLine}";
+                Dialogs.MessageBoxWithList messageBox = new Dialogs.MessageBoxWithList("ID Collisions", message, items);
                 messageBox.ShowDialog();
                 OnCloseProject?.Invoke();
                 this.Close();

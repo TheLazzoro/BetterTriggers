@@ -18,12 +18,14 @@ using Xceed.Wpf.AvalonDock.Controls;
 using GUI.Components.OpenMap;
 using System.Threading;
 using System.Windows.Threading;
+using BetterTriggers.WorldEdit;
 
 namespace GUI
 {
     public partial class ImportTriggersWindow : Window
     {
         private ImportTriggerItem root;
+        private string mapPath;
 
         public ImportTriggersWindow()
         {
@@ -36,6 +38,7 @@ namespace GUI
             window.ShowDialog();
             if (!string.IsNullOrEmpty(window.SelectedPath))
             {
+                btnImport.IsEnabled = true;
                 mapPath = window.SelectedPath;
                 Thread newWindowThread = new Thread(LoadTriggersThread);
                 newWindowThread.SetApartmentState(ApartmentState.STA);
@@ -44,7 +47,6 @@ namespace GUI
             }
         }
 
-        string mapPath;
         private void LoadTriggersThread()
         {
             this.Dispatcher.BeginInvoke(LoadTriggers, DispatcherPriority.Background);
@@ -95,6 +97,40 @@ namespace GUI
             }
 
             root.ExpandSubtree();
+        }
+
+        List<TriggerItem> triggerItems;
+        private void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                triggerItems = new List<TriggerItem>();
+                GatherAllCheckedTriggerItems(root);
+
+                TriggerConverter triggerConverter = new TriggerConverter();
+                triggerConverter.ImportIntoCurrentProject(mapPath, triggerItems);
+            }
+            catch (Exception ex)
+            {
+                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", ex.Message);
+                messageBox.ShowDialog();
+            }
+        }
+
+        private void GatherAllCheckedTriggerItems(ImportTriggerItem parent)
+        {
+            if (parent.treeItemHeader.checkbox.IsChecked == true)
+            {
+                if (parent.triggerItem.Type != TriggerItemType.RootCategory)
+                    triggerItems.Add(parent.triggerItem);
+            }
+            if (parent.Items.Count > 0)
+            {
+                foreach (ImportTriggerItem item in parent.Items)
+                {
+                    GatherAllCheckedTriggerItems(item);
+                }
+            }
         }
     }
 }

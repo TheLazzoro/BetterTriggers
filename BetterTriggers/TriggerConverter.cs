@@ -51,7 +51,7 @@ namespace BetterTriggers.WorldEdit
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="mapPath"></param>
+        /// <param name="mapPath">Path to map we're importing from.</param>
         /// <exception cref="Exception"></exception>
         public void ImportIntoCurrentProject(string mapPath, List<TriggerItem> itemsToImport)
         {
@@ -130,11 +130,12 @@ namespace BetterTriggers.WorldEdit
             }
 
             var root = project.GetRoot();
-            string targetDir = Path.Combine(root.GetPath(), mapInfo.MapName);
+            string targetDir = Path.Combine(root.GetPath(), mapInfo.MapName + "_Imported");
             if (!Directory.Exists(targetDir))
             {
                 Directory.CreateDirectory(targetDir);
             }
+            triggerPaths.Add(0, targetDir); // root path for the imported triggers
 
             triggerElementsToImport = new List<IExplorerElement>();
             for (int i = 0; i < selectedTriggers.Count; i++)
@@ -144,7 +145,7 @@ namespace BetterTriggers.WorldEdit
                     continue;
 
                 IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
-                //explorerElement.SetPath(Path.Combine())
+                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
                 if (explorerElement == null)
                     continue;
 
@@ -168,7 +169,11 @@ namespace BetterTriggers.WorldEdit
                         break;
                     case ExplorerElementVariable:
                         string variableName = project.Variables.GenerateName(element.GetName());
-                        element.SetPath(Path.Combine(dirLocation, variableName));
+                        element.SetPath(Path.Combine(dirLocation, variableName + ".var"));
+                        break;
+                    case ExplorerElementScript:
+                        string scriptName = project.Scripts.GenerateName(element as ExplorerElementScript);
+                        element.SetPath(Path.Combine(dirLocation, scriptName));
                         break;
                     case ExplorerElementFolder:
                         string folderName = project.Folders.GenerateName(element.GetName());
@@ -177,6 +182,9 @@ namespace BetterTriggers.WorldEdit
                     default:
                         break;
                 }
+
+                if (element is ExplorerElementFolder || element is ExplorerElementScript)
+                    continue;
 
                 // Resolve id-collisions
 
@@ -230,16 +238,28 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
+            // Check file paths before writing
+            for (int i = 0; i < triggerElementsToImport.Count; i++)
+            {
+                var element = triggerElementsToImport[i];
+                string path = element.GetPath();
+                if (File.Exists(path) || Directory.Exists(path))
+                {
+                    throw new Exception($"Could not properly rename file or folder for conversion.{Environment.NewLine}'{path}' already exists in the project.{Environment.NewLine}{Environment.NewLine}Import cancelled.");
+                }
+            }
+
             // Write to disk
             for (int i = 0; i < triggerElementsToImport.Count; i++)
             {
                 var element = triggerElementsToImport[i];
+                string path = element.GetPath();
                 if (element is ExplorerElementFolder)
-                    Directory.CreateDirectory(element.GetPath());
+                    Directory.CreateDirectory(path);
                 else
                 {
                     var saveable = (IExplorerSaveable)element;
-                    File.WriteAllText(element.GetPath(), saveable.GetSaveableString());
+                    File.WriteAllText(path, saveable.GetSaveableString());
                 }
             }
         }
@@ -258,7 +278,6 @@ namespace BetterTriggers.WorldEdit
             triggerPaths.Add(0, src);
 
 
-            List<IExplorerElement> filesToWrite = new List<IExplorerElement>();
             for (int i = 0; i < triggers.TriggerItems.Count; i++)
             {
                 var triggerItem = triggers.TriggerItems[i];

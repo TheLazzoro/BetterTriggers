@@ -196,7 +196,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         internal bool Contains(int id)
         {
-            bool found = true;
+            bool found = false;
             foreach (var variable in variableContainer)
             {
                 if (variable.variable.Id == id)
