@@ -19,6 +19,8 @@ using GUI.Components.OpenMap;
 using System.Threading;
 using System.Windows.Threading;
 using BetterTriggers.WorldEdit;
+using System.ComponentModel;
+using GUI.Components;
 
 namespace GUI
 {
@@ -26,6 +28,11 @@ namespace GUI
     {
         private ImportTriggerItem root;
         private string mapPath;
+        private List<TriggerItem> triggerItems;
+        private bool hasError;
+        private string errorMsg;
+        private BackgroundWorker worker;
+        private List<string> itemsImported;
 
         public ImportTriggersWindow()
         {
@@ -57,6 +64,7 @@ namespace GUI
             treeView.Items.Clear();
             var map = Map.Open(mapPath);
             var triggerItems = map.Triggers.TriggerItems;
+            txtTotalTriggerItems.Text = "Total items: " + triggerItems.Count;
 
             Dictionary<int, ImportTriggerItem> items = new Dictionary<int, ImportTriggerItem>();
 
@@ -99,22 +107,75 @@ namespace GUI
             root.ExpandSubtree();
         }
 
-        List<TriggerItem> triggerItems;
         private void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            progressBar.Visibility = Visibility.Visible;
+            btnImport.IsEnabled = false;
+            triggerItems = new List<TriggerItem>();
+            itemsImported = new List<string>();
+            GatherAllCheckedTriggerItems(root);
+
+            worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.ProgressChanged += Worker_ProgressChanged;
+            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                triggerItems = new List<TriggerItem>();
-                GatherAllCheckedTriggerItems(root);
-
                 TriggerConverter triggerConverter = new TriggerConverter();
+                triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
                 triggerConverter.ImportIntoCurrentProject(mapPath, triggerItems);
             }
             catch (Exception ex)
             {
-                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", ex.Message);
+                errorMsg = ex.Message;
+                worker.ReportProgress(-1);
+            }
+        }
+
+        private void TriggerConverter_OnExplorerElementImported(string fullPath)
+        {
+            itemsImported.Add(fullPath);
+            float percent = (float)itemsImported.Count / triggerItems.Count * 100;
+            worker.ReportProgress((int)percent);
+        }
+
+
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == -1)
+            {
+                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", errorMsg);
                 messageBox.ShowDialog();
             }
+            else if (e.ProgressPercentage == 100)
+            {
+                foreach (string fullPath in itemsImported)
+                {
+                    TriggerExplorer.Current.OnCreateElement(fullPath);
+                }
+            }
+            else
+            {
+                txtProgressPercent.Text = $"{e.ProgressPercentage}%";
+                progressBar.Value = e.ProgressPercentage;
+            }
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if(e.Error != null)
+            {
+                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", e.Error.Message);
+                messageBox.ShowDialog();
+            }
+            
+            this.Close();
         }
 
         private void GatherAllCheckedTriggerItems(ImportTriggerItem parent)

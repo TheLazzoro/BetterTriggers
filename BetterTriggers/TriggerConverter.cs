@@ -17,6 +17,8 @@ namespace BetterTriggers.WorldEdit
 {
     public class TriggerConverter
     {
+        public event Action<string> OnExplorerElementImported;
+
         private string mapPath;
         private MapTriggers triggers;
         private MapInfo mapInfo;
@@ -208,6 +210,15 @@ namespace BetterTriggers.WorldEdit
                 {
                     int oldId = id;
                     int newId = isVariable ? project.Variables.GenerateId() : project.Triggers.GenerateId();
+                    if(element is ExplorerElementTrigger t)
+                    {
+                        t.trigger.Id = newId;
+                    }
+                    else if(element is ExplorerElementVariable v)
+                    {
+                        v.variable.Id = newId;
+                    }
+
                     foreach (var trigger in triggerElementsToImport)
                     {
                         if (trigger is ExplorerElementTrigger trig)
@@ -236,6 +247,16 @@ namespace BetterTriggers.WorldEdit
                         }
                     }
                 }
+
+                // We add the elements to the container AFTER checking for duplicate id's
+                if (element is ExplorerElementVariable variable)
+                {
+                    project.Variables.AddVariable(variable);
+                }
+                else if (element is ExplorerElementTrigger trigger)
+                {
+                    project.Triggers.AddTrigger(trigger);
+                }
             }
 
             // Check file paths before writing
@@ -250,6 +271,7 @@ namespace BetterTriggers.WorldEdit
             }
 
             // Write to disk
+            project.EnableFileEvents(false);
             for (int i = 0; i < triggerElementsToImport.Count; i++)
             {
                 var element = triggerElementsToImport[i];
@@ -261,7 +283,10 @@ namespace BetterTriggers.WorldEdit
                     var saveable = (IExplorerSaveable)element;
                     File.WriteAllText(path, saveable.GetSaveableString());
                 }
+                project.OnCreateElement(path, false); // We manually create UI elements
+                OnExplorerElementImported?.Invoke(path);
             }
+            project.EnableFileEvents(true);
         }
 
 
@@ -361,6 +386,10 @@ namespace BetterTriggers.WorldEdit
 
             string parentPath;
             triggerPaths.TryGetValue(triggerItem.ParentId, out parentPath);
+            if(parentPath == null) // could not find the element's location, put it in root.
+            {
+                triggerPaths.TryGetValue(0, out parentPath);
+            }
 
             string name = triggerItem.Name;
             List<char> invalidPathChars = Path.GetInvalidPathChars().ToList();

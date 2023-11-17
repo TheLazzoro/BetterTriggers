@@ -16,6 +16,7 @@
             <RowDefinition Height="15"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
         <Button
@@ -37,5 +38,30 @@
             Margin="20,0,20,0">Import</Button>
 
         <TreeView x:Name="treeView" Background="{DynamicResource BackgroundDarker}" Grid.Row="2" Grid.ColumnSpan="3"></TreeView>
+
+        <TextBlock
+            x:Name="txtTotalTriggerItems"
+            Foreground="{DynamicResource TextBrush}"
+            Text="Total Items: 0"
+            Grid.Row="3"
+            VerticalAlignment="Center"
+            Margin="5,0,0,0"
+        />
+
+        <ProgressBar 
+            x:Name="progressBar"
+            Width="auto"
+            Grid.Column="1"
+            Grid.Row="3"
+            Visibility="Hidden"
+        />
+        <TextBlock
+            x:Name="txtProgressPercent"
+            Foreground="{DynamicResource TextBrush}"
+            Grid.Column="2"
+            Grid.Row="3"
+            Margin="15,0,0,0"
+            VerticalAlignment="Center"
+        />
     </Grid>
 </Window>

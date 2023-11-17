@@ -368,6 +368,10 @@ namespace BetterTriggers.Containers
 
             ExplorerElementRoot root = projectFiles[0] as ExplorerElementRoot;
             IExplorerElement parent = FindExplorerElementFolder(root, directory);
+            if(parent == null)
+            {
+                parent = root;
+            }
 
             RecurseCreateElement(parent, fullPath, doRecurse);
         }
@@ -602,7 +606,7 @@ namespace BetterTriggers.Containers
         }
 
 
-        public IExplorerElement FindExplorerElementFolder(IExplorerElement parent, string directory)
+        public IExplorerElement? FindExplorerElementFolder(IExplorerElement parent, string directory)
         {
             IExplorerElement matching = null;
             List<IExplorerElement> children = null;
@@ -636,11 +640,6 @@ namespace BetterTriggers.Containers
                     }
                 }
             }
-
-            // Returns root if no matching parent node was found.
-            // Usually only need when loading a new project.
-            if (matching == null)
-                return projectFiles[0];
 
             return matching;
         }
