@@ -1,4 +1,5 @@
-﻿using GUI.Components.Shared;
+﻿using BetterTriggers.Models.EditorData;
+using GUI.Components.Shared;
 using GUI.Components.TriggerEditor.ParameterControls;
 using System;
 using System.Collections.Generic;
@@ -15,49 +16,39 @@ namespace GUI.Components.ImportTriggers
 {
     internal class ImportTriggerItem : TreeViewItem
     {
-        internal TriggerItem triggerItem { get; }
-        internal bool IsValid { get; }
-        internal List<ImportTriggerItem> Children;
+        internal IExplorerElement explorerElement { get; }
 
         internal TreeItemHeaderCheckbox treeItemHeader;
 
-        public ImportTriggerItem(TriggerItem triggerItem)
+        public ImportTriggerItem(IExplorerElement explorerElement)
         {
-            this.triggerItem = triggerItem;
+            this.explorerElement = explorerElement;
 
-            string name = triggerItem.Name;
             string category = string.Empty;
-            switch (triggerItem.Type)
+            switch (explorerElement)
             {
-                case TriggerItemType.RootCategory:
+                case ExplorerElementRoot:
                     category = "TC_MAP";
-                    Children = new List<ImportTriggerItem>();
                     break;
-                case TriggerItemType.Category:
+                case ExplorerElementFolder:
                     category = "TC_DIRECTORY";
-                    Children = new List<ImportTriggerItem>();
                     break;
-                case TriggerItemType.Gui:
+                case ExplorerElementTrigger:
                     category = "TC_TRIGGER_NEW";
                     break;
-                case TriggerItemType.Script:
+                case ExplorerElementScript:
                     category = "TC_SCRIPT";
                     break;
-                case TriggerItemType.Variable:
+                case ExplorerElementVariable:
                     category = "TC_SETVARIABLE";
                     break;
                 default:
                     break;
             }
 
-            if(triggerItem is not DeletedTriggerItem && !string.IsNullOrEmpty(category))
-            {
-                IsValid = true;
-                treeItemHeader = new TreeItemHeaderCheckbox(name, category);
-                this.Header = treeItemHeader;
-
-                treeItemHeader.checkbox.Click += Checkbox_Click;
-            }
+            treeItemHeader = new TreeItemHeaderCheckbox(explorerElement.GetName(), category);
+            this.Header = treeItemHeader;
+            treeItemHeader.checkbox.Click += Checkbox_Click;
         }
 
         private void Checkbox_Click(object sender, RoutedEventArgs e)

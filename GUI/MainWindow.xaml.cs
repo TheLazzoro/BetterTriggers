@@ -563,7 +563,7 @@ namespace GUI
             {
                 foreach (var item in lastOpenedTabs.Tabs)
                 {
-                    var element = triggerExplorer.FindTreeNodeElement(this.triggerExplorer.map, item);
+                    var element = triggerExplorer.GetTreeNodeElement(item);
                     if (element != null)
                         triggerExplorer.OnSelectTab(element, tabViewModel, tabControl);
                 }

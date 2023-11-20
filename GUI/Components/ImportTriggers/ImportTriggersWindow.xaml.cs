@@ -1,42 +1,43 @@
-﻿using System;
+﻿using BetterTriggers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.WorldEdit;
+using GUI.Components;
+using GUI.Components.ImportTriggers;
+using GUI.Components.OpenMap;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using War3Net.Build.Script;
-using War3Net.Build;
-using GUI.Components.ImportTriggers;
-using Xceed.Wpf.AvalonDock.Controls;
-using GUI.Components.OpenMap;
-using System.Threading;
 using System.Windows.Threading;
-using BetterTriggers.WorldEdit;
-using System.ComponentModel;
-using GUI.Components;
+using War3Net.Build;
 
 namespace GUI
 {
     public partial class ImportTriggersWindow : Window
     {
-        private ImportTriggerItem root;
+        private ImportTriggerItem rootTreeItem;
         private string mapPath;
-        private List<TriggerItem> triggerItems;
         private bool hasError;
         private string errorMsg;
         private BackgroundWorker worker;
         private List<string> itemsImported;
+        Dictionary<string, ImportTriggerItem> treeItemExplorerElements;
+        private List<IExplorerElement> elementsToImport;
+
+        private UserControl control;
 
         public ImportTriggersWindow()
         {
+            this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+            EditorSettings settings = EditorSettings.Load();
+            this.Width = settings.triggerWindowWidth;
+            this.Height = settings.triggerWindowHeight;
+            this.Left = settings.triggerWindowX;
+            this.Top = settings.triggerWindowY;
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
@@ -47,10 +48,10 @@ namespace GUI
             {
                 btnImport.IsEnabled = true;
                 mapPath = window.SelectedPath;
-                Thread newWindowThread = new Thread(LoadTriggersThread);
-                newWindowThread.SetApartmentState(ApartmentState.STA);
-                newWindowThread.IsBackground = true;
-                newWindowThread.Start();
+                Thread thread = new Thread(LoadTriggersThread);
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.IsBackground = true;
+                thread.Start();
             }
         }
 
@@ -64,56 +65,119 @@ namespace GUI
             treeView.Items.Clear();
             var map = Map.Open(mapPath);
             var triggerItems = map.Triggers.TriggerItems;
+            var triggerConverter = new TriggerConverter(mapPath);
+            var explorerElements = triggerConverter.ConvertAll_NoWrite();
             txtTotalTriggerItems.Text = "Total items: " + triggerItems.Count;
 
-            Dictionary<int, ImportTriggerItem> items = new Dictionary<int, ImportTriggerItem>();
+            this.treeItemExplorerElements = new Dictionary<string, ImportTriggerItem>();
 
             // First create UI items and filter those we don't need.
-            for (int i = 0; i < triggerItems.Count; i++)
+            var explorerRoot = new ExplorerElementFolder
             {
-                var triggerItem = triggerItems[i];
-                var treeItem = new ImportTriggerItem(triggerItem);
-                if (triggerItem.Type == TriggerItemType.RootCategory)
-                {
-                    root = treeItem;
-                }
-                if (!treeItem.IsValid)
-                {
-                    continue;
-                }
+                path = mapPath
+            };
+            rootTreeItem = new ImportTriggerItem(explorerRoot);
+            this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootTreeItem);
+            rootTreeItem.Selected += ExplorerItem_Selected;
+            for (int i = 0; i < explorerElements.Count; i++)
+            {
+                var element = explorerElements[i];
+                var treeItem = new ImportTriggerItem(element);
 
-                items.TryAdd(triggerItem.Id, treeItem);
+                this.treeItemExplorerElements.TryAdd(element.GetPath(), treeItem);
+                treeItem.Selected += ExplorerItem_Selected;
             }
 
             // Then we attach them to their corresponding parent
-            foreach (var item in items)
+            foreach (var item in this.treeItemExplorerElements)
             {
                 var treeItem = item.Value;
-                if (treeItem.triggerItem.Type == TriggerItemType.RootCategory)
+                if (treeItem == rootTreeItem)
                 {
                     treeView.Items.Add(treeItem);
                 }
                 else
                 {
                     ImportTriggerItem parent;
-                    items.TryGetValue(treeItem.triggerItem.ParentId, out parent);
+                    string parentPath = System.IO.Path.GetDirectoryName(treeItem.explorerElement.GetPath());
+                    this.treeItemExplorerElements.TryGetValue(parentPath, out parent);
                     if (parent == null)
-                        root.Items.Add(treeItem);
+                        rootTreeItem.Items.Add(treeItem);
                     else
                         parent.Items.Add(treeItem);
                 }
             }
 
-            root.ExpandSubtree();
+            rootTreeItem.ExpandSubtree();
+        }
+
+        private void ExplorerItem_Selected(object sender, RoutedEventArgs e)
+        {
+            txtTriggerNote.Visibility = Visibility.Hidden;
+            var selected = (ImportTriggerItem)treeView.SelectedItem;
+            var explorerElement = selected.explorerElement;
+            if (explorerElement != null)
+            {
+                if (control != null)
+                {
+                    grid.Children.Remove(control);
+                }
+                if (explorerElement is ExplorerElementTrigger explorerTrigger)
+                {
+                    control = new TriggerControl(explorerTrigger);
+                    var triggerControl = (TriggerControl)control;
+                    triggerControl.checkBoxIsCustomScript.IsEnabled = false;
+                    triggerControl.checkBoxIsEnabled.IsEnabled = false;
+                    triggerControl.checkBoxIsInitiallyOn.IsEnabled = false;
+                    triggerControl.checkBoxList.IsEnabled = false;
+                    triggerControl.checkBoxRunOnMapInit.IsEnabled = false;
+                    triggerControl.textBoxComment.IsReadOnly = true;
+                    triggerControl.categoryAction.IsEnabled = false;
+                    triggerControl.categoryCondition.IsEnabled = false;
+                    triggerControl.categoryEvent.IsEnabled = false;
+                    triggerControl.categoryLocalVariable.IsEnabled = false;
+                    triggerControl.bottomControl.IsEnabled = false;
+
+                    grid.Children.Add(control);
+                    Grid.SetColumn(control, 2);
+                    Grid.SetColumnSpan(control, 2);
+                    Grid.SetRow(control, 3);
+                    txtTriggerNote.Visibility = Visibility.Visible;
+                }
+                else if (explorerElement is ExplorerElementScript explorerScript)
+                {
+                    control = new ScriptControl(explorerScript);
+                    var scriptControl = (ScriptControl)control;
+                    scriptControl.textEditor.avalonEditor.IsReadOnly = true;
+                    scriptControl.checkBoxIsEnabled.IsEnabled = false;
+
+                    grid.Children.Add(control);
+                    Grid.SetColumn(control, 2);
+                    Grid.SetColumnSpan(control, 2);
+                    Grid.SetRow(control, 2);
+                    Grid.SetRowSpan(control, 2);
+                }
+                else if (explorerElement is ExplorerElementVariable explorerVariable)
+                {
+                    control = new VariableControl(explorerVariable.variable);
+                    control.IsEnabled = false;
+
+                    grid.Children.Add(control);
+                    Grid.SetColumn(control, 2);
+                    Grid.SetColumnSpan(control, 2);
+                    Grid.SetRow(control, 2);
+                    Grid.SetRowSpan(control, 2);
+                }
+            }
         }
 
         private void btnImport_Click(object sender, RoutedEventArgs e)
         {
             progressBar.Visibility = Visibility.Visible;
             btnImport.IsEnabled = false;
-            triggerItems = new List<TriggerItem>();
+            elementsToImport = new List<IExplorerElement>();
+            GatherAllCheckedElements(rootTreeItem);
             itemsImported = new List<string>();
-            GatherAllCheckedTriggerItems(root);
 
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
@@ -127,22 +191,25 @@ namespace GUI
         {
             try
             {
-                TriggerConverter triggerConverter = new TriggerConverter();
-                triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
-                triggerConverter.ImportIntoCurrentProject(mapPath, triggerItems);
+                TriggerConverter triggerConverter = new TriggerConverter(mapPath);
+                TriggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
+                var list = treeItemExplorerElements.Select(item => item.Value.explorerElement).ToList();
+                TriggerConverter.WriteConvertedTriggers(list);
                 worker.ReportProgress(100);
+                TriggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
             }
             catch (Exception ex)
             {
                 errorMsg = ex.Message;
                 worker.ReportProgress(-1);
+                TriggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
             }
         }
 
         private void TriggerConverter_OnExplorerElementImported(string fullPath)
         {
             itemsImported.Add(fullPath);
-            float percent = (float)itemsImported.Count / triggerItems.Count * 100;
+            float percent = (float)itemsImported.Count / elementsToImport.Count * 100;
             worker.ReportProgress((int)percent);
         }
 
@@ -180,17 +247,17 @@ namespace GUI
             this.Close();
         }
 
-        private void GatherAllCheckedTriggerItems(ImportTriggerItem parent)
+        private void GatherAllCheckedElements(ImportTriggerItem parent)
         {
             if (parent.treeItemHeader.checkbox.IsChecked == true)
             {
-                triggerItems.Add(parent.triggerItem);
+                elementsToImport.Add(parent.explorerElement);
             }
             if (parent.Items.Count > 0)
             {
                 foreach (ImportTriggerItem item in parent.Items)
                 {
-                    GatherAllCheckedTriggerItems(item);
+                    GatherAllCheckedElements(item);
                 }
             }
         }

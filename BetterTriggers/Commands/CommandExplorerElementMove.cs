@@ -40,7 +40,7 @@ namespace BetterTriggers.Commands
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(newParent, NewInsertIndex);
             project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
-            explorerElement.ChangedPosition();
+            explorerElement.ChangedPosition(oldFullPath, newFullPath);
 
             project.CommandManager.AddCommand(this);
         }
@@ -58,7 +58,7 @@ namespace BetterTriggers.Commands
 
             project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
-            explorerElement.ChangedPosition();
+            explorerElement.ChangedPosition(oldFullPath, newFullPath);
         }
 
         public void Undo()
@@ -73,7 +73,7 @@ namespace BetterTriggers.Commands
 
             project.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
-            explorerElement.ChangedPosition();
+            explorerElement.ChangedPosition(oldFullPath, oldFullPath);
         }
 
         public string GetCommandName()

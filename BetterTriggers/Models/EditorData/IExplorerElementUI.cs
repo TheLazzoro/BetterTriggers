@@ -2,7 +2,7 @@
 {
     public interface IExplorerElementUI
     {
-        void UpdatePosition();
+        void UpdatePosition(string oldFullPath, string newFullPath);
         void Reload();
         void OnCreated(int insertIndex);
         void OnSaved();

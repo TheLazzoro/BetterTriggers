@@ -25,7 +25,7 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
-            explorerElement.ChangedPosition();
+            explorerElement.ChangedPosition(oldFullPath, newFullPath);
             refCollection.Notify();
 
             Project.CurrentProject.CommandManager.AddCommand(this);
@@ -39,7 +39,7 @@ namespace BetterTriggers.Commands
 
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
-            explorerElement.ChangedPosition();
+            explorerElement.ChangedPosition(oldFullPath, newFullPath);
             refCollection.Notify();
         }
 
@@ -51,7 +51,7 @@ namespace BetterTriggers.Commands
 
             Project.CurrentProject.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
-            explorerElement.ChangedPosition();
+            explorerElement.ChangedPosition(oldFullPath, newFullPath);
             refCollection.Notify();
         }
 

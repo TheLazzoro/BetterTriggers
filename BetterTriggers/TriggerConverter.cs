@@ -17,7 +17,7 @@ namespace BetterTriggers.WorldEdit
 {
     public class TriggerConverter
     {
-        public event Action<string> OnExplorerElementImported;
+        public static event Action<string> OnExplorerElementImported;
 
         private string mapPath;
         private MapTriggers triggers;
@@ -39,15 +39,25 @@ namespace BetterTriggers.WorldEdit
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
 
+        public TriggerConverter(string mapPath)
+        {
+            this.mapPath = mapPath;
+        }
+
         /// <summary>
         /// Converts an entire map's triggers to a Better Triggers project.
         /// </summary>
         /// <returns>Project file path.</returns>
-        public string Convert(string mapPath, string projectDestinationDir)
+        public string Convert(string projectDestinationDir)
         {
-            this.mapPath = mapPath;
             Load(mapPath);
             return ConvertAllTriggers(projectDestinationDir);
+        }
+
+        public List<IExplorerElement> ConvertAll_NoWrite()
+        {
+            Load(mapPath);
+            return ConvertSelectedTriggers(triggers.TriggerItems);
         }
 
         /// <summary>
@@ -55,16 +65,38 @@ namespace BetterTriggers.WorldEdit
         /// </summary>
         /// <param name="mapPath">Path to map we're importing from.</param>
         /// <exception cref="Exception"></exception>
-        public void ImportIntoCurrentProject(string mapPath, List<TriggerItem> itemsToImport)
+        public void ImportIntoCurrentProject(List<TriggerItem> itemsToImport)
         {
             if (Project.CurrentProject == null)
             {
                 throw new Exception("Cannot import when no project is open.");
             }
 
-            this.mapPath = mapPath;
             Load(mapPath);
-            ConvertSelectedTriggers(itemsToImport);
+            var convertedElements = ConvertSelectedTriggers(itemsToImport);
+            WriteConvertedTriggers(convertedElements);
+        }
+
+        public static void WriteConvertedTriggers(List<IExplorerElement> elements)
+        {
+            // Write to disk
+            var project = Project.CurrentProject;
+            project.EnableFileEvents(false);
+            for (int i = 0; i < elements.Count; i++)
+            {
+                var element = elements[i];
+                string path = element.GetPath();
+                if (element is ExplorerElementFolder)
+                    Directory.CreateDirectory(path);
+                else
+                {
+                    var saveable = (IExplorerSaveable)element;
+                    File.WriteAllText(path, saveable.GetSaveableString());
+                }
+                project.OnCreateElement(path, false); // We manually create UI elements
+                OnExplorerElementImported?.Invoke(path);
+            }
+            project.EnableFileEvents(true);
         }
 
         private void Load(string mapPath)
@@ -123,7 +155,7 @@ namespace BetterTriggers.WorldEdit
         }
 
         List<IExplorerElement> triggerElementsToImport;
-        private void ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
+        private List<IExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
         {
             var project = Project.CurrentProject;
             if (project == null)
@@ -147,10 +179,10 @@ namespace BetterTriggers.WorldEdit
                     continue;
 
                 IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
-                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
                 if (explorerElement == null)
                     continue;
 
+                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
                 triggerElementsToImport.Add(explorerElement);
 
             }
@@ -283,23 +315,7 @@ namespace BetterTriggers.WorldEdit
                 project.RemoveElementFromContainer(el);
             });
 
-            // Write to disk
-            project.EnableFileEvents(false);
-            for (int i = 0; i < triggerElementsToImport.Count; i++)
-            {
-                var element = triggerElementsToImport[i];
-                string path = element.GetPath();
-                if (element is ExplorerElementFolder)
-                    Directory.CreateDirectory(path);
-                else
-                {
-                    var saveable = (IExplorerSaveable)element;
-                    File.WriteAllText(path, saveable.GetSaveableString());
-                }
-                project.OnCreateElement(path, false); // We manually create UI elements
-                OnExplorerElementImported?.Invoke(path);
-            }
-            project.EnableFileEvents(true);
+            return triggerElementsToImport;
         }
 
 

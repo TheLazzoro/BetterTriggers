@@ -9,7 +9,7 @@ namespace GUI.Components
 {
     public partial class ScriptControl : UserControl, IEditor
     {
-        private TextEditor textEditor;
+        internal TextEditor textEditor;
         private ExplorerElementScript explorerElementScript;
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
         private bool suppressStateChange = false;

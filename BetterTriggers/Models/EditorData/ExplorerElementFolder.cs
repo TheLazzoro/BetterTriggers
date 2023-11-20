@@ -178,11 +178,11 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public void ChangedPosition()
+        public void ChangedPosition(string oldFullPath, string newFullPath)
         {
             for (int i = 0; i < observers.Count; i++)
             {
-                observers[i].UpdatePosition();
+                observers[i].UpdatePosition(oldFullPath, newFullPath);
             }
         }
 

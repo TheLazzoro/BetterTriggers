@@ -3,7 +3,6 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
-using Cake.Incubator.Project;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -41,6 +40,8 @@ namespace BetterTriggers.Containers
 
         bool wasMoved;
 
+        private Dictionary<string, IExplorerElement> AllElements;
+
 
         private Project()
         {
@@ -51,6 +52,7 @@ namespace BetterTriggers.Containers
             References = new();
             UnsavedFiles = new();
             CommandManager = new();
+            AllElements = new();
         }
 
         /// <summary>
@@ -114,6 +116,8 @@ namespace BetterTriggers.Containers
                 Directory.CreateDirectory(topElement.GetPath());
 
             topElement.UpdateMetadata(); // important, because this is a pseudo-redo
+            var parent = topElement.GetParent();
+            topElement.Created(parent.GetExplorerElements().IndexOf(topElement));
 
             if (Directory.Exists(topElement.GetPath()))
             {
@@ -366,8 +370,9 @@ namespace BetterTriggers.Containers
         {
             string directory = Path.GetDirectoryName(fullPath);
 
-            ExplorerElementRoot root = projectFiles[0] as ExplorerElementRoot;
-            IExplorerElement parent = FindExplorerElementFolder(root, directory);
+            ExplorerElementRoot root = GetRoot();
+            IExplorerElement parent;
+            AllElements.TryGetValue(directory, out parent);
             if(parent == null)
             {
                 parent = root;
@@ -402,6 +407,7 @@ namespace BetterTriggers.Containers
                 }
             }
             AddElementToContainer(explorerElement);
+            AllElements.Add(fullPath, explorerElement);
             lastCreated = explorerElement;
 
             CommandExplorerElementCreate command = new CommandExplorerElementCreate(explorerElement, parent, parent.GetExplorerElements().Count);
@@ -470,10 +476,13 @@ namespace BetterTriggers.Containers
 
         public IExplorerElement OnRenameElement(string oldFullPath, string newFullPath)
         {
-            var rootNode = projectFiles[0];
-            IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+            IExplorerElement elementToRename;
+            AllElements.TryGetValue(oldFullPath, out elementToRename);
             if (elementToRename == null)
                 return null;
+
+            AllElements.Remove(oldFullPath);
+            AllElements.Add(newFullPath, elementToRename);
 
             CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
             command.Execute();
@@ -489,8 +498,10 @@ namespace BetterTriggers.Containers
         /// <param name="newFullPath"></param>
         public void OnMoveElement(string oldFullPath, string newFullPath, int insertIndex)
         {
-            var rootNode = projectFiles[0];
-            IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+            IExplorerElement elementToRename;
+            AllElements.TryGetValue(oldFullPath, out elementToRename);
+            AllElements.Remove(oldFullPath);
+            AllElements.Add(newFullPath, elementToRename);
 
             CommandExplorerElementMove command = new CommandExplorerElementMove(elementToRename, newFullPath, insertIndex);
             command.Execute();
@@ -538,12 +549,12 @@ namespace BetterTriggers.Containers
 
         public void OnDeleteElement(string fullPath)
         {
-            var rootNode = projectFiles[0];
-            IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
+            IExplorerElement elementToDelete = GetExplorerElement(fullPath);
             if (elementToDelete == null)
                 return;
 
             RemoveElementFromContainer(elementToDelete);
+            AllElements.Remove(fullPath);
 
             CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
             command.Execute();
@@ -563,14 +574,19 @@ namespace BetterTriggers.Containers
 
         public void OnElementChanged(string fullPath)
         {
-            var rootNode = projectFiles[0];
-            IExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
-
+            IExplorerElement elementToChange = GetExplorerElement(fullPath);
             if (elementToChange != null)
             {
                 elementToChange.UpdateMetadata();
                 elementToChange.Notify();
             }
+        }
+
+        public IExplorerElement GetExplorerElement(string fullPath)
+        {
+            IExplorerElement element;
+            AllElements.TryGetValue(fullPath, out element);
+            return element;
         }
 
         public IExplorerElement FindExplorerElement(IExplorerElement parent, string path)
@@ -864,7 +880,7 @@ namespace BetterTriggers.Containers
 
         private bool WasFileMoved(string oldFullPath)
         {
-            var explorerElement = FindExplorerElement(CurrentProject.projectFiles[0], oldFullPath);
+            var explorerElement = GetExplorerElement(oldFullPath);
             if (explorerElement == null)
                 return false;
 

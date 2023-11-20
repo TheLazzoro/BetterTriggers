@@ -44,8 +44,8 @@ namespace Tests
             var project = Project.Load(projectFilePath);
             var map = Map.Open(mapPath);
 
-            TriggerConverter converter = new TriggerConverter();
-            converter.ImportIntoCurrentProject(mapPath, map.Triggers.TriggerItems);
+            TriggerConverter converter = new TriggerConverter(mapPath);
+            converter.ImportIntoCurrentProject(map.Triggers.TriggerItems);
 
             Builder mapBuilder = new Builder();
             mapBuilder.GenerateScript();
