@@ -806,12 +806,15 @@ namespace BetterTriggers.Containers
             return (ExplorerElementRoot)projectFiles[0];
         }
 
-        public string GetFullMapPath()
+        public string GetFullMapPath(string mapFileName = null)
         {
             string path = war3project.War3MapDirectory;
             if (war3project.UseRelativeMapDirectory)
             {
-                string mapFileName = Path.GetFileName(war3project.War3MapDirectory);
+                if(mapFileName == null)
+                {
+                    mapFileName = Path.GetFileName(war3project.War3MapDirectory);
+                }
                 var root = GetRoot();
                 string rootDir = Path.GetDirectoryName(root.GetPath());
                 path = Path.Combine(rootDir, "map/" + mapFileName);
@@ -827,7 +830,7 @@ namespace BetterTriggers.Containers
                 bool useRelativeMapDir = CurrentProject.war3project.UseRelativeMapDirectory;
                 if (useRelativeMapDir)
                 {
-                    path = CurrentProject.GetFullMapPath();
+                    path = CurrentProject.GetFullMapPath(path);
                 }
             }
 
