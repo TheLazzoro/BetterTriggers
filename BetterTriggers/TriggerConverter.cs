@@ -36,6 +36,7 @@ namespace BetterTriggers.WorldEdit
         Dictionary<string, int> triggerIds = new Dictionary<string, int>(); // [name, triggerId]
 
         Dictionary<int, ExplorerElementVariable> explorerVariables = new Dictionary<int, ExplorerElementVariable>(); // [id, variable]
+        Dictionary<string, ExplorerElementVariable> explorerVariables_byName = new Dictionary<string, ExplorerElementVariable>(); // [name, variable]
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
 
@@ -135,11 +136,16 @@ namespace BetterTriggers.WorldEdit
                 for (int i = 0; i < triggers.Variables.Count; i++)
                 {
                     var variable = triggers.Variables[i];
-
                     variableIds.Add(variable.Name, variable.Id);
                     variableTypes.Add(variable.Name, variable.Type);
-
-                    explorerVariables.Add(variable.Id, CreateVariable(variable));
+                    if(triggers.SubVersion != null)
+                    {
+                        explorerVariables.Add(variable.Id, CreateVariable(variable));
+                    }
+                    else
+                    {
+                        explorerVariables_byName.Add(variable.Name, CreateVariable(variable));
+                    }
                 }
 
                 // Then, gather all trigger names and ids
@@ -401,8 +407,7 @@ namespace BetterTriggers.WorldEdit
                     extension = mapInfo.ScriptLanguage == ScriptLanguage.Jass ? ".j" : ".lua";
                     break;
                 case TriggerItemType.Variable:
-                    ExplorerElementVariable explorerElementVariable;
-                    explorerVariables.TryGetValue(triggerItem.Id, out explorerElementVariable);
+                    ExplorerElementVariable explorerElementVariable = GetVariable(triggerItem);
                     explorerElement = explorerElementVariable;
                     extension = ".var";
                     break;
@@ -779,5 +784,20 @@ namespace BetterTriggers.WorldEdit
             return parameters;
         }
 
+
+        private ExplorerElementVariable GetVariable(TriggerItem triggerItem)
+        {
+            ExplorerElementVariable variable;
+            if (triggers.SubVersion is not null)
+            {
+                explorerVariables.TryGetValue(triggerItem.Id, out variable);
+            }
+            else
+            {
+                explorerVariables_byName.TryGetValue(triggerItem.Name, out variable);
+            }
+
+            return variable;
+        }
     }
 }
