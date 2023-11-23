@@ -47,6 +47,23 @@ namespace BetterTriggers
             }
         }
 
+        private static void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            // this try-block is only here because of the TriggerConverter.
+            try
+            {
+                if (!IsMapSaving())
+                {
+                    InvokeOnSaving(sender, e);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+
         public static bool IsMapSaving(string fullMapPath = null)
         {
             if (string.IsNullOrEmpty(fullMapPath))
@@ -94,12 +111,18 @@ namespace BetterTriggers
             Units.Load();
 
             if (watcher != null)
+            {
                 watcher.Created -= Watcher_Created;
+                watcher.Changed -= Watcher_Changed;
+                watcher.Dispose();
+            }
 
             watcher = new System.IO.FileSystemWatcher();
             watcher.Path = Path.GetDirectoryName(fullMapPath);
             watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = true;
             watcher.Created += Watcher_Created;
+            watcher.Changed += Watcher_Changed;
         }
 
         /// <summary>

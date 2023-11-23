@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -38,7 +39,7 @@ namespace Tests
 
 
             string[] testMaps = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/"));
-            foreach(var folder in testMaps)
+            foreach (var folder in testMaps)
             {
                 if (!folder.EndsWith(".w3x") && !folder.EndsWith(".w3m"))
                     Directory.Delete(folder, true);

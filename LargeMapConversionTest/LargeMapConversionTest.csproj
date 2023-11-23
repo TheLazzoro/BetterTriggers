@@ -1,0 +1,108 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\JassHelper\bin\sfmpq.dll" />
+    <None Remove="Resources\JassHelper\Blizzardj.txt" />
+    <None Remove="Resources\JassHelper\clijasshelper.exe" />
+    <None Remove="Resources\JassHelper\common.txt" />
+    <None Remove="TestResources\abilitybuffdata.slk" />
+    <None Remove="TestResources\abilitydata.slk" />
+    <None Remove="TestResources\abilityskin.txt" />
+    <None Remove="TestResources\campaignunitfunc.txt" />
+    <None Remove="TestResources\campaignupgradefunc.txt" />
+    <None Remove="TestResources\destructabledata.slk" />
+    <None Remove="TestResources\destructableskin.txt" />
+    <None Remove="TestResources\doodadskins.txt" />
+    <None Remove="TestResources\humanupgradefunc.txt" />
+    <None Remove="TestResources\itemfunc.txt" />
+    <None Remove="TestResources\itemskin.txt" />
+    <None Remove="TestResources\nightelfupgradefunc.txt" />
+    <None Remove="TestResources\orcupgradefunc.txt" />
+    <None Remove="TestResources\triggerdata.txt" />
+    <None Remove="TestResources\undeadupgradefunc.txt" />
+    <None Remove="TestResources\unitdata.slk" />
+    <None Remove="TestResources\unitskin.txt" />
+    <None Remove="TestResources\upgradedata.slk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\JassHelper\bin\sfmpq.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\Blizzardj.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\clijasshelper.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\common.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\abilitybuffdata.slk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\abilitydata.slk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\abilityskin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\campaignunitfunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\campaignupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\destructabledata.slk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\destructableskin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\doodadskins.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\humanupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\itemfunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\itemskin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\nightelfupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\orcupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\triggerdata.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\undeadupgradefunc.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\unitdata.slk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\unitskin.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\upgradedata.slk">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BetterTriggers\BetterTriggers.csproj" />
+  </ItemGroup>
+
+</Project>

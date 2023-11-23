@@ -798,6 +798,7 @@ namespace BetterTriggers.Containers
             project.fileSystemWatcher.Changed -= project.FileSystemWatcher_Changed;
             project.fileSystemWatcher.Renamed -= project.FileSystemWatcher_Renamed;
             project.fileSystemWatcher.Error -= project.FileSystemWatcher_Error;
+            project.fileSystemWatcher.Dispose();
         }
 
         /// <returns>The top level explorer element in the project.</returns>
