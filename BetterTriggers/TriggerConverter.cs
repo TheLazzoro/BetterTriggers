@@ -12,6 +12,8 @@ using Newtonsoft.Json;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using BetterTriggers.Containers;
+using ICSharpCode.Decompiler.TypeSystem;
+using NuGet.Packaging.Signing;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -339,6 +341,16 @@ namespace BetterTriggers.WorldEdit
 
             if (triggers != null)
             {
+                if (triggers.SubVersion == null)
+                {
+                    for (int i = 0; i < triggers.Variables.Count; i++)
+                    {
+                        var variableItem = triggers.Variables[i];
+                        ExplorerElementVariable explorerElement = CreateExplorerElement(variableItem);
+
+                    }
+                }
+
                 for (int i = 0; i < triggers.TriggerItems.Count; i++)
                 {
                     var triggerItem = triggers.TriggerItems[i];
@@ -381,7 +393,7 @@ namespace BetterTriggers.WorldEdit
             return projectPath;
         }
 
-        private IExplorerElement CreateExplorerElement(TriggerItem triggerItem)
+        private IExplorerElement CreateTriggerElement(TriggerItem triggerItem)
         {
             IExplorerElement explorerElement = null;
             string extension = string.Empty;
@@ -417,6 +429,22 @@ namespace BetterTriggers.WorldEdit
                     break;
             }
 
+            return CreateExplorerElement()
+        }
+
+        private IExplorerElement CreateExplorerElementVariable(VariableDefinition variableDefinition)
+        {
+            string name = variableDefinition.Name;
+            int id = variableDefinition.Id;
+            string extension = ".var";
+
+            ExplorerElementVariable explorerElementVariable = GetVariable(triggerItem);
+
+            return CreateExplorerElement(explorerElementVariable, name, variableDefinition.ParentId);
+        }
+
+        private IExplorerElement CreateExplorerElement(IExplorerElement explorerElement, string name, int parentId)
+        {
             if (explorerElement == null)
                 return null;
 
