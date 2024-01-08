@@ -26,6 +26,7 @@ namespace GUI.Components.Settings
             textBoxCopiedMapFile.Text = settings.CopyLocation;
             comboboxTriggerStyle.SelectedIndex = settings.triggerEditorMode;
             comboboxEditorAppearance.SelectedIndex = settings.editorAppearance;
+            checkBoxQuickStart.IsChecked = settings.useQuickStart;
 
             foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
             {
@@ -48,10 +49,12 @@ namespace GUI.Components.Settings
             settings.CopyLocation = textBoxCopiedMapFile.Text;
             settings.triggerEditorMode = comboboxTriggerStyle.SelectedIndex;
             settings.textEditorFontStyle = comboboxScriptFont.Text;
+            settings.useQuickStart = (bool)checkBoxQuickStart.IsChecked;
 
             EditorSettings.Save(settings);
             this.Close();
 
+            // Refreshes editor tabs in case any relevant settings changed
             var mainWindow = MainWindow.GetMainWindow();
             var tabs = mainWindow.tabViewModel;
             for (int i = 0; i < tabs.Tabs.Count; i++)
