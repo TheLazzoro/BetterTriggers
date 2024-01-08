@@ -268,7 +268,7 @@ namespace GUI
             return keybindings;
         }
 
-        private void CustomMapData_OnSaving(object sender, System.IO.FileSystemEventArgs e)
+        private void CustomMapData_OnSaving()
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
