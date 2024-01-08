@@ -43,6 +43,15 @@
     <Color x:Key="scrollbarBarColor">#40404a</Color>
     <Color x:Key="scrollbarBackgroundColor">#19191f</Color>
 
+    <Color x:Key="checkboxBackgroundColor">#282838</Color>
+    <Color x:Key="checkboxBackgroundHoverColor">#223</Color>
+    <Color x:Key="checkboxBackgroundDisabledColor">#373747</Color>
+    <Color x:Key="checkboxBackgroundBorderColor">#112</Color>
+    <Color x:Key="checkboxBackgroundBorderHoverColor">#112</Color>
+    <Color x:Key="checkboxBackgroundBorderDisabledColor">#373747</Color>
+    <Color x:Key="checkboxGlyphColor">#eef</Color>
+    <Color x:Key="checkboxGlyphDisabledColor">#556</Color>
+
     <Color x:Key="hyperlinkDefaultColor">#00C8FF</Color>
     <Color x:Key="hyperlinkErrorColor">#ff4b4b</Color>
     <Color x:Key="hyperlinkCliCliColor">#69AC41</Color>
@@ -116,6 +125,15 @@
     <SolidColorBrush x:Key="ScrollbarButtonDownBrush" Color="{DynamicResource scrollbarButtonDownColor}" />
     <SolidColorBrush x:Key="ScrollbarBarBrush" Color="{DynamicResource scrollbarBarColor}" />
     <SolidColorBrush x:Key="ScrollbarBackground" Color="{DynamicResource scrollbarBackgroundColor}" />
+
+    <SolidColorBrush x:Key="CheckboxBackground" Color="{DynamicResource checkboxBackgroundColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundHover" Color="{DynamicResource checkboxBackgroundHoverColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundDisabled" Color="{DynamicResource checkboxBackgroundDisabledColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundBorder" Color="{DynamicResource checkboxBackgroundBorderColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundBorderHover" Color="{DynamicResource checkboxBackgroundBorderHoverColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundBorderDisabled" Color="{DynamicResource checkboxBackgroundBorderDisabledColor}" />
+    <SolidColorBrush x:Key="CheckboxGlyph" Color="{DynamicResource checkboxGlyphColor}" />
+    <SolidColorBrush x:Key="CheckboxGlyphDisabled" Color="{DynamicResource checkboxGlyphDisabledColor}" />
 
     <SolidColorBrush x:Key="HyperlinkDefaultBrush" Color="{DynamicResource hyperlinkDefaultColor}" />
     <SolidColorBrush x:Key="HyperlinkErrorBrush" Color="{DynamicResource hyperlinkErrorColor}" />

@@ -2,12 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:gui="clr-namespace:GUI"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         UseLayoutRounding="True"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Better Triggers" Height="686" Width="994" MinWidth="750" Background="{DynamicResource BackgroundDarkest}" WindowState="Normal" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
-
+        Title="Better Triggers" Height="686" Width="994" MinWidth="750" Background="{DynamicResource BackgroundDarkest}" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
+        
 
     <Window.Resources>
 
@@ -443,7 +443,7 @@
 
             <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="{DynamicResource BackgroundLight}" />
 
-            <Button x:Name="btnVariableMenu" ToolTip="WESTRING_VARIABLESCATEGORY" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnVariableMenu_Click" >
+            <Button x:Name="btnVariableMenu" IsEnabled="False" ToolTip="WESTRING_VARIABLESCATEGORY" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnVariableMenu_Click" >
                 <Button.Content>
                     <Image Source="Resources/Icons/editor-toolbar-triggeraddvariable.png" Stretch="None"/>
                 </Button.Content>

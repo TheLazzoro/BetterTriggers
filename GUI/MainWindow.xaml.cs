@@ -619,6 +619,7 @@ namespace GUI
 
         private void EnableToolbar(bool enable)
         {
+            btnVariableMenu.IsEnabled = enable;
             btnCreateFolder.IsEnabled = enable;
             btnCreateTrigger.IsEnabled = enable;
             btnCreateScript.IsEnabled = enable;
