@@ -40,7 +40,8 @@
 
     <Color x:Key="scrollbarButtonColor">#ddd</Color>
     <Color x:Key="scrollbarButtonDownColor">#888</Color>
-    <Color x:Key="scrollbarBarColor">#999</Color>
+    <Color x:Key="scrollbarBarColor">#bbb</Color>
+    <Color x:Key="scrollbarBarPressedColor">#aaa</Color>
     <Color x:Key="scrollbarBackgroundColor">#ddd</Color>
 
     <Color x:Key="checkboxBackgroundColor">#fff</Color>
@@ -124,6 +125,7 @@
     <SolidColorBrush x:Key="ScrollbarButtonBrush" Color="{DynamicResource scrollbarButtonColor}" />
     <SolidColorBrush x:Key="ScrollbarButtonDownBrush" Color="{DynamicResource scrollbarButtonDownColor}" />
     <SolidColorBrush x:Key="ScrollbarBarBrush" Color="{DynamicResource scrollbarBarColor}" />
+    <SolidColorBrush x:Key="ScrollbarBarPressedBrush" Color="{DynamicResource scrollbarBarPressedColor}" />
     <SolidColorBrush x:Key="ScrollbarBackground" Color="{DynamicResource scrollbarBackgroundColor}" />
 
     <SolidColorBrush x:Key="CheckboxBackground" Color="{DynamicResource checkboxBackgroundColor}" />
