@@ -24,14 +24,15 @@ namespace BetterTriggers
     {
         internal static Map MPQMap;
         private static FileSystemWatcher watcher;
-        public static event FileSystemEventHandler OnSaving;
+        public static event Action OnSaving;
 
-        private static void InvokeOnSaving(object sender, FileSystemEventArgs e)
-        {
-            if (OnSaving != null)
-                OnSaving(sender, e);
-        }
+        private static System.Timers.Timer ThresholdBeforeReloadingTimer;
+        private const int THRESHOLD_BEFORE_SAVING_MS = 50;
+        private static bool isVanillaWESaving;
 
+        /// <summary>
+        /// Method used for detecting the vanilla WE saving the map.
+        /// </summary>
         private static void Watcher_Created(object sender, FileSystemEventArgs e)
         {
             // this try-block is only here because of the TriggerConverter.
@@ -39,12 +40,49 @@ namespace BetterTriggers
             {
                 var mapPath = Project.CurrentProject.GetFullMapPath();
                 if (e.Name == Path.GetFileName(mapPath) + "Temp")
-                    InvokeOnSaving(sender, e);
+                {
+                    isVanillaWESaving = true;
+                    OnSaving?.Invoke();
+                }
             }
             catch (Exception)
             {
 
             }
+        }
+
+        /// <summary>
+        /// Method used for detecting other tools changing the map.
+        /// </summary>
+        private static void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (!isVanillaWESaving)
+            {
+                string mapPath = Project.CurrentProject.GetFullMapPath();
+                bool fileIsInMap = e.FullPath.StartsWith(mapPath);
+                if (fileIsInMap)
+                {
+                    if (ThresholdBeforeReloadingTimer == null)
+                    {
+                        ThresholdBeforeReloadingTimer = new System.Timers.Timer();
+                        ThresholdBeforeReloadingTimer.AutoReset = false;
+                        ThresholdBeforeReloadingTimer.Elapsed += ThresholdBeforeReloadingTimer_Elapsed;
+                    }
+                    ThresholdBeforeReloadingTimer.Stop();
+                    ThresholdBeforeReloadingTimer.Interval = THRESHOLD_BEFORE_SAVING_MS;
+                    ThresholdBeforeReloadingTimer.Start();
+
+                    isThresholdTimerRunning = true;
+                    OnSaving?.Invoke();
+                }
+            }
+        }
+
+        private static bool isThresholdTimerRunning;
+        private static void ThresholdBeforeReloadingTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            isThresholdTimerRunning = false;
+            ThresholdBeforeReloadingTimer.Stop();
         }
 
         public static bool IsMapSaving(string fullMapPath = null)
@@ -57,6 +95,8 @@ namespace BetterTriggers
             if (Directory.Exists(fullMapPath + "Temp"))
                 return true;
             else if (Directory.Exists(fullMapPath + "Backup"))
+                return true;
+            else if(isThresholdTimerRunning)
                 return true;
             else
                 return false;
@@ -93,14 +133,22 @@ namespace BetterTriggers
             Sounds.Load();
             Units.Load();
 
+            isVanillaWESaving = false;
+
             if (watcher != null)
+            {
                 watcher.Created -= Watcher_Created;
+                watcher.Changed -= Watcher_Changed;
+            }
 
             watcher = new System.IO.FileSystemWatcher();
             watcher.Path = Path.GetDirectoryName(fullMapPath);
             watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = true;
             watcher.Created += Watcher_Created;
+            watcher.Changed += Watcher_Changed;
         }
+
 
         /// <summary>
         /// Removes all used map data that no longer exists in the map.

@@ -89,6 +89,7 @@ namespace BetterTriggers
 
         public ScriptGenerator(ScriptLanguage language)
         {
+            this.project = Project.CurrentProject;
             this.language = language;
             if (language == ScriptLanguage.Jass)
                 return;
@@ -131,7 +132,6 @@ end
 
         internal bool GenerateScript()
         {
-            this.project = Project.CurrentProject;
             bool success = true;
             if (Project.CurrentProject == null || Project.CurrentProject.war3project == null)
                 return false;

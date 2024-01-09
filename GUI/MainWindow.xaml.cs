@@ -19,8 +19,10 @@ using GUI.Components.VariableList;
 using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
 using Microsoft.Win32;
+using NuGet.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -114,6 +116,21 @@ namespace GUI
             SetKeybindings(keybindings);
 
             RecentFiles.isTest = false; // hack
+
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            EditorSettings settings = EditorSettings.Load();
+            if (settings.useQuickStart)
+            {
+                string lastOpenedProject = RecentFiles.GetRecentFiles().FirstOrDefault();
+                if (!string.IsNullOrEmpty(lastOpenedProject))
+                {
+                    OpenProject(lastOpenedProject);
+                }
+            }
 
             new VersionCheck();
         }
@@ -251,7 +268,7 @@ namespace GUI
             return keybindings;
         }
 
-        private void CustomMapData_OnSaving(object sender, System.IO.FileSystemEventArgs e)
+        private void CustomMapData_OnSaving()
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
@@ -619,6 +636,7 @@ namespace GUI
 
         private void EnableToolbar(bool enable)
         {
+            btnVariableMenu.IsEnabled = enable;
             btnCreateFolder.IsEnabled = enable;
             btnCreateTrigger.IsEnabled = enable;
             btnCreateScript.IsEnabled = enable;
@@ -771,7 +789,7 @@ namespace GUI
 
         private void CommandBinding_CanExecute_Undo(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(Project.CurrentProject != null)
+            if (Project.CurrentProject != null)
                 e.CanExecute = Project.CurrentProject.CommandManager.CanUndo();
         }
 
@@ -782,7 +800,7 @@ namespace GUI
 
         private void CommandBinding_CanExecute_Redo(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(Project.CurrentProject != null)
+            if (Project.CurrentProject != null)
                 e.CanExecute = Project.CurrentProject.CommandManager.CanRedo();
         }
 

@@ -40,8 +40,18 @@
 
     <Color x:Key="scrollbarButtonColor">#ddd</Color>
     <Color x:Key="scrollbarButtonDownColor">#888</Color>
-    <Color x:Key="scrollbarBarColor">#999</Color>
+    <Color x:Key="scrollbarBarColor">#bbb</Color>
+    <Color x:Key="scrollbarBarPressedColor">#aaa</Color>
     <Color x:Key="scrollbarBackgroundColor">#ddd</Color>
+
+    <Color x:Key="checkboxBackgroundColor">#fff</Color>
+    <Color x:Key="checkboxBackgroundHoverColor">#fff</Color>
+    <Color x:Key="checkboxBackgroundDisabledColor">#aaa</Color>
+    <Color x:Key="checkboxBackgroundBorderColor">#999</Color>
+    <Color x:Key="checkboxBackgroundBorderHoverColor">#08f</Color>
+    <Color x:Key="checkboxBackgroundBorderDisabledColor">#888</Color>
+    <Color x:Key="checkboxGlyphColor">#000</Color>
+    <Color x:Key="checkboxGlyphDisabledColor">#888</Color>
 
     <Color x:Key="hyperlinkDefaultColor">#0000FA</Color>
     <Color x:Key="hyperlinkErrorColor">#ff1717</Color>
@@ -115,7 +125,17 @@
     <SolidColorBrush x:Key="ScrollbarButtonBrush" Color="{DynamicResource scrollbarButtonColor}" />
     <SolidColorBrush x:Key="ScrollbarButtonDownBrush" Color="{DynamicResource scrollbarButtonDownColor}" />
     <SolidColorBrush x:Key="ScrollbarBarBrush" Color="{DynamicResource scrollbarBarColor}" />
+    <SolidColorBrush x:Key="ScrollbarBarPressedBrush" Color="{DynamicResource scrollbarBarPressedColor}" />
     <SolidColorBrush x:Key="ScrollbarBackground" Color="{DynamicResource scrollbarBackgroundColor}" />
+
+    <SolidColorBrush x:Key="CheckboxBackground" Color="{DynamicResource checkboxBackgroundColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundHover" Color="{DynamicResource checkboxBackgroundHoverColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundDisabled" Color="{DynamicResource checkboxBackgroundDisabledColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundBorder" Color="{DynamicResource checkboxBackgroundBorderColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundBorderHover" Color="{DynamicResource checkboxBackgroundBorderHoverColor}" />
+    <SolidColorBrush x:Key="CheckboxBackgroundBorderDisabled" Color="{DynamicResource checkboxBackgroundBorderDisabledColor}" />
+    <SolidColorBrush x:Key="CheckboxGlyph" Color="{DynamicResource checkboxGlyphColor}" />
+    <SolidColorBrush x:Key="CheckboxGlyphDisabled" Color="{DynamicResource checkboxGlyphDisabledColor}" />
 
     <SolidColorBrush x:Key="HyperlinkDefaultBrush" Color="{DynamicResource hyperlinkDefaultColor}" />
     <SolidColorBrush x:Key="HyperlinkErrorBrush" Color="{DynamicResource hyperlinkErrorColor}" />
