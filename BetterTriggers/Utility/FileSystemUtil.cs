@@ -1,14 +1,16 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using War3Net.Build.Info;
 
 namespace BetterTriggers.Utility
 {
-    public class FileSystemUtil
+    public static class FileSystemUtil
     {
         public static void Move(string elementToMove, string targetDir, int insertIndex)
         {
@@ -102,6 +104,28 @@ namespace BetterTriggers.Utility
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns appropriate file extension.
+        /// </summary>
+        public static string GetExtension(IExplorerElement element, ScriptLanguage language)
+        {
+            string extension = string.Empty;
+            switch (element)
+            {
+                case ExplorerElementScript:
+                    extension = language == ScriptLanguage.Jass ? ".j" : ".lua";
+                    break;
+                case ExplorerElementVariable:
+                    extension = ".var";
+                    break;
+                case ExplorerElementTrigger:
+                    extension = ".trg";
+                    break;
+            }
+
+            return extension;
         }
     }
 }

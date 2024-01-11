@@ -12,8 +12,7 @@ using Newtonsoft.Json;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using BetterTriggers.Containers;
-using ICSharpCode.Decompiler.TypeSystem;
-using NuGet.Packaging.Signing;
+using War3Net.Build;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -45,6 +44,61 @@ namespace BetterTriggers.WorldEdit
         public TriggerConverter(string mapPath)
         {
             this.mapPath = mapPath;
+            Load(mapPath);
+        }
+
+        private void Load(string mapPath)
+        {
+            var map = Map.Open(mapPath);
+            if (map.Triggers == null)
+                return;
+
+            triggers = map.Triggers;
+            var customTextTriggers = map.CustomTextTriggers;
+            rootComment = customTextTriggers.GlobalCustomScriptComment;
+            if (customTextTriggers.GlobalCustomScriptCode != null)
+            {
+                if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
+                    rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
+            }
+            customTextTriggers.CustomTextTriggers.ForEach(item =>
+            {
+                wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
+            });
+            mapInfo = map.Info;
+            language = mapInfo.ScriptLanguage;
+            var wts = map.TriggerStrings;
+            wts.Strings.ForEach(trigStr => triggerStrings.TryAdd(trigStr.Key, trigStr.Value));
+
+            // Prepare all trigger items
+            if (triggers != null)
+            {
+                // First, gather all variables names and ids
+                for (int i = 0; i < triggers.Variables.Count; i++)
+                {
+                    var variable = triggers.Variables[i];
+                    variableIds.Add(variable.Name, variable.Id);
+                    variableTypes.Add(variable.Name, variable.Type);
+                    if (triggers.SubVersion != null)
+                    {
+                        explorerVariables.Add(variable.Id, CreateVariable(variable));
+                    }
+                    else
+                    {
+                        explorerVariables_byName.Add(variable.Name, CreateVariable(variable));
+                    }
+                }
+
+                // Then, gather all trigger names and ids
+                for (int i = 0; i < triggers.TriggerItems.Count; i++)
+                {
+                    var triggerItem = triggers.TriggerItems[i];
+                    if (triggerItem.Type != TriggerItemType.Gui)
+                        continue;
+
+                    triggerIds.TryAdd("gg_trg_" + triggerItem.Name.Replace(" ", "_"), triggerItem.Id);
+                }
+            }
         }
 
         /// <summary>
@@ -53,20 +107,17 @@ namespace BetterTriggers.WorldEdit
         /// <returns>Project file path.</returns>
         public string Convert(string projectDestinationDir)
         {
-            Load(mapPath);
             return ConvertAllTriggers(projectDestinationDir);
         }
 
         public List<IExplorerElement> ConvertAll_NoWrite()
         {
-            Load(mapPath);
             return ConvertSelectedTriggers(triggers.TriggerItems);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="mapPath">Path to map we're importing from.</param>
         /// <exception cref="Exception"></exception>
         public void ImportIntoCurrentProject(List<TriggerItem> itemsToImport)
         {
@@ -75,7 +126,6 @@ namespace BetterTriggers.WorldEdit
                 throw new Exception("Cannot import when no project is open.");
             }
 
-            Load(mapPath);
             var convertedElements = ConvertSelectedTriggers(itemsToImport);
             WriteConvertedTriggers(convertedElements);
         }
@@ -102,99 +152,9 @@ namespace BetterTriggers.WorldEdit
             project.EnableFileEvents(true);
         }
 
-        private void Load(string mapPath)
+
+        private void ResolveIdCollisions(Project project, List<IExplorerElement> triggerElementsToImport)
         {
-            CustomMapData.Load(mapPath);
-
-
-            string pathTriggers = "war3map.wtg";
-            string pathCustomText = "war3map.wct";
-            string pathInfo = "war3map.w3i";
-            string pathTriggerStrings = "war3map.wts";
-            if (CustomMapData.MPQMap.Triggers == null)
-                return;
-
-            triggers = CustomMapData.MPQMap.Triggers;
-            var customTextTriggers = CustomMapData.MPQMap.CustomTextTriggers;
-            rootComment = customTextTriggers.GlobalCustomScriptComment;
-            if (customTextTriggers.GlobalCustomScriptCode != null)
-            {
-                if (customTextTriggers.GlobalCustomScriptCode.Code.Length > 0)
-                    rootHeader = customTextTriggers.GlobalCustomScriptCode.Code.Replace("\0", ""); // remove NUL char
-            }
-            customTextTriggers.CustomTextTriggers.ForEach(item =>
-            {
-                wctStrings.Add(item.Code.Replace("\0", "")); // remove NUL char
-            });
-            mapInfo = CustomMapData.MPQMap.Info;
-            language = mapInfo.ScriptLanguage;
-            var wts = CustomMapData.MPQMap.TriggerStrings;
-            wts.Strings.ForEach(trigStr => triggerStrings.TryAdd(trigStr.Key, trigStr.Value));
-
-            // Prepare all trigger items
-            if (triggers != null)
-            {
-                // First, gather all variables names and ids
-                for (int i = 0; i < triggers.Variables.Count; i++)
-                {
-                    var variable = triggers.Variables[i];
-                    variableIds.Add(variable.Name, variable.Id);
-                    variableTypes.Add(variable.Name, variable.Type);
-                    if(triggers.SubVersion != null)
-                    {
-                        explorerVariables.Add(variable.Id, CreateVariable(variable));
-                    }
-                    else
-                    {
-                        explorerVariables_byName.Add(variable.Name, CreateVariable(variable));
-                    }
-                }
-
-                // Then, gather all trigger names and ids
-                for (int i = 0; i < triggers.TriggerItems.Count; i++)
-                {
-                    var triggerItem = triggers.TriggerItems[i];
-                    if (triggerItem.Type != TriggerItemType.Gui)
-                        continue;
-
-                    triggerIds.TryAdd("gg_trg_" + triggerItem.Name.Replace(" ", "_"), triggerItem.Id);
-                }
-            }
-        }
-
-        List<IExplorerElement> triggerElementsToImport;
-        private List<IExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
-        {
-            var project = Project.CurrentProject;
-            if (project == null)
-            {
-                throw new Exception("Cannot import when no project is active.");
-            }
-
-            var root = project.GetRoot();
-            string targetDir = Path.Combine(root.GetPath(), mapInfo.MapName + "_Imported");
-            if (!Directory.Exists(targetDir))
-            {
-                Directory.CreateDirectory(targetDir);
-            }
-            triggerPaths.Add(0, targetDir); // root path for the imported triggers
-
-            triggerElementsToImport = new List<IExplorerElement>();
-            for (int i = 0; i < selectedTriggers.Count; i++)
-            {
-                var triggerItem = selectedTriggers[i];
-                if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
-                    continue;
-
-                IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
-                if (explorerElement == null)
-                    continue;
-
-                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
-                triggerElementsToImport.Add(explorerElement);
-
-            }
-
             List<IExplorerElement> dummyElements = new List<IExplorerElement>();
             // Resolve collisions
             for (int i = 0; i < triggerElementsToImport.Count; i++)
@@ -232,22 +192,22 @@ namespace BetterTriggers.WorldEdit
                 // Resolve id-collisions
 
                 int id = element.GetId();
-                bool doesIdExist = false;
+                bool idAlreadyExists = false;
                 bool isVariable = false;
                 switch (element)
                 {
                     case ExplorerElementTrigger:
-                        doesIdExist = project.Triggers.Contains(id);
+                        idAlreadyExists = project.Triggers.Contains(id);
                         break;
                     case ExplorerElementVariable:
-                        doesIdExist = project.Variables.Contains(id);
+                        idAlreadyExists = project.Variables.Contains(id);
                         isVariable = true;
                         break;
                     default:
                         break;
                 }
 
-                if (doesIdExist)
+                if (idAlreadyExists)
                 {
                     int oldId = id;
                     int newId = isVariable ? project.Variables.GenerateId() : project.Triggers.GenerateId();
@@ -322,6 +282,42 @@ namespace BetterTriggers.WorldEdit
             {
                 project.RemoveElementFromContainer(el);
             });
+        }
+
+
+        private List<IExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
+        {
+            var project = Project.CurrentProject;
+            if (project == null)
+            {
+                throw new Exception("Cannot import when no project is active.");
+            }
+
+            var root = project.GetRoot();
+            string targetDir = Path.Combine(root.GetPath(), mapInfo.MapName + "_Imported");
+            if (!Directory.Exists(targetDir))
+            {
+                Directory.CreateDirectory(targetDir);
+            }
+            triggerPaths.Add(0, targetDir); // root path for the imported triggers
+
+            var triggerElementsToImport = new List<IExplorerElement>();
+            for (int i = 0; i < selectedTriggers.Count; i++)
+            {
+                var triggerItem = selectedTriggers[i];
+                if (triggerItem is DeletedTriggerItem || triggerItem.Type is TriggerItemType.RootCategory)
+                    continue;
+
+                IExplorerElement explorerElement = CreateExplorerElement(triggerItem);
+                explorerElement = FormatExplorerElement(explorerElement, triggerItem.Name, triggerItem.ParentId);
+                if (explorerElement == null)
+                    continue;
+
+                triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
+                triggerElementsToImport.Add(explorerElement);
+            }
+
+            ResolveIdCollisions(project, triggerElementsToImport);
 
             return triggerElementsToImport;
         }
@@ -341,16 +337,49 @@ namespace BetterTriggers.WorldEdit
 
             if (triggers != null)
             {
+                /// Write to disk (local method)
+                void WriteToProjectFile(IExplorerElement explorerElement, int id, int parentId)
+                {
+                    War3ProjectFileEntry entry = new War3ProjectFileEntry()
+                    {
+                        isEnabled = explorerElement.GetEnabled(),
+                        isInitiallyOn = explorerElement.GetInitiallyOn(),
+                        path = explorerElement.GetSaveablePath(),
+                    };
+
+                    War3ProjectFileEntry parentEnty;
+                    projectFilesEntries.TryGetValue(parentId, out parentEnty);
+                    if (parentEnty == null)
+                        project.Files.Add(entry);
+                    else
+                        parentEnty.Files.Add(entry);
+
+                    projectFilesEntries.TryAdd(id, entry);
+                }
+
+                List<IExplorerElement> elements = new();
+
+                // run through legacy format for variables
                 if (triggers.SubVersion == null)
                 {
                     for (int i = 0; i < triggers.Variables.Count; i++)
                     {
                         var variableItem = triggers.Variables[i];
-                        ExplorerElementVariable explorerElement = CreateExplorerElement(variableItem);
+                        ExplorerElementVariable variable = CreateVariable(variableItem);
+                        int newId = RandomUtil.GenerateInt(); // Legacy variable format always has id=0, so we need to generate new id's
+                        variable.variable.Id = newId;
+                        variableIds.Remove(variableItem.Name);
+                        variableIds.Add(variableItem.Name, newId);
+                        IExplorerElement explorerElement = FormatExplorerElement(variable, variableItem.Name, variableItem.ParentId);
 
+                        triggerPaths.TryAdd(variableItem.Id, explorerElement.GetPath());
+
+                        elements.Add(explorerElement);
+                        WriteToProjectFile(explorerElement, variableItem.Id, variableItem.ParentId);
                     }
                 }
 
+                // run through the rest
                 for (int i = 0; i < triggers.TriggerItems.Count; i++)
                 {
                     var triggerItem = triggers.TriggerItems[i];
@@ -362,6 +391,20 @@ namespace BetterTriggers.WorldEdit
                         continue;
 
                     triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
+
+                    elements.Add(explorerElement);
+                    WriteToProjectFile(explorerElement, triggerItem.Id, triggerItem.ParentId);
+                }
+
+                // TODO: Check for id collisions
+
+
+
+
+                // Write to disk
+                for (int i = 0; i < elements.Count; i++)
+                {
+                    var explorerElement = elements[i];
                     if (explorerElement is ExplorerElementFolder)
                         Directory.CreateDirectory(explorerElement.GetPath());
                     else
@@ -369,22 +412,6 @@ namespace BetterTriggers.WorldEdit
                         var saveable = (IExplorerSaveable)explorerElement;
                         File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
                     }
-
-                    War3ProjectFileEntry entry = new War3ProjectFileEntry()
-                    {
-                        isEnabled = explorerElement.GetEnabled(),
-                        isInitiallyOn = explorerElement.GetInitiallyOn(),
-                        path = explorerElement.GetSaveablePath(),
-                    };
-
-                    War3ProjectFileEntry parentEnty;
-                    projectFilesEntries.TryGetValue(triggerItem.ParentId, out parentEnty);
-                    if (parentEnty == null)
-                        project.Files.Add(entry);
-                    else
-                        parentEnty.Files.Add(entry);
-
-                    projectFilesEntries.TryAdd(triggerItem.Id, entry);
                 }
             }
 
@@ -393,10 +420,9 @@ namespace BetterTriggers.WorldEdit
             return projectPath;
         }
 
-        private IExplorerElement CreateTriggerElement(TriggerItem triggerItem)
+        private IExplorerElement CreateExplorerElement(TriggerItem triggerItem)
         {
             IExplorerElement explorerElement = null;
-            string extension = string.Empty;
 
             switch (triggerItem.Type)
             {
@@ -409,19 +435,16 @@ namespace BetterTriggers.WorldEdit
                     break;
                 case TriggerItemType.Gui:
                     explorerElement = CreateTrigger(triggerItem as TriggerDefinition);
-                    extension = ".trg";
                     break;
                 case TriggerItemType.Comment:
                     break;
                 case TriggerItemType.Script:
                     explorerElement = CreateScript(triggerItem as TriggerDefinition, wctStrings[wctIndex]);
                     wctIndex++;
-                    extension = mapInfo.ScriptLanguage == ScriptLanguage.Jass ? ".j" : ".lua";
                     break;
                 case TriggerItemType.Variable:
                     ExplorerElementVariable explorerElementVariable = GetVariable(triggerItem);
                     explorerElement = explorerElementVariable;
-                    extension = ".var";
                     break;
                 case TriggerItemType.UNK7:
                     break;
@@ -429,7 +452,7 @@ namespace BetterTriggers.WorldEdit
                     break;
             }
 
-            return CreateExplorerElement()
+            return FormatExplorerElement(explorerElement, triggerItem.Name, triggerItem.ParentId);
         }
 
         private IExplorerElement CreateExplorerElementVariable(VariableDefinition variableDefinition)
@@ -438,24 +461,23 @@ namespace BetterTriggers.WorldEdit
             int id = variableDefinition.Id;
             string extension = ".var";
 
-            ExplorerElementVariable explorerElementVariable = GetVariable(triggerItem);
+            ExplorerElementVariable explorerElementVariable = GetVariable(variableDefinition);
 
-            return CreateExplorerElement(explorerElementVariable, name, variableDefinition.ParentId);
+            return FormatExplorerElement(explorerElementVariable, name, variableDefinition.ParentId);
         }
 
-        private IExplorerElement CreateExplorerElement(IExplorerElement explorerElement, string name, int parentId)
+        private IExplorerElement FormatExplorerElement(IExplorerElement explorerElement, string name, int parentId)
         {
             if (explorerElement == null)
                 return null;
 
             string parentPath;
-            triggerPaths.TryGetValue(triggerItem.ParentId, out parentPath);
+            triggerPaths.TryGetValue(parentId, out parentPath);
             if (parentPath == null) // could not find the element's location, put it in root.
             {
                 triggerPaths.TryGetValue(0, out parentPath);
             }
 
-            string name = triggerItem.Name;
             List<char> invalidPathChars = Path.GetInvalidPathChars().ToList();
             invalidPathChars.AddRange(Path.GetInvalidFileNameChars());
 
@@ -465,6 +487,8 @@ namespace BetterTriggers.WorldEdit
                 name = name.Replace(invalidPathChars[i].ToString(), "");
                 i++;
             }
+
+            string extension = FileSystemUtil.GetExtension(explorerElement, language);
             name = name.TrimStart().TrimEnd();
             name = name.TrimEnd('.'); // files/dirs cannot end with '.'
             string suffix = string.Empty;
@@ -542,7 +566,18 @@ namespace BetterTriggers.WorldEdit
             explorerElementTrigger.isEnabled = triggerDefinition.IsEnabled;
             explorerElementTrigger.isInitiallyOn = triggerDefinition.IsInitiallyOn;
 
-            trigger.Id = triggerDefinition.Id;
+            if(triggers.SubVersion == null) // legacy format
+            {
+                int newId = RandomUtil.GenerateInt();
+                string name = "gg_trg_" + triggerDefinition.Name.Replace(" ", "_");
+                trigger.Id = newId;
+                triggerIds.Remove(name);
+                triggerIds.TryAdd(name, newId);
+            }
+            else
+            {
+                trigger.Id = triggerDefinition.Id;
+            }
             trigger.Comment = triggerDefinition.Description;
             trigger.Script = wctStrings[wctIndex];
             wctIndex++;
@@ -571,7 +606,7 @@ namespace BetterTriggers.WorldEdit
                         Actions.Add(function);
                         break;
                     case TriggerFunctionType.Call:
-                        throw new Exception("Should not reach here!");
+                        throw new Exception("Attempted to create a 'Parameter' as 'TriggerElement'.");
                     default:
                         break;
                 }
@@ -823,6 +858,21 @@ namespace BetterTriggers.WorldEdit
             else
             {
                 explorerVariables_byName.TryGetValue(triggerItem.Name, out variable);
+            }
+
+            return variable;
+        }
+
+        private ExplorerElementVariable GetVariable(VariableDefinition variableDef)
+        {
+            ExplorerElementVariable variable;
+            if (triggers.SubVersion is not null)
+            {
+                explorerVariables.TryGetValue(variableDef.Id, out variable);
+            }
+            else
+            {
+                explorerVariables_byName.TryGetValue(variableDef.Name, out variable);
             }
 
             return variable;
