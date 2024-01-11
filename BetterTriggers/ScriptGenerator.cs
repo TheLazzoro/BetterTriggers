@@ -2511,6 +2511,11 @@ end
                     return $"{ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions, boolexprIsOn)}";
                 }
 
+                else if(f.value == "GetTriggerName")
+                {
+                    return $"\"{triggerName}\"";
+                }
+
 
                 // --------------------- //
                 // --- REGULAR CALLS --- //
