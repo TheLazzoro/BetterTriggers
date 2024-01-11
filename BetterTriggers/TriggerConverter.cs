@@ -49,7 +49,10 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            var map = Map.Open(mapPath);
+            CustomMapData.Load(mapPath);
+
+            var map = CustomMapData.MPQMap;
+            //var map = Map.Open(mapPath);
             if (map.Triggers == null)
                 return;
 
@@ -338,7 +341,7 @@ namespace BetterTriggers.WorldEdit
             if (triggers != null)
             {
                 /// Write to disk (local method)
-                void WriteToProjectFile(IExplorerElement explorerElement, int id, int parentId)
+                void WriteToProjectFileAndDisk(IExplorerElement explorerElement, int id, int parentId)
                 {
                     War3ProjectFileEntry entry = new War3ProjectFileEntry()
                     {
@@ -355,6 +358,14 @@ namespace BetterTriggers.WorldEdit
                         parentEnty.Files.Add(entry);
 
                     projectFilesEntries.TryAdd(id, entry);
+
+                    if (explorerElement is ExplorerElementFolder)
+                        Directory.CreateDirectory(explorerElement.GetPath());
+                    else
+                    {
+                        var saveable = (IExplorerSaveable)explorerElement;
+                        File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
+                    }
                 }
 
                 List<IExplorerElement> elements = new();
@@ -375,7 +386,7 @@ namespace BetterTriggers.WorldEdit
                         triggerPaths.TryAdd(variableItem.Id, explorerElement.GetPath());
 
                         elements.Add(explorerElement);
-                        WriteToProjectFile(explorerElement, variableItem.Id, variableItem.ParentId);
+                        WriteToProjectFileAndDisk(explorerElement, variableItem.Id, variableItem.ParentId);
                     }
                 }
 
@@ -393,25 +404,7 @@ namespace BetterTriggers.WorldEdit
                     triggerPaths.TryAdd(triggerItem.Id, explorerElement.GetPath());
 
                     elements.Add(explorerElement);
-                    WriteToProjectFile(explorerElement, triggerItem.Id, triggerItem.ParentId);
-                }
-
-                // TODO: Check for id collisions
-
-
-
-
-                // Write to disk
-                for (int i = 0; i < elements.Count; i++)
-                {
-                    var explorerElement = elements[i];
-                    if (explorerElement is ExplorerElementFolder)
-                        Directory.CreateDirectory(explorerElement.GetPath());
-                    else
-                    {
-                        var saveable = (IExplorerSaveable)explorerElement;
-                        File.WriteAllText(explorerElement.GetPath(), saveable.GetSaveableString());
-                    }
+                    WriteToProjectFileAndDisk(explorerElement, triggerItem.Id, triggerItem.ParentId);
                 }
             }
 
@@ -749,6 +742,16 @@ namespace BetterTriggers.WorldEdit
                             // Old versions of WE (other language versions too?) accept non-ASCII chars
                             // for variable names in WE, but references in WTG are underscore formatted.
                             // ... So we need to search and replace using the Ascii util.
+
+                            /* War3Net is doing something unexpected, where all parameters using
+                             * non-ASCII symbols are being auto-translated, but that also means parameters
+                             * automatically don't match the name of region they're referencing.
+                             * 
+                             * So we have to look through all actual regions, do the translation ourselves,
+                             * so we can find the region. Once the region is found the parameter
+                             * can then use the region's original name.
+                             */
+
 
                             var val = foreignParam.Value.Replace("gg_rct_", "");
                             var regions = Regions.GetAll();
