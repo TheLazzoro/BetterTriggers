@@ -434,7 +434,12 @@ namespace BetterTriggers.WorldEdit
                     explorerElement = CreateFolder(triggerItem as TriggerCategoryDefinition);
                     break;
                 case TriggerItemType.Gui:
-                    explorerElement = CreateTrigger(triggerItem as TriggerDefinition);
+                    var triggerDef = triggerItem as TriggerDefinition;
+                    if (triggerDef.IsComment) // Triggers can be converted to comments in vanilla WE
+                    {
+                        break;
+                    }
+                    explorerElement = CreateTrigger(triggerDef);
                     break;
                 case TriggerItemType.Comment:
                     break;
