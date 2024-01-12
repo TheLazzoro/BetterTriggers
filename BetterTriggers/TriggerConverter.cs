@@ -32,7 +32,6 @@ namespace BetterTriggers.WorldEdit
         private int wctIndex = 0;
 
         Dictionary<int, string> triggerPaths = new Dictionary<int, string>(); // [triggerId, our path in the filesystem]
-        Dictionary<string, string> variableTypes = new Dictionary<string, string>(); // [name, type]
         Dictionary<string, int> variableIds = new Dictionary<string, int>(); // [name, variableId]
         Dictionary<string, int> triggerIds = new Dictionary<string, int>(); // [name, triggerId]
 
@@ -81,7 +80,6 @@ namespace BetterTriggers.WorldEdit
                 {
                     var variable = triggers.Variables[i];
                     variableIds.Add(variable.Name, variable.Id);
-                    variableTypes.Add(variable.Name, variable.Type);
                     if (triggers.SubVersion != null)
                     {
                         explorerVariables.Add(variable.Id, CreateVariable(variable));
@@ -99,7 +97,16 @@ namespace BetterTriggers.WorldEdit
                     if (triggerItem.Type != TriggerItemType.Gui)
                         continue;
 
-                    triggerIds.TryAdd("gg_trg_" + triggerItem.Name.Replace(" ", "_"), triggerItem.Id);
+                    string name = "gg_trg_" + triggerItem.Name.Replace(" ", "_");
+                    if (triggers.SubVersion == null) // legacy format. Id's probably didn't exist in older formats
+                    {
+                        int newId = RandomUtil.GenerateInt();
+                        triggerIds.TryAdd(name, newId);
+                    }
+                    else
+                    {
+                        triggerIds.TryAdd(name, triggerItem.Id);
+                    }
                 }
             }
         }
@@ -559,13 +566,12 @@ namespace BetterTriggers.WorldEdit
             explorerElementTrigger.isEnabled = triggerDefinition.IsEnabled;
             explorerElementTrigger.isInitiallyOn = triggerDefinition.IsInitiallyOn;
 
-            if(triggers.SubVersion == null) // legacy format
+            if (triggers.SubVersion == null) // legacy format
             {
-                int newId = RandomUtil.GenerateInt();
                 string name = "gg_trg_" + triggerDefinition.Name.Replace(" ", "_");
+                int newId;
+                triggerIds.TryGetValue(name, out newId);
                 trigger.Id = newId;
-                triggerIds.Remove(name);
-                triggerIds.TryAdd(name, newId);
             }
             else
             {
@@ -801,16 +807,13 @@ namespace BetterTriggers.WorldEdit
                             break;
 
                         int id = 0;
-                        string type = string.Empty;
                         variableIds.TryGetValue(foreignParam.Value, out id);
-                        variableTypes.TryGetValue(foreignParam.Value, out type);
                         if (id != 0)
                         {
                             parameter = new VariableRef() { arrayIndexValues = arrayIndex, VariableId = id };
                             break;
                         }
                         triggerIds.TryGetValue(foreignParam.Value, out id);
-                        type = "trigger";
                         parameter = new TriggerRef() { TriggerId = id };
 
                         break;
