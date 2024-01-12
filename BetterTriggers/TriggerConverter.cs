@@ -97,7 +97,7 @@ namespace BetterTriggers.WorldEdit
                     if (triggerItem.Type != TriggerItemType.Gui)
                         continue;
 
-                    string name = "gg_trg_" + triggerItem.Name.Replace(" ", "_");
+                    string name = "gg_trg_" + triggerItem.Name.TrimEnd().Replace(" ", "_");
                     if (triggers.SubVersion == null) // legacy format. Id's probably didn't exist in older formats
                     {
                         int newId = RandomUtil.GenerateInt();
@@ -568,7 +568,7 @@ namespace BetterTriggers.WorldEdit
 
             if (triggers.SubVersion == null) // legacy format
             {
-                string name = "gg_trg_" + triggerDefinition.Name.Replace(" ", "_");
+                string name = "gg_trg_" + triggerDefinition.Name.TrimEnd().Replace(" ", "_");
                 int newId;
                 triggerIds.TryGetValue(name, out newId);
                 trigger.Id = newId;
