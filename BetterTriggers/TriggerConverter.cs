@@ -98,14 +98,17 @@ namespace BetterTriggers.WorldEdit
                         continue;
 
                     string name = "gg_trg_" + triggerItem.Name.TrimEnd().Replace(" ", "_");
+                    string nameFormatted = Ascii.ReplaceNonASCII("gg_trg_" + triggerItem.Name.TrimEnd().Replace(" ", "_")); // Again, War3Net auto-formats names for parameters. See comment further down in the parameter method.
                     if (triggers.SubVersion == null) // legacy format. Id's probably didn't exist in older formats
                     {
                         int newId = RandomUtil.GenerateInt();
                         triggerIds.TryAdd(name, newId);
+                        triggerIds.TryAdd(nameFormatted, newId);
                     }
                     else
                     {
                         triggerIds.TryAdd(name, triggerItem.Id);
+                        triggerIds.TryAdd(nameFormatted, triggerItem.Id);
                     }
                 }
             }
