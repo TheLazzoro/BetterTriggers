@@ -18,7 +18,15 @@ namespace BetterTriggers.Utility
         /// <returns>Output.</returns>
         public static string ReplaceNonASCII(string text, bool isScriptGenerate = false)
         {
-            string output = Regex.Replace(text, @"[^\u0000-\u007F]+", "__");
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                string formattedChar = Regex.Replace(c.ToString(), @"[^\u0000-\u007F]+", "__");
+                sb.Append(formattedChar);
+            }
+
+            string output = sb.ToString();
             for (int i = 0; i < output.Length; i++)
             {
                 char c = output[i];
