@@ -1,4 +1,5 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
@@ -62,53 +63,62 @@ namespace GUI
 
         private void LoadTriggers()
         {
-            treeView.Items.Clear();
-            var map = Map.Open(mapPath);
-            var triggerItems = map.Triggers.TriggerItems;
-            var triggerConverter = new TriggerConverter(mapPath);
-            var explorerElements = triggerConverter.ConvertAll_NoWrite();
-            txtTotalTriggerItems.Text = "Total items: " + triggerItems.Count;
-
-            this.treeItemExplorerElements = new Dictionary<string, ImportTriggerItem>();
-
-            // First create UI items and filter those we don't need.
-            var explorerRoot = new ExplorerElementFolder
+            try
             {
-                path = mapPath
-            };
-            rootTreeItem = new ImportTriggerItem(explorerRoot);
-            this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootTreeItem);
-            rootTreeItem.Selected += ExplorerItem_Selected;
-            for (int i = 0; i < explorerElements.Count; i++)
-            {
-                var element = explorerElements[i];
-                var treeItem = new ImportTriggerItem(element);
 
-                this.treeItemExplorerElements.TryAdd(element.GetPath(), treeItem);
-                treeItem.Selected += ExplorerItem_Selected;
-            }
+                treeView.Items.Clear();
+                var map = Map.Open(mapPath);
+                var triggerItems = map.Triggers.TriggerItems;
+                var triggerConverter = new TriggerConverter(mapPath);
+                var explorerElements = triggerConverter.ConvertAll_NoWrite();
+                txtTotalTriggerItems.Text = "Total items: " + triggerItems.Count;
 
-            // Then we attach them to their corresponding parent
-            foreach (var item in this.treeItemExplorerElements)
-            {
-                var treeItem = item.Value;
-                if (treeItem == rootTreeItem)
+                this.treeItemExplorerElements = new Dictionary<string, ImportTriggerItem>();
+
+                // First create UI items and filter those we don't need.
+                var explorerRoot = new ExplorerElementFolder
                 {
-                    treeView.Items.Add(treeItem);
+                    path = mapPath
+                };
+                rootTreeItem = new ImportTriggerItem(explorerRoot);
+                this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootTreeItem);
+                rootTreeItem.Selected += ExplorerItem_Selected;
+                for (int i = 0; i < explorerElements.Count; i++)
+                {
+                    var element = explorerElements[i];
+                    var treeItem = new ImportTriggerItem(element);
+
+                    this.treeItemExplorerElements.TryAdd(element.GetPath(), treeItem);
+                    treeItem.Selected += ExplorerItem_Selected;
                 }
-                else
+
+                // Then we attach them to their corresponding parent
+                foreach (var item in this.treeItemExplorerElements)
                 {
-                    ImportTriggerItem parent;
-                    string parentPath = System.IO.Path.GetDirectoryName(treeItem.explorerElement.GetPath());
-                    this.treeItemExplorerElements.TryGetValue(parentPath, out parent);
-                    if (parent == null)
-                        rootTreeItem.Items.Add(treeItem);
+                    var treeItem = item.Value;
+                    if (treeItem == rootTreeItem)
+                    {
+                        treeView.Items.Add(treeItem);
+                    }
                     else
-                        parent.Items.Add(treeItem);
+                    {
+                        ImportTriggerItem parent;
+                        string parentPath = System.IO.Path.GetDirectoryName(treeItem.explorerElement.GetPath());
+                        this.treeItemExplorerElements.TryGetValue(parentPath, out parent);
+                        if (parent == null)
+                            rootTreeItem.Items.Add(treeItem);
+                        else
+                            parent.Items.Add(treeItem);
+                    }
                 }
-            }
 
-            rootTreeItem.ExpandSubtree();
+                rootTreeItem.ExpandSubtree();
+            }
+            catch (Exception ex)
+            {
+                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", ex.Message);
+                messageBox.ShowDialog();
+            }
         }
 
         private void ExplorerItem_Selected(object sender, RoutedEventArgs e)
@@ -176,8 +186,12 @@ namespace GUI
             progressBar.Visibility = Visibility.Visible;
             btnImport.IsEnabled = false;
             elementsToImport = new List<IExplorerElement>();
-            GatherAllCheckedElements(rootTreeItem);
             itemsImported = new List<string>();
+            elementsToImport = treeItemExplorerElements
+                .Where(item => (bool)item.Value.treeItemHeader.checkbox.IsChecked)
+                .Where(item => item.Value != rootTreeItem)
+                .Select(item => item.Value.explorerElement)
+                .ToList();
 
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
@@ -189,27 +203,26 @@ namespace GUI
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            try
-            {
-                TriggerConverter triggerConverter = new TriggerConverter(mapPath);
-                TriggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
-                var list = treeItemExplorerElements.Select(item => item.Value.explorerElement).ToList();
-                TriggerConverter.WriteConvertedTriggers(list);
+            //try
+            //{
+                TriggerConverter triggerConverter = new TriggerConverter(mapPath, Project.CurrentProject.GetFullMapPath());
+                triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
+                triggerConverter.WriteConvertedTriggers(elementsToImport);
                 worker.ReportProgress(100);
-                TriggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
-            }
-            catch (Exception ex)
-            {
-                errorMsg = ex.Message;
-                worker.ReportProgress(-1);
-                TriggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
-            }
+                triggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
+            //}
+            //catch (Exception ex)
+            //{
+            //    errorMsg = ex.Message;
+            //    worker.ReportProgress(-1);
+            //    TriggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
+            //}
         }
 
         private void TriggerConverter_OnExplorerElementImported(string fullPath)
         {
             itemsImported.Add(fullPath);
-            float percent = (float)itemsImported.Count / elementsToImport.Count * 100;
+            float percent = (float)itemsImported.Count / elementsToImport.Count * 100; 
             worker.ReportProgress((int)percent);
         }
 
@@ -247,19 +260,5 @@ namespace GUI
             this.Close();
         }
 
-        private void GatherAllCheckedElements(ImportTriggerItem parent)
-        {
-            if (parent.treeItemHeader.checkbox.IsChecked == true)
-            {
-                elementsToImport.Add(parent.explorerElement);
-            }
-            if (parent.Items.Count > 0)
-            {
-                foreach (ImportTriggerItem item in parent.Items)
-                {
-                    GatherAllCheckedElements(item);
-                }
-            }
-        }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using War3Net.Build.Script;
+using Xceed.Wpf.Toolkit;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.AxHost;
 
@@ -54,8 +55,12 @@ namespace GUI.Components.ImportTriggers
         private void Checkbox_Click(object sender, RoutedEventArgs e)
         {
             ToggleCheckboxRecurse(this);
+            ToggleCheckboxRecurseReverse(this, (bool)this.treeItemHeader.checkbox.IsChecked);
         }
 
+        /// <summary>
+        /// All child items of a checked item are also affected.
+        /// </summary>
         private void ToggleCheckboxRecurse(ImportTriggerItem parent)
         {
             foreach (var item in parent.Items)
@@ -68,6 +73,32 @@ namespace GUI.Components.ImportTriggers
                     {
                         ToggleCheckboxRecurse(treeItem);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// All parent items of a checked item are affected.
+        /// </summary>
+        private void ToggleCheckboxRecurseReverse(ImportTriggerItem treeItem, bool isChecked)
+        {
+            var parent = treeItem.Parent as ImportTriggerItem;
+            if (parent != null)
+            {
+                var header = parent.Header as TreeItemHeaderCheckbox;
+                int checkedChildrenCount = 0;
+                foreach (ImportTriggerItem child in parent.Items)
+                {
+                    if((bool)child.treeItemHeader.checkbox.IsChecked)
+                    {
+                        checkedChildrenCount++;
+                    }
+                }
+
+                if(checkedChildrenCount == 0 || isChecked)
+                {
+                    header.checkbox.IsChecked = isChecked;
+                    ToggleCheckboxRecurseReverse(parent, isChecked);
                 }
             }
         }

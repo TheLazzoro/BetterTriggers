@@ -18,9 +18,10 @@ namespace BetterTriggers.WorldEdit
 {
     public class TriggerConverter
     {
-        public static event Action<string> OnExplorerElementImported;
+        public event Action<string> OnExplorerElementImported;
 
         private string mapPath;
+        private string mapPathProjectToImportInto;
         private MapTriggers triggers;
         private MapInfo mapInfo;
         private ScriptLanguage language;
@@ -43,6 +44,13 @@ namespace BetterTriggers.WorldEdit
         public TriggerConverter(string mapPath)
         {
             this.mapPath = mapPath;
+            Load(mapPath);
+        }
+
+        public TriggerConverter(string mapPath, string mapPathProjectToImportInto)
+        {
+            this.mapPath = mapPath;
+            this.mapPathProjectToImportInto = mapPathProjectToImportInto;
             Load(mapPath);
         }
 
@@ -129,7 +137,7 @@ namespace BetterTriggers.WorldEdit
         }
 
         /// <summary>
-        /// 
+        /// Used for unit test purposes.
         /// </summary>
         /// <exception cref="Exception"></exception>
         public void ImportIntoCurrentProject(List<TriggerItem> itemsToImport)
@@ -143,7 +151,10 @@ namespace BetterTriggers.WorldEdit
             WriteConvertedTriggers(convertedElements);
         }
 
-        public static void WriteConvertedTriggers(List<IExplorerElement> elements)
+        /// <summary>
+        /// Writes new triggers to a current project
+        /// </summary>
+        public void WriteConvertedTriggers(List<IExplorerElement> elements)
         {
             // Write to disk
             var project = Project.CurrentProject;
@@ -157,12 +168,22 @@ namespace BetterTriggers.WorldEdit
                 else
                 {
                     var saveable = (IExplorerSaveable)element;
+                    string folder = Path.GetDirectoryName(element.GetPath());
+                    if(!Directory.Exists(folder))
+                    {
+                        Directory.CreateDirectory(folder);
+                        project.OnCreateElement(folder, false); // We manually create UI elements
+                        OnExplorerElementImported?.Invoke(folder);
+                    }
                     File.WriteAllText(path, saveable.GetSaveableString());
                 }
                 project.OnCreateElement(path, false); // We manually create UI elements
                 OnExplorerElementImported?.Invoke(path);
             }
             project.EnableFileEvents(true);
+
+            CustomMapData.Load(mapPathProjectToImportInto);
+            CustomMapData.ReloadMapData();
         }
 
 
@@ -307,7 +328,7 @@ namespace BetterTriggers.WorldEdit
             }
 
             var root = project.GetRoot();
-            string targetDir = Path.Combine(root.GetPath(), mapInfo.MapName + "_Imported");
+            string targetDir = FileSystemUtil.FormatFileOrDirectoryName(Path.Combine(root.GetPath(), mapInfo.MapName + "_Imported"));
             if (!Directory.Exists(targetDir))
             {
                 Directory.CreateDirectory(targetDir);

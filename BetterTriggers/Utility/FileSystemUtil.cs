@@ -127,5 +127,18 @@ namespace BetterTriggers.Utility
 
             return extension;
         }
+
+        public static string FormatFileOrDirectoryName(string entry)
+        {
+            entry = entry
+                .Replace("<", "")
+                .Replace(">", "")
+                .Replace("\"", "")
+                .Replace("|", "")
+                .Replace("?", "")
+                .Replace("*", "");
+
+            return entry;
+        }
     }
 }

@@ -355,6 +355,7 @@ namespace BetterTriggers.Containers
                     explorerElementChild.SetEnabled(entryChild.isEnabled);
                     explorerElementChild.SetInitiallyOn(entryChild.isInitiallyOn);
                     explorerElementChild.SetParent(elementParent, insertIndex);
+                    AllElements.Add(path, explorerElementChild);
                     insertIndex++;
                     if (Directory.Exists(explorerElementChild.GetPath()))
                         RecurseLoad(entryChild, explorerElementChild, fileCheckList);
@@ -558,6 +559,20 @@ namespace BetterTriggers.Containers
 
             CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
             command.Execute();
+        }
+
+        /// <summary>
+        /// Does not create a 'Delete' command.
+        /// Should only be used when the element is deleted as a result of it's folder being deleted.
+        /// </summary>
+        public void OnDeleteElement_Extra(string fullPath)
+        {
+            IExplorerElement elementToDelete = GetExplorerElement(fullPath);
+            if (elementToDelete == null)
+                return;
+
+            AllElements.Remove(fullPath);
+            RemoveElementFromContainer(elementToDelete);
         }
 
 

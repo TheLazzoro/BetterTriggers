@@ -52,6 +52,13 @@ namespace GUI.Components
             Application.Current.Dispatcher.Invoke(delegate
             {
                 TriggerExplorer.Current.AllExplorerElements.Remove(this.Ielement.GetPath());
+                Project.CurrentProject.OnDeleteElement_Extra(this.Ielement.GetPath());
+                for (int i = 0; i < this.Items.Count; i++)
+                {
+                    TreeItemExplorerElement item = this.Items[i] as TreeItemExplorerElement;
+                    item.Delete();
+                }
+
                 var parent = this.Parent as TreeViewItem;
                 if (parent != null)
                 {

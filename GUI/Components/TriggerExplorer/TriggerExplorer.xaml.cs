@@ -169,7 +169,8 @@ namespace GUI.Components
 
             var project = Project.CurrentProject;
             var explorerElement = project.GetExplorerElement(fullPath);
-            int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
+            var parent = explorerElement.GetParent();
+            int insertIndex = parent.GetExplorerElements().IndexOf(explorerElement);
 
             TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);
             explorerElement.Attach(treeItemExplorerElement);
