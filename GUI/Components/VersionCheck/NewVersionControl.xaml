@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="GUI.Components.VersionCheck.NewVersionControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI.Components.VersionCheck"
+             mc:Ignorable="d" 
+             Width="auto" Height="200" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Image 
+            x:Name="imgError"
+            Source="/Resources/Icons/information.png"
+            Grid.Row="1"
+        />
+        
+        <TextBlock
+    Foreground="{DynamicResource TextBrush2}"
+    Text="A new version is available!"
+    FontSize="18"
+    Grid.Column="1"
+    Grid.Row="1"
+/>
+        <TextBlock
+    x:Name="txtNewVersion"
+    Foreground="{DynamicResource TextBrush2}"
+    Text="New version:"
+    Grid.Column="1"
+    Grid.Row="2"
+/>
+        <TextBlock
+    x:Name="txtOldVersion"
+    Foreground="{DynamicResource TextBrush2}"
+    Text="Current version:"
+    Grid.Column="1"
+    Grid.Row="3"
+/>
+        <TextBlock
+    Foreground="{DynamicResource TextBrush2}"
+    Grid.Column="1"
+    Grid.Row="4"
+>
+    <TextBlock
+    >
+        Get it on
+        <Hyperlink
+                Foreground="{DynamicResource HyperlinkDefaultBrush}"
+                NavigateUri="https://www.hiveworkshop.com/threads/better-triggers-custom-trigger-editor.341002/" RequestNavigate="Hyperlink_RequestNavigate"
+                ToolTip="https://www.hiveworkshop.com/threads/better-triggers-custom-trigger-editor.341002/"
+            >
+            Hive Workshop
+        </Hyperlink>
+    </TextBlock>
+    or
+    <TextBlock
+        >
+        <Hyperlink
+            x:Name="textGithub"
+            Foreground="{DynamicResource HyperlinkDefaultBrush}" RequestNavigate="Hyperlink_RequestNavigate"
+            >
+            GitHub
+        </Hyperlink>
+    </TextBlock>
+    
+</TextBlock>
+    </Grid>
+</UserControl>

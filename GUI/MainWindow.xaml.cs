@@ -23,6 +23,7 @@ using NuGet.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -132,7 +133,21 @@ namespace GUI
                 }
             }
 
-            new VersionCheck();
+            Task.Run(CheckVersionOnStart);
+        }
+
+        private async Task CheckVersionOnStart()
+        {
+            var versionCheck = new VersionCheck();
+            var version = await versionCheck.GetNewestVersionAsync();
+            if(version.VersionCheckEnum == VersionCheckEnum.NewerExists)
+            {
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    var window = new NewVersionWindow_OnStart(version);
+                    window.ShowDialog();
+                });
+            }
         }
 
         /// <summary>
@@ -997,5 +1012,10 @@ namespace GUI
             }
         }
 
+        private void menuItemCheckVersion_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new NewVersionWindow();
+            window.ShowDialog();
+        }
     }
 }

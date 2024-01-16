@@ -56,11 +56,14 @@
     <None Remove="Resources\Icons\code.ico" />
     <None Remove="Resources\Icons\code_blue.ico" />
     <None Remove="Resources\Icons\convert.png" />
+    <None Remove="Resources\Icons\correct.png" />
+    <None Remove="Resources\Icons\cross.png" />
     <None Remove="Resources\Icons\editor-testmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-exportmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-mapvalidation.png" />
     <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\Icons\green-check.png" />
+    <None Remove="Resources\Icons\information.png" />
     <None Remove="Resources\Icons\Keyword_16x.png" />
     <None Remove="Resources\Icons\Method_16x.png" />
     <None Remove="Resources\Icons\redo.png" />
@@ -123,6 +126,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\convert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\correct.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\cross.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\editor-testmap.dds">
@@ -231,6 +240,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\green-check.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\information.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\Keyword_16x.png">
@@ -371,6 +383,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\Dialogs\DialogBoxReferences.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Components\VersionCheck\NewVersionWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
