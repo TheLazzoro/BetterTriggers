@@ -37,11 +37,13 @@ namespace Tests
             Casc.GameVersion = new Version(1, 35, 1); // hack. We need the newest version to load our custom frame definition script.
             BetterTriggers.Init.Initialize(true);
 
-
-            string[] tempData = Directory.GetDirectories(tempFolder);
-            foreach (var folder in tempData)
+            if (Directory.Exists(tempFolder))
             {
-                Directory.Delete(folder, true);
+                string[] tempData = Directory.GetDirectories(tempFolder);
+                foreach (var folder in tempData)
+                {
+                    Directory.Delete(folder, true);
+                }
             }
         }
 
