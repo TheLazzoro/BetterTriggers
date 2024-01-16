@@ -73,7 +73,7 @@ namespace BetterTriggers.Commands
 
             project.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
-            explorerElement.ChangedPosition(oldFullPath, oldFullPath);
+            explorerElement.ChangedPosition(newFullPath, oldFullPath);
         }
 
         public string GetCommandName()

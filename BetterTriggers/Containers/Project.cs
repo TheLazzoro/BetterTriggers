@@ -6,6 +6,7 @@ using BetterTriggers.WorldEdit;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using War3Net.Build.Info;
@@ -18,7 +19,7 @@ namespace BetterTriggers.Containers
 
         public string src;
         public War3Project war3project;
-        public List<IExplorerElement> projectFiles;
+        public ObservableCollection<IExplorerElement> projectFiles;
         public string currentSelectedElement;
         public BufferingFileSystemWatcher fileSystemWatcher;
         public IExplorerElement lastCreated;
@@ -40,7 +41,7 @@ namespace BetterTriggers.Containers
 
         bool wasMoved;
 
-        private Dictionary<string, IExplorerElement> AllElements;
+        public Dictionary<string, IExplorerElement> AllElements;
 
 
         private Project()
@@ -247,7 +248,7 @@ namespace BetterTriggers.Containers
             war3project.GameVersion = Casc.GameVersion; // updates game version.
             project.src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
             project.war3project = war3project;
-            project.projectFiles = new List<IExplorerElement>();
+            project.projectFiles = new ();
             project.projectFiles.Add(new ExplorerElementRoot(war3project, projectPath));
             project.currentSelectedElement = project.src; // defaults to here when nothing has been selected yet.
 

@@ -55,7 +55,7 @@ namespace GUI.Components
                 Project.CurrentProject.OnDeleteElement_Extra(this.Ielement.GetPath());
                 for (int i = 0; i < this.Items.Count; i++)
                 {
-                    TreeItemExplorerElement item = this.Items[i] as TreeItemExplorerElement;
+                    TreeItemExplorerElement item = this.Items[0] as TreeItemExplorerElement;
                     item.Delete();
                 }
 
