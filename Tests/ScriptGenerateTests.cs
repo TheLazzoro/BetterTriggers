@@ -21,6 +21,7 @@ namespace Tests
         static War3Project war3project;
         static string mapDir;
         static string projectFile;
+        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
         static bool success;
         static string failedMsg = "Script generate failed. Project folder kept for inspection.";
 
@@ -37,11 +38,10 @@ namespace Tests
             BetterTriggers.Init.Initialize(true);
 
 
-            string[] testMaps = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/"));
-            foreach(var folder in testMaps)
+            string[] tempData = Directory.GetDirectories(tempFolder);
+            foreach (var folder in tempData)
             {
-                if (!folder.EndsWith(".w3x") && !folder.EndsWith(".w3m"))
-                    Directory.Delete(folder, true);
+                Directory.Delete(folder, true);
             }
         }
 
@@ -350,7 +350,8 @@ namespace Tests
         void ConvertMap_GenerateScript(string mapDir)
         {
             TriggerConverter triggerConverter = new TriggerConverter();
-            projectFile = triggerConverter.Convert(mapDir, Path.Combine(Path.GetDirectoryName(mapDir), Path.GetFileNameWithoutExtension(mapDir)));
+            string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
+            projectFile = triggerConverter.Convert(mapDir, destination);
             Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);

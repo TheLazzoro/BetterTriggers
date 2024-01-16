@@ -58,22 +58,30 @@ namespace BetterTriggers
         {
             if (!isVanillaWESaving)
             {
-                string mapPath = Project.CurrentProject.GetFullMapPath();
-                bool fileIsInMap = e.FullPath.StartsWith(mapPath);
-                if (fileIsInMap)
+                // this try-block is only here because of the TriggerConverter.
+                try
                 {
-                    if (ThresholdBeforeReloadingTimer == null)
+                    string mapPath = Project.CurrentProject.GetFullMapPath();
+                    bool fileIsInMap = e.FullPath.StartsWith(mapPath);
+                    if (fileIsInMap)
                     {
-                        ThresholdBeforeReloadingTimer = new System.Timers.Timer();
-                        ThresholdBeforeReloadingTimer.AutoReset = false;
-                        ThresholdBeforeReloadingTimer.Elapsed += ThresholdBeforeReloadingTimer_Elapsed;
-                    }
-                    ThresholdBeforeReloadingTimer.Stop();
-                    ThresholdBeforeReloadingTimer.Interval = THRESHOLD_BEFORE_SAVING_MS;
-                    ThresholdBeforeReloadingTimer.Start();
+                        if (ThresholdBeforeReloadingTimer == null)
+                        {
+                            ThresholdBeforeReloadingTimer = new System.Timers.Timer();
+                            ThresholdBeforeReloadingTimer.AutoReset = false;
+                            ThresholdBeforeReloadingTimer.Elapsed += ThresholdBeforeReloadingTimer_Elapsed;
+                        }
+                        ThresholdBeforeReloadingTimer.Stop();
+                        ThresholdBeforeReloadingTimer.Interval = THRESHOLD_BEFORE_SAVING_MS;
+                        ThresholdBeforeReloadingTimer.Start();
 
-                    isThresholdTimerRunning = true;
-                    OnSaving?.Invoke();
+                        isThresholdTimerRunning = true;
+                        OnSaving?.Invoke();
+                    }
+                }
+                catch (Exception)
+                {
+
                 }
             }
         }
@@ -96,7 +104,7 @@ namespace BetterTriggers
                 return true;
             else if (Directory.Exists(fullMapPath + "Backup"))
                 return true;
-            else if(isThresholdTimerRunning)
+            else if (isThresholdTimerRunning)
                 return true;
             else
                 return false;
