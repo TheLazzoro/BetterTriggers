@@ -351,9 +351,9 @@ namespace Tests
 
         void ConvertMap_GenerateScript(string mapDir)
         {
-            TriggerConverter triggerConverter = new TriggerConverter();
+            TriggerConverter triggerConverter = new TriggerConverter(mapDir);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
-            projectFile = triggerConverter.Convert(mapDir, destination);
+            projectFile = triggerConverter.Convert(destination);
             Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);
