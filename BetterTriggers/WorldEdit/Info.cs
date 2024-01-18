@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTriggers.Containers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -14,7 +15,11 @@ namespace BetterTriggers.WorldEdit
 
         public static ScriptLanguage GetLanguage()
         {
-            return MapInfo.ScriptLanguage;
+            var project = Project.CurrentProject;
+            if(project.war3project.Language == "jass")
+                return ScriptLanguage.Jass;
+            else
+                return ScriptLanguage.Lua;
         }
 
         internal static void Load()

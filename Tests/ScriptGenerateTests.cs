@@ -21,6 +21,7 @@ namespace Tests
         static War3Project war3project;
         static string mapDir;
         static string projectFile;
+        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
         static bool success;
         static string failedMsg = "Script generate failed. Project folder kept for inspection.";
 
@@ -36,12 +37,13 @@ namespace Tests
             Casc.GameVersion = new Version(1, 35, 1); // hack. We need the newest version to load our custom frame definition script.
             BetterTriggers.Init.Initialize(true);
 
-
-            string[] testMaps = Directory.GetDirectories(Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/"));
-            foreach(var folder in testMaps)
+            if (Directory.Exists(tempFolder))
             {
-                if (!folder.EndsWith(".w3x") && !folder.EndsWith(".w3m"))
+                string[] tempData = Directory.GetDirectories(tempFolder);
+                foreach (var folder in tempData)
+                {
                     Directory.Delete(folder, true);
+                }
             }
         }
 
@@ -349,8 +351,9 @@ namespace Tests
 
         void ConvertMap_GenerateScript(string mapDir)
         {
-            TriggerConverter triggerConverter = new TriggerConverter(mapDir);
-            projectFile = triggerConverter.Convert(Path.Combine(Path.GetDirectoryName(mapDir), Path.GetFileNameWithoutExtension(mapDir)));
+            TriggerConverter triggerConverter = new TriggerConverter();
+            string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
+            projectFile = triggerConverter.Convert(mapDir, destination);
             Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);

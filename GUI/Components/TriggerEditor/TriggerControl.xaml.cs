@@ -4,6 +4,7 @@ using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
+using Cake.Core.Scripting;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
 using GUI.Container;
@@ -65,12 +66,7 @@ namespace GUI.Components
             }
 
             this.explorerElementTrigger = explorerElementTrigger;
-            TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
-            TextEditor.avalonEditor.TextChanged += delegate
-            {
-                explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text;
-                OnStateChange();
-            };
+            
 
             checkBoxIsEnabled.IsChecked = explorerElementTrigger.GetEnabled();
             checkBoxIsInitiallyOn.IsChecked = explorerElementTrigger.GetInitiallyOn();
@@ -846,12 +842,7 @@ namespace GUI.Components
                     return;
                 }
             }
-
-            ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
-            string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
-            TextEditor.avalonEditor.Text = script;
-            explorerElementTrigger.trigger.Script = script;
-            explorerElementTrigger.trigger.IsScript = isScript;
+            
             ShowTextEditor(isScript);
             OnStateChange();
         }
@@ -860,6 +851,19 @@ namespace GUI.Components
         {
             if (doShow)
             {
+                ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
+                string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
+                explorerElementTrigger.trigger.Script = script;
+                explorerElementTrigger.trigger.IsScript = doShow;
+
+                TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
+                TextEditor.avalonEditor.Text = script;
+                TextEditor.avalonEditor.TextChanged += delegate
+                {
+                    explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text;
+                    OnStateChange();
+                };
+
                 if (!grid.Children.Contains(TextEditor))
                     grid.Children.Add(TextEditor);
                 Grid.SetRow(TextEditor, 2);
