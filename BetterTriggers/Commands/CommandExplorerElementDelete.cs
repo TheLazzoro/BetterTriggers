@@ -65,7 +65,6 @@ namespace BetterTriggers.Commands
 
             project.EnableFileEvents(true);
             refCollection.AddRefsToParent();
-            project.AllElements.Add(deletedElement.GetPath(), deletedElement);
         }
 
         public string GetCommandName()

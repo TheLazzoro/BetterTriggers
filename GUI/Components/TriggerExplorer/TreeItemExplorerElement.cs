@@ -51,7 +51,6 @@ namespace GUI.Components
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                Project.CurrentProject.OnDeleteElement_Extra(this.Ielement.GetPath());
                 for (int i = 0; i < this.Items.Count; i++)
                 {
                     TreeItemExplorerElement item = this.Items[0] as TreeItemExplorerElement;
