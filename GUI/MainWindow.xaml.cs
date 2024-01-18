@@ -595,7 +595,7 @@ namespace GUI
             {
                 foreach (var item in lastOpenedTabs.Tabs)
                 {
-                    var element = triggerExplorer.FindTreeNodeElement(this.triggerExplorer.map, item);
+                    var element = triggerExplorer.FindTreeNodeElement(triggerExplorer.map, item);
                     if (element != null)
                         triggerExplorer.OnSelectTab(element, tabViewModel, tabControl);
                 }
@@ -788,6 +788,12 @@ namespace GUI
                 tabIndex++;
             }
             LastOpenedTabs.Save(Project.CurrentProject.GetRoot().GetName(), tabs);
+        }
+
+        private void CommandBinding_Executed_ImportTriggers(object sender, ExecutedRoutedEventArgs e)
+        {
+            ImportTriggersWindow window = new ImportTriggersWindow();
+            window.ShowDialog();
         }
 
         private void CommandBinding_Executed_OpenProjectSettings(object sender, ExecutedRoutedEventArgs e)

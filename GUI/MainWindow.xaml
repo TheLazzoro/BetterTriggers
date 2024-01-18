@@ -254,6 +254,7 @@
         <RoutedUICommand x:Key="SaveProject"></RoutedUICommand>
         <RoutedUICommand x:Key="CloseProject"></RoutedUICommand>
         <RoutedUICommand x:Key="OpenProjectSettings"></RoutedUICommand>
+        <RoutedUICommand x:Key="ImportTriggers"></RoutedUICommand>
 
         <RoutedUICommand x:Key="Undo"></RoutedUICommand>
         <RoutedUICommand x:Key="Redo"></RoutedUICommand>
@@ -280,6 +281,7 @@
         <CommandBinding Command="{StaticResource OpenProject}" CanExecute="CommandBinding_CanExecute_OpenProject" Executed="CommandBinding_Executed_OpenProject"/>
         <CommandBinding Command="{StaticResource SaveProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_Save"/>
         <CommandBinding Command="{StaticResource CloseProject}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_CloseProject"/>
+        <CommandBinding Command="{StaticResource ImportTriggers}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_ImportTriggers"/>
         <CommandBinding Command="{StaticResource OpenProjectSettings}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_OpenProjectSettings"/>
 
         <CommandBinding Command="{StaticResource Undo}" CanExecute="CommandBinding_CanExecute_Undo" Executed="CommandBinding_Executed_Undo"/>
@@ -344,6 +346,9 @@
                 <MenuItem Name="menuOpen" Command="{StaticResource OpenProject}" InputGestureText="Ctrl+O" Header="Open Project..." />
                 <MenuItem Name="menuSave" Command="{StaticResource SaveProject}" InputGestureText="Ctrl+S" Header="Save All" />
                 <MenuItem Name="menuClose" Command="{StaticResource CloseProject}" Header="Close Project" />
+                <Separator Margin="0,5,0,4" />
+                <MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />
+                <Separator Margin="0,5,0,4" />
                 <Separator />
                 <MenuItem Name="menuProjectSettings" Command="{StaticResource OpenProjectSettings}" Header="Project Settings" />
                 <Separator />

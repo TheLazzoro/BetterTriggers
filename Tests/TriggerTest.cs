@@ -91,8 +91,8 @@ namespace Tests
             int expectedTriggerCount = 4;
             int actualTriggerCount = project.Triggers.Count();
 
-            var expectedParameters = project.Triggers.GetParametersFromTrigger(element1);
-            var actualParameters = project.Triggers.GetParametersFromTrigger(element as ExplorerElementTrigger);
+            var expectedParameters = Triggers.GetParametersFromTrigger(element1);
+            var actualParameters = Triggers.GetParametersFromTrigger(element as ExplorerElementTrigger);
             int expectedParamCount = expectedParameters.Count;
             int actualParamCount = actualParameters.Count;
 

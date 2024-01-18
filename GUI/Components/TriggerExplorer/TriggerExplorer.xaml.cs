@@ -157,7 +157,7 @@ namespace GUI.Components
         }
 
 
-        public void OnCreateElement(TriggerExplorer te, string fullPath)
+        public void OnCreateElement(string fullPath)
         {
             if (!FileSystemUtil.IsExtensionValid(System.IO.Path.GetExtension(fullPath)))
                 return;
@@ -248,7 +248,7 @@ namespace GUI.Components
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                OnCreateElement(this, Project.CurrentProject.createdPath); // hack
+                OnCreateElement(Project.CurrentProject.createdPath); // hack
             });
         }
 

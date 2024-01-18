@@ -338,4 +338,8 @@
     <PackageReference Include="War3Net.IO.Mpq" Version="5.6.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TriggerImporter\" />
+  </ItemGroup>
+
 </Project>

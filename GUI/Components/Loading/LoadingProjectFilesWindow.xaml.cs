@@ -12,6 +12,7 @@ namespace GUI.Components.Loading
         public War3Project project;
         private string projectPath;
         private BackgroundWorker worker;
+        private string label = "Loading Project Files";
 
         public LoadingProjectFilesWindow(string projectPath)
         {
@@ -31,7 +32,7 @@ namespace GUI.Components.Loading
         private void WorkerVerify_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar.Value = e.ProgressPercentage;
-            lblInfo.Content = $"Loading Project Files {filesLoaded}/{totalFiles}";
+            lblInfo.Content = $"{label} {filesLoaded}/{totalFiles}";
             if (e.ProgressPercentage == 100 && project != null)
                 this.Close();
 
@@ -48,23 +49,33 @@ namespace GUI.Components.Loading
         string errorMsg = string.Empty;
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            Project.FileLoadEvent += ControllerProject_FileLoadEvent;
+            Project.FileLoadEvent += FileLoadEvent;
+            Project.LoadingUnknownFilesEvent += Project_LoadingUnknownFilesEvent;
             try
             {
                 project = Project.Load(projectPath).war3project;
             }
             catch (Exception ex)
             {
-                Project.FileLoadEvent -= ControllerProject_FileLoadEvent;
+                Project.FileLoadEvent -= FileLoadEvent;
+                Project.LoadingUnknownFilesEvent -= Project_LoadingUnknownFilesEvent;
                 errorMsg = ex.Message;
                 worker.ReportProgress(-1);
                 return;
             }
-            Project.FileLoadEvent -= ControllerProject_FileLoadEvent;
+            Project.FileLoadEvent -= FileLoadEvent;
+            Project.LoadingUnknownFilesEvent -= Project_LoadingUnknownFilesEvent;
             worker.ReportProgress(100);
         }
 
-        private void ControllerProject_FileLoadEvent(int arg1, int arg2)
+        private void Project_LoadingUnknownFilesEvent()
+        {
+            label = "Loading unknown project files";
+            float percent = (float)filesLoaded / (float)totalFiles * 100f;
+            worker.ReportProgress((int)percent);
+        }
+
+        private void FileLoadEvent(int arg1, int arg2)
         {
             filesLoaded = arg1;
             totalFiles = arg2;

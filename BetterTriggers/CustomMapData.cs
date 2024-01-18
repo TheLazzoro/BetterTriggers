@@ -56,10 +56,10 @@ namespace BetterTriggers
         /// </summary>
         private static void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (!isVanillaWESaving)
+            // this try-block is only here because of the TriggerConverter.
+            try
             {
-                // this try-block is only here because of the TriggerConverter.
-                try
+                if (!isVanillaWESaving)
                 {
                     string mapPath = Project.CurrentProject.GetFullMapPath();
                     bool fileIsInMap = e.FullPath.StartsWith(mapPath);
@@ -79,10 +79,10 @@ namespace BetterTriggers
                         OnSaving?.Invoke();
                     }
                 }
-                catch (Exception)
-                {
+            }
+            catch (Exception)
+            {
 
-                }
             }
         }
 

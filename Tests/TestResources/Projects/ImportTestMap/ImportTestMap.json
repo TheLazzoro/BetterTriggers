@@ -1,0 +1,40 @@
+{
+  "Name": "ImportTestMap",
+  "Version": 3,
+  "GameVersion": "1.36.0.20257",
+  "Language": "jass",
+  "UseRelativeMapDirectory": true,
+  "Comment": null,
+  "Header": "",
+  "War3MapDirectory": "Tests\\TestResources\\Projects\\ImportTestMap\\map\\Map.w3x",
+  "Files": [
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "MyTrigger.trg",
+      "Files": []
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "MyOtherTrigger.trg",
+      "Files": []
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "MyVar.var",
+      "Files": []
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "MyOtherVar.var",
+      "Files": []
+    }
+  ]
+}

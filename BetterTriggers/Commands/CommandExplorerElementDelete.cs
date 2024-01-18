@@ -55,7 +55,6 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             deletedElement.SetParent(parent, index);
-            deletedElement.Created(index);
             var project = Project.CurrentProject;
             project.EnableFileEvents(false);
 

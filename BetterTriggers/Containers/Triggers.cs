@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.IO;
 using BetterTriggers.Commands;
 using BetterTriggers.WorldEdit;
+using System.Xml.Linq;
 
 namespace BetterTriggers.Containers
 {
@@ -69,6 +70,19 @@ namespace BetterTriggers.Containers
                 }
             }
 
+            return found;
+        }
+
+        public bool Contains(int id)
+        {
+            bool found = false;
+            foreach (var item in triggerElementContainer)
+            {
+                if (item.GetId() == id)
+                {
+                    found = true;
+                }
+            }
             return found;
         }
 
@@ -500,7 +514,7 @@ namespace BetterTriggers.Containers
             return functions;
         }
 
-        public List<Function> GetFunctionsFromTrigger(ExplorerElementTrigger explorerElement)
+        public static List<Function> GetFunctionsFromTrigger(ExplorerElementTrigger explorerElement)
         {
             List<Function> list = new List<Function>();
             list.AddRange(GatherFunctions(explorerElement.trigger.Events));
@@ -510,7 +524,7 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        private List<Function> GatherFunctions(List<TriggerElement> triggerElements)
+        private static List<Function> GatherFunctions(List<TriggerElement> triggerElements)
         {
             List<Function> list = new List<Function>();
             triggerElements.ForEach(t =>
@@ -580,7 +594,7 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        private List<Function> GetFunctionsFromParameters(Function function)
+        private static List<Function> GetFunctionsFromParameters(Function function)
         {
             List<Function> list = new List<Function>();
             list.Add(function);
@@ -642,7 +656,7 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// </summary>
         /// <returns>A list of every parameter in the given trigger.</returns>
-        public List<Parameter> GetParametersFromTrigger(ExplorerElementTrigger explorerElement)
+        public static List<Parameter> GetParametersFromTrigger(ExplorerElementTrigger explorerElement)
         {
             List<Parameter> list = new List<Parameter>();
             list.AddRange(GatherTriggerParameters(explorerElement.trigger.Events));
@@ -653,7 +667,7 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        private List<Parameter> GatherTriggerParameters(List<TriggerElement> triggerElements)
+        private static List<Parameter> GatherTriggerParameters(List<TriggerElement> triggerElements)
         {
             List<Parameter> parameters = new List<Parameter>();
 

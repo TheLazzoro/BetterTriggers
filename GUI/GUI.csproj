@@ -325,6 +325,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Components\Dialogs\MessageBoxWithList.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\ScriptEditor\RootControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -391,6 +394,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Components\Dialogs\MessageBoxWithList.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Components\ScriptEditor\RootControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

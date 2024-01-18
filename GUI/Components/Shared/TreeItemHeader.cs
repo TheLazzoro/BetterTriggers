@@ -16,11 +16,11 @@ namespace GUI.Components.Shared
     {
         internal TextBox RenameBox;
         internal bool isRenaming { get; private set; }
-        private StackPanel stackPanel;
-        private System.Windows.Shapes.Rectangle Icon;
-        private System.Windows.Shapes.Rectangle IconOverlay;
-        private TextBlock DisplayText;
-        private string categoryName = string.Empty;
+        internal StackPanel stackPanel;
+        internal System.Windows.Shapes.Rectangle Icon;
+        internal System.Windows.Shapes.Rectangle IconOverlay;
+        internal TextBlock DisplayText;
+        internal string categoryName = string.Empty;
 
 
         public enum TreeItemState

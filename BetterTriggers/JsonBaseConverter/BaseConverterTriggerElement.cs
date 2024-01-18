@@ -69,6 +69,8 @@ namespace BetterTriggers.JsonBaseConverter
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            reader.MaxDepth = 128;
+
             // Load JObject from stream
             JObject jObject = JObject.Load(reader);
 

@@ -84,7 +84,7 @@ namespace BetterTriggers.Containers
 
             RemoveReferrer(t);
 
-            var parameters = Project.CurrentProject.Triggers.GetParametersFromTrigger(t);
+            var parameters = Triggers.GetParametersFromTrigger(t);
             var variables = Project.CurrentProject.Variables;
             var triggers = Project.CurrentProject.Triggers;
             parameters.ForEach(p =>
@@ -115,7 +115,7 @@ namespace BetterTriggers.Containers
             var triggers = Project.CurrentProject.Triggers.GetAll();
             triggers.ForEach(exTrig =>
             {
-                var parameters = Project.CurrentProject.Triggers.GetParametersFromTrigger(exTrig);
+                var parameters = Triggers.GetParametersFromTrigger(exTrig);
                 parameters.ForEach(p =>
                 {
                     if (p is VariableRef varRef)

@@ -21,6 +21,10 @@ namespace BetterTriggers.Commands
             var project = Project.CurrentProject;
             var rootNode = project.projectFiles[0];
             newParent = project.FindExplorerElementFolder(rootNode, Path.GetDirectoryName(newFullPath));
+            if(newParent == null)
+            {
+                newParent = Project.CurrentProject.GetRoot();
+            }
             this.oldFullPath = explorerElement.GetPath();
             this.newFullPath = newFullPath;
 

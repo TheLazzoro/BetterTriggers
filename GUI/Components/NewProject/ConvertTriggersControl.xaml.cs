@@ -109,8 +109,8 @@ namespace GUI.Components.NewProject
 
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            TriggerConverter converter = new TriggerConverter();
-            ProjectLocation = converter.Convert(mapPath, FinalPath);
+            TriggerConverter converter = new TriggerConverter(mapPath);
+            ProjectLocation = converter.Convert(FinalPath);
             (sender as BackgroundWorker).ReportProgress(100);
         }
 

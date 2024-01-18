@@ -3,7 +3,6 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
-using Cake.Incubator.Project;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,7 +30,7 @@ namespace BetterTriggers.Containers
         public References References { get; private set; }
         public UnsavedFiles UnsavedFiles { get; private set; }
         public CommandManager CommandManager { get; private set; }
-        
+
         public event FileSystemEventHandler OnCreated;
         public event FileSystemEventHandler OnMoved;
         public event FileSystemEventHandler OnDeleted;
@@ -114,6 +113,8 @@ namespace BetterTriggers.Containers
                 Directory.CreateDirectory(topElement.GetPath());
 
             topElement.UpdateMetadata(); // important, because this is a pseudo-redo
+            var parent = topElement.GetParent();
+            topElement.Created(parent.GetExplorerElements().IndexOf(topElement));
 
             if (Directory.Exists(topElement.GetPath()))
             {
@@ -209,6 +210,7 @@ namespace BetterTriggers.Containers
 
 
         public static event Action<int, int> FileLoadEvent;
+        public static event Action LoadingUnknownFilesEvent;
         private int totalFiles;
         private int loadedFiles;
         /// <summary>
@@ -281,9 +283,12 @@ namespace BetterTriggers.Containers
             project.RecurseLoad(projectRootEntry, project.projectFiles[0], fileCheckList);
 
             // Loop through elements not found
+            LoadingUnknownFilesEvent?.Invoke();
             for (int i = 0; i < fileCheckList.Count; i++)
             {
                 project.OnCreateElement(fileCheckList[i], false);
+                project.loadedFiles++;
+                FileLoadEvent?.Invoke(project.loadedFiles, project.totalFiles);
             }
 
             project.CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
@@ -364,6 +369,10 @@ namespace BetterTriggers.Containers
 
             ExplorerElementRoot root = projectFiles[0] as ExplorerElementRoot;
             IExplorerElement parent = FindExplorerElementFolder(root, directory);
+            if(parent == null)
+            {
+                parent = root;
+            }
 
             RecurseCreateElement(parent, fullPath, doRecurse);
         }
@@ -597,8 +606,7 @@ namespace BetterTriggers.Containers
             return matching;
         }
 
-
-        public IExplorerElement FindExplorerElementFolder(IExplorerElement parent, string directory)
+        public IExplorerElement? FindExplorerElementFolder(IExplorerElement parent, string directory)
         {
             IExplorerElement matching = null;
             List<IExplorerElement> children = null;
@@ -627,14 +635,11 @@ namespace BetterTriggers.Containers
                     else
                     {
                         matching = FindExplorerElementFolder((ExplorerElementFolder)element, directory);
+                        if (matching != null)
+                            break;
                     }
                 }
             }
-
-            // Returns root if no matching parent node was found.
-            // Usually only need when loading a new project.
-            if (matching == null)
-                return projectFiles[0];
 
             return matching;
         }
@@ -811,7 +816,7 @@ namespace BetterTriggers.Containers
             string path = war3project.War3MapDirectory;
             if (war3project.UseRelativeMapDirectory)
             {
-                if(mapFileName == null)
+                if (mapFileName == null)
                 {
                     mapFileName = Path.GetFileName(war3project.War3MapDirectory);
                 }
@@ -825,7 +830,7 @@ namespace BetterTriggers.Containers
 
         public static bool VerifyMapPath(string path)
         {
-            if(CurrentProject != null)
+            if (CurrentProject != null)
             {
                 bool useRelativeMapDir = CurrentProject.war3project.UseRelativeMapDirectory;
                 if (useRelativeMapDir)

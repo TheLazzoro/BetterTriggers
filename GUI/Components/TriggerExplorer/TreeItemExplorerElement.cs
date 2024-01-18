@@ -51,6 +51,11 @@ namespace GUI.Components
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
+                for (int i = 0; i < this.Items.Count; i++)
+                {
+                    TreeItemExplorerElement item = this.Items[0] as TreeItemExplorerElement;
+                    item.Delete();
+                }
                 var parent = this.Parent as TreeViewItem;
                 if (parent != null)
                 {
@@ -78,7 +83,7 @@ namespace GUI.Components
                 tabItem.Header = this.Ielement.GetName();
             }
 
-            if( this.editor is TriggerControl)
+            if (this.editor is TriggerControl)
             {
                 var control = this.editor as TriggerControl;
                 control.OnRemoteChange();
@@ -88,7 +93,7 @@ namespace GUI.Components
                 var control = this.editor as VariableControl;
                 control.UpdateIdentifierText();
             }
-            else if(this.editor is ScriptControl)
+            else if (this.editor is ScriptControl)
             {
                 var control = this.editor as ScriptControl;
                 control.OnRemoteChange();

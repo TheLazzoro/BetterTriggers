@@ -18,8 +18,15 @@ namespace BetterTriggers.Utility
         /// <returns>Output.</returns>
         public static string ReplaceNonASCII(string text, bool isScriptGenerate = false)
         {
-            string output = Regex.Replace(text, @"[^\u0000-\u007F]+", "__");
-            //string output = string.Empty;
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                string formattedChar = Regex.Replace(c.ToString(), @"[^\u0000-\u007F]+", "__");
+                sb.Append(formattedChar);
+            }
+
+            string output = sb.ToString();
             for (int i = 0; i < output.Length; i++)
             {
                 char c = output[i];
@@ -30,7 +37,7 @@ namespace BetterTriggers.Utility
 
             }
             if (isScriptGenerate && output != text)
-                output = output + "u";
+                output = output + "u"; // vanilla WE also does this... so yeah
             while(isScriptGenerate && output.EndsWith("_"))
             {
                 output = output.Substring(0, output.Length-1);

@@ -26,6 +26,9 @@ namespace BetterTriggers.WorldEdit
         public static List<DestructibleType> GetAll()
         {
             List<DestructibleType> list = new List<DestructibleType>();
+            if (destructibles == null)
+                return list;
+
             var enumerator = destructibles.GetEnumerator();
             while (enumerator.MoveNext())
             {
