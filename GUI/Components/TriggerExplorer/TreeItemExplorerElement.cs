@@ -51,14 +51,12 @@ namespace GUI.Components
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                TriggerExplorer.Current.AllExplorerElements.Remove(this.Ielement.GetPath());
                 Project.CurrentProject.OnDeleteElement_Extra(this.Ielement.GetPath());
                 for (int i = 0; i < this.Items.Count; i++)
                 {
                     TreeItemExplorerElement item = this.Items[0] as TreeItemExplorerElement;
                     item.Delete();
                 }
-
                 var parent = this.Parent as TreeViewItem;
                 if (parent != null)
                 {
@@ -86,7 +84,7 @@ namespace GUI.Components
                 tabItem.Header = this.Ielement.GetName();
             }
 
-            if( this.editor is TriggerControl)
+            if (this.editor is TriggerControl)
             {
                 var control = this.editor as TriggerControl;
                 control.OnRemoteChange();
@@ -96,7 +94,7 @@ namespace GUI.Components
                 var control = this.editor as VariableControl;
                 control.UpdateIdentifierText();
             }
-            else if(this.editor is ScriptControl)
+            else if (this.editor is ScriptControl)
             {
                 var control = this.editor as ScriptControl;
                 control.OnRemoteChange();
@@ -169,12 +167,12 @@ namespace GUI.Components
                 tabItem.Header = this.Ielement.GetName();
         }
 
-        public void UpdatePosition(string oldFullPath, string newFullPath)
+        public void UpdatePosition()
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
                 int insertIndex = Ielement.GetParent().GetExplorerElements().IndexOf(Ielement);
-                TriggerExplorer.Current.OnMoveElement(TriggerExplorer.Current, oldFullPath, newFullPath, insertIndex);
+                TriggerExplorer.Current.OnMoveElement(TriggerExplorer.Current, Ielement.GetPath(), insertIndex);
                 this.treeItemHeader.SetDisplayText(this.Ielement.GetName());
 
                 this.IsSelected = true;
@@ -184,8 +182,7 @@ namespace GUI.Components
 
         public void OnCreated(int insertIndex)
         {
-            TriggerExplorer.Current.AllExplorerElements.Add(Ielement.GetPath(), this);
-            var parent = TriggerExplorer.Current.GetTreeNodeDirectory(Path.GetDirectoryName(this.Ielement.GetPath()));
+            var parent = TriggerExplorer.Current.FindTreeNodeDirectory(Path.GetDirectoryName(this.Ielement.GetPath()));
             parent.Items.Insert(insertIndex, this);
 
             this.IsSelected = true;

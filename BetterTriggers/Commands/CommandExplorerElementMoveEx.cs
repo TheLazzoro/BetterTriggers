@@ -27,7 +27,7 @@ namespace BetterTriggers.Commands
         {
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, NewInsertIndex);
-            explorerElement.ChangedPosition(explorerElement.GetPath(), explorerElement.GetPath());
+            explorerElement.ChangedPosition();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -35,14 +35,14 @@ namespace BetterTriggers.Commands
         {
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, NewInsertIndex);
-            explorerElement.ChangedPosition(explorerElement.GetPath(), explorerElement.GetPath());
+            explorerElement.ChangedPosition();
         }
 
         public void Undo()
         {
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, OldInsertIndex);
-            explorerElement.ChangedPosition(explorerElement.GetPath(), explorerElement.GetPath());
+            explorerElement.ChangedPosition();
         }
 
         public string GetCommandName()

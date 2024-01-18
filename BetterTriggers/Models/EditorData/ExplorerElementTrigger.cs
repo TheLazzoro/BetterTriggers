@@ -205,11 +205,11 @@ namespace BetterTriggers.Models.EditorData
             throw new Exception("'" + path + "' is not a folder.");
         }
 
-        public void ChangedPosition(string oldFullPath, string newFullPath)
+        public void ChangedPosition()
         {
             for (int i = 0; i < observers.Count; i++)
             {
-                observers[i].UpdatePosition(oldFullPath, newFullPath);
+                observers[i].UpdatePosition();
             }
         }
 

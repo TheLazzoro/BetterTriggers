@@ -31,8 +31,6 @@ namespace GUI.Components
         public TreeItemExplorerElement currentElement;
         public event Action<TreeItemExplorerElement> OnOpenExplorerElement;
 
-        internal Dictionary<string, TreeItemExplorerElement> AllExplorerElements;
-
         // Drag and drop fields
         Point _startPoint;
         TreeItemExplorerElement dragItem;
@@ -52,7 +50,6 @@ namespace GUI.Components
         {
             InitializeComponent();
 
-            AllExplorerElements = new ();
             Project.CurrentProject.OnCreated += ContainerProject_OnElementCreated;
             searchWorker = new BackgroundWorker();
             searchWorker.WorkerReportsProgress = true;
@@ -71,7 +68,6 @@ namespace GUI.Components
         public void Populate()
         {
             var root = Project.CurrentProject.GetRoot();
-            AllExplorerElements.Add(root.GetPath(), map);
             for (int i = 0; i < root.explorerElements.Count; i++)
             {
                 RecursePopulate(map, root.explorerElements[i]);
@@ -83,7 +79,6 @@ namespace GUI.Components
             var treeItem = new TreeItemExplorerElement(element);
             element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
             parent.Items.Add(treeItem);
-            AllExplorerElements.Add(element.GetPath(), treeItem);
 
             if (element is ExplorerElementFolder)
             {
@@ -168,20 +163,19 @@ namespace GUI.Components
                 return;
 
             var project = Project.CurrentProject;
-            var explorerElement = project.GetExplorerElement(fullPath);
-            var parent = explorerElement.GetParent();
-            int insertIndex = parent.GetExplorerElements().IndexOf(explorerElement);
+            var explorerElement = project.FindExplorerElement(project.GetRoot(), fullPath);
+            int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
 
             TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);
             explorerElement.Attach(treeItemExplorerElement);
             treeItemExplorerElement.OnCreated(insertIndex);
         }
 
-        internal void OnMoveElement(TriggerExplorer te, string oldFullPath, string newFullPath, int insertIndex)
+        internal void OnMoveElement(TriggerExplorer te, string fullPath, int insertIndex)
         {
-            TreeItemExplorerElement elementToMove = GetTreeNodeElement(oldFullPath);
+            TreeItemExplorerElement elementToMove = FindTreeNodeElement(te.map, fullPath);
             TreeItemExplorerElement oldParent = elementToMove.Parent as TreeItemExplorerElement;
-            TreeItemExplorerElement newParent = GetTreeNodeElement(System.IO.Path.GetDirectoryName(newFullPath));
+            TreeItemExplorerElement newParent = FindTreeNodeDirectory(System.IO.Path.GetDirectoryName(fullPath));
 
             Application.Current.Dispatcher.Invoke(delegate
             {
@@ -190,27 +184,8 @@ namespace GUI.Components
 
                 oldParent.Items.Remove(elementToMove);
                 newParent.Items.Insert(insertIndex, elementToMove);
-                AllExplorerElements.Remove(oldFullPath);
-                AllExplorerElements.Add(newFullPath, elementToMove);
                 elementToMove.IsSelected = true;
             });
-        }
-
-        internal TreeItemExplorerElement GetTreeNodeElement(string fullPath)
-        {
-            TreeItemExplorerElement element;
-            AllExplorerElements.TryGetValue(fullPath, out element);
-            return element;
-        }
-
-        internal TreeItemExplorerElement GetTreeNodeDirectory(string fullPath)
-        {
-            TreeItemExplorerElement element;
-            AllExplorerElements.TryGetValue(fullPath, out element);
-            if (element == null)
-                return map;
-
-            return element;
         }
 
         internal TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)
@@ -547,7 +522,7 @@ namespace GUI.Components
                 TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
                 IExplorerElement pasted = Project.CurrentProject.PasteExplorerElement(selectedElement.Ielement);
 
-                var parent = GetTreeNodeDirectory(pasted.GetParent().GetPath());
+                var parent = FindTreeNodeDirectory(pasted.GetParent().GetPath());
                 RecursePopulate(parent, pasted);
             }
             else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
@@ -595,7 +570,7 @@ namespace GUI.Components
             Project project = Project.CurrentProject;
             IExplorerElement pasted = project.PasteExplorerElement(currentElement.Ielement);
 
-            var parent = GetTreeNodeDirectory(pasted.GetParent().GetPath());
+            var parent = FindTreeNodeDirectory(pasted.GetParent().GetPath());
             RecursePopulate(parent, pasted);
         }
 

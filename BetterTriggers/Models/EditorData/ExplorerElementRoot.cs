@@ -154,7 +154,7 @@ namespace BetterTriggers.Models.EditorData
             return explorerElements;
         }
 
-        public void ChangedPosition(string oldFullPath, string newFullPath)
+        public void ChangedPosition()
         {
             throw new NotImplementedException();
         }

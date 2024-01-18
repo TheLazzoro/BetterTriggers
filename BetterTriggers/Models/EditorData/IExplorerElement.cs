@@ -36,7 +36,7 @@ namespace BetterTriggers.Models.EditorData
         // Notify all observers about an event.
         void Notify();
         void DeleteObservers();
-        void ChangedPosition(string oldFullPath, string newFullPath);
+        void ChangedPosition();
         IExplorerElement Clone();
         List<ExplorerElementTrigger> GetReferrers();
     }
