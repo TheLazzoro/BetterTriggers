@@ -17,6 +17,7 @@
 
 
         <CheckBox
+            HorizontalAlignment="Left"
             x:Name="checkboxIgnore"
             Grid.Row="6"
             Grid.Column="1"
