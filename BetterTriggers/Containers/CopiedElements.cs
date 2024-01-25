@@ -11,9 +11,9 @@ namespace BetterTriggers.Containers
     {
         public static List<TriggerElement> CopiedTriggerElements = new();
         public static List<TriggerElement> CutTriggerElements = new();
-        public static ExplorerElementTrigger CopiedFromTrigger;
+        public static ExplorerElement CopiedFromTrigger;
 
-        public static IExplorerElement CopiedExplorerElement;
-        public static IExplorerElement CutExplorerElement;
+        public static ExplorerElement CopiedExplorerElement;
+        public static ExplorerElement CutExplorerElement;
     }
 }

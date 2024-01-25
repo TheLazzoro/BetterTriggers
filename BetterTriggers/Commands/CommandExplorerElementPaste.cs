@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Xml.Linq;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
@@ -15,13 +16,13 @@ namespace BetterTriggers.Commands
         string commandName = "Paste Explorer Element";
         int pastedIndex = 0;
         int cutIndex = 0;
-        IExplorerElement toCut;
-        IExplorerElement toPaste;
-        IExplorerElement cutParent;
-        IExplorerElement pasteParent;
+        ExplorerElement toCut;
+        ExplorerElement toPaste;
+        ExplorerElement cutParent;
+        ExplorerElement pasteParent;
         Project project;
 
-        public CommandExplorerElementPaste(IExplorerElement elementToPaste, IExplorerElement pasteParent, int pastedIndex)
+        public CommandExplorerElementPaste(ExplorerElement elementToPaste, ExplorerElement pasteParent, int pastedIndex)
         {
             this.project = Project.CurrentProject;
             this.toCut = CopiedElements.CutExplorerElement;
@@ -47,10 +48,8 @@ namespace BetterTriggers.Commands
                 CopiedElements.CutExplorerElement = null;
                 FileSystemUtil.Delete(toCut.GetPath());
                 toCut.RemoveFromParent();
-                toCut.Deleted();
             }
             toPaste.SetParent(pasteParent, pastedIndex);
-            toPaste.Created(pastedIndex);
 
             project.EnableFileEvents(true);
 
@@ -67,10 +66,8 @@ namespace BetterTriggers.Commands
             {
                 FileSystemUtil.Delete(toCut.GetPath());
                 toCut.RemoveFromParent();
-                toCut.Deleted();
             }
             toPaste.SetParent(pasteParent, pastedIndex);
-            toPaste.Created(pastedIndex);
 
             project.EnableFileEvents(true);
         }
@@ -85,10 +82,8 @@ namespace BetterTriggers.Commands
             {
                 Project.CurrentProject.RecurseCreateElementsWithContent(toCut);
                 toCut.SetParent(cutParent, cutIndex);
-                toCut.Created(cutIndex);
             }
             toPaste.RemoveFromParent();
-            toPaste.Deleted();
 
             project.EnableFileEvents(true);
         }
@@ -103,7 +98,7 @@ namespace BetterTriggers.Commands
         /// </summary>
         /// <param name="toPaste"></param>
         /// <param name="pasteParent"></param>
-        private void CreatePastedElements(IExplorerElement toPaste, IExplorerElement pasteParent)
+        private void CreatePastedElements(ExplorerElement toPaste, ExplorerElement pasteParent)
         {
             string name = Path.GetFileName(toPaste.GetPath());
             string dir = pasteParent.GetPath();
@@ -111,9 +106,9 @@ namespace BetterTriggers.Commands
             toPaste.SetPath(finalPath);
             project.AddElementToContainer(toPaste);
             
-            if(toPaste is ExplorerElementScript script)
+            if(toPaste.ElementType == ExplorerElementEnum.Script)
             {
-                finalPath = project.Scripts.GenerateName(script);
+                finalPath = project.Scripts.GenerateName(toPaste);
                 toPaste.SetPath(finalPath);
             }
 
@@ -138,13 +133,17 @@ namespace BetterTriggers.Commands
         /// <summary>
         /// Removes elements from their respective container.
         /// </summary>
-        private void RemovePastedElements(IExplorerElement toRemove)
+        private void RemovePastedElements(ExplorerElement toRemove)
         {
             project.RemoveElementFromContainer(toRemove);
 
-            if(toRemove is ExplorerElementFolder)
+            if(toRemove.ElementType == ExplorerElementEnum.Folder)
             {
-                toRemove.GetExplorerElements().ForEach(element => RemovePastedElements(element));
+                var elementsToRemove = toRemove.GetExplorerElements();
+                foreach (var element in elementsToRemove)
+                {
+                    RemovePastedElements(element);
+                }
             }
         }
     }

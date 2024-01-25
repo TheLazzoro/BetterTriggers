@@ -6,6 +6,7 @@ using BetterTriggers.WorldEdit;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using War3Net.Build.Info;
@@ -17,11 +18,12 @@ namespace BetterTriggers.Containers
         public static Project CurrentProject { get; private set; }
 
         public string src;
+        public string ProjectPath { get; private set; }
         public War3Project war3project;
-        public List<IExplorerElement> projectFiles;
+        public ObservableCollection<ExplorerElement> projectFiles;
         public string currentSelectedElement;
         public BufferingFileSystemWatcher fileSystemWatcher;
-        public IExplorerElement lastCreated;
+        public ExplorerElement lastCreated;
 
         public Folders Folders { get; private set; }
         public Variables Variables { get; private set; }
@@ -102,7 +104,7 @@ namespace BetterTriggers.Containers
         /// This is used when we want to redo a 'create file' action
         /// or undo a 'delete' action.
         /// </summary>
-        public void RecurseCreateElementsWithContent(IExplorerElement topElement, bool doRecurse = true)
+        public void RecurseCreateElementsWithContent(ExplorerElement topElement, bool doRecurse = true)
         {
             if (topElement is IExplorerSaveable)
             {
@@ -114,17 +116,17 @@ namespace BetterTriggers.Containers
 
             topElement.UpdateMetadata(); // important, because this is a pseudo-redo
             var parent = topElement.GetParent();
-            topElement.Created(parent.GetExplorerElements().IndexOf(topElement));
+            //topElement.Created(parent.GetExplorerElements().IndexOf(topElement)); // THIS CALL USED TO ADD LOCAL VARIABLES TO THEIR CONTAINER!!!!
 
             if (Directory.Exists(topElement.GetPath()))
             {
-                var folder = (ExplorerElementFolder)topElement;
+                var folder = topElement;
                 if (!doRecurse)
                     return;
 
-                for (int i = 0; i < folder.explorerElements.Count; i++)
+                for (int i = 0; i < folder.ExplorerElements.Count; i++)
                 {
-                    var element = folder.explorerElements[i];
+                    var element = folder.ExplorerElements[i];
                     RecurseCreateElementsWithContent(element);
                 }
             }
@@ -157,35 +159,35 @@ namespace BetterTriggers.Containers
             UnsavedFiles.Clear();
 
             // Write to project file
-            var root = (ExplorerElementRoot)projectFiles[0];
+            var root = projectFiles[0];
             war3project.Files = new List<War3ProjectFileEntry>();
 
-            for (int i = 0; i < root.explorerElements.Count; i++)
+            for (int i = 0; i < root.ExplorerElements.Count; i++)
             {
-                var element = root.explorerElements[i];
+                var element = root.ExplorerElements[i];
 
                 var fileEntry = new War3ProjectFileEntry();
-                fileEntry.path = element.GetSaveablePath();
+                fileEntry.path = element.GetRelativePath();
                 fileEntry.isEnabled = element.GetEnabled();
                 fileEntry.isInitiallyOn = element.GetInitiallyOn();
 
                 war3project.Files.Add(fileEntry);
 
-                if (element is ExplorerElementFolder)
+                if (element.ElementType == ExplorerElementEnum.Folder)
                 {
-                    RecurseSaveFileEntries((ExplorerElementFolder)element, fileEntry);
+                    RecurseSaveFileEntries(element, fileEntry);
                 }
             }
 
             EnableFileEvents(true);
 
             var json = JsonConvert.SerializeObject(war3project, Formatting.Indented);
-            File.WriteAllText(root.GetProjectPath(), json);
+            File.WriteAllText(ProjectPath, json);
         }
 
-        private void RecurseSaveFileEntries(ExplorerElementFolder parent, War3ProjectFileEntry parentEntry)
+        private void RecurseSaveFileEntries(ExplorerElement parent, War3ProjectFileEntry parentEntry)
         {
-            List<IExplorerElement> children = parent.explorerElements;
+            ObservableCollection<ExplorerElement> children = parent.ExplorerElements;
             parentEntry.isExpanded = parent.isExpanded;
 
             for (int i = 0; i < children.Count; i++)
@@ -194,15 +196,15 @@ namespace BetterTriggers.Containers
 
                 // TODO: DUPLICATE CODE!!
                 var fileEntryChild = new War3ProjectFileEntry();
-                fileEntryChild.path = element.GetSaveablePath();
+                fileEntryChild.path = element.GetRelativePath();
                 fileEntryChild.isEnabled = element.GetEnabled();
                 fileEntryChild.isInitiallyOn = element.GetInitiallyOn();
 
                 parentEntry.Files.Add(fileEntryChild);
 
-                if (element is ExplorerElementFolder)
+                if (element.ElementType == ExplorerElementEnum.Folder)
                 {
-                    RecurseSaveFileEntries((ExplorerElementFolder)element, fileEntryChild);
+                    RecurseSaveFileEntries(element, fileEntryChild);
                 }
             }
         }
@@ -218,6 +220,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         public static Project Load(string projectPath)
         {
+
             if (!File.Exists(projectPath))
                 throw new Exception($"File '{projectPath}' does not exist.");
 
@@ -238,14 +241,15 @@ namespace BetterTriggers.Containers
 
             Project project = new Project();
             CurrentProject = project;
+            project.ProjectPath = projectPath;
             project.war3project = war3project;
 
             war3project.Version = War3Project.EditorVersion; // updates version.
             war3project.GameVersion = Casc.GameVersion; // updates game version.
             project.src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
             project.war3project = war3project;
-            project.projectFiles = new List<IExplorerElement>();
-            project.projectFiles.Add(new ExplorerElementRoot(war3project, projectPath));
+            project.projectFiles = new();
+            project.projectFiles.Add(new ExplorerElement(project.src));
             project.currentSelectedElement = project.src; // defaults to here when nothing has been selected yet.
 
             if (project.fileSystemWatcher == null)
@@ -300,18 +304,18 @@ namespace BetterTriggers.Containers
         }
 
 
-        private void RecurseLoad(War3ProjectFileEntry entryParent, IExplorerElement elementParent, List<string> fileCheckList)
+        private void RecurseLoad(War3ProjectFileEntry entryParent, ExplorerElement elementParent, List<string> fileCheckList)
         {
-            List<IExplorerElement> elementChildren = null;
-            if (elementParent is ExplorerElementRoot)
+            ObservableCollection<ExplorerElement> elementChildren = null;
+            if (elementParent.ElementType == ExplorerElementEnum.Root)
             {
-                var root = (ExplorerElementRoot)elementParent;
-                elementChildren = root.explorerElements;
+                var root = elementParent;
+                elementChildren = root.ExplorerElements;
             }
-            else if (elementParent is ExplorerElementFolder)
+            else if (elementParent.ElementType is ExplorerElementEnum.Folder)
             {
-                var folder = (ExplorerElementFolder)elementParent;
-                elementChildren = folder.explorerElements;
+                var folder = elementParent;
+                elementChildren = folder.ExplorerElements;
                 folder.isExpanded = entryParent.isExpanded;
             }
 
@@ -320,35 +324,10 @@ namespace BetterTriggers.Containers
             {
                 var entryChild = entryParent.Files[i];
                 string path = Path.Combine(src, entryChild.path);
-                IExplorerElement explorerElementChild = null;
-
                 if (File.Exists(path) || Directory.Exists(path))
                 {
                     fileCheckList.Remove(path);
-                    // Add item to appropriate container
-                    if (Directory.Exists(path))
-                    {
-                        explorerElementChild = new ExplorerElementFolder(path);
-                    }
-                    else
-                    {
-                        switch (Path.GetExtension(entryChild.path))
-                        {
-                            case ".trg":
-                                explorerElementChild = new ExplorerElementTrigger(path);
-                                break;
-                            case ".j":
-                            case ".lua":
-                                explorerElementChild = new ExplorerElementScript(path);
-                                break;
-                            case ".var":
-                                explorerElementChild = new ExplorerElementVariable(path);
-                                break;
-                            default:
-                                continue;
-                        }
-                    }
-
+                    ExplorerElement explorerElementChild = new ExplorerElement(path);
                     explorerElementChild.SetEnabled(entryChild.isEnabled);
                     explorerElementChild.SetInitiallyOn(entryChild.isInitiallyOn);
                     explorerElementChild.SetParent(elementParent, insertIndex);
@@ -367,9 +346,9 @@ namespace BetterTriggers.Containers
         {
             string directory = Path.GetDirectoryName(fullPath);
 
-            ExplorerElementRoot root = projectFiles[0] as ExplorerElementRoot;
-            IExplorerElement parent = FindExplorerElementFolder(root, directory);
-            if(parent == null)
+            ExplorerElement root = projectFiles[0];
+            ExplorerElement parent = FindExplorerElementFolder(root, directory);
+            if (parent == null)
             {
                 parent = root;
             }
@@ -377,31 +356,18 @@ namespace BetterTriggers.Containers
             RecurseCreateElement(parent, fullPath, doRecurse);
         }
 
-        private void RecurseCreateElement(IExplorerElement parent, string fullPath, bool doRecurse)
+        private void RecurseCreateElement(ExplorerElement parent, string fullPath, bool doRecurse)
         {
-            IExplorerElement explorerElement = null;
-            if (Directory.Exists(fullPath))
+            ExplorerElement explorerElement = null;
+            if (File.Exists(fullPath) || Directory.Exists(fullPath))
             {
-                explorerElement = new ExplorerElementFolder(fullPath);
+                explorerElement = new ExplorerElement(fullPath);
             }
             else
             {
-                switch (Path.GetExtension(fullPath))
-                {
-                    case ".trg":
-                        explorerElement = new ExplorerElementTrigger(fullPath);
-                        break;
-                    case ".j":
-                    case ".lua":
-                        explorerElement = new ExplorerElementScript(fullPath);
-                        break;
-                    case ".var":
-                        explorerElement = new ExplorerElementVariable(fullPath);
-                        break;
-                    default:
-                        return;
-                }
+                return;
             }
+
             AddElementToContainer(explorerElement);
             lastCreated = explorerElement;
 
@@ -417,42 +383,10 @@ namespace BetterTriggers.Containers
                 string[] entries = Directory.GetFileSystemEntries(fullPath);
                 for (int i = 0; i < entries.Length; i++)
                 {
-                    RecurseCreateElement((ExplorerElementFolder)explorerElement, entries[i], doRecurse);
+                    RecurseCreateElement(explorerElement, entries[i], doRecurse);
                 }
             }
         }
-
-        public void RenameElement(IExplorerElement explorerElement, string renameText)
-        {
-            string oldPath = explorerElement.GetPath();
-
-            string formattedName = string.Empty;
-            if (explorerElement is ExplorerElementFolder)
-                formattedName = renameText;
-            else if (explorerElement is ExplorerElementTrigger)
-            {
-                if (Triggers.Contains(renameText))
-                    throw new Exception($"Trigger '{renameText}' already exists.");
-
-                formattedName = renameText + ".trg";
-            }
-            else if (explorerElement is ExplorerElementScript)
-                formattedName = renameText + ".j";
-            else if (explorerElement is ExplorerElementVariable)
-            {
-                if (Variables.Contains(renameText))
-                    throw new Exception($"Variable '{renameText}' already exists.");
-
-                formattedName = renameText + ".var";
-            }
-
-            insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
-            FileSystemUtil.Rename(oldPath, formattedName);
-        }
-
-
-
-
 
 
         public bool War3MapDirExists()
@@ -467,12 +401,10 @@ namespace BetterTriggers.Containers
             return exists;
         }
 
-
-
-        public IExplorerElement OnRenameElement(string oldFullPath, string newFullPath)
+        public ExplorerElement OnRenameElement(string oldFullPath, string newFullPath)
         {
             var rootNode = projectFiles[0];
-            IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+            ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
             if (elementToRename == null)
                 return null;
 
@@ -491,7 +423,7 @@ namespace BetterTriggers.Containers
         public void OnMoveElement(string oldFullPath, string newFullPath, int insertIndex)
         {
             var rootNode = projectFiles[0];
-            IExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+            ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
 
             CommandExplorerElementMove command = new CommandExplorerElementMove(elementToRename, newFullPath, insertIndex);
             command.Execute();
@@ -503,26 +435,26 @@ namespace BetterTriggers.Containers
         /// <param name="elementToRename"></param>
         /// <param name="oldFullPath"></param>
         /// <param name="newFullPath"></param>
-        internal void RecurseMoveElement(IExplorerElement elementToRename, string oldFullPath, string newFullPath)
+        internal void RecurseMoveElement(ExplorerElement elementToRename, string oldFullPath, string newFullPath)
         {
             if (elementToRename != null)
             {
                 if (Directory.Exists(newFullPath))
                 {
-                    var folder = elementToRename as ExplorerElementFolder;
+                    var folder = elementToRename;
 
                     string[] entries = Directory.GetFileSystemEntries(newFullPath);
                     for (int i = 0; i < entries.Length; i++)
                     {
-                        IExplorerElement elementInSubSearch = null;
+                        ExplorerElement elementInSubSearch = null;
                         string filename = Path.GetFileName(entries[i]);
 
                         // find element with matching old path
-                        for (int e = 0; e < folder.explorerElements.Count; e++)
+                        for (int e = 0; e < folder.ExplorerElements.Count; e++)
                         {
-                            if (filename == Path.GetFileName(folder.explorerElements[e].GetPath()))
+                            if (filename == Path.GetFileName(folder.ExplorerElements[e].GetPath()))
                             {
-                                elementInSubSearch = folder.explorerElements[e];
+                                elementInSubSearch = folder.ExplorerElements[e];
                                 break;
                             }
                         }
@@ -540,7 +472,7 @@ namespace BetterTriggers.Containers
         public void OnDeleteElement(string fullPath)
         {
             var rootNode = projectFiles[0];
-            IExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
+            ExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
             if (elementToDelete == null)
                 return;
 
@@ -565,7 +497,7 @@ namespace BetterTriggers.Containers
         public void OnElementChanged(string fullPath)
         {
             var rootNode = projectFiles[0];
-            IExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
+            ExplorerElement elementToChange = FindExplorerElement(rootNode, fullPath);
 
             if (elementToChange != null)
             {
@@ -574,24 +506,18 @@ namespace BetterTriggers.Containers
             }
         }
 
-        public IExplorerElement FindExplorerElement(IExplorerElement parent, string path)
+        public ExplorerElement FindExplorerElement(ExplorerElement parent, string path)
         {
-            IExplorerElement matching = null;
-            List<IExplorerElement> children = null;
-            if (parent is ExplorerElementRoot)
+            ExplorerElement matching = null;
+            ObservableCollection<ExplorerElement> children = null;
+            if (parent.ElementType == ExplorerElementEnum.Root || parent.ElementType == ExplorerElementEnum.Folder)
             {
-                var root = parent as ExplorerElementRoot; // defaults to root
-                children = root.explorerElements;
-            }
-            else if (parent is ExplorerElementFolder)
-            {
-                var folder = parent as ExplorerElementFolder;
-                children = folder.explorerElements;
+                children = parent.ExplorerElements;
             }
 
             for (int i = 0; i < children.Count; i++)
             {
-                IExplorerElement element = children[i];
+                ExplorerElement element = children[i];
                 if (element.GetPath() == path)
                 {
                     matching = element;
@@ -599,42 +525,36 @@ namespace BetterTriggers.Containers
                 }
                 if (Directory.Exists(element.GetPath()) && matching == null)
                 {
-                    matching = FindExplorerElement((ExplorerElementFolder)element, path);
+                    matching = FindExplorerElement(element, path);
                 }
             }
 
             return matching;
         }
 
-        public IExplorerElement? FindExplorerElementFolder(IExplorerElement parent, string directory)
+        public ExplorerElement? FindExplorerElementFolder(ExplorerElement parent, string directory)
         {
-            IExplorerElement matching = null;
-            List<IExplorerElement> children = null;
+            ExplorerElement matching = null;
+            ObservableCollection<ExplorerElement> children = null;
 
-            if (parent is ExplorerElementRoot)
+            if (parent.ElementType == ExplorerElementEnum.Root || parent.ElementType == ExplorerElementEnum.Folder)
             {
-                var root = parent as ExplorerElementRoot;
-                children = root.explorerElements;
-            }
-            else if (parent is ExplorerElementFolder)
-            {
-                var folder = parent as ExplorerElementFolder;
-                children = folder.explorerElements;
+                children = parent.ExplorerElements;
             }
 
             for (int i = 0; i < children.Count; i++)
             {
-                IExplorerElement element = children[i];
-                if (Directory.Exists(element.GetPath()) && (matching == null || matching is ExplorerElementRoot))
+                ExplorerElement element = children[i];
+                if (Directory.Exists(element.GetPath()) && (matching == null || matching.ElementType == ExplorerElementEnum.Root))
                 {
                     if (element.GetPath() == directory)
                     {
-                        matching = (ExplorerElementFolder)element;
+                        matching = element;
                         break;
                     }
                     else
                     {
-                        matching = FindExplorerElementFolder((ExplorerElementFolder)element, directory);
+                        matching = FindExplorerElementFolder(element, directory);
                         if (matching != null)
                             break;
                     }
@@ -648,19 +568,16 @@ namespace BetterTriggers.Containers
         /// Add newly created ExplorerElements to their appropriate container.
         /// </summary>
         /// <param name="createdElement"></param>
-        public void AddElementToContainer(IExplorerElement element)
+        public void AddElementToContainer(ExplorerElement element)
         {
-            if (element is ExplorerElementFolder)
-                Folders.AddFolder(element as ExplorerElementFolder);
-            else if (element is ExplorerElementTrigger)
-                Triggers.AddTrigger(element as ExplorerElementTrigger);
-            else if (element is ExplorerElementScript)
-                Scripts.AddScript(element as ExplorerElementScript);
-            else if (element is ExplorerElementVariable)
-            {
-                var variable = (ExplorerElementVariable)element;
-                Variables.AddVariable(variable);
-            }
+            if (element.ElementType == ExplorerElementEnum.Folder)
+                Folders.AddFolder(element);
+            else if (element.ElementType == ExplorerElementEnum.Trigger)
+                Triggers.AddTrigger(element);
+            else if (element.ElementType == ExplorerElementEnum.Script)
+                Scripts.AddScript(element);
+            else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
+                Variables.AddVariable(element);
 
         }
 
@@ -668,28 +585,28 @@ namespace BetterTriggers.Containers
         /// Removes deleted ExplorerElements from their appropriate container.
         /// </summary>
         /// <param name="element"></param>
-        public void RemoveElementFromContainer(IExplorerElement element)
+        public void RemoveElementFromContainer(ExplorerElement element)
         {
-            if (element is ExplorerElementFolder folder)
+            if (element.ElementType == ExplorerElementEnum.Folder)
             {
-                for (int i = 0; i < folder.GetExplorerElements().Count; i++)
+                for (int i = 0; i < element.GetExplorerElements().Count; i++)
                 {
-                    var subElement = folder.GetExplorerElements()[i];
+                    var subElement = element.GetExplorerElements()[i];
                     RemoveElementFromContainer(subElement);
                 }
-                Folders.Remove(folder);
+                Folders.Remove(element);
             }
-            else if (element is ExplorerElementTrigger trigger)
-                Triggers.Remove(trigger);
-            else if (element is ExplorerElementScript script)
-                Scripts.Remove(script);
-            else if (element is ExplorerElementVariable variable)
-                Variables.Remove(variable);
+            else if (element.ElementType == ExplorerElementEnum.Trigger)
+                Triggers.Remove(element);
+            else if (element.ElementType == ExplorerElementEnum.Script)
+                Scripts.Remove(element);
+            else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
+                Variables.Remove(element);
         }
 
-        public void CopyExplorerElement(IExplorerElement explorerElement, bool isCut = false)
+        public void CopyExplorerElement(ExplorerElement explorerElement, bool isCut = false)
         {
-            IExplorerElement copied = explorerElement.Clone();
+            ExplorerElement copied = explorerElement.Clone();
             if (copied == null)
                 return;
 
@@ -706,11 +623,11 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="pasteTarget">Currently selected element when pasting.</param>
         /// <returns>The pasted ExplorerElement.</returns>
-        public IExplorerElement PasteExplorerElement(IExplorerElement pasteTarget)
+        public ExplorerElement PasteExplorerElement(ExplorerElement pasteTarget)
         {
             int insertIndex;
-            IExplorerElement parent = null;
-            if (pasteTarget is ExplorerElementFolder || pasteTarget is ExplorerElementRoot)
+            ExplorerElement parent = null;
+            if (pasteTarget.ElementType == ExplorerElementEnum.Folder || pasteTarget.ElementType == ExplorerElementEnum.Root)
             {
                 parent = pasteTarget;
                 insertIndex = 0;
@@ -738,11 +655,11 @@ namespace BetterTriggers.Containers
         /// Use when new elements are about to get created or pasted.
         /// </summary>
         /// <param name="explorerElement"></param>
-        public void PrepareExplorerElement(IExplorerElement explorerElement)
+        public void PrepareExplorerElement(ExplorerElement explorerElement)
         {
-            if (explorerElement is ExplorerElementTrigger)
+            if (explorerElement is ExplorerElement)
             {
-                var element = (ExplorerElementTrigger)explorerElement;
+                var element = (ExplorerElement)explorerElement;
 
                 string folder = Path.GetDirectoryName(element.GetPath());
                 string name = Triggers.GenerateTriggerName(explorerElement.GetName());
@@ -768,18 +685,16 @@ namespace BetterTriggers.Containers
                 });
 
             }
-            else if (explorerElement is ExplorerElementVariable)
+            else if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
             {
-                var element = (ExplorerElementVariable)explorerElement;
-
-                string folder = Path.GetDirectoryName(element.GetPath());
+                string folder = Path.GetDirectoryName(explorerElement.GetPath());
                 string name = Variables.GenerateName(explorerElement.GetName());
 
-                element.variable.Id = Variables.GenerateId();
-                element.SetPath(Path.Combine(folder, name + ".var"));
+                explorerElement.variable.Id = Variables.GenerateId();
+                explorerElement.SetPath(Path.Combine(folder, name + ".var"));
 
             }
-            else if (explorerElement is ExplorerElementFolder)
+            else if (explorerElement.ElementType == ExplorerElementEnum.Folder)
             {
                 var children = explorerElement.GetExplorerElements();
                 for (int i = 0; i < children.Count; i++)
@@ -806,9 +721,9 @@ namespace BetterTriggers.Containers
         }
 
         /// <returns>The top level explorer element in the project.</returns>
-        public ExplorerElementRoot GetRoot()
+        public ExplorerElement GetRoot()
         {
-            return (ExplorerElementRoot)projectFiles[0];
+            return projectFiles[0];
         }
 
         public string GetFullMapPath(string mapFileName = null)

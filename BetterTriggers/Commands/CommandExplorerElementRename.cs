@@ -8,13 +8,13 @@ namespace BetterTriggers.Commands
     public class CommandExplorerElementRename : ICommand
     {
         string commandName = "Rename Explorer Element";
-        IExplorerElement explorerElement;
+        ExplorerElement explorerElement;
         string oldFullPath;
         string newFullPath;
         RefCollection refCollection;
 
 
-        public CommandExplorerElementRename(IExplorerElement explorerElement, string newFullPath)
+        public CommandExplorerElementRename(ExplorerElement explorerElement, string newFullPath)
         {
             this.oldFullPath = explorerElement.GetPath();
             this.newFullPath = newFullPath;
@@ -25,7 +25,6 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
-            explorerElement.ChangedPosition();
             refCollection.Notify();
 
             Project.CurrentProject.CommandManager.AddCommand(this);
@@ -39,7 +38,6 @@ namespace BetterTriggers.Commands
 
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
-            explorerElement.ChangedPosition();
             refCollection.Notify();
         }
 
@@ -51,7 +49,6 @@ namespace BetterTriggers.Commands
 
             Project.CurrentProject.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
-            explorerElement.ChangedPosition();
             refCollection.Notify();
         }
 

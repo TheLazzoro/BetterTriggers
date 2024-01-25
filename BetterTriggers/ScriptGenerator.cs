@@ -21,6 +21,7 @@ using War3Net.Build.Environment;
 using System.Text.RegularExpressions;
 using BetterTriggers.Utility;
 using System.Transactions;
+using System.Collections.ObjectModel;
 
 namespace BetterTriggers
 {
@@ -50,9 +51,9 @@ namespace BetterTriggers
 
         Project project;
         ScriptLanguage language;
-        List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
-        List<ExplorerElementScript> scripts = new List<ExplorerElementScript>();
-        List<ExplorerElementTrigger> triggers = new List<ExplorerElementTrigger>();
+        List<ExplorerElement> variables = new List<ExplorerElement>();
+        List<ExplorerElement> scripts = new List<ExplorerElement>();
+        List<ExplorerElement> triggers = new List<ExplorerElement>();
         Dictionary<string, Tuple<Parameter, string>> generatedVarNames = new Dictionary<string, Tuple<Parameter, string>>(); // [value, [parameter, returnType] ]
         List<string> globalVarNames = new List<string>(); // Used in an edge case (old maps) where vars are multiple defined.
         CultureInfo enUS = new CultureInfo("en-US");
@@ -176,42 +177,35 @@ end
             return success;
         }
 
-        private void SortTriggerElements(IExplorerElement parent)
+        private void SortTriggerElements(ExplorerElement parent)
         {
             string script = string.Empty;
 
             // Gather all explorer elements
-            List<IExplorerElement> children = new List<IExplorerElement>();
-            if (parent is ExplorerElementRoot)
+            ObservableCollection<ExplorerElement> children = new ();
+            if (parent.ElementType == ExplorerElementEnum.Root || parent.ElementType == ExplorerElementEnum.Folder)
             {
-                var root = (ExplorerElementRoot)parent;
-                children = root.explorerElements;
-            }
-            else if (parent is ExplorerElementFolder)
-            {
-                var root = (ExplorerElementFolder)parent;
-                children = root.explorerElements;
+                children = parent.ExplorerElements;
             }
 
             for (int i = 0; i < children.Count; i++)
             {
-                var element = (IExplorerElement)children[i];
+                var element = children[i];
 
                 if (Directory.Exists(element.GetPath()))
                     SortTriggerElements(element);
-                else if (element is ExplorerElementTrigger)
+                else if (element.ElementType == ExplorerElementEnum.Trigger)
                 {
-                    triggers.Add(element as ExplorerElementTrigger);
+                    triggers.Add(element);
                 }
-                else if (element is ExplorerElementScript)
+                else if (element.ElementType == ExplorerElementEnum.Script)
                 {
-                    scripts.Add(element as ExplorerElementScript);
+                    scripts.Add(element);
                 }
-                else if (element is ExplorerElementVariable)
+                else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
                 {
-                    var variable = (ExplorerElementVariable)element;
-                    variable.variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
-                    variables.Add(element as ExplorerElementVariable);
+                    element.variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
+                    variables.Add(element);
                 }
             }
         }
@@ -1717,7 +1711,7 @@ end
             return s.ToString();
         }
 
-        public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
+        public string ConvertGUIToJass(ExplorerElement t, List<string> initialization_triggers)
         {
             triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
             string triggerVarName = "gg_trg_" + triggerName;

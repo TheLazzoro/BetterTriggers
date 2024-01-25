@@ -11,12 +11,12 @@ namespace BetterTriggers.Commands
     public class CommandExplorerElementDelete : ICommand
     {
         string commandName = "Delete Explorer Element";
-        IExplorerElement deletedElement;
-        IExplorerElement parent;
+        ExplorerElement deletedElement;
+        ExplorerElement parent;
         int index;
         RefCollection refCollection;
 
-        public CommandExplorerElementDelete(IExplorerElement deletedElement)
+        public CommandExplorerElementDelete(ExplorerElement deletedElement)
         {
             this.deletedElement = deletedElement;
             this.parent = deletedElement.GetParent();
@@ -28,10 +28,10 @@ namespace BetterTriggers.Commands
         {
             refCollection.RemoveRefsFromParent();
             deletedElement.RemoveFromParent();
-            deletedElement.Deleted();
+            deletedElement.RemoveFromUnsaved(true);
 
-            if (deletedElement is ExplorerElementTrigger)
-                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
+            if (deletedElement is ExplorerElement)
+                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
 
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
@@ -40,7 +40,7 @@ namespace BetterTriggers.Commands
         {
             refCollection.RemoveRefsFromParent();
             deletedElement.RemoveFromParent();
-            deletedElement.Deleted();
+            deletedElement.RemoveFromUnsaved(true);
 
             Project.CurrentProject.EnableFileEvents(false);
             FileSystemUtil.Delete(deletedElement.GetPath());
@@ -48,8 +48,8 @@ namespace BetterTriggers.Commands
 
             
             
-            if (deletedElement is ExplorerElementTrigger)
-                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElementTrigger);
+            if (deletedElement is ExplorerElement)
+                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
         }
 
         public void Undo()

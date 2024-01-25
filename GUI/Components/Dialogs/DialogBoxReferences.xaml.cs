@@ -16,7 +16,7 @@ namespace GUI.Components.Dialogs
     {
         public bool OK = false;
         
-        public DialogBoxReferences(List<ExplorerElementTrigger> references, ExplorerAction action)
+        public DialogBoxReferences(List<ExplorerElement> references, ExplorerAction action)
         {
             InitializeComponent();
 

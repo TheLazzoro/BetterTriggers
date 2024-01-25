@@ -59,7 +59,7 @@ namespace GUI.Components.Settings
             var tabs = mainWindow.tabViewModel;
             for (int i = 0; i < tabs.Tabs.Count; i++)
             {
-                if (tabs.Tabs[i].explorerElement.Ielement is ExplorerElementTrigger)
+                if (tabs.Tabs[i].explorerElement.Ielement is ExplorerElement)
                     tabs.Tabs[i].explorerElement.Reload();
                 if (tabs.Tabs[i].explorerElement.editor is ScriptControl scriptControl)
                     scriptControl.RefreshFontStyle();

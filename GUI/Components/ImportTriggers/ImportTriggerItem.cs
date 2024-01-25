@@ -17,30 +17,30 @@ namespace GUI.Components.ImportTriggers
 {
     internal class ImportTriggerItem : TreeViewItem
     {
-        internal IExplorerElement explorerElement { get; }
+        internal ExplorerElement explorerElement { get; }
 
         internal TreeItemHeaderCheckbox treeItemHeader;
 
-        public ImportTriggerItem(IExplorerElement explorerElement)
+        public ImportTriggerItem(ExplorerElement explorerElement)
         {
             this.explorerElement = explorerElement;
 
             string category = string.Empty;
-            switch (explorerElement)
+            switch (explorerElement.ElementType)
             {
-                case ExplorerElementRoot:
+                case ExplorerElementEnum.Root:
                     category = "TC_MAP";
                     break;
-                case ExplorerElementFolder:
+                case ExplorerElementEnum.Folder:
                     category = "TC_DIRECTORY";
                     break;
-                case ExplorerElementTrigger:
+                case ExplorerElementEnum.Trigger:
                     category = "TC_TRIGGER_NEW";
                     break;
-                case ExplorerElementScript:
+                case ExplorerElementEnum.Script:
                     category = "TC_SCRIPT";
                     break;
-                case ExplorerElementVariable:
+                case ExplorerElementEnum.GlobalVariable:
                     category = "TC_SETVARIABLE";
                     break;
                 default:

@@ -13,7 +13,7 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Modify Parameter";
         ECA triggerElement;
-        ExplorerElementTrigger explorerElement;
+        ExplorerElement explorerElement;
         List<Parameter> paramCollection;
         Parameter paramToAdd;
         Parameter oldParameter;
@@ -23,7 +23,7 @@ namespace BetterTriggers.Commands
         Parameter setVarValueOld; // TODO: Why is this not used?
         Parameter setVarValueNew;
 
-        public CommandTriggerElementParamModify(ECA triggerElement, ExplorerElementTrigger explorerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(ECA triggerElement, ExplorerElement explorerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
             this.triggerElement = triggerElement;
             this.paramCollection = paramCollection;

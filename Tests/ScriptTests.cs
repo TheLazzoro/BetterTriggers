@@ -19,7 +19,7 @@ namespace Tests
         static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElementScript element1, element2, element3;
+        static ExplorerElement element1, element2, element3;
 
 
         [ClassInitialize]
@@ -45,15 +45,15 @@ namespace Tests
 
             string fullPath = project.Scripts.Create();
             project.OnCreateElement(fullPath);
-            element1 = project.lastCreated as ExplorerElementScript;
+            element1 = project.lastCreated;
 
             fullPath = project.Scripts.Create();
             project.OnCreateElement(fullPath);
-            element2 = project.lastCreated as ExplorerElementScript;
+            element2 = project.lastCreated;
 
             fullPath = project.Scripts.Create();
             project.OnCreateElement(fullPath);
-            element3 = project.lastCreated as ExplorerElementScript;
+            element3 = project.lastCreated;
         }
 
         [TestCleanup]
@@ -68,7 +68,7 @@ namespace Tests
         {
             string fullPath = project.Scripts.Create();
             project.OnCreateElement(fullPath);
-            var element = project.lastCreated as ExplorerElementScript;
+            var element = project.lastCreated;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -80,7 +80,7 @@ namespace Tests
         public void OnPasteScript()
         {
             project.CopyExplorerElement(element1);
-            var element = project.PasteExplorerElement(element3) as ExplorerElementScript;
+            var element = project.PasteExplorerElement(element3);
 
             int suffix = 0;
             string expectedName = element1.GetName() + suffix;

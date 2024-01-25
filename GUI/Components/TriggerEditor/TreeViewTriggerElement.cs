@@ -242,7 +242,7 @@ namespace GUI.Components.TriggerEditor
             return triggerControl;
         }
 
-        public ExplorerElementTrigger GetExplorerElementTrigger()
+        public ExplorerElement GetExplorerElementTrigger()
         {
             return GetTriggerControl().explorerElementTrigger;
         }

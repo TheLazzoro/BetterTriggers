@@ -14,7 +14,7 @@ namespace BetterTriggers.Containers
     public class Variables
     {
         public static bool includeLocals { get; set; } = true; // hack
-        public HashSet<ExplorerElementVariable> variableContainer = new HashSet<ExplorerElementVariable>();
+        public HashSet<ExplorerElement> variableContainer = new HashSet<ExplorerElement>();
         public HashSet<Variable> localVariableContainer = new HashSet<Variable>();
 
         /// <returns>Full path.</returns>
@@ -73,9 +73,9 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Returns true if initial value was removed.
         /// </summary>
-        internal bool RemoveInvalidReference(ExplorerElementVariable explorerElementVariable)
+        internal bool RemoveInvalidReference(ExplorerElement ExplorerElement)
         {
-            Variable variable = explorerElementVariable.variable;
+            Variable variable = ExplorerElement.variable;
             if (variable.InitialValue is Value value)
             {
                 bool dataExists = CustomMapData.ReferencedDataExists(value, variable.Type);
@@ -168,7 +168,7 @@ namespace BetterTriggers.Containers
         }
 
 
-        internal void AddVariable(ExplorerElementVariable variable)
+        internal void AddVariable(ExplorerElement variable)
         {
             variableContainer.Add(variable);
         }
@@ -284,7 +284,7 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        public List<ExplorerElementVariable> GetGlobals()
+        public List<ExplorerElement> GetGlobals()
         {
             return variableContainer.ToList();
         }
@@ -380,7 +380,7 @@ namespace BetterTriggers.Containers
             return name;
         }
 
-        internal void Remove(ExplorerElementVariable variable)
+        internal void Remove(ExplorerElement variable)
         {
             variableContainer.Remove(variable);
         }

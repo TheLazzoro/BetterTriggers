@@ -8,7 +8,7 @@ namespace BetterTriggers.Containers
 {
     public class Folders
     {
-        private HashSet<ExplorerElementFolder> folderContainer = new HashSet<ExplorerElementFolder>();
+        private HashSet<ExplorerElement> folderContainer = new HashSet<ExplorerElement>();
 
         /// <summary>
         /// Creates a folder at the current selected 'destination' folder.
@@ -45,7 +45,7 @@ namespace BetterTriggers.Containers
             folderContainer.Clear();
         }
         
-        public void AddFolder(ExplorerElementFolder folder)
+        public void AddFolder(ExplorerElement folder)
         {
             folderContainer.Add(folder);
         }
@@ -70,7 +70,7 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public void Remove(ExplorerElementFolder explorerElement)
+        public void Remove(ExplorerElement explorerElement)
         {
             folderContainer.Remove(explorerElement);
         }

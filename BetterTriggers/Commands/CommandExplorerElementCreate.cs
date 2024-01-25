@@ -8,11 +8,11 @@ namespace BetterTriggers.Commands
     public class CommandExplorerElementCreate : ICommand
     {
         string commandName = "Create Explorer Element";
-        IExplorerElement parent;
-        IExplorerElement createdElement;
+        ExplorerElement parent;
+        ExplorerElement createdElement;
         int insertIndex;
 
-        public CommandExplorerElementCreate(IExplorerElement createdElement, IExplorerElement parent, int insertIndex)
+        public CommandExplorerElementCreate(ExplorerElement createdElement, ExplorerElement parent, int insertIndex)
         {
             this.createdElement = createdElement;
             this.parent = parent;
@@ -22,7 +22,6 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             createdElement.SetParent(parent, insertIndex);
-            createdElement.Created(insertIndex);
 
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
@@ -30,7 +29,6 @@ namespace BetterTriggers.Commands
         public void Redo()
         {
             createdElement.SetParent(parent, insertIndex);
-            createdElement.Created(insertIndex);
 
             var project = Project.CurrentProject;
             project.EnableFileEvents(false);
@@ -41,7 +39,6 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             createdElement.RemoveFromParent();
-            createdElement.Deleted();
 
             Project.CurrentProject.EnableFileEvents(false);
             FileSystemUtil.Delete(createdElement.GetPath());

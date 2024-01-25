@@ -26,7 +26,7 @@ namespace GUI
         private BackgroundWorker worker;
         private List<string> itemsImported;
         Dictionary<string, ImportTriggerItem> treeItemExplorerElements;
-        private List<IExplorerElement> elementsToImport;
+        private List<ExplorerElement> elementsToImport;
 
         private UserControl control;
 
@@ -65,7 +65,6 @@ namespace GUI
         {
             try
             {
-
                 treeView.Items.Clear();
                 var map = Map.Open(mapPath);
                 var triggerItems = map.Triggers.TriggerItems;
@@ -76,7 +75,7 @@ namespace GUI
                 this.treeItemExplorerElements = new Dictionary<string, ImportTriggerItem>();
 
                 // First create UI items and filter those we don't need.
-                var explorerRoot = new ExplorerElementFolder
+                var explorerRoot = new ExplorerElement
                 {
                     path = mapPath
                 };
@@ -132,7 +131,7 @@ namespace GUI
                 {
                     grid.Children.Remove(control);
                 }
-                if (explorerElement is ExplorerElementTrigger explorerTrigger)
+                if (explorerElement is ExplorerElement explorerTrigger)
                 {
                     control = new TriggerControl(explorerTrigger);
                     var triggerControl = (TriggerControl)control;
@@ -154,7 +153,7 @@ namespace GUI
                     Grid.SetRow(control, 3);
                     txtTriggerNote.Visibility = Visibility.Visible;
                 }
-                else if (explorerElement is ExplorerElementScript explorerScript)
+                else if (explorerElement is ExplorerElement explorerScript)
                 {
                     control = new ScriptControl(explorerScript);
                     var scriptControl = (ScriptControl)control;
@@ -167,7 +166,7 @@ namespace GUI
                     Grid.SetRow(control, 2);
                     Grid.SetRowSpan(control, 2);
                 }
-                else if (explorerElement is ExplorerElementVariable explorerVariable)
+                else if (explorerElement is ExplorerElement explorerVariable)
                 {
                     control = new VariableControl(explorerVariable.variable);
                     control.IsEnabled = false;
@@ -185,7 +184,7 @@ namespace GUI
         {
             progressBar.Visibility = Visibility.Visible;
             btnImport.IsEnabled = false;
-            elementsToImport = new List<IExplorerElement>();
+            elementsToImport = new List<ExplorerElement>();
             itemsImported = new List<string>();
             elementsToImport = treeItemExplorerElements
                 .Where(item => (bool)item.Value.treeItemHeader.checkbox.IsChecked)

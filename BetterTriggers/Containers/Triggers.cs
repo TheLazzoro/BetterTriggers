@@ -16,10 +16,10 @@ namespace BetterTriggers.Containers
     public class Triggers
     {
         public Trigger SelectedTrigger { get; set; }
-        private HashSet<ExplorerElementTrigger> triggerElementContainer = new HashSet<ExplorerElementTrigger>();
-        private ExplorerElementTrigger lastCreated;
+        private HashSet<ExplorerElement> triggerElementContainer = new HashSet<ExplorerElement>();
+        private ExplorerElement lastCreated;
 
-        public void AddTrigger(ExplorerElementTrigger trigger)
+        public void AddTrigger(ExplorerElement trigger)
         {
             triggerElementContainer.Add(trigger);
             lastCreated = trigger;
@@ -92,9 +92,9 @@ namespace BetterTriggers.Containers
             return element.GetName();
         }
 
-        public ExplorerElementTrigger GetById(int id)
+        public ExplorerElement GetById(int id)
         {
-            ExplorerElementTrigger trigger = null;
+            ExplorerElement trigger = null;
             var enumerator = triggerElementContainer.GetEnumerator();
             while (enumerator.MoveNext())
             {
@@ -108,22 +108,22 @@ namespace BetterTriggers.Containers
             return trigger;
         }
 
-        public ExplorerElementTrigger GetLastCreated()
+        public ExplorerElement GetLastCreated()
         {
             return lastCreated;
         }
 
-        public List<ExplorerElementTrigger> GetAll()
+        public List<ExplorerElement> GetAll()
         {
             return triggerElementContainer.Select(x => x).ToList();
         }
 
-        public void Remove(ExplorerElementTrigger explorerElement)
+        public void Remove(ExplorerElement explorerElement)
         {
             triggerElementContainer.Remove(explorerElement);
         }
 
-        public ExplorerElementTrigger GetByReference(TriggerRef triggerRef)
+        public ExplorerElement GetByReference(TriggerRef triggerRef)
         {
             return GetById(triggerRef.TriggerId);
         }
@@ -175,7 +175,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         public List<TriggerRef> GetTriggerRefs()
         {
-            List<ExplorerElementTrigger> elements = GetAll();
+            List<ExplorerElement> elements = GetAll();
             List<TriggerRef> list = new List<TriggerRef>();
 
             for (int i = 0; i < elements.Count; i++)
@@ -218,7 +218,7 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        public void CopyTriggerElements(ExplorerElementTrigger copiedFrom, List<TriggerElement> list, bool isCut = false)
+        public void CopyTriggerElements(ExplorerElement copiedFrom, List<TriggerElement> list, bool isCut = false)
         {
             List<TriggerElement> copiedItems = new List<TriggerElement>();
             for (int i = 0; i < list.Count; i++)
@@ -247,7 +247,7 @@ namespace BetterTriggers.Containers
         }
 
         /// <returns>A list of pasted elements.</returns>
-        public List<TriggerElement> PasteTriggerElements(ExplorerElementTrigger destinationTrigger, List<TriggerElement> parentList, int insertIndex)
+        public List<TriggerElement> PasteTriggerElements(ExplorerElement destinationTrigger, List<TriggerElement> parentList, int insertIndex)
         {
             var copied = CopiedElements.CopiedTriggerElements;
             var pasted = new List<TriggerElement>();
@@ -283,7 +283,7 @@ namespace BetterTriggers.Containers
         }
 
         /// <returns>Whether the trigger had invalid references removed.</returns>
-        public bool RemoveInvalidReferences(ExplorerElementTrigger explorerElement)
+        public bool RemoveInvalidReferences(ExplorerElement explorerElement)
         {
             int removeCount = 0;
             removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Events);
@@ -495,7 +495,7 @@ namespace BetterTriggers.Containers
             return invalidCount;
         }
 
-        public int VerifyParametersInTrigger(ExplorerElementTrigger explorerTrigger)
+        public int VerifyParametersInTrigger(ExplorerElement explorerTrigger)
         {
             List<Parameter> list = GetParametersFromTrigger(explorerTrigger);
             int invalidCount = VerifyParameters(list);
@@ -514,7 +514,7 @@ namespace BetterTriggers.Containers
             return functions;
         }
 
-        public static List<Function> GetFunctionsFromTrigger(ExplorerElementTrigger explorerElement)
+        public static List<Function> GetFunctionsFromTrigger(ExplorerElement explorerElement)
         {
             List<Function> list = new List<Function>();
             list.AddRange(GatherFunctions(explorerElement.trigger.Events));
@@ -639,7 +639,7 @@ namespace BetterTriggers.Containers
             return parameters;
         }
 
-        public List<VariableRef> GetVariableRefsFromTrigger(ExplorerElementTrigger explorerElement)
+        public List<VariableRef> GetVariableRefsFromTrigger(ExplorerElement explorerElement)
         {
             List<Parameter> _params = GetParametersFromTrigger(explorerElement);
             List<VariableRef> variableRefs = new List<VariableRef>();
@@ -656,7 +656,7 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// </summary>
         /// <returns>A list of every parameter in the given trigger.</returns>
-        public static List<Parameter> GetParametersFromTrigger(ExplorerElementTrigger explorerElement)
+        public static List<Parameter> GetParametersFromTrigger(ExplorerElement explorerElement)
         {
             List<Parameter> list = new List<Parameter>();
             list.AddRange(GatherTriggerParameters(explorerElement.trigger.Events));

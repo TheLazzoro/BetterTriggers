@@ -10,9 +10,9 @@ namespace BetterTriggers.Containers
 {
     public class Scripts
     {
-        private HashSet<ExplorerElementScript> scriptContainer = new HashSet<ExplorerElementScript>();
+        private HashSet<ExplorerElement> scriptContainer = new HashSet<ExplorerElement>();
 
-        public void AddScript(ExplorerElementScript script)
+        public void AddScript(ExplorerElement script)
         {
             scriptContainer.Add(script);
         }
@@ -37,7 +37,7 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public void Remove(ExplorerElementScript explorerElement)
+        public void Remove(ExplorerElement explorerElement)
         {
             scriptContainer.Remove(explorerElement);
         }
@@ -47,7 +47,7 @@ namespace BetterTriggers.Containers
             scriptContainer.Clear();
         }
 
-        internal string GenerateName(ExplorerElementScript script)
+        internal string GenerateName(ExplorerElement script)
         {
             string path = script.GetPath();
             string folder = Path.GetDirectoryName(path);

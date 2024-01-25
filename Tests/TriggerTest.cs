@@ -20,7 +20,7 @@ namespace Tests
         static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElementTrigger element1, element2, element3;
+        static ExplorerElement element1, element2, element3;
 
 
         [ClassInitialize]
@@ -92,7 +92,7 @@ namespace Tests
             int actualTriggerCount = project.Triggers.Count();
 
             var expectedParameters = Triggers.GetParametersFromTrigger(element1);
-            var actualParameters = Triggers.GetParametersFromTrigger(element as ExplorerElementTrigger);
+            var actualParameters = Triggers.GetParametersFromTrigger(element as ExplorerElement);
             int expectedParamCount = expectedParameters.Count;
             int actualParamCount = actualParameters.Count;
 
@@ -109,7 +109,7 @@ namespace Tests
             project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 1);
             project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 2);
             project.CopyExplorerElement(element1);
-            var pasted = (ExplorerElementTrigger)project.PasteExplorerElement(element1);
+            var pasted = (ExplorerElement)project.PasteExplorerElement(element1);
 
             for (int i = 0; i < pasted.trigger.LocalVariables.Count; i++)
             {

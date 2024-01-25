@@ -10,11 +10,11 @@ namespace GUI.Components
     public partial class ScriptControl : UserControl, IEditor
     {
         internal TextEditor textEditor;
-        private ExplorerElementScript explorerElementScript;
+        private ExplorerElement explorerElementScript;
         private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
         private bool suppressStateChange = false;
 
-        public ScriptControl(ExplorerElementScript explorerElementScript)
+        public ScriptControl(ExplorerElement explorerElementScript)
         {
             InitializeComponent();
 

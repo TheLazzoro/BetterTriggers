@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
@@ -9,16 +10,15 @@ namespace GUI.Components
     public partial class RootControl : UserControl, IEditor
     {
         public TextEditor textEditor;
-        private ExplorerElementRoot explorerElementRoot;
         List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
-        public RootControl(ExplorerElementRoot explorerElementRoot)
+        public RootControl()
         {
             InitializeComponent();
 
-            this.explorerElementRoot = explorerElementRoot;
-            string extension = System.IO.Path.GetExtension(explorerElementRoot.GetPath());
-            this.textEditor = new TextEditor(explorerElementRoot.project.Header, ScriptLanguage.Jass);
+            var root = Project.CurrentProject.GetRoot();
+            string extension = System.IO.Path.GetExtension(root.GetPath());
+            this.textEditor = new TextEditor(Project.CurrentProject.war3project.Header, ScriptLanguage.Jass);
             this.grid.Children.Add(textEditor);
             Grid.SetColumn(textEditor, 0);
             Grid.SetRow(textEditor, 3);
@@ -26,7 +26,7 @@ namespace GUI.Components
 
             textEditor.avalonEditor.TextChanged += delegate
             {
-                this.explorerElementRoot.project.Header = textEditor.avalonEditor.Text;
+                Project.CurrentProject.war3project.Header = textEditor.avalonEditor.Text;
                 OnStateChange();
             };
         }
@@ -61,7 +61,7 @@ namespace GUI.Components
 
         private void textBoxComment_TextChanged(object sender, TextChangedEventArgs e)
         {
-            explorerElementRoot.project.Comment = textBoxComment.Text;
+            Project.CurrentProject.war3project.Comment = textBoxComment.Text;
             OnStateChange();
         }
 

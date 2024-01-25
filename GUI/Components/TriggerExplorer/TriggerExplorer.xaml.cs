@@ -20,6 +20,7 @@ using System.Threading;
 using BetterTriggers.Utility;
 using GUI.Components.Dialogs;
 using GUI.Components.Tabs;
+using System.Windows.Media.Animation;
 
 namespace GUI.Components
 {
@@ -46,6 +47,8 @@ namespace GUI.Components
 
         BackgroundWorker searchWorker;
 
+        private TriggerExplorerViewModel viewModel;
+
         public TriggerExplorer()
         {
             InitializeComponent();
@@ -57,105 +60,63 @@ namespace GUI.Components
             searchWorker.DoWork += SearchWorker_DoWork;
             searchWorker.ProgressChanged += SearchWorker_ProgressChanged;
             searchWorker.RunWorkerCompleted += SearchWorker_RunWorkerCompleted;
+
+            viewModel = new TriggerExplorerViewModel();
+            DataContext = viewModel;
+
+            KeyDown += TriggerExplorer_KeyDown;
         }
 
+        public ExplorerElement? GetSelectedExplorerElement()
+        {
+            TreeView tv = this.treeViewTriggerExplorer;
+            var container = tv.ItemContainerGenerator;
+            ExplorerElement item = container.ItemFromContainer(tv.SelectedItem as TreeViewItem) as ExplorerElement;
+            return item;
+        }
+
+        public TextBox GetCurrentRenameBox()
+        {
+            var selected = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
+            var renameBox = selected.FindName("renameBox") as TextBox;
+            return renameBox;
+        }
+
+        private void TriggerExplorer_KeyDown(object sender, KeyEventArgs e)
+        {
+            var selected = GetSelectedExplorerElement();
+
+            if (e.Key == Key.F2)
+                SetSelectedRenameBoxVisible(true);
+            else if (e.Key == Key.Escape)
+                SetSelectedRenameBoxVisible(false);
+            if (e.Key == Key.Enter && selected.RenameBoxVisibility == Visibility.Visible)
+                RenameExplorerElement();
+            else if (e.Key == Key.Delete)
+            {
+
+            }
+        }
+
+        private void SetSelectedRenameBoxVisible(bool isVisible)
+        {
+            var selected = GetSelectedExplorerElement();
+            if(isVisible)
+                selected.RenameBoxVisibility = Visibility.Visible;
+            else
+                selected.RenameBoxVisibility = Visibility.Hidden;
+        }
+
+        private void RenameExplorerElement()
+        {
+            var selected = GetSelectedExplorerElement();
+            selected.Rename();
+        }
 
         public void Dispose()
         {
             Project.CurrentProject.OnCreated -= ContainerProject_OnElementCreated;
         }
-
-        public void Populate()
-        {
-            var root = Project.CurrentProject.GetRoot();
-            for (int i = 0; i < root.explorerElements.Count; i++)
-            {
-                RecursePopulate(map, root.explorerElements[i]);
-            }
-        }
-
-        private void RecursePopulate(TreeItemExplorerElement parent, IExplorerElement element)
-        {
-            var treeItem = new TreeItemExplorerElement(element);
-            element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
-            parent.Items.Add(treeItem);
-
-            if (element is ExplorerElementFolder)
-            {
-                var folder = element as ExplorerElementFolder;
-                if (folder.isExpanded)
-                    treeItem.ExpandSubtree();
-
-                for (int i = 0; i < folder.explorerElements.Count; i++)
-                {
-                    var child = folder.explorerElements[i];
-                    RecursePopulate(treeItem, child);
-                }
-            }
-        }
-
-        public void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
-        {
-            if (selectedItem.Ielement is ExplorerElementTrigger exTrig)
-                Project.CurrentProject.Triggers.SelectedTrigger = exTrig.trigger;
-
-            if (selectedItem.editor == null || selectedItem.tabItem == null)
-            {
-                if (selectedItem.Ielement is ExplorerElementRoot)
-                {
-                    var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
-                    rootControl.Attach(selectedItem);
-                    selectedItem.editor = rootControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementTrigger)
-                {
-                    var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
-                    triggerControl.Attach(selectedItem);
-                    selectedItem.editor = triggerControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementScript)
-                {
-                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
-                    scriptControl.Attach(selectedItem);
-                    selectedItem.editor = scriptControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementVariable)
-                {
-                    var element = (ExplorerElementVariable)selectedItem.Ielement;
-                    var variableControl = new VariableControl(element.variable);
-                    variableControl.Attach(selectedItem);
-                    selectedItem.editor = variableControl;
-                }
-
-                // select already open tab
-                for (int i = 0; i < tabViewModel.Tabs.Count; i++)
-                {
-                    var tab = tabViewModel.Tabs[i];
-                    if (tab.explorerElement.Ielement.GetPath() == selectedItem.Ielement.GetPath())
-                    {
-                        selectedItem.tabItem = tab;
-                        tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
-                        return;
-                    }
-                }
-
-                if (selectedItem.editor == null)
-                    return;
-
-                TabItemBT tabItem = new TabItemBT(selectedItem, tabViewModel);
-                tabViewModel.Tabs.Add(tabItem);
-                selectedItem.tabItem = tabItem;
-            }
-
-            if (selectedItem.tabItem != null)
-            {
-                if (!tabViewModel.Tabs.Contains(selectedItem.tabItem))
-                    tabViewModel.Tabs.Add(selectedItem.tabItem);
-
-                tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
-            }
-        }
-
 
         public void OnCreateElement(string fullPath)
         {
@@ -496,7 +457,7 @@ namespace GUI.Components
                 if (selectedElement == null || selectedElement == map)
                     return;
 
-                List<ExplorerElementTrigger> refs = selectedElement.Ielement.GetReferrers();
+                List<ExplorerElement> refs = selectedElement.Ielement.GetReferrers();
                 if (refs.Count > 0)
                 {
                     DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);
@@ -545,8 +506,8 @@ namespace GUI.Components
             menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
             menuElementEnabled.IsChecked = rightClickedElement.Ielement.GetEnabled();
             menuElementInitiallyOn.IsChecked = rightClickedElement.Ielement.GetInitiallyOn();
-            menuElementEnabled.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger || rightClickedElement.Ielement is ExplorerElementScript;
-            menuElementInitiallyOn.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger;
+            menuElementEnabled.IsEnabled = rightClickedElement.Ielement is ExplorerElement || rightClickedElement.Ielement is ExplorerElementScript;
+            menuElementInitiallyOn.IsEnabled = rightClickedElement.Ielement is ExplorerElement;
             menuRename.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
             menuDelete.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
             menuCut.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;

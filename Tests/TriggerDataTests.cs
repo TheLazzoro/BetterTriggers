@@ -22,7 +22,7 @@ namespace Tests
         static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElementVariable variable;
+        static ExplorerElement variable;
         static string variablePath;
 
 
@@ -57,7 +57,7 @@ namespace Tests
             string fullPath = project.Variables.Create();
             variablePath = fullPath;
             project.OnCreateElement(fullPath); // Force OnCreate 'event'.
-            variable = project.lastCreated as ExplorerElementVariable;
+            variable = project.lastCreated;
         }
 
         [TestCleanup]

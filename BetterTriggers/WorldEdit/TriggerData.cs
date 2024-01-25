@@ -15,6 +15,7 @@ using War3Net.Build.Info;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BetterTriggers.Containers;
+using War3Net.Common.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -115,42 +116,43 @@ namespace BetterTriggers.WorldEdit
 
                     CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
                     Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
+                    byte[] image = new byte[stream.Length];
+                    stream.CopyTo(image, 0, (int)stream.Length);
 
-                    System.Drawing.Bitmap image = Images.ReadImage(stream);
                     Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
                 }
 
-                System.Drawing.Bitmap img;
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png");
+                byte[] img;
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png");
                 Category.Create(TriggerCategory.TC_MAP, img, "???", false);
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png");
                 Category.Create(TriggerCategory.TC_ACTION, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png");
                 Category.Create(TriggerCategory.TC_CONDITION_NEW, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
                 Category.Create(TriggerCategory.TC_EVENT, img, "Event", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
                 Category.Create(TriggerCategory.TC_ERROR, img, "Error", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
                 Category.Create(TriggerCategory.TC_INVALID, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png");
                 Category.Create(TriggerCategory.TC_TRIGGER_NEW, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png");
                 Category.Create(TriggerCategory.TC_DIRECTORY, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
                 Category.Create(TriggerCategory.TC_SCRIPT, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-setvariables-alpha.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-setvariables-alpha.png");
                 Category.Create(TriggerCategory.TC_LOCAL_VARIABLE, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
                 Category.Create(TriggerCategory.TC_FRAMEHANDLE, img, "Frame", true);
 
             }

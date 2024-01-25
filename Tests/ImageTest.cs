@@ -25,7 +25,6 @@ namespace Tests
         [DataRow("FrostmourneNew.blp")]
         [DataRow("HelmOfDom.blp")]
         [DataRow("LichKing.blp")]
-        [DataRow("LichKing.blp")]
         [DataRow("BTNspell_arcane_manatap.dds")]
         [DataRow("previewFirelord.dds")]
         [DataRow("HeroAbilities.tga")]

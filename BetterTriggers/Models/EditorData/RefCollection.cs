@@ -11,7 +11,7 @@ namespace BetterTriggers.Models.EditorData
     internal class RefCollection
     {
         List<RefParent> refParents = new List<RefParent>();
-        List<ExplorerElementTrigger> triggersToUpdate = new();
+        List<ExplorerElement> triggersToUpdate = new();
 
         internal RefCollection(Variable variable)
         {
@@ -28,12 +28,12 @@ namespace BetterTriggers.Models.EditorData
             CreateTrigRefs(trigger);
         }
 
-        internal RefCollection(IExplorerElement explorerElement)
+        internal RefCollection(ExplorerElement explorerElement)
         {
-            if (explorerElement is ExplorerElementVariable exVar)
-                CreateVarRefs(exVar.variable);
-            else if (explorerElement is ExplorerElementTrigger exTrig)
-                CreateTrigRefs(exTrig.trigger);
+            if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
+                CreateVarRefs(explorerElement.variable);
+            else if (explorerElement.ElementType == ExplorerElementEnum.Trigger)
+                CreateTrigRefs(explorerElement.trigger);
         }
 
         private void CreateVarRefs(Variable variable, string newType = null)

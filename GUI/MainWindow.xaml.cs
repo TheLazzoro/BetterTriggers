@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
@@ -310,6 +311,68 @@ namespace GUI
             CloseProject(true);
         }
 
+        private void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
+        {
+            if (selectedItem.Ielement is ExplorerElement exTrig)
+                Project.CurrentProject.Triggers.SelectedTrigger = exTrig.trigger;
+
+            if (selectedItem.editor == null || selectedItem.tabItem == null)
+            {
+                if (selectedItem.Ielement is ExplorerElementRoot)
+                {
+                    var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
+                    rootControl.Attach(selectedItem);
+                    selectedItem.editor = rootControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElement)
+                {
+                    var triggerControl = new TriggerControl((ExplorerElement)selectedItem.Ielement);
+                    triggerControl.Attach(selectedItem);
+                    selectedItem.editor = triggerControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementScript)
+                {
+                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
+                    scriptControl.Attach(selectedItem);
+                    selectedItem.editor = scriptControl;
+                }
+                else if (selectedItem.Ielement is ExplorerElementVariable)
+                {
+                    var element = (ExplorerElementVariable)selectedItem.Ielement;
+                    var variableControl = new VariableControl(element.variable);
+                    variableControl.Attach(selectedItem);
+                    selectedItem.editor = variableControl;
+                }
+
+                // select already open tab
+                for (int i = 0; i < tabViewModel.Tabs.Count; i++)
+                {
+                    var tab = tabViewModel.Tabs[i];
+                    if (tab.explorerElement.Ielement.GetPath() == selectedItem.Ielement.GetPath())
+                    {
+                        selectedItem.tabItem = tab;
+                        tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
+                        return;
+                    }
+                }
+
+                if (selectedItem.editor == null)
+                    return;
+
+                TabItemBT tabItem = new TabItemBT(selectedItem, tabViewModel);
+                tabViewModel.Tabs.Add(tabItem);
+                selectedItem.tabItem = tabItem;
+            }
+
+            if (selectedItem.tabItem != null)
+            {
+                if (!tabViewModel.Tabs.Contains(selectedItem.tabItem))
+                    tabViewModel.Tabs.Add(selectedItem.tabItem);
+
+                tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
+            }
+        }
+
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeItemExplorerElement selected = e.NewValue as TreeItemExplorerElement;
@@ -327,7 +390,7 @@ namespace GUI
 
             triggerExplorer.currentElement = selectedExplorerItem;
 
-            TriggerExplorer.Current.OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
+            OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
             EnableTriggerElementButtons();
         }
 
@@ -340,7 +403,7 @@ namespace GUI
             if (tabItem == null) // it crashes when we don't do this?
                 return;
 
-            TriggerExplorer.Current.OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
+            OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
             selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
             EnableTriggerElementButtons();
         }
@@ -576,11 +639,8 @@ namespace GUI
 
             triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TreeViewTriggerExplorer_SelectedItemChanged;
             triggerExplorer.OnOpenExplorerElement += TriggerExplorer_OnOpenExplorerElement;
-            triggerExplorer.CreateRootItem();
 
             EnableToolbar(true);
-
-            triggerExplorer.Populate();
 
             VerifyTriggerData();
             OpenLastOpenedTabs();
@@ -597,7 +657,7 @@ namespace GUI
                 {
                     var element = triggerExplorer.FindTreeNodeElement(triggerExplorer.map, item);
                     if (element != null)
-                        triggerExplorer.OnSelectTab(element, tabViewModel, tabControl);
+                        OnSelectTab(element, tabViewModel, tabControl);
                 }
             }
         }

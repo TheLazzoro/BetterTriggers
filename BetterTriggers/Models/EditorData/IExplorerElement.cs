@@ -10,7 +10,7 @@ namespace BetterTriggers.Models.EditorData
     {
         int GetId();
         string GetPath();
-        string GetSaveablePath(); // Used in the project file.
+        string GetRelativePath(); // Used in the project file.
         void SetPath(string newPath);
         string GetName();
         long GetSize();
@@ -38,6 +38,6 @@ namespace BetterTriggers.Models.EditorData
         void DeleteObservers();
         void ChangedPosition();
         IExplorerElement Clone();
-        List<ExplorerElementTrigger> GetReferrers();
+        List<ExplorerElement> GetReferrers();
     }
 }

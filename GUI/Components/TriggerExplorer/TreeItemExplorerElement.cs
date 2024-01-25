@@ -2,12 +2,16 @@
 using BetterTriggers.Models.EditorData;
 using GUI.Components.Shared;
 using GUI.Components.Tabs;
+using GUI.Utility;
 using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using static GUI.Components.Shared.TreeItemHeader;
+using static System.Windows.Forms.AxHost;
 
 namespace GUI.Components
 {
@@ -26,7 +30,7 @@ namespace GUI.Components
                 categoryName = TriggerCategory.TC_MAP;
             else if (Ielement is ExplorerElementFolder)
                 categoryName = TriggerCategory.TC_DIRECTORY;
-            else if (Ielement is ExplorerElementTrigger)
+            else if (Ielement is ExplorerElement)
                 categoryName = TriggerCategory.TC_TRIGGER_NEW;
             else if (Ielement is ExplorerElementScript)
                 categoryName = TriggerCategory.TC_SCRIPT;
@@ -129,7 +133,7 @@ namespace GUI.Components
             {
                 try
                 {
-                    Project.CurrentProject.RenameElement(this.Ielement, renameText);
+                    Ielement.Rename();
                     this.treeItemHeader.ShowRenameBox(false);
                 }
                 catch (Exception ex)
@@ -196,9 +200,9 @@ namespace GUI.Components
         public void RefreshHeader()
         {
             TreeItemState state = Ielement.GetEnabled() == true ? TreeItemState.Normal : TreeItemState.Disabled;
-            if (Ielement is ExplorerElementTrigger)
+            if (Ielement is ExplorerElement)
             {
-                int invalidCount = Project.CurrentProject.Triggers.VerifyParametersInTrigger(Ielement as ExplorerElementTrigger);
+                int invalidCount = Project.CurrentProject.Triggers.VerifyParametersInTrigger(Ielement as ExplorerElement);
                 if (state != TreeItemState.Disabled && invalidCount > 0)
                     state = TreeItemState.HasErrorsNoTextColor;
             }

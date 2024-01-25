@@ -109,18 +109,18 @@ namespace BetterTriggers.Utility
         /// <summary>
         /// Returns appropriate file extension.
         /// </summary>
-        public static string GetExtension(IExplorerElement element, ScriptLanguage language)
+        public static string GetExtension(ExplorerElement element, ScriptLanguage language)
         {
             string extension = string.Empty;
-            switch (element)
+            switch (element.ElementType)
             {
-                case ExplorerElementScript:
+                case ExplorerElementEnum.Script:
                     extension = language == ScriptLanguage.Jass ? ".j" : ".lua";
                     break;
-                case ExplorerElementVariable:
+                case ExplorerElementEnum.GlobalVariable:
                     extension = ".var";
                     break;
-                case ExplorerElementTrigger:
+                case ExplorerElementEnum.Trigger:
                     extension = ".trg";
                     break;
             }

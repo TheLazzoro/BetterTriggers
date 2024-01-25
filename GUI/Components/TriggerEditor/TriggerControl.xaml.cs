@@ -25,7 +25,7 @@ namespace GUI.Components
     public partial class TriggerControl : UserControl, IEditor
     {
         public TextEditor TextEditor;
-        public ExplorerElementTrigger explorerElementTrigger; // needed to get file references to variables in TriggerElements
+        public ExplorerElement explorerElementTrigger; // needed to get file references to variables in TriggerElements
 
         public NodeEvent categoryEvent;
         public NodeCondition categoryCondition;
@@ -53,7 +53,7 @@ namespace GUI.Components
 
         VariableControl variableControl;
 
-        public TriggerControl(ExplorerElementTrigger explorerElementTrigger)
+        public TriggerControl(ExplorerElement explorerElementTrigger)
         {
             InitializeComponent();
 
@@ -333,7 +333,7 @@ namespace GUI.Components
 
         private void VariableControl_OnChange()
         {
-            OnStateChange();
+            explorerElementTrigger.AddToUnsaved();
         }
 
         // TODO: There are two 'SelectedItemChanged' functions?
@@ -707,7 +707,7 @@ namespace GUI.Components
                 var localVar = v as LocalVariable;
                 if (localVar != null)
                 {
-                    List<ExplorerElementTrigger> refs = Project.CurrentProject.References.GetReferrers(localVar.variable);
+                    List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(localVar.variable);
                     if (refs.Count > 0)
                         inUse.Add(localVar);
                 }

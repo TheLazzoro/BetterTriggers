@@ -31,8 +31,8 @@ namespace GUI.Components.OpenMap
             useRelativeMapDirectory = project.UseRelativeMapDirectory;
             if (useRelativeMapDirectory)
             {
-                var root = (ExplorerElementRoot)Project.CurrentProject.projectFiles[0];
-                string rootDir = Path.GetDirectoryName(root.GetProjectPath());
+                var root = Project.CurrentProject.projectFiles[0];
+                string rootDir = Path.GetDirectoryName(root.GetPath());
                 path = Path.Combine(rootDir, "map");
                 btnBrowseFiles.Visibility = Visibility.Hidden;
                 if (!Directory.Exists(path))
