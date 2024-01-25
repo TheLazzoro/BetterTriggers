@@ -348,8 +348,6 @@
                 <MenuItem Name="menuClose" Command="{StaticResource CloseProject}" Header="Close Project" />
                 <Separator Margin="0,5,0,4" />
                 <MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />
-                <Separator Margin="0,5,0,4" />
-                <Separator />
                 <MenuItem Name="menuProjectSettings" Command="{StaticResource OpenProjectSettings}" Header="Project Settings" />
                 <Separator />
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />

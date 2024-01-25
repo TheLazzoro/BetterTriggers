@@ -13,6 +13,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using BetterTriggers.Containers;
 using War3Net.Build;
+using BetterTriggers.Commands;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -56,7 +57,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.Load(mapPath);
+            CustomMapData.Load(mapPath, false);
 
             var map = CustomMapData.MPQMap;
             //var map = Map.Open(mapPath);
@@ -169,7 +170,7 @@ namespace BetterTriggers.WorldEdit
                 {
                     var saveable = (IExplorerSaveable)element;
                     string folder = Path.GetDirectoryName(element.GetPath());
-                    if(!Directory.Exists(folder))
+                    if (!Directory.Exists(folder))
                     {
                         Directory.CreateDirectory(folder);
                         project.OnCreateElement(folder, false); // We manually create UI elements
@@ -371,6 +372,21 @@ namespace BetterTriggers.WorldEdit
 
             if (triggers != null)
             {
+                int variablesFolderID = RandomUtil.GenerateInt();
+                if (triggers.SubVersion == null)
+                {
+                    string folderName = "Variables";
+                    TriggerCategoryDefinition triggerCategoryDefinition = new TriggerCategoryDefinition();
+                    triggerCategoryDefinition.Name = folderName;
+                    triggerCategoryDefinition.Id = variablesFolderID;
+                    var folder = CreateFolder(triggerCategoryDefinition);
+                    FormatExplorerElement(folder, folderName, 0);
+                    triggerPaths.TryAdd(variablesFolderID, Path.Combine(src, folderName));
+
+                    WriteToProjectFileAndDisk(folder, variablesFolderID, 0);
+                }
+
+
                 /// Write to disk (local method)
                 void WriteToProjectFileAndDisk(IExplorerElement explorerElement, int id, int parentId)
                 {
@@ -407,6 +423,7 @@ namespace BetterTriggers.WorldEdit
                     for (int i = 0; i < triggers.Variables.Count; i++)
                     {
                         var variableItem = triggers.Variables[i];
+                        variableItem.ParentId = variablesFolderID;
                         ExplorerElementVariable variable = CreateVariable(variableItem);
                         int newId = RandomUtil.GenerateInt(); // Legacy variable format always has id=0, so we need to generate new id's
                         variable.variable.Id = newId;
@@ -417,7 +434,7 @@ namespace BetterTriggers.WorldEdit
                         triggerPaths.TryAdd(variableItem.Id, explorerElement.GetPath());
 
                         elements.Add(explorerElement);
-                        WriteToProjectFileAndDisk(explorerElement, variableItem.Id, variableItem.ParentId);
+                        WriteToProjectFileAndDisk(explorerElement, newId, variableItem.ParentId);
                     }
                 }
 

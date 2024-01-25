@@ -31,6 +31,7 @@ namespace GUI.Components.VersionCheck
 
             Application.Current.Dispatcher.Invoke(delegate
             {
+                Title = "Version";
                 switch (version.VersionCheckEnum)
                 {
                     case VersionCheckEnum.IsNewest:
