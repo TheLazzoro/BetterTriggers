@@ -32,5 +32,15 @@
             <Button x:Name="btnCancel" Width="75" Margin="0,0,10,0" Click="btnCancel_Click">Cancel</Button>
             <Button x:Name="btnOK" Width="75" IsEnabled="False" Click="btnOK_Click">OK</Button>
         </StackPanel>
+
+        <TextBlock
+            x:Name="txtNoMapsFound"
+            Foreground="{DynamicResource TextBrush}"
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="No maps found in this directory. Select the directory which the map is located in."
+            TextWrapping="Wrap"
+            HorizontalAlignment="Center"
+            />
     </Grid>
 </Window>

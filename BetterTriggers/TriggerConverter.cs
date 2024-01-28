@@ -134,7 +134,7 @@ namespace BetterTriggers.WorldEdit
 
         public List<IExplorerElement> ConvertAll_NoWrite()
         {
-            return ConvertSelectedTriggers(triggers.TriggerItems);
+            return ConvertSelectedTriggers(triggers.TriggerItems, triggers.Variables);
         }
 
         /// <summary>
@@ -320,8 +320,9 @@ namespace BetterTriggers.WorldEdit
         }
 
 
-        private List<IExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
+        private List<IExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers, List<VariableDefinition> variableDefinitions = null)
         {
+            var triggerElementsToImport = new List<IExplorerElement>();
             var project = Project.CurrentProject;
             if (project == null)
             {
@@ -336,7 +337,37 @@ namespace BetterTriggers.WorldEdit
             }
             triggerPaths.Add(0, targetDir); // root path for the imported triggers
 
-            var triggerElementsToImport = new List<IExplorerElement>();
+
+            // hack to extract variables out of the 'variableDefinitions' part of the trigger format.
+            // Only 'not null' when importing triggers.
+            if (variableDefinitions != null)
+            {
+                int variablesFolderID = RandomUtil.GenerateInt();
+                string folderName = "Variables";
+                TriggerCategoryDefinition triggerCategoryDefinition = new TriggerCategoryDefinition();
+                triggerCategoryDefinition.Name = folderName;
+                triggerCategoryDefinition.Id = variablesFolderID;
+                triggerCategoryDefinition.ParentId = 0;
+                var folder = CreateFolder(triggerCategoryDefinition);
+                FormatExplorerElement(folder, folderName, 0);
+                triggerPaths.TryAdd(variablesFolderID, Path.Combine(targetDir, folderName));
+
+                triggerElementsToImport.Add(folder);
+
+                foreach (var variableDefinition in variableDefinitions)
+                {
+                    TriggerVariableDefinition variableDef = new TriggerVariableDefinition
+                    {
+                        Id = variableDefinition.Id,
+                        Name = variableDefinition.Name,
+                        ParentId = variablesFolderID,
+                    };
+                    IExplorerElement explorerElement = GetVariable(variableDef);
+                    explorerElement = FormatExplorerElement(explorerElement, variableDef.Name, variablesFolderID);
+                    triggerElementsToImport.Add(explorerElement);
+                }
+            }
+
             for (int i = 0; i < selectedTriggers.Count; i++)
             {
                 var triggerItem = selectedTriggers[i];
@@ -499,17 +530,6 @@ namespace BetterTriggers.WorldEdit
             }
 
             return FormatExplorerElement(explorerElement, triggerItem.Name, triggerItem.ParentId);
-        }
-
-        private IExplorerElement CreateExplorerElementVariable(VariableDefinition variableDefinition)
-        {
-            string name = variableDefinition.Name;
-            int id = variableDefinition.Id;
-            string extension = ".var";
-
-            ExplorerElementVariable explorerElementVariable = GetVariable(variableDefinition);
-
-            return FormatExplorerElement(explorerElementVariable, name, variableDefinition.ParentId);
         }
 
         private IExplorerElement FormatExplorerElement(IExplorerElement explorerElement, string name, int parentId)

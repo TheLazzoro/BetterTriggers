@@ -100,6 +100,7 @@ namespace GUI.Components.OpenMap
                     treeViewFiles.Items.Add(treeItem);
                 }
 
+                txtNoMapsFound.Visibility = treeViewFiles.Items.Count == 0 ? Visibility.Visible : Visibility.Hidden;
                 lblFound.Content = "Maps found: " + treeViewFiles.Items.Count;
             }
             catch (Exception ex)

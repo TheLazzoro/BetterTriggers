@@ -347,7 +347,7 @@
                 <MenuItem Name="menuSave" Command="{StaticResource SaveProject}" InputGestureText="Ctrl+S" Header="Save All" />
                 <MenuItem Name="menuClose" Command="{StaticResource CloseProject}" Header="Close Project" />
                 <Separator Margin="0,5,0,4" />
-                <MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />
+                <!--<MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />-->
                 <MenuItem Name="menuProjectSettings" Command="{StaticResource OpenProjectSettings}" Header="Project Settings" />
                 <Separator />
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
