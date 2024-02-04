@@ -549,7 +549,7 @@ namespace BetterTriggers.WorldEdit
             int arrSize = variableDefinition.ArraySize == 0 ? 1 : variableDefinition.ArraySize;
             Parameter initialValue = new Parameter();
             if (TriggerData.ConstantExists(variableDefinition.InitialValue))
-                initialValue = new Constant { value = variableDefinition.InitialValue };
+                initialValue = new Constant_Saveable { value = variableDefinition.InitialValue };
             else if (variableDefinition.InitialValue != "")
                 initialValue = new Value { value = variableDefinition.InitialValue };
 
@@ -733,7 +733,7 @@ namespace BetterTriggers.WorldEdit
                 switch (foreignParam.Type)
                 {
                     case TriggerFunctionParameterType.Preset:
-                        parameter = new Constant()
+                        parameter = new Constant_Saveable()
                         {
                             value = foreignParam.Value,
                         };

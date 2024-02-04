@@ -34,24 +34,24 @@ namespace BetterTriggers.Models.Templates
         public override Function ToParameter()
         {
             Function function = new Function();
-            List<Parameter> parameters = new List<Parameter>();
+            List<Parameter_Saveable> parameters = new List<Parameter_Saveable>();
             this.parameters.ForEach(p => parameters.Add(p.ToParameter()));
             function.value = new string(this.value);
             function.parameters = parameters;
             return function;
         }
 
-        public ECA ToTriggerElement()
+        public ECA_Saveable ToTriggerElement()
         {
-            ECA te = TriggerElementFactory.Create(value);
+            ECA_Saveable te = TriggerElementFactory.Create(value);
             te.function = ToParameter();
             return te;
         }
 
-        public List<Parameter> ConvertParameters()
+        public List<Parameter_Saveable> ConvertParameters()
         {
-            List<Parameter> parameters = new List<Parameter>();
-            this.parameters.ForEach(p => parameters.Add(new Parameter()));
+            List<Parameter_Saveable> parameters = new List<Parameter_Saveable>();
+            this.parameters.ForEach(p => parameters.Add(new Parameter_Saveable()));
             return parameters;
         }
     }

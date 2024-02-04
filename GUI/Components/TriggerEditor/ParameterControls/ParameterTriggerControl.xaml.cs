@@ -16,7 +16,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             InitializeComponent();
 
             var project = Project.CurrentProject;
-            List<TriggerRef> triggers = project.Triggers.GetTriggerRefs();
+            List<TriggerRef_Saveable> triggers = project.Triggers.GetTriggerRefs();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < triggers.Count; i++)
             {
@@ -41,14 +41,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listControl.listView.Items.Count)
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
-                var triggerRef = item.Tag as TriggerRef;
+                var triggerRef = item.Tag as TriggerRef_Saveable;
                 if (triggerRef.value == parameter.value)
                     found = true;
                 else
@@ -67,12 +67,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelectedItem()
+        public Parameter_Saveable GetSelectedItem()
         {
             if (selectedItem == null)
                 return null;
 
-            var trigger = (TriggerRef)selectedItem.Tag;
+            var trigger = (TriggerRef_Saveable)selectedItem.Tag;
             return trigger;
         }
 

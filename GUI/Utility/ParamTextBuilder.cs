@@ -77,7 +77,7 @@ namespace GUI.Utility
 
                     sb.Append(")");
                 }
-                else if (parameters[paramIndex] is Constant)
+                else if (parameters[paramIndex] is Constant_Saveable)
                     sb.Append(TriggerData.GetParamDisplayName(parameters[paramIndex]));
 
                 else if (parameters[paramIndex] is VariableRef)
@@ -273,7 +273,7 @@ namespace GUI.Utility
                     run.FontSize = TriggerEditorFont.GetParameterFontSize();
                     inlines.Add(run);
                 }
-                else if (parameters[paramIndex] is Constant)
+                else if (parameters[paramIndex] is Constant_Saveable)
                 {
                     inlines.Add(AddHyperlink(parameterFacade, TriggerData.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex, returnTypes[paramIndex]));
                 }

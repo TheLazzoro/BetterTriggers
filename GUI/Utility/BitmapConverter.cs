@@ -7,27 +7,25 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace GUI.Utility
 {
     public static class BitmapConverter
     {
-        public static BitmapImage ToBitmapImage(this Bitmap bitmap)
+        public static ImageSource ByteToImage(byte[] imageData)
         {
-            using (var memory = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream(imageData))
             {
-                bitmap.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.StreamSource = ms;
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.EndInit();
+                image.Freeze();
 
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-
-                return bitmapImage;
+                return image;
             }
         }
 

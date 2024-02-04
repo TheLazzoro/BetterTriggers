@@ -15,7 +15,7 @@ namespace GUI.Components.VerifyTriggers
     {
         public event Action OnCloseProject;
 
-        List<IExplorerElement> modifiedElements = new List<IExplorerElement>();
+        List<ExplorerElement> modifiedElements = new List<ExplorerElement>();
         IdCollisionException collisionError;
         Exception defaultError;
 

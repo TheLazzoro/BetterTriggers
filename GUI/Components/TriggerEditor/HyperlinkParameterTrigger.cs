@@ -18,10 +18,10 @@ namespace GUI.Components.TriggerEditor
         internal readonly int index;
         private TreeViewTriggerElement treeViewTriggerElement;
         private readonly string returnType;
-        List<Parameter> parameters;
+        List<Parameter_Saveable> parameters;
 
 
-        public HyperlinkParameterTrigger(ParameterFacadeTrigger parameterFacade, string text, List<Parameter> parameters, int index, string returnType)
+        public HyperlinkParameterTrigger(ParameterFacadeTrigger parameterFacade, string text, List<Parameter_Saveable> parameters, int index, string returnType)
             : base(parameters[index], text)
         {
             this.parameterFacade = parameterFacade;
@@ -36,7 +36,7 @@ namespace GUI.Components.TriggerEditor
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var triggerElement = (ECA)treeViewTriggerElement.triggerElement;
+            var triggerElement = (ECA_Saveable)treeViewTriggerElement.triggerElement;
             var window = new ParameterWindow(parameter, returnType, triggerElement.function);
             window.ShowDialog();
 

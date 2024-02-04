@@ -233,14 +233,6 @@ namespace GUI
                 Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", errorMsg);
                 messageBox.ShowDialog();
             }
-            else if (e.ProgressPercentage == 100 && !didComplete)
-            {
-                didComplete = true; // hack. In some cases it reports 100% twice. Don't question it :)
-                foreach (string fullPath in itemsImported)
-                {
-                    TriggerExplorer.Current.OnCreateElement(fullPath);
-                }
-            }
             else
             {
                 txtProgressPercent.Text = $"{e.ProgressPercentage}%";

@@ -12,6 +12,7 @@ using GUI.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
@@ -34,7 +35,6 @@ namespace GUI.Components
         private ComboBoxItemType previousSelected;
         private bool isLoading = true;
         private int defaultSelected = 0;
-        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
         private string previousText0 = "1";
         private string previousText1 = "1";
@@ -50,12 +50,13 @@ namespace GUI.Components
             InitializeComponent();
 
             var usedByList = Project.CurrentProject.References.GetReferrers(variable);
-            if(usedByList.Count == 0)
+            if (usedByList.Count == 0)
             {
                 listViewUsedBy.Visibility = Visibility.Hidden;
                 lblUsedBy.Visibility = Visibility.Hidden;
             }
-            usedByList.ForEach(r => {
+            usedByList.ForEach(r =>
+            {
                 TreeItemHeader header = new TreeItemHeader(r.GetName(), "TC_TRIGGER_NEW");
                 ListViewItem item = new ListViewItem
                 {
@@ -262,22 +263,8 @@ namespace GUI.Components
             throw new NotImplementedException();
         }
 
-        public void Attach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
-        public void Detach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
         public void OnStateChange()
         {
-            foreach (var observer in observers)
-            {
-                observer.OnStateChange();
-            }
             OnChange?.Invoke();
         }
 

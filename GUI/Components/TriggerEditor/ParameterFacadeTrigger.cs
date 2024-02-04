@@ -11,11 +11,11 @@ namespace GUI.Components.TriggerEditor
     public class ParameterFacadeTrigger : IParameterFacade
     {
         private TreeViewTriggerElement treeItem;
-        private List<Parameter> parameters;
+        private List<Parameter_Saveable> parameters;
         private string paramText;
         List<string> returnTypes;
 
-        public ParameterFacadeTrigger(TreeViewTriggerElement treeItem, List<Parameter> parameters, List<string> returnTypes, string paramText)
+        public ParameterFacadeTrigger(TreeViewTriggerElement treeItem, List<Parameter_Saveable> parameters, List<string> returnTypes, string paramText)
         {
             this.treeItem = treeItem;
             this.parameters = parameters;
@@ -28,12 +28,12 @@ namespace GUI.Components.TriggerEditor
             return treeItem;
         }
 
-        public Parameter GetParameter(int index)
+        public Parameter_Saveable GetParameter(int index)
         {
             return parameters[index];
         }
 
-        public List<Parameter> GetParametersAll()
+        public List<Parameter_Saveable> GetParametersAll()
         {
             return parameters;
         }
@@ -43,7 +43,7 @@ namespace GUI.Components.TriggerEditor
             return returnTypes;
         }
 
-        public void SetParameterAtIndex(Parameter parameter, int index)
+        public void SetParameterAtIndex(Parameter_Saveable parameter, int index)
         {
             parameters[index] = parameter;
         }

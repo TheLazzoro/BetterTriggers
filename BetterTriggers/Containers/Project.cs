@@ -32,6 +32,7 @@ namespace BetterTriggers.Containers
         public References References { get; private set; }
         public UnsavedFiles UnsavedFiles { get; private set; }
         public CommandManager CommandManager { get; private set; }
+        public Dictionary<string, ExplorerElement> AllElements { get; set; }
 
         public event FileSystemEventHandler OnCreated;
         public event FileSystemEventHandler OnMoved;
@@ -52,6 +53,7 @@ namespace BetterTriggers.Containers
             References = new();
             UnsavedFiles = new();
             CommandManager = new();
+            AllElements = new();
         }
 
         /// <summary>
@@ -488,7 +490,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="fullPath"></param>
         /// <param name="index"></param>
-        public void RearrangeElement(IExplorerElement element, int insertIndex)
+        public void RearrangeElement(ExplorerElement element, int insertIndex)
         {
             CommandExplorerElementMoveEx commandEx = new CommandExplorerElementMoveEx(element, insertIndex);
             commandEx.Execute();

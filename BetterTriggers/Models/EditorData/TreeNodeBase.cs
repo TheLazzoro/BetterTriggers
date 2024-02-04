@@ -12,6 +12,7 @@ namespace BetterTriggers.Models.EditorData
         private string _displayText;
         private string _category;
         private byte[] _icon;
+        private bool _isRenaming;
 
         public string DisplayText
         {
@@ -36,6 +37,12 @@ namespace BetterTriggers.Models.EditorData
         }
 
         public Visibility RenameBoxVisibility { get; set; }
+
+        public bool IsRenaming
+        {
+            get { return _isRenaming; }
+            set { _isRenaming = value; }
+        }
 
         public void SetCategory(string categoryStr)
         {

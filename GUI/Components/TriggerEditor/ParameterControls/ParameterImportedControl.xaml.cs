@@ -40,14 +40,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listControl.listView.Items.Count)
             {
                 ListViewItem item = listControl.listView.Items[i] as ListViewItem;
-                Value val = item.Tag as Value;
+                Value_Saveable val = item.Tag as Value_Saveable;
                 if (parameter.value == val.value)
                     found = true;
                 else
@@ -66,12 +66,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelectedItem()
+        public Parameter_Saveable GetSelectedItem()
         {
             if (selectedItem == null)
                 return null;
 
-            var variables = (Value)selectedItem.Tag;
+            var variables = (Value_Saveable)selectedItem.Tag;
             return variables;
         }
 

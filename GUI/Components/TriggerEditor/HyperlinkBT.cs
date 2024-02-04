@@ -9,9 +9,9 @@ namespace GUI.Components.TriggerEditor
 {
     public class HyperlinkBT : Hyperlink
     {
-        internal Parameter parameter { get; }
+        internal Parameter_Saveable parameter { get; }
 
-        public HyperlinkBT(Parameter parameter, string text)
+        public HyperlinkBT(Parameter_Saveable parameter, string text)
         {
             this.Inlines.Add(text);
             this.parameter = parameter;
@@ -80,11 +80,11 @@ namespace GUI.Components.TriggerEditor
         {
             if (this.IsFocused)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0));
-            else if (parameter is Constant ||
+            else if (parameter is Constant_Saveable ||
                      parameter is Function ||
-                     parameter is VariableRef ||
-                     parameter is TriggerRef ||
-                     parameter is Value
+                     parameter is VariableRef_Saveable ||
+                     parameter is TriggerRef_Saveable ||
+                     parameter is Value_Saveable
                      )
                 this.SetResourceReference(Hyperlink.ForegroundProperty, EditorTheme.HyperlinkColor());
             else

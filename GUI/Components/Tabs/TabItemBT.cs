@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using BetterTriggers.Models.EditorData;
 
 namespace GUI.Components.Tabs
 {
@@ -32,16 +33,16 @@ namespace GUI.Components.Tabs
 
         public IEditor Content { get; set; }
         public TabViewModel Parent;
-        public TreeItemExplorerElement explorerElement;
+        public ExplorerElement explorerElement;
+        public UserControl editor;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TabItemBT(TreeItemExplorerElement explorerElement, TabViewModel parent)
+        public TabItemBT(ExplorerElement explorerElement, IEditor editor, TabViewModel parent)
         {
             this.explorerElement = explorerElement;
-            this.explorerElement.tabItem = this;
-            Header = explorerElement.Ielement.GetName();
-            Content = explorerElement.editor;
+            Header = explorerElement.GetName();
+            Content = editor;
             Parent = parent;
         }
 

@@ -49,12 +49,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return 1;
         }
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             checkBox.IsChecked = parameter.value == "true";
         }
 
-        public Parameter GetSelected()
+        public Parameter_Saveable GetSelected()
         {
             string str = string.Empty;
             if ((bool)checkBox.IsChecked)
@@ -62,7 +62,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             else
                 str = "false";
 
-            Value value = new Value()
+            Value_Saveable value = new Value_Saveable()
             {
                 value = str,
             };

@@ -28,7 +28,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             img.Width = Width;
             img.Height = Height;
             img.Stretch = Stretch.Fill;
-            img.Source = BitmapConverter.ToBitmapImage(unit.Image);
+            img.Source = BitmapConverter.ByteToImage(unit.Image);
 
 
 

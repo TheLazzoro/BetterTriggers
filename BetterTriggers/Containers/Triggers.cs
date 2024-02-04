@@ -441,7 +441,7 @@ namespace BetterTriggers.Containers
                     List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
                     removeCount += VerifyParametersAndRemove(trig, function.parameters, _returnTypes);
                 }
-                else if (parameter is Constant constant)
+                else if (parameter is Constant_Saveable constant)
                 {
                     bool constantExists = TriggerData.ConstantExists(constant.value);
                     if (!constantExists)

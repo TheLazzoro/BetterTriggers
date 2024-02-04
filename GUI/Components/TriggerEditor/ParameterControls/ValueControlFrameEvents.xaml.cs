@@ -61,7 +61,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return 1;
         }
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             for (int i = 0; i < checkBoxes.Length; i++)
             {
@@ -72,14 +72,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             }
         }
 
-        public Parameter GetSelected()
+        public Parameter_Saveable GetSelected()
         {
             string str = string.Empty;
             for (int i = 0; i < checkBoxes.Length; i++)
             {
                 str += checkBoxes[i].IsChecked == true ? "1" : "0";
             }
-            Value value = new Value()
+            Value_Saveable value = new Value_Saveable()
             {
                 value = str,
             };

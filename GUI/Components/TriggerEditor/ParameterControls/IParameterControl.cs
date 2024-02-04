@@ -9,9 +9,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public interface IParameterControl
     {
-        Parameter GetSelectedItem();
+        Parameter_Saveable GetSelectedItem();
         void SetVisibility(Visibility visibility);
         int GetElementCount();
-        void SetDefaultSelection(Parameter parameter);
+        void SetDefaultSelection(Parameter_Saveable parameter);
     }
 }

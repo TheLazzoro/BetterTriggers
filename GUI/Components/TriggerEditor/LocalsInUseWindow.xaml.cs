@@ -19,7 +19,7 @@ namespace GUI.Components.TriggerEditor
     {
         public bool OK;
 
-        public LocalsInUseWindow(List<LocalVariable> localVariables)
+        public LocalsInUseWindow(List<LocalVariable_Saveable> localVariables)
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();

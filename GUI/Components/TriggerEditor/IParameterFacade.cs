@@ -9,9 +9,9 @@ namespace GUI.Components.TriggerEditor
 {
     public interface IParameterFacade
     {
-        List<Parameter> GetParametersAll();
-        Parameter GetParameter(int index);
-        void SetParameterAtIndex(Parameter parameter, int index);
+        List<Parameter_Saveable> GetParametersAll();
+        Parameter_Saveable GetParameter(int index);
+        void SetParameterAtIndex(Parameter_Saveable parameter, int index);
         List<string> GetReturnTypes();
         string GetParameterText();
     }

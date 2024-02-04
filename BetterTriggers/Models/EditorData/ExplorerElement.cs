@@ -19,10 +19,11 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement Parent { get; set; }
         public ObservableCollection<ExplorerElement> ExplorerElements { get; set; } = new();
         public bool HasUnsavedChanges { get; set; }
-        public bool isEnabled = true;
-        public bool isInitiallyOn = true;
-        public bool isExpanded = false;
+        public bool isEnabled { get; set; } = true;
+        public bool isInitiallyOn { get; set; } = true;
+        public bool isExpanded { get; set; } = false;
         public event Action OnReload;
+        public event Action OnChanged;
         private DateTime LastWrite;
         private long Size;
 
@@ -359,6 +360,11 @@ namespace BetterTriggers.Models.EditorData
             }
 
             FileSystemUtil.Rename(oldPath, formattedName);
+        }
+
+        public void Delete()
+        {
+            FileSystemUtil.Delete(path);
         }
 
         public void Notify()

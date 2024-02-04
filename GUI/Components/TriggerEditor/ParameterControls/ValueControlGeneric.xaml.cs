@@ -15,7 +15,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public event EventHandler SelectionChanged;
         public event EventHandler OK;
 
-        public ValueControlGeneric(List<Value> values, string returnType)
+        public ValueControlGeneric(List<Value_Saveable> values, string returnType)
         {
             InitializeComponent();
 
@@ -45,14 +45,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listControl.listView.Items.Count)
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
-                var val = item.Tag as Value;
+                var val = item.Tag as Value_Saveable;
                 if(val.value == parameter.value)
                     found = true;
                 else
@@ -72,12 +72,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelected()
+        public Parameter_Saveable GetSelected()
         {
             if (selectedItem == null)
                 return null;
 
-            return (Value)this.selectedItem.Tag;
+            return (Value_Saveable)this.selectedItem.Tag;
         }
 
         public void SetVisibility(Visibility visibility)

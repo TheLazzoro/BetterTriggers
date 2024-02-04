@@ -16,9 +16,9 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public override Value ToParameter()
+        public override Value_Saveable ToParameter()
         {
-            Value value = new Value();
+            Value_Saveable value = new Value_Saveable();
             value.value = new string(this.value);
             return value;
         }

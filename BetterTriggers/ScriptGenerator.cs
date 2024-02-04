@@ -2527,9 +2527,9 @@ end
                 }
                 output += ")";
             }
-            else if (parameter is Constant)
+            else if (parameter is Constant_Saveable)
             {
-                Constant c = (Constant)parameter;
+                Constant_Saveable c = (Constant_Saveable)parameter;
                 if (Types.GetBaseType(returnType) == "string")
                     output += "\"" + TriggerData.GetConstantCodeText(c.value, language) + "\"";
                 else

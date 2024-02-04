@@ -64,7 +64,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             int i = 0;
             bool found = false;
@@ -90,13 +90,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelectedItem()
+        public Parameter_Saveable GetSelectedItem()
         {
             if (selectedItem == null)
                 return null;
 
             var template = (ConstantTemplate)selectedItem.Tag;
-            var parameter = new Constant()
+            var parameter = new Constant_Saveable()
             {
                 value = template.value,
             };

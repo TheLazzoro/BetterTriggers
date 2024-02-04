@@ -7,10 +7,10 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public interface IValueControl
     {
-        Parameter GetSelected();
+        Parameter_Saveable GetSelected();
         event EventHandler SelectionChanged;
         event EventHandler OK;
         int GetElementCount();
-        void SetDefaultSelection(Parameter parameter);
+        void SetDefaultSelection(Parameter_Saveable parameter);
     }
 }

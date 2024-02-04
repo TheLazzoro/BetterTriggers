@@ -141,7 +141,7 @@ namespace GUI
         {
             var versionCheck = new VersionCheck();
             var version = await versionCheck.GetNewestVersionAsync();
-            if(version.VersionCheckEnum == VersionCheckEnum.NewerExists)
+            if (version.VersionCheckEnum == VersionCheckEnum.NewerExists)
             {
                 Application.Current.Dispatcher.Invoke(delegate
                 {
@@ -311,78 +311,58 @@ namespace GUI
             CloseProject(true);
         }
 
-        private void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
+        private void OnSelectTab(ExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
         {
-            if (selectedItem.Ielement is ExplorerElement exTrig)
-                Project.CurrentProject.Triggers.SelectedTrigger = exTrig.trigger;
-
-            if (selectedItem.editor == null || selectedItem.tabItem == null)
+            if (selectedItem.ElementType == ExplorerElementEnum.Trigger)
             {
-                if (selectedItem.Ielement is ExplorerElementRoot)
+                Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
+            }
+
+            if (!tabViewModel.Contains(selectedItem))
+            {
+                IEditor editor = null;
+                switch (selectedItem.ElementType)
                 {
-                    var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
-                    rootControl.Attach(selectedItem);
-                    selectedItem.editor = rootControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElement)
-                {
-                    var triggerControl = new TriggerControl((ExplorerElement)selectedItem.Ielement);
-                    triggerControl.Attach(selectedItem);
-                    selectedItem.editor = triggerControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementScript)
-                {
-                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
-                    scriptControl.Attach(selectedItem);
-                    selectedItem.editor = scriptControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementVariable)
-                {
-                    var element = (ExplorerElementVariable)selectedItem.Ielement;
-                    var variableControl = new VariableControl(element.variable);
-                    variableControl.Attach(selectedItem);
-                    selectedItem.editor = variableControl;
+                    case ExplorerElementEnum.Folder:
+                        break;
+                    case ExplorerElementEnum.GlobalVariable:
+                        var variableControl = new VariableControl(selectedItem.variable);
+                        editor = variableControl;
+                        break;
+                    case ExplorerElementEnum.Root:
+                        var rootControl = new RootControl();
+                        editor = rootControl;
+                        break;
+                    case ExplorerElementEnum.Script:
+                        var scriptControl = new ScriptControl(selectedItem);
+                        editor = scriptControl;
+                        break;
+                    case ExplorerElementEnum.Trigger:
+                        var triggerControl = new TriggerControl(selectedItem);
+                        editor = triggerControl;
+                        break;
+                    default:
+                        break;
                 }
 
-                // select already open tab
-                for (int i = 0; i < tabViewModel.Tabs.Count; i++)
-                {
-                    var tab = tabViewModel.Tabs[i];
-                    if (tab.explorerElement.Ielement.GetPath() == selectedItem.Ielement.GetPath())
-                    {
-                        selectedItem.tabItem = tab;
-                        tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
-                        return;
-                    }
-                }
-
-                if (selectedItem.editor == null)
-                    return;
-
-                TabItemBT tabItem = new TabItemBT(selectedItem, tabViewModel);
+                TabItemBT tabItem = new TabItemBT(selectedItem, editor, tabViewModel);
                 tabViewModel.Tabs.Add(tabItem);
-                selectedItem.tabItem = tabItem;
             }
 
-            if (selectedItem.tabItem != null)
-            {
-                if (!tabViewModel.Tabs.Contains(selectedItem.tabItem))
-                    tabViewModel.Tabs.Add(selectedItem.tabItem);
-
-                tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
-            }
+            tabControl.SelectedIndex = tabViewModel.IndexOf(selectedItem);
         }
 
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeItemExplorerElement selected = e.NewValue as TreeItemExplorerElement;
+            var selected = e.NewValue as TreeViewItem;
             if (selected == null)
                 return;
 
-            Project.CurrentProject.currentSelectedElement = selected.Ielement.GetPath();
+            var explorerElement = triggerExplorer.GetExplorerElementFromItem(selected);
+            Project.CurrentProject.currentSelectedElement = explorerElement.GetPath();
         }
 
-        private void TriggerExplorer_OnOpenExplorerElement(TreeItemExplorerElement opened)
+        private void TriggerExplorer_OnOpenExplorerElement(ExplorerElement opened)
         {
             selectedExplorerItem = opened;
             if (selectedExplorerItem == null)
@@ -624,7 +604,6 @@ namespace GUI
                 parent.Children.Remove(triggerExplorer);
                 triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged -= TreeViewTriggerExplorer_SelectedItemChanged;
                 triggerExplorer.OnOpenExplorerElement -= TriggerExplorer_OnOpenExplorerElement;
-                triggerExplorer.Dispose();
             }
             triggerExplorer = new TriggerExplorer();
             TriggerExplorer.Current = triggerExplorer;
@@ -655,9 +634,10 @@ namespace GUI
             {
                 foreach (var item in lastOpenedTabs.Tabs)
                 {
-                    var element = triggerExplorer.FindTreeNodeElement(triggerExplorer.map, item);
-                    if (element != null)
-                        OnSelectTab(element, tabViewModel, tabControl);
+                    ExplorerElement lastOpened;
+                    Project.CurrentProject.AllElements.TryGetValue(item, out lastOpened);
+                    if (lastOpened != null)
+                        OnSelectTab(lastOpened, tabViewModel, tabControl);
                 }
             }
         }
@@ -826,7 +806,6 @@ namespace GUI
             SaveLastOpenedTabs();
             tabViewModel.Tabs.Clear();
             mainGrid.Children.Remove(triggerExplorer);
-            triggerExplorer.Dispose();
             triggerExplorer = null;
             EnableToolbar(false);
             EnableECAButtons(false);
@@ -844,7 +823,7 @@ namespace GUI
             var enumerator = tabViewModel.Tabs.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                tabs[tabIndex] = enumerator.Current.explorerElement.Ielement.GetPath();
+                tabs[tabIndex] = enumerator.Current.explorerElement.GetPath();
                 tabIndex++;
             }
             LastOpenedTabs.Save(Project.CurrentProject.GetRoot().GetName(), tabs);

@@ -3,21 +3,20 @@ using BetterTriggers.Models.SaveableData;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementMove : ICommand
     {
         string commandName = "Move Trigger Element";
-        Trigger trig;
-        TriggerElement triggerElement;
-        List<TriggerElement> OldParent;
-        List<TriggerElement> NewParent;
+        Trigger_Saveable trig;
+        TriggerElement_Saveable triggerElement;
+        List<TriggerElement_Saveable> OldParent;
+        List<TriggerElement_Saveable> NewParent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandTriggerElementMove(Trigger trig, TriggerElement triggerElement, List<TriggerElement> NewParent, int NewInsertIndex)
+        public CommandTriggerElementMove(Trigger_Saveable trig, TriggerElement_Saveable triggerElement, List<TriggerElement_Saveable> NewParent, int NewInsertIndex)
         {
             this.trig = trig;
             this.triggerElement = triggerElement;
@@ -32,7 +31,7 @@ namespace BetterTriggers.Commands
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
             triggerElement.ChangedPosition();
-            Project.CurrentProject.Triggers.RemoveInvalidReferences(trig, new List<TriggerElement>() { triggerElement });
+            Project.CurrentProject.Triggers.RemoveInvalidReferences(trig, new List<TriggerElement_Saveable>() { triggerElement });
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 

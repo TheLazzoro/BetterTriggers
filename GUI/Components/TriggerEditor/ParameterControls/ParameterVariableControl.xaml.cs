@@ -15,7 +15,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         /// </summary>
         /// <param name="returnType"></param>
         /// <param name="trig"></param>
-        public ParameterVariableControl(string returnType, BetterTriggers.Models.SaveableData.Trigger trig)
+        public ParameterVariableControl(string returnType, BetterTriggers.Models.SaveableData.Trigger_Saveable trig)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 returnType = "string";
 
             var project = Project.CurrentProject;
-            List<VariableRef> variables = project.Variables.GetVariableRefs(returnType, trig, Variables.includeLocals);
+            List<VariableRef_Saveable> variables = project.Variables.GetVariableRefs(returnType, trig, Variables.includeLocals);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < variables.Count; i++)
@@ -49,14 +49,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             var project = Project.CurrentProject;
             int i = 0;
             bool found = false;
-            Variable selected = null;
-            if (parameter is VariableRef)
-                selected = project.Variables.GetByReference(parameter as VariableRef);
+            Variable_Saveable selected = null;
+            if (parameter is VariableRef_Saveable)
+                selected = project.Variables.GetByReference(parameter as VariableRef_Saveable);
 
             if (selected == null)
                 return;
@@ -64,7 +64,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             while (!found && i < listControl.listView.Items.Count)
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
-                var variableRef = item.Tag as VariableRef;
+                var variableRef = item.Tag as VariableRef_Saveable;
                 var variable = project.Variables.GetByReference(variableRef);
                 if (variable == selected)
                     found = true;
@@ -85,12 +85,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelectedItem()
+        public Parameter_Saveable GetSelectedItem()
         {
             if (selectedItem == null)
                 return null;
 
-            var variables = (VariableRef)selectedItem.Tag;
+            var variables = (VariableRef_Saveable)selectedItem.Tag;
             return variables;
         }
 

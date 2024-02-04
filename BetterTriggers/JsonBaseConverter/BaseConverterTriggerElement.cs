@@ -15,7 +15,7 @@ namespace BetterTriggers.JsonBaseConverter
 
         public override bool CanConvert(System.Type objectType)
         {
-            return (objectType == typeof(ECA));
+            return (objectType == typeof(ECA_Saveable));
         }
 
         public object Create(Type objectType, JObject jObject)
@@ -23,7 +23,7 @@ namespace BetterTriggers.JsonBaseConverter
             if (jObject.ContainsKey("LocalVar"))
             {
                 var n = (int)jObject.Property("LocalVar");
-                if (n == 1) return new LocalVariable();
+                if (n == 1) return new LocalVariable_Saveable();
                 throw new ApplicationException(String.Format("LocalVar type {0} not supported!", n));
             }
 
@@ -33,37 +33,37 @@ namespace BetterTriggers.JsonBaseConverter
                 switch (type)
                 {
                     case 1:
-                        return new IfThenElse();
+                        return new IfThenElse_Saveable();
                     case 2:
-                        return new AndMultiple();
+                        return new AndMultiple_Saveable();
                     case 3:
-                        return new OrMultiple();
+                        return new OrMultiple_Saveable();
                     case 4:
-                        return new ForGroupMultiple();
+                        return new ForGroupMultiple_Saveable();
                     case 5:
-                        return new ForForceMultiple();
+                        return new ForForceMultiple_Saveable();
                     case 6:
-                        return new ForLoopAMultiple();
+                        return new ForLoopAMultiple_Saveable();
                     case 7:
-                        return new ForLoopBMultiple();
+                        return new ForLoopBMultiple_Saveable();
                     case 8:
-                        return new ForLoopVarMultiple();
+                        return new ForLoopVarMultiple_Saveable();
                     case 9:
-                        return new SetVariable();
+                        return new SetVariable_Saveable();
                     case 10:
-                        return new EnumDestructablesInRectAllMultiple();
+                        return new EnumDestructablesInRectAllMultiple_Saveable();
                     case 11:
-                        return new EnumDestructiblesInCircleBJMultiple();
+                        return new EnumDestructiblesInCircleBJMultiple_Saveable();
                     case 12:
-                        return new EnumItemsInRectBJ();
+                        return new EnumItemsInRectBJ_Saveable();
                     default:
-                        return new ECA();
+                        return new ECA_Saveable();
                 }
 
                 throw new ApplicationException(String.Format("The given trigger element type {0} is not supported!", type));
             }
             else
-                return new ECA();
+                return new ECA_Saveable();
 
         }
 

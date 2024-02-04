@@ -20,9 +20,9 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public override Constant ToParameter()
+        public override Constant_Saveable ToParameter()
         {
-            Constant constant = new Constant();
+            Constant_Saveable constant = new Constant_Saveable();
             constant.value = new string(this.value);
             return constant;
         }

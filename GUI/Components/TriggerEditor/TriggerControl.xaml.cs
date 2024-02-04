@@ -32,7 +32,7 @@ namespace GUI.Components
         public NodeLocalVariable categoryLocalVariable;
         public NodeAction categoryAction;
 
-        public static BetterTriggers.Models.SaveableData.Trigger TriggerInFocus;
+        public static BetterTriggers.Models.SaveableData.Trigger_Saveable TriggerInFocus;
 
         Point _startPoint;
         TreeViewTriggerElement dragItem;
@@ -40,7 +40,6 @@ namespace GUI.Components
         int insertIndex = 0;
         TreeViewItem parentDropTarget;
 
-        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
         private TreeViewTriggerElement selectedElement;
         private TreeViewTriggerElement selectedElementEnd;
         private List<TreeViewTriggerElement> selectedElements = new List<TreeViewTriggerElement>();
@@ -168,7 +167,7 @@ namespace GUI.Components
             }
         }
 
-        private void LoadTrigger(BetterTriggers.Models.SaveableData.Trigger trigger)
+        private void LoadTrigger(BetterTriggers.Models.SaveableData.Trigger_Saveable trigger)
         {
             this.textBoxComment.Text = trigger.Comment;
             TreeViewTriggerElement.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
@@ -777,26 +776,6 @@ namespace GUI.Components
                 treeViewTriggerElement.OnCreated(pasted[i].GetParent().IndexOf(pasted[i]));
             }
         }
-
-        public void Attach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
-        public void Detach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-
-        }
-
-        public void OnStateChange()
-        {
-            foreach (var observer in observers)
-            {
-                observer.OnStateChange();
-            }
-        }
-
 
         public void SetElementEnabled(bool isEnabled)
         {

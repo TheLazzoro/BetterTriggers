@@ -13,11 +13,10 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using static GUI.Components.Shared.TreeItemHeader;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class TreeViewTriggerElement : TreeItemBT, ITriggerElementUI
+    public class TreeViewTriggerElement : TreeItemBT, ITriggerElementUI_Saveable
     {
         internal TriggerElement triggerElement { get; }
         internal string paramText { get; set; }

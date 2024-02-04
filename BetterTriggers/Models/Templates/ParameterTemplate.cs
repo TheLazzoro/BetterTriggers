@@ -15,9 +15,9 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public virtual Parameter ToParameter()
+        public virtual Parameter_Saveable ToParameter()
         {
-            return new Parameter();
+            return new Parameter_Saveable();
         }
     }
 }

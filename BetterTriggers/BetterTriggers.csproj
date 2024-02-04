@@ -4,8 +4,8 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <AssemblyName>BetterTriggers</AssemblyName>
     <RootNamespace>BetterTriggers</RootNamespace>
+    <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Nullable>true</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

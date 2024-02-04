@@ -7,12 +7,12 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementReplace : ICommand
     {
         string commandName = "Replace Trigger Element";
-        TriggerElement toReplace;
-        TriggerElement toInsert;
-        List<TriggerElement> parent;
+        TriggerElement_Saveable toReplace;
+        TriggerElement_Saveable toInsert;
+        List<TriggerElement_Saveable> parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementReplace(TriggerElement toReplace, TriggerElement toInsert)
+        public CommandTriggerElementReplace(TriggerElement_Saveable toReplace, TriggerElement_Saveable toInsert)
         {
             this.toReplace = toReplace;
             this.toInsert = toInsert;

@@ -9,13 +9,13 @@ namespace BetterTriggers.Containers
 {
     public class References
     {
-        private Dictionary<ExplorerElement, HashSet<IReferable>> fromTrigger = new Dictionary<ExplorerElement, HashSet<IReferable>>();
-        private Dictionary<IReferable, HashSet<ExplorerElement>> fromReference = new Dictionary<IReferable, HashSet<ExplorerElement>>();
+        private Dictionary<ExplorerElement, HashSet<IReferable_Saveable>> fromTrigger = new Dictionary<ExplorerElement, HashSet<IReferable_Saveable>>();
+        private Dictionary<IReferable_Saveable, HashSet<ExplorerElement>> fromReference = new Dictionary<IReferable_Saveable, HashSet<ExplorerElement>>();
 
         /// <summary>
         /// Returns a list of trigger which are referencing the given referable.
         /// </summary>
-        public List<ExplorerElement> GetReferrers(IReferable referable)
+        public List<ExplorerElement> GetReferrers(IReferable_Saveable referable)
         {
             HashSet<ExplorerElement> referrers = new HashSet<ExplorerElement>();
             fromReference.TryGetValue(referable, out referrers);
@@ -26,15 +26,15 @@ namespace BetterTriggers.Containers
             return referrers.ToList();
         }
 
-        internal void AddReferrer(ExplorerElement source, IReferable reference)
+        internal void AddReferrer(ExplorerElement source, IReferable_Saveable reference)
         {
             if (reference == null)
                 return;
 
             // Gets a list of references, given the trigger referencing them.
-            HashSet<IReferable> references = null;
+            HashSet<IReferable_Saveable> references = null;
             if (!fromTrigger.TryGetValue(source, out references)) {
-                references = new HashSet<IReferable>();
+                references = new HashSet<IReferable_Saveable>();
                 fromTrigger.Add(source, references);
             }
             references.Add(reference); // Adds the reference to the trigger's total references.
@@ -55,7 +55,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         internal void RemoveReferrer(ExplorerElement source)
         {
-            HashSet<IReferable> references = null;
+            HashSet<IReferable_Saveable> references = null;
             fromTrigger.TryGetValue(source, out references);
             if (references == null)
                 return;

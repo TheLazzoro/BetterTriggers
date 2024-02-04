@@ -52,7 +52,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             textBoxAsset.Text = parameter.value;
         }
@@ -62,9 +62,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelected()
+        public Parameter_Saveable GetSelected()
         {
-            return  new Value()
+            return  new Value_Saveable()
             {
                 value = textBoxAsset.Text,
             };

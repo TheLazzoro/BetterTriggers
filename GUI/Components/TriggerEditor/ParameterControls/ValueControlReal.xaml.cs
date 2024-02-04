@@ -51,7 +51,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             handler?.Invoke(this, e);
         }
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             textBox.Text = parameter.value;
         }
@@ -61,9 +61,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return 1;
         }
 
-        public Parameter GetSelected()
+        public Parameter_Saveable GetSelected()
         {
-            Value value = new Value()
+            Value_Saveable value = new Value_Saveable()
             {
                 value = textBox.Text,
             };

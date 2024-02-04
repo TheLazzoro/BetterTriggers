@@ -53,7 +53,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(Parameter parameter)
+        public void SetDefaultSelection(Parameter_Saveable parameter)
         {
             textBoxAsset.Text = parameter.value;
         }
@@ -63,9 +63,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter GetSelected()
+        public Parameter_Saveable GetSelected()
         {
-            return new Value()
+            return new Value_Saveable()
             {
                 value = textBoxAsset.Text,
             };
@@ -97,7 +97,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             try
             {
                 var bitmap = Icon.Get(textBoxAsset.Text);
-                imgPreview.Source = BitmapConverter.ToBitmapImage(bitmap);
+                imgPreview.Source = BitmapConverter.ByteToImage(bitmap);
                 EventHandler handler = SelectionChanged;
                 handler?.Invoke(this, e);
             }

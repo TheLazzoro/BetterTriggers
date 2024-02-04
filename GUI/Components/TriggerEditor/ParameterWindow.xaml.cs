@@ -21,7 +21,7 @@ namespace GUI
     public partial class ParameterWindow : Window
     {
         public bool isOK = false;
-        public Parameter selectedParameter;
+        public Parameter_Saveable selectedParameter;
 
         ParameterFunctionControl functionControl;
         ParameterConstantControl constantControl;
@@ -35,7 +35,7 @@ namespace GUI
         /// <summary>
         /// </summary>
         /// <param name="function">null indicates we're editing a variable initial value. Yes, very hacky.</param>
-        public ParameterWindow(Parameter parameter, string returnType, Function function = null)
+        public ParameterWindow(Parameter_Saveable parameter, string returnType, Function function = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
@@ -50,7 +50,7 @@ namespace GUI
 
             if (function != null && function.value == "SetVariable")
             {
-                VariableRef variableRef = function.parameters[0] as VariableRef;
+                VariableRef_Saveable variableRef = function.parameters[0] as VariableRef_Saveable;
                 if (parameter == function.parameters[0])
                     returnType = "AnyGlobal";
                 else if (parameter == function.parameters[1])
@@ -108,27 +108,27 @@ namespace GUI
                 radioBtnFunction.IsChecked = true;
                 parameterControl = functionControl;
             }
-            else if (parameter is Constant)
+            else if (parameter is Constant_Saveable)
             {
                 radioBtnPreset.IsChecked = true;
                 parameterControl = constantControl;
             }
-            else if (parameter is VariableRef)
+            else if (parameter is VariableRef_Saveable)
             {
                 radioBtnVariable.IsChecked = true;
                 parameterControl = variableControl;
             }
-            else if (parameter is Value && returnType != "skymodelstring" && returnType != "musictheme")
+            else if (parameter is Value_Saveable && returnType != "skymodelstring" && returnType != "musictheme")
             {
                 radioBtnValue.IsChecked = true;
                 parameterControl = valueControl;
             }
-            else if (parameter is TriggerRef)
+            else if (parameter is TriggerRef_Saveable)
             {
                 radioBtnTrigger.IsChecked = true;
                 parameterControl = triggerRefControl;
             }
-            else if (parameter is Value && (returnType == "skymodelstring" || returnType == "musictheme"))
+            else if (parameter is Value_Saveable && (returnType == "skymodelstring" || returnType == "musictheme"))
             {
                 radioBtnImported.IsChecked = true;
                 parameterControl = importControl;
@@ -138,7 +138,7 @@ namespace GUI
 
             if(function == null)
             {
-                if(parameter is not Constant && parameter is not Value)
+                if(parameter is not Constant_Saveable && parameter is not Value_Saveable)
                 {
                     ShowHideTabs(constantControl);
                     radioBtnPreset.IsChecked = true;

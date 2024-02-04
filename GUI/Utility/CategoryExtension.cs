@@ -4,26 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace GUI.Utility
 {
     internal class CategoryExtension
     {
-        private static Dictionary<string, BitmapImage> categories = new Dictionary<string, BitmapImage>();
+        private static Dictionary<string, ImageSource> categories = new Dictionary<string, ImageSource>();
 
-        internal static BitmapImage getImageByCategory(string category)
+        internal static ImageSource getImageByCategory(string category)
         {
             Category cat = Category.Get(category);
             if(categories.ContainsKey(category))
             {
-                BitmapImage image;
+                ImageSource image;
                 categories.TryGetValue(category, out image);
                 return image;
             }
             else
             {
-                BitmapImage image = BitmapConverter.ToBitmapImage(cat.Icon);
+                ImageSource image = BitmapConverter.ByteToImage(cat.Icon);
                 categories.Add(category, image);
                 return image;
             }

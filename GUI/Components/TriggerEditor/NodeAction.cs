@@ -10,7 +10,7 @@ namespace GUI.Components.TriggerEditor
 {
     public class NodeAction : TreeItemBT, INode
     {
-        public List<TriggerElement> TriggerElements = new List<TriggerElement>();
+        public List<TriggerElement_Saveable> TriggerElements = new List<TriggerElement_Saveable>();
 
 
         public NodeAction(string text)
@@ -46,7 +46,7 @@ namespace GUI.Components.TriggerEditor
             return triggerElements;
         }
 
-        public List<TriggerElement> GetTriggerElements()
+        public List<TriggerElement_Saveable> GetTriggerElements()
         {
             return TriggerElements;
         }
@@ -56,7 +56,7 @@ namespace GUI.Components.TriggerEditor
             return TriggerElementType.Action;
         }
 
-        public void SetTriggerElements(List<TriggerElement> triggerElements)
+        public void SetTriggerElements(List<TriggerElement_Saveable> triggerElements)
         {
             this.TriggerElements = triggerElements;
         }
