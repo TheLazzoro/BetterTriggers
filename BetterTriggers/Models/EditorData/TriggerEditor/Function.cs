@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.EditorData
     /// </summary>
     public class Function : Parameter
     {
-        public ObservableCollection<Parameter> Parameters { get; set; } = new();
+        public List<Parameter> parameters { get; set; } = new();
 
         public override Function Clone()
         {
@@ -22,9 +22,9 @@ namespace BetterTriggers.Models.EditorData
 
             Function f = new Function();
             f.value = value;
-            ObservableCollection<Parameter> parameters = new();
+            List<Parameter> parameters = new();
 
-            for (int i = 0; i < this.Parameters.Count; i++)
+            for (int i = 0; i < this.parameters.Count; i++)
             {
                 /* This thing could be reduced to a simple interface,
                  * but JSON deserialization becomes a problem
@@ -32,7 +32,7 @@ namespace BetterTriggers.Models.EditorData
                  * because the deserializer thinks it must create an 'IParameter'
                  * instance, which is illegal.
                  */
-                Parameter param = this.Parameters[i];
+                Parameter param = this.parameters[i];
                 Parameter cloned;
                 if (param is Function)
                 {
@@ -64,7 +64,7 @@ namespace BetterTriggers.Models.EditorData
 
                 parameters.Add(cloned);
             }
-            f.Parameters = parameters;
+            f.parameters = parameters;
 
             return f;
         }

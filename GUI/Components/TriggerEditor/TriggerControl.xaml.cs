@@ -2,7 +2,6 @@
 using BetterTriggers.Commands;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using Cake.Core.Scripting;
 using GUI.Components.Shared;
@@ -32,18 +31,18 @@ namespace GUI.Components
         public NodeLocalVariable categoryLocalVariable;
         public NodeAction categoryAction;
 
-        public static BetterTriggers.Models.SaveableData.Trigger_Saveable TriggerInFocus;
+        public static BetterTriggers.Models.EditorData.Trigger TriggerInFocus;
 
         Point _startPoint;
-        TreeViewTriggerElement dragItem;
+        TreeViewItem dragItem;
         bool _IsDragging = false;
         int insertIndex = 0;
         TreeViewItem parentDropTarget;
 
-        private TreeViewTriggerElement selectedElement;
-        private TreeViewTriggerElement selectedElementEnd;
-        private List<TreeViewTriggerElement> selectedElements = new List<TreeViewTriggerElement>();
-        private List<TreeViewTriggerElement> selectedItems = new List<TreeViewTriggerElement>();
+        private TreeViewItem selectedElement;
+        private TreeViewItem selectedElementEnd;
+        private List<TreeViewItem> selectedElements = new List<TreeViewItem>();
+        private List<TreeViewItem> selectedItems = new List<TreeViewItem>();
 
         // attaches to a treeviewitem
         AdornerLayer adorner;
@@ -85,14 +84,18 @@ namespace GUI.Components
             treeViewTriggers.Items.Add(categoryLocalVariable);
             treeViewTriggers.Items.Add(categoryAction);
 
-            LoadTrigger(explorerElementTrigger.trigger);
-
-            TreeViewTriggerElement.OnMouseEnter += TreeViewTriggerElement_OnMouseEnter;
+            TreeViewItem.OnMouseEnter += TreeViewItem_OnMouseEnter;
         }
 
         internal void Dispose()
         {
-            TreeViewTriggerElement.OnMouseEnter -= TreeViewTriggerElement_OnMouseEnter;
+            TreeViewItem.OnMouseEnter -= TreeViewItem_OnMouseEnter;
+        }
+
+        public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)
+        {
+            var explorerElement = treeViewTriggers.ItemContainerGenerator.ItemFromContainer(item) as TriggerElement;
+            return explorerElement;
         }
 
         private void TreeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -104,11 +107,11 @@ namespace GUI.Components
             }
 
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                selectedElementEnd = (TreeViewTriggerElement)treeViewTriggers.SelectedItem;
+                selectedElementEnd = (TreeViewItem)treeViewTriggers.SelectedItem;
             else
             {
-                selectedElement = (TreeViewTriggerElement)treeViewTriggers.SelectedItem;
-                selectedElementEnd = (TreeViewTriggerElement)treeViewTriggers.SelectedItem;
+                selectedElement = (TreeViewItem)treeViewTriggers.SelectedItem;
+                selectedElementEnd = (TreeViewItem)treeViewTriggers.SelectedItem;
             }
 
             this.selectedItems = SelectItemsMultiple(selectedElement, selectedElementEnd);
@@ -117,23 +120,24 @@ namespace GUI.Components
         /// <summary>
         /// When mouse hovers over trigger element, determine whether top node is an action.
         /// </summary>
-        private void TreeViewTriggerElement_OnMouseEnter(TreeViewTriggerElement obj)
+        private void TreeViewItem_OnMouseEnter(TreeViewItem obj)
         {
             Variables.includeLocals = IsActionOrConditionalInAction(obj);
         }
 
         private void bottomControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (treeViewTriggers.SelectedItem is TreeViewTriggerElement treeItem)
+            if (treeViewTriggers.SelectedItem is TreeViewItem treeItem)
                 Variables.includeLocals = IsActionOrConditionalInAction(treeItem);
         }
 
         private bool IsActionOrConditionalInAction(TreeViewItem item)
         {
+            var triggerElement = GetTriggerElementFromItem(item);
             bool isActionOrConditionalInAction = false;
             while (!isActionOrConditionalInAction && item != null)
             {
-                if (item == categoryAction)
+                if (triggerElement != null && triggerElement.ElementType == TriggerElementType.Action)
                     isActionOrConditionalInAction = true;
                 else
                     item = item.Parent as TreeViewItem;
@@ -144,41 +148,7 @@ namespace GUI.Components
 
         private void Refresh()
         {
-            Refresh(categoryEvent);
-            Refresh(categoryCondition);
-            Refresh(categoryLocalVariable);
-            Refresh(categoryAction);
             RefreshBottomControls();
-        }
-
-        private void Refresh(TreeViewItem treeViewItem)
-        {
-            for (int i = 0; i < treeViewItem.Items.Count; i++)
-            {
-                var child = (TreeViewItem)treeViewItem.Items[i];
-                if (child is TreeViewTriggerElement)
-                {
-                    var item = treeViewItem.Items[i] as TreeViewTriggerElement;
-                    item.UpdateTreeItem();
-                }
-
-                if (child.Items.Count > 0)
-                    Refresh(child);
-            }
-        }
-
-        private void LoadTrigger(BetterTriggers.Models.SaveableData.Trigger_Saveable trigger)
-        {
-            this.textBoxComment.Text = trigger.Comment;
-            TreeViewTriggerElement.RecurseLoadTrigger(trigger.Events, this.categoryEvent);
-            TreeViewTriggerElement.RecurseLoadTrigger(trigger.Conditions, this.categoryCondition);
-            TreeViewTriggerElement.RecurseLoadTrigger(trigger.LocalVariables, this.categoryLocalVariable);
-            TreeViewTriggerElement.RecurseLoadTrigger(trigger.Actions, this.categoryAction);
-
-            this.categoryEvent.IsExpanded = true;
-            this.categoryCondition.IsExpanded = true;
-            this.categoryLocalVariable.IsExpanded = true;
-            this.categoryAction.IsExpanded = true;
         }
 
         public UserControl GetControl()
@@ -213,13 +183,8 @@ namespace GUI.Components
             if (type == TriggerElementType.LocalVariable)
             {
                 insertIndex = categoryLocalVariable.GetTriggerElements().Count;
-                LocalVariable localVariable = new LocalVariable(explorerElementTrigger.trigger); // TODO: This is probably not supposed to be here.
-                Project.CurrentProject.Variables.CreateLocalVariable(explorerElementTrigger.trigger, localVariable, categoryLocalVariable.GetTriggerElements(), insertIndex);
-                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(localVariable);
-                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
-
-                localVariable.Attach(treeViewTriggerElement);
-                treeViewTriggerElement.OnCreated(insertIndex);
+                var trigger = explorerElementTrigger.trigger;
+                Project.CurrentProject.Variables.CreateLocalVariable(trigger, insertIndex);
                 return;
             }
 
@@ -229,10 +194,23 @@ namespace GUI.Components
 
             INode parent = null;
             List<TriggerElement> parentItems = null;
-            var selected = treeViewTriggers.SelectedItem;
-            if (selected is TreeViewTriggerElement)
+            var selected = treeViewTriggers.SelectedItem as TreeViewItem;
+            var treeItemSelection = GetTriggerElementFromItem(selected);
+            if(treeItemSelection == null)
             {
-                var selectedTreeItem = (TreeViewTriggerElement)selected;
+                switch (type)
+                {
+                    case TriggerElementType.Event:
+                        break;
+                    case TriggerElementType.Condition:
+                        break;
+                    case TriggerElementType.Action:
+                        break;
+                }
+            }
+            if (selected is TreeViewItem)
+            {
+                var selectedTreeItem = (TreeViewItem)selected;
                 var node = (INode)selectedTreeItem.Parent;
                 if (node.GetNodeType() == type) // valid parent if 'created' matches 'selected' type
                 {
@@ -273,11 +251,11 @@ namespace GUI.Components
                 CommandTriggerElementCreate command = new CommandTriggerElementCreate(triggerElement, parentItems, insertIndex);
                 command.Execute();
 
-                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(triggerElement);
-                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
+                TreeViewItem TreeViewItem = new TreeViewItem(triggerElement);
+                this.treeViewTriggers.Items.Add(TreeViewItem); // hack. This is to not make the below OnCreated method crash.
 
-                triggerElement.Attach(treeViewTriggerElement);
-                treeViewTriggerElement.OnCreated(insertIndex);
+                triggerElement.Attach(TreeViewItem);
+                TreeViewItem.OnCreated(insertIndex);
             }
         }
 
@@ -297,7 +275,7 @@ namespace GUI.Components
                 Grid.SetRowSpan(treeViewTriggers, 1);
             }
 
-            var item = treeViewTriggers.SelectedItem as TreeViewTriggerElement;
+            var item = treeViewTriggers.SelectedItem as TreeViewItem;
             textblockParams.Inlines.Clear();
             textblockDescription.Text = string.Empty;
 
@@ -364,7 +342,7 @@ namespace GUI.Components
         private void StartDrag(MouseEventArgs e)
         {
             _IsDragging = true;
-            dragItem = this.treeViewTriggers.SelectedItem as TreeViewTriggerElement;
+            dragItem = this.treeViewTriggers.SelectedItem as TreeViewItem;
 
             if (dragItem == null || dragItem.IsRenaming())
             {
@@ -421,7 +399,7 @@ namespace GUI.Components
             if (UIUtility.IsCircularParent(dragItem, dropTarget))
                 return;
 
-            if (dropTarget is TreeViewTriggerElement)
+            if (dropTarget is TreeViewItem)
             {
                 if (
                     dragItem.Parent is NodeEvent && !(dropTarget.Parent is NodeEvent) ||
@@ -507,7 +485,7 @@ namespace GUI.Components
             if (UIUtility.IsCircularParent(dragItem, parentDropTarget))
                 return;
 
-            TreeViewTriggerElement item = (TreeViewTriggerElement)dragItem;
+            TreeViewItem item = (TreeViewItem)dragItem;
             INode targetParentGUI = (INode)parentDropTarget;
 
             /* Fix for jumpy trigger elements.
@@ -558,7 +536,7 @@ namespace GUI.Components
         /// <param name="startElement"></param>
         /// <param name="endElement"></param>
         /// <returns></returns>
-        public List<TreeViewTriggerElement> SelectItemsMultiple(TreeViewTriggerElement startElement, TreeViewTriggerElement endElement)
+        public List<TreeViewItem> SelectItemsMultiple(TreeViewItem startElement, TreeViewItem endElement)
         {
             // visually deselect old items
             for (int i = 0; i < selectedElements.Count; i++)
@@ -568,13 +546,13 @@ namespace GUI.Components
             if (startElement == null && endElement == null)
                 return null;
 
-            selectedElements = new List<TreeViewTriggerElement>();
+            selectedElements = new List<TreeViewItem>();
             if (startElement.Parent == endElement.Parent)
             {
                 var parent = (TreeViewItem)startElement.Parent;
 
-                TreeViewTriggerElement correctedStartElement;
-                TreeViewTriggerElement correctedEndElement;
+                TreeViewItem correctedStartElement;
+                TreeViewItem correctedEndElement;
                 if (parent.Items.IndexOf(startElement) < parent.Items.IndexOf(endElement))
                 {
                     correctedStartElement = startElement;
@@ -590,7 +568,7 @@ namespace GUI.Components
                 int size = parent.Items.IndexOf(correctedEndElement) - parent.Items.IndexOf(correctedStartElement);
                 for (int i = 0; i <= size; i++)
                 {
-                    selectedElements.Add((TreeViewTriggerElement)parent.Items[startIndex + i]);
+                    selectedElements.Add((TreeViewItem)parent.Items[startIndex + i]);
                 }
             }
             else
@@ -751,7 +729,7 @@ namespace GUI.Components
 
             INode attachTarget = null;
             int insertIndex = 0;
-            if (selected is TreeViewTriggerElement)
+            if (selected is TreeViewItem)
             {
                 attachTarget = (INode)selected.Parent;
                 var parent = (TreeViewItem)selected.Parent;
@@ -769,11 +747,11 @@ namespace GUI.Components
 
             for (int i = 0; i < pasted.Count; i++)
             {
-                TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(pasted[i]);
-                this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
+                TreeViewItem TreeViewItem = new TreeViewItem(pasted[i]);
+                this.treeViewTriggers.Items.Add(TreeViewItem); // hack. This is to not make the below OnCreated method crash.
 
-                pasted[i].Attach(treeViewTriggerElement);
-                treeViewTriggerElement.OnCreated(pasted[i].GetParent().IndexOf(pasted[i]));
+                pasted[i].Attach(TreeViewItem);
+                TreeViewItem.OnCreated(pasted[i].GetParent().IndexOf(pasted[i]));
             }
         }
 
@@ -905,7 +883,7 @@ namespace GUI.Components
                 menuCut.IsEnabled = true;
                 menuCopy.IsEnabled = true;
                 menuDelete.IsEnabled = true;
-                var treeItemTriggerElement = (TreeViewTriggerElement)rightClickedElement;
+                var treeItemTriggerElement = (TreeViewItem)rightClickedElement;
                 menuFunctionEnabled.IsEnabled = true;
                 if (treeItemTriggerElement.triggerElement is ECA)
                 {
@@ -1032,7 +1010,7 @@ namespace GUI.Components
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeViewTriggerElement doubleClicked = selectedElementEnd;
+            TreeViewItem doubleClicked = selectedElementEnd;
             ReplaceTriggerElement(doubleClicked);
         }
 
@@ -1042,7 +1020,7 @@ namespace GUI.Components
                 ReplaceTriggerElement(selectedElementEnd);
         }
 
-        private void ReplaceTriggerElement(TreeViewTriggerElement toReplace)
+        private void ReplaceTriggerElement(TreeViewItem toReplace)
         {
             if (toReplace == null)
                 return;
@@ -1071,11 +1049,11 @@ namespace GUI.Components
             CommandTriggerElementReplace command = new CommandTriggerElementReplace(triggerElement, selected);
             command.Execute();
 
-            TreeViewTriggerElement treeViewTriggerElement = new TreeViewTriggerElement(selected);
-            this.treeViewTriggers.Items.Add(treeViewTriggerElement); // hack. This is to not make the below OnCreated method crash.
+            TreeViewItem TreeViewItem = new TreeViewItem(selected);
+            this.treeViewTriggers.Items.Add(TreeViewItem); // hack. This is to not make the below OnCreated method crash.
 
-            selected.Attach(treeViewTriggerElement);
-            treeViewTriggerElement.OnCreated(index);
+            selected.Attach(TreeViewItem);
+            TreeViewItem.OnCreated(index);
         }
 
         /// <summary>

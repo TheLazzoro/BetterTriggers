@@ -111,10 +111,10 @@ namespace Tests
             project.CopyExplorerElement(element1);
             var pasted = (ExplorerElement)project.PasteExplorerElement(element1);
 
-            for (int i = 0; i < pasted.trigger.LocalVariables.Count; i++)
+            for (int i = 0; i < pasted.trigger.LocalVariables.Count(); i++)
             {
-                var copiedLv = (LocalVariable) element1.trigger.LocalVariables[i];
-                var pastedLv = (LocalVariable)pasted.trigger.LocalVariables[i];
+                var copiedLv = (LocalVariable) element1.trigger.LocalVariables.Elements[i];
+                var pastedLv = (LocalVariable)pasted.trigger.LocalVariables.Elements[i];
                 int notEqualId = copiedLv.variable.Id;
                 int actualId = pastedLv.variable.Id;
 

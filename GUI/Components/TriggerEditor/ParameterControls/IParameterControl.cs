@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,9 +9,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public interface IParameterControl
     {
-        Parameter_Saveable GetSelectedItem();
+        Parameter GetSelectedItem();
         void SetVisibility(Visibility visibility);
         int GetElementCount();
-        void SetDefaultSelection(Parameter_Saveable parameter);
+        void SetDefaultSelection(Parameter parameter);
     }
 }

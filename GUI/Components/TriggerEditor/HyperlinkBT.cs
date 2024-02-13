@@ -1,5 +1,5 @@
 ﻿using BetterTriggers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using GUI.Components.Settings;
 using System.Windows;
 using System.Windows.Documents;
@@ -9,9 +9,9 @@ namespace GUI.Components.TriggerEditor
 {
     public class HyperlinkBT : Hyperlink
     {
-        internal Parameter_Saveable parameter { get; }
+        internal Parameter parameter { get; }
 
-        public HyperlinkBT(Parameter_Saveable parameter, string text)
+        public HyperlinkBT(Parameter parameter, string text)
         {
             this.Inlines.Add(text);
             this.parameter = parameter;
@@ -80,11 +80,11 @@ namespace GUI.Components.TriggerEditor
         {
             if (this.IsFocused)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0));
-            else if (parameter is Constant_Saveable ||
+            else if (parameter is Preset ||
                      parameter is Function ||
-                     parameter is VariableRef_Saveable ||
-                     parameter is TriggerRef_Saveable ||
-                     parameter is Value_Saveable
+                     parameter is VariableRef ||
+                     parameter is TriggerRef ||
+                     parameter is Value
                      )
                 this.SetResourceReference(Hyperlink.ForegroundProperty, EditorTheme.HyperlinkColor());
             else

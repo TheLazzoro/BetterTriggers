@@ -12,20 +12,20 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Delete Trigger Element";
         ExplorerElement explorerElement;
-        List<TriggerElement> elementsToDelete;
-        List<TriggerElement> Parent;
+        TriggerElementCollection elementsToDelete;
+        TriggerElementCollection Parent;
         int insertIndex = 0;
 
         List<RefCollection> refCollections = new List<RefCollection>();
 
-        public CommandTriggerElementDelete(ExplorerElement element, List<TriggerElement> elementsToDelete)
+        public CommandTriggerElementDelete(ExplorerElement element, TriggerElementCollection elementsToDelete)
         {
             this.explorerElement = element;
             this.elementsToDelete = elementsToDelete;
-            this.Parent = elementsToDelete[0].GetParent();
-            this.insertIndex = this.Parent.IndexOf(elementsToDelete[0]);
+            this.Parent = elementsToDelete.Elements[0].GetParent();
+            this.insertIndex = this.Parent.IndexOf(elementsToDelete.Elements[0]);
 
-            elementsToDelete.ForEach(el =>
+            elementsToDelete.Elements.ForEach(el =>
             {
                 if(el is LocalVariable localVar)
                 {
@@ -37,10 +37,9 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            for (int i = 0; i < elementsToDelete.Count; i++)
+            for (int i = 0; i < elementsToDelete.Count(); i++)
             {
-                elementsToDelete[i].RemoveFromParent();
-                elementsToDelete[i].Deleted();
+                elementsToDelete.Elements[i].RemoveFromParent();
             }
 
             refCollections.ForEach(r => r.RemoveRefsFromParent());
@@ -51,10 +50,9 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            for (int i = 0; i < elementsToDelete.Count; i++)
+            for (int i = 0; i < elementsToDelete.Count(); i++)
             {
-                elementsToDelete[i].RemoveFromParent();
-                elementsToDelete[i].Deleted();
+                elementsToDelete.Elements[i].RemoveFromParent();
             }
 
             refCollections.ForEach(r => r.RemoveRefsFromParent());
@@ -63,10 +61,9 @@ namespace BetterTriggers.Commands
 
         public void Undo()
         {
-            for (int i = 0; i < elementsToDelete.Count; i++)
+            for (int i = 0; i < elementsToDelete.Count(); i++)
             {
-                elementsToDelete[i].SetParent(Parent, insertIndex + i);
-                elementsToDelete[i].Created(insertIndex + i);
+                elementsToDelete.Elements[i].SetParent(Parent, insertIndex + i);
             }
 
             refCollections.ForEach(r => r.AddRefsToParent());

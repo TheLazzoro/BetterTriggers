@@ -549,7 +549,7 @@ namespace BetterTriggers.WorldEdit
             int arrSize = variableDefinition.ArraySize == 0 ? 1 : variableDefinition.ArraySize;
             Parameter initialValue = new Parameter();
             if (TriggerData.ConstantExists(variableDefinition.InitialValue))
-                initialValue = new Constant_Saveable { value = variableDefinition.InitialValue };
+                initialValue = new Preset { value = variableDefinition.InitialValue };
             else if (variableDefinition.InitialValue != "")
                 initialValue = new Value { value = variableDefinition.InitialValue };
 
@@ -641,7 +641,7 @@ namespace BetterTriggers.WorldEdit
             return explorerElementTrigger;
         }
 
-        private void CreateSubElements(List<TriggerElement> triggerElements, List<TriggerFunction> triggerFunctions)
+        private void CreateSubElements(TriggerElementCollection triggerElements, List<TriggerFunction> triggerFunctions)
         {
             triggerFunctions.ForEach(function =>
             {
@@ -649,7 +649,7 @@ namespace BetterTriggers.WorldEdit
                 te.isEnabled = function.IsEnabled;
                 te.function.parameters = CreateParameters(function.Parameters);
 
-                triggerElements.Add(te);
+                triggerElements.Elements.Add(te);
 
                 if (te is IfThenElse)
                 {
@@ -733,7 +733,7 @@ namespace BetterTriggers.WorldEdit
                 switch (foreignParam.Type)
                 {
                     case TriggerFunctionParameterType.Preset:
-                        parameter = new Constant_Saveable()
+                        parameter = new Preset()
                         {
                             value = foreignParam.Value,
                         };

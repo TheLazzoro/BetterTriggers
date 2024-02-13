@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
@@ -7,11 +7,11 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementCreate : ICommand
     {
         string commandName = "Create Trigger Element";
-        TriggerElement_Saveable triggerElement;
-        List<TriggerElement_Saveable> parent;
+        TriggerElement triggerElement;
+        TriggerElementCollection parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementCreate(TriggerElement_Saveable triggerElement, List<TriggerElement_Saveable> parent, int insertIndex)
+        public CommandTriggerElementCreate(TriggerElement triggerElement, TriggerElementCollection parent, int insertIndex)
         {
             this.triggerElement = triggerElement;
             this.parent = parent;
@@ -21,20 +21,17 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             triggerElement.SetParent(parent, insertIndex);
-            triggerElement.Created(insertIndex);
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
             triggerElement.SetParent(parent, insertIndex);
-            triggerElement.Created(insertIndex);
         }
 
         public void Undo()
         {
             triggerElement.RemoveFromParent();
-            triggerElement.Deleted();
         }
 
         public string GetCommandName()

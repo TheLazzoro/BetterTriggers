@@ -1982,4 +1982,10 @@
     <Resource Include="TestResources\Maps\empty_132.w3m\war3mapUnits.doo" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestResources\Maps\Boss_Battle-1.5.2_open.w3x">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

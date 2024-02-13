@@ -68,252 +68,38 @@ namespace Tests
         }
 
 
-        [TestMethod]
-        public void ConvertMap_GenerateScript_DirectStrikeReforged_New()
+        [DataTestMethod]
+        [DataRow("Direct_Strike_Reforged.w3x")]
+        [DataRow("Direct_Strike_Reforged_Open_Source.w3x")]
+        [DataRow("Direct_Strike_Reforged_Open_Source_1.33.w3x")]
+        [DataRow("Direct_Strike_Reforged_Open_Source_1.34.w3x")]
+        [DataRow("Enfo FFB - v2.42d.w3x")]
+        [DataRow("MZA 2.41.w3x")]
+        [DataRow("AAE REBORN V0.5b (beta) UNPROTECTED.w3x")]
+        [DataRow("Skeletal Annihilation 3.075.w3x")]
+        [DataRow("WoW Dungeons Classic 3.9.w3x")]
+        [DataRow("HolyWarAnniversary1_32a.w3x")]
+        [DataRow("The Legend of Ergl_1.31.w3x")]
+        [DataRow("Sheol_131.w3x")]
+        [DataRow("empty_131.w3m")]
+        [DataRow("empty_132.w3m")]
+        [DataRow("Metastasis Reclassic 1.0H.120.w3x")]
+        [DataRow("MpqMap_135.w3x")]
+        [DataRow("warquest.w3x")]
+        [DataRow("Chimney Isles.w3x")]
+        [DataRow("MechaDefenders 1.1.0.w3x")]
+        [DataRow("DeadlockNE25.w3x")]
+        [DataRow("Myth01.CrowsBridge.w3m")]
+        [DataRow("Myth02.WillowCreek.w3m")]
+        [DataRow("WarCard_B_1.1.24.w3m")]
+        [DataRow("ZombieHunt1.10R.w3x")]
+        [DataRow("Dark Planet 1.06.w3x")]
+        [DataRow("Risk Forever (2.5.7).w3x")]
+        [DataRow("Universe Of Warcraft 1.7.w3x")]
+        [DataRow("KingsAndCursesTD-V1.198.w3x")]
+        public void ConvertMap_GenerateScript_Test(string fileName)
         {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Direct_Strike_Reforged.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_DirectStrikeReforged()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Direct_Strike_Reforged_Open_Source.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_DirectStrikeReforged_133()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Direct_Strike_Reforged_Open_Source_1.33.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_DirectStrikeReforged_134()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Direct_Strike_Reforged_Open_Source_1.34.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Enfo_FFB()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Enfo FFB - v2.42d.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_MZA()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/MZA 2.41.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_AAE_REBORN()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/AAE REBORN V0.5b (beta) UNPROTECTED.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Skeletal_Annihilation()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Skeletal Annihilation 3.075.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_WoW_Dungeons_Classic()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/WoW Dungeons Classic 3.9.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Holy_War_Anniversary()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/HolyWarAnniversary1_32a.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_The_Legend_of_Ergl_131()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/The Legend of Ergl_1.31.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Sheol_131()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Sheol_131.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_empty_131()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/empty_131.w3m");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_empty_132()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/empty_132.w3m");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Metastasis_Reclassic_135()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Metastasis Reclassic 1.0H.120.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_MpqMap_135()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/MpqMap_135.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_warquest()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/warquest.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Chimney_Isles()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Chimney Isles.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_MechaDefenders()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/MechaDefenders 1.1.0.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_DeadlockNE25()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/DeadlockNE25.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Myth01()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Myth01.CrowsBridge.w3m");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Myth02()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Myth02.WillowCreek.w3m");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_WarCard()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/WarCard_B_1.1.24.w3m");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_ZombieHunt()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/ZombieHunt1.10R.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_KingsAndCursesTD()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/KingsAndCursesTD-V1.198.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Dark_Planet()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Dark Planet 1.06.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Universe_Of_Warcraft()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Universe Of Warcraft 1.7.w3x");
-            ConvertMap_GenerateScript(mapDir);
-
-            Assert.IsTrue(success, failedMsg);
-        }
-        [TestMethod]
-        public void ConvertMap_GenerateScript_Risk_Forever()
-        {
-            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Risk Forever (2.5.7).w3x");
+            mapDir = Path.Combine(Directory.GetCurrentDirectory() + "/TestResources/Maps", fileName);
             ConvertMap_GenerateScript(mapDir);
 
             Assert.IsTrue(success, failedMsg);

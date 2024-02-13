@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using BetterTriggers.Models.EditorData;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class Variable_Saveable : IReferable_Saveable
+    public class Variable_Saveable : IReferable
     {
         public int Id;
 

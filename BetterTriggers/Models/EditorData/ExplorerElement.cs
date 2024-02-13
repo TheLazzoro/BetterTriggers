@@ -392,7 +392,7 @@ namespace BetterTriggers.Models.EditorData
         private void StoreLocalVariables()
         {
             var variables = Project.CurrentProject.Variables;
-            trigger.LocalVariables.ForEach(e =>
+            trigger.LocalVariables.Elements.ForEach(e =>
             {
                 var lv = (LocalVariable)e;
                 variables.AddLocalVariable(lv);
@@ -402,7 +402,7 @@ namespace BetterTriggers.Models.EditorData
         private void RemoveLocalVariables()
         {
             var variables = Project.CurrentProject.Variables;
-            trigger.LocalVariables.ForEach(e =>
+            trigger.LocalVariables.Elements.ForEach(e =>
             {
                 var lv = (LocalVariable)e;
                 variables.RemoveLocalVariable(lv);

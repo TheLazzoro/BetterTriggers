@@ -9,8 +9,8 @@ namespace BetterTriggers.Containers
     /// </summary>
     public static class CopiedElements
     {
-        public static List<TriggerElement> CopiedTriggerElements = new();
-        public static List<TriggerElement> CutTriggerElements = new();
+        public static TriggerElementCollection CopiedTriggerElements;
+        public static TriggerElementCollection CutTriggerElements;
         public static ExplorerElement CopiedFromTrigger;
 
         public static ExplorerElement CopiedExplorerElement;

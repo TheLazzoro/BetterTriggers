@@ -47,6 +47,7 @@ namespace BetterTriggers.Commands
 
                 if(paramCollection[paramIndex] == setVarParam && setVarParam is VariableRef && oldParameter is VariableRef)
                 {
+                    int i = 0;
                     var setVarParamRef = setVarParam as VariableRef;
                     var setVarParamRefOld = oldParameter as VariableRef;
                     var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef);
@@ -70,8 +71,6 @@ namespace BetterTriggers.Commands
                 }
             }
 
-            triggerElement.ChangedParams();
-
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -85,14 +84,12 @@ namespace BetterTriggers.Commands
 
             paramCollection[paramIndex] = paramToAdd;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
-            triggerElement.ChangedParams();
         }
 
         public void Undo()
         {
             paramCollection[paramIndex] = oldParameter;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
-            triggerElement.ChangedParams();
         }
 
         public string GetCommandName()

@@ -19,5 +19,15 @@ namespace BetterTriggers.Models.EditorData
             this.Elements.ForEach(element => clone.Elements.Add(element.Clone()));
             return clone;
         }
+
+        public int Count()
+        {
+            return Elements.Count;
+        }
+
+        public int IndexOf(TriggerElement element)
+        {
+            return Elements.IndexOf(element);
+        }
     }
 }

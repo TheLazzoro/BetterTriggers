@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using System.Collections.Generic;
 
@@ -7,12 +8,12 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementReplace : ICommand
     {
         string commandName = "Replace Trigger Element";
-        TriggerElement_Saveable toReplace;
-        TriggerElement_Saveable toInsert;
-        List<TriggerElement_Saveable> parent;
+        TriggerElement toReplace;
+        TriggerElement toInsert;
+        TriggerElementCollection parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementReplace(TriggerElement_Saveable toReplace, TriggerElement_Saveable toInsert)
+        public CommandTriggerElementReplace(TriggerElement toReplace, TriggerElement toInsert)
         {
             this.toReplace = toReplace;
             this.toInsert = toInsert;
@@ -23,26 +24,20 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             toReplace.RemoveFromParent();
-            toReplace.Deleted();
             toInsert.SetParent(parent, insertIndex);
-            toInsert.Created(insertIndex);
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
             toReplace.RemoveFromParent();
-            toReplace.Deleted();
             toInsert.SetParent(parent, insertIndex);
-            toInsert.Created(insertIndex);
         }
 
         public void Undo()
         {
             toInsert.RemoveFromParent();
-            toInsert.Deleted();
             toReplace.SetParent(parent, insertIndex);
-            toReplace.Created(insertIndex);
         }
 
         public string GetCommandName()

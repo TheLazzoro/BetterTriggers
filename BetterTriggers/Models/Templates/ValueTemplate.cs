@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
 using System;
 
 namespace BetterTriggers.Models.Templates
@@ -16,9 +16,9 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public override Value_Saveable ToParameter()
+        public override Value ToParameter()
         {
-            Value_Saveable value = new Value_Saveable();
+            Value value = new Value();
             value.value = new string(this.value);
             return value;
         }

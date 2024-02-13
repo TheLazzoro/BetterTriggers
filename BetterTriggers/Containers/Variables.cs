@@ -43,8 +43,10 @@ namespace BetterTriggers.Containers
             return fullPath;
         }
 
-        public void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
+        public void CreateLocalVariable(Trigger trig, int insertIndex)
         {
+            TriggerElementCollection parent = trig.LocalVariables;
+            LocalVariable localVariable = new LocalVariable(trig);
             localVariable.variable.Name = GenerateLocalName(trig);
             localVariable.variable.Id = GenerateId();
             localVariable.variable.Type = "integer";
@@ -60,7 +62,7 @@ namespace BetterTriggers.Containers
             if (newName == variable.variable.Name)
                 return;
 
-            foreach (LocalVariable v in trig.LocalVariables)
+            foreach (LocalVariable v in trig.LocalVariables.Elements)
             {
                 if (v.variable.Name == newName)
                     throw new Exception($"Local variable with name '{newName}' already exists.");
@@ -96,7 +98,7 @@ namespace BetterTriggers.Containers
             all.AddRange(GetGlobals().Select(v => v.variable)); // globals
             if (includeLocals)
             {
-                trig.LocalVariables.ForEach(e =>
+                trig.LocalVariables.Elements.ForEach(e =>
                 { // locals
                     var lv = (LocalVariable)e;
                     all.Add(lv.variable);
@@ -257,9 +259,9 @@ namespace BetterTriggers.Containers
             string name = baseName;
             int i = 0;
             bool validName = false;
-            while (!validName && trig.LocalVariables.Count > 0)
+            while (!validName && trig.LocalVariables.Elements.Count > 0)
             {
-                foreach (LocalVariable localVar in trig.LocalVariables)
+                foreach (LocalVariable localVar in trig.LocalVariables.Elements)
                 {
                     validName = name != localVar.variable.Name;
                     if (!validName)
@@ -309,9 +311,9 @@ namespace BetterTriggers.Containers
 
             if (trig != null) // for local variables
             {
-                for (int i = 0; i < trig.LocalVariables.Count; i++)
+                for (int i = 0; i < trig.LocalVariables.Elements.Count; i++)
                 {
-                    var localVar = (LocalVariable)trig.LocalVariables[i];
+                    var localVar = (LocalVariable)trig.LocalVariables.Elements[i];
                     if (localVar.variable.Id == Id)
                     {
                         var = localVar.variable;

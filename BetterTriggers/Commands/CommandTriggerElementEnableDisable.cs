@@ -20,20 +20,17 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             triggerElement.isEnabled = !triggerElement.isEnabled;
-            triggerElement.ChangedEnabled();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
             triggerElement.isEnabled = !triggerElement.isEnabled;
-            triggerElement.ChangedEnabled();
         }
 
         public void Undo()
         {
             triggerElement.isEnabled = !triggerElement.isEnabled;
-            triggerElement.ChangedEnabled();
         }
 
         public string GetCommandName()

@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
 using Newtonsoft.Json;
 using System;
 
@@ -15,9 +15,9 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public virtual Parameter_Saveable ToParameter()
+        public virtual Parameter ToParameter()
         {
-            return new Parameter_Saveable();
+            return new Parameter();
         }
     }
 }

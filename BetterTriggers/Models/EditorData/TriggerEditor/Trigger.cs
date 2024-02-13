@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.EditorData
 {
-    public class Trigger
+    public class Trigger : IReferable
     {
         public int Id;
         public string Comment;
@@ -21,18 +21,9 @@ namespace BetterTriggers.Models.EditorData
         public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
         public TriggerElementCollection Actions = new(TriggerElementType.Action);
 
-        public Trigger(Trigger_Saveable trigger)
-        {
-            Id = trigger.Id;
-            Comment = trigger.Comment;
-            Script = trigger.Script;
-            RunOnMapInit = trigger.RunOnMapInit;
-            IsScript = trigger.IsScript;
-            trigger.Events.ForEach(e => Events.Elements.Add(new ));
-        }
-
         public Trigger Clone()
         {
+            // NOTE: we don't clone the script since it would cause script errors. Maybe we should?
             Trigger cloned = new Trigger();
             cloned.Comment = new string(Comment);
             cloned.Events = Events.Clone();
@@ -41,17 +32,6 @@ namespace BetterTriggers.Models.EditorData
             cloned.Actions = Actions.Clone();
 
             return cloned;
-        }
-
-        public SaveableData.Trigger_Saveable Serialize()
-        {
-            SaveableData.Trigger_Saveable trig = new SaveableData.Trigger_Saveable();
-            trig.Id = Id;
-            trig.Comment = Comment;
-            trig.Script = Script;
-            trig.RunOnMapInit = RunOnMapInit;
-            trig.IsScript = IsScript;
-            Events.Elements.ForEach(e => trig.Events.Add(e.));
         }
     }
 }

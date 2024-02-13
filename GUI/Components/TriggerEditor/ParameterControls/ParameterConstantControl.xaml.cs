@@ -71,7 +71,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             while (!found && i < listControl.listView.Items.Count)
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
-                var constant = item.Tag as ConstantTemplate;
+                var constant = item.Tag as PresetTemplate;
                 if (constant.value == parameter.value)
                     found = true;
                 else
@@ -95,7 +95,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             if (selectedItem == null)
                 return null;
 
-            var template = (ConstantTemplate)selectedItem.Tag;
+            var template = (PresetTemplate)selectedItem.Tag;
             var parameter = new Constant_Saveable()
             {
                 value = template.value,
@@ -114,7 +114,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             if (selectedItem == null)
                 return;
 
-            var constant = selectedItem.Tag as ConstantTemplate;
+            var constant = selectedItem.Tag as PresetTemplate;
 
             textBoxDescription.Inlines.Clear();
             var brush = (SolidColorBrush)Application.Current.FindResource("TextBrush");

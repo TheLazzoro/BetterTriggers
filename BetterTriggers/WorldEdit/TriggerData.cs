@@ -21,7 +21,7 @@ namespace BetterTriggers.WorldEdit
 {
     public class TriggerData
     {
-        internal static Dictionary<string, ConstantTemplate> ConstantTemplates = new Dictionary<string, ConstantTemplate>();
+        internal static Dictionary<string, PresetTemplate> ConstantTemplates = new Dictionary<string, PresetTemplate>();
         internal static Dictionary<string, FunctionTemplate> EventTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> ConditionTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> ActionTemplates = new Dictionary<string, FunctionTemplate>();
@@ -278,7 +278,7 @@ namespace BetterTriggers.WorldEdit
                 string codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
                 string displayText = Locale.Translate(values[3]);
 
-                ConstantTemplate constant = new ConstantTemplate()
+                PresetTemplate constant = new PresetTemplate()
                 {
                     value = key,
                     returnType = variableType,
@@ -311,7 +311,7 @@ namespace BetterTriggers.WorldEdit
 
                     string def = defaultsTxt[i];
                     ParameterTemplate oldParameter = template.parameters[i];
-                    ConstantTemplate constantTemplate = GetConstantTemplate(def);
+                    PresetTemplate constantTemplate = GetConstantTemplate(def);
                     FunctionTemplate functionTemplate = GetFunctionTemplate(def);
                     if (functionTemplate != null)
                         defaults.Add(functionTemplate);
@@ -475,7 +475,7 @@ namespace BetterTriggers.WorldEdit
             if (function != null)
                 return function.returnType;
 
-            ConstantTemplate constant;
+            PresetTemplate constant;
             ConstantTemplates.TryGetValue(value, out constant);
             return constant.returnType;
         }
@@ -526,9 +526,9 @@ namespace BetterTriggers.WorldEdit
             return functionTemplate;
         }
 
-        private static ConstantTemplate GetConstantTemplate(string key)
+        private static PresetTemplate GetConstantTemplate(string key)
         {
-            ConstantTemplate constantTemplate;
+            PresetTemplate constantTemplate;
             ConstantTemplates.TryGetValue(key, out constantTemplate);
             return constantTemplate;
         }
@@ -541,7 +541,7 @@ namespace BetterTriggers.WorldEdit
         internal static string GetConstantCodeText(string identifier, ScriptLanguage language)
         {
             string codeText = string.Empty;
-            ConstantTemplate constant;
+            PresetTemplate constant;
             ConstantTemplates.TryGetValue(identifier, out constant);
             codeText = constant.codeText;
             if (language == ScriptLanguage.Lua)
@@ -557,7 +557,7 @@ namespace BetterTriggers.WorldEdit
 
         internal static bool ConstantExists(string value)
         {
-            ConstantTemplate temp;
+            PresetTemplate temp;
             bool exists = ConstantTemplates.TryGetValue(value, out temp);
             return exists;
         }
@@ -672,9 +672,9 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static List<ConstantTemplate> LoadAllConstants()
+        public static List<PresetTemplate> LoadAllConstants()
         {
-            List<ConstantTemplate> list = new List<ConstantTemplate>();
+            List<PresetTemplate> list = new List<PresetTemplate>();
             var enumerator = TriggerData.ConstantTemplates.GetEnumerator();
             while (enumerator.MoveNext())
             {

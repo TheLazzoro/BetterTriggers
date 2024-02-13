@@ -10,6 +10,7 @@ using System.IO;
 using BetterTriggers.Commands;
 using BetterTriggers.WorldEdit;
 using System.Xml.Linq;
+using System.Collections.ObjectModel;
 
 namespace BetterTriggers.Containers
 {
@@ -197,7 +198,7 @@ namespace BetterTriggers.Containers
         public static List<Parameter> GetElementParametersAll(TriggerElement te)
         {
             ECA eca = (ECA)te;
-            List<Parameter> list = GetElementParametersAll(eca.function.parameters);
+            var list = GetElementParametersAll(eca.function.parameters);
             return list;
         }
 
@@ -218,20 +219,21 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        public void CopyTriggerElements(ExplorerElement copiedFrom, List<TriggerElement> list, bool isCut = false)
+        public void CopyTriggerElements(ExplorerElement copiedFrom, TriggerElementCollection copiedCollection, bool isCut = false)
         {
-            List<TriggerElement> copiedItems = new List<TriggerElement>();
-            for (int i = 0; i < list.Count; i++)
+            var type = copiedCollection.Elements[0].ElementType;
+            TriggerElementCollection copiedItems = new TriggerElementCollection(type);
+            for (int i = 0; i < copiedCollection.Count(); i++)
             {
-                if (list[i] is ECA)
+                if (copiedCollection.Elements[i] is ECA)
                 {
-                    var element = (ECA)list[i];
-                    copiedItems.Add(element.Clone());
+                    var element = (ECA)copiedCollection.Elements[i];
+                    copiedItems.Elements.Add(element.Clone());
                 }
-                else if (list[i] is LocalVariable)
+                else if (copiedCollection.Elements[i] is LocalVariable)
                 {
-                    var element = (LocalVariable)list[i];
-                    copiedItems.Add(element.Clone());
+                    var element = (LocalVariable)copiedCollection.Elements[i];
+                    copiedItems.Elements.Add(element.Clone());
                 }
             }
 
@@ -239,7 +241,7 @@ namespace BetterTriggers.Containers
 
             if (isCut)
             {
-                CopiedElements.CutTriggerElements = list;
+                CopiedElements.CutTriggerElements = copiedCollection;
                 CopiedElements.CopiedFromTrigger = copiedFrom;
             }
             else
@@ -247,23 +249,23 @@ namespace BetterTriggers.Containers
         }
 
         /// <returns>A list of pasted elements.</returns>
-        public List<TriggerElement> PasteTriggerElements(ExplorerElement destinationTrigger, List<TriggerElement> parentList, int insertIndex)
+        public TriggerElementCollection PasteTriggerElements(ExplorerElement destinationTrigger, TriggerElementCollection parentList, int insertIndex)
         {
             var copied = CopiedElements.CopiedTriggerElements;
-            var pasted = new List<TriggerElement>();
-            for (int i = 0; i < copied.Count; i++)
+            var pasted = new TriggerElementCollection(copied.ElementType);
+            for (int i = 0; i < copied.Count(); i++)
             {
-                if (copied[i] is ECA eca)
+                if (copied.Elements[i] is ECA eca)
                 {
-                    pasted.Add(eca.Clone());
+                    pasted.Elements.Add(eca.Clone());
                 }
-                else if (copied[i] is LocalVariable localVar)
+                else if (copied.Elements[i] is LocalVariable localVar)
                 {
                     var clone = localVar.Clone();
                     var variables = Project.CurrentProject.Variables;
                     clone.variable.Id = variables.GenerateId();
                     clone.variable.Name = variables.GenerateLocalName(destinationTrigger.trigger, clone.variable.Name);
-                    pasted.Add(clone);
+                    pasted.Elements.Add(clone);
                     variables.AddLocalVariable(clone);
                 }
             }
@@ -294,13 +296,13 @@ namespace BetterTriggers.Containers
             return removeCount > 0;
         }
 
-        public int RemoveInvalidReferences(Trigger trig, List<TriggerElement> triggerElements)
+        public int RemoveInvalidReferences(Trigger trig, TriggerElementCollection triggerElements)
         {
             int removeCount = 0;
 
-            for (int i = 0; i < triggerElements.Count; i++)
+            for (int i = 0; i < triggerElements.Elements.Count; i++)
             {
-                if (triggerElements[i] is LocalVariable localVar)
+                if (triggerElements.Elements[i] is LocalVariable localVar)
                 {
                     if (localVar.variable.InitialValue is Value value)
                     {
@@ -314,11 +316,11 @@ namespace BetterTriggers.Containers
                     continue;
                 }
 
-                var eca = (ECA)triggerElements[i];
+                var eca = (ECA)triggerElements.Elements[i];
                 bool ecaExists = TriggerData.FunctionExists(eca.function);
                 if (!ecaExists)
                 {
-                    triggerElements[i] = new InvalidECA();
+                    triggerElements.Elements[i] = new InvalidECA();
                     removeCount += 1;
                 }
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
@@ -441,9 +443,9 @@ namespace BetterTriggers.Containers
                     List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
                     removeCount += VerifyParametersAndRemove(trig, function.parameters, _returnTypes);
                 }
-                else if (parameter is Constant_Saveable constant)
+                else if (parameter is Preset preset)
                 {
-                    bool constantExists = TriggerData.ConstantExists(constant.value);
+                    bool constantExists = TriggerData.ConstantExists(preset.value);
                     if (!constantExists)
                     {
                         parameters[i] = new Parameter();
@@ -524,10 +526,10 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        private static List<Function> GatherFunctions(List<TriggerElement> triggerElements)
+        private static List<Function> GatherFunctions(TriggerElementCollection triggerElements)
         {
             List<Function> list = new List<Function>();
-            triggerElements.ForEach(t =>
+            triggerElements.Elements.ForEach(t =>
             {
                 var eca = (ECA)t;
                 list.AddRange(GetFunctionsFromParameters(eca.function));
@@ -667,13 +669,13 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        private static List<Parameter> GatherTriggerParameters(List<TriggerElement> triggerElements)
+        private static List<Parameter> GatherTriggerParameters(TriggerElementCollection triggerElements)
         {
             List<Parameter> parameters = new List<Parameter>();
 
-            for (int i = 0; i < triggerElements.Count; i++)
+            for (int i = 0; i < triggerElements.Elements.Count; i++)
             {
-                var triggerElement = triggerElements[i];
+                var triggerElement = triggerElements.Elements[i];
                 if (triggerElement is LocalVariable localVar)
                 {
                     parameters.Add(localVar.variable.InitialValue);

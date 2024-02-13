@@ -1730,7 +1730,7 @@ end
             events.Append($"\t{set} {triggerVarName} = CreateTrigger(){newline}");
 
 
-            foreach (ECA e in t.trigger.Events)
+            foreach (ECA e in t.trigger.Events.Elements)
             {
                 if (!e.isEnabled || e is InvalidECA)
                     continue;
@@ -1753,7 +1753,7 @@ end
                 events.Append($"{_event} {newline}");
             }
 
-            foreach (LocalVariable localVar in t.trigger.LocalVariables)
+            foreach (LocalVariable localVar in t.trigger.LocalVariables.Elements)
             {
                 var v = localVar.variable;
                 localVariables.Add(v);
@@ -1784,7 +1784,7 @@ end
                 events.Insert(0, $"{globals}{newline}");
             }
 
-            foreach (ECA c in t.trigger.Conditions)
+            foreach (ECA c in t.trigger.Conditions.Elements)
             {
                 string condition = ConvertTriggerElementToJass(c, pre_actions, true);
                 if (condition == "")
@@ -1796,7 +1796,7 @@ end
             }
             actions.Insert(0, localVariableInit.ToString());
             actions.Insert(0, $"function {triggerActionName} {functionReturnsNothing}{newline}");
-            foreach (ECA a in t.trigger.Actions)
+            foreach (ECA a in t.trigger.Actions.Elements)
             {
                 actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, false)}{newline}");
             }
@@ -1847,7 +1847,7 @@ end
                 if (t is ForLoopAMultiple)
                 {
                     ForLoopAMultiple loopA = (ForLoopAMultiple)t;
-                    foreach (ECA action in loopA.Actions)
+                    foreach (ECA action in loopA.Actions.Elements)
                     {
                         script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                     }
@@ -1855,7 +1855,7 @@ end
                 else
                 {
                     ForLoopBMultiple loopB = (ForLoopBMultiple)t;
-                    foreach (ECA action in loopB.Actions)
+                    foreach (ECA action in loopB.Actions.Elements)
                     {
                         script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                     }
@@ -1883,7 +1883,7 @@ end
                 script.Append(ConvertParametersToJass(loopVar.function.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
                 script.Append($"\t{startLoop}{varName}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
 
-                foreach (ECA action in loopVar.Actions)
+                foreach (ECA action in loopVar.Actions.Elements)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
@@ -1898,7 +1898,7 @@ end
                 IfThenElse ifThenElse = (IfThenElse)t;
 
                 List<ECA> conditions = new List<ECA>();
-                ifThenElse.If.ForEach(c =>
+                ifThenElse.If.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
                     int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
@@ -1974,7 +1974,7 @@ end
 
                 //script.Append($") then{newline}");
 
-                foreach (ECA action in ifThenElse.Then)
+                foreach (ECA action in ifThenElse.Then.Elements)
                 {
                     if (!action.isEnabled)
                         continue;
@@ -1982,7 +1982,7 @@ end
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
                 script.Append($"\telse{newline}");
-                foreach (ECA action in ifThenElse.Else)
+                foreach (ECA action in ifThenElse.Else.Elements)
                 {
                     if (!action.isEnabled)
                         continue;
@@ -2007,7 +2007,7 @@ end
                 if (f.value == "ForForceMultiple")
                 {
                     ForForceMultiple forForce = (ForForceMultiple)t;
-                    foreach (ECA action in forForce.Actions)
+                    foreach (ECA action in forForce.Actions.Elements)
                     {
                         pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                     }
@@ -2015,7 +2015,7 @@ end
                 else
                 {
                     ForGroupMultiple forGroup = (ForGroupMultiple)t;
-                    foreach (ECA action in forGroup.Actions)
+                    foreach (ECA action in forGroup.Actions.Elements)
                     {
                         pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                     }
@@ -2043,7 +2043,7 @@ end
 
                 string pre = string.Empty;
                 string pre_content = string.Empty;
-                foreach (ECA action in enumDest.Actions)
+                foreach (ECA action in enumDest.Actions.Elements)
                 {
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
@@ -2071,7 +2071,7 @@ end
 
                 string pre = string.Empty;
                 string pre_content = string.Empty;
-                foreach (ECA action in enumDest.Actions)
+                foreach (ECA action in enumDest.Actions.Elements)
                 {
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
@@ -2099,7 +2099,7 @@ end
 
                 string pre = string.Empty;
                 string pre_content = string.Empty;
-                foreach (ECA action in enumItem.Actions)
+                foreach (ECA action in enumItem.Actions.Elements)
                 {
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
@@ -2119,7 +2119,7 @@ end
             {
                 AndMultiple andMultiple = (AndMultiple)t;
                 List<ECA> conditions = new List<ECA>();
-                andMultiple.And.ForEach(c =>
+                andMultiple.And.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
                     int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
@@ -2191,7 +2191,7 @@ end
             {
                 OrMultiple orMultiple = (OrMultiple)t;
                 List<ECA> conditions = new List<ECA>();
-                orMultiple.Or.ForEach(c =>
+                orMultiple.Or.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
                     int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
@@ -2527,9 +2527,9 @@ end
                 }
                 output += ")";
             }
-            else if (parameter is Constant_Saveable)
+            else if (parameter is Preset)
             {
-                Constant_Saveable c = (Constant_Saveable)parameter;
+                Preset c = (Preset)parameter;
                 if (Types.GetBaseType(returnType) == "string")
                     output += "\"" + TriggerData.GetConstantCodeText(c.value, language) + "\"";
                 else

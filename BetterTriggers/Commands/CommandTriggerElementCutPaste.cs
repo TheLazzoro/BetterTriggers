@@ -16,18 +16,18 @@ namespace BetterTriggers.Commands
         int cutIndex = 0;
         ExplorerElement from;
         ExplorerElement to;
-        List<TriggerElement> listToCut;
-        List<TriggerElement> listToPaste;
-        List<TriggerElement> cutParent;
-        List<TriggerElement> pasteParent;
+        TriggerElementCollection listToCut;
+        TriggerElementCollection listToPaste;
+        TriggerElementCollection cutParent;
+        TriggerElementCollection pasteParent;
 
-        public CommandTriggerElementCutPaste(ExplorerElement from, ExplorerElement to, List<TriggerElement> listToPaste, List<TriggerElement> pasteParent, int pastedIndex)
+        public CommandTriggerElementCutPaste(ExplorerElement from, ExplorerElement to, TriggerElementCollection listToPaste, TriggerElementCollection pasteParent, int pastedIndex)
         {
             this.from = from;
             this.to = to;
             this.listToCut = CopiedElements.CutTriggerElements;
-            this.cutParent = listToCut[0].GetParent();
-            this.cutIndex = listToCut[0].GetParent().IndexOf(listToCut[0]);
+            this.cutParent = listToCut.Elements[0].GetParent();
+            this.cutIndex = listToCut.Elements[0].GetParent().Elements.IndexOf(listToCut.Elements[0]);
             this.listToPaste = listToPaste;
             this.pasteParent = pasteParent;
             this.pastedIndex = pastedIndex;
@@ -36,18 +36,17 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             Project.CurrentProject.Triggers.RemoveInvalidReferences(to.trigger, listToPaste);
-            for (int i = 0; i < listToCut.Count; i++)
+            for (int i = 0; i < listToCut.Count(); i++)
             {
-                listToCut[i].RemoveFromParent();
-                listToCut[i].Deleted();
+                listToCut.Elements[i].RemoveFromParent();
             }
             if (cutParent == pasteParent && pastedIndex > cutIndex)
             {
-                this.pastedIndex = pastedIndex - listToPaste.Count;
+                this.pastedIndex = pastedIndex - listToPaste.Count();
             }
 
-            for (int i = 0; i < listToPaste.Count; i++) {
-                listToPaste[i].SetParent(pasteParent, pastedIndex + i);
+            for (int i = 0; i < listToPaste.Count(); i++) {
+                listToPaste.Elements[i].SetParent(pasteParent, pastedIndex + i);
             }
 
             Project.CurrentProject.References.UpdateReferences(from);
@@ -59,15 +58,13 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
-            for (int i = 0; i < listToCut.Count; i++)
+            for (int i = 0; i < listToCut.Count(); i++)
             {
-                listToCut[i].RemoveFromParent();
-                listToCut[i].Deleted();
+                listToCut.Elements[i].RemoveFromParent();
             }
-            for (int i = 0; i < listToPaste.Count; i++)
+            for (int i = 0; i < listToPaste.Count(); i++)
             {
-                listToPaste[i].SetParent(pasteParent, pastedIndex + i);
-                listToPaste[i].Created(pastedIndex + i);
+                listToPaste.Elements[i].SetParent(pasteParent, pastedIndex + i);
             }
 
             Project.CurrentProject.References.UpdateReferences(from);
@@ -76,15 +73,13 @@ namespace BetterTriggers.Commands
 
         public void Undo()
         {
-            for (int i = 0; i < listToCut.Count; i++)
+            for (int i = 0; i < listToCut.Count(); i++)
             {
-                listToCut[i].SetParent(cutParent, cutIndex + i);
-                listToCut[i].Created(cutIndex + i);
+                listToCut.Elements[i].SetParent(cutParent, cutIndex + i);
             }
-            for (int i = 0; i < listToPaste.Count; i++)
+            for (int i = 0; i < listToPaste.Count(); i++)
             {
-                listToPaste[i].RemoveFromParent();
-                listToPaste[i].Deleted();
+                listToPaste.Elements[i].RemoveFromParent();
             }
 
             Project.CurrentProject.References.UpdateReferences(from);

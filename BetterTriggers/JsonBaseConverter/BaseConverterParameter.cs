@@ -26,7 +26,7 @@ namespace BetterTriggers.JsonBaseConverter
                 switch (type)
                 {
                     case 1:
-                        return new Function();
+                        return new Function_Saveable();
                     case 2:
                         return new Constant_Saveable();
                     case 3:

@@ -672,7 +672,7 @@ namespace BetterTriggers.Containers
                 // Adjusts local variable ids
                 List<int> blacklistedIds = new List<int>();
                 var varRefs = Triggers.GetVariableRefsFromTrigger(element);
-                element.trigger.LocalVariables.ForEach(v =>
+                element.trigger.LocalVariables.Elements.ForEach(v =>
                 {
                     var lv = (LocalVariable)v;
                     int oldId = lv.variable.Id;

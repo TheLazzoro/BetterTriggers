@@ -5,8 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System;
 using BetterTriggers.Models.War3Data;
-using BetterTriggers.Models.SaveableData;
 using System.Windows.Input;
+using BetterTriggers.Models.EditorData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -39,7 +39,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private List<UnitType> unitData = new List<UnitType>();
         private CategoryRace selectedRace = CategoryRace.Human;
-        private Value_Saveable selectedType;
+        private Value selectedType;
         private int elementCount;
         private ButtonUnitType selectedButton;
         private UnitType defaultSelected;
@@ -68,7 +68,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             handler?.Invoke(this, e);
         }
 
-        public void SetDefaultSelection(Parameter_Saveable parameter)
+        public void SetDefaultSelection(Parameter parameter)
         {
             // TODO:
             int selectedIndex = 0;
@@ -102,7 +102,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 comboboxRace.SelectedIndex = 4;
         }
 
-        public Parameter_Saveable GetSelected()
+        public Parameter GetSelected()
         {
             return selectedType;
         }
@@ -206,7 +206,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void SetSelectedType(string unitcode)
         {
-            this.selectedType = new Value_Saveable()
+            this.selectedType = new Value()
             {
                 value = unitcode,
             };

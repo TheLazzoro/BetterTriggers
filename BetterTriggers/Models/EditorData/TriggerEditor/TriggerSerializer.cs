@@ -25,6 +25,8 @@ namespace BetterTriggers.Models.EditorData
             saveableTrig.Id = trigger.Id;
             saveableTrig.Script = trigger.Script;
             saveableTrig.IsScript = trigger.IsScript;
+            saveableTrig.RunOnMapInit = trigger.RunOnMapInit;
+            saveableTrig.Comment = trigger.Comment;
 
             saveableTrig.Events = ConvertTriggerElements(trigger.Events.Elements);
             saveableTrig.Conditions = ConvertTriggerElements(trigger.Conditions.Elements);
@@ -148,9 +150,9 @@ namespace BetterTriggers.Models.EditorData
         private static Function_Saveable ConvertFunction(Function function)
         {
             Function_Saveable converted = new Function_Saveable();
-            for (int i = 0; i < function.Parameters.Count; i++)
+            for (int i = 0; i < function.parameters.Count; i++)
             {
-                var converted_param = ConvertParameter(function.Parameters[i]);
+                var converted_param = ConvertParameter(function.parameters[i]);
                 converted.parameters.Add(converted_param);
             }
 
@@ -203,7 +205,7 @@ namespace BetterTriggers.Models.EditorData
 
         public static Trigger Deserialize(SaveableData.Trigger_Saveable trigger)
         {
-
+            throw new NotImplementedException();
         }
 
         #endregion

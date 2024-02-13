@@ -1,9 +1,10 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class Trigger_Saveable : IReferable_Saveable
+    public class Trigger_Saveable : IReferable
     {
         public int Id;
         public string Comment;

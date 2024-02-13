@@ -11,6 +11,7 @@ namespace BetterTriggers.Models.EditorData
     {
         public TriggerElementType ElementType { get; set; }
         public ObservableCollection<TriggerElement>? Elements { get; set; }
+        private TriggerElementCollection? Parent;
 
         public virtual TriggerElement Clone()
         {
@@ -20,6 +21,28 @@ namespace BetterTriggers.Models.EditorData
         public virtual SaveableData.TriggerElement_Saveable Serialize()
         {
             throw new Exception("'Serialize' method must be overriden.");
+        }
+
+        public void SetParent(TriggerElementCollection Parent, int insertIndex)
+        {
+            Parent?.Elements?.Insert(insertIndex, this);
+            this.Parent = Parent;
+        }
+
+        public void RemoveFromParent()
+        {
+            this.Parent?.Elements?.Remove(this);
+            this.Parent = null;
+        }
+
+        public TriggerElementCollection? GetParent()
+        {
+            return this.Parent;
+        }
+
+        public void SetParent(TriggerElementCollection parent)
+        {
+            this.Parent = parent;
         }
     }
 }

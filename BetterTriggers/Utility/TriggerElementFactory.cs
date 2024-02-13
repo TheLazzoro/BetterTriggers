@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,36 +9,36 @@ namespace BetterTriggers.Utility
 {
     public static class TriggerElementFactory
     {
-        public static ECA_Saveable Create(string name)
+        public static ECA Create(string name)
         {
             switch (name)
             {
                 case "IfThenElseMultiple":
-                    return new IfThenElse_Saveable();
+                    return new IfThenElse();
                 case "AndMultiple":
-                    return new AndMultiple_Saveable();
+                    return new AndMultiple();
                 case "OrMultiple":
-                    return new OrMultiple_Saveable();
+                    return new OrMultiple();
                 case "ForGroupMultiple":
-                    return new ForGroupMultiple_Saveable();
+                    return new ForGroupMultiple();
                 case "ForForceMultiple":
-                    return new ForForceMultiple_Saveable();
+                    return new ForForceMultiple();
                 case "ForLoopAMultiple":
-                    return new ForLoopAMultiple_Saveable();
+                    return new ForLoopAMultiple();
                 case "ForLoopBMultiple":
-                    return new ForLoopBMultiple_Saveable();
+                    return new ForLoopBMultiple();
                 case "ForLoopVarMultiple":
-                    return new ForLoopVarMultiple_Saveable();
+                    return new ForLoopVarMultiple();
                 case "SetVariable":
-                    return new SetVariable_Saveable();
+                    return new SetVariable();
                 case "EnumDestructablesInRectAllMultiple":
-                    return new EnumDestructablesInRectAllMultiple_Saveable();
+                    return new EnumDestructablesInRectAllMultiple();
                 case "EnumDestructablesInCircleBJMultiple":
-                    return new EnumDestructiblesInCircleBJMultiple_Saveable();
+                    return new EnumDestructiblesInCircleBJMultiple();
                 case "EnumItemsInRectBJMultiple":
-                    return new EnumItemsInRectBJ_Saveable();
+                    return new EnumItemsInRectBJ();
                 default:
-                    return new ECA_Saveable(name);
+                    return new ECA(name);
             }
         }
     }
