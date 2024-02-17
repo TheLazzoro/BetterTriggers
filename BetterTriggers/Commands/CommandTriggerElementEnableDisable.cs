@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementEnableDisable : ICommand
     {
         string commandName = "Change Enable Trigger Element";
-        ECA_Saveable triggerElement;
+        ECA triggerElement;
 
-        public CommandTriggerElementEnableDisable(ECA_Saveable triggerElement)
+        public CommandTriggerElementEnableDisable(ECA triggerElement)
         {
             this.triggerElement = triggerElement;
         }

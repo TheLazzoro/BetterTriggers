@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using BetterTriggers.Models.EditorData;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using BetterTriggers.Models.SaveableData;
-using BetterTriggers.WorldEdit;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -51,7 +41,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             handler?.Invoke(this, e);
         }
 
-        public void SetDefaultSelection(Parameter_Saveable parameter)
+        public void SetDefaultSelection(Parameter parameter)
         {
             textBox.Text = parameter.value;
         }
@@ -61,9 +51,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return 1;
         }
 
-        public Parameter_Saveable GetSelected()
+        public Parameter GetSelected()
         {
-            Value_Saveable value = new Value_Saveable()
+            Value value = new Value()
             {
                 value = textBox.Text,
             };

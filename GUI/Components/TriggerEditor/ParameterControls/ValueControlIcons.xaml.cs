@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
@@ -53,7 +54,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         }
 
 
-        public void SetDefaultSelection(Parameter_Saveable parameter)
+        public void SetDefaultSelection(Parameter parameter)
         {
             textBoxAsset.Text = parameter.value;
         }
@@ -63,9 +64,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter_Saveable GetSelected()
+        public Parameter GetSelected()
         {
-            return new Value_Saveable()
+            return new Value()
             {
                 value = textBoxAsset.Text,
             };

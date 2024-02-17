@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Commands;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,21 +14,18 @@ namespace GUI.Components.TriggerEditor
 {
     public class HyperlinkParameterTrigger : HyperlinkBT
     {
-        internal ParameterFacadeTrigger parameterFacade;
         internal readonly int index;
-        private TreeViewTriggerElement treeViewTriggerElement;
+        private ECA eca;
         private readonly string returnType;
-        List<Parameter_Saveable> parameters;
+        List<Parameter> parameters;
 
-
-        public HyperlinkParameterTrigger(ParameterFacadeTrigger parameterFacade, string text, List<Parameter_Saveable> parameters, int index, string returnType)
+        public HyperlinkParameterTrigger(ECA eca, string text, List<Parameter> parameters, int index, string returnType)
             : base(parameters[index], text)
         {
-            this.parameterFacade = parameterFacade;
             this.parameters = parameters;
             this.index = index;
             this.returnType = returnType;
-            this.treeViewTriggerElement = parameterFacade.GetTreeItem();
+            this.eca = eca;
 
             this.Click += HyperlinkParameter_Click;
         }
@@ -36,13 +33,12 @@ namespace GUI.Components.TriggerEditor
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var triggerElement = (ECA_Saveable)treeViewTriggerElement.triggerElement;
-            var window = new ParameterWindow(parameter, returnType, triggerElement.function);
+            var window = new ParameterWindow(parameter, returnType, eca.function);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(triggerElement, treeViewTriggerElement.GetExplorerElementTrigger(), parameters, index, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(eca, parameters, index, window.selectedParameter);
                 command.Execute();
             }
         }

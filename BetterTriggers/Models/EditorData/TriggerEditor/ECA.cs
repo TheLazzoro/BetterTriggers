@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.EditorData
 {
+    /// <summary>
+    /// Event, Condition, Action.
+    /// </summary>
     public class ECA : TriggerElement
     {
         public bool isEnabled { get; set; } = true;

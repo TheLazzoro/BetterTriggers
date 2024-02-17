@@ -37,7 +37,7 @@ namespace GUI
     {
         static MainWindow instance;
         TriggerExplorer triggerExplorer;
-        TreeItemExplorerElement selectedExplorerItem;
+        TreeViewItem selectedExplorerItem;
         public TabViewModel tabViewModel;
 
         public MainWindow()

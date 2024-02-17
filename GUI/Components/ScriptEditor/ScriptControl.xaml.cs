@@ -11,7 +11,6 @@ namespace GUI.Components
     {
         internal TextEditor textEditor;
         private ExplorerElement explorerElementScript;
-        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
         private bool suppressStateChange = false;
 
         public ScriptControl(ExplorerElement explorerElementScript)
@@ -56,23 +55,9 @@ namespace GUI.Components
         {
             throw new NotImplementedException();
         }
-
-        public void Attach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
-        public void Detach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
         public void OnStateChange()
         {
-            foreach (var observer in observers)
-            {
-                observer.OnStateChange();
-            }
+            
         }
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)

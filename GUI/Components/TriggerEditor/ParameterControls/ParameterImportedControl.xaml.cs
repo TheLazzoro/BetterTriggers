@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
+using BetterTriggers.Models.EditorData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -40,14 +40,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(Parameter_Saveable parameter)
+        public void SetDefaultSelection(Parameter parameter)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listControl.listView.Items.Count)
             {
                 ListViewItem item = listControl.listView.Items[i] as ListViewItem;
-                Value_Saveable val = item.Tag as Value_Saveable;
+                Value val = item.Tag as Value;
                 if (parameter.value == val.value)
                     found = true;
                 else
@@ -66,12 +66,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter_Saveable GetSelectedItem()
+        public Parameter GetSelectedItem()
         {
             if (selectedItem == null)
                 return null;
 
-            var variables = (Value_Saveable)selectedItem.Tag;
+            var variables = (Value)selectedItem.Tag;
             return variables;
         }
 

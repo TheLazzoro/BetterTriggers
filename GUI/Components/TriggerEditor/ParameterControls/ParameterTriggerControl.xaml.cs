@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using System.Collections.Generic;
 using System.Windows;
@@ -16,7 +16,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             InitializeComponent();
 
             var project = Project.CurrentProject;
-            List<TriggerRef_Saveable> triggers = project.Triggers.GetTriggerRefs();
+            List<TriggerRef> triggers = project.Triggers.GetTriggerRefs();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < triggers.Count; i++)
             {
@@ -41,14 +41,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(Parameter_Saveable parameter)
+        public void SetDefaultSelection(Parameter parameter)
         {
             int i = 0;
             bool found = false;
             while (!found && i < listControl.listView.Items.Count)
             {
                 var item = listControl.listView.Items[i] as ListViewItem;
-                var triggerRef = item.Tag as TriggerRef_Saveable;
+                var triggerRef = item.Tag as TriggerRef;
                 if (triggerRef.value == parameter.value)
                     found = true;
                 else
@@ -67,12 +67,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter_Saveable GetSelectedItem()
+        public Parameter GetSelectedItem()
         {
             if (selectedItem == null)
                 return null;
 
-            var trigger = (TriggerRef_Saveable)selectedItem.Tag;
+            var trigger = (TriggerRef)selectedItem.Tag;
             return trigger;
         }
 

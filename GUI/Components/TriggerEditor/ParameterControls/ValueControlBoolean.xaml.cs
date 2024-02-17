@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 
@@ -49,12 +50,12 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return 1;
         }
 
-        public void SetDefaultSelection(Parameter_Saveable parameter)
+        public void SetDefaultSelection(Parameter parameter)
         {
             checkBox.IsChecked = parameter.value == "true";
         }
 
-        public Parameter_Saveable GetSelected()
+        public Parameter GetSelected()
         {
             string str = string.Empty;
             if ((bool)checkBox.IsChecked)
@@ -62,7 +63,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             else
                 str = "false";
 
-            Value_Saveable value = new Value_Saveable()
+            Value value = new Value()
             {
                 value = str,
             };

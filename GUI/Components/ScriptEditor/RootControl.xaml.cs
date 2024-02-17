@@ -10,7 +10,6 @@ namespace GUI.Components
     public partial class RootControl : UserControl, IEditor
     {
         public TextEditor textEditor;
-        List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
         public RootControl()
         {
@@ -41,22 +40,9 @@ namespace GUI.Components
             throw new NotImplementedException();
         }
 
-        public void Attach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
-        public void Detach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
         public void OnStateChange()
         {
-            foreach (var observer in observers)
-            {
-                observer.OnStateChange();
-            }
+            
         }
 
         private void textBoxComment_TextChanged(object sender, TextChangedEventArgs e)

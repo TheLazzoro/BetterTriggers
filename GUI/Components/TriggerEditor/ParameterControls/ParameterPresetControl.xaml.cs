@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
@@ -20,35 +21,32 @@ using System.Windows.Shapes;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    /// <summary>
-    /// Interaction logic for ParameterFunctionControl.xaml
-    /// </summary>
-    public partial class ParameterConstantControl : UserControl, IParameterControl
+    public partial class ParameterPresetControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
 
-        public ParameterConstantControl(string returnType)
+        public ParameterPresetControl(string returnType)
         {
             InitializeComponent();
 
-            var constants = TriggerData.LoadAllConstants();
+            var presets = TriggerData.LoadAllConstants();
             List<Searchable> objects = new List<Searchable>();
-            for (int i = 0; i < constants.Count; i++)
+            for (int i = 0; i < presets.Count; i++)
             {
-                var constant = constants[i];
-                if (constant.returnType != returnType)
+                var preset = presets[i];
+                if (preset.returnType != returnType)
                     continue;
 
                 ListViewItem listItem = new ListViewItem();
-                listItem.Content = constant.name;
-                listItem.Tag = constant;
+                listItem.Content = preset.name;
+                listItem.Tag = preset;
                 objects.Add(new Searchable()
                 {
                     Object = listItem,
                     Words = new List<string>()
                     {
-                        constant.name.ToLower(),
-                        constant.value.ToLower()
+                        preset.name.ToLower(),
+                        preset.value.ToLower()
                     },
                 });
             }
@@ -64,7 +62,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             listControl.listView.SelectionChanged += ListView_SelectionChanged;
         }
 
-        public void SetDefaultSelection(Parameter_Saveable parameter)
+        public void SetDefaultSelection(Parameter parameter)
         {
             int i = 0;
             bool found = false;
@@ -90,13 +88,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return listControl.listView.Items.Count;
         }
 
-        public Parameter_Saveable GetSelectedItem()
+        public Parameter GetSelectedItem()
         {
             if (selectedItem == null)
                 return null;
 
             var template = (PresetTemplate)selectedItem.Tag;
-            var parameter = new Constant_Saveable()
+            var parameter = new Preset()
             {
                 value = template.value,
             };

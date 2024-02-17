@@ -12,7 +12,7 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementParamModify : ICommand
     {
         string commandName = "Modify Parameter";
-        ECA triggerElement;
+        ECA eca;
         ExplorerElement explorerElement;
         List<Parameter> paramCollection;
         Parameter paramToAdd;
@@ -23,14 +23,13 @@ namespace BetterTriggers.Commands
         Parameter setVarValueOld; // TODO: Why is this not used?
         Parameter setVarValueNew;
 
-        public CommandTriggerElementParamModify(ECA triggerElement, ExplorerElement explorerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(ECA eca, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
-            this.triggerElement = triggerElement;
+            this.eca = eca;
             this.paramCollection = paramCollection;
             this.paramIndex = paramIndex;
             this.paramToAdd = paramToAdd;
 
-            this.explorerElement = explorerElement;
             this.oldParameter = paramCollection[this.paramIndex];
         }
 
@@ -40,10 +39,10 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.References.UpdateReferences(explorerElement);
 
             // Special case
-            if (triggerElement is SetVariable)
+            if (eca is SetVariable)
             {
-                Parameter setVarParam = triggerElement.function.parameters[0];
-                Parameter value = triggerElement.function.parameters[1];
+                Parameter setVarParam = eca.function.parameters[0];
+                Parameter value = eca.function.parameters[1];
 
                 if(paramCollection[paramIndex] == setVarParam && setVarParam is VariableRef && oldParameter is VariableRef)
                 {

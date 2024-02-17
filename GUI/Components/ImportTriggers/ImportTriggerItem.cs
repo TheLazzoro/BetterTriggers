@@ -15,11 +15,9 @@ using static System.Windows.Forms.AxHost;
 
 namespace GUI.Components.ImportTriggers
 {
-    internal class ImportTriggerItem : TreeViewItem
+    internal class ImportTriggerItem
     {
         internal ExplorerElement explorerElement { get; }
-
-        internal TreeItemHeaderCheckbox treeItemHeader;
 
         public ImportTriggerItem(ExplorerElement explorerElement)
         {
@@ -47,15 +45,17 @@ namespace GUI.Components.ImportTriggers
                     break;
             }
 
-            treeItemHeader = new TreeItemHeaderCheckbox(explorerElement.GetName(), category);
-            this.Header = treeItemHeader;
-            treeItemHeader.checkbox.Click += Checkbox_Click;
+            // TODO: BETTERTRIGGERS REFACTOR
+            //treeItemHeader = new TreeItemHeaderCheckbox(explorerElement.GetName(), category);
+            //this.Header = treeItemHeader;
+            //treeItemHeader.checkbox.Click += Checkbox_Click;
         }
 
         private void Checkbox_Click(object sender, RoutedEventArgs e)
         {
             ToggleCheckboxRecurse(this);
-            ToggleCheckboxRecurseReverse(this, (bool)this.treeItemHeader.checkbox.IsChecked);
+            // TODO: BETTERTRIGGERS REFACTOR
+            //ToggleCheckboxRecurseReverse(this, (bool)this.treeItemHeader.checkbox.IsChecked);
         }
 
         /// <summary>
@@ -63,18 +63,19 @@ namespace GUI.Components.ImportTriggers
         /// </summary>
         private void ToggleCheckboxRecurse(ImportTriggerItem parent)
         {
-            foreach (var item in parent.Items)
-            {
-                if (item is ImportTriggerItem treeItem)
-                {
-                    var header = treeItem.Header as TreeItemHeaderCheckbox;
-                    header.checkbox.IsChecked = parent.treeItemHeader.checkbox.IsChecked;
-                    if (treeItem.Items.Count > 0)
-                    {
-                        ToggleCheckboxRecurse(treeItem);
-                    }
-                }
-            }
+            // TODO: BETTERTRIGGERS REFACTOR
+            //foreach (var item in parent.Items)
+            //{
+            //    if (item is ImportTriggerItem treeItem)
+            //    {
+            //        var header = treeItem.Header as TreeItemHeaderCheckbox;
+            //        header.checkbox.IsChecked = parent.treeItemHeader.checkbox.IsChecked;
+            //        if (treeItem.Items.Count > 0)
+            //        {
+            //            ToggleCheckboxRecurse(treeItem);
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -82,25 +83,26 @@ namespace GUI.Components.ImportTriggers
         /// </summary>
         private void ToggleCheckboxRecurseReverse(ImportTriggerItem treeItem, bool isChecked)
         {
-            var parent = treeItem.Parent as ImportTriggerItem;
-            if (parent != null)
-            {
-                var header = parent.Header as TreeItemHeaderCheckbox;
-                int checkedChildrenCount = 0;
-                foreach (ImportTriggerItem child in parent.Items)
-                {
-                    if((bool)child.treeItemHeader.checkbox.IsChecked)
-                    {
-                        checkedChildrenCount++;
-                    }
-                }
+            // TODO: BETTERTRIGGERS REFACTOR
+            //var parent = treeItem.Parent as ImportTriggerItem;
+            //if (parent != null)
+            //{
+            //    var header = parent.Header as TreeItemHeaderCheckbox;
+            //    int checkedChildrenCount = 0;
+            //    foreach (ImportTriggerItem child in parent.Items)
+            //    {
+            //        if((bool)child.treeItemHeader.checkbox.IsChecked)
+            //        {
+            //            checkedChildrenCount++;
+            //        }
+            //    }
 
-                if(checkedChildrenCount == 0 || isChecked)
-                {
-                    header.checkbox.IsChecked = isChecked;
-                    ToggleCheckboxRecurseReverse(parent, isChecked);
-                }
-            }
+            //    if(checkedChildrenCount == 0 || isChecked)
+            //    {
+            //        header.checkbox.IsChecked = isChecked;
+            //        ToggleCheckboxRecurseReverse(parent, isChecked);
+            //    }
+            //}
         }
     }
 }

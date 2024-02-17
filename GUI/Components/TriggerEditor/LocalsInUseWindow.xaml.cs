@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace GUI.Components.TriggerEditor
     {
         public bool OK;
 
-        public LocalsInUseWindow(List<LocalVariable_Saveable> localVariables)
+        public LocalsInUseWindow(List<LocalVariable> localVariables)
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
