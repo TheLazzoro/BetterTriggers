@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,12 +12,52 @@ namespace BetterTriggers.Models.EditorData
     public class Variable : IReferable
     {
         public int Id { get; set; }
-        public string Name { get { return _name; } set { _name = value; } }
-        public string Type { get { return _type; } set { _type = value; } }
-        public bool IsArray { get { return _isArray; } set { _isArray = value; } }
-        public bool IsTwoDimensions { get { return _isTwoDimensions; } set { _isTwoDimensions = value; } }
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Type
+        {
+            get { return _type; }
+            set
+            {
+                _type = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsArray
+        {
+            get { return _isArray; }
+            set
+            {
+                _isArray = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsTwoDimensions
+        {
+            get { return _isTwoDimensions; }
+            set
+            {
+                _isTwoDimensions = value;
+                OnPropertyChanged();
+            }
+        }
         public int[] ArraySize = new int[2]; // TODO: how to detect set values in array indexes?
-        public Parameter InitialValue { get { return _initialValue; } set { _initialValue = value; } }
+        public Parameter InitialValue
+        {
+            get { return _initialValue; }
+            set
+            {
+                _initialValue = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool SuppressChangedEvent = false;
         private string _name;
@@ -22,6 +65,9 @@ namespace BetterTriggers.Models.EditorData
         private bool _isArray;
         private bool _isTwoDimensions;
         private Parameter _initialValue;
+
+        public event Action? PropertyChanged;
+
         public bool _isLocal { get; internal set; }
 
         public Variable Clone()
@@ -46,6 +92,11 @@ namespace BetterTriggers.Models.EditorData
                 name = name + "v";
 
             return name;
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke();
         }
     }
 }

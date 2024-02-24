@@ -93,6 +93,19 @@
                 </Style.Resources>
             </Style>
 
+            
+            <Style x:Key="FocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle Margin="2" SnapsToDevicePixels="true"
+                    Stroke="{DynamicResource TextBrush}"
+                    StrokeThickness="1" StrokeDashArray="1 2"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
 
 
             <!-- BUTTON WITH ICON -->
@@ -619,22 +632,12 @@
             </Style>
 
 
-            <Style x:Key="FocusVisual">
-                <Setter Property="Control.Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <Rectangle Margin="2" SnapsToDevicePixels="true"
-                                Stroke="{DynamicResource ABrush.ColourfulGlyph.Static}"
-                                StrokeThickness="1" StrokeDashArray="1 2"/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            
             <Style x:Key="OptionMarkFocusVisual">
                 <Setter Property="Control.Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource ABrush.Foreground.Static}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                            <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource TextBrush}" StrokeThickness="1" StrokeDashArray="1 2"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>

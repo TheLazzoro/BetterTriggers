@@ -75,16 +75,21 @@ namespace GUI.Components
             return explorerElement;
         }
 
-        public ExplorerElement? GetTreeItemFromExplorerElement(ExplorerElement explorerElement)
+        public TreeViewItem? GetTreeItemFromExplorerElement(ExplorerElement explorerElement)
         {
             var treeItem = treeViewTriggerExplorer.ItemContainerGenerator.ContainerFromItem(explorerElement) as TreeViewItem;
-            return explorerElement;
+            return treeItem;
         }
 
         public ExplorerElement? GetSelectedExplorerElement()
         {
             ExplorerElement item = GetExplorerElementFromItem(treeViewTriggerExplorer.SelectedItem as TreeViewItem);
             return item;
+        }
+
+        public void SetSelectedElement(ExplorerElement element)
+        {
+            currentElement = GetTreeItemFromExplorerElement(element);
         }
 
         public TextBox GetCurrentRenameBox()
@@ -619,8 +624,7 @@ namespace GUI.Components
         {
             if (e.ProgressPercentage < 100)
             {
-                TreeViewItem newItem = new TreeViewItem(e.UserState as IExplorerElement);
-                treeViewSearch.Items.Add(newItem);
+                viewModel.SearchedFiles.Add(e.UserState as ExplorerElement);
             }
         }
 
@@ -635,9 +639,13 @@ namespace GUI.Components
                     break;
                 }
 
-                if (item.Ielement.GetName().ToLower().Contains(searchWord))
+                var explorerElement = GetExplorerElementFromItem(item);
+                if (explorerElement == null)
+                    continue;
+
+                if (explorerElement.GetName().ToLower().Contains(searchWord))
                 {
-                    searchWorker.ReportProgress(0, item.Ielement);
+                    searchWorker.ReportProgress(0, explorerElement);
                     Thread.Sleep(5);
                 }
             }
@@ -665,7 +673,8 @@ namespace GUI.Components
             TreeViewItem selected = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
             if (selected != null)
             {
-                OnOpenExplorerElement?.Invoke(selected);
+                var explorerElement = GetExplorerElementFromItem(selected);
+                OnOpenExplorerElement?.Invoke(explorerElement);
                 e.Handled = true; // prevents event from firing up the parent items
             }
         }
@@ -675,7 +684,8 @@ namespace GUI.Components
             TreeViewItem selected = treeViewSearch.SelectedItem as TreeViewItem;
             if (selected != null)
             {
-                OnOpenExplorerElement?.Invoke(selected);
+                var explorerElement = GetExplorerElementFromItem(selected);
+                OnOpenExplorerElement?.Invoke(explorerElement);
                 e.Handled = true; // prevents event from firing up the parent items
             }
         }
@@ -687,7 +697,10 @@ namespace GUI.Components
 
             TreeViewItem selected = treeViewSearch.SelectedItem as TreeViewItem;
             if (selected != null)
-                OnOpenExplorerElement?.Invoke(selected);
+            {
+                var explorerElement = GetExplorerElementFromItem(selected);
+                OnOpenExplorerElement?.Invoke(explorerElement);
+            }
         }
 
         private void btnCloseSearchMenu_Click(object sender, RoutedEventArgs e)

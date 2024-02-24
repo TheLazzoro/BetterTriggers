@@ -89,7 +89,8 @@ namespace Tests
             string newName = "MyTrigger";
             string newFullPath = Path.Combine(Path.GetDirectoryName(element.GetPath()), newName + ".j");
 
-            project.RenameElement(element, "newName");
+            element.RenameText = "newName";
+            element.Rename();
             project.OnRenameElement(element.GetPath(), newFullPath);
 
             string expectedPath = newFullPath;

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Controls;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -30,6 +31,8 @@ namespace BetterTriggers.Models.EditorData
         public Trigger trigger;
         public Variable variable;
         public string script;
+
+        public UserControl editor;
 
 
         /// <summary>Reserved for copy-pasting purposes.</summary>
@@ -372,6 +375,10 @@ namespace BetterTriggers.Models.EditorData
             if (ElementType == ExplorerElementEnum.Script)
             {
                 this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
+                OnReload?.Invoke();
+            }
+            else if(ElementType == ExplorerElementEnum.Trigger)
+            {
                 OnReload?.Invoke();
             }
         }

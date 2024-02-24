@@ -36,6 +36,8 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
+        public bool IsIconVisible { get; set; } = true;
+
         public Visibility RenameBoxVisibility { get; set; }
 
         public bool IsRenaming

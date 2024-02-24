@@ -43,7 +43,7 @@ namespace BetterTriggers.Containers
             return fullPath;
         }
 
-        public void CreateLocalVariable(Trigger trig, int insertIndex)
+        public LocalVariable CreateLocalVariable(Trigger trig, int insertIndex)
         {
             TriggerElementCollection parent = trig.LocalVariables;
             LocalVariable localVariable = new LocalVariable(trig);
@@ -55,6 +55,8 @@ namespace BetterTriggers.Containers
 
             CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable, parent, insertIndex);
             command.Execute();
+
+            return localVariable;
         }
 
         public void RenameLocalVariable(Trigger trig, LocalVariable variable, string newName)

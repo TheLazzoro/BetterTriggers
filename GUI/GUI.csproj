@@ -353,7 +353,7 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlScript.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\TriggerElementMenuWindow.xaml.cs">
+    <Compile Update="Components\TriggerEditor\TriggerElementMenu\TriggerElementMenuWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterPresetControl.xaml.cs">
@@ -430,7 +430,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TriggerEditor\TriggerElementMenuWindow.xaml">
+    <Page Update="Components\TriggerEditor\TriggerElementMenu\TriggerElementMenuWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

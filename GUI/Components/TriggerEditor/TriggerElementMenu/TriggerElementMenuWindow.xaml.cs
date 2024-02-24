@@ -16,14 +16,16 @@ namespace GUI.Components.TriggerEditor
     {
         public ECA createdTriggerElement;
         TriggerElementType triggerElementType;
-        ECA selected;
-        ECA previous;
 
-        ListViewItem defaultSelected;
+        private TriggerElementMenuViewModel _viewModel;
 
         public TriggerElementMenuWindow(TriggerElementType triggerElementType, ECA previous = null)
         {
             InitializeComponent();
+
+            _viewModel = new TriggerElementMenuViewModel(triggerElementType, previous);
+            DataContext = _viewModel;
+
             this.Owner = MainWindow.GetMainWindow();
 
             EditorSettings settings = EditorSettings.Load();
@@ -33,11 +35,12 @@ namespace GUI.Components.TriggerEditor
             this.Top = settings.triggerWindowY;
 
             this.triggerElementType = triggerElementType;
-            this.previous = previous;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var selected = _viewModel.Selected;
+
             listControl.ListViewChanged += delegate
             {
                 btnOK.IsEnabled = selected != null && listControl.GetItemsCount() > 0;
@@ -64,76 +67,12 @@ namespace GUI.Components.TriggerEditor
 
         private void Init()
         {
-            EditorSettings settings = EditorSettings.Load();
-            
-
-            var templates = new List<FunctionTemplate>();
-            if (triggerElementType == TriggerElementType.Event)
-            {
-                templates = TriggerData.LoadAllEvents();
-            }
-            else if (triggerElementType == TriggerElementType.Condition)
-            {
-                templates = TriggerData.LoadAllConditions();
-            }
-            else if (triggerElementType == TriggerElementType.Action)
-            {
-                templates = TriggerData.LoadAllActions();
-            }
-
-            List<Searchable> objects = new List<Searchable>();
-            for (int i = 0; i < templates.Count; i++)
-            {
-                Category category = Category.Get(templates[i].category);
-                string categoryStr = Locale.Translate(category.Name);
-                if (categoryStr != "")
-                    categoryStr += " - ";
-                string name = templates[i].name != "" ? templates[i].name : templates[i].value;
-                string content = categoryStr + name;
-                ListViewItem listItem = new ListViewItem();
-                if (settings.GUINewElementIcon)
-                {
-                    HeaderItemIcon header = new HeaderItemIcon(content, category);
-                    listItem.Content = header;
-                }
-                else
-                {
-                    listItem.Content = content;
-                }
-                listItem.Tag = templates[i].ToTriggerElement();
-                objects.Add(new Searchable()
-                {
-                    Object = listItem,
-                    Category = Locale.Translate(category.Name),
-                    Words = new List<string>()
-                    {
-                        content.ToLower(),
-                        templates[i].value.ToLower()
-                    },
-                });
-
-                // default selection
-                if (previous != null && previous.function.value == templates[i].value)
-                {
-                    defaultSelected = listItem;
-                    selected = (ECA)listItem.Tag;
-                    listItem.IsSelected = true;
-                }
-            }
-
-
-            var searchables = new Searchables(objects);
+            var searchables = _viewModel.Searchables;
             listControl.SetSearchableList(searchables);
-            
 
-            if (selected == null)
-            {
-                defaultSelected = (ListViewItem)listControl.listView.Items[0];
-                selected = (ECA)defaultSelected.Tag;
-            }
-
-            listControl.listView.ScrollIntoView(defaultSelected);
-            defaultSelected.Focus();
+            var selectedListItem = listControl.listView.ItemContainerGenerator.ContainerFromItem(_viewModel.Selected) as ListViewItem;
+            listControl.listView.ScrollIntoView(selectedListItem);
+            selectedListItem.Focus();
             listControl.checkBoxShowIcons.Visibility = Visibility.Visible;
 
             var categoryControl = new GenericCategoryControl(searchables);
@@ -145,7 +84,7 @@ namespace GUI.Components.TriggerEditor
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            createdTriggerElement = selected;
+            createdTriggerElement = _viewModel.Selected;
             this.Close();
         }
 
@@ -163,6 +102,7 @@ namespace GUI.Components.TriggerEditor
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            var selected = _viewModel.Selected;
             if (e.Key == Key.Enter && selected != null)
             {
                 createdTriggerElement = selected;

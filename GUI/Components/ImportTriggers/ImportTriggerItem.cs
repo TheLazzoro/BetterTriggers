@@ -15,8 +15,9 @@ using static System.Windows.Forms.AxHost;
 
 namespace GUI.Components.ImportTriggers
 {
-    internal class ImportTriggerItem
+    internal class ImportTriggerItem : TreeNodeBase
     {
+        public bool IsChecked { get; set; }
         internal ExplorerElement explorerElement { get; }
 
         public ImportTriggerItem(ExplorerElement explorerElement)
@@ -45,7 +46,7 @@ namespace GUI.Components.ImportTriggers
                     break;
             }
 
-            // TODO: BETTERTRIGGERS REFACTOR
+            // TODO: REFACTOR
             //treeItemHeader = new TreeItemHeaderCheckbox(explorerElement.GetName(), category);
             //this.Header = treeItemHeader;
             //treeItemHeader.checkbox.Click += Checkbox_Click;
@@ -54,7 +55,7 @@ namespace GUI.Components.ImportTriggers
         private void Checkbox_Click(object sender, RoutedEventArgs e)
         {
             ToggleCheckboxRecurse(this);
-            // TODO: BETTERTRIGGERS REFACTOR
+            // TODO: REFACTOR
             //ToggleCheckboxRecurseReverse(this, (bool)this.treeItemHeader.checkbox.IsChecked);
         }
 
@@ -63,7 +64,7 @@ namespace GUI.Components.ImportTriggers
         /// </summary>
         private void ToggleCheckboxRecurse(ImportTriggerItem parent)
         {
-            // TODO: BETTERTRIGGERS REFACTOR
+            // TODO: REFACTOR
             //foreach (var item in parent.Items)
             //{
             //    if (item is ImportTriggerItem treeItem)
@@ -83,7 +84,7 @@ namespace GUI.Components.ImportTriggers
         /// </summary>
         private void ToggleCheckboxRecurseReverse(ImportTriggerItem treeItem, bool isChecked)
         {
-            // TODO: BETTERTRIGGERS REFACTOR
+            // TODO: REFACTOR
             //var parent = treeItem.Parent as ImportTriggerItem;
             //if (parent != null)
             //{

@@ -67,12 +67,14 @@ namespace GUI.Components
 
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
 
-            TreeViewItem.OnMouseEnter += TreeViewItem_OnMouseEnter;
+            // TODO: REFACTOR
+            //TreeViewItem.OnMouseEnter += TreeViewItem_OnMouseEnter;
         }
 
         internal void Dispose()
         {
-            TreeViewItem.OnMouseEnter -= TreeViewItem_OnMouseEnter;
+            // TODO: REFACTOR
+            // TreeViewItem.OnMouseEnter -= TreeViewItem_OnMouseEnter;
         }
 
         public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)

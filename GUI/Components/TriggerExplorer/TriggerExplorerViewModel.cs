@@ -15,6 +15,7 @@ namespace GUI.Components
     public class TriggerExplorerViewModel
     {
         public ObservableCollection<ExplorerElement> ProjectFiles { get => Project.CurrentProject.projectFiles; }
+        public ObservableCollection<ExplorerElement> SearchedFiles { get; set; } = new();
 
         private RelayCommand<ExplorerElement> _renameBox_KeyDown;
 

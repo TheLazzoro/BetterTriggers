@@ -141,11 +141,11 @@ namespace GUI.Components
                     while (tabs.MoveNext())
                     {
                         var tab = tabs.Current;
-                        if (tab.explorerElement.editor is ScriptControl scriptControl)
+                        if (tab.editor is ScriptControl scriptControl)
                         {
                             scriptControl.RefreshFontSize();
                         }
-                        else if (tab.explorerElement.editor is RootControl rootControl)
+                        else if (tab.editor is RootControl rootControl)
                         {
                             rootControl.RefreshFontSize();
                         }

@@ -81,37 +81,20 @@ namespace GUI
                 };
                 rootTreeItem = new ImportTriggerItem(explorerRoot);
                 this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootTreeItem);
-                rootTreeItem.Selected += ExplorerItem_Selected;
+                // TODO: REFACTOR
+                //rootTreeItem.Selected += ExplorerItem_Selected;
                 for (int i = 0; i < explorerElements.Count; i++)
                 {
                     var element = explorerElements[i];
                     var treeItem = new ImportTriggerItem(element);
 
                     this.treeItemExplorerElements.TryAdd(element.GetPath(), treeItem);
-                    treeItem.Selected += ExplorerItem_Selected;
+                    // TODO: REFACTOR
+                    //treeItem.Selected += ExplorerItem_Selected;
                 }
 
-                // Then we attach them to their corresponding parent
-                foreach (var item in this.treeItemExplorerElements)
-                {
-                    var treeItem = item.Value;
-                    if (treeItem == rootTreeItem)
-                    {
-                        treeView.Items.Add(treeItem);
-                    }
-                    else
-                    {
-                        ImportTriggerItem parent;
-                        string parentPath = System.IO.Path.GetDirectoryName(treeItem.explorerElement.GetPath());
-                        this.treeItemExplorerElements.TryGetValue(parentPath, out parent);
-                        if (parent == null)
-                            rootTreeItem.Items.Add(treeItem);
-                        else
-                            parent.Items.Add(treeItem);
-                    }
-                }
-
-                rootTreeItem.ExpandSubtree();
+                var root = treeView.Items[0] as TreeViewItem;
+                root.ExpandSubtree();
             }
             catch (Exception ex)
             {
@@ -141,10 +124,11 @@ namespace GUI
                     triggerControl.checkBoxList.IsEnabled = false;
                     triggerControl.checkBoxRunOnMapInit.IsEnabled = false;
                     triggerControl.textBoxComment.IsReadOnly = true;
-                    triggerControl.categoryAction.IsEnabled = false;
-                    triggerControl.categoryCondition.IsEnabled = false;
-                    triggerControl.categoryEvent.IsEnabled = false;
-                    triggerControl.categoryLocalVariable.IsEnabled = false;
+                    // TODO: REFACTOR
+                    //triggerControl.categoryAction.IsEnabled = false;
+                    //triggerControl.categoryCondition.IsEnabled = false;
+                    //triggerControl.categoryEvent.IsEnabled = false;
+                    //triggerControl.categoryLocalVariable.IsEnabled = false;
                     triggerControl.bottomControl.IsEnabled = false;
 
                     grid.Children.Add(control);
@@ -187,7 +171,7 @@ namespace GUI
             elementsToImport = new List<ExplorerElement>();
             itemsImported = new List<string>();
             elementsToImport = treeItemExplorerElements
-                .Where(item => (bool)item.Value.treeItemHeader.checkbox.IsChecked)
+                .Where(item => (bool)item.Value.IsChecked)
                 .Where(item => item.Value != rootTreeItem)
                 .Select(item => item.Value.explorerElement)
                 .ToList();

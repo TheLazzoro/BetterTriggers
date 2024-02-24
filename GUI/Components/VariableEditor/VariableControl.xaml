@@ -26,30 +26,117 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="Identifier:" Grid.Row="1" Grid.Column="0" />
-            <TextBox x:Name="textBlockVariableNameUDG" Text="placeholder" Grid.Row="1" IsReadOnly="True" Grid.Column="1" Margin="5,5,0,5" HorizontalAlignment="Left" Width="200"/>
+            <TextBox x:Name="textBlockVariableNameUDG"
+                     Text="{Binding Identifier}"
+                     Grid.Row="1"
+                     IsReadOnly="True"
+                     Grid.Column="1"
+                     Margin="5,5,0,5"
+                     HorizontalAlignment="Left"
+                     Width="200"/>
 
             <Label Content="Variable Type:" Grid.Row="2" Grid.Column="0" />
-            <ComboBox x:Name="comboBoxVariableType" Grid.Row="2" Grid.Column="1" Margin="5,4,0,4" HorizontalAlignment="Left" Width="200" SelectionChanged="comboBoxVariableType_SelectionChanged" Loaded="comboBoxVariableType_Loaded" />
+            <ComboBox x:Name="comboBoxVariableType"
+                      ItemsSource="{Binding ComboBoxItemTypes}"
+                      Grid.Row="2"
+                      Grid.Column="1"
+                      Margin="5,4,0,4"
+                      HorizontalAlignment="Left"
+                      Width="200"
+                      SelectionChanged="comboBoxVariableType_SelectionChanged"
+                      Loaded="comboBoxVariableType_Loaded" />
 
-            <CheckBox x:Name="checkBoxIsArray" Width="75" Content="Array" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Click="checkBoxIsArray_Click" />
+            <CheckBox x:Name="checkBoxIsArray"
+                      IsChecked="{Binding IsArray}"
+                      Visibility="{Binding IsLocal}"
+                      Width="75"
+                      Content="Array"
+                      Grid.Row="4"
+                      Grid.Column="1"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Margin="5,0,0,0"
+                      Click="checkBoxIsArray_Click" />
 
-            <Label x:Name="lblDimensions" Content="Dimensions:" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0" Grid.ColumnSpan="2"/>
-            <ComboBox x:Name="comboBoxArrayDimensions" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="85,0,0,0" Width="50" SelectionChanged="comboBoxArrayDimensions_SelectionChanged">
+            <Label x:Name="lblDimensions"
+                   IsEnabled="{Binding IsArray}"
+                   Visibility="{Binding IsLocal}"
+                   Content="Dimensions:"
+                   Grid.Row="5"
+                   Grid.Column="1"
+                   VerticalAlignment="Center"
+                   Margin="5,0,0,0"
+                   Grid.ColumnSpan="2"/>
+            
+            <ComboBox x:Name="comboBoxArrayDimensions"
+                      Visibility="{Binding IsLocal}"
+                      Grid.Row="5" Grid.Column="1"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Margin="85,0,0,0"
+                      Width="50"
+                      SelectionChanged="comboBoxArrayDimensions_SelectionChanged">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="2"/>
             </ComboBox>
 
-            <Label x:Name="lblSize0" Content="Size:" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
-            <TextBox x:Name="textBoxArraySize0" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" TextChanged="textBoxArraySize0_TextChanged"/>
-            <Label x:Name="lblSize1" Content="Size:" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0,0,0" Width="50" IsEnabled="False"/>
-            <TextBox x:Name="textBoxArraySize1" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0" Width="50" IsEnabled="False" TextChanged="textBoxArraySize1_TextChanged"/>
+
+            <Label x:Name="lblSize0"
+                   Visibility="{Binding IsLocal}"
+                   IsEnabled="{Binding IsArray}"
+                   Content="Size:"
+                   Grid.Row="6"
+                   Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Margin="5,0,0,0"
+                   Width="50"/>
+            <TextBox x:Name="textBoxArraySize0"
+                     Text="{Binding Size0}"
+                     Visibility="{Binding IsLocal}"
+                     IsEnabled="{Binding IsArray}"
+                     Grid.Row="6"
+                     Grid.Column="1"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Margin="40,0,0,0"
+                     Width="50"
+                     TextChanged="textBoxArraySize0_TextChanged"/>
+            
+            <Label x:Name="lblSize1"
+                   Visibility="{Binding IsLocal}"
+                   IsEnabled="{Binding Size1Enabled}"
+                   Content="Size:"
+                   Grid.Row="7"
+                   Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Margin="5,0,0,0"
+                   Width="50"/>
+            <TextBox x:Name="textBoxArraySize1"
+                     Text="{Binding Size1}"
+                     Visibility="{Binding IsLocal}"
+                     IsEnabled="{Binding Size1Enabled}"
+                     Grid.Row="7"
+                     Grid.Column="1"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Margin="40,0,0,0"
+                     Width="50"
+                     TextChanged="textBoxArraySize1_TextChanged"/>
 
             <Label x:Name="lblInitialValue" Content="Initial Value:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBlock x:Name="textblockInitialValue" Grid.Row="8" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" Grid.ColumnSpan="2"></TextBlock>
+            <TextBlock x:Name="textblockInitialValue"
+                       Text="{Binding InitialValueParamText}"
+                       Grid.Row="8" Grid.Column="1"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       Grid.ColumnSpan="2" />
 
             <Label x:Name="lblUsedBy" Grid.Column="2" Grid.Row="1">Used By:</Label>
             
             <ListView
+                ItemsSource="{Binding ReferenceTriggers}"
                 Grid.Column="2"
                 Grid.Row="2"
                 Grid.RowSpan="6"

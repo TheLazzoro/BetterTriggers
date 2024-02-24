@@ -37,7 +37,6 @@ namespace GUI
     {
         static MainWindow instance;
         TriggerExplorer triggerExplorer;
-        TreeViewItem selectedExplorerItem;
         public TabViewModel tabViewModel;
 
         public MainWindow()
@@ -349,6 +348,7 @@ namespace GUI
                 tabViewModel.Tabs.Add(tabItem);
             }
 
+            triggerExplorer.SetSelectedElement(selectedItem);
             tabControl.SelectedIndex = tabViewModel.IndexOf(selectedItem);
         }
 
@@ -364,13 +364,10 @@ namespace GUI
 
         private void TriggerExplorer_OnOpenExplorerElement(ExplorerElement opened)
         {
-            selectedExplorerItem = opened;
-            if (selectedExplorerItem == null)
+            if (opened == null)
                 return;
 
-            triggerExplorer.currentElement = selectedExplorerItem;
-
-            OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
+            OnSelectTab(opened, tabViewModel, tabControl);
             EnableTriggerElementButtons();
         }
 
@@ -384,15 +381,14 @@ namespace GUI
                 return;
 
             OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
-            selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
             EnableTriggerElementButtons();
         }
 
         private void EnableTriggerElementButtons()
         {
-            if (selectedExplorerItem.editor as TriggerControl != null)
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            if (selected.editor is TriggerControl control)
             {
-                TriggerControl control = (TriggerControl)selectedExplorerItem.editor;
                 TriggerControl.TriggerInFocus = control.explorerElementTrigger.trigger;
                 EnableECAButtons(true);
             }
@@ -458,19 +454,22 @@ namespace GUI
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void btnCreateAction_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateAction();
         }
 
@@ -891,40 +890,46 @@ namespace GUI
 
         private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (selectedExplorerItem != null)
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            if (selected != null)
             {
-                var triggerControl = selectedExplorerItem.editor as TriggerControl;
+                var triggerControl = selected.editor as TriggerControl;
                 e.CanExecute = triggerControl != null;
             }
         }
 
         private void CommandBinding_Executed_NewEvent(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void CommandBinding_Executed_NewCondition(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void CommandBinding_Executed_NewLocalVariable(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
         }
 
         private void CommandBinding_Executed_NewAction(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateAction();
         }
 
         private void btnCreateLocalVariable_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var triggerControl = selected.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
         }
 
