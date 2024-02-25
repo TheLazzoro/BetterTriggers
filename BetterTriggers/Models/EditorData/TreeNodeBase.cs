@@ -4,15 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace BetterTriggers.Models.EditorData
 {
-    public abstract class TreeNodeBase
+    public abstract class TreeNodeBase : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
         private string _displayText;
         private string _category;
         private byte[] _icon;
         private bool _isRenaming;
+        private Visibility _renameBoxVisibility = Visibility.Hidden;
+        private Visibility _checkBoxVisibility = Visibility.Hidden;
 
         public string DisplayText
         {
@@ -38,7 +43,15 @@ namespace BetterTriggers.Models.EditorData
 
         public bool IsIconVisible { get; set; } = true;
 
-        public Visibility RenameBoxVisibility { get; set; } = Visibility.Hidden;
+        public Visibility RenameBoxVisibility
+        {
+            get => _renameBoxVisibility;
+            set
+            {
+                _renameBoxVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsRenaming
         {
@@ -46,7 +59,15 @@ namespace BetterTriggers.Models.EditorData
             set { _isRenaming = value; }
         }
 
-        public Visibility CheckBoxVisibility { get; set; } = Visibility.Hidden;
+        public Visibility CheckBoxVisibility
+        {
+            get => _checkBoxVisibility;
+            set
+            {
+                _checkBoxVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsChecked { get; set; } = false;
         public bool IsEnabled { get; set; } = true;
@@ -57,6 +78,11 @@ namespace BetterTriggers.Models.EditorData
             this._category = categoryStr;
             var category = Category.Get(_category);
             _icon = category.Icon;
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
