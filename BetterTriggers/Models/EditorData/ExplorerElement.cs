@@ -47,6 +47,7 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement(string path)
         {
             this.path = path;
+            this.DisplayText = Path.GetFileNameWithoutExtension(path);
             string extension = Path.GetExtension(path);
             bool isReadyForRead = false;
             int sleepTolerance = 100;
@@ -72,7 +73,8 @@ namespace BetterTriggers.Models.EditorData
                             sleepTolerance--;
                         }
                     }
-                    trigger = JsonConvert.DeserializeObject<Trigger>(json);
+                    var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(json);
+                    trigger = TriggerSerializer.Deserialize(savedTrigger);
                     StoreLocalVariables();
                     Project.CurrentProject.Triggers.AddTrigger(this);
 
@@ -115,6 +117,7 @@ namespace BetterTriggers.Models.EditorData
                     SetCategory(TriggerCategory.TC_DIRECTORY);
                     break;
                 default:
+                    ElementType = ExplorerElementEnum.None;
                     break;
             }
 
@@ -265,7 +268,7 @@ namespace BetterTriggers.Models.EditorData
 
         public ObservableCollection<ExplorerElement> GetExplorerElements()
         {
-            if (ElementType != ExplorerElementEnum.Folder || ElementType != ExplorerElementEnum.Root)
+            if (ElementType != ExplorerElementEnum.Folder && ElementType != ExplorerElementEnum.Root)
             {
                 throw new Exception("'" + path + "' is not a folder.");
             }

@@ -26,7 +26,7 @@ namespace GUI.Components.VersionCheck
 
         private async Task GetVersion()
         {
-            var versionCheck = new VersionCheck(true);
+            var versionCheck = new VersionCheck();
             var version = await versionCheck.GetNewestVersionAsync();
 
             Application.Current.Dispatcher.Invoke(delegate

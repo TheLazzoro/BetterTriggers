@@ -88,11 +88,14 @@
             KeyDown="treeViewTriggerExplorer_KeyDown"
             MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp"
             MouseDoubleClick="treeViewTriggerExplorer_MouseDoubleClick"
+            ItemTemplate="{DynamicResource TreeItemDataTemplate}"
             >
             <TreeView.Resources>
-                <HierarchicalDataTemplate ItemsSource="{Binding ExplorerElements}" DataType="{x:Type betterTriggers:ExplorerElement}">
+                <!--<HierarchicalDataTemplate ItemsSource="{Binding ExplorerElements}"
+                                          DataType="{x:Type betterTriggers:ExplorerElement}"
+                                          >
                     <TextBlock Text="{Binding Name}" />
-                </HierarchicalDataTemplate>
+                </HierarchicalDataTemplate>-->
 
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                 Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />

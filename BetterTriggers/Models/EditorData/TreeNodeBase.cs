@@ -38,13 +38,19 @@ namespace BetterTriggers.Models.EditorData
 
         public bool IsIconVisible { get; set; } = true;
 
-        public Visibility RenameBoxVisibility { get; set; }
+        public Visibility RenameBoxVisibility { get; set; } = Visibility.Hidden;
 
         public bool IsRenaming
         {
             get { return _isRenaming; }
             set { _isRenaming = value; }
         }
+
+        public Visibility CheckBoxVisibility { get; set; } = Visibility.Hidden;
+
+        public bool IsChecked { get; set; } = false;
+        public bool IsEnabled { get; set; } = true;
+
 
         public void SetCategory(string categoryStr)
         {

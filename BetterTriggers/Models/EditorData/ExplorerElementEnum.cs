@@ -7,5 +7,6 @@
         Root,
         Script,
         Trigger,
+        None,
     }
 }

@@ -31,8 +31,10 @@ namespace GUI
         public void ChangeTheme(Uri uri)
         {
             Resources.MergedDictionaries.Clear();
-            var dict = new ResourceDictionary() { Source = uri };
-            Resources.MergedDictionaries.Add(dict);
+            var dataTemplate = new ResourceDictionary() { Source = new Uri("/Resources/DataTemplate.xaml", UriKind.Relative) };
+            var theme = new ResourceDictionary() { Source = uri };
+            Resources.MergedDictionaries.Add(dataTemplate);
+            Resources.MergedDictionaries.Add(theme);
         }
 
     }

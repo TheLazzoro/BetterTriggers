@@ -14,14 +14,8 @@ namespace GUI.Components.VersionCheck
         private string userAgent;
         private string version;
 
-        public VersionCheck(bool forceShowNewVersion = false)
+        public VersionCheck()
         {
-            ProgramSettings programSettings = ProgramSettings.Load();
-            if (programSettings.IgnoreNewVersion && !forceShowNewVersion)
-            {
-                return;
-            }
-
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             version = fvi.FileVersion;
@@ -32,8 +26,6 @@ namespace GUI.Components.VersionCheck
             }
 
             userAgent = "BetterTriggers/" + version;
-
-            Task.Run(GetNewestVersionAsync);
         }
 
         public async Task<VersionCheckCollection> GetNewestVersionAsync()

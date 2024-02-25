@@ -133,7 +133,11 @@ namespace GUI
                 }
             }
 
-            Task.Run(CheckVersionOnStart);
+            ProgramSettings programSettings = ProgramSettings.Load();
+            if (programSettings.IgnoreNewVersion == false)
+            {
+                Task.Run(CheckVersionOnStart);
+            }
         }
 
         private async Task CheckVersionOnStart()
@@ -890,6 +894,12 @@ namespace GUI
 
         private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)
         {
+            if(triggerExplorer == null)
+            {
+                e.CanExecute = false;
+                return;
+            }
+
             var selected = triggerExplorer.GetSelectedExplorerElement();
             if (selected != null)
             {

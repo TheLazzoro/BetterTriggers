@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -150,6 +151,7 @@ namespace BetterTriggers.Models.EditorData
         private static Function_Saveable ConvertFunction(Function function)
         {
             Function_Saveable converted = new Function_Saveable();
+            converted.value = function.value;
             for (int i = 0; i < function.parameters.Count; i++)
             {
                 var converted_param = ConvertParameter(function.parameters[i]);
@@ -203,9 +205,179 @@ namespace BetterTriggers.Models.EditorData
 
         #region Deserializer
 
-        public static Trigger Deserialize(SaveableData.Trigger_Saveable trigger)
+        public static Trigger Deserialize(Trigger_Saveable saveableTrig)
         {
-            throw new NotImplementedException();
+            Trigger trigger = new Trigger();
+            trigger.Id = saveableTrig.Id;
+            trigger.Script = saveableTrig.Script;
+            trigger.IsScript = saveableTrig.IsScript;
+            trigger.RunOnMapInit = saveableTrig.RunOnMapInit;
+            trigger.Comment = saveableTrig.Comment;
+
+            trigger.Events         = ConvertTriggerElements_Deserialize(saveableTrig.Events, TriggerElementType.Event);
+            trigger.Conditions     = ConvertTriggerElements_Deserialize(saveableTrig.Conditions, TriggerElementType.Condition);
+            trigger.LocalVariables = ConvertTriggerElements_Deserialize(saveableTrig.LocalVariables, TriggerElementType.LocalVariable);
+            trigger.Actions        = ConvertTriggerElements_Deserialize(saveableTrig.Actions, TriggerElementType.Action);
+
+            return trigger;
+        }
+
+        private static TriggerElementCollection ConvertTriggerElements_Deserialize(List<TriggerElement_Saveable> elements, TriggerElementType type)
+        {
+            TriggerElementCollection collection = new(type);
+
+            for (int i = 0; i < elements.Count; i++)
+            {
+                var element = elements[i];
+                TriggerElement converted = null;
+                if (element is ECA_Saveable ECA_Saveable)
+                {
+                    ECA eca = new();
+                    switch (ECA_Saveable)
+                    {
+                        case AndMultiple_Saveable thing:
+                            AndMultiple andMultiple = new();
+                            andMultiple.And = ConvertTriggerElements_Deserialize(thing.And, TriggerElementType.Condition);
+                            eca = andMultiple;
+                            break;
+                        case EnumDestructablesInRectAllMultiple_Saveable thing:
+                            EnumDestructablesInRectAllMultiple EnumDestRect_Saveable = new();
+                            EnumDestRect_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumDestRect_Saveable;
+                            break;
+                        case EnumDestructiblesInCircleBJMultiple_Saveable thing:
+                            EnumDestructiblesInCircleBJMultiple EnumDestCircle_Saveable = new();
+                            EnumDestCircle_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumDestCircle_Saveable;
+                            break;
+                        case EnumItemsInRectBJ_Saveable thing:
+                            EnumItemsInRectBJ EnumItemsInRectBJ_Saveable = new();
+                            EnumItemsInRectBJ_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumItemsInRectBJ_Saveable;
+                            break;
+                        case ForForceMultiple_Saveable thing:
+                            ForForceMultiple ForForceMultiple_Saveable = new();
+                            ForForceMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForForceMultiple_Saveable;
+                            break;
+                        case ForGroupMultiple_Saveable thing:
+                            ForGroupMultiple ForGroupMultiple_Saveable = new();
+                            ForGroupMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForGroupMultiple_Saveable;
+                            break;
+                        case ForLoopAMultiple_Saveable thing:
+                            ForLoopAMultiple ForLoopAMultiple_Saveable = new();
+                            ForLoopAMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopAMultiple_Saveable;
+                            break;
+                        case ForLoopBMultiple_Saveable thing:
+                            ForLoopBMultiple ForLoopBMultiple_Saveable = new();
+                            ForLoopBMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopBMultiple_Saveable;
+                            break;
+                        case ForLoopVarMultiple_Saveable thing:
+                            ForLoopVarMultiple ForLoopVarMultiple_Saveable = new();
+                            ForLoopVarMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopVarMultiple_Saveable;
+                            break;
+                        case IfThenElse_Saveable thing:
+                            IfThenElse IfThenElse_Saveable = new();
+                            IfThenElse_Saveable.If = ConvertTriggerElements_Deserialize(thing.If, TriggerElementType.Condition);
+                            IfThenElse_Saveable.Then = ConvertTriggerElements_Deserialize(thing.Then, TriggerElementType.Action);
+                            IfThenElse_Saveable.Else = ConvertTriggerElements_Deserialize(thing.Else, TriggerElementType.Action);
+                            eca = IfThenElse_Saveable;
+                            break;
+                        case OrMultiple_Saveable thing:
+                            OrMultiple OrMultiple_Saveable = new();
+                            OrMultiple_Saveable.Or = ConvertTriggerElements_Deserialize(thing.Or, TriggerElementType.Condition);
+                            eca = OrMultiple_Saveable;
+                            break;
+                        case SetVariable_Saveable:
+                            SetVariable SetVariable = new();
+                            eca = SetVariable;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    eca.function = ConvertFunction_Deserialize(ECA_Saveable.function);
+                    eca.isEnabled = ECA_Saveable.isEnabled;
+                    converted = eca;
+                }
+                else if (element is LocalVariable_Saveable localVar)
+                {
+                    converted = new LocalVariable
+                    {
+                        variable = new Variable
+                        {
+                            Id = localVar.variable.Id,
+                            ArraySize = localVar.variable.ArraySize,
+                            IsTwoDimensions = localVar.variable.IsTwoDimensions,
+                            IsArray = localVar.variable.IsArray,
+                            Type = localVar.variable.Type,
+                            InitialValue = ConvertParameter_Deserialize(localVar.variable.InitialValue)
+                        }
+                    };
+                }
+
+                if (converted != null)
+                    collection.Elements.Add(converted);
+
+            }
+
+            return collection;
+        }
+
+        private static Function ConvertFunction_Deserialize(Function_Saveable function_Saveable)
+        {
+            Function converted = new Function();
+            converted.value = function_Saveable.value;
+            for (int i = 0; i < function_Saveable.parameters.Count; i++)
+            {
+                var converted_param = ConvertParameter_Deserialize(function_Saveable.parameters[i]);
+                converted.parameters.Add(converted_param);
+            }
+
+            return converted;
+        }
+
+        private static Parameter ConvertParameter_Deserialize(Parameter_Saveable parameter_Saveable)
+        {
+            var converted_param = new Parameter();
+            switch (parameter_Saveable)
+            {
+                case Function_Saveable func:
+                    converted_param = ConvertFunction_Deserialize(func);
+                    break;
+                case Constant_Saveable:
+                    Preset preset = new();
+                    converted_param = preset;
+                    break;
+                case VariableRef_Saveable variableRef_Saveable:
+                    VariableRef variableRef = new();
+                    variableRef.VariableId = variableRef_Saveable.VariableId;
+                    variableRef_Saveable.arrayIndexValues.ForEach(varRef =>
+                    {
+                        var _param = ConvertParameter_Deserialize(varRef);
+                        variableRef.arrayIndexValues.Add(_param);
+                    });
+                    converted_param = variableRef;
+                    break;
+                case TriggerRef_Saveable triggerRef_Saveable:
+                    TriggerRef triggerRef = new();
+                    triggerRef.TriggerId = triggerRef_Saveable.TriggerId;
+                    converted_param = triggerRef;
+                    break;
+                case Value_Saveable:
+                    Value value = new();
+                    converted_param = value;
+                    break;
+                default:
+                    break;
+            }
+
+            converted_param.value = parameter_Saveable.value;
+            return converted_param;
         }
 
         #endregion

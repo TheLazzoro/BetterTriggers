@@ -71,7 +71,7 @@ namespace GUI.Components
         /// </summary>
         public ExplorerElement? GetExplorerElementFromItem(TreeViewItem item)
         {
-            var explorerElement = treeViewTriggerExplorer.ItemContainerGenerator.ItemFromContainer(item) as ExplorerElement;
+            var explorerElement = item.DataContext as ExplorerElement;
             return explorerElement;
         }
 
@@ -83,7 +83,7 @@ namespace GUI.Components
 
         public ExplorerElement? GetSelectedExplorerElement()
         {
-            ExplorerElement item = GetExplorerElementFromItem(treeViewTriggerExplorer.SelectedItem as TreeViewItem);
+            ExplorerElement item = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
             return item;
         }
 
@@ -174,6 +174,9 @@ namespace GUI.Components
         {
             _IsDragging = true;
             dragItem = this.treeViewTriggerExplorer.SelectedItem as TreeViewItem;
+            if (dragItem == null)
+                return;
+
             var explorerElement = GetExplorerElementFromItem(dragItem);
 
             if (dragItem == null || explorerElement.IsRenaming)
@@ -343,7 +346,10 @@ namespace GUI.Components
 
         private void treeViewItem_Expanded(object sender, RoutedEventArgs e)
         {
-            var treeItem = (TreeViewItem)e.Source;
+            var treeItem = e.Source as TreeViewItem;
+            if (treeItem == null)
+                return;
+
             var explorerElement = GetExplorerElementFromItem(treeItem);
             if (explorerElement.ElementType == ExplorerElementEnum.Folder)
             {
@@ -353,7 +359,10 @@ namespace GUI.Components
 
         private void treeViewItem_Collapsed(object sender, RoutedEventArgs e)
         {
-            var treeItem = (TreeViewItem)e.Source;
+            var treeItem = e.Source as TreeViewItem;
+            if (treeItem == null)
+                return;
+
             var explorerElement = GetExplorerElementFromItem(treeItem);
             if (explorerElement.ElementType == ExplorerElementEnum.Folder)
             {
@@ -670,11 +679,10 @@ namespace GUI.Components
 
         private void treeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem selected = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
+            var selected = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
             if (selected != null)
             {
-                var explorerElement = GetExplorerElementFromItem(selected);
-                OnOpenExplorerElement?.Invoke(explorerElement);
+                OnOpenExplorerElement?.Invoke(selected);
                 e.Handled = true; // prevents event from firing up the parent items
             }
         }

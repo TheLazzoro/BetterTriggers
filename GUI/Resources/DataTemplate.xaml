@@ -1,7 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:betterTriggers="clr-namespace:BetterTriggers.Models.EditorData;assembly=BetterTriggers"
+                    
+                    >
 
-    <HierarchicalDataTemplate x:Key="TreeItemDataTemplate">
+    <HierarchicalDataTemplate x:Key="TreeItemDataTemplate"
+                              ItemsSource="{Binding ExplorerElements}"
+                              DataType="{x:Type betterTriggers:ExplorerElement}"
+                              >
         <Grid
             ContextMenu="{Binding ContextMenu}"
             Margin="-1, -1, 0, -1"
@@ -13,9 +19,9 @@
             </Grid.ColumnDefinitions>
 
             <CheckBox Focusable="False"
-                      IsChecked="{Binding Path=IsChecked}"
-                      IsEnabled="{Binding Path=IsEnabled}"
-                      Visibility="{Binding Path=IsVisible}"
+                      IsChecked="{Binding IsChecked}"
+                      IsEnabled="{Binding IsEnabled}"
+                      Visibility="{Binding CheckBoxVisibility}"
                       VerticalAlignment="Center"
                       Grid.Column="0"
                       Margin="2,0,2,0" />
@@ -50,6 +56,7 @@
 
             <TextBlock x:Name="displayText"
                        Text="{Binding DisplayText}"
+                       Foreground="{DynamicResource TextBrush}"
                        Grid.Column="1"
                        Margin="5,0,0,0" />
 
