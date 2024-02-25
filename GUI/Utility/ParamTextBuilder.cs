@@ -379,7 +379,7 @@ namespace GUI.Utility
             }
             else
             {
-                hyperlinkBT = new HyperlinkParameterVariable(_variable, parameters[0]);
+                hyperlinkBT = new HyperlinkParameterVariable(_variable, parameters[0], text);
             }
 
             hyperlinkParameters.Add(hyperlinkBT);

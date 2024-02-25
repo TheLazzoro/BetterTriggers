@@ -32,9 +32,6 @@ namespace GUI.Components
         public event Action OnChange;
 
         private Variable variable;
-        private War3Type previousSelected;
-        private bool isLoading = true;
-        private int defaultSelected = 0;
 
         private string previousText0 = "1";
         private string previousText1 = "1";
@@ -62,52 +59,35 @@ namespace GUI.Components
                 lblUsedBy.Visibility = Visibility.Hidden;
             }
 
-            checkBoxIsArray.IsChecked = variable.IsArray;
-            textBoxArraySize0.IsEnabled = variable.IsArray;
-            comboBoxArrayDimensions.IsEnabled = variable.IsArray;
-            textBoxArraySize0.Text = previousText0;
-            textBoxArraySize1.Text = previousText1;
-            if (!variable.IsTwoDimensions)
-                comboBoxArrayDimensions.SelectedIndex = 0;
-            else
-            {
-                comboBoxArrayDimensions.SelectedIndex = 1;
-                textBoxArraySize1.IsEnabled = variable.IsArray;
-            }
-
             preventStateChange = false;
+            variable.PropertyChanged += Variable_ValuesChanged;
+            
+            textblockInitialValue.Inlines.Clear();
+            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+            var inlines = paramTextBuilder.GenerateParamText(variable);
+            textblockInitialValue.Inlines.AddRange(inlines);
+
+            this.Loaded += VariableControl_Loaded;
+        }
+
+        /// <summary>
+        /// Prevents 'Changed' events from firing when opening the control,
+        /// since they only hook after the values have been set.
+        /// </summary>
+        private void VariableControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.comboBoxVariableType.SelectionChanged += comboBoxVariableType_SelectionChanged;
+            this.comboBoxArrayDimensions.SelectionChanged += comboBoxArrayDimensions_SelectionChanged;
+            this.textBoxArraySize0.TextChanged += textBoxArraySize0_TextChanged;
+            this.textBoxArraySize1.TextChanged += textBoxArraySize1_TextChanged;
         }
 
         private void Variable_ValuesChanged()
         {
-            suppressUIEvents = true;
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                UpdateIdentifierText();
-                checkBoxIsArray.IsChecked = variable.IsArray;
-                comboBoxArrayDimensions.SelectedIndex = variable.IsTwoDimensions ? 1 : 0;
-                foreach (var i in comboBoxVariableType.Items)
-                {
-                    War3Type item = (War3Type)i;
-                    if (item.Type == variable.Type)
-                    {
-                        comboBoxVariableType.SelectedItem = item;
-                        break;
-                    }
-                }
-
-            });
-
-            suppressUIEvents = false;
-        }
-
-        private void comboBoxVariableType_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!isLoading)
-                return;
-
-            comboBoxVariableType.SelectedIndex = defaultSelected;
-            isLoading = false;
+            textblockInitialValue.Inlines.Clear();
+            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+            var inlines = paramTextBuilder.GenerateParamText(variable);
+            textblockInitialValue.Inlines.AddRange(inlines);
         }
 
         public void UpdateIdentifierText()
@@ -120,7 +100,7 @@ namespace GUI.Components
 
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (isLoading || suppressUIEvents)
+            if (suppressUIEvents)
                 return;
 
             if (ResetVarRefs())
@@ -131,8 +111,7 @@ namespace GUI.Components
                 command.Execute();
                 OnStateChange();
 
-                previousSelected = (War3Type)comboBoxVariableType.SelectedItem;
-                defaultSelected = comboBoxVariableType.SelectedIndex;
+                _viewModel.SelectedItemPrevious = (War3Type)comboBoxVariableType.SelectedItem;
 
                 ParamTextBuilder controllerParamText = new ParamTextBuilder();
                 this.textblockInitialValue.Inlines.Clear();
@@ -141,16 +120,13 @@ namespace GUI.Components
             }
             else
             {
-                comboBoxVariableType.SelectedItem = previousSelected;
+                comboBoxVariableType.SelectedItem = _viewModel.SelectedItemPrevious;
                 e.Handled = false;
             }
         }
 
         private void checkBoxIsArray_Click(object sender, RoutedEventArgs e)
         {
-            if (isLoading)
-                return;
-
             if (ResetVarRefs())
             {
                 CommandVariableModifyArray command = new CommandVariableModifyArray(variable, (bool)checkBoxIsArray.IsChecked);
@@ -172,9 +148,6 @@ namespace GUI.Components
 
         private void comboBoxArrayDimensions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (isLoading)
-                return;
-
             bool isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             if (ResetVarRefs())
             {

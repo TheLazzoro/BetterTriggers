@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace BetterTriggers.Models.EditorData
@@ -228,15 +229,18 @@ namespace BetterTriggers.Models.EditorData
 
         public void SetParent(ExplorerElement parent, int insertIndex)
         {
-            if (ElementType == ExplorerElementEnum.Root)
-                throw new Exception("Root is the super parent");
-
-            Parent = parent;
-            parent.GetExplorerElements().Insert(insertIndex, this);
-            if (ElementType == ExplorerElementEnum.Trigger)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                StoreLocalVariables();
-            }
+                if (ElementType == ExplorerElementEnum.Root)
+                    throw new Exception("Root is the super parent");
+
+                Parent = parent;
+                parent.GetExplorerElements().Insert(insertIndex, this);
+                if (ElementType == ExplorerElementEnum.Trigger)
+                {
+                    StoreLocalVariables();
+                }
+            });
         }
 
         public void RemoveFromParent()

@@ -86,8 +86,6 @@
             BorderBrush="{x:Null}"
             Drop="treeViewTriggerExplorer_Drop"
             KeyDown="treeViewTriggerExplorer_KeyDown"
-            MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp"
-            MouseDoubleClick="treeViewTriggerExplorer_MouseDoubleClick"
             ItemTemplate="{DynamicResource TreeItemDataTemplate}"
             >
             <TreeView.Resources>
@@ -115,6 +113,8 @@
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
                     <EventSetter Event="TreeViewItem.Expanded" Handler="treeViewItem_Expanded"/>
                     <EventSetter Event="TreeViewItem.Collapsed" Handler="treeViewItem_Collapsed"/>
+                    <EventSetter Event="TreeViewItem.MouseRightButtonUp" Handler="treeViewItem_MouseRightButtonUp"/>
+                    <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
                 </Style>
             </TreeView.ItemContainerStyle>
 
@@ -171,7 +171,11 @@
                     <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
                 </Button.Content>
             </Button>
-            <TreeView x:Name="treeViewSearch" Background="{DynamicResource BackgroundDark}" Grid.Row="1" BorderBrush="{DynamicResource BackgroundDark}" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewSearch_MouseDoubleClick" KeyDown="treeViewSearch_KeyDown" >
+            <TreeView x:Name="treeViewSearch"
+                      Background="{DynamicResource BackgroundDark}"
+                      Grid.Row="1"
+                      BorderBrush="{DynamicResource BackgroundDark}"
+                      KeyDown="treeViewSearch_KeyDown" >
                 <TreeView.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                       Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
@@ -182,6 +186,13 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                       Color="Black" />
                 </TreeView.Resources>
+
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <EventSetter Event="TreeViewItem.MouseRightButtonUp" Handler="treeViewItem_MouseRightButtonUp"/>
+                        <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
 
             </TreeView>
         </Grid>

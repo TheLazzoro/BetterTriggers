@@ -17,8 +17,8 @@ namespace GUI.Components.TriggerEditor
     {
         private Variable variable;
 
-        public HyperlinkParameterVariable(Variable variable, Parameter parameter)
-            : base(parameter, "~Value")
+        public HyperlinkParameterVariable(Variable variable, Parameter parameter, string text)
+            : base(parameter, text)
         {
             this.variable = variable;
 

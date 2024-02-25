@@ -419,9 +419,12 @@ namespace GUI.Components
             }
         }
 
-        private void treeViewTriggerExplorer_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void treeViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem rightClickedElement = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+            var rightClickedElement = sender as TreeViewItem;
+            if (rightClickedElement == null)
+                return;
+
             var explorerElement = GetExplorerElementFromItem(rightClickedElement);
 
             if (rightClickedElement == null)
@@ -440,6 +443,10 @@ namespace GUI.Components
             menuDelete.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
             menuCut.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
             menuCopy.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+
+            contextMenu.IsOpen = true;
+
+            e.Handled = true;
         }
 
         private void menuCut_Click(object sender, RoutedEventArgs e)
@@ -677,7 +684,7 @@ namespace GUI.Components
             return list;
         }
 
-        private void treeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selected = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
             if (selected != null)
@@ -687,16 +694,6 @@ namespace GUI.Components
             }
         }
 
-        private void treeViewSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            TreeViewItem selected = treeViewSearch.SelectedItem as TreeViewItem;
-            if (selected != null)
-            {
-                var explorerElement = GetExplorerElementFromItem(selected);
-                OnOpenExplorerElement?.Invoke(explorerElement);
-                e.Handled = true; // prevents event from firing up the parent items
-            }
-        }
 
         private void treeViewSearch_KeyDown(object sender, KeyEventArgs e)
         {

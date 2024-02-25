@@ -138,7 +138,7 @@ namespace BetterTriggers.Containers
 
             string name = GenerateTriggerName();
 
-            Trigger trigger = new Trigger()
+            Trigger_Saveable trigger = new Trigger_Saveable()
             {
                 Id = GenerateId(),
             };

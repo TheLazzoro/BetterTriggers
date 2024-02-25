@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Media.Animation;
 
 namespace BetterTriggers.Containers
 {
@@ -28,12 +29,12 @@ namespace BetterTriggers.Containers
             string name = GenerateName();
 
             // Default variable is always an integer on creation.
-            Variable variable = new Variable()
+            Variable_Saveable variable = new Variable_Saveable()
             {
                 Id = GenerateId(),
                 Name = name,
                 Type = "integer",
-                InitialValue = new Value() { value = "0" },
+                InitialValue = new Value_Saveable() { value = "0" },
                 ArraySize = new int[] { 1, 1 },
             };
             string json = JsonConvert.SerializeObject(variable);
@@ -73,7 +74,7 @@ namespace BetterTriggers.Containers
             CommandLocalVariableRename command = new CommandLocalVariableRename(variable, newName);
             command.Execute();
         }
-        
+
         /// <summary>
         /// Returns true if initial value was removed.
         /// </summary>
@@ -100,11 +101,15 @@ namespace BetterTriggers.Containers
             all.AddRange(GetGlobals().Select(v => v.variable)); // globals
             if (includeLocals)
             {
-                trig.LocalVariables.Elements.ForEach(e =>
-                { // locals
-                    var lv = (LocalVariable)e;
-                    all.Add(lv.variable);
-                });
+                bool isParameterFromVariableInitialValue = trig == null;
+                if (isParameterFromVariableInitialValue == false)
+                {
+                    trig.LocalVariables.Elements.ForEach(e =>
+                    { // locals
+                        var lv = (LocalVariable)e;
+                        all.Add(lv.variable);
+                    });
+                }
             }
 
             for (int i = 0; i < all.Count; i++)
@@ -388,7 +393,7 @@ namespace BetterTriggers.Containers
         {
             variableContainer.Remove(variable);
         }
-        
+
         internal void AddLocalVariable(LocalVariable localVariable)
         {
             localVariableContainer.Add(localVariable.variable);

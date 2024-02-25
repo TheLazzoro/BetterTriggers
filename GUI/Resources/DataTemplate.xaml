@@ -6,7 +6,7 @@
 
     <HierarchicalDataTemplate x:Key="TreeItemDataTemplate"
                               ItemsSource="{Binding ExplorerElements}"
-                              DataType="{x:Type betterTriggers:ExplorerElement}"
+                              DataType="{x:Type TreeViewItem}"
                               >
         <Grid
             ContextMenu="{Binding ContextMenu}"
@@ -73,6 +73,13 @@
             </TextBox>
 
         </Grid>
+    </HierarchicalDataTemplate>
+
+    <HierarchicalDataTemplate x:Key="ComboBoxVariableTypes"
+                          ItemsSource="{Binding War3Types}" >
+
+        <TextBlock Text="{Binding DisplayName}" />
+
     </HierarchicalDataTemplate>
     
 </ResourceDictionary>

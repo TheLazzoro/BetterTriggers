@@ -27,7 +27,7 @@
 
             <Label Content="Identifier:" Grid.Row="1" Grid.Column="0" />
             <TextBox x:Name="textBlockVariableNameUDG"
-                     Text="{Binding Identifier}"
+                     Text="{Binding Identifier, Mode=OneWay}"
                      Grid.Row="1"
                      IsReadOnly="True"
                      Grid.Column="1"
@@ -37,14 +37,14 @@
 
             <Label Content="Variable Type:" Grid.Row="2" Grid.Column="0" />
             <ComboBox x:Name="comboBoxVariableType"
-                      ItemsSource="{Binding ComboBoxItemTypes}"
+                      ItemsSource="{Binding War3Types}"
+                      ItemTemplate="{DynamicResource ComboBoxVariableTypes}"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                       Grid.Row="2"
                       Grid.Column="1"
                       Margin="5,4,0,4"
                       HorizontalAlignment="Left"
-                      Width="200"
-                      SelectionChanged="comboBoxVariableType_SelectionChanged"
-                      Loaded="comboBoxVariableType_Loaded" />
+                      Width="200" />
 
             <CheckBox x:Name="checkBoxIsArray"
                       IsChecked="{Binding IsArray}"
@@ -69,13 +69,14 @@
                    Grid.ColumnSpan="2"/>
             
             <ComboBox x:Name="comboBoxArrayDimensions"
+                      SelectedIndex="{Binding DimensionsIndex, Mode=TwoWay}"
+                      IsEnabled="{Binding IsArray}"
                       Visibility="{Binding IsLocal}"
                       Grid.Row="5" Grid.Column="1"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
                       Margin="85,0,0,0"
-                      Width="50"
-                      SelectionChanged="comboBoxArrayDimensions_SelectionChanged">
+                      Width="50">
                 <ComboBoxItem Content="1"/>
                 <ComboBoxItem Content="2"/>
             </ComboBox>
@@ -100,8 +101,7 @@
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center"
                      Margin="40,0,0,0"
-                     Width="50"
-                     TextChanged="textBoxArraySize0_TextChanged"/>
+                     Width="50"/>
             
             <Label x:Name="lblSize1"
                    Visibility="{Binding IsLocal}"
@@ -122,12 +122,10 @@
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center"
                      Margin="40,0,0,0"
-                     Width="50"
-                     TextChanged="textBoxArraySize1_TextChanged"/>
+                     Width="50"/>
 
             <Label x:Name="lblInitialValue" Content="Initial Value:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
             <TextBlock x:Name="textblockInitialValue"
-                       Text="{Binding InitialValueParamText}"
                        Grid.Row="8" Grid.Column="1"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"

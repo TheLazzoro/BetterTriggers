@@ -21,8 +21,10 @@ namespace GUI.Components.VariableEditor
         private Variable _variable;
         private string _identifier;
         private bool _size1Enabled;
-        private bool _dimensions;
+        private int _dimensionsIndex;
+        private War3Type _selectedItem;
         private static ObservableCollection<War3Type> _war3Types;
+        private static War3Type defaultSelection;
 
         public Visibility IsLocal
         {
@@ -37,17 +39,20 @@ namespace GUI.Components.VariableEditor
         public string Identifier
         {
             get => _variable.GetIdentifierName();
+        }
+        public ObservableCollection<War3Type> War3Types { get => _war3Types; }
+        public War3Type SelectedItem
+        {
+            get => _selectedItem;
             set
             {
-                if (_variable._isLocal)
-                    _identifier = "udl_" + value;
-                else
-                    _identifier = "udg_" + value;
+                _selectedItem = value;
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<War3Type> War3Types { get => _war3Types; }
-        public int SelectedIndex { get; set; }
+        public War3Type SelectedItemPrevious { get; set; }
+
+
         public bool IsArray
         {
             get => _variable.IsArray;
@@ -57,14 +62,17 @@ namespace GUI.Components.VariableEditor
                 OnPropertyChanged();
             }
         }
-        public int Dimensions
+        public int DimensionsIndex
         {
             get
             {
-                if (_variable.IsArray && _variable.IsTwoDimensions)
-                    return 2;
-                else
-                    return 1;
+                return _dimensionsIndex;
+            }
+            set
+            {
+                _variable.IsTwoDimensions = _dimensionsIndex == 1;
+                _dimensionsIndex = value;
+                OnPropertyChanged();
             }
         }
         public int Size0
@@ -85,8 +93,7 @@ namespace GUI.Components.VariableEditor
                 OnPropertyChanged();
             }
         }
-        public bool Size1Enabled { get => Dimensions == 2; }
-        public ObservableCollection<Inline> InitialValueParamText { get; private set; } = new();
+        public bool Size1Enabled { get => DimensionsIndex == 1; }
         public ObservableCollection<TreeNodeBase> ReferenceTriggers { get; set; } = new();
 
         public VariableControlViewModel(Variable variable)
@@ -102,6 +109,9 @@ namespace GUI.Components.VariableEditor
                     War3Type item = new War3Type(type, displayName);
 
                     _war3Types.Add(item);
+
+                    if (type == "integer")
+                        defaultSelection = item;
                 }
             }
 
@@ -109,9 +119,13 @@ namespace GUI.Components.VariableEditor
             {
                 if (item.Type == variable.Type)
                 {
-                    SelectedIndex = _war3Types.IndexOf(item);
+                    SelectedItem = item;
                     break;
                 }
+            }
+            if (SelectedItem == null)
+            {
+                SelectedItem = defaultSelection;
             }
 
             _variable = variable;
@@ -121,15 +135,7 @@ namespace GUI.Components.VariableEditor
 
         private void Variable_PropertyChanged()
         {
-            OnPropertyChanged();
-
-            Identifier = _variable.Name;
-
-
-            InitialValueParamText.Clear();
-            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
-            var inlines = paramTextBuilder.GenerateParamText(_variable);
-            InitialValueParamText.AddRange(inlines);
+            OnPropertyChanged(nameof(Identifier));
         }
     }
 }
