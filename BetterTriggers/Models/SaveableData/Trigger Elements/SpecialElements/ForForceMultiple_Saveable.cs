@@ -11,15 +11,5 @@ namespace BetterTriggers.Models.SaveableData
         {
             function.value = "ForForceMultiple";
         }
-
-        public override ForForceMultiple_Saveable Clone()
-        {
-            ForForceMultiple_Saveable forForce = new ForForceMultiple_Saveable();
-            forForce.function = this.function.Clone();
-            forForce.Actions = new List<TriggerElement_Saveable>();
-            Actions.ForEach(element => forForce.Actions.Add(element.Clone()));
-
-            return forForce;
-        }
     }
 }

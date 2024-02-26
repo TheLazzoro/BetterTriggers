@@ -45,7 +45,13 @@ namespace BetterTriggers.Models.EditorData
             ElementType = type;
         }
 
-        public ExplorerElement(string path)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="explicitType">Only used when creating root on init. hack...</param>
+        /// <exception cref="Exception"></exception>
+        public ExplorerElement(string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
         {
             this.path = path;
             this.DisplayText = Path.GetFileNameWithoutExtension(path);
@@ -107,7 +113,9 @@ namespace BetterTriggers.Models.EditorData
                         }
                     }
 
-                    variable = JsonConvert.DeserializeObject<Variable>(json);
+                    var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(json);
+                    variable = TriggerSerializer.DeserializeVariable(savedVariable);
+                    variable.PropertyChanged += AddToUnsaved;
                     UpdateMetadata();
                     Project.CurrentProject.Variables.AddVariable(this);
 
@@ -120,6 +128,14 @@ namespace BetterTriggers.Models.EditorData
                 default:
                     ElementType = ExplorerElementEnum.None;
                     break;
+            }
+
+            if(explicitType == ExplorerElementEnum.Root)
+            {
+                var project = Project.CurrentProject;
+                DisplayText = Path.GetFileNameWithoutExtension(project.war3project.Name);
+                ElementType = ExplorerElementEnum.Root;
+                SetCategory(TriggerCategory.TC_MAP);
             }
 
 
@@ -205,7 +221,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void UpdateMetadata()
         {
-            if (ElementType == ExplorerElementEnum.Folder)
+            if (ElementType == ExplorerElementEnum.Folder || ElementType == ExplorerElementEnum.Root)
             {
                 var info = new DirectoryInfo(path);
                 this.Size = info.EnumerateFiles().Sum(file => file.Length);
@@ -255,7 +271,11 @@ namespace BetterTriggers.Models.EditorData
 
         public void AddToUnsaved()
         {
-            Project.CurrentProject.UnsavedFiles.AddToUnsaved(this);
+            var project = Project.CurrentProject;
+            if (project.IsLoading)
+                return;
+
+            project.UnsavedFiles.AddToUnsaved(this);
         }
 
         public void RemoveFromUnsaved(bool recursive = false)
@@ -315,18 +335,23 @@ namespace BetterTriggers.Models.EditorData
 
         public void Save()
         {
+            if (!File.Exists(this.path)) // Edge case when a folder containing the file was deleted.
+            {
+                return;
+            }
+
             string fileContent;
             switch (ElementType)
             {
                 case ExplorerElementEnum.GlobalVariable:
-                    fileContent = JsonConvert.SerializeObject(variable, Formatting.Indented);
+                    fileContent = TriggerSerializer.SerializeVariable(variable);
                     File.WriteAllText(path, fileContent);
                     break;
                 case ExplorerElementEnum.Script:
                     File.WriteAllText(path, script);
                     break;
                 case ExplorerElementEnum.Trigger:
-                    fileContent = JsonConvert.SerializeObject(trigger, Formatting.Indented);
+                    fileContent = TriggerSerializer.Serialize(trigger);
                     File.WriteAllText(path, fileContent);
                     break;
                 case ExplorerElementEnum.Folder:
@@ -384,7 +409,7 @@ namespace BetterTriggers.Models.EditorData
                 this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
                 OnReload?.Invoke();
             }
-            else if(ElementType == ExplorerElementEnum.Trigger)
+            else if (ElementType == ExplorerElementEnum.Trigger)
             {
                 OnReload?.Invoke();
             }

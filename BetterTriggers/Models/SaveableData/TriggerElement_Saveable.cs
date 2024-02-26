@@ -12,9 +12,6 @@ namespace BetterTriggers.Models.SaveableData
     [JsonConverter(typeof(BaseConverterTriggerElement))]
     public class TriggerElement_Saveable
     {
-        public virtual TriggerElement_Saveable Clone()
-        {
-            return new TriggerElement_Saveable();
-        }
+        
     }
 }

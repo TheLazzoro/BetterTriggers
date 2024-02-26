@@ -19,9 +19,6 @@ namespace GUI.Components.VariableEditor
     public class VariableControlViewModel : ViewModelBase
     {
         private Variable _variable;
-        private string _identifier;
-        private bool _size1Enabled;
-        private int _dimensionsIndex;
         private War3Type _selectedItem;
         private static ObservableCollection<War3Type> _war3Types;
         private static War3Type defaultSelection;
@@ -66,12 +63,11 @@ namespace GUI.Components.VariableEditor
         {
             get
             {
-                return _dimensionsIndex;
+                return _variable.IsTwoDimensions ? 1 : 0;
             }
             set
             {
-                _variable.IsTwoDimensions = _dimensionsIndex == 1;
-                _dimensionsIndex = value;
+                _variable.IsTwoDimensions = value == 1;
                 OnPropertyChanged();
             }
         }
@@ -93,7 +89,15 @@ namespace GUI.Components.VariableEditor
                 OnPropertyChanged();
             }
         }
-        public bool Size1Enabled { get => DimensionsIndex == 1; }
+        public bool IsTwoDimensions
+        {
+            get => _variable.IsTwoDimensions;
+            set
+            {
+                _variable.IsTwoDimensions = value;
+                OnPropertyChanged();
+            }
+        }
         public ObservableCollection<TreeNodeBase> ReferenceTriggers { get; set; } = new();
 
         public VariableControlViewModel(Variable variable)

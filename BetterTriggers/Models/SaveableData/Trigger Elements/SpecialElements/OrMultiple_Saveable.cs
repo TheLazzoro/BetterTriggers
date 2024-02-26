@@ -11,15 +11,5 @@ namespace BetterTriggers.Models.SaveableData
         {
             function.value = "OrMultiple";
         }
-
-        public override OrMultiple_Saveable Clone()
-        {
-            OrMultiple_Saveable andMultiple = new OrMultiple_Saveable();
-            andMultiple.function = this.function.Clone();
-            andMultiple.Or = new List<TriggerElement_Saveable>();
-            Or.ForEach(element => andMultiple.Or.Add(element.Clone()));
-
-            return andMultiple;
-        }
     }
 }

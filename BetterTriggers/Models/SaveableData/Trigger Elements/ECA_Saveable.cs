@@ -14,14 +14,5 @@ namespace BetterTriggers.Models.SaveableData
         {
             this.function.value = value;
         }
-
-        public override ECA_Saveable Clone()
-        {
-            ECA_Saveable clone = new ECA_Saveable();
-            clone.isEnabled = isEnabled;
-            clone.function = function.Clone();
-
-            return clone;
-        }
     }
 }

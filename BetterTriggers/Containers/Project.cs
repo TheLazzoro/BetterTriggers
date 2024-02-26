@@ -34,6 +34,7 @@ namespace BetterTriggers.Containers
         public CommandManager CommandManager { get; private set; }
         public Dictionary<string, ExplorerElement> AllElements { get; set; }
 
+        public bool IsLoading;
         public event FileSystemEventHandler OnCreated;
         public event FileSystemEventHandler OnMoved;
         public event FileSystemEventHandler OnDeleted;
@@ -46,6 +47,7 @@ namespace BetterTriggers.Containers
 
         private Project()
         {
+            IsLoading = true;
             Folders = new();
             Variables = new();
             Triggers = new();
@@ -148,15 +150,8 @@ namespace BetterTriggers.Containers
             var unsaved = UnsavedFiles.GetAllUnsaved();
             for (int i = 0; i < UnsavedFiles.Count(); i++)
             {
-                if (unsaved[i] is IExplorerSaveable)
-                {
-                    var saveable = (IExplorerSaveable)unsaved[i];
-                    if (File.Exists(unsaved[i].GetPath())) // Edge case when a folder containing the file was deleted.
-                    {
-                        File.WriteAllText(unsaved[i].GetPath(), saveable.GetSaveableString());
-                        saveable.OnSaved();
-                    }
-                }
+                var element = unsaved[i];
+                element.Save();
             }
             UnsavedFiles.Clear();
 
@@ -251,7 +246,7 @@ namespace BetterTriggers.Containers
             project.src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
             project.war3project = war3project;
             project.projectFiles = new();
-            project.projectFiles.Add(new ExplorerElement(project.src));
+            project.projectFiles.Add(new ExplorerElement(project.src, ExplorerElementEnum.Root));
             project.currentSelectedElement = project.src; // defaults to here when nothing has been selected yet.
 
             if (project.fileSystemWatcher == null)
@@ -286,7 +281,7 @@ namespace BetterTriggers.Containers
             fileCheckList.AddRange(files);
 
             // Recurse through elements found in the project file
-            project.RecurseLoad(projectRootEntry, project.projectFiles[0], fileCheckList);
+            project.RecurseLoad(projectRootEntry, project.GetRoot(), fileCheckList);
 
             // Loop through elements not found
             LoadingUnknownFilesEvent?.Invoke();
@@ -301,6 +296,8 @@ namespace BetterTriggers.Containers
 
             project.References.UpdateReferencesAll();
             RecentFiles.AddProjectToRecent(projectPath);
+
+            project.IsLoading = false;
 
             return project;
         }

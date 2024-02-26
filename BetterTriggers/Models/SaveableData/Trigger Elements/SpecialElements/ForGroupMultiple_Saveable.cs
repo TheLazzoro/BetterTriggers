@@ -11,15 +11,5 @@ namespace BetterTriggers.Models.SaveableData
         {
             function.value = "ForGroupMultiple";
         }
-
-        public override ForGroupMultiple_Saveable Clone()
-        {
-            ForGroupMultiple_Saveable forGroup = new ForGroupMultiple_Saveable();
-            forGroup.function = this.function.Clone();
-            forGroup.Actions = new List<TriggerElement_Saveable>();
-            Actions.ForEach(element => forGroup.Actions.Add(element.Clone()));
-
-            return forGroup;
-        }
     }
 }

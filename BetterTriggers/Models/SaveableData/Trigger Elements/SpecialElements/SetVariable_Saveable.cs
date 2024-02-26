@@ -8,13 +8,5 @@
         {
             function.value = "SetVariable";
         }
-
-        public override SetVariable_Saveable Clone()
-        {
-            SetVariable_Saveable setVariable = new SetVariable_Saveable();
-            setVariable.function = this.function.Clone();
-
-            return setVariable;
-        }
     }
 }

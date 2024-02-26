@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Models.SaveableData;
+using ICSharpCode.Decompiler.DebugInfo;
 using ICSharpCode.Decompiler.IL;
 using Microsoft.CodeAnalysis.Operations;
 using Newtonsoft.Json;
@@ -15,7 +16,7 @@ namespace BetterTriggers.Models.EditorData
 {
     public static class TriggerSerializer
     {
-        #region Serializer
+        #region Serializers
 
         /// <summary>
         /// Transforms a trigger into a saveable trigger.
@@ -35,6 +36,20 @@ namespace BetterTriggers.Models.EditorData
             saveableTrig.Actions = ConvertTriggerElements(trigger.Actions.Elements);
 
             return JsonConvert.SerializeObject(saveableTrig, Formatting.Indented);
+        }
+
+        internal static string SerializeVariable(Variable variable)
+        {
+            Variable_Saveable converted = new Variable_Saveable();
+            converted.Id = variable.Id;
+            converted.Name = variable.Name;
+            converted.Type = variable.Type;
+            converted.IsArray = variable.IsArray;
+            converted.IsTwoDimensions = variable.IsTwoDimensions;
+            converted.ArraySize = variable.ArraySize;
+            converted.InitialValue = ConvertParameter(variable.InitialValue);
+
+            return JsonConvert.SerializeObject(converted, Formatting.Indented);
         }
 
         private static List<TriggerElement_Saveable> ConvertTriggerElements(ObservableCollection<TriggerElement> elements)
@@ -203,7 +218,7 @@ namespace BetterTriggers.Models.EditorData
 
         #endregion
 
-        #region Deserializer
+        #region Deserializers
 
         public static Trigger Deserialize(Trigger_Saveable saveableTrig)
         {
@@ -220,6 +235,20 @@ namespace BetterTriggers.Models.EditorData
             trigger.Actions        = ConvertTriggerElements_Deserialize(saveableTrig.Actions, TriggerElementType.Action);
 
             return trigger;
+        }
+
+        public static Variable DeserializeVariable(Variable_Saveable saveableVariable)
+        {
+            Variable variable = new Variable();
+            variable.Id = saveableVariable.Id;
+            variable.Name = saveableVariable.Name;
+            variable.Type = saveableVariable.Type;
+            variable.IsArray = saveableVariable.IsArray;
+            variable.IsTwoDimensions = saveableVariable.IsTwoDimensions;
+            variable.ArraySize = saveableVariable.ArraySize;
+            variable.InitialValue = ConvertParameter_Deserialize(saveableVariable.InitialValue);
+
+            return variable;
         }
 
         private static TriggerElementCollection ConvertTriggerElements_Deserialize(List<TriggerElement_Saveable> elements, TriggerElementType type)

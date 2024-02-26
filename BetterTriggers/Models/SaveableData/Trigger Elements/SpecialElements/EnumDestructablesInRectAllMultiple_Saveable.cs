@@ -11,15 +11,5 @@ namespace BetterTriggers.Models.SaveableData
         {
             function.value = "EnumDestructablesInRectAllMultiple";
         }
-
-        public override EnumDestructablesInRectAllMultiple_Saveable Clone()
-        {
-            EnumDestructablesInRectAllMultiple_Saveable enumDest = new EnumDestructablesInRectAllMultiple_Saveable();
-            enumDest.function = this.function.Clone();
-            enumDest.Actions = new List<TriggerElement_Saveable>();
-            Actions.ForEach(element => enumDest.Actions.Add(element.Clone()));
-
-            return enumDest;
-        }
     }
 }

@@ -11,15 +11,5 @@ namespace BetterTriggers.Models.SaveableData
         {
             function.value = "ForLoopBMultiple";
         }
-
-        public override ForLoopBMultiple_Saveable Clone()
-        {
-            ForLoopBMultiple_Saveable forLoop = new ForLoopBMultiple_Saveable();
-            forLoop.function = this.function.Clone();
-            forLoop.Actions = new List<TriggerElement_Saveable>();
-            Actions.ForEach(element => forLoop.Actions.Add(element.Clone()));
-
-            return forLoop;
-        }
     }
 }

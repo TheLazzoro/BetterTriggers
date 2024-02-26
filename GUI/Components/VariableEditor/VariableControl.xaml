@@ -105,7 +105,7 @@
             
             <Label x:Name="lblSize1"
                    Visibility="{Binding IsLocal}"
-                   IsEnabled="{Binding Size1Enabled}"
+                   IsEnabled="{Binding IsTwoDimensions}"
                    Content="Size:"
                    Grid.Row="7"
                    Grid.Column="1"
@@ -116,7 +116,7 @@
             <TextBox x:Name="textBoxArraySize1"
                      Text="{Binding Size1}"
                      Visibility="{Binding IsLocal}"
-                     IsEnabled="{Binding Size1Enabled}"
+                     IsEnabled="{Binding IsTwoDimensions}"
                      Grid.Row="7"
                      Grid.Column="1"
                      HorizontalAlignment="Left"

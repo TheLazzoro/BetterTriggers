@@ -16,12 +16,6 @@ namespace BetterTriggers.Models.EditorData
             variable.IsArray = false; // forces locals to be non-arrays
         }
 
-        public LocalVariable(Trigger trig)
-        {
-            variable._isLocal = true;
-            variable.IsArray = false; // forces locals to be non-arrays
-        }
-
         public override LocalVariable Clone()
         {
             LocalVariable clone = new LocalVariable();

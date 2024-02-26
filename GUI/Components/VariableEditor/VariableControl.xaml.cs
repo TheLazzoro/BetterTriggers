@@ -88,6 +88,8 @@ namespace GUI.Components
             ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
             var inlines = paramTextBuilder.GenerateParamText(variable);
             textblockInitialValue.Inlines.AddRange(inlines);
+
+            OnChange?.Invoke();
         }
 
         public void UpdateIdentifierText()

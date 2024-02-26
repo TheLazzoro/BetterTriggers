@@ -11,15 +11,5 @@ namespace BetterTriggers.Models.SaveableData
         {
             function.value = "EnumItemsInRectBJMultiple";
         }
-
-        public override EnumItemsInRectBJ_Saveable Clone()
-        {
-            EnumItemsInRectBJ_Saveable enumItems = new EnumItemsInRectBJ_Saveable();
-            enumItems.function = this.function.Clone();
-            enumItems.Actions = new List<TriggerElement_Saveable>();
-            Actions.ForEach(element => enumItems.Actions.Add(element.Clone()));
-
-            return enumItems;
-        }
     }
 }

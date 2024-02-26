@@ -47,7 +47,7 @@ namespace BetterTriggers.Containers
         public LocalVariable CreateLocalVariable(Trigger trig, int insertIndex)
         {
             TriggerElementCollection parent = trig.LocalVariables;
-            LocalVariable localVariable = new LocalVariable(trig);
+            LocalVariable localVariable = new LocalVariable();
             localVariable.variable.Name = GenerateLocalName(trig);
             localVariable.variable.Id = GenerateId();
             localVariable.variable.Type = "integer";
