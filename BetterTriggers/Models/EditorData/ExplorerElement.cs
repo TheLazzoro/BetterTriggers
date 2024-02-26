@@ -333,6 +333,9 @@ namespace BetterTriggers.Models.EditorData
             return newElement;
         }
 
+        /// <summary>
+        /// Writes the content of the ExplorerElement to disk.
+        /// </summary>
         public void Save()
         {
             if (!File.Exists(this.path)) // Edge case when a folder containing the file was deleted.

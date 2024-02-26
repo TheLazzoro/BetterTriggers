@@ -36,6 +36,17 @@ namespace GUI.Components
 
                 OnStateChange();
             };
+
+            explorerElementScript.OnReload += ExplorerElementScript_OnReload;
+        }
+
+        private void ExplorerElementScript_OnReload()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.suppressStateChange = true;
+                textEditor.avalonEditor.Document.Text = explorerElementScript.script;
+            });
         }
 
         public void OnRemoteChange()
@@ -57,7 +68,7 @@ namespace GUI.Components
         }
         public void OnStateChange()
         {
-            
+            explorerElementScript.AddToUnsaved();
         }
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)

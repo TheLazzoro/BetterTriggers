@@ -202,12 +202,6 @@ namespace GUI.Components
             OnChange?.Invoke();
         }
 
-        public void OnRemoteChange()
-        {
-            // TODO: Why is this here?
-            throw new Exception("Hello. Notice this call plz.");
-        }
-
         private void textBoxArraySize0_TextChanged(object sender, TextChangedEventArgs e)
         {
             ArraySizeTextChanged(e);

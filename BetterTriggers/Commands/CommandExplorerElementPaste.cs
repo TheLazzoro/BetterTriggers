@@ -112,10 +112,9 @@ namespace BetterTriggers.Commands
                 toPaste.SetPath(finalPath);
             }
 
-            if (toPaste is IExplorerSaveable)
+            if (toPaste.ElementType != ExplorerElementEnum.Folder)
             {
-                var saveable = (IExplorerSaveable)toPaste;
-                File.WriteAllText(finalPath, saveable.GetSaveableString());
+                toPaste.Save();
             }
             else
             {

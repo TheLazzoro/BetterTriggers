@@ -5,6 +5,5 @@
         void SetElementEnabled(bool isEnabled);
         void SetElementInitiallyOn(bool isInitiallyOn);
         void OnStateChange();
-        void OnRemoteChange();
     }
 }

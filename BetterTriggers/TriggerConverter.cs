@@ -162,21 +162,20 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < elements.Count; i++)
             {
                 var element = elements[i];
-                string path = element.GetPath();
                 if (element.ElementType == ExplorerElementEnum.Folder)
-                    Directory.CreateDirectory(path);
+                    element.Save();
                 else
                 {
-                    var saveable = (IExplorerSaveable)element;
                     string folder = Path.GetDirectoryName(element.GetPath());
-                    if(!Directory.Exists(folder))
+                    if (!Directory.Exists(folder))
                     {
                         Directory.CreateDirectory(folder);
                         project.OnCreateElement(folder, false); // We manually create UI elements
                         OnExplorerElementImported?.Invoke(folder);
                     }
-                    File.WriteAllText(path, saveable.GetSaveableString());
+                    element.Save();
                 }
+                string path = element.GetPath();
                 project.OnCreateElement(path, false); // We manually create UI elements
                 OnExplorerElementImported?.Invoke(path);
             }
@@ -523,7 +522,7 @@ namespace BetterTriggers.WorldEdit
                 finalName = name + suffix;
                 if (explorerElement.ElementType == ExplorerElementEnum.Folder && !Directory.Exists(Path.Combine(parentPath, finalName + extension)))
                     ok = true;
-                else if (explorerElement is IExplorerSaveable && !File.Exists(Path.Combine(parentPath, finalName + extension)))
+                else if (explorerElement.ElementType != ExplorerElementEnum.Folder && !File.Exists(Path.Combine(parentPath, finalName + extension)))
                     ok = true;
 
                 suffix = i.ToString();

@@ -110,14 +110,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         public void RecurseCreateElementsWithContent(ExplorerElement topElement, bool doRecurse = true)
         {
-            if (topElement is IExplorerSaveable)
-            {
-                var element = (IExplorerSaveable)topElement;
-                File.WriteAllText(topElement.GetPath(), element.GetSaveableString());
-            }
-            else
-                Directory.CreateDirectory(topElement.GetPath());
-
+            topElement.Save();
             topElement.UpdateMetadata(); // important, because this is a pseudo-redo
             var parent = topElement.GetParent();
             //topElement.Created(parent.GetExplorerElements().IndexOf(topElement)); // THIS CALL USED TO ADD LOCAL VARIABLES TO THEIR CONTAINER!!!!

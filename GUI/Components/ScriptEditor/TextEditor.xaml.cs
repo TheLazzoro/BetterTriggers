@@ -80,7 +80,6 @@ namespace GUI.Components
 
             // Autocomplete
             avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
-            avalonEditor.TextArea.Document.Changed += Document_Changed;
 
             // Hover over text
             this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
@@ -175,11 +174,6 @@ namespace GUI.Components
                 ShowAutoCompletion();
                 e.Handled = true; // prevents a space from being entered when opening autocomplete menu
             }
-        }
-
-        private void Document_Changed(object sender, ICSharpCode.AvalonEdit.Document.DocumentChangeEventArgs e)
-        {
-
         }
 
         private void ShowAutoCompletion()
