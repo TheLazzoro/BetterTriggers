@@ -35,10 +35,8 @@ namespace BetterTriggers.Models.EditorData
 
         public byte[] IconImage
         {
-            get
-            {
-                return _icon;
-            }
+            set => _icon = value;
+            get => _icon;
         }
 
         public bool IsIconVisible { get; set; } = true;

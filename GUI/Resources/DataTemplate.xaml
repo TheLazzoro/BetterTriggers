@@ -75,6 +75,70 @@
         </Grid>
     </HierarchicalDataTemplate>
 
+    <HierarchicalDataTemplate x:Key="TreeItemDataTemplateTriggers"
+                          ItemsSource="{Binding Elements}"
+                          DataType="{x:Type TreeViewItem}"
+                          >
+        <Grid
+        ContextMenu="{Binding ContextMenu}"
+        Margin="-1, -1, 0, -1"
+        Height="18" >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image x:Name="img"
+               Width="16"
+               Height="16"
+               Stretch="Fill"
+               RenderOptions.EdgeMode="Aliased"
+               Grid.Column="0"
+               Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding IconImage}" />
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image x:Name="imgOverlay"
+               Width="16"
+               Height="16"
+               Stretch="Fill"
+               RenderOptions.EdgeMode="Aliased"
+               Grid.Column="0"
+               Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding IconImageOverlay}" />
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <TextBlock x:Name="displayText"
+                   Text="{Binding DisplayText}"
+                   Foreground="{DynamicResource TextBrush}"
+                   Grid.Column="1"
+                   Margin="5,0,0,0" />
+
+            <TextBox x:Name="renameBox"
+                 Text="{Binding RenameText}"
+                 Visibility="{Binding RenameBoxVisibility}"
+                 Grid.Column="1"
+                 FontFamily="Segoe UI">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter"
+                            Command="{Binding RenameBox_KeyDown}"
+                            CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}" />
+                </TextBox.InputBindings>
+            </TextBox>
+
+        </Grid>
+    </HierarchicalDataTemplate>
+
+
     <HierarchicalDataTemplate x:Key="ComboBoxVariableTypes"
                           ItemsSource="{Binding War3Types}" >
 

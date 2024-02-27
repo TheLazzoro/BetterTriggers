@@ -22,6 +22,8 @@ namespace GUI.Components
 {
     public partial class TriggerControl : UserControl, IEditor
     {
+        public TriggerControlViewModel ViewModel { get; }
+
         public TextEditor TextEditor;
         public ExplorerElement explorerElementTrigger; // needed to get file references to variables in TriggerElements
         public static BetterTriggers.Models.EditorData.Trigger TriggerInFocus;
@@ -44,9 +46,12 @@ namespace GUI.Components
 
         VariableControl variableControl;
 
-        public TriggerControl(ExplorerElement explorerElementTrigger)
+        public TriggerControl(ExplorerElement explorerElement)
         {
             InitializeComponent();
+
+            ViewModel = new TriggerControlViewModel(explorerElement);
+            DataContext = ViewModel;
 
             EditorSettings settings = EditorSettings.Load();
             if (settings.triggerEditorMode == 1)
@@ -56,14 +61,14 @@ namespace GUI.Components
                 Grid.SetRowSpan(treeViewTriggers, 3);
             }
 
-            this.explorerElementTrigger = explorerElementTrigger;
+            this.explorerElementTrigger = explorerElement;
 
 
-            checkBoxIsEnabled.IsChecked = explorerElementTrigger.GetEnabled();
-            checkBoxIsInitiallyOn.IsChecked = explorerElementTrigger.GetInitiallyOn();
-            checkBoxIsCustomScript.IsChecked = explorerElementTrigger.trigger.IsScript;
-            checkBoxRunOnMapInit.IsChecked = explorerElementTrigger.trigger.RunOnMapInit;
-            ShowTextEditor(explorerElementTrigger.trigger.IsScript);
+            checkBoxIsEnabled.IsChecked = explorerElement.GetEnabled();
+            checkBoxIsInitiallyOn.IsChecked = explorerElement.GetInitiallyOn();
+            checkBoxIsCustomScript.IsChecked = explorerElement.trigger.IsScript;
+            checkBoxRunOnMapInit.IsChecked = explorerElement.trigger.RunOnMapInit;
+            ShowTextEditor(explorerElement.trigger.IsScript);
 
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
 
