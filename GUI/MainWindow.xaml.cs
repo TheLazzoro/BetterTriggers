@@ -323,7 +323,7 @@ namespace GUI
 
             if (!tabViewModel.Contains(selectedItem))
             {
-                IEditor editor = null;
+                UserControl editor = null;
                 switch (selectedItem.ElementType)
                 {
                     case ExplorerElementEnum.Folder:
@@ -347,6 +347,8 @@ namespace GUI
                     default:
                         break;
                 }
+
+                selectedItem.editor = editor;
 
                 TabItemBT tabItem = new TabItemBT(selectedItem, editor, tabViewModel);
                 tabViewModel.Tabs.Add(tabItem);

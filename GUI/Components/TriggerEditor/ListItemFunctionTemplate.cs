@@ -14,6 +14,17 @@ namespace GUI.Components.TriggerEditor
     {
         public ECA eca { get; }
         public string DisplayName { get; }
+        public double IconWidth
+        {
+            get => _iconWidth;
+            set
+            {
+                _iconWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _iconWidth = Double.NaN; // "auto" property in WPF
 
         public ListItemFunctionTemplate(FunctionTemplate template, Category category)
         {
@@ -24,8 +35,21 @@ namespace GUI.Components.TriggerEditor
 
             string name = template.name != "" ? template.name : template.value;
             DisplayName = categoryStr + name;
-            IsIconVisible = settings.GUINewElementIcon;
+            IconImage = category.Icon;
+            IsIconVisible = settings.GUINewElementIcon ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
             eca = template.ToECA();
+            eca.IconImage = category.Icon;
+
+            PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(IsIconVisible))
+                {
+                    if (IsIconVisible == System.Windows.Visibility.Visible)
+                        IconWidth = Double.NaN; // "auto" property in WPF
+                    else
+                        IconWidth = 0;
+                }
+            };
         }
     }
 }

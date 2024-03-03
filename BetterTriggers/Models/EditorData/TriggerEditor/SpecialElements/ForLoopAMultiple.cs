@@ -10,7 +10,8 @@ namespace BetterTriggers.Models.EditorData
         {
             function.value = "ForLoopAMultiple";
             Elements = new();
-            Elements.Add(Actions);
+            Actions.SetParent(this, 0);
+            Actions.DisplayText = "Loop - Actions";
         }
 
         public override ForLoopAMultiple Clone()

@@ -145,5 +145,33 @@
         <TextBlock Text="{Binding DisplayName}" />
 
     </HierarchicalDataTemplate>
-    
+
+    <DataTemplate x:Key="TriggerElementMenuItem">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding IconWidth}" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image x:Name="img"
+                   Visibility="{Binding IsIconVisible}"
+                   Width="16"
+                   Height="16"
+                   Stretch="Fill"
+                   RenderOptions.EdgeMode="Aliased"
+                   Grid.Column="0"
+                   Margin="0,0,5,0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding IconImage}" />
+                    </Style>
+                </Image.Style>
+            </Image>
+            <TextBlock Text="{Binding DisplayName}"
+                       Grid.Column="1"/>
+        </Grid>
+
+    </DataTemplate>
+
 </ResourceDictionary>

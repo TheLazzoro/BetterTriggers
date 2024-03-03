@@ -249,7 +249,7 @@ namespace BetterTriggers.Containers
         }
 
         /// <returns>A list of pasted elements.</returns>
-        public TriggerElementCollection PasteTriggerElements(ExplorerElement destinationTrigger, TriggerElementCollection parentList, int insertIndex)
+        public TriggerElementCollection PasteTriggerElements(ExplorerElement destinationTrigger, TriggerElement parentList, int insertIndex)
         {
             var copied = CopiedElements.CopiedTriggerElements;
             var pasted = new TriggerElementCollection(copied.ElementType);
@@ -296,7 +296,7 @@ namespace BetterTriggers.Containers
             return removeCount > 0;
         }
 
-        public int RemoveInvalidReferences(Trigger trig, TriggerElementCollection triggerElements)
+        public int RemoveInvalidReferences(Trigger trig, TriggerElement triggerElements)
         {
             int removeCount = 0;
 

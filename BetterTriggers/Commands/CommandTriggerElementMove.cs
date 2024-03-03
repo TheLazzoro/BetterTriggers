@@ -11,8 +11,8 @@ namespace BetterTriggers.Commands
         string commandName = "Move Trigger Element";
         Trigger trig;
         TriggerElement triggerElement;
-        TriggerElementCollection OldParent;
-        TriggerElementCollection NewParent;
+        TriggerElement OldParent;
+        TriggerElement NewParent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 

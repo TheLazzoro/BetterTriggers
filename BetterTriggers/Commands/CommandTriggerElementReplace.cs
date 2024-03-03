@@ -10,7 +10,7 @@ namespace BetterTriggers.Commands
         string commandName = "Replace Trigger Element";
         TriggerElement toReplace;
         TriggerElement toInsert;
-        TriggerElementCollection parent;
+        TriggerElement parent;
         int insertIndex = 0;
 
         public CommandTriggerElementReplace(TriggerElement toReplace, TriggerElement toInsert)

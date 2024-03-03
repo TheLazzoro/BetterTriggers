@@ -31,14 +31,13 @@ namespace GUI.Components.Tabs
             }
         }
 
-        public IEditor Content { get; set; }
         public TabViewModel Parent;
         public ExplorerElement explorerElement;
-        public UserControl editor;
+        public UserControl Content { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TabItemBT(ExplorerElement explorerElement, IEditor editor, TabViewModel parent)
+        public TabItemBT(ExplorerElement explorerElement, UserControl editor, TabViewModel parent)
         {
             this.explorerElement = explorerElement;
             Header = explorerElement.GetName();
@@ -54,7 +53,7 @@ namespace GUI.Components.Tabs
         public void Close()
         {
             Parent.Tabs.Remove(this);
-            if (editor is TriggerControl triggerControl)
+            if (Content is TriggerControl triggerControl)
                 triggerControl.Dispose();
             
         }

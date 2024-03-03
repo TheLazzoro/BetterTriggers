@@ -1,6 +1,8 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Utility;
+using GUI.Components.TriggerEditor;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GUI.Components.Shared
@@ -62,15 +64,20 @@ namespace GUI.Components.Shared
             }
         }
 
-        private void checkBoxShowIcons_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void checkBoxShowIcons_Click(object sender, RoutedEventArgs e)
         {
             EditorSettings settings = EditorSettings.Load();
             settings.GUINewElementIcon = (bool)checkBoxShowIcons.IsChecked;
             ShowIconsChanged?.Invoke();
-            InvokeListViewChanged(sender, e);
+            var items = searchObjects.GetObjects();
+            foreach (var item in items)
+            {
+                var function = item.Object as ListItemFunctionTemplate;
+                function.IsIconVisible = settings.GUINewElementIcon ? Visibility.Visible : Visibility.Hidden;
+            }
         }
 
-        private void CheckBoxShowIcons_IsVisibleChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        private void CheckBoxShowIcons_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if(checkBoxShowIcons.IsVisible)
                 Grid.SetColumnSpan(textBoxSearch, 1);

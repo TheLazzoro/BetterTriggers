@@ -45,19 +45,5 @@ namespace BetterTriggers.Models.EditorData
             return clone;
         }
 
-        public int Count()
-        {
-            return Elements.Count;
-        }
-
-        public void Insert(TriggerElement triggerElement, int insertIndex)
-        {
-            Elements.Insert(insertIndex, triggerElement);
-        }
-
-        public int IndexOf(TriggerElement element)
-        {
-            return Elements.IndexOf(element);
-        }
     }
 }

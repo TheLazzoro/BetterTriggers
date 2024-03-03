@@ -10,7 +10,7 @@ namespace BetterTriggers.Models.EditorData
         {
             function.value = "AndMultiple";
             Elements = new();
-            Elements.Add(And);
+            And.SetParent(this, 0);
         }
 
         public override AndMultiple Clone()

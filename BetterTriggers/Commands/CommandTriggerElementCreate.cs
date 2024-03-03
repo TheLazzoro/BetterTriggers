@@ -8,10 +8,10 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Create Trigger Element";
         TriggerElement triggerElement;
-        TriggerElementCollection parent;
+        TriggerElement parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementCreate(TriggerElement triggerElement, TriggerElementCollection parent, int insertIndex)
+        public CommandTriggerElementCreate(TriggerElement triggerElement, TriggerElement parent, int insertIndex)
         {
             this.triggerElement = triggerElement;
             this.parent = parent;

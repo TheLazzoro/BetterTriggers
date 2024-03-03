@@ -34,10 +34,10 @@ namespace GUI.Components
         int insertIndex = 0;
         TreeViewItem treeItemParentDropTarget;
 
-        private TreeViewItem selectedElement;
-        private TreeViewItem selectedElementEnd;
-        private List<TreeViewItem> selectedElements = new List<TreeViewItem>();
-        private List<TreeViewItem> selectedItems = new List<TreeViewItem>();
+        private TriggerElement selectedElement;
+        private TriggerElement selectedElementEnd;
+        private List<TriggerElement> selectedElements = new ();
+        private List<TriggerElement> selectedItems = new ();
 
         // attaches to a treeviewitem
         AdornerLayer adorner;
@@ -84,31 +84,62 @@ namespace GUI.Components
 
         public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)
         {
-            var explorerElement = treeViewTriggers.ItemContainerGenerator.ItemFromContainer(item) as TriggerElement;
-            return explorerElement;
+            var parent = GetTreeItemParent(item);
+            var triggerElement = parent.ItemContainerGenerator.ItemFromContainer(item) as TriggerElement;
+            return triggerElement;
         }
 
         public TreeViewItem? GetTreeViewItemFromTriggerElement(TriggerElement triggerElement)
         {
-            var treeViewItem = treeViewTriggers.ItemContainerGenerator.ContainerFromItem(triggerElement) as TreeViewItem;
+            List<TriggerElement> list = new();
+            TreeViewItem? treeViewItem = null;
+
+            // walks up the element hierarchy until a parent attached to the TreeView is found.
+            while (treeViewItem == null)
+            {
+                treeViewItem = treeViewTriggers.ItemContainerGenerator.ContainerFromItem(triggerElement) as TreeViewItem;
+                if(treeViewItem == null)
+                {
+                    list.Add(triggerElement);
+                    triggerElement = triggerElement.GetParent();
+                }
+            }
+
+            // walks down the tree until the TreeViewItem has been pulled out.
+            for (int i = list.Count-1; i >= 0; i--)
+            {
+                var element = list[i];
+                treeViewItem = treeViewItem.ItemContainerGenerator.ContainerFromItem(element) as TreeViewItem;
+            }
+            
             return treeViewItem;
+        }
+
+        private ItemsControl GetTreeItemParent(TreeViewItem item)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(item);
+            while (!(parent is TreeViewItem || parent is TreeView))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return parent as ItemsControl;
         }
 
         private void TreeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var triggerElement = GetTriggerElementFromItem(treeViewTriggers.SelectedItem as TreeViewItem);
-            if (triggerElement is TriggerElementCollection)
+            var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
+            if (triggerElement == null)
             {
                 this.selectedItems = SelectItemsMultiple(null, null);
                 return;
             }
 
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                selectedElementEnd = (TreeViewItem)treeViewTriggers.SelectedItem;
+                selectedElementEnd = (TriggerElement)treeViewTriggers.SelectedItem;
             else
             {
-                selectedElement = (TreeViewItem)treeViewTriggers.SelectedItem;
-                selectedElementEnd = (TreeViewItem)treeViewTriggers.SelectedItem;
+                selectedElement = triggerElement;
+                selectedElementEnd = triggerElement;
             }
 
             this.selectedItems = SelectItemsMultiple(selectedElement, selectedElementEnd);
@@ -189,10 +220,9 @@ namespace GUI.Components
             menu.ShowDialog();
             ECA eca = menu.createdTriggerElement;
 
-            TriggerElementCollection parent = null;
-            var selected = treeViewTriggers.SelectedItem as TreeViewItem;
-            var selectedTriggerElement = GetTriggerElementFromItem(selected);
-            if (selectedTriggerElement == null)
+            TriggerElement parent = null;
+            var selected = treeViewTriggers.SelectedItem as TriggerElement;
+            if (selected == null)
             {
                 switch (type)
                 {
@@ -207,17 +237,17 @@ namespace GUI.Components
                         break;
                 }
             }
-            if (selectedTriggerElement is ECA)
+            if (selected is ECA)
             {
-                var selectedTreeItem = (ECA)selectedTriggerElement;
+                var selectedTreeItem = (ECA)selected;
                 var node = selectedTreeItem.GetParent();
                 if (node.ElementType == type) // valid parent if 'created' matches 'selected' type
                 {
                     parent = node;
-                    insertIndex = parent.IndexOf(selectedTriggerElement);
+                    insertIndex = parent.IndexOf(selected);
                 }
             }
-            else if (selectedTriggerElement is TriggerElementCollection node)
+            else if (selected is TriggerElementCollection node)
             {
                 if (node.ElementType == type)
                 {
@@ -336,9 +366,10 @@ namespace GUI.Components
         private void StartDrag(MouseEventArgs e)
         {
             _IsDragging = true;
-            dragItem = this.treeViewTriggers.SelectedItem as TreeViewItem;
+            var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
+            var treeItem = GetTreeViewItemFromTriggerElement(treeViewTriggers.SelectedItem as TriggerElement);
+            dragItem = treeItem;
 
-            var triggerElement = GetTriggerElementFromItem(dragItem);
             if (dragItem == null || triggerElement.IsRenaming)
             {
                 _IsDragging = false;
@@ -374,9 +405,13 @@ namespace GUI.Components
             if (!dragItem.IsKeyboardFocused)
                 return;
 
-            TreeViewItem currentParent = (TreeViewItem)dragItem.Parent;
+            var dragItemTriggerElement = GetTriggerElementFromItem(dragItem);
+            if (dragItemTriggerElement is TriggerElementCollection)
+                return;
+
+            var currentParent = GetTreeItemParent(dragItem);
             TreeViewItem dropTarget = GetTraversedTargetDropItem(e.Source as DependencyObject);
-            int currentIndex = currentParent.Items.IndexOf(dragItem);
+            int currentIndex = currentParent.Items.IndexOf(dragItemTriggerElement);
             if (dropTarget == null)
                 return;
 
@@ -399,7 +434,7 @@ namespace GUI.Components
             var parentOfDragItem = triggerElementDragItem.GetParent();
             var parentOfDropTarget = triggerElementDropTarget.GetParent();
 
-            if (parentOfDragItem.ElementType != parentOfDropTarget.ElementType)
+            if (triggerElementDropTarget is not TriggerElementCollection && parentOfDragItem.ElementType != parentOfDropTarget.ElementType)
             {
                 treeItemParentDropTarget = null;
                 return;
@@ -415,8 +450,8 @@ namespace GUI.Components
                     lineIndicator = new TreeItemAdornerLine(dropTarget, true);
                     adorner.Add(lineIndicator);
 
-                    treeItemParentDropTarget = (TreeViewItem)dropTarget.Parent;
-                    insertIndex = treeItemParentDropTarget.Items.IndexOf(dropTarget);
+                    var parentDropTarget = triggerElementDropTarget.GetParent();
+                    insertIndex = parentDropTarget.IndexOf(triggerElementDropTarget);
                 }
                 else
                 {
@@ -424,8 +459,8 @@ namespace GUI.Components
                     lineIndicator = new TreeItemAdornerLine(dropTarget, false);
                     adorner.Add(lineIndicator);
 
-                    treeItemParentDropTarget = (TreeViewItem)dropTarget.Parent;
-                    insertIndex = treeItemParentDropTarget.Items.IndexOf(dropTarget) + 1;
+                    var parentDropTarget = triggerElementDropTarget.GetParent();
+                    insertIndex = parentDropTarget.IndexOf(triggerElementDropTarget) + 1;
                 }
 
                 // We detach the item before inserting, so the index goes one down.
@@ -517,23 +552,29 @@ namespace GUI.Components
         /// <param name="startElement"></param>
         /// <param name="endElement"></param>
         /// <returns></returns>
-        public List<TreeViewItem> SelectItemsMultiple(TreeViewItem startElement, TreeViewItem endElement)
+        public List<TriggerElement> SelectItemsMultiple(TriggerElement startElement, TriggerElement endElement)
         {
-            // visually deselect old items
+            // deselect old items
             for (int i = 0; i < selectedElements.Count; i++)
             {
-                selectedElements[i].Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                selectedElements[i].IsSelected = false;
             }
             if (startElement == null && endElement == null)
                 return null;
 
-            selectedElements = new List<TreeViewItem>();
-            if (startElement.Parent == endElement.Parent)
+            // Prepare selection
+            selectedElements = new List<TriggerElement>();
+            var startTreeItem = GetTreeViewItemFromTriggerElement(startElement);
+            var endTreeItem = GetTreeViewItemFromTriggerElement(endElement);
+            var startParent = GetTreeItemParent(startTreeItem);
+            var endParent = GetTreeItemParent(endTreeItem);
+            if (startParent == endParent)
             {
-                var parent = (TreeViewItem)startElement.Parent;
+                var parent = startParent;
 
-                TreeViewItem correctedStartElement;
-                TreeViewItem correctedEndElement;
+                // in case selected goes from bottom to top.
+                TriggerElement correctedStartElement;
+                TriggerElement correctedEndElement;
                 if (parent.Items.IndexOf(startElement) < parent.Items.IndexOf(endElement))
                 {
                     correctedStartElement = startElement;
@@ -549,16 +590,16 @@ namespace GUI.Components
                 int size = parent.Items.IndexOf(correctedEndElement) - parent.Items.IndexOf(correctedStartElement);
                 for (int i = 0; i <= size; i++)
                 {
-                    selectedElements.Add((TreeViewItem)parent.Items[startIndex + i]);
+                    selectedElements.Add((TriggerElement)parent.Items[startIndex + i]);
                 }
             }
             else
                 selectedElements.Add(endElement);
 
-            // visually select elements
+            // select elements
             for (int i = 0; i < selectedElements.Count; i++)
             {
-                selectedElements[i].Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#aa357EC7");
+                selectedElements[i].IsSelected = true;
             }
 
             return selectedElements;
@@ -663,7 +704,7 @@ namespace GUI.Components
             TriggerElementCollection elementsToDelete = new (selectedElement.ElementType);
             for (int i = 0; i < selectedItems.Count; i++)
             {
-                var triggerElement = GetTriggerElementFromItem(selectedItems[i]);
+                var triggerElement = selectedItems[i];
                 if (triggerElement != null)
                     elementsToDelete.Elements.Add(triggerElement);
             }
@@ -712,7 +753,7 @@ namespace GUI.Components
             TriggerElementCollection triggerElements = new(selectedElement.ElementType);
             for (int i = 0; i < selectedItems.Count; i++)
             {
-                var triggerElement = GetTriggerElementFromItem(selectedItems[i]);
+                var triggerElement = selectedItems[i];
                 if (triggerElement != null)
                     triggerElements.Elements.Add(triggerElement);
             }
@@ -725,7 +766,7 @@ namespace GUI.Components
             if (selected == null)
                 return;
 
-            TriggerElementCollection? attachTarget = null;
+            TriggerElement? attachTarget = null;
             int insertIndex = 0;
             var selectedElement = GetTriggerElementFromItem(selected);
             if (selectedElement is TriggerElementCollection collection)
@@ -882,7 +923,7 @@ namespace GUI.Components
             }
         }
 
-        private void ContextMenuDisableNodeTypes(TriggerElementCollection node)
+        private void ContextMenuDisableNodeTypes(TriggerElement node)
         {
             if (node.ElementType == TriggerElementType.Event)
             {
@@ -956,7 +997,7 @@ namespace GUI.Components
 
         private void menuRename_Click(object sender, RoutedEventArgs e)
         {
-            var triggerElement = GetTriggerElementFromItem(selectedElementEnd);
+            var triggerElement = selectedElementEnd;
             if (selectedElementEnd == null || triggerElement is not LocalVariable)
                 return;
 
@@ -988,7 +1029,7 @@ namespace GUI.Components
             if (selectedElementEnd == null)
                 return;
 
-            var eca = GetTriggerElementFromItem(selectedElementEnd) as ECA;
+            var eca = selectedElementEnd as ECA;
             CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(eca);
             command.Execute();
         }
@@ -1001,8 +1042,7 @@ namespace GUI.Components
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem doubleClicked = selectedElementEnd;
-            ReplaceTriggerElement(doubleClicked);
+            ReplaceTriggerElement(selectedElementEnd);
         }
 
         private void treeViewItem_KeyDown(object sender, KeyEventArgs e)
@@ -1011,12 +1051,12 @@ namespace GUI.Components
                 ReplaceTriggerElement(selectedElementEnd);
         }
 
-        private void ReplaceTriggerElement(TreeViewItem toReplace)
+        private void ReplaceTriggerElement(TriggerElement toReplace)
         {
-            if (toReplace == null)
+            var eca = toReplace as ECA;
+            if (eca == null)
                 return;
 
-            var eca = (ECA)GetTriggerElementFromItem(toReplace);
 
             TriggerElementType elementType;
             if (eca.ElementType == TriggerElementType.Event)
@@ -1035,8 +1075,6 @@ namespace GUI.Components
             if (selected == null || selected.function.value == eca.function.value)
                 return;
 
-            TreeViewItem parent = toReplace.Parent as TreeViewItem;
-            int index = parent.Items.IndexOf(toReplace);
             CommandTriggerElementReplace command = new CommandTriggerElementReplace(eca, selected);
             command.Execute();
         }
@@ -1067,7 +1105,7 @@ namespace GUI.Components
             if (selectionIsNull)
                 return;
 
-            var triggerElement = GetTriggerElementFromItem(selectedElementEnd);
+            var triggerElement = selectedElementEnd;
 
             bool isECA = triggerElement is ECA;
             bool isLocalVar = triggerElement is LocalVariable;

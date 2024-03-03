@@ -13,7 +13,7 @@ namespace BetterTriggers.Commands
         string commandName = "Delete Trigger Element";
         ExplorerElement explorerElement;
         TriggerElementCollection elementsToDelete;
-        TriggerElementCollection Parent;
+        TriggerElement Parent;
         int insertIndex = 0;
 
         List<RefCollection> refCollections = new List<RefCollection>();

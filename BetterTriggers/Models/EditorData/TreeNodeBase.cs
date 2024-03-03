@@ -16,6 +16,7 @@ namespace BetterTriggers.Models.EditorData
         private string _category;
         private byte[] _icon;
         private bool _isRenaming;
+        private Visibility _iconVisibility = Visibility.Visible;
         private Visibility _renameBoxVisibility = Visibility.Hidden;
         private Visibility _checkBoxVisibility = Visibility.Hidden;
 
@@ -39,7 +40,15 @@ namespace BetterTriggers.Models.EditorData
             get => _icon;
         }
 
-        public bool IsIconVisible { get; set; } = true;
+        public Visibility IsIconVisible
+        {
+            get => _iconVisibility;
+            set
+            {
+                _iconVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Visibility RenameBoxVisibility
         {

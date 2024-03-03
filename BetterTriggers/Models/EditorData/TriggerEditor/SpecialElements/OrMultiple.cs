@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -10,7 +11,7 @@ namespace BetterTriggers.Models.EditorData
         {
             function.value = "OrMultiple";
             Elements = new();
-            Elements.Add(Or);
+            Or.SetParent(this, 0);
         }
 
         public override OrMultiple Clone()

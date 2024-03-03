@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Animation;
+using War3Net.Build.Script;
 
 namespace BetterTriggers.Containers
 {
@@ -53,6 +54,8 @@ namespace BetterTriggers.Containers
             localVariable.variable.Type = "integer";
             localVariable.variable.ArraySize = new int[] { 1, 1 };
             localVariable.variable.InitialValue = new Value() { value = "0" };
+            localVariable.DisplayText = localVariable.variable.Name;
+            localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
 
             CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable, parent, insertIndex);
             command.Execute();

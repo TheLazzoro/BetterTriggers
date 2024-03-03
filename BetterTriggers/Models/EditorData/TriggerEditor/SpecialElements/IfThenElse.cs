@@ -13,9 +13,12 @@ namespace BetterTriggers.Models.EditorData
         {
             function.value = "IfThenElseMultiple";
             Elements = new();
-            Elements.Add(If);
-            Elements.Add(Then);
-            Elements.Add(Else);
+            If.SetParent(this, 0);
+            Then.SetParent(this, 1);
+            Else.SetParent(this, 2);
+            If.DisplayText = "If - Conditions";
+            Then.DisplayText = "Then - Actions";
+            Else.DisplayText = "Else - Actions";
         }
 
         public override IfThenElse Clone()

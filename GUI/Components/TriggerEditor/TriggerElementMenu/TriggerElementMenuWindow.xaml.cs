@@ -5,6 +5,7 @@ using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
+using GUI.Utility;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,6 @@ namespace GUI.Components.TriggerEditor
     public partial class TriggerElementMenuWindow : Window
     {
         public ECA createdTriggerElement;
-        TriggerElementType triggerElementType;
 
         private TriggerElementMenuViewModel _viewModel;
 
@@ -34,7 +34,13 @@ namespace GUI.Components.TriggerEditor
             this.Left = settings.triggerWindowX;
             this.Top = settings.triggerWindowY;
 
-            this.triggerElementType = triggerElementType;
+            Closing += TriggerElementMenuWindow_Closing;
+        }
+
+        private void TriggerElementMenuWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+            createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(createdTriggerElement);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -47,11 +53,11 @@ namespace GUI.Components.TriggerEditor
             };
             listControl.listView.SelectionChanged += delegate
             {
-                ListViewItem item = (ListViewItem)listControl.listView.SelectedItem;
+                var item = listControl.listView.SelectedItem as ListItemFunctionTemplate;
                 if (item == null)
                     return;
 
-                selected = (ECA)item.Tag;
+                selected = item.eca;
                 textBoxDescription.Text = Locale.Translate(selected.function.value);
             };
             listControl.listView.MouseDoubleClick += delegate
@@ -59,20 +65,16 @@ namespace GUI.Components.TriggerEditor
                 createdTriggerElement = selected;
                 this.Close();
             };
-            listControl.ShowIconsChanged += ListControl_ShowIconsChanged;
 
-
-            Init();
-        }
-
-        private void Init()
-        {
             var searchables = _viewModel.Searchables;
             listControl.SetSearchableList(searchables);
 
             var selectedListItem = listControl.listView.ItemContainerGenerator.ContainerFromItem(_viewModel.Selected) as ListViewItem;
-            listControl.listView.ScrollIntoView(selectedListItem);
-            selectedListItem.Focus();
+            if (selectedListItem != null)
+            {
+                listControl.listView.ScrollIntoView(selectedListItem);
+                selectedListItem.Focus();
+            }
             listControl.checkBoxShowIcons.Visibility = Visibility.Visible;
 
             var categoryControl = new GenericCategoryControl(searchables);
@@ -92,13 +94,6 @@ namespace GUI.Components.TriggerEditor
         {
             this.Close();
         }
-
-
-        private void ListControl_ShowIconsChanged()
-        {
-            Init();
-        }
-
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {

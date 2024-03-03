@@ -11,7 +11,8 @@ namespace BetterTriggers.Models.EditorData
     {
         public TriggerElementType ElementType { get; set; }
         public ObservableCollection<TriggerElement>? Elements { get; set; }
-        private TriggerElementCollection? Parent;
+        public bool IsSelected { get; set; }
+        private TriggerElement? Parent;
 
         public virtual TriggerElement Clone()
         {
@@ -23,7 +24,7 @@ namespace BetterTriggers.Models.EditorData
             throw new Exception("'Serialize' method must be overriden.");
         }
 
-        public void SetParent(TriggerElementCollection Parent, int insertIndex)
+        public void SetParent(TriggerElement Parent, int insertIndex)
         {
             Parent?.Elements?.Insert(insertIndex, this);
             this.Parent = Parent;
@@ -35,7 +36,7 @@ namespace BetterTriggers.Models.EditorData
             this.Parent = null;
         }
 
-        public TriggerElementCollection? GetParent()
+        public TriggerElement? GetParent()
         {
             return this.Parent;
         }
@@ -43,6 +44,21 @@ namespace BetterTriggers.Models.EditorData
         public void SetParent(TriggerElementCollection parent)
         {
             this.Parent = parent;
+        }
+
+        public int Count()
+        {
+            return Elements.Count;
+        }
+
+        public void Insert(TriggerElement triggerElement, int insertIndex)
+        {
+            Elements.Insert(insertIndex, triggerElement);
+        }
+
+        public int IndexOf(TriggerElement element)
+        {
+            return Elements.IndexOf(element);
         }
     }
 }
