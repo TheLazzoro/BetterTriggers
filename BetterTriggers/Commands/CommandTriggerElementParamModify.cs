@@ -23,8 +23,9 @@ namespace BetterTriggers.Commands
         Parameter setVarValueOld; // TODO: Why is this not used?
         Parameter setVarValueNew;
 
-        public CommandTriggerElementParamModify(ECA eca, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(ExplorerElement explorerElement, ECA eca, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
+            this.explorerElement = explorerElement;
             this.eca = eca;
             this.paramCollection = paramCollection;
             this.paramIndex = paramIndex;
@@ -70,6 +71,8 @@ namespace BetterTriggers.Commands
                 }
             }
 
+            explorerElement.InvokeChange();
+
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -83,12 +86,14 @@ namespace BetterTriggers.Commands
 
             paramCollection[paramIndex] = paramToAdd;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
             paramCollection[paramIndex] = oldParameter;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

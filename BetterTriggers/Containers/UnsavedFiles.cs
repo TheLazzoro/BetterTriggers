@@ -9,36 +9,30 @@ namespace BetterTriggers.Containers
 {
     public class UnsavedFiles
     {
-        private List<ExplorerElement> unsavedFiles = new List<ExplorerElement>();
+        private HashSet<ExplorerElement> unsavedFiles = new();
 
         public void AddToUnsaved(ExplorerElement element)
         {
-            if (unsavedFiles.Contains(element))
-                return;
-
             unsavedFiles.Add(element);
-            element.HasUnsavedChanges = true;
         }
 
         public void RemoveFromUnsaved(ExplorerElement element)
         {
             unsavedFiles.Remove(element);
-            element.HasUnsavedChanges = false;
         }
 
-        internal List<ExplorerElement> GetAllUnsaved()
+        public void SaveAll()
         {
-            return unsavedFiles;
+            foreach (ExplorerElement element in unsavedFiles)
+            {
+                element.Save();
+            }
+            unsavedFiles.Clear();
         }
 
         internal int Count()
         {
             return unsavedFiles.Count;
-        }
-
-        public void Clear()
-        {
-            unsavedFiles.Clear();
         }
     }
 }

@@ -11,8 +11,27 @@ namespace BetterTriggers.Models.EditorData
     {
         public TriggerElementType ElementType { get; set; }
         public ObservableCollection<TriggerElement>? Elements { get; set; }
-        public bool IsSelected { get; set; }
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set
+            {
+                _isExpanded = value;
+                OnPropertyChanged();
+            }
+        }
         private TriggerElement? Parent;
+        private bool _isSelected;
+        private bool _isExpanded = true;
 
         public virtual TriggerElement Clone()
         {
@@ -39,11 +58,6 @@ namespace BetterTriggers.Models.EditorData
         public TriggerElement? GetParent()
         {
             return this.Parent;
-        }
-
-        public void SetParent(TriggerElementCollection parent)
-        {
-            this.Parent = parent;
         }
 
         public int Count()

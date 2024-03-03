@@ -7,7 +7,7 @@ using War3Net.Build.Info;
 
 namespace GUI.Components
 {
-    public partial class ScriptControl : UserControl, IEditor
+    public partial class ScriptControl : UserControl
     {
         internal TextEditor textEditor;
         private ExplorerElement explorerElementScript;

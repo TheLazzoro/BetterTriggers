@@ -17,15 +17,24 @@ namespace BetterTriggers.Models.EditorData
     public class ExplorerElement : TreeNodeBase
     {
         public ExplorerElementEnum ElementType { get; private set; }
-        public string path { get; set; }
+        public string path
+        {
+            get => _path;
+            set
+            {
+                _path = value;
+                DisplayText = Path.GetFileNameWithoutExtension(value);
+            }
+        }
         public ExplorerElement Parent { get; set; }
         public ObservableCollection<ExplorerElement> ExplorerElements { get; set; } = new();
-        public bool HasUnsavedChanges { get; set; }
         public bool isEnabled { get; set; } = true;
         public bool isInitiallyOn { get; set; } = true;
         public bool isExpanded { get; set; } = false;
         public event Action OnReload;
         public event Action OnChanged;
+        public event Action OnSaved;
+        private string _path;
         private DateTime LastWrite;
         private long Size;
 
@@ -54,7 +63,6 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement(string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
         {
             this.path = path;
-            this.DisplayText = Path.GetFileNameWithoutExtension(path);
             string extension = Path.GetExtension(path);
             bool isReadyForRead = false;
             int sleepTolerance = 100;
@@ -130,7 +138,7 @@ namespace BetterTriggers.Models.EditorData
                     break;
             }
 
-            if(explicitType == ExplorerElementEnum.Root)
+            if (explicitType == ExplorerElementEnum.Root)
             {
                 var project = Project.CurrentProject;
                 DisplayText = Path.GetFileNameWithoutExtension(project.war3project.Name);
@@ -367,7 +375,8 @@ namespace BetterTriggers.Models.EditorData
                     break;
             }
 
-            HasUnsavedChanges = false;
+            RemoveFromUnsaved();
+            OnSaved?.Invoke();
         }
 
 
@@ -416,6 +425,12 @@ namespace BetterTriggers.Models.EditorData
             {
                 OnReload?.Invoke();
             }
+        }
+
+        public void InvokeChange()
+        {
+            OnChanged?.Invoke();
+            AddToUnsaved();
         }
 
         public List<ExplorerElement> GetReferrers()

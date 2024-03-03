@@ -146,11 +146,16 @@
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
                     <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
                     <EventSetter Event="TreeViewItem.KeyDown" Handler="treeViewItem_KeyDown"/>
+                    <EventSetter Event="TreeViewItem.Expanded" Handler="treeViewItem_IsExpanded"/>
+                    <EventSetter Event="TreeViewItem.Collapsed" Handler="treeViewItem_IsCollapsed"/>
                     <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
 
                     <Style.Triggers>
-                        <DataTrigger Binding ="{Binding IsSelected}" Value="True" >
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True" >
                             <Setter Property="Background" Value="#aa357EC7" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsExpanded}" Value="True" >
+                            <Setter Property="IsExpanded" Value="True" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

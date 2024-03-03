@@ -18,14 +18,16 @@ namespace GUI.Components.TriggerEditor
         private ECA eca;
         private readonly string returnType;
         List<Parameter> parameters;
+        ExplorerElement explorerElement;
 
-        public HyperlinkParameterTrigger(ECA eca, string text, List<Parameter> parameters, int index, string returnType)
+        public HyperlinkParameterTrigger(ExplorerElement explorerElement, ECA eca, string text, List<Parameter> parameters, int index, string returnType)
             : base(parameters[index], text)
         {
             this.parameters = parameters;
             this.index = index;
             this.returnType = returnType;
             this.eca = eca;
+            this.explorerElement = explorerElement;
 
             this.Click += HyperlinkParameter_Click;
         }
@@ -38,7 +40,7 @@ namespace GUI.Components.TriggerEditor
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(eca, parameters, index, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(explorerElement, eca, parameters, index, window.selectedParameter);
                 command.Execute();
             }
         }

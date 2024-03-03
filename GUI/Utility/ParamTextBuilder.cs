@@ -22,6 +22,7 @@ namespace GUI.Utility
         private Project project;
         private Variable _variable;
         private ECA _eca;
+        private ExplorerElement _explorerElement;
 
         public ParamTextBuilder()
         {
@@ -190,8 +191,10 @@ namespace GUI.Utility
             return Inlines;
         }
 
-        public List<Inline> GenerateParamText(ECA eca)
+        public List<Inline> GenerateParamText(ExplorerElement explorerElement, ECA eca)
         {
+            _eca = eca;
+            _explorerElement = explorerElement;
             List<Inline> Inlines = new List<Inline>();
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
             string paramText = TriggerData.GetParamText(eca.function);
@@ -375,7 +378,7 @@ namespace GUI.Utility
             HyperlinkBT hyperlinkBT;
             if (_eca != null)
             {
-                hyperlinkBT = new HyperlinkParameterTrigger(_eca, text, parameters, index, returnType);
+                hyperlinkBT = new HyperlinkParameterTrigger(_explorerElement, _eca, text, parameters, index, returnType);
             }
             else
             {

@@ -40,9 +40,21 @@ namespace GUI.Components.Tabs
         public TabItemBT(ExplorerElement explorerElement, UserControl editor, TabViewModel parent)
         {
             this.explorerElement = explorerElement;
+            explorerElement.OnChanged += ExplorerElement_OnChanged;
+            explorerElement.OnSaved += ExplorerElement_OnSaved;
             Header = explorerElement.GetName();
             Content = editor;
             Parent = parent;
+        }
+
+        private void ExplorerElement_OnChanged()
+        {
+            Header = explorerElement.GetName() + " *";
+        }
+
+        private void ExplorerElement_OnSaved()
+        {
+            Header = explorerElement.GetName();
         }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -53,9 +65,11 @@ namespace GUI.Components.Tabs
         public void Close()
         {
             Parent.Tabs.Remove(this);
+            explorerElement.OnChanged -= ExplorerElement_OnChanged;
+            explorerElement.OnSaved -= ExplorerElement_OnSaved;
             if (Content is TriggerControl triggerControl)
                 triggerControl.Dispose();
-            
+
         }
     }
 }

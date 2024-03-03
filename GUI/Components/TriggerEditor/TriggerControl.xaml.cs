@@ -20,7 +20,7 @@ using System.Windows.Media;
 
 namespace GUI.Components
 {
-    public partial class TriggerControl : UserControl, IEditor
+    public partial class TriggerControl : UserControl
     {
         public TriggerControlViewModel ViewModel { get; }
 
@@ -71,6 +71,7 @@ namespace GUI.Components
             ShowTextEditor(explorerElement.trigger.IsScript);
 
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
+            explorerElement.OnChanged += ExplorerElement_OnChanged;
 
             // TODO: REFACTOR
             //TreeViewItem.OnMouseEnter += TreeViewItem_OnMouseEnter;
@@ -216,7 +217,7 @@ namespace GUI.Components
                 return;
             }
 
-            var menu = new TriggerElementMenuWindow(type);
+            var menu = new TriggerElementMenuWindow(explorerElementTrigger, type);
             menu.ShowDialog();
             ECA eca = menu.createdTriggerElement;
 
@@ -299,7 +300,7 @@ namespace GUI.Components
                 Grid.SetRowSpan(treeViewTriggers, 1);
             }
 
-            var item = treeViewTriggers.SelectedItem as TreeViewItem;
+            var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
             textblockParams.Inlines.Clear();
             textblockDescription.Text = string.Empty;
 
@@ -310,17 +311,16 @@ namespace GUI.Components
                 grid.Children.Remove(variableControl);
             }
 
-            if (item == null)
+            if (triggerElement == null)
                 return;
-
-            var triggerElement = GetTriggerElementFromItem(item);
 
             if (triggerElement is ECA eca)
             {
                 ParamTextBuilder controllerTriggerTreeItem = new ParamTextBuilder();
-                var inlines = controllerTriggerTreeItem.GenerateParamText(eca);
+                var inlines = controllerTriggerTreeItem.GenerateParamText(explorerElementTrigger, eca);
                 textblockParams.Inlines.AddRange(inlines);
                 textblockDescription.Text = Locale.Translate(eca.function.value);
+                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(eca);
             }
             else if (triggerElement is LocalVariable localVar)
             {
@@ -439,6 +439,11 @@ namespace GUI.Components
                 treeItemParentDropTarget = null;
                 return;
             }
+            if (dragItemTriggerElement.ElementType != triggerElementDropTarget.ElementType)
+            {
+                treeItemParentDropTarget = null;
+                return;
+            }
 
             if (triggerElementDropTarget is ECA || triggerElementDropTarget is LocalVariable)
             {
@@ -476,6 +481,8 @@ namespace GUI.Components
                 treeItemParentDropTarget = dropTarget;
                 insertIndex = 0;
             }
+
+            e.Handled = true;
         }
 
 
@@ -603,6 +610,28 @@ namespace GUI.Components
             }
 
             return selectedElements;
+        }
+
+        private void treeViewItem_IsExpanded(object sender, RoutedEventArgs e)
+        {
+            var treeItem = sender as TreeViewItem;
+            bool isDisconnected = VisualTreeHelper.GetParent(treeItem) == null;
+            if (isDisconnected)
+                return;
+
+            var triggerElement = GetTriggerElementFromItem(sender as TreeViewItem);
+            triggerElement.IsExpanded = true;
+        }
+
+        private void treeViewItem_IsCollapsed(object sender, RoutedEventArgs e)
+        {
+            var treeItem = sender as TreeViewItem;
+            bool isDisconnected = VisualTreeHelper.GetParent(treeItem) == null;
+            if (isDisconnected)
+                return;
+
+            var triggerElement = GetTriggerElementFromItem(sender as TreeViewItem);
+            triggerElement.IsExpanded = false;
         }
 
         /// <summary>
@@ -1068,7 +1097,7 @@ namespace GUI.Components
             else
                 return;
 
-            TriggerElementMenuWindow window = new TriggerElementMenuWindow(elementType, eca);
+            TriggerElementMenuWindow window = new TriggerElementMenuWindow(explorerElementTrigger, elementType, eca);
             window.ShowDialog();
             ECA selected = window.createdTriggerElement;
 
@@ -1113,9 +1142,9 @@ namespace GUI.Components
             menuRename.IsEnabled = isLocalVar;
         }
 
-        public void OnStateChange()
+        private void ExplorerElement_OnChanged()
         {
-            throw new NotImplementedException();
+            RefreshBottomControls();
         }
     }
 }

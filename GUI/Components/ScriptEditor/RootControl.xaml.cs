@@ -7,7 +7,7 @@ using War3Net.Build.Info;
 
 namespace GUI.Components
 {
-    public partial class RootControl : UserControl, IEditor
+    public partial class RootControl : UserControl
     {
         public TextEditor textEditor;
 

@@ -18,11 +18,13 @@ namespace GUI.Components.TriggerEditor
         public ECA createdTriggerElement;
 
         private TriggerElementMenuViewModel _viewModel;
+        private ExplorerElement explorerElement;
 
-        public TriggerElementMenuWindow(TriggerElementType triggerElementType, ECA previous = null)
+        public TriggerElementMenuWindow(ExplorerElement explorerElement, TriggerElementType triggerElementType, ECA previous = null)
         {
             InitializeComponent();
 
+            this.explorerElement = explorerElement;
             _viewModel = new TriggerElementMenuViewModel(triggerElementType, previous);
             DataContext = _viewModel;
 

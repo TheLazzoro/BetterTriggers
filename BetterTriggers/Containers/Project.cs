@@ -140,13 +140,7 @@ namespace BetterTriggers.Containers
             EnableFileEvents(false);
 
             // Write to unsaved
-            var unsaved = UnsavedFiles.GetAllUnsaved();
-            for (int i = 0; i < UnsavedFiles.Count(); i++)
-            {
-                var element = unsaved[i];
-                element.Save();
-            }
-            UnsavedFiles.Clear();
+            UnsavedFiles.SaveAll();
 
             // Write to project file
             var root = projectFiles[0];

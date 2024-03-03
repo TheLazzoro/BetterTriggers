@@ -1,16 +1,7 @@
 ﻿using BetterTriggers.Models.SaveableData;
-using ICSharpCode.Decompiler.DebugInfo;
-using ICSharpCode.Decompiler.IL;
-using Microsoft.CodeAnalysis.Operations;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -21,9 +12,9 @@ namespace BetterTriggers.Models.EditorData
         /// <summary>
         /// Transforms a trigger into a saveable trigger.
         /// </summary>
-        public static string Serialize(EditorData.Trigger trigger)
+        public static string Serialize(Trigger trigger)
         {
-            SaveableData.Trigger_Saveable saveableTrig = new SaveableData.Trigger_Saveable();
+            SaveableData.Trigger_Saveable saveableTrig = new Trigger_Saveable();
             saveableTrig.Id = trigger.Id;
             saveableTrig.Script = trigger.Script;
             saveableTrig.IsScript = trigger.IsScript;
@@ -350,7 +341,7 @@ namespace BetterTriggers.Models.EditorData
                 }
 
                 if (converted != null)
-                    collection.Elements.Add(converted);
+                    converted.SetParent(collection, i);
 
             }
 

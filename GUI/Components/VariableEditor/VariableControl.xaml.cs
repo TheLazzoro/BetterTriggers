@@ -27,7 +27,7 @@ using System.Windows.Shapes;
 
 namespace GUI.Components
 {
-    public partial class VariableControl : UserControl, IEditor
+    public partial class VariableControl : UserControl
     {
         public event Action OnChange;
 

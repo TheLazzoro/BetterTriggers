@@ -2,6 +2,7 @@
 {
     public enum TriggerElementType
     {
+        None,
         Event,
         Condition,
         LocalVariable,

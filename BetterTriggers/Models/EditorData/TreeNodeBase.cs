@@ -30,14 +30,19 @@ namespace BetterTriggers.Models.EditorData
             {
                 _displayText = value;
                 RenameText = value;
+                OnPropertyChanged();
             }
         }
         public string RenameText { get; set; }
 
         public byte[] IconImage
         {
-            set => _icon = value;
             get => _icon;
+            set
+            {
+                _icon = value;
+                OnPropertyChanged();
+            }
         }
 
         public Visibility IsIconVisible

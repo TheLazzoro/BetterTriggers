@@ -293,10 +293,10 @@ namespace BetterTriggers.WorldEdit
 
             // --- TRIGGER FUNCTIONS --- //
 
-            LoadFunctions(data, "TriggerEvents", EventTemplates);
-            LoadFunctions(data, "TriggerConditions", ConditionTemplates);
-            LoadFunctions(data, "TriggerActions", ActionTemplates);
-            LoadFunctions(data, "TriggerCalls", CallTemplates);
+            LoadFunctions(data, "TriggerEvents", EventTemplates, TriggerElementType.Event);
+            LoadFunctions(data, "TriggerConditions", ConditionTemplates, TriggerElementType.Condition);
+            LoadFunctions(data, "TriggerActions", ActionTemplates, TriggerElementType.Action);
+            LoadFunctions(data, "TriggerCalls", CallTemplates, TriggerElementType.None);
 
             // --- INIT DEFAULTS --- //
             foreach (var function in Defaults)
@@ -337,7 +337,7 @@ namespace BetterTriggers.WorldEdit
         }
 
 
-        private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary)
+        private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary, TriggerElementType Type)
         {
             var section = data.Sections[sectionName];
             if (section == null)
@@ -430,7 +430,7 @@ namespace BetterTriggers.WorldEdit
                     // Some actions have 'nothing' as a parameter type. We don't want that.
                     parameters = parameters.Where(p => p.returnType != "nothing").ToList();
                     name = key;
-                    functionTemplate = new FunctionTemplate();
+                    functionTemplate = new FunctionTemplate(Type);
                     functionTemplate.value = key;
                     functionTemplate.parameters = parameters;
                     functionTemplate.returnType = returnType;
