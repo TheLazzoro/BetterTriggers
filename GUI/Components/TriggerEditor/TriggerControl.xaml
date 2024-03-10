@@ -125,7 +125,9 @@
                   KeyDown="treeViewTriggers_KeyDown"
                   MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp"
                   ContextMenuOpening="treeViewTriggers_ContextMenuOpening"
-                  PreviewKeyDown="treeViewTriggers_PreviewKeyDown">
+                  MouseDown="treeViewTriggers_MouseDown"
+                  >
+                  <!-- PreviewKeyDown="treeViewTriggers_PreviewKeyDown" -->
             <TreeView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                 Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />

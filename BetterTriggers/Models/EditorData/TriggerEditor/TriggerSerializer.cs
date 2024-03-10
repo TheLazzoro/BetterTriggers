@@ -322,6 +322,7 @@ namespace BetterTriggers.Models.EditorData
 
                     eca.function = ConvertFunction_Deserialize(ECA_Saveable.function);
                     eca.isEnabled = ECA_Saveable.isEnabled;
+                    eca.ElementType = type;
                     converted = eca;
                 }
                 else if (element is LocalVariable_Saveable localVar)

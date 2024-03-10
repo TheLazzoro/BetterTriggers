@@ -36,7 +36,6 @@ namespace GUI.Components.TriggerEditor
             string name = template.name != "" ? template.name : template.value;
             DisplayName = categoryStr + name;
             IconImage = category.Icon;
-            IsIconVisible = settings.GUINewElementIcon ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
             eca = template.ToECA();
             eca.IconImage = category.Icon;
 
@@ -50,6 +49,9 @@ namespace GUI.Components.TriggerEditor
                         IconWidth = 0;
                 }
             };
+
+            // Important to set visibility after 'PropertyChanged' event listener.
+            IsIconVisible = settings.GUINewElementIcon ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
         }
     }
 }

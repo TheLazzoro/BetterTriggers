@@ -41,8 +41,11 @@ namespace GUI.Components.TriggerEditor
 
         private void TriggerElementMenuWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
-            createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(createdTriggerElement);
+            if(createdTriggerElement != null)
+            {
+                ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+                createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(createdTriggerElement);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

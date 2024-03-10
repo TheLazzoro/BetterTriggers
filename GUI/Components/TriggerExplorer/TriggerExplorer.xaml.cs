@@ -473,7 +473,7 @@ namespace GUI.Components
         private void menuRename_Click(object sender, RoutedEventArgs e)
         {
             var explorerElement = GetExplorerElementFromItem(currentElement);
-            explorerElement.IsRenaming = true;
+            explorerElement.RenameBoxVisibility = Visibility.Visible;
         }
 
         private void menuDelete_Click(object sender, RoutedEventArgs e)

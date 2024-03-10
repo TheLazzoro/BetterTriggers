@@ -67,8 +67,7 @@ namespace BetterTriggers.Models.EditorData
 
         public bool IsRenaming
         {
-            get { return _isRenaming; }
-            set { _isRenaming = value; }
+            get => RenameBoxVisibility == Visibility.Visible;
         }
 
         public Visibility CheckBoxVisibility

@@ -32,7 +32,7 @@ namespace GUI.Components
         TreeViewItem dragItem;
         bool _IsDragging = false;
         int insertIndex = 0;
-        TreeViewItem treeItemParentDropTarget;
+        TreeViewItem _treeItemParentDropTarget;
 
         private TriggerElement selectedElement;
         private TriggerElement selectedElementEnd;
@@ -422,7 +422,7 @@ namespace GUI.Components
 
             if (dropTarget == dragItem)
             {
-                treeItemParentDropTarget = null;
+                _treeItemParentDropTarget = null;
                 return;
             }
 
@@ -436,12 +436,12 @@ namespace GUI.Components
 
             if (triggerElementDropTarget is not TriggerElementCollection && parentOfDragItem.ElementType != parentOfDropTarget.ElementType)
             {
-                treeItemParentDropTarget = null;
+                _treeItemParentDropTarget = null;
                 return;
             }
             if (dragItemTriggerElement.ElementType != triggerElementDropTarget.ElementType)
             {
-                treeItemParentDropTarget = null;
+                _treeItemParentDropTarget = null;
                 return;
             }
 
@@ -466,6 +466,8 @@ namespace GUI.Components
 
                     var parentDropTarget = triggerElementDropTarget.GetParent();
                     insertIndex = parentDropTarget.IndexOf(triggerElementDropTarget) + 1;
+                    var treeItemParentDropTarget = GetTreeViewItemFromTriggerElement(parentDropTarget);
+                    _treeItemParentDropTarget = treeItemParentDropTarget;
                 }
 
                 // We detach the item before inserting, so the index goes one down.
@@ -478,7 +480,7 @@ namespace GUI.Components
                 squareIndicator = new TreeItemAdornerSquare(dropTarget);
                 adorner.Add(squareIndicator);
 
-                treeItemParentDropTarget = dropTarget;
+                _treeItemParentDropTarget = dropTarget;
                 insertIndex = 0;
             }
 
@@ -502,21 +504,21 @@ namespace GUI.Components
                     adorner.Remove(squareIndicator);
             }
 
-            if (treeItemParentDropTarget == null)
+            if (_treeItemParentDropTarget == null)
                 return;
 
-            if (UIUtility.IsCircularParent(dragItem, treeItemParentDropTarget))
+            if (UIUtility.IsCircularParent(dragItem, _treeItemParentDropTarget))
                 return;
 
             var triggerElement = GetTriggerElementFromItem(dragItem);
-            var parent = GetTriggerElementFromItem(treeItemParentDropTarget) as TriggerElementCollection;
+            var parent = GetTriggerElementFromItem(_treeItemParentDropTarget) as TriggerElementCollection;
 
             /* Fix for jumpy trigger elements.
              * When creating a new trigger element on double-click
              * and then holding and dragging after the dialog menu closed,
              * the element could jump to the last 'parentDropTarget',
              * which could be an invalid trigger element location. */
-            treeItemParentDropTarget = null;
+            _treeItemParentDropTarget = null;
 
             CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElementTrigger.trigger, triggerElement, parent, insertIndex);
             command.Execute();
@@ -634,8 +636,12 @@ namespace GUI.Components
             triggerElement.IsExpanded = false;
         }
 
+        /*
         /// <summary>
         /// Custom arrow key navigation. WPF's built-in TreeView navigation is slow and buggy once treeitems get complex headers.
+        /// 
+        /// TODO: REFACTOR - Is this even needed now when the items are generated from a collection? I'm not sure.
+        /// Have to test performance once we get everything working.
         /// </summary>
         private void treeViewTriggers_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -704,6 +710,7 @@ namespace GUI.Components
                 }
             }
         }
+        */
 
         private void treeViewTriggers_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1030,7 +1037,7 @@ namespace GUI.Components
             if (selectedElementEnd == null || triggerElement is not LocalVariable)
                 return;
 
-            triggerElement.IsRenaming = true;
+            triggerElement.RenameBoxVisibility = Visibility.Visible;
         }
 
         private void menuEvent_Click(object sender, RoutedEventArgs e)
@@ -1071,13 +1078,32 @@ namespace GUI.Components
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ReplaceTriggerElement(selectedElementEnd);
+            var treeItem = sender as TreeViewItem;
+            if (treeItem == null)
+                return;
+
+            if(treeViewTriggers.SelectedItem == treeItem.DataContext) // prevents the parent TreeItems from running the same logic
+            {
+                ReplaceTriggerElement(selectedElementEnd);
+                e.Handled = true;
+            }
         }
 
         private void treeViewItem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
+            {
                 ReplaceTriggerElement(selectedElementEnd);
+                e.Handled = true;
+            }
+            else if(e.Key == Key.F2)
+            {
+                selectedElementEnd.RenameBoxVisibility = Visibility.Visible;
+            }
+            else if(e.Key == Key.Escape)
+            {
+                selectedElementEnd.RenameBoxVisibility = Visibility.Hidden;
+            }
         }
 
         private void ReplaceTriggerElement(TriggerElement toReplace)
@@ -1145,6 +1171,17 @@ namespace GUI.Components
         private void ExplorerElement_OnChanged()
         {
             RefreshBottomControls();
+        }
+
+        private void treeViewTriggers_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (selectedElementEnd == null)
+                return;
+
+            if (selectedElementEnd.IsRenaming)
+            {
+                selectedElementEnd.RenameBoxVisibility = Visibility.Hidden;
+            }
         }
     }
 }
