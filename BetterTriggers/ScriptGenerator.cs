@@ -283,7 +283,7 @@ end
             {
                 var function = functions[i];
                 List<Parameter> parameters = function.parameters;
-                int errors = project.Triggers.VerifyParameters(parameters);
+                int errors = VerifyParameters(parameters);
                 if (errors > 0)
                 {
                     functions.Remove(function);
@@ -1243,7 +1243,7 @@ end
 
             foreach (var t in triggers)
             {
-                if (!t.isEnabled)
+                if (!t.IsEnabled)
                     continue;
 
                 string triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
@@ -1625,7 +1625,7 @@ end
 
             foreach (var s in scripts)
             {
-                if (!s.isEnabled)
+                if (!s.IsEnabled)
                     continue;
 
                 script.Append(s.script);
@@ -1645,7 +1645,7 @@ end
 
             foreach (var i in triggers)
             {
-                if (!i.isEnabled)
+                if (!i.IsEnabled)
                     continue;
 
                 if (i.trigger.IsScript)
@@ -1827,7 +1827,7 @@ end
         {
             if (!t.isEnabled || t is InvalidECA)
                 return "";
-            if (project.Triggers.VerifyParameters(t.function.parameters) > 0)
+            if (VerifyParameters(t.function.parameters) > 0)
                 return "";
 
             StringBuilder script = new StringBuilder();
@@ -1901,7 +1901,7 @@ end
                 ifThenElse.If.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
+                    int emptyParams = VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
@@ -2122,7 +2122,7 @@ end
                 andMultiple.And.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
+                    int emptyParams = VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
@@ -2194,7 +2194,7 @@ end
                 orMultiple.Or.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
+                    int emptyParams = VerifyParameters(cond.function.parameters);
                     if (cond.isEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
@@ -2268,7 +2268,7 @@ end
         {
             StringBuilder script = new StringBuilder();
 
-            int invalidParams = project.Triggers.VerifyParameters(f.parameters);
+            int invalidParams = VerifyParameters(f.parameters);
             if (invalidParams > 0)
                 return "";
 
@@ -2623,6 +2623,50 @@ end
             return output;
         }
 
+        /// <summary>
+        /// Returns amount of invalid parameters.
+        /// </summary>
+        private int VerifyParameters(List<Parameter> parameters)
+        {
+            int invalidCount = 0;
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
+                if (parameter.value == null && !(parameter is VariableRef) && !(parameter is TriggerRef))
+                    invalidCount++;
+
+                if (parameter is Function)
+                {
+                    var function = (Function)parameter;
+                    invalidCount += VerifyParameters(function.parameters);
+                }
+                else if (parameter is VariableRef varRef)
+                {
+                    var variable = Project.CurrentProject.Variables.GetVariableById_AllLocals(varRef.VariableId);
+                    if (variable == null)
+                        invalidCount++;
+                    else
+                    {
+                        List<Parameter> arrays = new List<Parameter>();
+                        if (variable.IsArray)
+                            arrays.Add(varRef.arrayIndexValues[0]);
+                        if (variable.IsArray && variable.IsTwoDimensions)
+                            arrays.Add(varRef.arrayIndexValues[1]);
+
+                        invalidCount += VerifyParameters(arrays);
+                    }
+                }
+                else if (parameter is TriggerRef triggerRef)
+                {
+                    var trigger = Project.CurrentProject.Triggers.GetById(triggerRef.TriggerId);
+                    if (trigger == null)
+                        invalidCount++;
+                }
+            }
+
+            return invalidCount;
+        }
 
         private string generate_function_name(string triggerName)
         {

@@ -571,7 +571,7 @@ namespace BetterTriggers.WorldEdit
         private ExplorerElement CreateScript(TriggerDefinition triggerDefinition, string script)
         {
             ExplorerElement element = new ExplorerElement(ExplorerElementEnum.Script);
-            element.isEnabled = triggerDefinition.IsEnabled;
+            element.IsEnabled = triggerDefinition.IsEnabled;
             element.script = script;
 
             return element;
@@ -585,7 +585,7 @@ namespace BetterTriggers.WorldEdit
             ExplorerElement explorerElementTrigger = new ExplorerElement(ExplorerElementEnum.Trigger);
             Trigger trigger = new Trigger();
             explorerElementTrigger.trigger = trigger;
-            explorerElementTrigger.isEnabled = triggerDefinition.IsEnabled;
+            explorerElementTrigger.IsEnabled = triggerDefinition.IsEnabled;
             explorerElementTrigger.isInitiallyOn = triggerDefinition.IsInitiallyOn;
 
             if (triggers.SubVersion == null) // legacy format

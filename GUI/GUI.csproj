@@ -68,6 +68,8 @@
     <None Remove="Resources\Icons\Keyword_16x.png" />
     <None Remove="Resources\Icons\Method_16x.png" />
     <None Remove="Resources\Icons\redo.png" />
+    <None Remove="Resources\Icons\trigger-error.png" />
+    <None Remove="Resources\Icons\trigger-invalid.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_copy.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_cut.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_open.png" />
@@ -256,6 +258,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\redo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\trigger-error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\trigger-invalid.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\ui-editoricon-general_copy.png">

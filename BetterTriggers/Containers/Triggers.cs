@@ -285,7 +285,7 @@ namespace BetterTriggers.Containers
         }
 
         /// <returns>Whether the trigger had invalid references removed.</returns>
-        public bool RemoveInvalidReferences(ExplorerElement explorerElement)
+        public int RemoveInvalidReferences(ExplorerElement explorerElement)
         {
             int removeCount = 0;
             removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Events);
@@ -293,16 +293,16 @@ namespace BetterTriggers.Containers
             removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.LocalVariables);
             removeCount += RemoveInvalidReferences(explorerElement.trigger, explorerElement.trigger.Actions);
 
-            return removeCount > 0;
+            return removeCount;
         }
 
-        public int RemoveInvalidReferences(Trigger trig, TriggerElement triggerElements)
+        public int RemoveInvalidReferences(Trigger trig, TriggerElement triggerElement)
         {
             int removeCount = 0;
 
-            for (int i = 0; i < triggerElements.Elements.Count; i++)
+            for (int i = 0; i < triggerElement.Elements.Count; i++)
             {
-                if (triggerElements.Elements[i] is LocalVariable localVar)
+                if (triggerElement.Elements[i] is LocalVariable localVar)
                 {
                     if (localVar.variable.InitialValue is Value value)
                     {
@@ -316,15 +316,17 @@ namespace BetterTriggers.Containers
                     continue;
                 }
 
-                var eca = (ECA)triggerElements.Elements[i];
+                var eca = (ECA)triggerElement.Elements[i];
                 bool ecaExists = TriggerData.FunctionExists(eca.function);
                 if (!ecaExists)
                 {
-                    triggerElements.Elements[i] = new InvalidECA();
+                    triggerElement.Elements[i] = new InvalidECA();
                     removeCount += 1;
                 }
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
-                removeCount += VerifyParametersAndRemove(trig, eca.function.parameters, returnTypes);
+                int invalidCount = VerifyParametersAndRemove(trig, eca.function.parameters, returnTypes);
+                eca.HasErrors = invalidCount > 0;
+                removeCount += invalidCount;
 
 
                 if (eca is IfThenElse)
@@ -410,6 +412,23 @@ namespace BetterTriggers.Containers
                         removeCount++;
                         parameters[i] = new Parameter();
                     }
+                    else
+                    {
+                        List<Parameter> arrays = new();
+                        List<string> returnTypes_Array = new();
+                        if (variable.IsArray)
+                        {
+                            arrays.Add(varRef.arrayIndexValues[0]);
+                            returnTypes_Array.Add("integer");
+                        }
+                        if (variable.IsArray && variable.IsTwoDimensions)
+                        {
+                            arrays.Add(varRef.arrayIndexValues[1]);
+                            returnTypes_Array.Add("integer");
+                        }
+
+                        removeCount += VerifyParametersAndRemove(trig, arrays, returnTypes_Array);
+                    }
                 }
                 else if (parameter is TriggerRef)
                 {
@@ -430,8 +449,7 @@ namespace BetterTriggers.Containers
                     }
 
                 }
-
-                if (parameter is Function function)
+                else if (parameter is Function function)
                 {
                     bool functionExists = TriggerData.FunctionExists(function);
                     if (!functionExists)
@@ -452,55 +470,19 @@ namespace BetterTriggers.Containers
                         removeCount++;
                     }
                 }
+                else // parameter is not set
+                {
+                    removeCount++;
+                }
             }
 
             return removeCount;
         }
 
-        // TODO: This seems incomplete and intended functionality probably exists in another method.
-        /// <summary>
-        /// Returns amount of invalid parameters.
-        /// </summary>
-        public int VerifyParameters(List<Parameter> parameters)
-        {
-            int invalidCount = 0;
-
-            for (int i = 0; i < parameters.Count; i++)
-            {
-                var parameter = parameters[i];
-                if (parameter.value == null && !(parameter is VariableRef) && !(parameter is TriggerRef))
-                    invalidCount++;
-
-                if (parameter is Function)
-                {
-                    var function = (Function)parameter;
-                    invalidCount += VerifyParameters(function.parameters);
-                }
-                else if (parameter is VariableRef varRef)
-                {
-                    var variable = Project.CurrentProject.Variables.GetVariableById_AllLocals(varRef.VariableId);
-                    if (variable == null)
-                        invalidCount++;
-                    else
-                    {
-                        List<Parameter> arrays = new List<Parameter>();
-                        if (variable.IsArray)
-                            arrays.Add(varRef.arrayIndexValues[0]);
-                        if (variable.IsArray && variable.IsTwoDimensions)
-                            arrays.Add(varRef.arrayIndexValues[1]);
-
-                        invalidCount += VerifyParameters(arrays);
-                    }
-                }
-            }
-
-            return invalidCount;
-        }
-
+        /// <returns>Number of invalid parameters.</returns>
         public int VerifyParametersInTrigger(ExplorerElement explorerTrigger)
         {
-            List<Parameter> list = GetParametersFromTrigger(explorerTrigger);
-            int invalidCount = VerifyParameters(list);
+            int invalidCount = RemoveInvalidReferences(explorerTrigger);
             return invalidCount;
         }
 

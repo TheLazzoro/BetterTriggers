@@ -4,7 +4,7 @@
     <Color x:Key="textColor">#000</Color>
     <Color x:Key="textColor2">#000</Color>
     <Color x:Key="textColorDim">#111</Color>
-    <Color x:Key="textErrorColor">#FFFF5454</Color>
+    <Color x:Key="textErrorColor">#FFFF1111</Color>
     <Color x:Key="textBlockColor">#333</Color>
     <Color x:Key="separatorColor">#ccc</Color>
     <Color x:Key="backgroundDarkColor">#fff</Color>

@@ -19,6 +19,8 @@ namespace BetterTriggers.Models.EditorData
         private Visibility _iconVisibility = Visibility.Visible;
         private Visibility _renameBoxVisibility = Visibility.Hidden;
         private Visibility _checkBoxVisibility = Visibility.Hidden;
+        private bool _isEnabled = true;
+        private bool _hasErrors = false;
 
         public string DisplayText
         {
@@ -80,8 +82,28 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged();
+                OnToggleEnable?.Invoke();
+            }
+        }
+        public bool HasErrors
+        {
+            get => _hasErrors;
+            set
+            {
+                _hasErrors = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsChecked { get; set; } = false;
-        public bool IsEnabled { get; set; } = true;
+        public event Action OnToggleEnable;
 
 
         public void SetCategory(string categoryStr)

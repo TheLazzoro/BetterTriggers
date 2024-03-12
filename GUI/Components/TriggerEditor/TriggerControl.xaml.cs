@@ -72,6 +72,7 @@ namespace GUI.Components
 
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
             explorerElement.OnChanged += ExplorerElement_OnChanged;
+            explorerElement.OnToggleEnable += ExplorerElement_OnToggleEnable;
 
             // TODO: REFACTOR
             //TreeViewItem.OnMouseEnter += TreeViewItem_OnMouseEnter;
@@ -822,13 +823,6 @@ namespace GUI.Components
             var pasted = Project.CurrentProject.Triggers.PasteTriggerElements(explorerElementTrigger, attachTarget, insertIndex);
         }
 
-        public void SetElementEnabled(bool isEnabled)
-        {
-            checkBoxIsEnabled.IsChecked = isEnabled;
-            explorerElementTrigger.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
-            //OnStateChange();
-        }
-
         public void SetElementInitiallyOn(bool isInitiallyOn)
         {
             checkBoxIsInitiallyOn.IsChecked = isInitiallyOn;
@@ -838,7 +832,8 @@ namespace GUI.Components
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
-            SetElementEnabled((bool)checkBoxIsEnabled.IsChecked);
+            var trigger = explorerElementTrigger.trigger;
+            explorerElementTrigger.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
         }
 
         private void checkBoxIsInitiallyOn_Click(object sender, RoutedEventArgs e)
@@ -1171,6 +1166,12 @@ namespace GUI.Components
         {
             RefreshBottomControls();
         }
+
+        private void ExplorerElement_OnToggleEnable()
+        {
+            checkBoxIsEnabled.IsChecked = explorerElementTrigger.IsEnabled;
+        }
+
 
         private void treeViewTriggers_MouseDown(object sender, MouseButtonEventArgs e)
         {

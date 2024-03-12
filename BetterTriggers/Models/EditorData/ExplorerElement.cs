@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,6 @@ namespace BetterTriggers.Models.EditorData
         }
         public ExplorerElement Parent { get; set; }
         public ObservableCollection<ExplorerElement> ExplorerElements { get; set; } = new();
-        public bool isEnabled { get; set; } = true;
         public bool isInitiallyOn { get; set; } = true;
         public bool isExpanded { get; set; } = false;
         public event Action OnReload;
@@ -199,7 +199,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void SetEnabled(bool isEnabled)
         {
-            this.isEnabled = isEnabled;
+            this.IsEnabled = isEnabled;
         }
 
         public void SetInitiallyOn(bool isInitiallyOn)
@@ -209,7 +209,7 @@ namespace BetterTriggers.Models.EditorData
 
         public bool GetEnabled()
         {
-            return this.isEnabled;
+            return this.IsEnabled;
         }
 
         public bool GetInitiallyOn()
@@ -314,7 +314,7 @@ namespace BetterTriggers.Models.EditorData
             newElement.path = new string(this.path); // we need this path in paste command.
             newElement.Parent = this.Parent;
             newElement.isInitiallyOn = this.isInitiallyOn;
-            newElement.isEnabled = this.isEnabled;
+            newElement.IsEnabled = this.IsEnabled;
 
             switch (ElementType)
             {
@@ -423,14 +423,25 @@ namespace BetterTriggers.Models.EditorData
             }
             else if (ElementType == ExplorerElementEnum.Trigger)
             {
-                OnReload?.Invoke();
+                VerifyAndRemoveTriggerErrors();
             }
         }
 
         public void InvokeChange()
         {
+            VerifyAndRemoveTriggerErrors();
             OnChanged?.Invoke();
             AddToUnsaved();
+        }
+
+        private void VerifyAndRemoveTriggerErrors()
+        {
+            if (ElementType == ExplorerElementEnum.Trigger)
+            {
+                var triggers = Project.CurrentProject.Triggers;
+                int errors = triggers.VerifyParametersInTrigger(this);
+                HasErrors = errors > 0;
+            }
         }
 
         public List<ExplorerElement> GetReferrers()

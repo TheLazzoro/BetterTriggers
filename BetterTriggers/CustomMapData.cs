@@ -212,8 +212,8 @@ namespace BetterTriggers
             var triggers = Project.CurrentProject.Triggers.GetAll();
             for (int i = 0; i < triggers.Count; i++)
             {
-                bool wasRemoved = Project.CurrentProject.Triggers.RemoveInvalidReferences(triggers[i]);
-                if (wasRemoved)
+                int invalidCount = Project.CurrentProject.Triggers.RemoveInvalidReferences(triggers[i]);
+                if (invalidCount > 0)
                     modified.Add(triggers[i]);
 
                 triggers[i].Notify();
