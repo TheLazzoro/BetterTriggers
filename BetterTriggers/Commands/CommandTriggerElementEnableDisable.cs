@@ -10,27 +10,32 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementEnableDisable : ICommand
     {
         string commandName = "Change Enable Trigger Element";
-        ECA triggerElement;
+        ExplorerElement _explorerElement;
+        ECA _eca;
 
-        public CommandTriggerElementEnableDisable(ECA triggerElement)
+        public CommandTriggerElementEnableDisable(ExplorerElement explorerElement, ECA eca)
         {
-            this.triggerElement = triggerElement;
+            _explorerElement = explorerElement;
+            _eca = eca;
         }
 
         public void Execute()
         {
-            triggerElement.isEnabled = !triggerElement.isEnabled;
+            _eca.isEnabled = !_eca.isEnabled;
             Project.CurrentProject.CommandManager.AddCommand(this);
+            _explorerElement.InvokeChange();
         }
 
         public void Redo()
         {
-            triggerElement.isEnabled = !triggerElement.isEnabled;
+            _eca.isEnabled = !_eca.isEnabled;
+            _explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
-            triggerElement.isEnabled = !triggerElement.isEnabled;
+            _eca.isEnabled = !_eca.isEnabled;
+            _explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

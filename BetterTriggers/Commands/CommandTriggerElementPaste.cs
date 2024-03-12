@@ -35,6 +35,7 @@ namespace BetterTriggers.Commands
 
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            explorerElement.InvokeChange();
         }
 
         public void Redo()
@@ -46,6 +47,7 @@ namespace BetterTriggers.Commands
 
 
             Project.CurrentProject.References.UpdateReferences(explorerElement);
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
@@ -56,6 +58,7 @@ namespace BetterTriggers.Commands
             }
 
             Project.CurrentProject.References.UpdateReferences(explorerElement);
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

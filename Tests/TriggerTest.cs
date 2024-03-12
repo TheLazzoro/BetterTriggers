@@ -104,9 +104,9 @@ namespace Tests
         [TestMethod]
         public void OnPrepareExplorerTrigger()
         {
-            project.Variables.CreateLocalVariable(element1.trigger, 0);
-            project.Variables.CreateLocalVariable(element1.trigger, 1);
-            project.Variables.CreateLocalVariable(element1.trigger, 2);
+            project.Variables.CreateLocalVariable(element1, 0);
+            project.Variables.CreateLocalVariable(element1, 1);
+            project.Variables.CreateLocalVariable(element1, 2);
             project.CopyExplorerElement(element1);
             var pasted = project.PasteExplorerElement(element1);
 

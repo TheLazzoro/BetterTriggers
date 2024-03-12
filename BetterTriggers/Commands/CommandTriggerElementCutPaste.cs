@@ -52,8 +52,10 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
             CopiedElements.CutTriggerElements = null; // Reset
-
             Project.CurrentProject.CommandManager.AddCommand(this);
+
+            from.InvokeChange();
+            to.InvokeChange();
         }
 
         public void Redo()
@@ -69,6 +71,9 @@ namespace BetterTriggers.Commands
 
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
+
+            from.InvokeChange();
+            to.InvokeChange();
         }
 
         public void Undo()
@@ -84,6 +89,9 @@ namespace BetterTriggers.Commands
 
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
+
+            from.InvokeChange();
+            to.InvokeChange();
         }
 
         public string GetCommandName()

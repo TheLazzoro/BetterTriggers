@@ -212,8 +212,7 @@ namespace GUI.Components
             if (type == TriggerElementType.LocalVariable)
             {
                 insertIndex = explorerElementTrigger.trigger.LocalVariables.Count();
-                var trigger = explorerElementTrigger.trigger;
-                Project.CurrentProject.Variables.CreateLocalVariable(trigger, insertIndex);
+                Project.CurrentProject.Variables.CreateLocalVariable(explorerElementTrigger, insertIndex);
                 return;
             }
 
@@ -279,7 +278,7 @@ namespace GUI.Components
 
             if (eca != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(eca, parent, insertIndex);
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, eca, parent, insertIndex);
                 command.Execute();
             }
         }
@@ -520,7 +519,7 @@ namespace GUI.Components
              * which could be an invalid trigger element location. */
             _treeItemParentDropTarget = null;
 
-            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElementTrigger.trigger, triggerElement, parent, insertIndex);
+            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElementTrigger, triggerElement, parent, insertIndex);
             command.Execute();
         }
 
@@ -1066,7 +1065,7 @@ namespace GUI.Components
                 return;
 
             var eca = selectedElementEnd as ECA;
-            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(eca);
+            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(explorerElementTrigger, eca);
             command.Execute();
         }
 
@@ -1130,7 +1129,7 @@ namespace GUI.Components
             if (selected == null || selected.function.value == eca.function.value)
                 return;
 
-            CommandTriggerElementReplace command = new CommandTriggerElementReplace(eca, selected);
+            CommandTriggerElementReplace command = new CommandTriggerElementReplace(explorerElementTrigger, eca, selected);
             command.Execute();
         }
 

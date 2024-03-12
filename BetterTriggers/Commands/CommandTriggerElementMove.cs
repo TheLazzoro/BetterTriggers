@@ -10,15 +10,17 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Move Trigger Element";
         Trigger trig;
+        ExplorerElement explorerElement;
         TriggerElement triggerElement;
         TriggerElement OldParent;
         TriggerElement NewParent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandTriggerElementMove(Trigger trig, TriggerElement triggerElement, TriggerElementCollection NewParent, int NewInsertIndex)
+        public CommandTriggerElementMove(ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElementCollection NewParent, int NewInsertIndex)
         {
-            this.trig = trig;
+            this.explorerElement = explorerElement;
+            this.trig = explorerElement.trigger;
             this.triggerElement = triggerElement;
             this.OldParent = triggerElement.GetParent();
             this.OldInsertIndex = this.OldParent.IndexOf(triggerElement);
@@ -32,18 +34,21 @@ namespace BetterTriggers.Commands
             triggerElement.SetParent(NewParent, NewInsertIndex);
             Project.CurrentProject.Triggers.RemoveInvalidReferences(trig, NewParent);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            explorerElement.InvokeChange();
         }
 
         public void Redo()
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(OldParent, OldInsertIndex);
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

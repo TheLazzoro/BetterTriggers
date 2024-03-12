@@ -8,13 +8,15 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementReplace : ICommand
     {
         string commandName = "Replace Trigger Element";
+        ExplorerElement explorerElement;
         TriggerElement toReplace;
         TriggerElement toInsert;
         TriggerElement parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementReplace(TriggerElement toReplace, TriggerElement toInsert)
+        public CommandTriggerElementReplace(ExplorerElement explorerElement, TriggerElement toReplace, TriggerElement toInsert)
         {
+            this.explorerElement = explorerElement;
             this.toReplace = toReplace;
             this.toInsert = toInsert;
             this.parent = toReplace.GetParent();
@@ -26,18 +28,21 @@ namespace BetterTriggers.Commands
             toReplace.RemoveFromParent();
             toInsert.SetParent(parent, insertIndex);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            explorerElement.InvokeChange();
         }
 
         public void Redo()
         {
             toReplace.RemoveFromParent();
             toInsert.SetParent(parent, insertIndex);
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
             toInsert.RemoveFromParent();
             toReplace.SetParent(parent, insertIndex);
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

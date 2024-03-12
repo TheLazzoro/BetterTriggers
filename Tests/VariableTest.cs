@@ -102,8 +102,9 @@ namespace Tests
         [TestMethod]
         public void CloneLocalVariable()
         {
-            var trig = new Trigger();
-            var variable = project.Variables.CreateLocalVariable(trig, 0);
+            var explorerElement = new ExplorerElement();
+            explorerElement.trigger = new Trigger();
+            var variable = project.Variables.CreateLocalVariable(explorerElement, 0);
 
             Assert.AreEqual("UntitledVariable", variable.variable.Name);
             Assert.AreEqual(true, variable.variable._isLocal);

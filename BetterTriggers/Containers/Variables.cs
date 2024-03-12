@@ -45,8 +45,9 @@ namespace BetterTriggers.Containers
             return fullPath;
         }
 
-        public LocalVariable CreateLocalVariable(Trigger trig, int insertIndex)
+        public LocalVariable CreateLocalVariable(ExplorerElement explorerElement, int insertIndex)
         {
+            var trig = explorerElement.trigger;
             TriggerElementCollection parent = trig.LocalVariables;
             LocalVariable localVariable = new LocalVariable();
             localVariable.variable.Name = GenerateLocalName(trig);
@@ -57,7 +58,7 @@ namespace BetterTriggers.Containers
             localVariable.DisplayText = localVariable.variable.Name;
             localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
 
-            CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable, parent, insertIndex);
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, localVariable, parent, insertIndex);
             command.Execute();
 
             return localVariable;

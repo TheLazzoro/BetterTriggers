@@ -144,11 +144,6 @@ namespace BetterTriggers.Models.EditorData
                 if (converted != null)
                     list.Add(converted);
 
-
-                if (element.Elements != null)
-                {
-                    ConvertTriggerElements(element.Elements);
-                }
             }
 
             return list;

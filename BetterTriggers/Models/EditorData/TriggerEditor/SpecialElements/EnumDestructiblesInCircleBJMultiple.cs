@@ -4,14 +4,27 @@ namespace BetterTriggers.Models.EditorData
 {
     public class EnumDestructiblesInCircleBJMultiple : ECA
     {
-        public TriggerElementCollection Actions = new(TriggerElementType.Action);
+        public TriggerElementCollection Actions
+        {
+            get => _actions;
+            set
+            {
+                if (_actions != null)
+                {
+                    _actions.RemoveFromParent();
+                }
+                _actions = value;
+                _actions.SetParent(this, 0);
+            }
+        }
+
+        private TriggerElementCollection _actions;
 
         public EnumDestructiblesInCircleBJMultiple()
         {
             function.value = "EnumDestructablesInCircleBJMultiple";
             Elements = new();
-            Actions.SetParent(this, 0);
-            Actions.DisplayText = "Loop - Actions";
+            Actions = new(TriggerElementType.Action);
         }
 
         public override EnumDestructiblesInCircleBJMultiple Clone()
