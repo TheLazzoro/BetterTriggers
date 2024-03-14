@@ -1732,7 +1732,7 @@ end
 
             foreach (ECA e in t.trigger.Events.Elements)
             {
-                if (!e.isEnabled || e is InvalidECA)
+                if (!e.IsEnabled || e is InvalidECA)
                     continue;
 
                 if (e.function.value == "MapInitializationEvent")
@@ -1825,7 +1825,7 @@ end
 
         private string ConvertTriggerElementToJass(ECA t, PreActions pre_actions, bool nested)
         {
-            if (!t.isEnabled || t is InvalidECA)
+            if (!t.IsEnabled || t is InvalidECA)
                 return "";
             if (VerifyParameters(t.function.parameters) > 0)
                 return "";
@@ -1902,7 +1902,7 @@ end
                 {
                     ECA cond = (ECA)c;
                     int emptyParams = VerifyParameters(cond.function.parameters);
-                    if (cond.isEnabled && emptyParams == 0)
+                    if (cond.IsEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
 
@@ -1976,7 +1976,7 @@ end
 
                 foreach (ECA action in ifThenElse.Then.Elements)
                 {
-                    if (!action.isEnabled)
+                    if (!action.IsEnabled)
                         continue;
 
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
@@ -1984,7 +1984,7 @@ end
                 script.Append($"\telse{newline}");
                 foreach (ECA action in ifThenElse.Else.Elements)
                 {
-                    if (!action.isEnabled)
+                    if (!action.IsEnabled)
                         continue;
 
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
@@ -2123,7 +2123,7 @@ end
                 {
                     ECA cond = (ECA)c;
                     int emptyParams = VerifyParameters(cond.function.parameters);
-                    if (cond.isEnabled && emptyParams == 0)
+                    if (cond.IsEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
 
@@ -2195,7 +2195,7 @@ end
                 {
                     ECA cond = (ECA)c;
                     int emptyParams = VerifyParameters(cond.function.parameters);
-                    if (cond.isEnabled && emptyParams == 0)
+                    if (cond.IsEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
 

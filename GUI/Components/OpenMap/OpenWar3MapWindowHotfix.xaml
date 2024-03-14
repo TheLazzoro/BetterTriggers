@@ -25,7 +25,15 @@
         <Button x:Name="btnBrowseFiles" Height="25" Grid.Column="3" Margin="5,0,5,0" Click="btnBrowseFiles_Click">Browse</Button>
         <Separator Grid.Row="0" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
 
-        <TreeView x:Name="treeViewFiles" Background="{DynamicResource BackgroundPanel}" Grid.Row="1"  Grid.ColumnSpan="3" BorderThickness="0" SelectedItemChanged="treeViewFiles_SelectedItemChanged" />
+        <TreeView x:Name="treeViewFiles"
+                  Background="{DynamicResource BackgroundPanel}"
+                  ItemsSource="{Binding Maps}"
+                  ItemTemplate="{DynamicResource TreeItemDataTemplateTriggers}"
+                  Grid.Row="1"
+                  Grid.ColumnSpan="3"
+                  BorderThickness="0"
+                  SelectedItemChanged="treeViewFiles_SelectedItemChanged" />
+        
         <Separator Grid.Row="2" Height="1" Grid.ColumnSpan="3" VerticalAlignment="Top"/>
         <Label x:Name="lblFound" Grid.Row="3">Maps found: 0</Label>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="3" FlowDirection="RightToLeft" Margin="0,5,10,5">

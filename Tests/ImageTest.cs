@@ -1,25 +1,12 @@
 ﻿using BetterTriggers.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Tests
 {
-    [TestClass]
-    public class ImageTest
+    public class ImageTest : TestBase
     {
         static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + "/Resources/Images";
-
-        [ClassInitialize]
-        public static void Init(TestContext context)
-        {
-            Console.WriteLine("-----------");
-            Console.WriteLine("RUNNING IMAGE TESTS");
-            Console.WriteLine("-----------");
-            Console.WriteLine("");
-        }
 
         [DataTestMethod]
         [DataRow("FrostmourneNew.blp")]

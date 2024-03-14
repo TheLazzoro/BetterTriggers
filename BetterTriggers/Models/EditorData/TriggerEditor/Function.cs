@@ -27,41 +27,30 @@ namespace BetterTriggers.Models.EditorData
 
             for (int i = 0; i < this.parameters.Count; i++)
             {
-                /* This thing could be reduced to a simple interface,
-                 * but JSON deserialization becomes a problem
-                 * if we change the parameter list from 'Parameter' to 'IParameter',
-                 * because the deserializer thinks it must create an 'IParameter'
-                 * instance, which is illegal.
-                 */
                 Parameter param = this.parameters[i];
                 Parameter cloned;
-                if (param is Function)
+                if (param is Function func)
                 {
-                    var func = (Function)param;
-                    cloned = (Function)func.Clone();
+                    cloned = func.Clone();
                 }
-                else if (param is Preset)
+                else if (param is Preset preset)
                 {
-                    var constant = (Preset)param;
-                    cloned = (Preset)constant.Clone();
+                    cloned = preset.Clone();
                 }
-                else if (param is VariableRef)
+                else if (param is VariableRef varRef)
                 {
-                    var varRef = (VariableRef)param;
-                    cloned = (VariableRef)varRef.Clone();
+                    cloned = varRef.Clone();
                 }
-                else if (param is TriggerRef)
+                else if (param is TriggerRef triggerRef)
                 {
-                    var triggerRef = (TriggerRef)param;
-                    cloned = (TriggerRef)triggerRef.Clone();
+                    cloned = triggerRef.Clone();
                 }
-                else if (param is Value)
+                else if (param is Value val)
                 {
-                    var val = (Value)param;
-                    cloned = (Value)val.Clone();
+                    cloned = val.Clone();
                 }
                 else
-                    cloned = (Parameter)param.Clone();
+                    cloned = param.Clone();
 
                 parameters.Add(cloned);
             }

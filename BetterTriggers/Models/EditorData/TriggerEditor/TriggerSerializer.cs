@@ -122,7 +122,7 @@ namespace BetterTriggers.Models.EditorData
                     }
 
                     ECA_Saveable.function = ConvertFunction(eca.function);
-                    ECA_Saveable.isEnabled = eca.isEnabled;
+                    ECA_Saveable.isEnabled = eca.IsEnabled;
                     converted = ECA_Saveable;
                 }
                 else if (element is LocalVariable localVar)
@@ -316,7 +316,7 @@ namespace BetterTriggers.Models.EditorData
                     }
 
                     eca.function = ConvertFunction_Deserialize(ECA_Saveable.function);
-                    eca.isEnabled = ECA_Saveable.isEnabled;
+                    eca.IsEnabled = ECA_Saveable.isEnabled;
                     eca.ElementType = type;
                     converted = eca;
                 }

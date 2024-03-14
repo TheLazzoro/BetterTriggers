@@ -62,6 +62,7 @@
     <None Remove="Resources\Icons\editor-testmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-exportmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-mapvalidation.png" />
+    <None Remove="Resources\Icons\editor-triggerfunctiondisabled.png" />
     <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\Icons\green-check.png" />
     <None Remove="Resources\Icons\information.png" />
@@ -156,6 +157,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\editor-triggerevent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\editor-triggerfunctiondisabled.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\editor-triggerscript.png">

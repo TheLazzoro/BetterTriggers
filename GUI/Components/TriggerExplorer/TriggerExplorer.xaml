@@ -82,6 +82,7 @@
             x:Name="treeViewTriggerExplorer"
             ItemsSource="{Binding ProjectFiles}"
             Background="{DynamicResource BackgroundDark}"
+            VirtualizingPanel.IsVirtualizing="True"
             AllowDrop="True"
             BorderBrush="{x:Null}"
             Drop="treeViewTriggerExplorer_Drop"

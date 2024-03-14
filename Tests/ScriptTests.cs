@@ -11,7 +11,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class ScriptTests
+    public class ScriptTests : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";

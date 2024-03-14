@@ -1,19 +1,17 @@
+using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using War3Net.Build.Info;
 
 namespace Tests
 {
     [TestClass]
-    public class ProjectTest
+    public class ProjectTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -25,7 +23,7 @@ namespace Tests
 
 
         [ClassInitialize]
-        public static void Init(TestContext context)
+        public static void BeforeAll(TestContext context)
         {
             Console.WriteLine("-----------");
             Console.WriteLine("RUNNING PROJECT TESTS");

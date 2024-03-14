@@ -10,7 +10,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class VariableTest
+    public class VariableTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";

@@ -12,7 +12,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class TriggerTest
+    public class TriggerTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";

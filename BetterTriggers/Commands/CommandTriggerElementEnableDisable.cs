@@ -21,20 +21,20 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            _eca.isEnabled = !_eca.isEnabled;
+            _eca.IsEnabled = !_eca.IsEnabled;
             Project.CurrentProject.CommandManager.AddCommand(this);
             _explorerElement.InvokeChange();
         }
 
         public void Redo()
         {
-            _eca.isEnabled = !_eca.isEnabled;
+            _eca.IsEnabled = !_eca.IsEnabled;
             _explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
-            _eca.isEnabled = !_eca.isEnabled;
+            _eca.IsEnabled = !_eca.IsEnabled;
             _explorerElement.InvokeChange();
         }
 

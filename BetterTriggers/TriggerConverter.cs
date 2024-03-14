@@ -645,7 +645,7 @@ namespace BetterTriggers.WorldEdit
             triggerFunctions.ForEach(function =>
             {
                 ECA te = TriggerElementFactory.Create(function.Name);
-                te.isEnabled = function.IsEnabled;
+                te.IsEnabled = function.IsEnabled;
                 te.function.parameters = CreateParameters(function.Parameters);
 
                 triggerElements.Elements.Add(te);

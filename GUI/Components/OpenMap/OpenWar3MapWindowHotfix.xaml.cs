@@ -72,7 +72,7 @@ namespace GUI.Components.OpenMap
                 var options = new EnumerationOptions();
                 options.IgnoreInaccessible = true;
                 string[] entries = Directory.GetFileSystemEntries(dir, "*", options);
-                treeViewFiles.Items.Clear();
+                _viewModel.Maps.Clear();
                 currentDir = dir;
                 textBox.Text = dir;
                 for (int i = 0; i < entries.Length; i++)
@@ -116,15 +116,14 @@ namespace GUI.Components.OpenMap
 
         private void treeViewFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeViewItem treeItem = treeViewFiles.SelectedItem as TreeViewItem;
-            if (treeItem == null)
+            var mapfile = treeViewFiles.SelectedItem as MapFile;
+            if (mapfile == null)
             {
                 btnOK.IsEnabled = false;
                 return;
             }
 
-            ListItemData data = (ListItemData)treeItem.Tag;
-            SelectedPath = data.path;
+            SelectedPath = mapfile.FullPath;
             if (!Project.VerifyMapPath(SelectedPath))
             {
                 btnOK.IsEnabled = false;

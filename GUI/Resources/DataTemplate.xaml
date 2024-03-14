@@ -114,6 +114,11 @@
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Setter Property="Source" Value="{Binding IconImage}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </Image.Style>
             </Image>
@@ -132,11 +137,12 @@
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=IsEnabled}" Value="False" />
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Source" Value="/Resources/Icons/trigger-error.png" />
+                                <Setter Property="Source" Value="/Resources/Icons/editor-triggerfunctiondisabled.png" />
                             </MultiDataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=HasErrors}" Value="True" />
+                                    <Condition Binding="{Binding Path=IsEnabled}" Value="True" />
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Source" Value="/Resources/Icons/trigger-error.png" />
                             </MultiDataTrigger>
@@ -152,24 +158,18 @@
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource TextErrorBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=HasErrors}" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource TextErrorBrush}" />
+                            </DataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=IsEnabled}" Value="True" />
                                     <Condition Binding="{Binding Path=HasErrors}" Value="False" />
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding Path=IsEnabled}" Value="False" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource TextErrorBrush}" />
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding Path=HasErrors}" Value="True" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource TextErrorBrush}" />
                             </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>

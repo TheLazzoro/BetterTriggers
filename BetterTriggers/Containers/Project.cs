@@ -640,23 +640,21 @@ namespace BetterTriggers.Containers
         /// Adjusts the name and id of ExplorerElement(s) so they don't get an name/id that's already in use.
         /// Use when new elements are about to get created or pasted.
         /// </summary>
-        /// <param name="explorerElement"></param>
-        public void PrepareExplorerElement(ExplorerElement explorerElement)
+        /// <param name="pasted"></param>
+        public void PrepareExplorerElement(ExplorerElement pasted)
         {
-            if (explorerElement is ExplorerElement)
+            if (pasted.ElementType == ExplorerElementEnum.Trigger)
             {
-                var element = (ExplorerElement)explorerElement;
-
-                string folder = Path.GetDirectoryName(element.GetPath());
-                string name = Triggers.GenerateTriggerName(explorerElement.GetName());
-                element.trigger.Id = Triggers.GenerateId();
-                element.SetPath(Path.Combine(folder, name));
+                string folder = Path.GetDirectoryName(pasted.GetPath());
+                string name = Triggers.GenerateTriggerName(pasted.GetName());
+                pasted.trigger.Id = Triggers.GenerateId();
+                pasted.SetPath(Path.Combine(folder, name));
 
 
                 // Adjusts local variable ids
                 List<int> blacklistedIds = new List<int>();
-                var varRefs = Triggers.GetVariableRefsFromTrigger(element);
-                element.trigger.LocalVariables.Elements.ForEach(v =>
+                var varRefs = Triggers.GetVariableRefsFromTrigger(pasted);
+                pasted.trigger.LocalVariables.Elements.ForEach(v =>
                 {
                     var lv = (LocalVariable)v;
                     int oldId = lv.variable.Id;
@@ -671,25 +669,25 @@ namespace BetterTriggers.Containers
                 });
 
             }
-            else if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
+            else if (pasted.ElementType == ExplorerElementEnum.GlobalVariable)
             {
-                string folder = Path.GetDirectoryName(explorerElement.GetPath());
-                string name = Variables.GenerateName(explorerElement.GetName());
+                string folder = Path.GetDirectoryName(pasted.GetPath());
+                string name = Variables.GenerateName(pasted.GetName());
 
-                explorerElement.variable.Id = Variables.GenerateId();
-                explorerElement.SetPath(Path.Combine(folder, name + ".var"));
+                pasted.variable.Id = Variables.GenerateId();
+                pasted.SetPath(Path.Combine(folder, name + ".var"));
 
             }
-            else if (explorerElement.ElementType == ExplorerElementEnum.Folder)
+            else if (pasted.ElementType == ExplorerElementEnum.Folder)
             {
-                var children = explorerElement.GetExplorerElements();
+                var children = pasted.GetExplorerElements();
                 for (int i = 0; i < children.Count; i++)
                 {
                     PrepareExplorerElement(children[i]);
                 }
             }
 
-            AddElementToContainer(explorerElement);
+            AddElementToContainer(pasted);
         }
 
         /// <summary>

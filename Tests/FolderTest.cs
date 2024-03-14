@@ -11,7 +11,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class FolderTest
+    public class FolderTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -81,20 +81,22 @@ namespace Tests
         {
             var root = Project.CurrentProject.projectFiles[0];
             Project.CurrentProject.CopyExplorerElement(element1);
-            var element = Project.CurrentProject.PasteExplorerElement(root);
+            var pastedElement = Project.CurrentProject.PasteExplorerElement(root);
 
             int expectedElements = element1.ExplorerElements.Count;
-            int actualElements = element.ExplorerElements.Count;
+            int actualElements = pastedElement.ExplorerElements.Count;
 
-            Assert.AreEqual(element, Project.CurrentProject.lastCreated);
+            Assert.AreEqual(pastedElement, Project.CurrentProject.lastCreated);
             Assert.AreEqual(expectedElements, actualElements);
-            Assert.AreNotEqual(element.GetName(), element1.GetName());
+            Assert.AreNotEqual(pastedElement.GetName(), element1.GetName());
 
-            foreach (var el in element.ExplorerElements)
+            foreach (var el in pastedElement.ExplorerElements)
             {
                 foreach (var toCompare in element1.ExplorerElements)
                 {
-                    Assert.AreNotEqual(el.GetName(), toCompare.GetName());
+                    string expected = el.GetName();
+                    string actual = toCompare.GetName();
+                    Assert.AreNotEqual(expected, actual);
                 }
             }
         }

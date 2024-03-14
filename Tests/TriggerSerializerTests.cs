@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Tests
 {
     [TestClass]
-    public class TriggerSerializerTests
+    public class TriggerSerializerTests : TestBase
     {
         [TestMethod]
         public void Deserialize_Serialize_Compare_Test()

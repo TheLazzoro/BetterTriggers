@@ -36,6 +36,9 @@ namespace BetterTriggers.Models.EditorData
 
             Category category;
             categories.TryGetValue(key, out category);
+            if(category == null)
+                return new Category(null, "", false); // hack
+
             return category;
         }
 

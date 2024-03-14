@@ -116,6 +116,8 @@
                   ItemsSource="{Binding Elements}"
                   Background="{DynamicResource BackgroundDark}"
                   ItemTemplate="{DynamicResource TreeItemDataTemplateTriggers}"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.CacheLength="256"
                   BorderBrush="#00828790"
                   Grid.Row="2"
                   Margin="0,35,0,0"

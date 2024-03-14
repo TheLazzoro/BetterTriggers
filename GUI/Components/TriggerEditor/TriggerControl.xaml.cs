@@ -948,7 +948,7 @@ namespace GUI.Components
                 menuFunctionEnabled.IsEnabled = true;
                 if (triggerElement is ECA eca)
                 {
-                    menuFunctionEnabled.IsChecked = eca.isEnabled;
+                    menuFunctionEnabled.IsChecked = eca.IsEnabled;
                 }
             }
         }
@@ -1159,6 +1159,7 @@ namespace GUI.Components
             bool isECA = triggerElement is ECA;
             bool isLocalVar = triggerElement is LocalVariable;
             menuFunctionEnabled.IsEnabled = isECA;
+            menuFunctionEnabled.IsChecked = triggerElement.IsEnabled;
             menuRename.IsEnabled = isLocalVar;
         }
 

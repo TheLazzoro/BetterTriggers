@@ -11,7 +11,6 @@ namespace BetterTriggers.Models.EditorData
     /// </summary>
     public class ECA : TriggerElement
     {
-        public bool isEnabled { get; set; } = true;
         public Function function = new Function();
 
         public ECA() { }
@@ -24,7 +23,7 @@ namespace BetterTriggers.Models.EditorData
         public override ECA Clone()
         {
             ECA clone = new ECA();
-            clone.isEnabled = isEnabled;
+            clone.IsEnabled = IsEnabled;
             clone.function = function.Clone();
 
             return clone;

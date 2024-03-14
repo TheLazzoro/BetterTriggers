@@ -1,5 +1,7 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -10,14 +12,14 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class FileSystemTest
+    public class FileSystemTest : TestBase
     {
         static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "source";
         static string targetFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "target";
         static string projectFolder = Path.Combine(Directory.GetCurrentDirectory(), "testProject");
 
         [ClassInitialize]
-        public static void Init(TestContext context)
+        public static void BeforeAll(TestContext context)
         {
             Console.WriteLine("-----------");
             Console.WriteLine("RUNNING FS TESTS");

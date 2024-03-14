@@ -125,18 +125,17 @@ namespace GUI.Components.OpenMap
 
         private void treeViewFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeViewItem treeItem = treeViewFiles.SelectedItem as TreeViewItem;
+            var treeItem = treeViewFiles.SelectedItem as MapFile;
             if (treeItem == null)
             {
                 btnOK.IsEnabled = false;
                 return;
             }
 
-            ListItemData data = (ListItemData)treeItem.Tag;
-            SelectedPath = data.path;
+            SelectedPath = treeItem.FullPath;
             if(useRelativeMapDirectory)
             {
-                SelectedPath = Path.GetFileName(data.path);
+                SelectedPath = Path.GetFileName(treeItem.FullPath);
             }
             if(!Project.VerifyMapPath(SelectedPath))
             {

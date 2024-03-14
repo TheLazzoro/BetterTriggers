@@ -14,7 +14,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class TriggerDataTest
+    public class TriggerDataTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -33,8 +33,6 @@ namespace Tests
             Console.WriteLine("RUNNING TRIGGER DATA TESTS");
             Console.WriteLine("-----------");
             Console.WriteLine("");
-
-            BetterTriggers.Init.Initialize(true);
         }
 
         [ClassCleanup]

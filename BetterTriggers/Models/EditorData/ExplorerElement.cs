@@ -315,6 +315,7 @@ namespace BetterTriggers.Models.EditorData
             newElement.Parent = this.Parent;
             newElement.isInitiallyOn = this.isInitiallyOn;
             newElement.IsEnabled = this.IsEnabled;
+            newElement.ElementType = this.ElementType;
 
             switch (ElementType)
             {
@@ -346,7 +347,7 @@ namespace BetterTriggers.Models.EditorData
         /// </summary>
         public void Save()
         {
-            if (!File.Exists(this.path)) // Edge case when a folder containing the file was deleted.
+            if (!Directory.Exists(Path.GetDirectoryName(this.path))) // Edge case when a folder containing the file was deleted.
             {
                 return;
             }

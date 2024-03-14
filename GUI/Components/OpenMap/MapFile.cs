@@ -10,13 +10,12 @@ namespace GUI.Components.OpenMap
 {
     public class MapFile : TreeNodeBase
     {
-        public string DisplayName { get; private set; }
         public string FullPath { get; private set; }
 
         public MapFile(string fullPath)
         {
             FullPath = fullPath;
-            DisplayName = Path.GetFileName(fullPath);
+            DisplayText = Path.GetFileName(fullPath);
             SetCategory(TriggerCategory.TC_MAP);
         }
     }
