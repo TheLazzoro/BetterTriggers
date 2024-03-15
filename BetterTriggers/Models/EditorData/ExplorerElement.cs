@@ -63,79 +63,84 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement(string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
         {
             this.path = path;
-            string extension = Path.GetExtension(path);
             bool isReadyForRead = false;
             int sleepTolerance = 100;
             string json = string.Empty;
-            switch (extension)
+
+            if (Directory.Exists(path))
             {
-                case ".trg":
-                    ElementType = ExplorerElementEnum.Trigger;
-                    SetCategory(TriggerCategory.TC_TRIGGER_NEW);
-                    while (!isReadyForRead)
-                    {
-                        try
+                ElementType = ExplorerElementEnum.Folder;
+                SetCategory(TriggerCategory.TC_DIRECTORY);
+            }
+            else if (File.Exists(path))
+            {
+                string extension = Path.GetExtension(path);
+                switch (extension)
+                {
+                    case ".trg":
+                        ElementType = ExplorerElementEnum.Trigger;
+                        SetCategory(TriggerCategory.TC_TRIGGER_NEW);
+                        while (!isReadyForRead)
                         {
-                            json = File.ReadAllText(path);
-                            isReadyForRead = true;
+                            try
+                            {
+                                json = File.ReadAllText(path);
+                                isReadyForRead = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                if (sleepTolerance < 0)
+                                    throw new Exception(ex.Message);
+
+                                Thread.Sleep(100);
+                                sleepTolerance--;
+                            }
                         }
-                        catch (Exception ex)
+                        var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(json);
+                        trigger = TriggerSerializer.Deserialize(savedTrigger);
+                        StoreLocalVariables();
+                        Project.CurrentProject.Triggers.AddTrigger(this);
+
+                        break;
+                    case ".j":
+                    case ".lua":
+                        ElementType = ExplorerElementEnum.Script;
+                        SetCategory(TriggerCategory.TC_SCRIPT);
+                        this.script = Project.CurrentProject.Scripts.LoadFromFile(path);
+                        Project.CurrentProject.Scripts.AddScript(this);
+                        break;
+                    case ".var":
+                        ElementType = ExplorerElementEnum.GlobalVariable;
+                        SetCategory(TriggerCategory.TC_SETVARIABLE);
+                        while (!isReadyForRead)
                         {
-                            if (sleepTolerance < 0)
-                                throw new Exception(ex.Message);
+                            try
+                            {
+                                json = File.ReadAllText(path);
+                                isReadyForRead = true;
+                            }
+                            catch (Exception ex)
+                            {
+                                if (sleepTolerance < 0)
+                                    throw new Exception(ex.Message);
 
-                            Thread.Sleep(100);
-                            sleepTolerance--;
+                                Thread.Sleep(100);
+                                sleepTolerance--;
+                            }
                         }
-                    }
-                    var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(json);
-                    trigger = TriggerSerializer.Deserialize(savedTrigger);
-                    StoreLocalVariables();
-                    Project.CurrentProject.Triggers.AddTrigger(this);
 
-                    break;
-                case ".j":
-                case ".lua":
-                    ElementType = ExplorerElementEnum.Script;
-                    SetCategory(TriggerCategory.TC_SCRIPT);
-                    this.script = Project.CurrentProject.Scripts.LoadFromFile(path);
-                    Project.CurrentProject.Scripts.AddScript(this);
-                    break;
-                case ".var":
-                    ElementType = ExplorerElementEnum.GlobalVariable;
-                    SetCategory(TriggerCategory.TC_SETVARIABLE);
-                    while (!isReadyForRead)
-                    {
-                        try
-                        {
-                            json = File.ReadAllText(path);
-                            isReadyForRead = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (sleepTolerance < 0)
-                                throw new Exception(ex.Message);
+                        var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(json);
+                        variable = TriggerSerializer.DeserializeVariable(savedVariable);
+                        variable.PropertyChanged += AddToUnsaved;
+                        UpdateMetadata();
+                        Project.CurrentProject.Variables.AddVariable(this);
 
-                            Thread.Sleep(100);
-                            sleepTolerance--;
-                        }
-                    }
-
-                    var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(json);
-                    variable = TriggerSerializer.DeserializeVariable(savedVariable);
-                    variable.PropertyChanged += AddToUnsaved;
-                    UpdateMetadata();
-                    Project.CurrentProject.Variables.AddVariable(this);
-
-                    variable.Name = Path.GetFileNameWithoutExtension(GetPath());
-                    break;
-                case "":
-                    ElementType = ExplorerElementEnum.Folder;
-                    SetCategory(TriggerCategory.TC_DIRECTORY);
-                    break;
-                default:
-                    ElementType = ExplorerElementEnum.None;
-                    break;
+                        variable.Name = Path.GetFileNameWithoutExtension(GetPath());
+                        break;
+                    default:
+                        ElementType = ExplorerElementEnum.None;
+                        break;
+                }
             }
 
             if (explicitType == ExplorerElementEnum.Root)
@@ -235,7 +240,7 @@ namespace BetterTriggers.Models.EditorData
                 this.Size = info.EnumerateFiles().Sum(file => file.Length);
                 this.LastWrite = info.LastWriteTime;
             }
-            else
+            else if (ElementType != ExplorerElementEnum.None)
             {
                 var info = new FileInfo(path);
                 this.Size = info.Length;
@@ -288,6 +293,9 @@ namespace BetterTriggers.Models.EditorData
 
         public void RemoveFromUnsaved(bool recursive = false)
         {
+            if (Project.CurrentProject == null)
+                return;
+
             Project.CurrentProject.UnsavedFiles.RemoveFromUnsaved(this);
             if (recursive && ExplorerElements.Count > 0)
             {

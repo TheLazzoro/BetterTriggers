@@ -675,6 +675,7 @@ namespace BetterTriggers.Containers
                 string name = Variables.GenerateName(pasted.GetName());
 
                 pasted.variable.Id = Variables.GenerateId();
+                pasted.variable.Name = name;
                 pasted.SetPath(Path.Combine(folder, name + ".var"));
 
             }

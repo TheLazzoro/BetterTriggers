@@ -57,6 +57,7 @@ namespace BetterTriggers.Containers
             localVariable.variable.InitialValue = new Value() { value = "0" };
             localVariable.DisplayText = localVariable.variable.Name;
             localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
+            localVariableContainer.Add(localVariable.variable);
 
             CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, localVariable, parent, insertIndex);
             command.Execute();

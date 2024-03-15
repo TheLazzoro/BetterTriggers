@@ -326,7 +326,9 @@ namespace BetterTriggers.Models.EditorData
                     {
                         variable = new Variable
                         {
+                            _isLocal = true,
                             Id = localVar.variable.Id,
+                            Name = localVar.variable.Name,
                             ArraySize = localVar.variable.ArraySize,
                             IsTwoDimensions = localVar.variable.IsTwoDimensions,
                             IsArray = localVar.variable.IsArray,

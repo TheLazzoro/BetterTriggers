@@ -83,6 +83,7 @@ namespace Tests
 
             string expectedName = element1.variable.Name + "2";
             string actualName = element.variable.Name;
+            string actualName2 = element.GetName();
 
             int expectedArray0 = element1.variable.ArraySize[0];
             int expectedArray1 = element1.variable.ArraySize[1];
@@ -97,6 +98,7 @@ namespace Tests
             Assert.AreEqual(expectedArray1, actualArray1);
             Assert.AreEqual(expectedType, actualType);
             Assert.AreEqual(expectedName, actualName);
+            Assert.AreEqual(expectedName, actualName2);
         }
 
         [TestMethod]
