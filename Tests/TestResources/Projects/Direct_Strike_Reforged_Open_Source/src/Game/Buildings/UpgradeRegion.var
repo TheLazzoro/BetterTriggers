@@ -1,0 +1,14 @@
+{
+  "Id": 100663318,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "UpgradeRegion",
+  "Type": "rect",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

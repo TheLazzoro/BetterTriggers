@@ -1,0 +1,14 @@
+{
+  "Id": 100663593,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "VolcanoPoint",
+  "Type": "location",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

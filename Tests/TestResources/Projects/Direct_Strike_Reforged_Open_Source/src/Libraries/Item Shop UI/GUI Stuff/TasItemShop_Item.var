@@ -1,0 +1,14 @@
+{
+  "Id": 100663616,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TasItemShop_Item",
+  "Type": "itemcode",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

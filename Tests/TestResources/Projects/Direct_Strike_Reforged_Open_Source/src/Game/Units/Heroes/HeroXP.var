@@ -1,0 +1,14 @@
+{
+  "Id": 100663636,
+  "ArraySize": [
+    10,
+    1
+  ],
+  "Name": "HeroXP",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

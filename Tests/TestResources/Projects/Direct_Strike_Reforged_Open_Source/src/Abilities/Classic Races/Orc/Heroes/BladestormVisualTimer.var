@@ -1,0 +1,14 @@
+{
+  "Id": 100663396,
+  "ArraySize": [
+    14,
+    1
+  ],
+  "Name": "BladestormVisualTimer",
+  "Type": "timer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

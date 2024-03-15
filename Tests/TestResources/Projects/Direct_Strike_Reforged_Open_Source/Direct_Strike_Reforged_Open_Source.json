@@ -1,0 +1,4786 @@
+{
+  "Name": "Direct_Strike_Reforged_Open_Source",
+  "Version": 0,
+  "GameVersion": null,
+  "Language": "jass",
+  "UseRelativeMapDirectory": false,
+  "Comment": "Enter map-specific custom script code below.  This text will be included in the map script after variables are declared and before any trigger code except Custom Script Item. Custom Script Item will merge into map script after globals variables declaration with the list order in trigger view.",
+  "Header": "native GetUnitGoldCost      takes integer unitid                        returns integer",
+  "War3MapDirectory": "C:\\Users\\Lasse\\Desktop\\Direct_Strike_Reforged_Open_Source.w3x",
+  "Files": [
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Libraries",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Libraries\\Table Lib.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Libraries\\Item Shop UI",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Libraries\\Item Shop UI\\Fix",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Fix\\FrameLoader vjass.j",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Libraries\\Item Shop UI\\Req",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\ItemHolder.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\Power2.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\SimpleTooltip.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\IsRightClick.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\SoundConfig.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\TasItemFusion Table.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\TasItemCost.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\ToggleIconButton.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\ToggleIconButtonGroup.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\Sting.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\Req\\TasButtonList (TIS) (CC).j",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Libraries\\Item Shop UI\\GUI Stuff",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShopShortCuts.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShopFusion.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShopCreateShop.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShopCategory.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShopAdd.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShopHaggle.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShopCosts.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Mats.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Item.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Unit.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Player.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_WhiteList.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Category.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Text.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Icon.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Gold.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Lumber.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Skill.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_Buff.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_GoldAdd.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\TasItemShop_LumberAdd.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\GUILoader.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\MyItemShopCat.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\MyItemShopCat2.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": false,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\ItemshopGUI Init Cats.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": false,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\ItemshopGUI Init Fusions.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": false,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\ItemshopGUI Init Items.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\ItemshopGUI Init Shop.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": false,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\ItemshopGUI Init Haggle Skills.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\ItemshopGUI Init.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": false,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Libraries\\Item Shop UI\\GUI Stuff\\ItemshopGUI Init ShortCuts.trg",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Libraries\\Item Shop UI\\TasItemShop.j",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Libraries\\Item Shop UI\\TasItemShopUserInit.j",
+              "Files": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Required",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Required\\Required.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Required\\Grid.j",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Scripts",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\AFK System.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Constants.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Ability AI.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Buildings.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Custom Abilities.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Damage Detect.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Race Selection Script.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\InitSpawn.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\InitAIGroups.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Scoreboard.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Spawn.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\UICamera.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\UIFrameHealthIndicators.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\UIMapIndicators.j",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Scripts\\Core Script.j",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Cinematic",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Cinematic\\Cinematic Sequence 01.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Cinematic\\Cinematic Sequence 02 init scripts.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Cinematic\\VisibilityModifier.var",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Abilities",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Abilities\\SetupGUISpellTables.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Abilities\\Move Unit On Cast.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Abilities\\Unit Type Groups",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Unit Type Groups\\UnitTypeTable.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Unit Type Groups\\Human",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\Priests.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\Sorceress.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\Spellbreaker.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\DragonhawkRiders.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\MortarTeams.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\Paladins.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\Archmages.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\MountainKings.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Human\\BloodMages.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Unit Type Groups\\Orc",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\Batriders.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\Shamans.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\Raiders.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\SpiritWalkers.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\Blademasters.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\FarSeers.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\TaurenChieftains.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Orc\\ShadowHunters.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Unit Type Groups\\Undead",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\CryptFiends.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\Necromancers.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\Banshees.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\ObsidianStatues.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\Destroyers.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\DeathKnights.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\Liches.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\Dreadlords.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Undead\\CryptLords.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Unit Type Groups\\Night Elf",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\Dryads.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\DruidOfTheClaws.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\DruidOfTheTalons.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\FaerieDragons.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\KeeperOfTheGroves.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\PriestessOfTheMoons.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\DemonHunters.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Night Elf\\Wardens.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Unit Type Groups\\Tavern",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Alchemists.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\SeaWitches.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Tinkers.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Beastmasters.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Brewmasters.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\DarkRangers.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Firelords.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\PitLords.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Storm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Earth.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Unit Type Groups\\Tavern\\Fire.var",
+                  "Files": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Abilities\\Classic Races",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Classic Races\\Unit Casts",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Mana Flare Cast.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\ManaFlareRange.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Invisibility.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Invisibility NEW.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Aerial Shackles.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Finishes Casting Aerial Shackles.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\AerialShacklesGroup.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Ancestral Spirit.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Stasis Trap.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Burrow.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Devour Magic.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Hit by Possession.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Unit Casts Kaboom.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Raider Pillage.j",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Banshee Possession NEW.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Banshee Possession Kill.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Banshee Possession change back.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\PossessionGroup.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\PossessionTable.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\PossessionTable2.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Hero Casts Earthquake.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Hero Stops Casting Earthquake.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Hero Casts Death and Decay.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Hero Stops Casting Death and Decay.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Hero Casts Tornado.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Tornado Search.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Unit Casts\\Tornados.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Classic Races\\Human",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Heroes",
+                  "Files": [
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Holy Light.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Divine Shield.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Resurrection.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Blizzard.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Water Elemental.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Tornado.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Storm Bolt.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Avatar and Thunder Clap.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Avatar.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Human\\Heroes\\Blood Mage Abilities.trg",
+                      "Files": []
+                    }
+                  ]
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Footman Defend.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Priest Dispel Magic.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Priest Inner Fire 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Sorceress Invisibility.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Sorceress Sheep.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Sorceress Sheep 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Spellbreaker Control Magic.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Dragonhawk Rider Aerial Shackles.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Dragonhawk Rider Aerial Shackles 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\Mortar Team Flare.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeDefend.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeSlow.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeInvisibility.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activePolymorph.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeFlare.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeHeal.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeDispelMagic.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeInnerFire.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeControlMagic.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeAerialShackles.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeHolyLight.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeDivineShield.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeResurrection.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeBlizzard.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeWaterElemental.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeTornado.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeStormBolt.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeThunderClap.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeAvatar.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeFlamestrike.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeBanish.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activeSiphonMana.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Human\\activePhoenix.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Classic Races\\Orc",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Heroes",
+                  "Files": [
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Wind Walk.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Wind Walk 2.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Wind Walk Unit Dies.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Blademaster Dies.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\WindWalkUnit.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Mirror Image.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Bladestorm.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\isBladestormOn.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\BladestormVisualUnit.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\BladestormVisualTimer.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Chain Lightning.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Spirit Wolves.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Firebolt.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Earthquake.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Earthquake Point Check.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\EarthquakePoint.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\EarthquakeActive.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Shockwave.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\War Stomp.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Healing Wave.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Hex.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Serpent Ward.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Big Bad Voodoo.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Big Bad Voodoo Check.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Orc\\Heroes\\Big Bad Voodoo is attacked.trg",
+                      "Files": []
+                    }
+                  ]
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Berserker Berserk.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Batrider Unstable Concoction.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Batrider Unstable Concoction 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Shaman Purge.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Shaman Purge 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Shaman Lightning Shield.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Spirit Walker Spirit Link.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Spirit Walker Spirit Link 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Spirit Walker Disenchant.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Spirit Walker Ancestral Spirit.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Witch Doctor Stasis Trap Healing Ward.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\Kodo Beast Devour.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeBerserk.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activePurge.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeLightningShield.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeBloodlust.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeEnsnare.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeSentryWard.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeStasisTrap.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeHealingWard.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeSpiritLink.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeDisenchant.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeAncestralSpirit.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeUnstableConcoction.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeDevour.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeWindWalk.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeMirrorImage.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeBladestorm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeChainLightning.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeFirebolt.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeSpiritWolves.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeEarthquake.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeShockwave.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeWarStomp.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeHealingWave.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeHex.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeSerpentWard.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Orc\\activeBigBadVoodoo.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Classic Races\\Undead",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Heroes",
+                  "Files": [
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Death Coil.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Death Pact.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Animate Dead.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Frost Nova.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Autocast Frost Armor ON.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Autocast Frost Armor OFF.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Dark Ritual.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Death and Decay.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Death and Decay Point Check.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\DeathAndDecayPoint.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\DeathAndDecayActive.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Dreadlord Abilities.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Crypt Lord Abilities.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Autocast Carrion Beetles ON.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Undead\\Heroes\\Autocast Carrion Beetles OFF.trg",
+                      "Files": []
+                    }
+                  ]
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Crypt Fiend Burrow.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Crypt Fiend Unburrow.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Crypt Fiend Unburrow 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Crypt Fiend Dies.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\CryptFiendBurrow.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Gargoyle Stone Form.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Gargoyle Unstone Form.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Gargoyle Uses Unstone Form.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\GargoyleStoneForm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Necromancer Raise Dead.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Necromancer Unholy Frenzy.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Necromancer Cripple.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Banshee Anti Magic Shell.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Banshee Possession.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": false,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Banshee Possession 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Banshee Possession Random.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Obsidian Staue Spirit Touch.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\MeatWagonsMoveEvent.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\MeatWagonsMoveTimer.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\MeatWagons.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Meat Wagon Exhume Corpses.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Meat Wagon Dies.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Disease Cloud is summoned.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Disease Cloud Dies.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\DiseaseClouds.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": false,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Destroyer Absorb Mana.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Destroyer Absorb Mana 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\Destroyer Devour Magic.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeWeb.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeBurrow.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeCurse.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeAntiMagicShell.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activePossession.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeSpiritTouch.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeEssenceOfBlight.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeStoneForm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeRaiseDead.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeUnholyFrenzy.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeCripple.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeDevourMagic.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeOrbOfAnnihilation.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeAbsorbMana.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeDeathCoil.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeDeathPact.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeAnimateDead.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeFrostNova.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeFrostShield.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeDarkRitual.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeDeathAndDecay.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeCarrionSwarm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeSleep.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeInferno.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeImpale.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeCarrionBeetles.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Undead\\activeLocustSwarm.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Classic Races\\Night Elf",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Heroes",
+                  "Files": [
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Entangling Roots.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Force of Nature.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Tranquility.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Autocast Searing Arrows ON.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Autocast Searing Arrows OFF.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Silence.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Starfall.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Starfall Check.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Mana Burn.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Immolation.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\ImmolationCounter.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Metamorphosis.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Fan of Knives.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Blink.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Shadow Strike.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Night Elf\\Heroes\\Vengeance.trg",
+                      "Files": []
+                    }
+                  ]
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Dryad Abolish Magic.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Huntress Sentinel.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Druid of the Talon Crow Form.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Druid of the Talon Cyclone.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Druid of the Claw Roar.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Druid of the Claw Roar 2.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Druid of the Claw Rejuvenation.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Druid of the Claw Bear Form.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\Mountain Giant Taunt.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeSentinel.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeAbolishMagic.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeRoar.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeRejuvenation.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeBearForm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeFaerieFire.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeCrowForm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeCyclone.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activePhaseShift.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeManaFlare.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeTaunt.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeEntanglingRoots.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeForceOfNature.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeTranquility.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeSilence.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeSearingArrows.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeStarfall.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeManaBurn.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeImmolation.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeMetamorphosis.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeFanOfKnives.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeBlink.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeShadowStrike.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Night Elf\\activeVengeance.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Abilities\\Classic Races\\Neutral",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\Heroes",
+                  "Files": [
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Healing Spray.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Chemical Rage.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Acid Bomb.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Transmute.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Transmute FIX.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Forked Lightning.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Autocast Frost Arrows ON.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Autocast Frost Arrows OFF.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Mana Shield.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Tornado Neutral.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Pocket Factory.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Cluster Rockets.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Robo Goblin.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Summon Bear.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Summon Hawk and Quilbeast.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Stampede.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Breath of Fire.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Drunken Haze.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Storm Earth and Fire.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Storm Earth and Fire is summoned.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Storm Wind Walk.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Storm Wind Walk 2.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Storm Wind Walk Unit Dies.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Storm Dies.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\StormWindWalkUnit.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Earth Attacks.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Silence Neutral.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Autocast Black Arrow ON.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Autocast Black Arrow OFF.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Life Drain.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Charm.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Soul Burn.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Lava Spawn.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Volcano.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Volcano Point Check.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\VolcanoPoint.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\VolcanoActive.var",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Rain of Fire.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Howl of Terror.trg",
+                      "Files": []
+                    },
+                    {
+                      "isEnabled": true,
+                      "isInitiallyOn": true,
+                      "isExpanded": false,
+                      "path": "Abilities\\Classic Races\\Neutral\\Heroes\\Doom.trg",
+                      "Files": []
+                    }
+                  ]
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeHealingSpray.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeChemicalRage.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeAcidBomb.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeTransmute.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeForkedLightning.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeFrostArrows.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeManaShield.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeTornadoNeutral.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activePocketFactory.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeClusterRockets.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeRoboGoblin.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeSummonBear.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeSummonQuilbeast.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeSummonHawk.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeStampede.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeBreathOfFire.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeDrunkenHaze.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeStormEarthFire.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeSilenceNeutral.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeBlackArrow.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeLifeDrain.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeCharm.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeSoulBurn.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeLavaSpawn.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeVolcano.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeRainOfFire.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeHowlOfTerror.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Abilities\\Classic Races\\Neutral\\activeDoom.var",
+                  "Files": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Initialization",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\PlayerColors.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\MapMusic.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Set Map Music.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\PlayerRace.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\PlayerRacePrevious.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\TablePlayerRace.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\BuilderType.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\MainBuildingType.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\ResearchBuilding1Type.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\ResearchBuilding2Type.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Initialization.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Initializatize Scripts.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Start Game.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Info Init.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Info Prompt.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Load Building Models.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Reset Game.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Setup Fortress and Watch Tower etc.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\AmountOfRoundsPlayed.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\GameModeTimer.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\RaceSelectionTimer.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\WorkerRegion.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\SpawnTimerRegion.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\SpawnTimerTextTags.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\RockRegions.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\Rocks.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\PlayerCameras.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\XRVoteClickCheck.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Initialization\\TotalRounds.var",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Camera",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Camera\\Camera Zoom.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Camera\\CameraZoom.var",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Game",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Game\\Core",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Spawn.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\WaveTime.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\UnitGroupBuildings.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\SpawnTable.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\HeroTable.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TableBuildingTypes.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TableUnitTypes.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Timer.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\PlayerQueue.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\SpawnPlayers.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\SpawnRegions.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\SpawnDelayTimer.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TotalUnits.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TotalKills.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TotalDamage.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TotalUnitsSpawned.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TotalScore.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TotalGoldEarned.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\PlayerLeavesEventReal.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\EventPlayerLeave.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Player Leaves.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Tower Team 1 Dies.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Tower Team 2 Dies.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\FrameFortressTimer.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Game Over.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Show Scoreboard.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\TimerScoreboard.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Research.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\ActivePlayers.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Teams.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Fortress.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\WatchTower.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\Victory.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Core\\GameOver.var",
+              "Files": []
+            }
+          ]
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Game\\Buildings",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Summon Hero Builder.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Construct Hero.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Hero Building Dies.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Hero Building Set Mana Zero.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Move Building.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Sell Building 100.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Sell Building 75.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\MainBuilding.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\BuildRegion.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\UpgradeRegion.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\ResearchRegion.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\ResearchRegion2.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\ItemShopRegion.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\UnitBuildingSwap.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\HeroBuildings.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Buildings\\Enable Upgrades",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Footman.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Priest.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Grunt.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Headhunter.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Witch Doctor.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Raider.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Kodo Beast.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Crypt Fiend.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Ghoul.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Necromancer.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Banshee.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Frost Wyrm.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Huntress.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Glaive Thrower.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Buildings\\Enable Upgrades\\Build Mountain Giant.trg",
+                  "Files": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Game\\Income",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": false,
+              "isExpanded": false,
+              "path": "Game\\Income\\Basic Income.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": false,
+              "isExpanded": false,
+              "path": "Game\\Income\\Extra Income.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\Income.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\IncomeNoMiddleText.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\IncomeMiddleText.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\MiddleIncome.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\MiddleIncome2.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\AddedTime.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\testbool.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\Gold Extractor Add.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\Gold Extractor Cooldown Expires.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\GoldExtractorCost.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\GoldExtractorNumber.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\GoldExtractorCooldown.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Income\\GoldExtractorCooldownBoolean.var",
+              "Files": []
+            }
+          ]
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Game\\Middle",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\Team 1 Enters Middle.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\Team 2 Enters Middle.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\Middle Check.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\UnitsOnTheirHalf.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\UnitsOnEnemyHalf.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\UnitsOnTeam1Side.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\UnitsOnTeam2Side.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\MiddleRegions.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Middle\\AttackRegions.var",
+              "Files": []
+            }
+          ]
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Game\\Units",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Units\\General",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\Unit Dies.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\DeadUnits.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\Idle Check.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\IdleUnits.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\Unit Timed Life.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\Update Unit TT.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\UnitLifespan.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\TableUnitTimedLife.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\TableTimedLifeTT.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\General\\TimedLifeTTs.var",
+                  "Files": []
+                }
+              ]
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Units\\Heroes",
+              "Files": [
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\Hero Dies.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\Hero XP Gain.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\Hero Learn Spells.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\Hero Uses Spell.trg",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\TotalHeroes.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\Heroes.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\DeadHeroes.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\UnitXP.var",
+                  "Files": []
+                },
+                {
+                  "isEnabled": true,
+                  "isInitiallyOn": true,
+                  "isExpanded": false,
+                  "path": "Game\\Units\\Heroes\\HeroXP.var",
+                  "Files": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Game\\Other",
+          "Files": [
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\Staging Area Anti Stuck.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": false,
+              "isExpanded": false,
+              "path": "Game\\Other\\Timer Update.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": false,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\Twenty Minutes In.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\Archer Hippo Merge.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": false,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\Shop Select.trg",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\isShopOpen.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\TwentyMinuteTimer.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\intSeconds.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\stringSeconds.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\intMinutes.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\stringMinutes.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\intHours.var",
+              "Files": []
+            },
+            {
+              "isEnabled": true,
+              "isInitiallyOn": true,
+              "isExpanded": false,
+              "path": "Game\\Other\\stringHours.var",
+              "Files": []
+            }
+          ]
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Game\\UnitExpirationTimer.var",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Multiboard",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Multiboard\\Multiboard Setup.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Multiboard\\Multiboard.var",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Memory Management Variables",
+      "Files": [
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Bool.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Point.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Point2.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Point3.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Point4.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Point5.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Point6.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\UnitGroup.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\UnitGroup2.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\UnitGroup3.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\UnitGroup4.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Integer.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Integer2.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Player.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Real.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Real2.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Real3.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Real4.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\String.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\String2.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Unit.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Memory Management Variables\\Unit2.var",
+          "Files": []
+        }
+      ]
+    },
+    {
+      "isEnabled": true,
+      "isInitiallyOn": true,
+      "isExpanded": false,
+      "path": "Test",
+      "Files": [
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST RANDOM BUILDER.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST SET SKIN.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST SAVE.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST LEAVE.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\SPAWN TEST.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST LEVEL UP.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\test own.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST SELECT UNIT.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST GROUND UNIT.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\test move.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\DEBUG ORDERS.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\Test Script.j",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST SPAWN.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\Leak Detector.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST LEAK.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST RESET.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST ORDER.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST DESTRUCTIBLE.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST KILLS.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": false,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\TEST CUSTOM VALUE.trg",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\DebugCounter.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\DebugString.var",
+          "Files": []
+        },
+        {
+          "isEnabled": true,
+          "isInitiallyOn": true,
+          "isExpanded": false,
+          "path": "Test\\testunit.var",
+          "Files": []
+        }
+      ]
+    }
+  ]
+}

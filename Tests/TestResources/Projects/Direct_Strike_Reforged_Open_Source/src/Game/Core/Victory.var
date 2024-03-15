@@ -1,0 +1,14 @@
+{
+  "Id": 100663482,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "Victory",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

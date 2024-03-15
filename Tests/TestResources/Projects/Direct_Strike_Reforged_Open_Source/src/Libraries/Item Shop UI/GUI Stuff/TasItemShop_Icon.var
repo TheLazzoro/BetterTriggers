@@ -1,0 +1,14 @@
+{
+  "Id": 100663622,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TasItemShop_Icon",
+  "Type": "imagefile",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

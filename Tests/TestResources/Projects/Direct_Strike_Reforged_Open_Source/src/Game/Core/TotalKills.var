@@ -1,0 +1,14 @@
+{
+  "Id": 100663481,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "TotalKills",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Id": 100663541,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activeImpale",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

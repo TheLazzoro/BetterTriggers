@@ -1,0 +1,14 @@
+{
+  "Id": 100663628,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TasItemShop_LumberAdd",
+  "Type": "real",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

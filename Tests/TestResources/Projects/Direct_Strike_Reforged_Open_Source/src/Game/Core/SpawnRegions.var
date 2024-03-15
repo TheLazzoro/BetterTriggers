@@ -1,0 +1,14 @@
+{
+  "Id": 100663335,
+  "ArraySize": [
+    2,
+    1
+  ],
+  "Name": "SpawnRegions",
+  "Type": "rect",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

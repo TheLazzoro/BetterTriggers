@@ -1,0 +1,14 @@
+{
+  "Id": 100663775,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "ResearchBuilding1Type",
+  "Type": "unitcode",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

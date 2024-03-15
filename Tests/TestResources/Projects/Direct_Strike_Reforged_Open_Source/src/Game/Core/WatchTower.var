@@ -1,0 +1,14 @@
+{
+  "Id": 100663391,
+  "ArraySize": [
+    2,
+    1
+  ],
+  "Name": "WatchTower",
+  "Type": "unit",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Id": 100663588,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activeSilenceNeutral",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

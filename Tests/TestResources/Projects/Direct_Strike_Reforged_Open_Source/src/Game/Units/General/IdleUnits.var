@@ -1,0 +1,14 @@
+{
+  "Id": 100663326,
+  "ArraySize": [
+    2,
+    1
+  ],
+  "Name": "IdleUnits",
+  "Type": "group",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

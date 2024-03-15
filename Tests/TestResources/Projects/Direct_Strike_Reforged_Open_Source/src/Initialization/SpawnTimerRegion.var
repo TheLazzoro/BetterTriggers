@@ -1,0 +1,14 @@
+{
+  "Id": 100663355,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "SpawnTimerRegion",
+  "Type": "rect",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

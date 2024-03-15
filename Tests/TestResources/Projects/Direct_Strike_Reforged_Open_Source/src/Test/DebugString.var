@@ -1,0 +1,14 @@
+{
+  "Id": 100663405,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "DebugString",
+  "Type": "string",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

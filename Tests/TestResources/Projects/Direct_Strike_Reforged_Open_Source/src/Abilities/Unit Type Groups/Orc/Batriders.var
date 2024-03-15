@@ -1,0 +1,14 @@
+{
+  "Id": 100663389,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "Batriders",
+  "Type": "group",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Id": 100663354,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "SpawnTimerTextTags",
+  "Type": "texttag",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

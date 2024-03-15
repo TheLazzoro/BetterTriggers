@@ -1,0 +1,15 @@
+{
+  "Id": 100663353,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "ManaFlareRange",
+  "Type": "real",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "500.00"
+  }
+}

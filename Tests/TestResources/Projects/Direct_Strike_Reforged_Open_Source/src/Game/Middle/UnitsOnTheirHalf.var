@@ -1,0 +1,14 @@
+{
+  "Id": 100663332,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "UnitsOnTheirHalf",
+  "Type": "group",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

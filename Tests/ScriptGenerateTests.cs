@@ -336,7 +336,6 @@ namespace Tests
             TriggerConverter triggerConverter = new TriggerConverter(mapDir);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
             projectFile = triggerConverter.Convert(destination);
-            Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);
             war3project = JsonConvert.DeserializeObject<War3Project>(projectFileContent);
@@ -347,6 +346,7 @@ namespace Tests
             CustomMapData.Load(mapDir);
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
             string script;
+            Builder builder = new();
             (success, script) = builder.GenerateScript();
 
             // Just for the sake of it

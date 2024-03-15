@@ -1,0 +1,14 @@
+{
+  "Id": 100663317,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "GoldExtractorNumber",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Id": 100663676,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TotalRounds",
+  "Type": "integer",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Id": 100663360,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "IncomeMiddleText",
+  "Type": "string",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

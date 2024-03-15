@@ -1,0 +1,14 @@
+{
+  "Id": 100663484,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "TotalUnitsSpawned",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Id": 100663679,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "PlayerRacePrevious",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Id": 100663483,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "TotalGoldEarned",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

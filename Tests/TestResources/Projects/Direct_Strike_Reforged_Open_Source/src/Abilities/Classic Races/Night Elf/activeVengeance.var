@@ -1,0 +1,15 @@
+{
+  "Id": 100663556,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activeVengeance",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

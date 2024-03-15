@@ -1,0 +1,14 @@
+{
+  "Id": 100663356,
+  "ArraySize": [
+    2,
+    1
+  ],
+  "Name": "MiddleIncome2",
+  "Type": "real",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Id": 100663331,
+  "ArraySize": [
+    2,
+    1
+  ],
+  "Name": "SpawnDelayTimer",
+  "Type": "timer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

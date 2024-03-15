@@ -1,0 +1,14 @@
+{
+  "Id": 100663729,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "DeadUnits",
+  "Type": "group",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}
