@@ -18,6 +18,17 @@
         <Label Foreground="{DynamicResource TextBrush}" Grid.RowSpan="2" Grid.Row="1">Changed triggers:</Label>
 
 
-        <ListView x:Name="listView" Grid.Row="2" Background="{DynamicResource BackgroundDark}"></ListView>
+        <ListView x:Name="listView"
+                  Grid.Row="2"
+                  ItemsSource="{Binding ChangedElements}"
+                  ItemTemplate="{DynamicResource TriggerElementMenuItem}"
+                  Background="{DynamicResource BackgroundDark}" >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemStyleBT}">
+                    <EventSetter Event="Selected" Handler="ListViewItem_MouseDown" />
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDown" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
 </Window>

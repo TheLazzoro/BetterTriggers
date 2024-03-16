@@ -9,6 +9,9 @@
     <Grid>
 
         <ListView x:Name="listViewCategory" Grid.RowSpan="2" Grid.Column="0" Background="{DynamicResource BackgroundDark}" BorderBrush="#00ABADB3" SelectionChanged="listViewCategory_SelectionChanged" >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemStyleBT}"/>
+            </ListView.ItemContainerStyle>
         </ListView>
 
     </Grid>

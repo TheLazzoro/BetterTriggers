@@ -82,7 +82,6 @@
             x:Name="treeViewTriggerExplorer"
             ItemsSource="{Binding ProjectFiles}"
             Background="{DynamicResource BackgroundDark}"
-            VirtualizingPanel.IsVirtualizing="True"
             AllowDrop="True"
             BorderBrush="{x:Null}"
             Drop="treeViewTriggerExplorer_Drop"
@@ -112,10 +111,11 @@
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
-                    <EventSetter Event="TreeViewItem.Expanded" Handler="treeViewItem_Expanded"/>
-                    <EventSetter Event="TreeViewItem.Collapsed" Handler="treeViewItem_Collapsed"/>
                     <EventSetter Event="TreeViewItem.MouseRightButtonUp" Handler="treeViewItem_MouseRightButtonUp"/>
                     <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
+                    <EventSetter Event="TreeViewItem.Selected" Handler="treeViewItem_Selected" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                 </Style>
             </TreeView.ItemContainerStyle>
 
@@ -197,39 +197,6 @@
 
             </TreeView>
         </Grid>
-
-        <!-- Search Field DISABLED -->
-        <Border x:Name="searchField" Visibility="Hidden" Width="225" Height="45" Background="{DynamicResource BackgroundLight}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,22,0">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="-90"
-                              RenderingBias="Quality" ShadowDepth="2"/>
-            </Border.Effect>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="15" />
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="10" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="22" />
-                    <RowDefinition Height="10" />
-                </Grid.RowDefinitions>
-
-                <Label Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource TextBrush}">Search:</Label>
-                <TextBox x:Name="searchTextBox" Grid.Row="1" Grid.Column="1" KeyDown="searchTextBox_KeyDown" ></TextBox>
-                <Button x:Name="btnSearch" Grid.Row="1" Grid.Column="3" Click="btnSearch_Click" >Search</Button>
-                <Button x:Name="btnCloseSearchField" Width="20" Height="20" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCloseSearchField_Click"  >
-                    <Button.Content>
-                        <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
-                    </Button.Content>
-                </Button>
-            </Grid>
-        </Border>
 
     </Grid>
 </UserControl>

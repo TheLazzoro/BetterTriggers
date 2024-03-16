@@ -30,7 +30,6 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement Parent { get; set; }
         public ObservableCollection<ExplorerElement> ExplorerElements { get; set; } = new();
         public bool isInitiallyOn { get; set; } = true;
-        public bool isExpanded { get; set; } = false;
         public event Action OnReload;
         public event Action OnChanged;
         public event Action OnSaved;

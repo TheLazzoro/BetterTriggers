@@ -132,7 +132,7 @@
                        Grid.ColumnSpan="2" />
 
             <Label x:Name="lblUsedBy" Grid.Column="2" Grid.Row="1">Used By:</Label>
-            
+
             <ListView
                 ItemsSource="{Binding ReferenceTriggers}"
                 Grid.Column="2"
@@ -141,9 +141,11 @@
                 MaxHeight="250"
                 x:Name="listViewUsedBy"
                 Background="{DynamicResource BackgroundDark}"
-                MouseDoubleClick="listViewUsedBy_MouseDoubleClick"
-                
-                />
+                MouseDoubleClick="listViewUsedBy_MouseDoubleClick">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemStyleBT}"/>
+                </ListView.ItemContainerStyle>
+            </ListView>
 
         </Grid>
     </ScrollViewer>

@@ -221,7 +221,7 @@
                     </Style>
                 </Image.Style>
             </Image>
-            <TextBlock Text="{Binding DisplayName}"
+            <TextBlock Text="{Binding DisplayText}"
                        Grid.Column="1"/>
         </Grid>
 

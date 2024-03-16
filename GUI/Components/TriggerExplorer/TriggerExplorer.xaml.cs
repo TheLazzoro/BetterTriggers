@@ -77,8 +77,28 @@ namespace GUI.Components
 
         public TreeViewItem? GetTreeItemFromExplorerElement(ExplorerElement explorerElement)
         {
-            var treeItem = treeViewTriggerExplorer.ItemContainerGenerator.ContainerFromItem(explorerElement) as TreeViewItem;
-            return treeItem;
+            List<ExplorerElement> list = new ();
+            TreeViewItem? treeViewItem = null;
+
+            // walks up the element hierarchy until a parent attached to the TreeView is found.
+            while (treeViewItem == null)
+            {
+                treeViewItem = treeViewTriggerExplorer.ItemContainerGenerator.ContainerFromItem(explorerElement) as TreeViewItem;
+                if (treeViewItem == null)
+                {
+                    list.Add(explorerElement);
+                    explorerElement = explorerElement.GetParent();
+                }
+            }
+
+            // walks down the tree until the TreeViewItem has been pulled out.
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                var element = list[i];
+                treeViewItem = treeViewItem.ItemContainerGenerator.ContainerFromItem(element) as TreeViewItem;
+            }
+
+            return treeViewItem;
         }
 
         public ExplorerElement? GetSelectedExplorerElement()
@@ -344,32 +364,6 @@ namespace GUI.Components
             dragItem.IsSelected = true;
         }
 
-        private void treeViewItem_Expanded(object sender, RoutedEventArgs e)
-        {
-            var treeItem = e.Source as TreeViewItem;
-            if (treeItem == null)
-                return;
-
-            var explorerElement = GetExplorerElementFromItem(treeItem);
-            if (explorerElement.ElementType == ExplorerElementEnum.Folder)
-            {
-                explorerElement.isExpanded = true;
-            }
-        }
-
-        private void treeViewItem_Collapsed(object sender, RoutedEventArgs e)
-        {
-            var treeItem = e.Source as TreeViewItem;
-            if (treeItem == null)
-                return;
-
-            var explorerElement = GetExplorerElementFromItem(treeItem);
-            if (explorerElement.ElementType == ExplorerElementEnum.Folder)
-            {
-                explorerElement.isExpanded = false;
-            }
-        }
-
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
             var selected = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
@@ -520,76 +514,37 @@ namespace GUI.Components
             FileSystemUtil.OpenInExplorer(explorerElement.GetPath());
         }
 
-        private void OpenSearchField()
+        public void NavigateToExplorerElement(ExplorerElement explorerElement)
         {
-            searchField.Visibility = searchField.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-            if (searchField.Visibility == Visibility.Visible)
-                searchTextBox.Focus();
-        }
-
-        private void CloseSearchField()
-        {
-            searchField.Visibility = Visibility.Hidden;
-            var treeItem = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
-            if (treeItem != null)
-                treeItem.Focus();
-        }
-
-        private void btnCloseSearchField_Click(object sender, RoutedEventArgs e)
-        {
-            CloseSearchField();
-        }
-
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            Search(searchTextBox.Text);
-        }
-
-        private void searchTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                Search(searchTextBox.Text);
-            else if (e.Key == Key.Escape)
-                CloseSearchField();
-        }
-
-        /// <summary>
-        /// Searches for a trigger element with the specified text, and brings the first matching result into view in the trigger explorer.
-        /// </summary>
-        internal void Search(string searchText)
-        {
-            TreeViewItem treeItem = SearchForElement(searchText, treeViewTriggerExplorer.Items[0] as TreeViewItem);
-            if (treeItem != null)
+            List<ExplorerElement> itemsToExpand = new();
+            while (true)
             {
-                TreeViewItem parent = treeItem.Parent as TreeViewItem;
-                while (parent != null)
-                {
-                    parent.IsExpanded = true;
-                    parent = parent.Parent as TreeViewItem;
-                }
-                treeItem.IsSelected = true;
-                treeItem.BringIntoView();
-                //treeItem.Focus();
+                itemsToExpand.Add(explorerElement);
+                explorerElement = explorerElement.GetParent();
+                if (explorerElement.ElementType == ExplorerElementEnum.Root)
+                    break;
             }
+
+            for (int i = itemsToExpand.Count-1; i >= 0; i--)
+            {
+                explorerElement = itemsToExpand[i];
+                explorerElement.IsExpanded = true;
+            }
+
+            explorerElement.IsSelected = true;
         }
 
-        private TreeViewItem SearchForElement(string searchText, TreeViewItem parent)
+        private void treeViewItem_Selected(object sender, RoutedEventArgs e)
         {
-            var explorerElement = GetExplorerElementFromItem(parent);
-            if (explorerElement.GetName() == searchText)
-                return parent;
+            // Only react to the Selected event raised by the TreeViewItem
+            // whose IsSelected property was modified. Ignore all ancestors
+            // who are merely reporting that a descendant's Selected fired.
+            if (!Object.ReferenceEquals(sender, e.OriginalSource))
+                return;
 
-            TreeViewItem treeItem = null;
-            if (parent.Items.Count > 0)
-            {
-                foreach (var item in parent.Items)
-                {
-                    treeItem = SearchForElement(searchText, item as TreeViewItem);
-                    if (treeItem != null)
-                        break;
-                }
-            }
-            return treeItem;
+            TreeViewItem item = e.OriginalSource as TreeViewItem;
+            if (item != null)
+                item.BringIntoView();
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)

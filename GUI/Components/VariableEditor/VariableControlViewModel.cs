@@ -98,7 +98,7 @@ namespace GUI.Components.VariableEditor
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<TreeNodeBase> ReferenceTriggers { get; set; } = new();
+        public ObservableCollection<ExplorerElement> ReferenceTriggers { get; set; } = new();
 
         public VariableControlViewModel(Variable variable)
         {

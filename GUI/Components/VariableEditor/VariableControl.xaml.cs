@@ -255,9 +255,9 @@ namespace GUI.Components
             if (item == null)
                 return;
 
-            var treeNode = (TreeNodeBase) listViewUsedBy.ItemContainerGenerator.ItemFromContainer(item);
+            var element = (ExplorerElement) listViewUsedBy.ItemContainerGenerator.ItemFromContainer(item);
             var triggerExplorer = TriggerExplorer.Current;
-            triggerExplorer.Search(treeNode.DisplayText);
+            triggerExplorer.NavigateToExplorerElement(element);
         }
     }
 }

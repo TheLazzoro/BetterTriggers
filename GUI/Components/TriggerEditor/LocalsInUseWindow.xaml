@@ -15,7 +15,15 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" >The following objects are still being used:</Label>
-        <ListView x:Name="listView" Grid.Row="1" Foreground="{DynamicResource TextBrush}" BorderBrush="#00ABADB3" Background="{DynamicResource BackgroundDark}"></ListView>
+        <ListView x:Name="listView"
+                  Grid.Row="1"
+                  Foreground="{DynamicResource TextBrush}"
+                  BorderBrush="#00ABADB3"
+                  Background="{DynamicResource BackgroundDark}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemStyleBT}"/>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
         <Label Grid.Row="2" >Deleting them will disable or clear their usage.</Label>
         <Label Grid.Row="2" VerticalAlignment="Bottom">Continue anyway?</Label>

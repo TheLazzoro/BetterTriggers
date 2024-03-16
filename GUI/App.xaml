@@ -457,7 +457,7 @@
 
             <!-- LISTVIEWITEM -->
             
-            <Style TargetType="ListViewItem">
+            <Style TargetType="ListViewItem" x:Key="listViewItemStyleBT">
                 <Setter Property="BorderBrush" Value="#fff" />
                 <Setter Property="Foreground" Value="{DynamicResource ListItemForeground}" />
                 <Setter Property="BorderThickness" Value="0" />

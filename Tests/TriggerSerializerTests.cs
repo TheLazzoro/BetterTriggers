@@ -18,19 +18,17 @@ namespace Tests
     public class TriggerSerializerTests : TestBase
     {
         private static string MAP_FOLDER;
-        static string TEMP_FOLDER;
 
         [ClassInitialize]
         public static void BeforeAll(TestContext context)
         {
             MAP_FOLDER = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects");
-            TEMP_FOLDER = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
         }
 
         [TestMethod]
         public void Deserialize_Serialize_Compare_Test()
         {
-            // Saved map project using an old version of BT (v1.2.4)
+            // Saved map project using an old version of BT (v1.2.5)
             string projectDir = Path.Combine(MAP_FOLDER, "Direct_Strike_Reforged_Open_Source");
             string src = Path.Combine(projectDir, "src");
             string projectFile = Path.Combine(projectDir, "Direct_Strike_Reforged_Open_Source.json");

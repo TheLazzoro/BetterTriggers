@@ -19,8 +19,11 @@
         <ListView
             x:Name="listView"
             Background="{DynamicResource BackgroundDark}"
-            Grid.Row="2"
-        />
+            Grid.Row="2">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemStyleBT}"/>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
         <Button Content="OK" Click="CancelButton_Click" HorizontalAlignment="Right" Margin="0,0,5,10" Grid.Row="3" Width="70" Height="25"/>
     </Grid>

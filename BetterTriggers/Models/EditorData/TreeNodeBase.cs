@@ -15,12 +15,13 @@ namespace BetterTriggers.Models.EditorData
         private string _displayText;
         private string _category;
         private byte[] _icon;
-        private bool _isRenaming;
+        private bool _isEnabled = true;
+        private bool _hasErrors = false;
+        private bool _isSelected;
+        private bool _isExpanded;
         private Visibility _iconVisibility = Visibility.Visible;
         private Visibility _renameBoxVisibility = Visibility.Hidden;
         private Visibility _checkBoxVisibility = Visibility.Hidden;
-        private bool _isEnabled = true;
-        private bool _hasErrors = false;
 
         public string DisplayText
         {
@@ -98,6 +99,24 @@ namespace BetterTriggers.Models.EditorData
             set
             {
                 _hasErrors = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set
+            {
+                _isExpanded = value;
                 OnPropertyChanged();
             }
         }
