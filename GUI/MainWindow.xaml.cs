@@ -3,6 +3,7 @@ using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.About;
@@ -1071,6 +1072,26 @@ namespace GUI
                 var header = tabItem_rightClicked.Header as TabItemBT;
                 int index = tabControl.Items.IndexOf(header);
                 tabViewModel.Tabs.RemoveAt(index);
+            }
+        }
+
+        private void tabitem_Menu_NavigateToElement_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabItem_rightClicked != null)
+            {
+                var header = tabItem_rightClicked.Header as TabItemBT;
+                var explorerElement = header.explorerElement;
+                triggerExplorer.NavigateToExplorerElement(explorerElement);
+            }
+        }
+
+        private void tabitem_Menu_OpenInExplorer_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabItem_rightClicked != null)
+            {
+                var header = tabItem_rightClicked.Header as TabItemBT;
+                var explorerElement = header.explorerElement;
+                FileSystemUtil.OpenInExplorer(explorerElement.GetPath());
             }
         }
 

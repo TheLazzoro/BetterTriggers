@@ -61,7 +61,7 @@ namespace GUI.Components.TriggerEditor
                     Category = Locale.Translate(category.Name),
                     Words = new List<string>()
                     {
-                        listItem.DisplayName.ToLower(),
+                        listItem.DisplayText.ToLower(),
                         template.value.ToLower()
                     },
                 });

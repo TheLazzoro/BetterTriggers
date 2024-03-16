@@ -63,13 +63,17 @@ namespace BetterTriggers.Models.EditorData
 
         public override IfThenElse Clone()
         {
-            IfThenElse ifThenElse = new IfThenElse();
-            ifThenElse.function = this.function.Clone();
-            ifThenElse.If = If.Clone();
-            ifThenElse.Then = Then.Clone();
-            ifThenElse.Else = Else.Clone();
+            IfThenElse clone = new IfThenElse();
+            clone.DisplayText = new string(DisplayText);
+            clone.function = this.function.Clone();
+            clone.If = If.Clone();
+            clone.Then = Then.Clone();
+            clone.Else = Else.Clone();
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
-            return ifThenElse;
+            return clone;
         }
     }
 }

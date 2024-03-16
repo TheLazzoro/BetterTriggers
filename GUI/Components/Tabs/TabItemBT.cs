@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Containers;
 
 namespace GUI.Components.Tabs
 {
@@ -30,6 +31,10 @@ namespace GUI.Components.Tabs
                 }
             }
         }
+        public string ToolTip
+        {
+            get => explorerElement.GetPath();
+        }
 
         public TabViewModel Parent;
         public ExplorerElement explorerElement;
@@ -42,9 +47,15 @@ namespace GUI.Components.Tabs
             this.explorerElement = explorerElement;
             explorerElement.OnChanged += ExplorerElement_OnChanged;
             explorerElement.OnSaved += ExplorerElement_OnSaved;
-            Header = explorerElement.GetName();
+            
             Content = editor;
             Parent = parent;
+
+            bool isUnsaved = Project.CurrentProject.UnsavedFiles.Contains(explorerElement);
+            if (isUnsaved)
+                ExplorerElement_OnChanged();
+            else
+                ExplorerElement_OnSaved();
         }
 
         private void ExplorerElement_OnChanged()

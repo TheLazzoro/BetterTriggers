@@ -288,6 +288,7 @@ namespace BetterTriggers.Models.EditorData
                 return;
 
             project.UnsavedFiles.AddToUnsaved(this);
+            OnChanged?.Invoke();
         }
 
         public void RemoveFromUnsaved(bool recursive = false)

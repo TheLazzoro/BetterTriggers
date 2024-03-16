@@ -29,11 +29,15 @@ namespace BetterTriggers.Models.EditorData
 
         public override ForForceMultiple Clone()
         {
-            ForForceMultiple forForce = new ForForceMultiple();
-            forForce.function = this.function.Clone();
-            forForce.Actions = Actions.Clone();
+            ForForceMultiple clone = new ForForceMultiple();
+            clone.DisplayText = new string(DisplayText);
+            clone.function = this.function.Clone();
+            clone.Actions = Actions.Clone();
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
-            return forForce;
+            return clone;
         }
     }
 }

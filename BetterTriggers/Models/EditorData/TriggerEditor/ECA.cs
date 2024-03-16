@@ -23,8 +23,12 @@ namespace BetterTriggers.Models.EditorData
         public override ECA Clone()
         {
             ECA clone = new ECA();
+            clone.DisplayText = new string(DisplayText);
             clone.IsEnabled = IsEnabled;
             clone.function = function.Clone();
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
             return clone;
         }

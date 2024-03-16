@@ -13,7 +13,6 @@ namespace GUI.Components.TriggerEditor
     public class ListItemFunctionTemplate : TreeNodeBase
     {
         public ECA eca { get; }
-        public string DisplayName { get; }
         public double IconWidth
         {
             get => _iconWidth;
@@ -34,7 +33,7 @@ namespace GUI.Components.TriggerEditor
                 categoryStr += " - ";
 
             string name = template.name != "" ? template.name : template.value;
-            DisplayName = categoryStr + name;
+            DisplayText = categoryStr + name;
             IconImage = category.Icon;
             eca = template.ToECA();
             eca.IconImage = category.Icon;

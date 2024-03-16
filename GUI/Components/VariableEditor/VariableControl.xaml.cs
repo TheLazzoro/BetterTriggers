@@ -251,11 +251,10 @@ namespace GUI.Components
 
         private void listViewUsedBy_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = listViewUsedBy.SelectedItem as ListViewItem;
-            if (item == null)
+            var element = listViewUsedBy.SelectedItem as ExplorerElement;
+            if (element == null)
                 return;
 
-            var element = (ExplorerElement) listViewUsedBy.ItemContainerGenerator.ItemFromContainer(item);
             var triggerExplorer = TriggerExplorer.Current;
             triggerExplorer.NavigateToExplorerElement(element);
         }

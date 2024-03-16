@@ -19,8 +19,12 @@ namespace BetterTriggers.Models.EditorData
         public override LocalVariable Clone()
         {
             LocalVariable clone = new LocalVariable();
+            clone.DisplayText = new string(DisplayText);
             clone.variable = variable.Clone();
             clone.variable._isLocal = true;
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
             return clone;
         }

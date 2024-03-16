@@ -225,16 +225,8 @@ namespace BetterTriggers.Containers
             TriggerElementCollection copiedItems = new TriggerElementCollection(type);
             for (int i = 0; i < copiedCollection.Count(); i++)
             {
-                if (copiedCollection.Elements[i] is ECA)
-                {
-                    var element = (ECA)copiedCollection.Elements[i];
-                    copiedItems.Elements.Add(element.Clone());
-                }
-                else if (copiedCollection.Elements[i] is LocalVariable)
-                {
-                    var element = (LocalVariable)copiedCollection.Elements[i];
-                    copiedItems.Elements.Add(element.Clone());
-                }
+                var element = copiedCollection.Elements[i];
+                copiedItems.Elements.Add(element.Clone());
             }
 
             CopiedElements.CopiedTriggerElements = copiedItems;
@@ -280,6 +272,9 @@ namespace BetterTriggers.Containers
                 CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
             }
+
+            if(pasted.Elements.Count > 0)
+                pasted.Elements[pasted.Elements.Count - 1].IsSelected = true;
 
             return pasted;
         }

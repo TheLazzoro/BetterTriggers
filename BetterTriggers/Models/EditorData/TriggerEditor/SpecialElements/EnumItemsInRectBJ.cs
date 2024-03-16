@@ -29,11 +29,15 @@ namespace BetterTriggers.Models.EditorData
 
         public override EnumItemsInRectBJ Clone()
         {
-            EnumItemsInRectBJ enumItems = new EnumItemsInRectBJ();
-            enumItems.function = this.function.Clone();
-            enumItems.Actions = Actions.Clone();
+            EnumItemsInRectBJ clone = new EnumItemsInRectBJ();
+            clone.DisplayText = new string(DisplayText);
+            clone.function = this.function.Clone();
+            clone.Actions = Actions.Clone();
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
-            return enumItems;
+            return clone;
         }
     }
 }

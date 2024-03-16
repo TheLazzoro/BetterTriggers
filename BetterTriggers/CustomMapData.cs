@@ -201,7 +201,7 @@ namespace BetterTriggers
             Project.CurrentProject.CommandManager.Reset();
             CustomMapData.Load();
             var changed = CustomMapData.RemoveInvalidReferences();
-            changed.ForEach(trig => Project.CurrentProject.UnsavedFiles.AddToUnsaved(trig));
+            changed.ForEach(trig => trig.AddToUnsaved());
 
             return changed;
         }

@@ -724,16 +724,9 @@ namespace GUI.Components
                 PasteTriggerElement();
         }
 
-        private TriggerElement? GetSelectedTriggerElement()
-        {
-            var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
-            TriggerElement? selectedElement = GetTriggerElementFromItem(selected);
-            return selectedElement;
-        }
-
         public void DeleteTriggerElement()
         {
-            var selectedElement = GetSelectedTriggerElement();
+            var selectedElement = treeViewTriggers.SelectedItem as TriggerElement;
             if (selectedElement == null)
                 return;
 
@@ -778,15 +771,11 @@ namespace GUI.Components
 
         private void CopyTriggerElement(bool isCut = false)
         {
-            var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
+            var selected = (TriggerElement) treeViewTriggers.SelectedItem;
             if (selected == null)
                 return;
 
-            var selectedElement = GetTriggerElementFromItem(selected);
-            if (selectedElement == null)
-                return;
-
-            TriggerElementCollection triggerElements = new(selectedElement.ElementType);
+            TriggerElementCollection triggerElements = new(selected.ElementType);
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 var triggerElement = selectedItems[i];
@@ -798,21 +787,20 @@ namespace GUI.Components
 
         private void PasteTriggerElement()
         {
-            var selected = (TreeViewItem)treeViewTriggers.SelectedItem;
+            var selected = (TriggerElement)treeViewTriggers.SelectedItem;
             if (selected == null)
                 return;
 
             TriggerElement? attachTarget = null;
             int insertIndex = 0;
-            var selectedElement = GetTriggerElementFromItem(selected);
             if (selectedElement is TriggerElementCollection collection)
             {
                 attachTarget = collection;
             }
-            else if (selected is TreeViewItem parent)
+            else
             {
                 attachTarget = selectedElement.GetParent();
-                insertIndex = parent.Items.IndexOf(selected) + 1;
+                insertIndex = selected.GetParent().IndexOf(selected) + 1;
             }
 
             if (attachTarget == null)

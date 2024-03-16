@@ -141,6 +141,7 @@
                 MaxHeight="250"
                 x:Name="listViewUsedBy"
                 Background="{DynamicResource BackgroundDark}"
+                ItemTemplate="{DynamicResource TreeItemDataTemplate}"
                 MouseDoubleClick="listViewUsedBy_MouseDoubleClick">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemStyleBT}"/>

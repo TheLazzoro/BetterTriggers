@@ -13,10 +13,10 @@ namespace GUI.Components.Shared
         public event Action ShowIconsChanged;
         private Searchables searchObjects;
 
-
         public SearchableListControl()
         {
             InitializeComponent();
+
             EditorSettings settings = EditorSettings.Load();
             checkBoxShowIcons.IsChecked = settings.GUINewElementIcon;
             checkBoxShowIcons.Click += checkBoxShowIcons_Click;
@@ -69,7 +69,7 @@ namespace GUI.Components.Shared
             EditorSettings settings = EditorSettings.Load();
             settings.GUINewElementIcon = (bool)checkBoxShowIcons.IsChecked;
             ShowIconsChanged?.Invoke();
-            var items = searchObjects.GetObjects();
+            var items = searchObjects.GetAllObject();
             foreach (var item in items)
             {
                 var function = item.Object as ListItemFunctionTemplate;

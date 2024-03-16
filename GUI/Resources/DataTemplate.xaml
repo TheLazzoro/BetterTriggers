@@ -200,7 +200,6 @@
     </HierarchicalDataTemplate>
 
     <DataTemplate x:Key="TriggerElementMenuItem">
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding IconWidth}" />
@@ -224,7 +223,6 @@
             <TextBlock Text="{Binding DisplayText}"
                        Grid.Column="1"/>
         </Grid>
-
     </DataTemplate>
 
 </ResourceDictionary>

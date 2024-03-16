@@ -29,11 +29,15 @@ namespace BetterTriggers.Models.EditorData
 
         public override AndMultiple Clone()
         {
-            AndMultiple andMultiple = new AndMultiple();
-            andMultiple.function = this.function.Clone();
-            andMultiple.And = And.Clone();
+            AndMultiple clone = new AndMultiple();
+            clone.DisplayText = new string(DisplayText);
+            clone.function = this.function.Clone();
+            clone.And = And.Clone();
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
-            return andMultiple;
+            return clone;
         }
     }
 }

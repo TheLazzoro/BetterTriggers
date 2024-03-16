@@ -9,10 +9,14 @@
 
         public override SetVariable Clone()
         {
-            SetVariable setVariable = new SetVariable();
-            setVariable.function = this.function.Clone();
+            SetVariable clone = new SetVariable();
+            clone.DisplayText = new string(DisplayText);
+            clone.function = this.function.Clone();
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
-            return setVariable;
+            return clone;
         }
     }
 }

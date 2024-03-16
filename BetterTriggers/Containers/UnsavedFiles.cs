@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,11 @@ namespace BetterTriggers.Containers
                 element.Save();
             }
             unsavedFiles.Clear();
+        }
+
+        public bool Contains(ExplorerElement element)
+        {
+            return unsavedFiles.Contains(element);
         }
 
         internal int Count()

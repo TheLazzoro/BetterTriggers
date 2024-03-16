@@ -29,11 +29,15 @@ namespace BetterTriggers.Models.EditorData
 
         public override ForLoopBMultiple Clone()
         {
-            ForLoopBMultiple forLoop = new ForLoopBMultiple();
-            forLoop.function = this.function.Clone();
-            forLoop.Actions = Actions.Clone();
+            ForLoopBMultiple clone = new ForLoopBMultiple();
+            clone.DisplayText = new string(DisplayText);
+            clone.function = this.function.Clone();
+            clone.Actions = Actions.Clone();
+            clone.ElementType = ElementType;
+            clone.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(clone.IconImage, 0);
 
-            return forLoop;
+            return clone;
         }
     }
 }
