@@ -18,6 +18,7 @@ namespace BetterTriggers.Containers
         public static Project CurrentProject { get; private set; }
 
         public string src;
+        public string MapName { get; private set; }
         public string ProjectPath { get; private set; }
         public War3Project war3project;
         public ObservableCollection<ExplorerElement> projectFiles;
@@ -227,6 +228,7 @@ namespace BetterTriggers.Containers
 
             Project project = new Project();
             CurrentProject = project;
+            project.MapName = Path.GetFileNameWithoutExtension(projectPath);
             project.ProjectPath = projectPath;
             project.war3project = war3project;
 

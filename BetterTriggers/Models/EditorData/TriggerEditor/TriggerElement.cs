@@ -20,6 +20,18 @@ namespace BetterTriggers.Models.EditorData
                 OnPropertyChanged();
             }
         }
+        /// <summary>
+        /// Fix for UI multi-select because 'IsSelected' calls itself recursively, causing a stackoverflow.
+        /// </summary>
+        public bool IsSelected_Multi
+        {
+            get => _isSelected_Multi;
+            set
+            {
+                _isSelected_Multi = value;
+                OnPropertyChanged();
+            }
+        }
         public bool IsExpanded
         {
             get => _isExpanded;
@@ -31,6 +43,7 @@ namespace BetterTriggers.Models.EditorData
         }
         private TriggerElement? Parent;
         private bool _isSelected;
+        private bool _isSelected_Multi;
         private bool _isExpanded = true;
 
         public virtual TriggerElement Clone()

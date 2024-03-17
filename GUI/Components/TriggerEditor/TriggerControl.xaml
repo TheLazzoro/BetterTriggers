@@ -160,6 +160,9 @@
                         <DataTrigger Binding="{Binding IsSelected}" Value="True" >
                             <Setter Property="Background" Value="#aa357EC7" />
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSelected_Multi}" Value="True" >
+                            <Setter Property="Background" Value="#aa357EC7" />
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding IsExpanded}" Value="True" >
                             <Setter Property="IsExpanded" Value="True" />
                         </DataTrigger>

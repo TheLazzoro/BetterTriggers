@@ -36,8 +36,8 @@ namespace GUI.Components
 
         private TriggerElement selectedElement;
         private TriggerElement selectedElementEnd;
-        private List<TriggerElement> selectedElements = new ();
-        private List<TriggerElement> selectedItems = new ();
+        private List<TriggerElement> selectedElements = new();
+        private List<TriggerElement> selectedItems = new();
 
         // attaches to a treeviewitem
         AdornerLayer adorner;
@@ -100,7 +100,7 @@ namespace GUI.Components
             while (treeViewItem == null)
             {
                 treeViewItem = treeViewTriggers.ItemContainerGenerator.ContainerFromItem(triggerElement) as TreeViewItem;
-                if(treeViewItem == null)
+                if (treeViewItem == null)
                 {
                     list.Add(triggerElement);
                     triggerElement = triggerElement.GetParent();
@@ -108,12 +108,12 @@ namespace GUI.Components
             }
 
             // walks down the tree until the TreeViewItem has been pulled out.
-            for (int i = list.Count-1; i >= 0; i--)
+            for (int i = list.Count - 1; i >= 0; i--)
             {
                 var element = list[i];
                 treeViewItem = treeViewItem.ItemContainerGenerator.ContainerFromItem(element) as TreeViewItem;
             }
-            
+
             return treeViewItem;
         }
 
@@ -245,7 +245,7 @@ namespace GUI.Components
                 if (node.ElementType == type) // valid parent if 'created' matches 'selected' type
                 {
                     parent = node;
-                    insertIndex = parent.IndexOf(selected);
+                    insertIndex = parent.IndexOf(selected) + 1;
                 }
             }
             else if (selected is TriggerElementCollection node)
@@ -281,6 +281,7 @@ namespace GUI.Components
             {
                 CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, eca, parent, insertIndex);
                 command.Execute();
+                eca.IsSelected = true;
             }
         }
 
@@ -566,7 +567,7 @@ namespace GUI.Components
             // deselect old items
             for (int i = 0; i < selectedElements.Count; i++)
             {
-                selectedElements[i].IsSelected = false;
+                selectedElements[i].IsSelected_Multi = false;
             }
             if (startElement == null && endElement == null)
                 return null;
@@ -608,7 +609,7 @@ namespace GUI.Components
             // select elements
             for (int i = 0; i < selectedElements.Count; i++)
             {
-                selectedElements[i].IsSelected = true;
+                selectedElements[i].IsSelected_Multi = true;
             }
 
             return selectedElements;
@@ -730,7 +731,7 @@ namespace GUI.Components
             if (selectedElement == null)
                 return;
 
-            TriggerElementCollection elementsToDelete = new (selectedElement.ElementType);
+            TriggerElementCollection elementsToDelete = new(selectedElement.ElementType);
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 var triggerElement = selectedItems[i];
@@ -765,13 +766,40 @@ namespace GUI.Components
                 Project.CurrentProject.Triggers.RemoveInvalidReferences(explorerElementTrigger);
             }
 
+            TriggerElement ToSelectAfterDeletion = null;
+            TriggerElement BottomSelected = elementsToDelete.Elements.Last();
+            var parent = elementsToDelete.Elements[0].GetParent();
+            if (elementsToDelete.Elements.Count() == parent.Elements.Count)
+            {
+                // All elements in the parent are deleted, we select the parent.
+                ToSelectAfterDeletion = parent;
+            }
+            else if (parent.Elements.IndexOf(BottomSelected) < parent.Elements.Count - 1)
+            {
+                // Selects the element right below the bottom selected one.
+                int index = parent.Elements.IndexOf(BottomSelected) + 1;
+                ToSelectAfterDeletion = parent.Elements[index];
+            }
+            else if(parent.Elements.IndexOf(BottomSelected) == parent.Elements.Count - 1)
+            {
+                // Selects the element coming before all the selected ones.
+                TriggerElement topSelected = elementsToDelete.Elements.First();
+                int index = parent.Elements.IndexOf(topSelected) - 1;
+                ToSelectAfterDeletion = parent.Elements[index];
+            }
+
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
             command.Execute();
+
+            if(ToSelectAfterDeletion != null)
+            {
+                ToSelectAfterDeletion.IsSelected = true;
+            }
         }
 
         private void CopyTriggerElement(bool isCut = false)
         {
-            var selected = (TriggerElement) treeViewTriggers.SelectedItem;
+            var selected = (TriggerElement)treeViewTriggers.SelectedItem;
             if (selected == null)
                 return;
 
@@ -1064,7 +1092,7 @@ namespace GUI.Components
             if (treeItem == null)
                 return;
 
-            if(treeViewTriggers.SelectedItem == treeItem.DataContext) // prevents the parent TreeItems from running the same logic
+            if (treeViewTriggers.SelectedItem == treeItem.DataContext) // prevents the parent TreeItems from running the same logic
             {
                 ReplaceTriggerElement(selectedElementEnd);
                 e.Handled = true;
@@ -1078,11 +1106,11 @@ namespace GUI.Components
                 ReplaceTriggerElement(selectedElementEnd);
                 e.Handled = true;
             }
-            else if(e.Key == Key.F2)
+            else if (e.Key == Key.F2)
             {
                 selectedElementEnd.RenameBoxVisibility = Visibility.Visible;
             }
-            else if(e.Key == Key.Escape)
+            else if (e.Key == Key.Escape)
             {
                 selectedElementEnd.RenameBoxVisibility = Visibility.Hidden;
             }
