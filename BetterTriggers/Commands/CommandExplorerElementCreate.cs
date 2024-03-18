@@ -43,6 +43,7 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.EnableFileEvents(false);
             FileSystemUtil.Delete(createdElement.GetPath());
             Project.CurrentProject.EnableFileEvents(true);
+            createdElement.InvokeDelete();
         }
 
         public string GetCommandName()

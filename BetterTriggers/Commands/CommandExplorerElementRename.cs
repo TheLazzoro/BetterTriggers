@@ -26,6 +26,7 @@ namespace BetterTriggers.Commands
         {
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
             refCollection.Notify();
+            explorerElement.InvokeChange();
 
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
@@ -35,10 +36,10 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.EnableFileEvents(false);
             FileSystemUtil.RenameElementPath(explorerElement.GetPath(), newFullPath);
             Project.CurrentProject.EnableFileEvents(true);
-
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
             refCollection.Notify();
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
@@ -46,10 +47,10 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.EnableFileEvents(false);
             FileSystemUtil.RenameElementPath(explorerElement.GetPath(), oldFullPath);
             Project.CurrentProject.EnableFileEvents(true);
-
             Project.CurrentProject.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
             refCollection.Notify();
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

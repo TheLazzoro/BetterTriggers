@@ -33,6 +33,7 @@ namespace BetterTriggers.Commands
             if (deletedElement is ExplorerElement)
                 Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
 
+            deletedElement.InvokeDelete();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -46,10 +47,10 @@ namespace BetterTriggers.Commands
             FileSystemUtil.Delete(deletedElement.GetPath());
             Project.CurrentProject.EnableFileEvents(true);
 
-            
-            
             if (deletedElement is ExplorerElement)
                 Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
+
+            deletedElement.InvokeDelete();
         }
 
         public void Undo()

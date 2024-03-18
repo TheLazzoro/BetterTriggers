@@ -76,15 +76,10 @@
                        Margin="5,0,0,0" />
 
             <TextBox x:Name="renameBox"
-                     Text="{Binding RenameText}"
+                     Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
                      Visibility="{Binding RenameBoxVisibility}"
                      Grid.Column="1"
                      FontFamily="Segoe UI">
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Enter"
-                                Command="{Binding RenameBox_KeyDown}"
-                                CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}" />
-                </TextBox.InputBindings>
             </TextBox>
 
         </Grid>
@@ -177,15 +172,10 @@
             </TextBlock>
 
             <TextBox x:Name="renameBox"
-                 Text="{Binding RenameText}"
+                 Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
                  Visibility="{Binding RenameBoxVisibility}"
                  Grid.Column="1"
                  FontFamily="Segoe UI">
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Enter"
-                            Command="{Binding RenameBox_KeyDown}"
-                            CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}" />
-                </TextBox.InputBindings>
             </TextBox>
 
         </Grid>

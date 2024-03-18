@@ -77,7 +77,7 @@ namespace GUI.Components
 
         public TreeViewItem? GetTreeItemFromExplorerElement(ExplorerElement explorerElement)
         {
-            List<ExplorerElement> list = new ();
+            List<ExplorerElement> list = new();
             TreeViewItem? treeViewItem = null;
 
             // walks up the element hierarchy until a parent attached to the TreeView is found.
@@ -129,25 +129,31 @@ namespace GUI.Components
                 SetSelectedRenameBoxVisible(false);
             if (e.Key == Key.Enter && selected.RenameBoxVisibility == Visibility.Visible)
                 RenameExplorerElement();
-            else if (e.Key == Key.Delete)
-            {
-
-            }
         }
 
         private void SetSelectedRenameBoxVisible(bool isVisible)
         {
             var selected = GetSelectedExplorerElement();
             if (isVisible)
+            {
                 selected.RenameBoxVisibility = Visibility.Visible;
+            }
             else
                 selected.RenameBoxVisibility = Visibility.Hidden;
         }
 
         private void RenameExplorerElement()
         {
-            var selected = GetSelectedExplorerElement();
-            selected.Rename();
+            try
+            {
+                var selected = GetSelectedExplorerElement();
+                selected.Rename();
+            }
+            catch (Exception e)
+            {
+                Dialogs.MessageBox dialog = new Dialogs.MessageBox("Error renaming", e.Message);
+                dialog.ShowDialog();
+            }
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -344,25 +350,23 @@ namespace GUI.Components
 
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
-            var selected = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
+            var selected = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
             if (selected == null)
             {
                 return;
             }
 
-            var explorerElement = GetExplorerElementFromItem(selected);
             if (e.Key == Key.Enter)
             {
-                OnOpenExplorerElement?.Invoke(explorerElement);
+                OnOpenExplorerElement?.Invoke(selected);
             }
 
             else if (e.Key == Key.Delete)
             {
-                TreeViewItem selectedElement = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
-                if (selectedElement == null || selectedElement == map)
+                if (selected.ElementType == ExplorerElementEnum.Root)
                     return;
 
-                List<ExplorerElement> refs = explorerElement.GetReferrers();
+                List<ExplorerElement> refs = selected.GetReferrers();
                 if (refs.Count > 0)
                 {
                     DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);
@@ -371,19 +375,24 @@ namespace GUI.Components
                         return;
                 }
 
-                explorerElement.Delete();
+                DialogBox dialog = new DialogBox("Delete Element", $"Are you sure you want to delete '{selected.GetName()}' ?");
+                dialog.ShowDialog();
+                if(dialog.OK)
+                {
+                    selected.Delete();
+                }
             }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                Project.CurrentProject.CopyExplorerElement(explorerElement);
+                Project.CurrentProject.CopyExplorerElement(selected);
             }
             else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                Project.CurrentProject.CopyExplorerElement(explorerElement, true);
+                Project.CurrentProject.CopyExplorerElement(selected, true);
             }
             else if (e.Key == Key.V && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                Project.CurrentProject.PasteExplorerElement(explorerElement);
+                Project.CurrentProject.PasteExplorerElement(selected);
             }
             else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
@@ -503,7 +512,7 @@ namespace GUI.Components
                     break;
             }
 
-            for (int i = itemsToExpand.Count-1; i >= 0; i--)
+            for (int i = itemsToExpand.Count - 1; i >= 0; i--)
             {
                 explorerElement = itemsToExpand[i];
                 explorerElement.IsExpanded = true;

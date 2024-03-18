@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using GUI.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,21 +16,5 @@ namespace GUI.Components
         public ObservableCollection<ExplorerElement> ProjectFiles { get => Project.CurrentProject.projectFiles; }
         public ObservableCollection<ExplorerElement> SearchedFiles { get; set; } = new();
 
-        private RelayCommand<ExplorerElement> _renameBox_KeyDown;
-
-        public ICommand RenameBox_KeyDown
-        {
-            get
-            {
-                if(_renameBox_KeyDown == null)
-                {
-                    _renameBox_KeyDown = new RelayCommand<ExplorerElement>(e =>
-                    {
-                        e.Rename();
-                    });
-                }
-                return _renameBox_KeyDown;
-            }
-        }
     }
 }

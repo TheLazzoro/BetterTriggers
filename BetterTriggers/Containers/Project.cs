@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using War3Net.Build.Info;
 
 namespace BetterTriggers.Containers
@@ -392,17 +393,18 @@ namespace BetterTriggers.Containers
             return exists;
         }
 
-        public ExplorerElement OnRenameElement(string oldFullPath, string newFullPath)
+        public void OnRenameElement(string oldFullPath, string newFullPath)
         {
-            var rootNode = projectFiles[0];
-            ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
-            if (elementToRename == null)
-                return null;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var rootNode = projectFiles[0];
+                ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+                if (elementToRename == null)
+                    return;
 
-            CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
-            command.Execute();
-
-            return elementToRename;
+                CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
+                command.Execute();
+            });
         }
 
         /// <summary>

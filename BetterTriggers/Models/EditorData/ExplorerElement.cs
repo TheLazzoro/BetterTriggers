@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -33,6 +34,7 @@ namespace BetterTriggers.Models.EditorData
         public event Action OnReload;
         public event Action OnChanged;
         public event Action OnSaved;
+        public event Action OnDeleted;
         private string _path;
         private DateTime LastWrite;
         private long Size;
@@ -394,10 +396,14 @@ namespace BetterTriggers.Models.EditorData
 
         public void Rename()
         {
+            if (RenameText == DisplayText)
+            {
+                RenameBoxVisibility = Visibility.Hidden;
+                return;
+            }
+
             var project = Project.CurrentProject;
-
             string oldPath = GetPath();
-
             string formattedName = string.Empty;
             if (ElementType == ExplorerElementEnum.Folder)
                 formattedName = RenameText;
@@ -419,6 +425,7 @@ namespace BetterTriggers.Models.EditorData
             }
 
             FileSystemUtil.Rename(oldPath, formattedName);
+            RenameBoxVisibility = Visibility.Hidden;
         }
 
         public void Delete()
@@ -446,6 +453,14 @@ namespace BetterTriggers.Models.EditorData
             AddToUnsaved();
         }
 
+        public void InvokeDelete()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                OnDeleted?.Invoke();
+            });
+        }
+
         private void VerifyAndRemoveTriggerErrors()
         {
             if (ElementType == ExplorerElementEnum.Trigger)
@@ -464,8 +479,10 @@ namespace BetterTriggers.Models.EditorData
                     return Project.CurrentProject.References.GetReferrers(variable);
                 case ExplorerElementEnum.Trigger:
                     return Project.CurrentProject.References.GetReferrers(trigger);
+                case ExplorerElementEnum.Folder:
+                    return ExplorerElements.SelectMany(el => el.GetReferrers()).ToList();
                 default:
-                    throw new Exception($"'{ElementType} cannot make references to GUI objects.'");
+                    return new List<ExplorerElement>();
             }
         }
 
