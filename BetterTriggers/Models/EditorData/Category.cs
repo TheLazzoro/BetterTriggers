@@ -32,12 +32,12 @@ namespace BetterTriggers.Models.EditorData
         public static Category Get(string key)
         {
             if (key == null)
-                return new Category(null, "", false); // hack
+                return new Category(new byte[0], "", false); // hack
 
             Category category;
             categories.TryGetValue(key, out category);
             if(category == null)
-                return new Category(null, "", false); // hack
+                return new Category(new byte[0], "", false); // hack
 
             return category;
         }

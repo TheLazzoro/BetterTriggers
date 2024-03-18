@@ -86,7 +86,7 @@ namespace GUI.Components
 
         public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)
         {
-            var parent = GetTreeItemParent(item);
+            var parent = TreeViewItemHelper.GetTreeItemParent(item);
             var triggerElement = parent.ItemContainerGenerator.ItemFromContainer(item) as TriggerElement;
             return triggerElement;
         }
@@ -115,16 +115,6 @@ namespace GUI.Components
             }
 
             return treeViewItem;
-        }
-
-        private ItemsControl GetTreeItemParent(TreeViewItem item)
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent(item);
-            while (!(parent is TreeViewItem || parent is TreeView))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            return parent as ItemsControl;
         }
 
         private void TreeViewTriggers_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -410,8 +400,8 @@ namespace GUI.Components
             if (dragItemTriggerElement is TriggerElementCollection)
                 return;
 
-            var currentParent = GetTreeItemParent(dragItem);
-            TreeViewItem dropTarget = GetTraversedTargetDropItem(e.Source as DependencyObject);
+            var currentParent = TreeViewItemHelper.GetTreeItemParent(dragItem);
+            TreeViewItem dropTarget = TreeViewItemHelper.GetTraversedTargetDropItem(e.Source as DependencyObject);
             int currentIndex = currentParent.Items.IndexOf(dragItemTriggerElement);
             if (dropTarget == null)
                 return;
@@ -525,36 +515,6 @@ namespace GUI.Components
             command.Execute();
         }
 
-
-        private TreeViewItem GetTraversedTargetDropItem(DependencyObject dropTarget)
-        {
-            if (dropTarget == null || dropTarget is TreeView)
-                return null;
-
-            TreeViewItem traversedTarget = null;
-            while (traversedTarget == null)
-            {
-                if (dropTarget is not TextElement)
-                    dropTarget = VisualTreeHelper.GetParent(dropTarget);
-                else
-                {
-                    var d = (TextElement)dropTarget;
-                    dropTarget = d.Parent;
-                }
-
-
-                if (dropTarget is TreeViewItem)
-                {
-                    traversedTarget = (TreeViewItem)dropTarget;
-                }
-
-                if (dropTarget == null)
-                    return null;
-            }
-
-            return traversedTarget;
-        }
-
         /// <summary>
         /// Returns a list of selected elements in the editor.
         /// Returns only the first selected element if their 'Parents' don't match.
@@ -576,8 +536,8 @@ namespace GUI.Components
             selectedElements = new List<TriggerElement>();
             var startTreeItem = GetTreeViewItemFromTriggerElement(startElement);
             var endTreeItem = GetTreeViewItemFromTriggerElement(endElement);
-            var startParent = GetTreeItemParent(startTreeItem);
-            var endParent = GetTreeItemParent(endTreeItem);
+            var startParent = TreeViewItemHelper.GetTreeItemParent(startTreeItem);
+            var endParent = TreeViewItemHelper.GetTreeItemParent(endTreeItem);
             if (startParent == endParent)
             {
                 var parent = startParent;
@@ -937,7 +897,7 @@ namespace GUI.Components
             // It is necessary to traverse the item's parents since drag & drop picks up
             // things like 'TextBlock' and 'Border' on the drop target when dropping the 
             // dragged element.
-            TreeViewItem rightClickedElement = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+            TreeViewItem rightClickedElement = TreeViewItemHelper.GetTraversedTargetDropItem(e.Source as FrameworkElement);
 
             if (!(rightClickedElement is TreeViewItem))
                 return;

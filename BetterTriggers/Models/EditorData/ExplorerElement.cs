@@ -273,12 +273,15 @@ namespace BetterTriggers.Models.EditorData
 
         public void RemoveFromParent()
         {
-            Parent.GetExplorerElements().Remove(this);
-            Parent = null;
-            if (ElementType == ExplorerElementEnum.Trigger)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                RemoveLocalVariables();
-            }
+                Parent.GetExplorerElements().Remove(this);
+                Parent = null;
+                if (ElementType == ExplorerElementEnum.Trigger)
+                {
+                    RemoveLocalVariables();
+                }
+            });
         }
 
         public void AddToUnsaved()

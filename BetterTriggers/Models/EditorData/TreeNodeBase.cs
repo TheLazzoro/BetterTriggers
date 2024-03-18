@@ -14,7 +14,7 @@ namespace BetterTriggers.Models.EditorData
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _displayText;
         private string _category;
-        private byte[] _icon;
+        private byte[] _icon = new byte[0];
         private bool _isEnabled = true;
         private bool _hasErrors = false;
         private bool _isSelected;
