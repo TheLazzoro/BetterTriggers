@@ -30,14 +30,23 @@ namespace BetterTriggers.Models.EditorData
         }
         public ExplorerElement Parent { get; set; }
         public ObservableCollection<ExplorerElement> ExplorerElements { get; set; } = new();
-        public bool isInitiallyOn { get; set; } = true;
+        public bool IsInitiallyOn
+        {
+            get => _isInitiallyOn;
+            set
+            {
+                _isInitiallyOn = value;
+                OnPropertyChanged();
+            }
+        }
         public event Action OnReload;
         public event Action OnChanged;
         public event Action OnSaved;
         public event Action OnDeleted;
         private string _path;
-        private DateTime LastWrite;
-        private long Size;
+        private bool _isInitiallyOn = true;
+        public DateTime LastWrite { get; private set; }
+        public long Size { get; private set; }
 
         public Trigger trigger;
         public Variable variable;
@@ -203,36 +212,6 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public void SetEnabled(bool isEnabled)
-        {
-            this.IsEnabled = isEnabled;
-        }
-
-        public void SetInitiallyOn(bool isInitiallyOn)
-        {
-            this.isInitiallyOn = isInitiallyOn;
-        }
-
-        public bool GetEnabled()
-        {
-            return this.IsEnabled;
-        }
-
-        public bool GetInitiallyOn()
-        {
-            return this.isInitiallyOn;
-        }
-
-        public long GetSize()
-        {
-            return Size;
-        }
-
-        public DateTime GetLastWrite()
-        {
-            return LastWrite;
-        }
-
         public void UpdateMetadata()
         {
             if (ElementType == ExplorerElementEnum.Folder || ElementType == ExplorerElementEnum.Root)
@@ -326,7 +305,7 @@ namespace BetterTriggers.Models.EditorData
             ExplorerElement newElement = new ExplorerElement();
             newElement.path = new string(this.path); // we need this path in paste command.
             newElement.Parent = this.Parent;
-            newElement.isInitiallyOn = this.isInitiallyOn;
+            newElement.IsInitiallyOn = this.IsInitiallyOn;
             newElement.IsEnabled = this.IsEnabled;
             newElement.ElementType = this.ElementType;
 
@@ -465,8 +444,8 @@ namespace BetterTriggers.Models.EditorData
         {
             if (ElementType == ExplorerElementEnum.Trigger)
             {
-                var triggers = Project.CurrentProject.Triggers;
-                int errors = triggers.VerifyParametersInTrigger(this);
+                TriggerValidator validator = new TriggerValidator(this, true);
+                int errors = validator.RemoveInvalidReferences();
                 HasErrors = errors > 0;
             }
         }

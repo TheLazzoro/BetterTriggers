@@ -6,6 +6,7 @@ using System.Windows;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
 
 namespace BetterTriggers.Commands
 {
@@ -35,7 +36,8 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            Project.CurrentProject.Triggers.RemoveInvalidReferences(to.trigger, listToPaste);
+            TriggerValidator validator = new TriggerValidator(to);
+            validator.RemoveInvalidReferences(listToPaste);
             for (int i = 0; i < listToCut.Count(); i++)
             {
                 listToCut.Elements[i].RemoveFromParent();

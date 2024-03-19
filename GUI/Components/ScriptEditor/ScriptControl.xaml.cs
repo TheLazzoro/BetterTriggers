@@ -22,7 +22,7 @@ namespace GUI.Components
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
 
-            checkBoxIsEnabled.IsChecked = explorerElementScript.GetEnabled();
+            checkBoxIsEnabled.IsChecked = explorerElementScript.IsEnabled;
             this.explorerElementScript = explorerElementScript;
 
             textEditor.avalonEditor.TextChanged += delegate
@@ -58,7 +58,7 @@ namespace GUI.Components
         public void SetElementEnabled(bool isEnabled)
         {
             checkBoxIsEnabled.IsChecked = isEnabled;
-            explorerElementScript.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
+            explorerElementScript.IsEnabled = (bool)checkBoxIsEnabled.IsChecked;
             OnStateChange();
         }
 
@@ -73,7 +73,7 @@ namespace GUI.Components
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
-            explorerElementScript.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
+            explorerElementScript.IsEnabled = (bool)checkBoxIsEnabled.IsChecked;
             OnStateChange();
         }
 

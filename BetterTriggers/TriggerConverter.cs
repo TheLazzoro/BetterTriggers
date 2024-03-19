@@ -375,8 +375,8 @@ namespace BetterTriggers.WorldEdit
                 {
                     War3ProjectFileEntry entry = new War3ProjectFileEntry()
                     {
-                        isEnabled = explorerElement.GetEnabled(),
-                        isInitiallyOn = explorerElement.GetInitiallyOn(),
+                        isEnabled = explorerElement.IsEnabled,
+                        isInitiallyOn = explorerElement.IsInitiallyOn,
                         path = explorerElement.GetRelativePath(),
                     };
 
@@ -586,7 +586,7 @@ namespace BetterTriggers.WorldEdit
             Trigger trigger = new Trigger();
             explorerElementTrigger.trigger = trigger;
             explorerElementTrigger.IsEnabled = triggerDefinition.IsEnabled;
-            explorerElementTrigger.isInitiallyOn = triggerDefinition.IsInitiallyOn;
+            explorerElementTrigger.IsInitiallyOn = triggerDefinition.IsInitiallyOn;
 
             if (triggers.SubVersion == null) // legacy format
             {

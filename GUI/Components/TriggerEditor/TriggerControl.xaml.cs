@@ -2,6 +2,7 @@
 using BetterTriggers.Commands;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using Cake.Core.Scripting;
 using GUI.Components.Shared;
@@ -64,8 +65,8 @@ namespace GUI.Components
             this.explorerElementTrigger = explorerElement;
 
 
-            checkBoxIsEnabled.IsChecked = explorerElement.GetEnabled();
-            checkBoxIsInitiallyOn.IsChecked = explorerElement.GetInitiallyOn();
+            checkBoxIsEnabled.IsChecked = explorerElement.IsEnabled;
+            checkBoxIsInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
             checkBoxIsCustomScript.IsChecked = explorerElement.trigger.IsScript;
             checkBoxRunOnMapInit.IsChecked = explorerElement.trigger.RunOnMapInit;
             ShowTextEditor(explorerElement.trigger.IsScript);
@@ -723,7 +724,8 @@ namespace GUI.Components
                     return;
 
                 inUse.ForEach(v => Project.CurrentProject.Variables.RemoveLocalVariable(v));
-                Project.CurrentProject.Triggers.RemoveInvalidReferences(explorerElementTrigger);
+                TriggerValidator validator = new TriggerValidator(explorerElementTrigger);
+                validator.RemoveInvalidReferences();
             }
 
             TriggerElement ToSelectAfterDeletion = null;
@@ -799,22 +801,15 @@ namespace GUI.Components
             var pasted = Project.CurrentProject.Triggers.PasteTriggerElements(explorerElementTrigger, attachTarget, insertIndex);
         }
 
-        public void SetElementInitiallyOn(bool isInitiallyOn)
-        {
-            checkBoxIsInitiallyOn.IsChecked = isInitiallyOn;
-            explorerElementTrigger.SetEnabled((bool)checkBoxIsInitiallyOn.IsChecked);
-            //OnStateChange();
-        }
-
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
             var trigger = explorerElementTrigger.trigger;
-            explorerElementTrigger.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
+            explorerElementTrigger.IsEnabled = (bool)checkBoxIsEnabled.IsChecked;
         }
 
         private void checkBoxIsInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
-            SetElementInitiallyOn((bool)checkBoxIsInitiallyOn.IsChecked);
+            explorerElementTrigger.IsInitiallyOn = (bool)checkBoxIsInitiallyOn.IsChecked;
         }
 
         private void checkBoxRunOnMapInit_Click(object sender, RoutedEventArgs e)

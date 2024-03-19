@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,6 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementMove : ICommand
     {
         string commandName = "Move Trigger Element";
-        Trigger trig;
         ExplorerElement explorerElement;
         TriggerElement triggerElement;
         TriggerElement OldParent;
@@ -20,7 +20,6 @@ namespace BetterTriggers.Commands
         public CommandTriggerElementMove(ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElementCollection NewParent, int NewInsertIndex)
         {
             this.explorerElement = explorerElement;
-            this.trig = explorerElement.trigger;
             this.triggerElement = triggerElement;
             this.OldParent = triggerElement.GetParent();
             this.OldInsertIndex = this.OldParent.IndexOf(triggerElement);
@@ -32,7 +31,8 @@ namespace BetterTriggers.Commands
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
-            Project.CurrentProject.Triggers.RemoveInvalidReferences(trig, NewParent);
+            TriggerValidator validator = new TriggerValidator(explorerElement);
+            validator.RemoveInvalidReferences(NewParent);
             Project.CurrentProject.CommandManager.AddCommand(this);
             explorerElement.InvokeChange();
         }

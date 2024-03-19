@@ -154,8 +154,8 @@ namespace BetterTriggers.Containers
 
                 var fileEntry = new War3ProjectFileEntry();
                 fileEntry.path = element.GetRelativePath();
-                fileEntry.isEnabled = element.GetEnabled();
-                fileEntry.isInitiallyOn = element.GetInitiallyOn();
+                fileEntry.isEnabled = element.IsEnabled;
+                fileEntry.isInitiallyOn = element.IsInitiallyOn;
                 fileEntry.isExpanded = element.IsExpanded;
 
                 war3project.Files.Add(fileEntry);
@@ -184,8 +184,8 @@ namespace BetterTriggers.Containers
                 // TODO: DUPLICATE CODE!!
                 var fileEntryChild = new War3ProjectFileEntry();
                 fileEntryChild.path = element.GetRelativePath();
-                fileEntryChild.isEnabled = element.GetEnabled();
-                fileEntryChild.isInitiallyOn = element.GetInitiallyOn();
+                fileEntryChild.isEnabled = element.IsEnabled;
+                fileEntryChild.isInitiallyOn = element.IsInitiallyOn;
                 fileEntryChild.isExpanded = element.IsExpanded;
 
                 parentEntry.Files.Add(fileEntryChild);
@@ -320,8 +320,8 @@ namespace BetterTriggers.Containers
                 {
                     fileCheckList.Remove(path);
                     ExplorerElement explorerElementChild = new ExplorerElement(path);
-                    explorerElementChild.SetEnabled(entryChild.isEnabled);
-                    explorerElementChild.SetInitiallyOn(entryChild.isInitiallyOn);
+                    explorerElementChild.IsEnabled = entryChild.isEnabled;
+                    explorerElementChild.IsInitiallyOn = entryChild.isInitiallyOn;
                     explorerElementChild.SetParent(elementParent, insertIndex);
                     insertIndex++;
                     if (Directory.Exists(explorerElementChild.GetPath()))
@@ -800,7 +800,7 @@ namespace BetterTriggers.Containers
                         size = info.EnumerateFiles().Sum(file => file.Length);
                         lastWrite = new DirectoryInfo(files[i]).LastWriteTime;
                     }
-                    if (size == explorerElement.GetSize() && lastWrite == explorerElement.GetLastWrite())
+                    if (size == explorerElement.Size && lastWrite == explorerElement.LastWrite)
                         wasMoved = true;
                 }
 

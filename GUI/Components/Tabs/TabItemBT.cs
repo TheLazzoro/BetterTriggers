@@ -66,12 +66,18 @@ namespace GUI.Components.Tabs
 
         private void ExplorerElement_OnChanged()
         {
-            Header = explorerElement.GetName() + " *";
+            if (explorerElement.ElementType == ExplorerElementEnum.Root)
+                Header = Project.CurrentProject.MapName + " *";
+            else
+                Header = explorerElement.GetName() + " *";
         }
 
         private void ExplorerElement_OnSaved()
         {
-            Header = explorerElement.GetName();
+            if (explorerElement.ElementType == ExplorerElementEnum.Root)
+                Header = Project.CurrentProject.MapName;
+            else
+                Header = explorerElement.GetName();
         }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

@@ -1811,7 +1811,7 @@ end
                 events.Append($"\t{call} TriggerAddCondition({triggerVarName}, Condition({function} Trig_{triggerName}_Conditions)){newline}");
             }
 
-            if (!t.isInitiallyOn)
+            if (!t.IsInitiallyOn)
                 events.Append($"\t{call} DisableTrigger({triggerVarName}){newline}");
 
             events.Append($"\t{call} TriggerAddAction({triggerVarName}, {function} {triggerActionName}){newline}");

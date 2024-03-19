@@ -26,10 +26,7 @@ namespace BetterTriggers.Models.EditorData
 
         public string DisplayText
         {
-            get
-            {
-                return _displayText;
-            }
+            get => _displayText;
             set
             {
                 _displayText = value;

@@ -3,6 +3,7 @@ using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
@@ -212,7 +213,8 @@ namespace BetterTriggers
             var triggers = Project.CurrentProject.Triggers.GetAll();
             for (int i = 0; i < triggers.Count; i++)
             {
-                int invalidCount = Project.CurrentProject.Triggers.RemoveInvalidReferences(triggers[i]);
+                TriggerValidator validator = new TriggerValidator(triggers[i]);
+                int invalidCount = validator.RemoveInvalidReferences();
                 if (invalidCount > 0)
                     modified.Add(triggers[i]);
 

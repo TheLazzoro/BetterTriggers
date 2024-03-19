@@ -96,8 +96,8 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
 
-            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
-            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
+            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
+            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
             <CheckBox x:Name="checkBoxIsCustomScript" Content="Custom Script" IsChecked="false" Margin="10,0,0,0" Click="checkBoxIsCustomScript_Click"/>
             <CheckBox x:Name="checkBoxRunOnMapInit" Content="Run on Map Initialization" Margin="10,0,0,0" Click="checkBoxRunOnMapInit_Click"/>
 

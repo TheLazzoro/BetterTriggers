@@ -416,8 +416,8 @@ namespace GUI.Components
             rightClickedElement.ContextMenu = contextMenu;
 
             menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
-            menuElementEnabled.IsChecked = explorerElement.GetEnabled();
-            menuElementInitiallyOn.IsChecked = explorerElement.GetInitiallyOn();
+            menuElementEnabled.IsChecked = explorerElement.IsEnabled;
+            menuElementInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
             menuElementEnabled.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger || explorerElement.ElementType == ExplorerElementEnum.Script;
             menuElementInitiallyOn.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger;
             menuRename.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
@@ -486,13 +486,13 @@ namespace GUI.Components
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
         {
             var explorerElement = GetExplorerElementFromItem(currentElement);
-            explorerElement.SetEnabled(!explorerElement.GetEnabled());
+            explorerElement.IsEnabled = !explorerElement.IsEnabled;
         }
 
         private void menuElementInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
             var explorerElement = GetExplorerElementFromItem(currentElement);
-            explorerElement.SetInitiallyOn(!explorerElement.GetInitiallyOn());
+            explorerElement.IsInitiallyOn = !explorerElement.IsInitiallyOn;
         }
 
         private void menuOpenInExplorer_Click(object sender, RoutedEventArgs e)

@@ -36,6 +36,11 @@
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Setter Property="Source" Value="{Binding IconImage}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="False" >
+                                <Setter Property="Opacity" Value="0.5" />
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </Image.Style>
             </Image>
@@ -52,17 +57,17 @@
                         <Style.Triggers>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding Path=IsEnabled}" Value="False" />
-                                </MultiDataTrigger.Conditions>
-
-                                <Setter Property="Source" Value="/Resources/Icons/trigger-error.png" />
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=HasErrors}" Value="True" />
                                 </MultiDataTrigger.Conditions>
 
                                 <Setter Property="Source" Value="/Resources/Icons/trigger-invalid.png" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsEnabled}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+
+                                <Setter Property="Source" Value="/Resources/Icons/trigger-error.png" />
                             </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -71,9 +76,21 @@
 
             <TextBlock x:Name="displayText"
                        Text="{Binding DisplayText}"
-                       Foreground="{DynamicResource TextBrush}"
                        Grid.Column="1"
-                       Margin="5,0,0,0" />
+                       Margin="5,0,0,0" >
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="True" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="False" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDim}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
             <TextBox x:Name="renameBox"
                      Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
@@ -150,6 +167,7 @@
                    Text="{Binding DisplayText}"
                    Grid.Column="1"
                    Margin="5,0,0,0">
+
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Style.Triggers>
