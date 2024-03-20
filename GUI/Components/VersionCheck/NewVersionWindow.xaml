@@ -44,7 +44,7 @@
         <TextBlock
             x:Name="textLoading"
             Foreground="{DynamicResource TextBrush}"
-            Text="Loading Version"
+            Text="Checking Version..."
             Grid.Column="1"
             VerticalAlignment="Center"
             TextWrapping="Wrap"

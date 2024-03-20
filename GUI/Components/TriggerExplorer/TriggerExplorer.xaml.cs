@@ -101,7 +101,7 @@ namespace GUI.Components
             return treeViewItem;
         }
 
-        public ExplorerElement? GetSelectedExplorerElement()
+        private ExplorerElement? GetSelectedExplorerElement()
         {
             ExplorerElement item = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
             return item;

@@ -320,6 +320,11 @@ namespace GUI
             if (selectedItem.ElementType == ExplorerElementEnum.Trigger)
             {
                 Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
+                EnableECAButtons(true);
+            }
+            else
+            {
+                EnableECAButtons(false);
             }
 
             if (!tabViewModel.Contains(selectedItem))
@@ -375,7 +380,6 @@ namespace GUI
                 return;
 
             OnSelectTab(opened, tabViewModel, tabControl);
-            EnableTriggerElementButtons();
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -388,19 +392,6 @@ namespace GUI
                 return;
 
             OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
-            EnableTriggerElementButtons();
-        }
-
-        private void EnableTriggerElementButtons()
-        {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            if (selected.editor is TriggerControl control)
-            {
-                TriggerControl.TriggerInFocus = control.explorerElementTrigger.trigger;
-                EnableECAButtons(true);
-            }
-            else
-                EnableECAButtons(false);
         }
 
         private void ButtonTabItem_Click(object sender, RoutedEventArgs e)
@@ -461,22 +452,22 @@ namespace GUI
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void btnCreateAction_Click(object sender, RoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateAction();
         }
 
@@ -903,46 +894,46 @@ namespace GUI
                 return;
             }
 
-            var selected = triggerExplorer.GetSelectedExplorerElement();
+            var selected = tabControl.SelectedItem as TabItemBT;
             if (selected != null)
             {
-                var triggerControl = selected.editor as TriggerControl;
+                var triggerControl = selected.explorerElement.editor as TriggerControl;
                 e.CanExecute = triggerControl != null;
             }
         }
 
         private void CommandBinding_Executed_NewEvent(object sender, ExecutedRoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void CommandBinding_Executed_NewCondition(object sender, ExecutedRoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void CommandBinding_Executed_NewLocalVariable(object sender, ExecutedRoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
         }
 
         private void CommandBinding_Executed_NewAction(object sender, ExecutedRoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateAction();
         }
 
         private void btnCreateLocalVariable_Click(object sender, RoutedEventArgs e)
         {
-            var selected = triggerExplorer.GetSelectedExplorerElement();
-            var triggerControl = selected.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
         }
 
