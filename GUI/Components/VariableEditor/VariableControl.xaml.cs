@@ -88,11 +88,12 @@ namespace GUI.Components
             ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
             var inlines = paramTextBuilder.GenerateParamText(variable);
             textblockInitialValue.Inlines.AddRange(inlines);
+            UpdateIdentifierText();
 
             OnChange?.Invoke();
         }
 
-        public void UpdateIdentifierText()
+        private void UpdateIdentifierText()
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
@@ -185,16 +186,6 @@ namespace GUI.Components
             }
 
             return ok;
-        }
-
-        public void SetElementEnabled(bool isEnabled)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetElementInitiallyOn(bool isInitiallyOn)
-        {
-            throw new NotImplementedException();
         }
 
         public void OnStateChange()

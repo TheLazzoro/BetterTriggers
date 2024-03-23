@@ -308,6 +308,8 @@ namespace BetterTriggers.Models.EditorData
             newElement.IsInitiallyOn = this.IsInitiallyOn;
             newElement.IsEnabled = this.IsEnabled;
             newElement.ElementType = this.ElementType;
+            newElement.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(newElement.IconImage, 0);
 
             switch (ElementType)
             {
@@ -428,6 +430,7 @@ namespace BetterTriggers.Models.EditorData
         public void InvokeChange()
         {
             VerifyAndRemoveTriggerErrors();
+            UpdateVariableIdentifier();
             OnChanged?.Invoke();
             AddToUnsaved();
         }
@@ -447,6 +450,14 @@ namespace BetterTriggers.Models.EditorData
                 TriggerValidator validator = new TriggerValidator(this, true);
                 int errors = validator.RemoveInvalidReferences();
                 HasErrors = errors > 0;
+            }
+        }
+
+        private void UpdateVariableIdentifier()
+        {
+            if(ElementType == ExplorerElementEnum.GlobalVariable)
+            {
+                variable.Name = this.GetName();
             }
         }
 
