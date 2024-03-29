@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Models.EditorData;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -39,7 +40,11 @@ namespace GUI.Components.Dialogs
             string content = $"This element is still in use. {actionText} it will reset all references to it and cannot be undone. Do you wish to continue?\n\nUsed by:";
             foreach (var reference in references)
             {
-                content += "\n<" + reference.GetName() + ">";
+                ListViewItem item = new ListViewItem
+                {
+                    Content = "<" + reference.GetName() + ">"
+                };
+                listView.Items.Add(item);
             }
 
             textBlockMessage.Text = content;

@@ -243,7 +243,7 @@ namespace BetterTriggers.Containers
 
             if (project.fileSystemWatcher == null)
             {
-                project.fileSystemWatcher = new BufferingFileSystemWatcher();
+                project.fileSystemWatcher = new();
                 project.fileSystemWatcher.Created += project.FileSystemWatcher_Created;
                 project.fileSystemWatcher.Deleted += project.FileSystemWatcher_Deleted;
                 project.fileSystemWatcher.Changed += project.FileSystemWatcher_Changed;

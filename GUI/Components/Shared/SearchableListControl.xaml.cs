@@ -79,11 +79,10 @@ namespace GUI.Components.Shared
 
         private void CheckBoxShowIcons_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(checkBoxShowIcons.IsVisible)
+            if (checkBoxShowIcons.IsVisible)
                 Grid.SetColumnSpan(textBoxSearch, 1);
             else
                 Grid.SetColumnSpan(textBoxSearch, 2);
         }
-
     }
 }

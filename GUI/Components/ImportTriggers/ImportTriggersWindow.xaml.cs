@@ -19,7 +19,7 @@ namespace GUI
 {
     public partial class ImportTriggersWindow : Window
     {
-        private ImportTriggerItem rootTreeItem;
+        private ImportTriggerItem rootElement;
         private string mapPath;
         private bool hasError;
         private string errorMsg;
@@ -29,11 +29,14 @@ namespace GUI
         private List<ExplorerElement> elementsToImport;
 
         private UserControl control;
+        private ImportTriggersViewModel _viewModel;
 
         public ImportTriggersWindow()
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+            _viewModel = new();
+            DataContext = _viewModel;
             EditorSettings settings = EditorSettings.Load();
             this.Width = settings.triggerWindowWidth;
             this.Height = settings.triggerWindowHeight;
@@ -65,7 +68,7 @@ namespace GUI
         {
             try
             {
-                treeView.Items.Clear();
+                _viewModel.ExplorerElements.Clear();
                 var map = Map.Open(mapPath);
                 var triggerItems = map.Triggers.TriggerItems;
                 var triggerConverter = new TriggerConverter(mapPath);
@@ -79,22 +82,37 @@ namespace GUI
                 {
                     path = mapPath
                 };
-                rootTreeItem = new ImportTriggerItem(explorerRoot);
-                this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootTreeItem);
+                rootElement = new ImportTriggerItem(explorerRoot);
+                this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootElement);
+                _viewModel.ExplorerElements.Add(rootElement);
+
                 // TODO: REFACTOR
                 //rootTreeItem.Selected += ExplorerItem_Selected;
                 for (int i = 0; i < explorerElements.Count; i++)
                 {
                     var element = explorerElements[i];
                     var treeItem = new ImportTriggerItem(element);
-
                     this.treeItemExplorerElements.TryAdd(element.GetPath(), treeItem);
+
+                    string parentPath = System.IO.Path.GetDirectoryName(element.GetPath());
+                    ImportTriggerItem parent;
+                    this.treeItemExplorerElements.TryGetValue(parentPath, out parent);
+                    if (parent == null)
+                    {
+                        treeItem.Parent = rootElement;
+                        rootElement.ExplorerElements.Add(treeItem);
+                    }
+                    else
+                    {
+                        treeItem.Parent = parent;
+                        parent.ExplorerElements.Add(treeItem);
+                    }
+
                     // TODO: REFACTOR
                     //treeItem.Selected += ExplorerItem_Selected;
                 }
 
-                var root = treeView.Items[0] as TreeViewItem;
-                root.ExpandSubtree();
+                rootElement.IsExpanded = true;
             }
             catch (Exception ex)
             {
@@ -172,7 +190,7 @@ namespace GUI
             itemsImported = new List<string>();
             elementsToImport = treeItemExplorerElements
                 .Where(item => (bool)item.Value.IsChecked)
-                .Where(item => item.Value != rootTreeItem)
+                .Where(item => item.Value != rootElement)
                 .Select(item => item.Value.explorerElement)
                 .ToList();
 

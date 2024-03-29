@@ -457,7 +457,7 @@
 
             <!-- LISTVIEWITEM -->
             
-            <Style TargetType="ListViewItem" x:Key="listViewItemStyleBT">
+            <Style TargetType="ListViewItem">
                 <Setter Property="BorderBrush" Value="#fff" />
                 <Setter Property="Foreground" Value="{DynamicResource ListItemForeground}" />
                 <Setter Property="BorderThickness" Value="0" />
@@ -761,6 +761,11 @@
             <Style TargetType="RadioButton">
                 <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
             </Style>
+
+            <Style TargetType="{x:Type ListView}">
+                <Setter Property="Background" Value="{DynamicResource BackgroundDark}"/>
+            </Style>
+
 
 
 

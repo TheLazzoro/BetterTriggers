@@ -20,6 +20,8 @@ namespace BetterTriggers.Models.EditorData
         private bool _hasErrors = false;
         private bool _isSelected;
         private bool _isExpanded;
+        private bool _isChecked;
+        private double _checkBoxWidth = 0;
         private Visibility _iconVisibility = Visibility.Visible;
         private Visibility _renameBoxVisibility = Visibility.Hidden;
         private Visibility _checkBoxVisibility = Visibility.Hidden;
@@ -89,6 +91,16 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
+        public double CheckBoxWidth
+        {
+            get => _checkBoxWidth;
+            set
+            {
+                _checkBoxWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -127,7 +139,15 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public bool IsChecked { get; set; } = false;
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                _isChecked = value;
+                OnPropertyChanged();
+            }
+        }
         public event Action OnToggleEnable;
 
 

@@ -219,7 +219,7 @@ namespace BetterTriggers.WorldEdit
                         break;
                 }
 
-                if (element.ElementType == ExplorerElementEnum.Folder || element.ElementType == ExplorerElementEnum.Root)
+                if (element.ElementType != ExplorerElementEnum.Trigger && element.ElementType != ExplorerElementEnum.GlobalVariable)
                     continue;
 
                 // Resolve id-collisions
@@ -255,9 +255,9 @@ namespace BetterTriggers.WorldEdit
 
                     foreach (var trigger in triggerElementsToImport)
                     {
-                        if (trigger is ExplorerElement trig)
+                        if (trigger.ElementType == ExplorerElementEnum.Trigger)
                         {
-                            var functions = Triggers.GetFunctionsFromTrigger(trig);
+                            var functions = Triggers.GetFunctionsFromTrigger(trigger);
                             foreach (var function in functions)
                             {
                                 foreach (var parameter in function.parameters)

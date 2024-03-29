@@ -3,6 +3,7 @@ using GUI.Components.Shared;
 using GUI.Components.TriggerEditor.ParameterControls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,10 +16,26 @@ using static System.Windows.Forms.AxHost;
 
 namespace GUI.Components.ImportTriggers
 {
-    internal class ImportTriggerItem : TreeNodeBase
+    public class ImportTriggerItem : TreeNodeBase
     {
-        public bool IsChecked { get; set; }
-        internal ExplorerElement explorerElement { get; }
+        private static bool _suppressEvents = false;
+        private bool _isInitiallyOn;
+
+        public bool IsInitiallyOn
+        {
+            get => _isInitiallyOn;
+            set
+            {
+                if (!_suppressEvents)
+                {
+                    _isInitiallyOn = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public ObservableCollection<ImportTriggerItem> ExplorerElements { get; set; } = new();
+        public ExplorerElement explorerElement { get; }
+        public ImportTriggerItem Parent { get; set; }
 
         public ImportTriggerItem(ExplorerElement explorerElement)
         {
@@ -50,13 +67,31 @@ namespace GUI.Components.ImportTriggers
             //treeItemHeader = new TreeItemHeaderCheckbox(explorerElement.GetName(), category);
             //this.Header = treeItemHeader;
             //treeItemHeader.checkbox.Click += Checkbox_Click;
+
+            var cat = Category.Get(category);
+            DisplayText = explorerElement.GetName();
+            IsEnabled = explorerElement.IsEnabled;
+            IsInitiallyOn = explorerElement.IsInitiallyOn;
+            HasErrors = explorerElement.HasErrors;
+            IconImage = cat.Icon;
+            CheckBoxVisibility = Visibility.Visible;
+            CheckBoxWidth = 20;
+
+            PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(IsChecked) && !_suppressEvents)
+                {
+                    _suppressEvents = true;
+                    Checkbox_Click();
+                    _suppressEvents = false;
+                }
+            };
         }
 
-        private void Checkbox_Click(object sender, RoutedEventArgs e)
+        private void Checkbox_Click()
         {
             ToggleCheckboxRecurse(this);
-            // TODO: REFACTOR
-            //ToggleCheckboxRecurseReverse(this, (bool)this.treeItemHeader.checkbox.IsChecked);
+            ToggleCheckboxRecurseReverse(this, IsChecked);
         }
 
         /// <summary>
@@ -64,19 +99,17 @@ namespace GUI.Components.ImportTriggers
         /// </summary>
         private void ToggleCheckboxRecurse(ImportTriggerItem parent)
         {
-            // TODO: REFACTOR
-            //foreach (var item in parent.Items)
-            //{
-            //    if (item is ImportTriggerItem treeItem)
-            //    {
-            //        var header = treeItem.Header as TreeItemHeaderCheckbox;
-            //        header.checkbox.IsChecked = parent.treeItemHeader.checkbox.IsChecked;
-            //        if (treeItem.Items.Count > 0)
-            //        {
-            //            ToggleCheckboxRecurse(treeItem);
-            //        }
-            //    }
-            //}
+            foreach (ImportTriggerItem item in parent.ExplorerElements)
+            {
+                if (item is ImportTriggerItem treeItem)
+                {
+                    item.IsChecked = this.IsChecked;
+                    if (treeItem.ExplorerElements.Count > 0)
+                    {
+                        ToggleCheckboxRecurse(treeItem);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -84,26 +117,24 @@ namespace GUI.Components.ImportTriggers
         /// </summary>
         private void ToggleCheckboxRecurseReverse(ImportTriggerItem treeItem, bool isChecked)
         {
-            // TODO: REFACTOR
-            //var parent = treeItem.Parent as ImportTriggerItem;
-            //if (parent != null)
-            //{
-            //    var header = parent.Header as TreeItemHeaderCheckbox;
-            //    int checkedChildrenCount = 0;
-            //    foreach (ImportTriggerItem child in parent.Items)
-            //    {
-            //        if((bool)child.treeItemHeader.checkbox.IsChecked)
-            //        {
-            //            checkedChildrenCount++;
-            //        }
-            //    }
+            var parent = treeItem.Parent;
+            if (parent != null)
+            {
+                int checkedChildrenCount = 0;
+                foreach (ImportTriggerItem child in parent.ExplorerElements)
+                {
+                    if (child.IsChecked)
+                    {
+                        checkedChildrenCount++;
+                    }
+                }
 
-            //    if(checkedChildrenCount == 0 || isChecked)
-            //    {
-            //        header.checkbox.IsChecked = isChecked;
-            //        ToggleCheckboxRecurseReverse(parent, isChecked);
-            //    }
-            //}
+                if (checkedChildrenCount == 0 || isChecked)
+                {
+                    parent.IsChecked = isChecked;
+                    ToggleCheckboxRecurseReverse(parent, isChecked);
+                }
+            }
         }
     }
 }

@@ -140,12 +140,8 @@
                 Grid.RowSpan="6"
                 MaxHeight="250"
                 x:Name="listViewUsedBy"
-                Background="{DynamicResource BackgroundDark}"
-                ItemTemplate="{DynamicResource TreeItemDataTemplate}"
+                ItemTemplate="{DynamicResource TriggerElementMenuItem}"
                 MouseDoubleClick="listViewUsedBy_MouseDoubleClick">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemStyleBT}"/>
-                </ListView.ItemContainerStyle>
             </ListView>
 
         </Grid>

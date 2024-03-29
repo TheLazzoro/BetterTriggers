@@ -363,24 +363,7 @@ namespace GUI.Components
 
             else if (e.Key == Key.Delete)
             {
-                if (selected.ElementType == ExplorerElementEnum.Root)
-                    return;
-
-                List<ExplorerElement> refs = selected.GetReferrers();
-                if (refs.Count > 0)
-                {
-                    DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);
-                    dialogBox.ShowDialog();
-                    if (!dialogBox.OK)
-                        return;
-                }
-
-                DialogBox dialog = new DialogBox("Delete Element", $"Are you sure you want to delete '{selected.GetName()}' ?");
-                dialog.ShowDialog();
-                if(dialog.OK)
-                {
-                    selected.Delete();
-                }
+                DeleteElement(selected);
             }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
@@ -397,6 +380,28 @@ namespace GUI.Components
             else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 //OpenSearchField();
+            }
+        }
+
+        private void DeleteElement(ExplorerElement toDelete)
+        {
+            if (toDelete.ElementType == ExplorerElementEnum.Root)
+                return;
+
+            List<ExplorerElement> refs = toDelete.GetReferrers();
+            if (refs.Count > 0)
+            {
+                DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);
+                dialogBox.ShowDialog();
+                if (!dialogBox.OK)
+                    return;
+            }
+
+            DialogBox dialog = new DialogBox("Delete Element", $"Are you sure you want to delete '{toDelete.GetName()}' ?");
+            dialog.ShowDialog();
+            if (dialog.OK)
+            {
+                toDelete.Delete();
             }
         }
 
@@ -460,7 +465,7 @@ namespace GUI.Components
         private void menuDelete_Click(object sender, RoutedEventArgs e)
         {
             var explorerElement = GetExplorerElementFromItem(currentElement);
-            explorerElement.Delete();
+            DeleteElement(explorerElement);
         }
 
         private void menuNewCategory_Click(object sender, RoutedEventArgs e)
