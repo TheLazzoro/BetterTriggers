@@ -47,7 +47,7 @@ namespace GUI.Components.VerifyTriggers
                 {
                     collisionError.triggers.ForEach(t =>
                     {
-                        items[index] = $"{t.Item1.GetName()} <-> {t.Item2.GetName()}{Environment.NewLine}";
+                        items[index] = $"{t.Item1.GetName()} <-> {t.Item2.GetName()}";
                         index++;
                     });
                 }
@@ -55,11 +55,11 @@ namespace GUI.Components.VerifyTriggers
                 {
                     collisionError.variables.ForEach(v =>
                     {
-                        items[index] = $"{v.Item1.GetName()} <-> {v.Item2.GetName()}{Environment.NewLine}";
+                        items[index] = $"{v.Item1.GetName()} <-> {v.Item2.GetName()}";
                         index++;
                     });
                 }
-                string message = $"{collisionError.Message}{Environment.NewLine}{Environment.NewLine}You need to resolve these manually.{Environment.NewLine}";
+                string message = $"{collisionError.Message}{Environment.NewLine}{Environment.NewLine}Triggers or variables with the same ID are not allowed.{Environment.NewLine}You need to resolve these manually in a text editor.{Environment.NewLine}";
                 Dialogs.MessageBoxWithList messageBox = new Dialogs.MessageBoxWithList("ID Collisions", message, items);
                 messageBox.ShowDialog();
                 OnCloseProject?.Invoke();

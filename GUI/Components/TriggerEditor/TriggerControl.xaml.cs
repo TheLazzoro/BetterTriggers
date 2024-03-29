@@ -678,6 +678,16 @@ namespace GUI.Components
         {
             if (e.Key == Key.Delete)
                 DeleteTriggerElement();
+            else if(e.Key == Key.Enter)
+            {
+                var selected = treeViewTriggers.SelectedItem as TriggerElement;
+                if(selected != null && selected.IsRenaming && selected.ElementType == TriggerElementType.LocalVariable)
+                {
+                    var localVar = selected as LocalVariable;
+                    var variables = Project.CurrentProject.Variables;
+                    variables.RenameLocalVariable(explorerElementTrigger.trigger, localVar, localVar.RenameText);
+                }
+            }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 CopyTriggerElement();
             else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))

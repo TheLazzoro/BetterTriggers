@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -132,6 +133,7 @@ namespace BetterTriggers.Models.EditorData
                         variable = new Variable_Saveable
                         {
                             Id = localVar.variable.Id,
+                            Name = localVar.variable.Name,
                             ArraySize = localVar.variable.ArraySize,
                             IsTwoDimensions = localVar.variable.IsTwoDimensions,
                             IsArray = localVar.variable.IsArray,
@@ -324,6 +326,7 @@ namespace BetterTriggers.Models.EditorData
                 {
                     converted = new LocalVariable
                     {
+                        DisplayText = localVar.variable.Name,
                         variable = new Variable
                         {
                             _isLocal = true,

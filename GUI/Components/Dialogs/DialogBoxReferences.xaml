@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
         Title="DialogBox"
-        Height="600"
+        Height="400"
         Width="351"
-        Background="{DynamicResource BackgroundDark}"
+        Background="{DynamicResource BackgroundMenu}"
+        WindowStartupLocation="CenterOwner"
         KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
@@ -20,7 +21,7 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="textBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" TextWrapping="Wrap" Margin="15,0,15,0" />
 
-        <ListView x:Name="listView" Grid.Row="2">
+        <ListView x:Name="listView" BorderBrush="Transparent" Grid.Row="2">
             
         </ListView>
         

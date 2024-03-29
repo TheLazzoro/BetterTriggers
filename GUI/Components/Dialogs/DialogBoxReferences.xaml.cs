@@ -19,7 +19,9 @@ namespace GUI.Components.Dialogs
         
         public DialogBoxReferences(List<ExplorerElement> references, ExplorerAction action)
         {
+            this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+
 
             this.Title = "Confimation";
 

@@ -29,6 +29,7 @@ namespace BetterTriggers.Commands
             toInsert.SetParent(parent, insertIndex);
             Project.CurrentProject.CommandManager.AddCommand(this);
             explorerElement.InvokeChange();
+            toInsert.IsSelected = true;
         }
 
         public void Redo()
@@ -36,6 +37,7 @@ namespace BetterTriggers.Commands
             toReplace.RemoveFromParent();
             toInsert.SetParent(parent, insertIndex);
             explorerElement.InvokeChange();
+            toInsert.IsSelected = true;
         }
 
         public void Undo()
@@ -43,6 +45,7 @@ namespace BetterTriggers.Commands
             toInsert.RemoveFromParent();
             toReplace.SetParent(parent, insertIndex);
             explorerElement.InvokeChange();
+            toReplace.IsSelected = true;
         }
 
         public string GetCommandName()

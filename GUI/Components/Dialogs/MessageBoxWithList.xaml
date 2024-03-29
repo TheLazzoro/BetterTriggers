@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="DialogBox" WindowStartupLocation="CenterOwner" Height="400" Width="500" Background="{DynamicResource BackgroundDark}" KeyDown="Window_KeyDown">
+        Title="DialogBox"
+        WindowStartupLocation="CenterOwner"
+        Height="400"
+        Width="500"
+        Background="{DynamicResource BackgroundMenu}"
+        KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -18,6 +23,7 @@
 
         <ListView
             x:Name="listView"
+            BorderBrush="Transparent"
             Background="{DynamicResource BackgroundDark}"
             Grid.Row="2">
         </ListView>

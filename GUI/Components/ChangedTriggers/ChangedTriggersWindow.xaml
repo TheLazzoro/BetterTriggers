@@ -24,7 +24,7 @@
                   ItemTemplate="{DynamicResource TriggerElementMenuItem}"
                   Background="{DynamicResource BackgroundDark}" >
             <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
                     <EventSetter Event="Selected" Handler="ListViewItem_MouseDown" />
                     <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDown" />
                 </Style>
