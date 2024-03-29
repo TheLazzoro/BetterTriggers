@@ -13,6 +13,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using BetterTriggers.Containers;
 using War3Net.Build;
+using BetterTriggers.Commands;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -56,7 +57,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.Load(mapPath);
+            CustomMapData.Load(mapPath, false);
 
             var map = CustomMapData.MPQMap;
             //var map = Map.Open(mapPath);
@@ -133,7 +134,7 @@ namespace BetterTriggers.WorldEdit
 
         public List<ExplorerElement> ConvertAll_NoWrite()
         {
-            return ConvertSelectedTriggers(triggers.TriggerItems);
+            return ConvertSelectedTriggers(triggers.TriggerItems, triggers.Variables);
         }
 
         /// <summary>
@@ -320,6 +321,7 @@ namespace BetterTriggers.WorldEdit
 
         private List<ExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
         {
+            var triggerElementsToImport = new List<IExplorerElement>();
             var project = Project.CurrentProject;
             if (project == null)
             {
@@ -370,6 +372,21 @@ namespace BetterTriggers.WorldEdit
 
             if (triggers != null)
             {
+                int variablesFolderID = RandomUtil.GenerateInt();
+                if (triggers.SubVersion == null)
+                {
+                    string folderName = "Variables";
+                    TriggerCategoryDefinition triggerCategoryDefinition = new TriggerCategoryDefinition();
+                    triggerCategoryDefinition.Name = folderName;
+                    triggerCategoryDefinition.Id = variablesFolderID;
+                    var folder = CreateFolder(triggerCategoryDefinition);
+                    FormatExplorerElement(folder, folderName, 0);
+                    triggerPaths.TryAdd(variablesFolderID, Path.Combine(src, folderName));
+
+                    WriteToProjectFileAndDisk(folder, variablesFolderID, 0);
+                }
+
+
                 /// Write to disk (local method)
                 void WriteToProjectFileAndDisk(ExplorerElement explorerElement, int id, int parentId)
                 {
@@ -410,7 +427,7 @@ namespace BetterTriggers.WorldEdit
                         triggerPaths.TryAdd(variableItem.Id, explorerElement.GetPath());
 
                         elements.Add(explorerElement);
-                        WriteToProjectFileAndDisk(explorerElement, variableItem.Id, variableItem.ParentId);
+                        WriteToProjectFileAndDisk(explorerElement, newId, variableItem.ParentId);
                     }
                 }
 

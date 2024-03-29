@@ -112,7 +112,7 @@ namespace BetterTriggers
         }
 
 
-        public static void Load(string fullMapPath = null)
+        public static void Load(string fullMapPath = null, bool isFilesystemWatcherEnabled = true)
         {
             if (string.IsNullOrEmpty(fullMapPath))
             {
@@ -144,18 +144,21 @@ namespace BetterTriggers
 
             isVanillaWESaving = false;
 
-            if (watcher != null)
+            if (isFilesystemWatcherEnabled)
             {
-                watcher.Created -= Watcher_Created;
-                watcher.Changed -= Watcher_Changed;
-            }
+                if (watcher != null)
+                {
+                    watcher.Created -= Watcher_Created;
+                    watcher.Changed -= Watcher_Changed;
+                }
 
-            watcher = new System.IO.FileSystemWatcher();
-            watcher.Path = Path.GetDirectoryName(fullMapPath);
-            watcher.EnableRaisingEvents = true;
-            watcher.IncludeSubdirectories = true;
-            watcher.Created += Watcher_Created;
-            watcher.Changed += Watcher_Changed;
+                watcher = new System.IO.FileSystemWatcher();
+                watcher.Path = Path.GetDirectoryName(fullMapPath);
+                watcher.EnableRaisingEvents = true;
+                watcher.IncludeSubdirectories = true;
+                watcher.Created += Watcher_Created;
+                watcher.Changed += Watcher_Changed;
+            }
         }
 
 

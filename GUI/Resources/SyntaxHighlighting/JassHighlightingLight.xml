@@ -96,7 +96,8 @@
             <Word>create</Word>
 			<Word>allocate</Word>
 			<Word>readonly</Word>
-			<Word>implement</Word>
+          <Word>implement</Word>
+          <Word>constant</Word>
         </Keywords>
 
         <!-- TYPES -->

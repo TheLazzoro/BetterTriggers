@@ -851,13 +851,17 @@ namespace GUI.Components
         {
             if (doShow)
             {
-                ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
-                string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
-                explorerElementTrigger.trigger.Script = script;
+                if (!explorerElementTrigger.trigger.IsScript)
+                {
+                    // Only generates a new script when the user has clicked the 'Custom Script' checkbox.
+                    ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
+                    string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
+                    explorerElementTrigger.trigger.Script = script;
+                }
+                
                 explorerElementTrigger.trigger.IsScript = doShow;
-
                 TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
-                TextEditor.avalonEditor.Text = script;
+                TextEditor.avalonEditor.Text = explorerElementTrigger.trigger.Script;
                 TextEditor.avalonEditor.TextChanged += delegate
                 {
                     explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text;

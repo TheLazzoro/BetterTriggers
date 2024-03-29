@@ -90,6 +90,7 @@ namespace GUI.Components.OpenMap
                     _viewModel.Maps.Add(new MapFile(entry));
                 }
 
+                txtNoMapsFound.Visibility = treeViewFiles.Items.Count == 0 ? Visibility.Visible : Visibility.Hidden;
                 lblFound.Content = "Maps found: " + treeViewFiles.Items.Count;
             }
             catch (Exception ex)
