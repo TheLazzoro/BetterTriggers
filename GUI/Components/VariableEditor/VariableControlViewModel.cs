@@ -23,16 +23,6 @@ namespace GUI.Components.VariableEditor
         private static ObservableCollection<War3Type> _war3Types;
         private static War3Type defaultSelection;
 
-        public Visibility IsLocal
-        {
-            get
-            {
-                if (_variable._isLocal)
-                    return Visibility.Hidden;
-                else
-                    return Visibility.Visible;
-            }
-        }
         public string Identifier
         {
             get => _variable.GetIdentifierName();

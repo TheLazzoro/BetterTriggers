@@ -35,7 +35,7 @@ namespace GUI
         /// <summary>
         /// </summary>
         /// <param name="function">null indicates we're editing a variable initial value. Yes, very hacky.</param>
-        public ParameterWindow(Parameter parameter, string returnType, Function function = null)
+        public ParameterWindow(Parameter parameter, string returnType, Function function = null, BetterTriggers.Models.EditorData.Trigger trig = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
@@ -67,7 +67,7 @@ namespace GUI
             Grid.SetRow(presetControl, 1);
             Grid.SetColumnSpan(presetControl, 2);
 
-            this.variableControl = new ParameterVariableControl(returnType, TriggerControl.TriggerInFocus);
+            this.variableControl = new ParameterVariableControl(returnType, trig);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);

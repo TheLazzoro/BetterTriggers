@@ -63,11 +63,6 @@ namespace GUI.Components.ImportTriggers
                     break;
             }
 
-            // TODO: REFACTOR
-            //treeItemHeader = new TreeItemHeaderCheckbox(explorerElement.GetName(), category);
-            //this.Header = treeItemHeader;
-            //treeItemHeader.checkbox.Click += Checkbox_Click;
-
             var cat = Category.Get(category);
             DisplayText = explorerElement.GetName();
             IsEnabled = explorerElement.IsEnabled;

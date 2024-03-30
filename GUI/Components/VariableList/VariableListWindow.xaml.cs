@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
@@ -20,12 +21,6 @@ using System.Windows.Shapes;
 
 namespace GUI.Components.VariableList
 {
-    public class ListItemVariable : ListViewItem
-    {
-        public Variable variable { get; set; }
-    }
-
-
     public partial class VariableListWindow : Window
     {
         private VariableControl control;
@@ -35,13 +30,19 @@ namespace GUI.Components.VariableList
         {
             InitializeComponent();
 
-            List<ListItemVariable> list = new List<ListItemVariable>();
+            EditorSettings settings = EditorSettings.Load();
+            this.Left = settings.variableListWindowX;
+            this.Top = settings.variableListWindowY;
+            this.Width = settings.variableListWindowWidth;
+            this.Height = settings.variableListWindowHeight;
+
+            List<ListViewItem> list = new List<ListViewItem>();
             List<Searchable> objects = new List<Searchable>();
             
             var variables = Project.CurrentProject.Variables.GetGlobals();
             variables.ForEach(v =>
             {
-                var item = new ListItemVariable { Content = v.variable.Name, variable = v.variable };
+                var item = new ListViewItem { Content = v.variable.Name, Tag = v.variable };
                 objects.Add(new Searchable()
                 {
                     Object = item,
@@ -58,11 +59,11 @@ namespace GUI.Components.VariableList
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selected = listControl.listView.SelectedItem as ListItemVariable;
+            var selected = listControl.listView.SelectedItem as ListViewItem;
             if (selected == null)
                 return;
 
-            VariableControl control = new VariableControl(selected.variable);
+            VariableControl control = new VariableControl(selected.Tag as Variable);
             if(this.control != null)
                 grid.Children.Remove(this.control);
             this.control = control;
@@ -80,9 +81,13 @@ namespace GUI.Components.VariableList
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
-            
+            EditorSettings settings = EditorSettings.Load();
+            settings.variableListWindowX = (int)this.Left;
+            settings.variableListWindowY = (int)this.Top;
+            settings.variableListWindowWidth = (int)this.Width;
+            settings.variableListWindowHeight = (int)this.Height;
         }
     }
 }

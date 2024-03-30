@@ -13,6 +13,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Xml.Linq;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -440,6 +441,10 @@ namespace BetterTriggers.Models.EditorData
             Application.Current.Dispatcher.Invoke(() =>
             {
                 OnDeleted?.Invoke();
+                foreach (var element in ExplorerElements)
+                {
+                    element.InvokeDelete();
+                }
             });
         }
 

@@ -3,6 +3,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
+using ICSharpCode.Decompiler.Metadata;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -34,12 +35,8 @@ namespace BetterTriggers.Containers
         public References References { get; private set; }
         public UnsavedFiles UnsavedFiles { get; private set; }
         public CommandManager CommandManager { get; private set; }
-        public Dictionary<string, ExplorerElement> AllElements { get; set; }
 
         public bool IsLoading;
-        public event FileSystemEventHandler OnCreated;
-        public event FileSystemEventHandler OnMoved;
-        public event FileSystemEventHandler OnDeleted;
         public string createdPath = string.Empty;
         public string deletedPath = string.Empty;
         public int insertIndex = 0;
@@ -57,7 +54,6 @@ namespace BetterTriggers.Containers
             References = new();
             UnsavedFiles = new();
             CommandManager = new();
-            AllElements = new();
         }
 
         /// <summary>
@@ -735,6 +731,29 @@ namespace BetterTriggers.Containers
             return path;
         }
 
+        public List<ExplorerElement> GetAllExplorerElements()
+        {
+            var root = GetRoot();
+            return GetAllExplorerElements(root);
+        }
+
+        private List<ExplorerElement> GetAllExplorerElements(ExplorerElement source)
+        {
+            List<ExplorerElement> list = new();
+            var items = source.ExplorerElements;
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                list.Add(item);
+                if (item.ExplorerElements.Count > 0)
+                {
+                    list.AddRange(GetAllExplorerElements(item));
+                }
+            }
+
+            return list;
+        }
+
         public static bool VerifyMapPath(string path)
         {
             if (CurrentProject != null)
@@ -820,27 +839,6 @@ namespace BetterTriggers.Containers
             fileSystemWatcher.EnableRaisingEvents = doEnable;
         }
 
-        private void InvokeCreate(object sender, FileSystemEventArgs e)
-        {
-            // bubble up event
-            if (OnCreated != null)
-                OnCreated(this, e);
-        }
-
-        private void InvokeMove(object sender, FileSystemEventArgs e)
-        {
-            // bubble up event
-            if (OnMoved != null)
-                OnMoved(this, e);
-        }
-
-        private void InvokeDelete(object sender, FileSystemEventArgs e)
-        {
-            // bubble up event
-            if (OnDeleted != null)
-                OnDeleted(this, e);
-        }
-
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
             createdPath = e.FullPath;
@@ -853,7 +851,6 @@ namespace BetterTriggers.Containers
             else
             {
                 OnCreateElement(createdPath, false);
-                InvokeCreate(sender, e);
             }
         }
 
@@ -864,7 +861,6 @@ namespace BetterTriggers.Containers
             {
                 deletedPath = e.FullPath;
                 OnDeleteElement(deletedPath);
-                InvokeDelete(sender, e);
                 wasMoved = false;
             }
             else

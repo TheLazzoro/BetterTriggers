@@ -21,7 +21,6 @@
 
             <CheckBox Focusable="False"
                       IsChecked="{Binding IsChecked}"
-                      IsEnabled="{Binding IsEnabled}"
                       Visibility="{Binding CheckBoxVisibility}"
                       VerticalAlignment="Center"
                       Grid.Column="0"

@@ -710,14 +710,29 @@
 
             <!-- TEXTBOX -->
             <Style TargetType="TextBox" >
-                <Setter Property="Background" Value="{DynamicResource BackgroundDark}"/>
+                <Setter Property="Background" Value="{DynamicResource TextBox.Background}"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextBrush2}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource BackgroundDarker}"/>
-                <Style.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Style.Resources>
+                <Setter Property="BorderBrush" Value="{DynamicResource TextBox.Border}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.Border.MouseOver}"/>
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.Border.Focused}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
 
@@ -766,165 +781,26 @@
                 <Setter Property="Background" Value="{DynamicResource BackgroundDark}"/>
             </Style>
 
-
-
-
-            <!-- LISTVIEW HEADER -->
-            <!--
-            <Style TargetType="{x:Type GridViewColumnHeader}">
-                <Setter Property ="Background" Value="#FF3D3D3D"/>
-                <Setter Property ="Foreground" Value="White"/>
-                <Setter Property="BorderBrush" Value="#555"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <Grid SnapsToDevicePixels="True">
-                                <Border BorderThickness="0,1,0,1" BorderBrush="{TemplateBinding Border.BorderBrush}" 
-         Background="{TemplateBinding Panel.Background}" Name="HeaderBorder">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition MaxHeight="7" />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <Rectangle Fill="#FFE3F7FF" Name="UpperHighlight" Visibility="Collapsed" />
-                                        <Border Padding="{TemplateBinding Control.Padding}" Grid.RowSpan="2">
-                                            <ContentPresenter RecognizesAccessKey="True" Content="{TemplateBinding ContentControl.Content}" 
-             ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" 
-             ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}" 
-             Name="HeaderContent" Margin="0,0,0,1" 
-             HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" 
-             VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" 
-             SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                                <Canvas>
-                                    <Thumb Name="PART_HeaderGripper">
-                                        <Thumb.Style>
-                                            <Style TargetType="Thumb">
-                                                <Style.Resources>
-                                                    <ResourceDictionary />
-                                                </Style.Resources>
-                                                <Setter Property="Canvas.Right" Value="-9"/>
-                                                <Setter Property="FrameworkElement.Width" Value="18"/>
-                                                <Setter Property="FrameworkElement.Height">
-                                                    <Setter.Value>
-                                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Setter Property="Control.Padding">
-                                                    <Setter.Value>
-                                                        <Thickness>0,0,0,0</Thickness>
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Setter Property="Panel.Background">
-                                                    <Setter.Value>
-                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                            <LinearGradientBrush.GradientStops>
-                                                                <GradientStop Color="#555" Offset="0" />
-                                                                <GradientStop Color="#555" Offset="1" />
-                                                            </LinearGradientBrush.GradientStops>
-                                                        </LinearGradientBrush>
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Setter Property="Control.Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="Thumb">
-                                                            <Border Padding="{TemplateBinding Control.Padding}" Background="#00FFFFFF">
-                                                                <Rectangle Fill="{TemplateBinding Panel.Background}" Width="1" HorizontalAlignment="Center" />
-                                                            </Border>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </Thumb.Style>
-                                    </Thumb>
-                                </Canvas>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
+            <!-- TREEVIEWITEM -->
+            <Style TargetType="{x:Type TreeViewItem}">
                 <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Foreground" Value="#f90"/>
-                        <Setter Property="Background" Value="Gray"/>
-                    </Trigger>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="True" >
+                        <Setter Property="Background" Value="{DynamicResource TreeItemHighlight}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsSelected_Multi}" Value="True" >
+                        <Setter Property="Background" Value="{DynamicResource TreeItemHighlight}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsExpanded}" Value="True" >
+                        <Setter Property="IsExpanded" Value="True" />
+                    </DataTrigger>
                 </Style.Triggers>
+                <Style.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="Black" />
+                </Style.Resources>
             </Style>
-            -->
-
-            
-            
-            
-            <!-- TABCONTROL -->
-            <!--<Style x:Key="TabItemGlobal" TargetType="TabItem">
-                <Setter Property="Foreground" Value="#EEE" />
-                <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#222" />
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="False">
-                                    <Setter Property="Background" Value="#555" />
-                                </Trigger>
-                </Style.Triggers>
-            </Style>-->
-
-
-
-
-            <!--  Experimental styles  -->
-            <Style x:Key="TreeItemTriggerStyle" TargetType="{x:Type TreeViewItem}">
-                <Style.Triggers>
-                    <Trigger Property="IsFocused" Value="False">
-                        <Setter Property="Background" Value="#0000FF00"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="StackTriggerStyle" TargetType="{x:Type StackPanel}">
-                <Style.Triggers>
-                    <Trigger Property="IsFocused" Value="False">
-                        <Setter Property="Background" Value="#00FF0000"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="TextBlockTriggerStyle" TargetType="{x:Type TextBlock}">
-                <Style.Triggers>
-
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsFocused" Value="False" />
-                        </MultiTrigger.Conditions>
-                        <MultiTrigger.Setters>
-                            <Setter Property="Background" Value="#880000FF" />
-                        </MultiTrigger.Setters>
-                    </MultiTrigger>
-
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsMouseOver" Value="True" />
-                        </MultiTrigger.Conditions>
-                        <MultiTrigger.Setters>
-                            <Setter Property="Background" Value="#8800FF00" />
-                        </MultiTrigger.Setters>
-                    </MultiTrigger>
-
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="RectTriggerStyle" TargetType="{x:Type Rectangle}">
-                <Style.Triggers>
-                    <Trigger Property="IsFocused" Value="False">
-                        <Setter Property="Fill" Value="#000000ff"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            
-
-
-
 
         </ResourceDictionary>
     </Application.Resources>

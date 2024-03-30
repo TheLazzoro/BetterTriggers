@@ -42,7 +42,8 @@ namespace Tests
             }
 
             var project = Project.Load(projectFile);
-            project.AllElements.ForEach(el => el.Value.AddToUnsaved());
+            var allElements = project.GetAllExplorerElements();
+            allElements.ForEach(el => el.AddToUnsaved());
             project.Save();
 
             for (int i = 0; i < filesBefore.Length; i++)

@@ -625,15 +625,20 @@ namespace GUI
         {
             Project project = Project.CurrentProject;
             var lastOpenedTabs = LastOpenedTabs.Load(project.GetRoot().GetName());
-            var triggerExplorer = TriggerExplorer.Current;
+            var explorerElements = project.GetAllExplorerElements();
             if (lastOpenedTabs.Tabs != null)
             {
-                foreach (var item in lastOpenedTabs.Tabs)
+                foreach (string lastOpenedPath in lastOpenedTabs.Tabs)
                 {
-                    ExplorerElement lastOpened;
-                    Project.CurrentProject.AllElements.TryGetValue(item, out lastOpened);
-                    if (lastOpened != null)
-                        OnSelectTab(lastOpened, tabViewModel, tabControl);
+                    for (int i = 0; i < explorerElements.Count; i++)
+                    {
+                        var element = explorerElements[i];
+                        if(element.path == lastOpenedPath)
+                        {
+                            OnSelectTab(element, tabViewModel, tabControl);
+                            break;
+                        }
+                    }
                 }
             }
         }

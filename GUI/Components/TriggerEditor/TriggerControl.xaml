@@ -129,19 +129,9 @@
                   MouseDown="treeViewTriggers_MouseDown"
                   >
                   <!-- PreviewKeyDown="treeViewTriggers_PreviewKeyDown" -->
-            <TreeView.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                      Color="Black" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                      Color="Black" />
-            </TreeView.Resources>
 
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <!-- We have to select the item which is right-clicked on -->
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
@@ -152,20 +142,10 @@
                     <EventSetter Event="TreeViewItem.Expanded" Handler="treeViewItem_IsExpanded"/>
                     <EventSetter Event="TreeViewItem.Collapsed" Handler="treeViewItem_IsCollapsed"/>
                     <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
+                    <EventSetter Event="MouseEnter" Handler="TreeViewItem_OnMouseEnter" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsSelected}" Value="True" >
-                            <Setter Property="Background" Value="#aa357EC7" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsSelected_Multi}" Value="True" >
-                            <Setter Property="Background" Value="#aa357EC7" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsExpanded}" Value="True" >
-                            <Setter Property="IsExpanded" Value="True" />
-                        </DataTrigger>
-                    </Style.Triggers>
+                    <Setter Property="IsEnabled" Value="{Binding IsEnabledTreeItem}"/>
                 </Style>
             </TreeView.ItemContainerStyle>
 

@@ -17,6 +17,7 @@ namespace BetterTriggers.Models.EditorData
         private string _category;
         private byte[] _icon = new byte[0];
         private bool _isEnabled = true;
+        private bool _isEnabledTreeItem = true;
         private bool _hasErrors = false;
         private bool _isSelected;
         private bool _isExpanded;
@@ -109,6 +110,15 @@ namespace BetterTriggers.Models.EditorData
                 _isEnabled = value;
                 OnPropertyChanged();
                 OnToggleEnable?.Invoke();
+            }
+        }
+        public bool IsEnabledTreeItem
+        {
+            get => _isEnabledTreeItem;
+            set
+            {
+                _isEnabledTreeItem = value;
+                OnPropertyChanged();
             }
         }
         public bool HasErrors

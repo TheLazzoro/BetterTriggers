@@ -28,7 +28,6 @@ namespace GUI.Components
     {
         internal static TriggerExplorer Current;
 
-        public TreeViewItem map;
         public TreeViewItem currentElement;
         public event Action<ExplorerElement> OnOpenExplorerElement;
 
@@ -83,6 +82,11 @@ namespace GUI.Components
             // walks up the element hierarchy until a parent attached to the TreeView is found.
             while (treeViewItem == null)
             {
+                if(explorerElement == null)
+                {
+                    return null;
+                }
+
                 treeViewItem = treeViewTriggerExplorer.ItemContainerGenerator.ContainerFromItem(explorerElement) as TreeViewItem;
                 if (treeViewItem == null)
                 {
@@ -569,12 +573,13 @@ namespace GUI.Components
             if (string.IsNullOrEmpty(searchBox.Text))
                 return;
 
-            treeItems = GetSubTreeItems(map);
+            Project project = Project.CurrentProject;
+            searchItems = project.GetAllExplorerElements();
             searchWord = searchBox.Text.ToLower();
             searchWorker.RunWorkerAsync();
         }
 
-        List<TreeViewItem> treeItems = new();
+        List<ExplorerElement> searchItems = new();
         string searchWord;
         private void SearchWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -586,18 +591,14 @@ namespace GUI.Components
 
         private void SearchWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i < treeItems.Count; i++)
+            for (int i = 0; i < searchItems.Count; i++)
             {
-                var item = treeItems[i];
+                var explorerElement = searchItems[i];
                 if (searchWorker.CancellationPending)
                 {
                     e.Cancel = true;
                     break;
                 }
-
-                var explorerElement = GetExplorerElementFromItem(item);
-                if (explorerElement == null)
-                    continue;
 
                 if (explorerElement.GetName().ToLower().Contains(searchWord))
                 {
@@ -609,20 +610,7 @@ namespace GUI.Components
             searchWorker.ReportProgress(100);
         }
 
-        private List<TreeViewItem> GetSubTreeItems(TreeViewItem source)
-        {
-            List<TreeViewItem> list = new();
-            var items = source.Items.SourceCollection.GetEnumerator();
-            while (items.MoveNext())
-            {
-                var item = (TreeViewItem)items.Current;
-                list.Add(item);
-                if (item.Items.Count > 0)
-                    list.AddRange(GetSubTreeItems(item)); // recurse
-            }
-
-            return list;
-        }
+        
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

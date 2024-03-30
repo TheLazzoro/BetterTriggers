@@ -41,6 +41,11 @@ namespace BetterTriggers
         public int parameterWindowWidth    = 800;
         public int parameterWindowHeight   = 450;
 
+        public int variableListWindowX     = 100;
+        public int variableListWindowY     = 100;
+        public int variableListWindowWidth = 1000;
+        public int variableListWindowHeight = 450;
+
         public int editorAppearance        = 0;
         public int triggerEditorMode       = 0;
         public double textEditorFontSize   = 12;

@@ -88,25 +88,9 @@
             KeyDown="treeViewTriggerExplorer_KeyDown"
             ItemTemplate="{DynamicResource TreeItemDataTemplate}"
             >
-            <TreeView.Resources>
-                <!--<HierarchicalDataTemplate ItemsSource="{Binding ExplorerElements}"
-                                          DataType="{x:Type betterTriggers:ExplorerElement}"
-                                          >
-                    <TextBlock Text="{Binding Name}" />
-                </HierarchicalDataTemplate>-->
-
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                      Color="Black" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                      Color="Black" />
-            </TreeView.Resources>
 
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <!-- We have to select the item which is right-clicked on -->
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>

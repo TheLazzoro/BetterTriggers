@@ -86,8 +86,6 @@ namespace GUI
                 this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootElement);
                 _viewModel.ExplorerElements.Add(rootElement);
 
-                // TODO: REFACTOR
-                //rootTreeItem.Selected += ExplorerItem_Selected;
                 for (int i = 0; i < explorerElements.Count; i++)
                 {
                     var element = explorerElements[i];
@@ -107,9 +105,6 @@ namespace GUI
                         treeItem.Parent = parent;
                         parent.ExplorerElements.Add(treeItem);
                     }
-
-                    // TODO: REFACTOR
-                    //treeItem.Selected += ExplorerItem_Selected;
                 }
 
                 rootElement.IsExpanded = true;
@@ -121,7 +116,8 @@ namespace GUI
             }
         }
 
-        private void ExplorerItem_Selected(object sender, RoutedEventArgs e)
+
+        private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             txtTriggerNote.Visibility = Visibility.Hidden;
             var selected = (ImportTriggerItem)treeView.SelectedItem;
@@ -132,9 +128,9 @@ namespace GUI
                 {
                     grid.Children.Remove(control);
                 }
-                if (explorerElement is ExplorerElement explorerTrigger)
+                if (explorerElement.ElementType == ExplorerElementEnum.Trigger)
                 {
-                    control = new TriggerControl(explorerTrigger);
+                    control = new TriggerControl(explorerElement);
                     var triggerControl = (TriggerControl)control;
                     triggerControl.checkBoxIsCustomScript.IsEnabled = false;
                     triggerControl.checkBoxIsEnabled.IsEnabled = false;
@@ -142,11 +138,12 @@ namespace GUI
                     triggerControl.checkBoxList.IsEnabled = false;
                     triggerControl.checkBoxRunOnMapInit.IsEnabled = false;
                     triggerControl.textBoxComment.IsReadOnly = true;
-                    // TODO: REFACTOR
-                    //triggerControl.categoryAction.IsEnabled = false;
-                    //triggerControl.categoryCondition.IsEnabled = false;
-                    //triggerControl.categoryEvent.IsEnabled = false;
-                    //triggerControl.categoryLocalVariable.IsEnabled = false;
+                    
+                    var trigger = explorerElement.trigger;
+                    trigger.Events.IsEnabledTreeItem = false;
+                    trigger.Conditions.IsEnabledTreeItem = false;
+                    trigger.LocalVariables.IsEnabledTreeItem = false;
+                    trigger.Actions.IsEnabledTreeItem = false;
                     triggerControl.bottomControl.IsEnabled = false;
 
                     grid.Children.Add(control);
@@ -155,9 +152,9 @@ namespace GUI
                     Grid.SetRow(control, 3);
                     txtTriggerNote.Visibility = Visibility.Visible;
                 }
-                else if (explorerElement is ExplorerElement explorerScript)
+                else if (explorerElement.ElementType == ExplorerElementEnum.Script)
                 {
-                    control = new ScriptControl(explorerScript);
+                    control = new ScriptControl(explorerElement);
                     var scriptControl = (ScriptControl)control;
                     scriptControl.textEditor.avalonEditor.IsReadOnly = true;
                     scriptControl.checkBoxIsEnabled.IsEnabled = false;
@@ -168,9 +165,9 @@ namespace GUI
                     Grid.SetRow(control, 2);
                     Grid.SetRowSpan(control, 2);
                 }
-                else if (explorerElement is ExplorerElement explorerVariable)
+                else if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
                 {
-                    control = new VariableControl(explorerVariable.variable);
+                    control = new VariableControl(explorerElement.variable);
                     control.IsEnabled = false;
 
                     grid.Children.Add(control);

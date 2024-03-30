@@ -67,6 +67,18 @@ namespace GUI.Components
             var inlines = paramTextBuilder.GenerateParamText(variable);
             textblockInitialValue.Inlines.AddRange(inlines);
 
+            // remove components for local variable
+            if(variable._isLocal)
+            {
+                grid.Children.Remove(lblDimensions);
+                grid.Children.Remove(lblSize0);
+                grid.Children.Remove(lblSize1);
+                grid.Children.Remove(checkBoxIsArray);
+                grid.Children.Remove(comboBoxArrayDimensions);
+                grid.Children.Remove(textBoxArraySize0);
+                grid.Children.Remove(textBoxArraySize1);
+            }
+
             this.Loaded += VariableControl_Loaded;
         }
 

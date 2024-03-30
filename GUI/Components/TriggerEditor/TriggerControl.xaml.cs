@@ -27,7 +27,6 @@ namespace GUI.Components
 
         public TextEditor TextEditor;
         public ExplorerElement explorerElementTrigger; // needed to get file references to variables in TriggerElements
-        public static BetterTriggers.Models.EditorData.Trigger TriggerInFocus;
 
         Point _startPoint;
         TreeViewItem dragItem;
@@ -76,16 +75,8 @@ namespace GUI.Components
             explorerElement.OnToggleEnable += ExplorerElement_OnToggleEnable;
 
             KeyDown += TriggerControl_KeyDown;
-
-            // TODO: REFACTOR
-            //TreeViewItem.OnMouseEnter += TreeViewItem_OnMouseEnter;
         }
 
-        internal void Dispose()
-        {
-            // TODO: REFACTOR
-            // TreeViewItem.OnMouseEnter -= TreeViewItem_OnMouseEnter;
-        }
 
         public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)
         {
@@ -143,30 +134,37 @@ namespace GUI.Components
         /// <summary>
         /// When mouse hovers over trigger element, determine whether top node is an action.
         /// </summary>
-        private void TreeViewItem_OnMouseEnter(TreeViewItem obj)
+        private void TreeViewItem_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            Variables.includeLocals = IsActionOrConditionalInAction(obj);
+            var treeItem = e.Source as TreeViewItem;
+            if (treeItem == null)
+                return;
+
+            var triggerElement = treeItem.DataContext as TriggerElement;
+            IncludeLocalsInParameterMenu(triggerElement);
         }
 
         private void bottomControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (treeViewTriggers.SelectedItem is TreeViewItem treeItem)
-                Variables.includeLocals = IsActionOrConditionalInAction(treeItem);
+            if (treeViewTriggers.SelectedItem is TriggerElement triggerElement)
+                IncludeLocalsInParameterMenu(triggerElement);
         }
 
-        private bool IsActionOrConditionalInAction(TreeViewItem item)
+        private void IncludeLocalsInParameterMenu(TriggerElement triggerElement)
         {
-            var triggerElement = GetTriggerElementFromItem(item);
             bool isActionOrConditionalInAction = false;
-            while (!isActionOrConditionalInAction && item != null)
+            while (triggerElement != null)
             {
-                if (triggerElement != null && triggerElement.ElementType == TriggerElementType.Action)
+                if (triggerElement == explorerElementTrigger.trigger.Actions)
+                {
                     isActionOrConditionalInAction = true;
-                else
-                    item = item.Parent as TreeViewItem;
+                    break;
+                }
+                
+                triggerElement = triggerElement.GetParent();
             }
 
-            return isActionOrConditionalInAction;
+            Variables.includeLocals = isActionOrConditionalInAction;
         }
 
         private void Refresh()

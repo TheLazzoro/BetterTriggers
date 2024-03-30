@@ -90,9 +90,6 @@ namespace GUI.Components.Tabs
             Parent.Tabs.Remove(this);
             explorerElement.OnChanged -= ExplorerElement_OnChanged;
             explorerElement.OnSaved -= ExplorerElement_OnSaved;
-            if (Content is TriggerControl triggerControl)
-                triggerControl.Dispose();
-
         }
     }
 }

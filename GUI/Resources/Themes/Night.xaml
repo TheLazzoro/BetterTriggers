@@ -116,6 +116,11 @@
     <SolidColorBrush x:Key="ButtonIconHoverBorder" Color="{DynamicResource buttonIconHoverBorderColor}" />
     <SolidColorBrush x:Key="ButtonIconHoverBorderPressed" Color="{DynamicResource buttonIconHoverBorderPressedColor}" />
 
+    <SolidColorBrush x:Key="TextBox.Background" Color="#28282f" />
+    <SolidColorBrush x:Key="TextBox.Border" Color="#202028" />
+    <SolidColorBrush x:Key="TextBox.Border.MouseOver" Color="#202028" />
+    <SolidColorBrush x:Key="TextBox.Border.Focused" Color="#202028" />
+
     <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{DynamicResource comboBoxBorderColor}" />
     <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{DynamicResource comboBoxBackgroundColor}" />
     <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="{DynamicResource comboBoxDisabledForegroundColor}" />
