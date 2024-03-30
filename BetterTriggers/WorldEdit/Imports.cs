@@ -12,12 +12,12 @@ namespace BetterTriggers.WorldEdit
 {
     public class Imports
     {
-        public static List<Value> GetImportsByReturnType(string returnType)
+        public static List<Value_Saveable> GetImportsByReturnType(string returnType)
         {
             var project = Project.CurrentProject;
             string fullMapPath = project.GetFullMapPath();
             bool isMapMPQ = File.Exists(fullMapPath);
-            List<Value> imports = new List<Value>();
+            List<Value_Saveable> imports = new List<Value_Saveable>();
             List<string> files = new List<string>();
             string mapDir = fullMapPath + "/";
 
@@ -53,7 +53,7 @@ namespace BetterTriggers.WorldEdit
                     if (!isMapMPQ)
                         fileName = file.Substring(mapDir.Length, file.Length - mapDir.Length);
 
-                    imports.Add(new Value()
+                    imports.Add(new Value_Saveable()
                     {
                         value = fileName
                     });

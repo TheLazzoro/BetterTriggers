@@ -12,7 +12,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class TriggerTest
+    public class TriggerTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -20,7 +20,7 @@ namespace Tests
         static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElementTrigger element1, element2, element3;
+        static ExplorerElement element1, element2, element3;
 
 
         [ClassInitialize]
@@ -92,7 +92,7 @@ namespace Tests
             int actualTriggerCount = project.Triggers.Count();
 
             var expectedParameters = Triggers.GetParametersFromTrigger(element1);
-            var actualParameters = Triggers.GetParametersFromTrigger(element as ExplorerElementTrigger);
+            var actualParameters = Triggers.GetParametersFromTrigger(element as ExplorerElement);
             int expectedParamCount = expectedParameters.Count;
             int actualParamCount = actualParameters.Count;
 
@@ -104,17 +104,16 @@ namespace Tests
         [TestMethod]
         public void OnPrepareExplorerTrigger()
         {
-            LocalVariable localVariable = new LocalVariable();
-            project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 0);
-            project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 1);
-            project.Variables.CreateLocalVariable(element1.trigger, localVariable, element1.trigger.LocalVariables, 2);
+            project.Variables.CreateLocalVariable(element1, 0);
+            project.Variables.CreateLocalVariable(element1, 1);
+            project.Variables.CreateLocalVariable(element1, 2);
             project.CopyExplorerElement(element1);
-            var pasted = (ExplorerElementTrigger)project.PasteExplorerElement(element1);
+            var pasted = project.PasteExplorerElement(element1);
 
-            for (int i = 0; i < pasted.trigger.LocalVariables.Count; i++)
+            for (int i = 0; i < pasted.trigger.LocalVariables.Count(); i++)
             {
-                var copiedLv = (LocalVariable) element1.trigger.LocalVariables[i];
-                var pastedLv = (LocalVariable)pasted.trigger.LocalVariables[i];
+                var copiedLv = (LocalVariable) element1.trigger.LocalVariables.Elements[i];
+                var pastedLv = (LocalVariable)pasted.trigger.LocalVariables.Elements[i];
                 int notEqualId = copiedLv.variable.Id;
                 int actualId = pastedLv.variable.Id;
 

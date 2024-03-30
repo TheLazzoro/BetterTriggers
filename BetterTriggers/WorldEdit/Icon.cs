@@ -28,7 +28,7 @@ namespace BetterTriggers.WorldEdit
         }
 
         /// <exception cref="IOException">When MPQ archive is in use by another process.</exception>
-        public static Bitmap Get(string path)
+        public static byte[] Get(string path)
         {
             string fullMapPath = Project.CurrentProject.GetFullMapPath();
             string filePath = Path.Combine(fullMapPath, path);
@@ -58,7 +58,7 @@ namespace BetterTriggers.WorldEdit
             if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(path, ".dds")))
                 return Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(path, ".dds")));
 
-            return new Bitmap(4, 4);
+            return null;
         }
 
         public static List<Icon> GetAll()

@@ -7,14 +7,13 @@ using War3Net.Build.Info;
 
 namespace GUI.Components
 {
-    public partial class ScriptControl : UserControl, IEditor
+    public partial class ScriptControl : UserControl
     {
         internal TextEditor textEditor;
-        private ExplorerElementScript explorerElementScript;
-        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
+        private ExplorerElement explorerElementScript;
         private bool suppressStateChange = false;
 
-        public ScriptControl(ExplorerElementScript explorerElementScript)
+        public ScriptControl(ExplorerElement explorerElementScript)
         {
             InitializeComponent();
 
@@ -23,7 +22,7 @@ namespace GUI.Components
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
 
-            checkBoxIsEnabled.IsChecked = explorerElementScript.GetEnabled();
+            checkBoxIsEnabled.IsChecked = explorerElementScript.IsEnabled;
             this.explorerElementScript = explorerElementScript;
 
             textEditor.avalonEditor.TextChanged += delegate
@@ -37,6 +36,17 @@ namespace GUI.Components
 
                 OnStateChange();
             };
+
+            explorerElementScript.OnReload += ExplorerElementScript_OnReload;
+        }
+
+        private void ExplorerElementScript_OnReload()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.suppressStateChange = true;
+                textEditor.avalonEditor.Document.Text = explorerElementScript.script;
+            });
         }
 
         public void OnRemoteChange()
@@ -48,7 +58,7 @@ namespace GUI.Components
         public void SetElementEnabled(bool isEnabled)
         {
             checkBoxIsEnabled.IsChecked = isEnabled;
-            explorerElementScript.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
+            explorerElementScript.IsEnabled = (bool)checkBoxIsEnabled.IsChecked;
             OnStateChange();
         }
 
@@ -56,28 +66,14 @@ namespace GUI.Components
         {
             throw new NotImplementedException();
         }
-
-        public void Attach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
-        public void Detach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
         public void OnStateChange()
         {
-            foreach (var observer in observers)
-            {
-                observer.OnStateChange();
-            }
+            explorerElementScript.AddToUnsaved();
         }
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
-            explorerElementScript.SetEnabled((bool)checkBoxIsEnabled.IsChecked);
+            explorerElementScript.IsEnabled = (bool)checkBoxIsEnabled.IsChecked;
             OnStateChange();
         }
 

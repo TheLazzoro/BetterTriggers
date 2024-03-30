@@ -3,8 +3,8 @@
 
     <Color x:Key="textColor">#000</Color>
     <Color x:Key="textColor2">#000</Color>
-    <Color x:Key="textColorDim">#111</Color>
-    <Color x:Key="textErrorColor">#FFFF5454</Color>
+    <Color x:Key="textColorDim">#444</Color>
+    <Color x:Key="textErrorColor">#FFFF1111</Color>
     <Color x:Key="textBlockColor">#333</Color>
     <Color x:Key="separatorColor">#ccc</Color>
     <Color x:Key="backgroundDarkColor">#fff</Color>
@@ -22,10 +22,10 @@
     <Color x:Key="buttonSignificantBackgroundColor">#999</Color>
     <Color x:Key="buttonSignificantHighlightColor">#aaa</Color>
     <Color x:Key="buttonSignificantClickedColor">#ccc</Color>
-    <Color x:Key="treeItemHighlightColor">#aa357EC7</Color>
+    <Color x:Key="treeItemHighlightColor">#aa259Ef7</Color>
     <Color x:Key="treeItemHighlightInactiveColor">#33000000</Color>
     <Color x:Key="treeItemDisabledColor">#777</Color>
-    <Color x:Key="codeCommentColor">#6A9955</Color>
+    <Color x:Key="codeCommentColor">Green</Color>
 
     <Color x:Key="buttonIconHoverColor">#ccc</Color>
     <Color x:Key="buttonIconHoverPressedColor">#bbb</Color>
@@ -115,6 +115,11 @@
     <SolidColorBrush x:Key="ButtonIconHoverPressed" Color="{DynamicResource buttonIconHoverPressedColor}" />
     <SolidColorBrush x:Key="ButtonIconHoverBorder" Color="{DynamicResource buttonIconHoverBorderColor}" />
     <SolidColorBrush x:Key="ButtonIconHoverBorderPressed" Color="{DynamicResource buttonIconHoverBorderPressedColor}" />
+
+    <SolidColorBrush x:Key="TextBox.Background" Color="#fff" />
+    <SolidColorBrush x:Key="TextBox.Border" Color="#eee" />
+    <SolidColorBrush x:Key="TextBox.Border.MouseOver" Color="#FF7EB4EA" />
+    <SolidColorBrush x:Key="TextBox.Border.Focused" Color="#FF7EB4EA" />
 
     <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{DynamicResource comboBoxBorderColor}" />
     <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{DynamicResource comboBoxBackgroundColor}" />

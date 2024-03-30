@@ -1,0 +1,14 @@
+{
+  "Id": 100663406,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "Point6",
+  "Type": "location",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

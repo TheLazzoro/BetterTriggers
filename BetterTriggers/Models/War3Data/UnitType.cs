@@ -16,6 +16,6 @@ namespace BetterTriggers.Models.War3Data
         public string Model;
         public bool isSpecial;
         public bool isCampaign;
-        public Bitmap Image;
+        public byte[] Image;
     }
 }

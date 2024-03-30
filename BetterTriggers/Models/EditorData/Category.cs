@@ -9,30 +9,36 @@ namespace BetterTriggers.Models.EditorData
     {
         private static Dictionary<string, Category> categories = new Dictionary<string, Category>();
 
-        public Bitmap Icon { get; }
+        /// <summary>
+        /// Image icon file stored in bytes.
+        /// </summary>
+        public byte[] Icon { get; }
         public string Name { get; }
         public bool ShouldDisplay { get; }
 
-        private Category(Bitmap icon, string name, bool shouldDisplay)
+        private Category(byte[] icon, string name, bool shouldDisplay)
         {
             this.Name = name;
             this.Icon = icon;
             this.ShouldDisplay = shouldDisplay;
         }
 
-        public static void Create(string key, Bitmap icon, string name, bool shouldDisplay)
+        public static void Create(string key, byte[] icon, string name, bool shouldDisplayInCategoryList)
         {
-            Category category = new Category(icon, name, shouldDisplay);
+            Category category = new Category(icon, name, shouldDisplayInCategoryList);
             categories.Add(key, category);
         }
 
         public static Category Get(string key)
         {
             if (key == null)
-                return new Category(null, "", false); // hack
+                return new Category(new byte[0], "", false); // hack
 
             Category category;
             categories.TryGetValue(key, out category);
+            if(category == null)
+                return new Category(new byte[0], "", false); // hack
+
             return category;
         }
 

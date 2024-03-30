@@ -1,0 +1,15 @@
+{
+  "Id": 100663624,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TasItemShop_Lumber",
+  "Type": "real",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "1.00"
+  }
+}

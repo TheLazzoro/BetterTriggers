@@ -1,0 +1,14 @@
+{
+  "Id": 100663635,
+  "ArraySize": [
+    10,
+    1
+  ],
+  "Name": "UnitXP",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

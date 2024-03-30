@@ -1,0 +1,14 @@
+{
+  "Id": 100663613,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TasItemShopHaggle",
+  "Type": "trigger",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

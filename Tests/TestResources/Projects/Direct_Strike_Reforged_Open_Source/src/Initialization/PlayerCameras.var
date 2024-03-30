@@ -1,0 +1,14 @@
+{
+  "Id": 100663383,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "PlayerCameras",
+  "Type": "camerasetup",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

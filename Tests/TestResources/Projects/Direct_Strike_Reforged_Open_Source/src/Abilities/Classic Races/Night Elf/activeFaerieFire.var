@@ -1,0 +1,15 @@
+{
+  "Id": 100663500,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activeFaerieFire",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

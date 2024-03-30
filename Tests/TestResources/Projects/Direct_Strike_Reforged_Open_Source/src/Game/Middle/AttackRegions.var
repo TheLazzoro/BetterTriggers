@@ -1,0 +1,14 @@
+{
+  "Id": 100663310,
+  "ArraySize": [
+    2,
+    1
+  ],
+  "Name": "AttackRegions",
+  "Type": "rect",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

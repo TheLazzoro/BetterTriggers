@@ -1,6 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.TriggerEditor.ParameterControls;
@@ -24,7 +24,7 @@ namespace GUI
         public Parameter selectedParameter;
 
         ParameterFunctionControl functionControl;
-        ParameterConstantControl constantControl;
+        ParameterPresetControl presetControl;
         ParameterVariableControl variableControl;
         ParameterValueControl valueControl;
         ParameterTriggerControl triggerRefControl;
@@ -35,7 +35,7 @@ namespace GUI
         /// <summary>
         /// </summary>
         /// <param name="function">null indicates we're editing a variable initial value. Yes, very hacky.</param>
-        public ParameterWindow(Parameter parameter, string returnType, Function function = null)
+        public ParameterWindow(Parameter parameter, string returnType, Function function = null, BetterTriggers.Models.EditorData.Trigger trig = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
@@ -62,12 +62,12 @@ namespace GUI
             Grid.SetRow(functionControl, 1);
             Grid.SetColumnSpan(functionControl, 2);
 
-            this.constantControl = new ParameterConstantControl(returnType);
-            grid.Children.Add(constantControl);
-            Grid.SetRow(constantControl, 1);
-            Grid.SetColumnSpan(constantControl, 2);
+            this.presetControl = new ParameterPresetControl(returnType);
+            grid.Children.Add(presetControl);
+            Grid.SetRow(presetControl, 1);
+            Grid.SetColumnSpan(presetControl, 2);
 
-            this.variableControl = new ParameterVariableControl(returnType, TriggerControl.TriggerInFocus);
+            this.variableControl = new ParameterVariableControl(returnType, trig);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);
@@ -88,30 +88,30 @@ namespace GUI
             Grid.SetColumnSpan(importControl, 2);
 
             this.functionControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(functionControl); };
-            this.constantControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(constantControl); };
+            this.presetControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(presetControl); };
             this.variableControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(variableControl); };
             this.triggerRefControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(triggerRefControl); };
             this.importControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(importControl); };
             this.valueControl.SelectionChanged += delegate { SetSelectedItem(valueControl); };
 
             functionControl.listControl.listView.MouseDoubleClick += btnOK_Click;
-            constantControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            presetControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             variableControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             triggerRefControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             importControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             valueControl.OK += delegate { OK(); };
 
 
-            IParameterControl parameterControl = constantControl; // default
+            IParameterControl parameterControl = presetControl; // default
             if (parameter is Function)
             {
                 radioBtnFunction.IsChecked = true;
                 parameterControl = functionControl;
             }
-            else if (parameter is Constant)
+            else if (parameter is Preset)
             {
                 radioBtnPreset.IsChecked = true;
-                parameterControl = constantControl;
+                parameterControl = presetControl;
             }
             else if (parameter is VariableRef)
             {
@@ -138,9 +138,9 @@ namespace GUI
 
             if(function == null)
             {
-                if(parameter is not Constant && parameter is not Value)
+                if(parameter is not Preset && parameter is not Value)
                 {
-                    ShowHideTabs(constantControl);
+                    ShowHideTabs(presetControl);
                     radioBtnPreset.IsChecked = true;
                 }
 
@@ -151,7 +151,7 @@ namespace GUI
             else if (returnType == "AnyGlobal")
             {
                 functionControl.Visibility = Visibility.Hidden;
-                constantControl.Visibility = Visibility.Hidden;
+                presetControl.Visibility = Visibility.Hidden;
                 variableControl.Visibility = Visibility.Visible;
                 valueControl.Visibility = Visibility.Hidden;
                 triggerRefControl.Visibility = Visibility.Hidden;
@@ -175,7 +175,7 @@ namespace GUI
                 radioButtonList.Items.Remove(radioBtnImported);
             if (functionControl.GetElementCount() == 0)
                 radioButtonList.Items.Remove(radioBtnFunction);
-            if (constantControl.GetElementCount() == 0)
+            if (presetControl.GetElementCount() == 0)
                 radioButtonList.Items.Remove(radioBtnPreset);
             if (variableControl.GetElementCount() == 0)
                 radioButtonList.Items.Remove(radioBtnVariable);
@@ -203,7 +203,7 @@ namespace GUI
         {
             this.selectedControl = control;
             functionControl.Visibility = Visibility.Hidden;
-            constantControl.Visibility = Visibility.Hidden;
+            presetControl.Visibility = Visibility.Hidden;
             variableControl.Visibility = Visibility.Hidden;
             valueControl.Visibility = Visibility.Hidden;
             triggerRefControl.Visibility = Visibility.Hidden;
@@ -235,7 +235,7 @@ namespace GUI
 
         private void radioBtnPreset_Checked(object sender, RoutedEventArgs e)
         {
-            ShowHideTabs(constantControl);
+            ShowHideTabs(presetControl);
         }
 
         private void radioBtnVariable_Checked(object sender, RoutedEventArgs e)

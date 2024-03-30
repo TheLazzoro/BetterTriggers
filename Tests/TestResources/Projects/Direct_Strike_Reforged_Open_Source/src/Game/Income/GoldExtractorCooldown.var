@@ -1,0 +1,14 @@
+{
+  "Id": 100663357,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "GoldExtractorCooldown",
+  "Type": "timer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

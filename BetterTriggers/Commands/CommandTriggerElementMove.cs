@@ -1,25 +1,25 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementMove : ICommand
     {
         string commandName = "Move Trigger Element";
-        Trigger trig;
+        ExplorerElement explorerElement;
         TriggerElement triggerElement;
-        List<TriggerElement> OldParent;
-        List<TriggerElement> NewParent;
+        TriggerElement OldParent;
+        TriggerElement NewParent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandTriggerElementMove(Trigger trig, TriggerElement triggerElement, List<TriggerElement> NewParent, int NewInsertIndex)
+        public CommandTriggerElementMove(ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElementCollection NewParent, int NewInsertIndex)
         {
-            this.trig = trig;
+            this.explorerElement = explorerElement;
             this.triggerElement = triggerElement;
             this.OldParent = triggerElement.GetParent();
             this.OldInsertIndex = this.OldParent.IndexOf(triggerElement);
@@ -31,23 +31,24 @@ namespace BetterTriggers.Commands
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
-            triggerElement.ChangedPosition();
-            Project.CurrentProject.Triggers.RemoveInvalidReferences(trig, new List<TriggerElement>() { triggerElement });
+            TriggerValidator validator = new TriggerValidator(explorerElement);
+            validator.RemoveInvalidReferences(NewParent);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            explorerElement.InvokeChange();
         }
 
         public void Redo()
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
-            triggerElement.ChangedPosition();
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(OldParent, OldInsertIndex);
-            triggerElement.ChangedPosition();
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

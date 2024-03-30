@@ -7,7 +7,8 @@
     <ApplicationIcon>Resources\Icons\code_blue.ico</ApplicationIcon>
     <AssemblyName>Better Triggers</AssemblyName>
     <Version>1.2.6.0</Version>
-	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+    <Nullable>enable</Nullable>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -61,12 +62,15 @@
     <None Remove="Resources\Icons\editor-testmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-exportmap.dds" />
     <None Remove="Resources\Icons\editor-toolbar-mapvalidation.png" />
+    <None Remove="Resources\Icons\editor-triggerfunctiondisabled.png" />
     <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\Icons\green-check.png" />
     <None Remove="Resources\Icons\information.png" />
     <None Remove="Resources\Icons\Keyword_16x.png" />
     <None Remove="Resources\Icons\Method_16x.png" />
     <None Remove="Resources\Icons\redo.png" />
+    <None Remove="Resources\Icons\trigger-error.png" />
+    <None Remove="Resources\Icons\trigger-invalid.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_copy.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_cut.png" />
     <None Remove="Resources\Icons\ui-editoricon-general_open.png" />
@@ -153,6 +157,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\editor-triggerevent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\editor-triggerfunctiondisabled.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\editor-triggerscript.png">
@@ -257,6 +264,12 @@
     <Content Include="Resources\Icons\redo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Icons\trigger-error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\trigger-invalid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\ui-editoricon-general_copy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -352,10 +365,10 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlScript.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\TriggerElementMenuWindow.xaml.cs">
+    <Compile Update="Components\TriggerEditor\TriggerElementMenu\TriggerElementMenuWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterConstantControl.xaml.cs">
+    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterPresetControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ValueControlReal.xaml.cs">
@@ -429,11 +442,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TriggerEditor\TriggerElementMenuWindow.xaml">
+    <Page Update="Components\TriggerEditor\TriggerElementMenu\TriggerElementMenuWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\TriggerEditor\ParameterControls\ParameterConstantControl.xaml">
+    <Page Update="Components\TriggerEditor\ParameterControls\ParameterPresetControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

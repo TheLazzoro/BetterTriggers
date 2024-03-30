@@ -1,5 +1,5 @@
 ﻿using BetterTriggers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using GUI.Components.Settings;
 using System.Windows;
 using System.Windows.Documents;
@@ -61,8 +61,6 @@ namespace GUI.Components.TriggerEditor
         public void Disable()
         {
             this.IsEnabled = false;
-            this.Inlines.Clear();
-            this.Inlines.Add("Value");
             this.Foreground = new SolidColorBrush(Color.FromRgb(150, 150, 150));
         }
 
@@ -80,7 +78,7 @@ namespace GUI.Components.TriggerEditor
         {
             if (this.IsFocused)
                 this.Foreground = new SolidColorBrush(Color.FromRgb(0, 200, 0));
-            else if (parameter is Constant ||
+            else if (parameter is Preset ||
                      parameter is Function ||
                      parameter is VariableRef ||
                      parameter is TriggerRef ||

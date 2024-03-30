@@ -10,13 +10,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using War3Net.Build;
 using War3Net.Build.Script;
 
 namespace Tests
 {
     [TestClass]
-    public class ImportTest
+    public class ImportTest : TestBase
     {
         string projectDir;
         string projectFilePath;
@@ -39,8 +40,6 @@ namespace Tests
         [TestMethod]
         public void ImportTriggersTest()
         {
-            Casc.GameVersion = new Version(1, 36, 1); // hack.
-            BetterTriggers.Init.Initialize(true);
             var project = Project.Load(projectFilePath);
             var map = Map.Open(mapPath);
 

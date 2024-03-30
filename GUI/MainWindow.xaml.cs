@@ -1,7 +1,9 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.About;
@@ -36,7 +38,6 @@ namespace GUI
     {
         static MainWindow instance;
         TriggerExplorer triggerExplorer;
-        TreeItemExplorerElement selectedExplorerItem;
         public TabViewModel tabViewModel;
 
         public MainWindow()
@@ -133,14 +134,18 @@ namespace GUI
                 }
             }
 
-            Task.Run(CheckVersionOnStart);
+            ProgramSettings programSettings = ProgramSettings.Load();
+            if (programSettings.IgnoreNewVersion == false)
+            {
+                Task.Run(CheckVersionOnStart);
+            }
         }
 
         private async Task CheckVersionOnStart()
         {
             var versionCheck = new VersionCheck();
             var version = await versionCheck.GetNewestVersionAsync();
-            if(version.VersionCheckEnum == VersionCheckEnum.NewerExists)
+            if (version.VersionCheckEnum == VersionCheckEnum.NewerExists)
             {
                 Application.Current.Dispatcher.Invoke(delegate
                 {
@@ -310,25 +315,70 @@ namespace GUI
             CloseProject(true);
         }
 
+        private void OnSelectTab(ExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
+        {
+            if (selectedItem.ElementType == ExplorerElementEnum.Trigger)
+            {
+                Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
+                EnableECAButtons(true);
+            }
+            else
+            {
+                EnableECAButtons(false);
+            }
+
+            if (!tabViewModel.Contains(selectedItem))
+            {
+                UserControl editor = null;
+                switch (selectedItem.ElementType)
+                {
+                    case ExplorerElementEnum.Folder:
+                        return;
+                    case ExplorerElementEnum.GlobalVariable:
+                        var variableControl = new VariableControl(selectedItem.variable);
+                        editor = variableControl;
+                        break;
+                    case ExplorerElementEnum.Root:
+                        var rootControl = new RootControl();
+                        editor = rootControl;
+                        break;
+                    case ExplorerElementEnum.Script:
+                        var scriptControl = new ScriptControl(selectedItem);
+                        editor = scriptControl;
+                        break;
+                    case ExplorerElementEnum.Trigger:
+                        var triggerControl = new TriggerControl(selectedItem);
+                        editor = triggerControl;
+                        break;
+                    default:
+                        break;
+                }
+
+                selectedItem.editor = editor;
+
+                TabItemBT tabItem = new TabItemBT(selectedItem, editor, tabViewModel);
+                tabViewModel.Tabs.Add(tabItem);
+            }
+
+            triggerExplorer.SetSelectedElement(selectedItem);
+            tabControl.SelectedIndex = tabViewModel.IndexOf(selectedItem);
+        }
+
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeItemExplorerElement selected = e.NewValue as TreeItemExplorerElement;
+            var selected = e.NewValue as ExplorerElement;
             if (selected == null)
                 return;
 
-            Project.CurrentProject.currentSelectedElement = selected.Ielement.GetPath();
+            Project.CurrentProject.currentSelectedElement = selected.GetPath();
         }
 
-        private void TriggerExplorer_OnOpenExplorerElement(TreeItemExplorerElement opened)
+        private void TriggerExplorer_OnOpenExplorerElement(ExplorerElement opened)
         {
-            selectedExplorerItem = opened;
-            if (selectedExplorerItem == null)
+            if (opened == null)
                 return;
 
-            triggerExplorer.currentElement = selectedExplorerItem;
-
-            TriggerExplorer.Current.OnSelectTab(selectedExplorerItem, tabViewModel, tabControl);
-            EnableTriggerElementButtons();
+            OnSelectTab(opened, tabViewModel, tabControl);
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -340,21 +390,7 @@ namespace GUI
             if (tabItem == null) // it crashes when we don't do this?
                 return;
 
-            TriggerExplorer.Current.OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
-            selectedExplorerItem = tabItem.explorerElement; // TODO: lazy
-            EnableTriggerElementButtons();
-        }
-
-        private void EnableTriggerElementButtons()
-        {
-            if (selectedExplorerItem.editor as TriggerControl != null)
-            {
-                TriggerControl control = (TriggerControl)selectedExplorerItem.editor;
-                TriggerControl.TriggerInFocus = control.explorerElementTrigger.trigger;
-                EnableECAButtons(true);
-            }
-            else
-                EnableECAButtons(false);
+            OnSelectTab(tabItem.explorerElement, tabViewModel, tabControl);
         }
 
         private void ButtonTabItem_Click(object sender, RoutedEventArgs e)
@@ -415,19 +451,22 @@ namespace GUI
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void btnCreateCondition_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void btnCreateAction_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateAction();
         }
 
@@ -561,7 +600,6 @@ namespace GUI
                 parent.Children.Remove(triggerExplorer);
                 triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged -= TreeViewTriggerExplorer_SelectedItemChanged;
                 triggerExplorer.OnOpenExplorerElement -= TriggerExplorer_OnOpenExplorerElement;
-                triggerExplorer.Dispose();
             }
             triggerExplorer = new TriggerExplorer();
             TriggerExplorer.Current = triggerExplorer;
@@ -576,11 +614,8 @@ namespace GUI
 
             triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TreeViewTriggerExplorer_SelectedItemChanged;
             triggerExplorer.OnOpenExplorerElement += TriggerExplorer_OnOpenExplorerElement;
-            triggerExplorer.CreateRootItem();
 
             EnableToolbar(true);
-
-            triggerExplorer.Populate();
 
             VerifyTriggerData();
             OpenLastOpenedTabs();
@@ -590,14 +625,20 @@ namespace GUI
         {
             Project project = Project.CurrentProject;
             var lastOpenedTabs = LastOpenedTabs.Load(project.GetRoot().GetName());
-            var triggerExplorer = TriggerExplorer.Current;
+            var explorerElements = project.GetAllExplorerElements();
             if (lastOpenedTabs.Tabs != null)
             {
-                foreach (var item in lastOpenedTabs.Tabs)
+                foreach (string lastOpenedPath in lastOpenedTabs.Tabs)
                 {
-                    var element = triggerExplorer.FindTreeNodeElement(triggerExplorer.map, item);
-                    if (element != null)
-                        triggerExplorer.OnSelectTab(element, tabViewModel, tabControl);
+                    for (int i = 0; i < explorerElements.Count; i++)
+                    {
+                        var element = explorerElements[i];
+                        if(element.path == lastOpenedPath)
+                        {
+                            OnSelectTab(element, tabViewModel, tabControl);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -766,7 +807,6 @@ namespace GUI
             SaveLastOpenedTabs();
             tabViewModel.Tabs.Clear();
             mainGrid.Children.Remove(triggerExplorer);
-            triggerExplorer.Dispose();
             triggerExplorer = null;
             EnableToolbar(false);
             EnableECAButtons(false);
@@ -784,7 +824,7 @@ namespace GUI
             var enumerator = tabViewModel.Tabs.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                tabs[tabIndex] = enumerator.Current.explorerElement.Ielement.GetPath();
+                tabs[tabIndex] = enumerator.Current.explorerElement.GetPath();
                 tabIndex++;
             }
             LastOpenedTabs.Save(Project.CurrentProject.GetRoot().GetName(), tabs);
@@ -852,40 +892,52 @@ namespace GUI
 
         private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (selectedExplorerItem != null)
+            if(triggerExplorer == null)
             {
-                var triggerControl = selectedExplorerItem.editor as TriggerControl;
+                e.CanExecute = false;
+                return;
+            }
+
+            var selected = tabControl.SelectedItem as TabItemBT;
+            if (selected != null)
+            {
+                var triggerControl = selected.explorerElement.editor as TriggerControl;
                 e.CanExecute = triggerControl != null;
             }
         }
 
         private void CommandBinding_Executed_NewEvent(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateEvent();
         }
 
         private void CommandBinding_Executed_NewCondition(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateCondition();
         }
 
         private void CommandBinding_Executed_NewLocalVariable(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
         }
 
         private void CommandBinding_Executed_NewAction(object sender, ExecutedRoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateAction();
         }
 
         private void btnCreateLocalVariable_Click(object sender, RoutedEventArgs e)
         {
-            var triggerControl = selectedExplorerItem.editor as TriggerControl;
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
         }
 
@@ -1015,6 +1067,26 @@ namespace GUI
                 var header = tabItem_rightClicked.Header as TabItemBT;
                 int index = tabControl.Items.IndexOf(header);
                 tabViewModel.Tabs.RemoveAt(index);
+            }
+        }
+
+        private void tabitem_Menu_NavigateToElement_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabItem_rightClicked != null)
+            {
+                var header = tabItem_rightClicked.Header as TabItemBT;
+                var explorerElement = header.explorerElement;
+                triggerExplorer.NavigateToExplorerElement(explorerElement);
+            }
+        }
+
+        private void tabitem_Menu_OpenInExplorer_Click(object sender, RoutedEventArgs e)
+        {
+            if (tabItem_rightClicked != null)
+            {
+                var header = tabItem_rightClicked.Header as TabItemBT;
+                var explorerElement = header.explorerElement;
+                FileSystemUtil.OpenInExplorer(explorerElement.GetPath());
             }
         }
 

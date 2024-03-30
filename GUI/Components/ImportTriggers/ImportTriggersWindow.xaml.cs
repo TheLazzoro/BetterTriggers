@@ -19,21 +19,24 @@ namespace GUI
 {
     public partial class ImportTriggersWindow : Window
     {
-        private ImportTriggerItem rootTreeItem;
+        private ImportTriggerItem rootElement;
         private string mapPath;
         private bool hasError;
         private string errorMsg;
         private BackgroundWorker worker;
         private List<string> itemsImported;
         Dictionary<string, ImportTriggerItem> treeItemExplorerElements;
-        private List<IExplorerElement> elementsToImport;
+        private List<ExplorerElement> elementsToImport;
 
         private UserControl control;
+        private ImportTriggersViewModel _viewModel;
 
         public ImportTriggersWindow()
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+            _viewModel = new();
+            DataContext = _viewModel;
             EditorSettings settings = EditorSettings.Load();
             this.Width = settings.triggerWindowWidth;
             this.Height = settings.triggerWindowHeight;
@@ -65,8 +68,7 @@ namespace GUI
         {
             try
             {
-
-                treeView.Items.Clear();
+                _viewModel.ExplorerElements.Clear();
                 var map = Map.Open(mapPath);
                 var triggerItems = map.Triggers.TriggerItems;
                 var triggerConverter = new TriggerConverter(mapPath);
@@ -76,43 +78,36 @@ namespace GUI
                 this.treeItemExplorerElements = new Dictionary<string, ImportTriggerItem>();
 
                 // First create UI items and filter those we don't need.
-                var explorerRoot = new ExplorerElementFolder
+                var explorerRoot = new ExplorerElement
                 {
                     path = mapPath
                 };
-                rootTreeItem = new ImportTriggerItem(explorerRoot);
-                this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootTreeItem);
-                rootTreeItem.Selected += ExplorerItem_Selected;
+                rootElement = new ImportTriggerItem(explorerRoot);
+                this.treeItemExplorerElements.TryAdd(explorerRoot.GetPath(), rootElement);
+                _viewModel.ExplorerElements.Add(rootElement);
+
                 for (int i = 0; i < explorerElements.Count; i++)
                 {
                     var element = explorerElements[i];
                     var treeItem = new ImportTriggerItem(element);
-
                     this.treeItemExplorerElements.TryAdd(element.GetPath(), treeItem);
-                    treeItem.Selected += ExplorerItem_Selected;
-                }
 
-                // Then we attach them to their corresponding parent
-                foreach (var item in this.treeItemExplorerElements)
-                {
-                    var treeItem = item.Value;
-                    if (treeItem == rootTreeItem)
+                    string parentPath = System.IO.Path.GetDirectoryName(element.GetPath());
+                    ImportTriggerItem parent;
+                    this.treeItemExplorerElements.TryGetValue(parentPath, out parent);
+                    if (parent == null)
                     {
-                        treeView.Items.Add(treeItem);
+                        treeItem.Parent = rootElement;
+                        rootElement.ExplorerElements.Add(treeItem);
                     }
                     else
                     {
-                        ImportTriggerItem parent;
-                        string parentPath = System.IO.Path.GetDirectoryName(treeItem.explorerElement.GetPath());
-                        this.treeItemExplorerElements.TryGetValue(parentPath, out parent);
-                        if (parent == null)
-                            rootTreeItem.Items.Add(treeItem);
-                        else
-                            parent.Items.Add(treeItem);
+                        treeItem.Parent = parent;
+                        parent.ExplorerElements.Add(treeItem);
                     }
                 }
 
-                rootTreeItem.ExpandSubtree();
+                rootElement.IsExpanded = true;
             }
             catch (Exception ex)
             {
@@ -121,7 +116,8 @@ namespace GUI
             }
         }
 
-        private void ExplorerItem_Selected(object sender, RoutedEventArgs e)
+
+        private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             txtTriggerNote.Visibility = Visibility.Hidden;
             var selected = (ImportTriggerItem)treeView.SelectedItem;
@@ -132,9 +128,9 @@ namespace GUI
                 {
                     grid.Children.Remove(control);
                 }
-                if (explorerElement is ExplorerElementTrigger explorerTrigger)
+                if (explorerElement.ElementType == ExplorerElementEnum.Trigger)
                 {
-                    control = new TriggerControl(explorerTrigger);
+                    control = new TriggerControl(explorerElement);
                     var triggerControl = (TriggerControl)control;
                     triggerControl.checkBoxIsCustomScript.IsEnabled = false;
                     triggerControl.checkBoxIsEnabled.IsEnabled = false;
@@ -142,10 +138,12 @@ namespace GUI
                     triggerControl.checkBoxList.IsEnabled = false;
                     triggerControl.checkBoxRunOnMapInit.IsEnabled = false;
                     triggerControl.textBoxComment.IsReadOnly = true;
-                    triggerControl.categoryAction.IsEnabled = false;
-                    triggerControl.categoryCondition.IsEnabled = false;
-                    triggerControl.categoryEvent.IsEnabled = false;
-                    triggerControl.categoryLocalVariable.IsEnabled = false;
+                    
+                    var trigger = explorerElement.trigger;
+                    trigger.Events.IsEnabledTreeItem = false;
+                    trigger.Conditions.IsEnabledTreeItem = false;
+                    trigger.LocalVariables.IsEnabledTreeItem = false;
+                    trigger.Actions.IsEnabledTreeItem = false;
                     triggerControl.bottomControl.IsEnabled = false;
 
                     grid.Children.Add(control);
@@ -154,9 +152,9 @@ namespace GUI
                     Grid.SetRow(control, 3);
                     txtTriggerNote.Visibility = Visibility.Visible;
                 }
-                else if (explorerElement is ExplorerElementScript explorerScript)
+                else if (explorerElement.ElementType == ExplorerElementEnum.Script)
                 {
-                    control = new ScriptControl(explorerScript);
+                    control = new ScriptControl(explorerElement);
                     var scriptControl = (ScriptControl)control;
                     scriptControl.textEditor.avalonEditor.IsReadOnly = true;
                     scriptControl.checkBoxIsEnabled.IsEnabled = false;
@@ -167,9 +165,9 @@ namespace GUI
                     Grid.SetRow(control, 2);
                     Grid.SetRowSpan(control, 2);
                 }
-                else if (explorerElement is ExplorerElementVariable explorerVariable)
+                else if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
                 {
-                    control = new VariableControl(explorerVariable.variable);
+                    control = new VariableControl(explorerElement.variable);
                     control.IsEnabled = false;
 
                     grid.Children.Add(control);
@@ -185,11 +183,11 @@ namespace GUI
         {
             progressBar.Visibility = Visibility.Visible;
             btnImport.IsEnabled = false;
-            elementsToImport = new List<IExplorerElement>();
+            elementsToImport = new List<ExplorerElement>();
             itemsImported = new List<string>();
             elementsToImport = treeItemExplorerElements
-                .Where(item => (bool)item.Value.treeItemHeader.checkbox.IsChecked)
-                .Where(item => item.Value != rootTreeItem)
+                .Where(item => (bool)item.Value.IsChecked)
+                .Where(item => item.Value != rootElement)
                 .Select(item => item.Value.explorerElement)
                 .ToList();
 
@@ -233,14 +231,6 @@ namespace GUI
             {
                 Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", errorMsg);
                 messageBox.ShowDialog();
-            }
-            else if (e.ProgressPercentage == 100 && !didComplete)
-            {
-                didComplete = true; // hack. In some cases it reports 100% twice. Don't question it :)
-                foreach (string fullPath in itemsImported)
-                {
-                    TriggerExplorer.Current.OnCreateElement(fullPath);
-                }
             }
             else
             {

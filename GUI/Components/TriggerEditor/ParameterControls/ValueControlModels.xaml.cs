@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;

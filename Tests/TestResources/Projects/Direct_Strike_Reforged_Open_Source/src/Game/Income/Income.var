@@ -1,0 +1,14 @@
+{
+  "Id": 100663304,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "Income",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

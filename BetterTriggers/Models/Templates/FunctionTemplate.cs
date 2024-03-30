@@ -1,4 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
@@ -14,10 +14,17 @@ namespace BetterTriggers.Models.Templates
         public string description;
         public string paramText;
         public string category;
+        public TriggerElementType ElementType;
+
+        public FunctionTemplate(TriggerElementType elementType)
+        {
+            ElementType = elementType;
+        }
 
         public override FunctionTemplate Clone()
         {
             FunctionTemplate clone = (FunctionTemplate)this.MemberwiseClone();
+            clone.ElementType = this.ElementType;
             clone.parameters = new List<ParameterTemplate>(parameters);
             if (paramText != null) // some are null
                 clone.paramText = new string(paramText);
@@ -41,17 +48,18 @@ namespace BetterTriggers.Models.Templates
             return function;
         }
 
-        public ECA ToTriggerElement()
+        public ECA ToECA()
         {
-            ECA te = TriggerElementFactory.Create(value);
-            te.function = ToParameter();
-            return te;
+            ECA eca = TriggerElementFactory.Create(value);
+            eca.function = ToParameter();
+            eca.ElementType = ElementType;
+            return eca;
         }
 
         public List<Parameter> ConvertParameters()
         {
             List<Parameter> parameters = new List<Parameter>();
-            this.parameters.ForEach(p => parameters.Add(new Parameter()));
+            this.parameters.ForEach(p => parameters.Add(p.ToParameter()));
             return parameters;
         }
     }

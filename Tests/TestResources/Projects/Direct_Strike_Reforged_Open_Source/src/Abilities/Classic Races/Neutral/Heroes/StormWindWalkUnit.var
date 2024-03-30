@@ -1,0 +1,14 @@
+{
+  "Id": 100663587,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "StormWindWalkUnit",
+  "Type": "unit",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -24,6 +24,7 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             localVariable.variable.Name = newName;
+            localVariable.DisplayText = newName;
             refCollection.Notify();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
@@ -31,12 +32,14 @@ namespace BetterTriggers.Commands
         public void Redo()
         {
             localVariable.variable.Name = newName;
+            localVariable.DisplayText = newName;
             refCollection.Notify();
         }
 
         public void Undo()
         {
             localVariable.variable.Name = oldName;
+            localVariable.DisplayText = oldName;
             refCollection.Notify();
         }
 

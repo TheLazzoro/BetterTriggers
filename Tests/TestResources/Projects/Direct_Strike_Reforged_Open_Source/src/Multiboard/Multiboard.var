@@ -1,0 +1,14 @@
+{
+  "Id": 100663307,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "Multiboard",
+  "Type": "multiboard",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

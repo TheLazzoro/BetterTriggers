@@ -6,6 +6,7 @@ using System.Windows;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
 
 namespace BetterTriggers.Commands
 {
@@ -14,20 +15,20 @@ namespace BetterTriggers.Commands
         string commandName = "Paste Trigger Element";
         int pastedIndex = 0;
         int cutIndex = 0;
-        ExplorerElementTrigger from;
-        ExplorerElementTrigger to;
-        List<TriggerElement> listToCut;
-        List<TriggerElement> listToPaste;
-        List<TriggerElement> cutParent;
-        List<TriggerElement> pasteParent;
+        ExplorerElement from;
+        ExplorerElement to;
+        TriggerElement listToCut;
+        TriggerElement listToPaste;
+        TriggerElement cutParent;
+        TriggerElement pasteParent;
 
-        public CommandTriggerElementCutPaste(ExplorerElementTrigger from, ExplorerElementTrigger to, List<TriggerElement> listToPaste, List<TriggerElement> pasteParent, int pastedIndex)
+        public CommandTriggerElementCutPaste(ExplorerElement from, ExplorerElement to, TriggerElement listToPaste, TriggerElement pasteParent, int pastedIndex)
         {
             this.from = from;
             this.to = to;
             this.listToCut = CopiedElements.CutTriggerElements;
-            this.cutParent = listToCut[0].GetParent();
-            this.cutIndex = listToCut[0].GetParent().IndexOf(listToCut[0]);
+            this.cutParent = listToCut.Elements[0].GetParent();
+            this.cutIndex = listToCut.Elements[0].GetParent().Elements.IndexOf(listToCut.Elements[0]);
             this.listToPaste = listToPaste;
             this.pasteParent = pasteParent;
             this.pastedIndex = pastedIndex;
@@ -35,60 +36,64 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            Project.CurrentProject.Triggers.RemoveInvalidReferences(to.trigger, listToPaste);
-            for (int i = 0; i < listToCut.Count; i++)
+            TriggerValidator validator = new TriggerValidator(to);
+            validator.RemoveInvalidReferences(listToPaste);
+            for (int i = 0; i < listToCut.Count(); i++)
             {
-                listToCut[i].RemoveFromParent();
-                listToCut[i].Deleted();
+                listToCut.Elements[i].RemoveFromParent();
             }
             if (cutParent == pasteParent && pastedIndex > cutIndex)
             {
-                this.pastedIndex = pastedIndex - listToPaste.Count;
+                this.pastedIndex = pastedIndex - listToPaste.Count();
             }
 
-            for (int i = 0; i < listToPaste.Count; i++) {
-                listToPaste[i].SetParent(pasteParent, pastedIndex + i);
+            for (int i = 0; i < listToPaste.Count(); i++) {
+                listToPaste.Elements[i].SetParent(pasteParent, pastedIndex + i);
             }
 
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
             CopiedElements.CutTriggerElements = null; // Reset
-
             Project.CurrentProject.CommandManager.AddCommand(this);
+
+            from.InvokeChange();
+            to.InvokeChange();
         }
 
         public void Redo()
         {
-            for (int i = 0; i < listToCut.Count; i++)
+            for (int i = 0; i < listToCut.Count(); i++)
             {
-                listToCut[i].RemoveFromParent();
-                listToCut[i].Deleted();
+                listToCut.Elements[i].RemoveFromParent();
             }
-            for (int i = 0; i < listToPaste.Count; i++)
+            for (int i = 0; i < listToPaste.Count(); i++)
             {
-                listToPaste[i].SetParent(pasteParent, pastedIndex + i);
-                listToPaste[i].Created(pastedIndex + i);
+                listToPaste.Elements[i].SetParent(pasteParent, pastedIndex + i);
             }
 
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
+
+            from.InvokeChange();
+            to.InvokeChange();
         }
 
         public void Undo()
         {
-            for (int i = 0; i < listToCut.Count; i++)
+            for (int i = 0; i < listToCut.Count(); i++)
             {
-                listToCut[i].SetParent(cutParent, cutIndex + i);
-                listToCut[i].Created(cutIndex + i);
+                listToCut.Elements[i].SetParent(cutParent, cutIndex + i);
             }
-            for (int i = 0; i < listToPaste.Count; i++)
+            for (int i = 0; i < listToPaste.Count(); i++)
             {
-                listToPaste[i].RemoveFromParent();
-                listToPaste[i].Deleted();
+                listToPaste.Elements[i].RemoveFromParent();
             }
 
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
+
+            from.InvokeChange();
+            to.InvokeChange();
         }
 
         public string GetCommandName()

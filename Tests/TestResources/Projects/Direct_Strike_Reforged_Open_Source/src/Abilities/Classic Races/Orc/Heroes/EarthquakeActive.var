@@ -1,0 +1,14 @@
+{
+  "Id": 100663416,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "EarthquakeActive",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

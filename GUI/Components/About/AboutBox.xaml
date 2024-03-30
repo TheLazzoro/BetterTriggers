@@ -28,10 +28,10 @@
         </Rectangle>
 
         <TextBlock x:Name="txtVersion" Grid.Row="1" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
-            Version: 1.0.1
+            Version: 1.0.0
         </TextBlock>
         <TextBlock Grid.Row="2" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
-            Copyright © 2023
+            Copyright © 2024
         </TextBlock>
         <TextBlock Grid.Row="3" Foreground="{DynamicResource TextBrush}" Margin="10,0,0,0" Grid.Column="1">
             Author: LazZ

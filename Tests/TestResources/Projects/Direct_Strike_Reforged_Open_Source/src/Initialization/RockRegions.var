@@ -1,0 +1,14 @@
+{
+  "Id": 100663392,
+  "ArraySize": [
+    100,
+    1
+  ],
+  "Name": "RockRegions",
+  "Type": "rect",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

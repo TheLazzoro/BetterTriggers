@@ -1,0 +1,15 @@
+{
+  "Id": 100663623,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TasItemShop_Gold",
+  "Type": "real",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "1.00"
+  }
+}

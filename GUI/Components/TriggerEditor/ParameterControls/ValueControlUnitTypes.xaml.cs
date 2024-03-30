@@ -5,8 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System;
 using BetterTriggers.Models.War3Data;
-using BetterTriggers.Models.SaveableData;
 using System.Windows.Input;
+using BetterTriggers.Models.EditorData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {

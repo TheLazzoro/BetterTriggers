@@ -1,0 +1,14 @@
+{
+  "Id": 100663394,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TwentyMinuteTimer",
+  "Type": "timer",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

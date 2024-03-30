@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
+using BetterTriggers.Models.EditorData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {

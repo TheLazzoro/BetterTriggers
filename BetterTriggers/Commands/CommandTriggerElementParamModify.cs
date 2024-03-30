@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Printing;
 using System.Text;
 using System.Windows;
 using BetterTriggers.Containers;
@@ -12,25 +13,25 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementParamModify : ICommand
     {
         string commandName = "Modify Parameter";
-        ECA triggerElement;
-        ExplorerElementTrigger explorerElement;
+        ECA eca;
+        ExplorerElement explorerElement;
         List<Parameter> paramCollection;
         Parameter paramToAdd;
         Parameter oldParameter;
         int paramIndex = 0;
 
         // special case 'SetVariable'
-        Parameter setVarValueOld; // TODO: Why is this not used?
+        Parameter setVarValueOld;
         Parameter setVarValueNew;
 
-        public CommandTriggerElementParamModify(ECA triggerElement, ExplorerElementTrigger explorerElement, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
+        public CommandTriggerElementParamModify(ExplorerElement explorerElement, ECA eca, List<Parameter> paramCollection, int paramIndex, Parameter paramToAdd)
         {
-            this.triggerElement = triggerElement;
+            this.explorerElement = explorerElement;
+            this.eca = eca;
             this.paramCollection = paramCollection;
             this.paramIndex = paramIndex;
             this.paramToAdd = paramToAdd;
 
-            this.explorerElement = explorerElement;
             this.oldParameter = paramCollection[this.paramIndex];
         }
 
@@ -40,38 +41,53 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.References.UpdateReferences(explorerElement);
 
             // Special case
-            if (triggerElement is SetVariable)
+            if (eca is SetVariable)
             {
-                Parameter setVarParam = triggerElement.function.parameters[0];
-                Parameter value = triggerElement.function.parameters[1];
+                Parameter setVarParam = eca.function.parameters[0];
+                Parameter value = eca.function.parameters[1];
+                bool doResetValue = false;
 
-                if(paramCollection[paramIndex] == setVarParam && setVarParam is VariableRef && oldParameter is VariableRef)
+                if (paramCollection[paramIndex] == setVarParam && setVarParam is VariableRef && oldParameter is VariableRef)
                 {
                     var setVarParamRef = setVarParam as VariableRef;
                     var setVarParamRefOld = oldParameter as VariableRef;
                     var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef);
                     var oldVar = Project.CurrentProject.Variables.GetByReference(setVarParamRefOld);
-                    if(!Types.AreTypesEqual(newVar.Type, oldVar.Type))
+                    if (!Types.AreTypesEqual(newVar.Type, oldVar.Type))
                     {
-                        setVarValueOld = value;
-                        setVarValueNew = new Parameter()
-                        {
-                            value = null,
-                        };
-                        paramCollection[paramIndex + 1] = setVarValueNew;
+                        doResetValue = true;
                     }
 
                     // Copy array index parameters
-                    if(newVar.IsArray == oldVar.IsArray && newVar.IsTwoDimensions == oldVar.IsTwoDimensions)
+                    if (newVar.IsArray == oldVar.IsArray && newVar.IsTwoDimensions == oldVar.IsTwoDimensions)
                     {
                         setVarParamRef.arrayIndexValues[0] = setVarParamRefOld.arrayIndexValues[0].Clone();
                         setVarParamRef.arrayIndexValues[1] = setVarParamRefOld.arrayIndexValues[1].Clone();
                     }
                 }
+                else if (paramCollection[paramIndex] == setVarParam && setVarParam is VariableRef && oldParameter is not VariableRef)
+                {
+                    var setVarParamRef = setVarParam as VariableRef;
+                    var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef);
+                    var valueReturnType = TriggerData.GetReturnType(value.value);
+                    if (valueReturnType != newVar.Type)
+                    {
+                        doResetValue = true;
+                    }
+                }
+
+                if (doResetValue)
+                {
+                    setVarValueOld = value;
+                    setVarValueNew = new Parameter()
+                    {
+                        value = null,
+                    };
+                    paramCollection[paramIndex + 1] = setVarValueNew;
+                }
             }
 
-            triggerElement.ChangedParams();
-
+            explorerElement.InvokeChange();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -85,14 +101,20 @@ namespace BetterTriggers.Commands
 
             paramCollection[paramIndex] = paramToAdd;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
-            triggerElement.ChangedParams();
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
+            // 'SetVariable' special case
+            if (setVarValueOld != null)
+            {
+                paramCollection[paramIndex + 1] = setVarValueOld;
+            }
+
             paramCollection[paramIndex] = oldParameter;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
-            triggerElement.ChangedParams();
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

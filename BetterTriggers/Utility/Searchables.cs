@@ -101,6 +101,14 @@ namespace BetterTriggers.Utility
         }
 
         /// <summary>
+        /// Returns all objects, regardless of the search input.
+        /// </summary>
+        public List<Searchable> GetAllObject()
+        {
+            return ItemsAll;
+        }
+
+        /// <summary>
         /// Returns a list of categories found with the last search.
         /// </summary>
         /// <returns></returns>

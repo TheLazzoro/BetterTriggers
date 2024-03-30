@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.WorldEdit;
 using System;

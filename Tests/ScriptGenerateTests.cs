@@ -1,30 +1,24 @@
 using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Windows;
-using War3Net.Build.Info;
 
 namespace Tests
 {
     [TestClass]
-    public class ScriptGenerateTests
+    public class ScriptGenerateTests : TestBase
     {
         static War3Project war3project;
         static string mapDir;
         static string projectFile;
         static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
-        static bool success;
         static string failedMsg = "Script generate failed. Project folder kept for inspection.";
-
+        bool success;
 
         [ClassInitialize]
         public static void Init(TestContext context)
@@ -34,9 +28,6 @@ namespace Tests
             Console.WriteLine("-----------");
             Console.WriteLine("");
 
-            Casc.GameVersion = new Version(1, 35, 1); // hack. We need the newest version to load our custom frame definition script.
-            BetterTriggers.Init.Initialize(true);
-
             if (Directory.Exists(tempFolder))
             {
                 string[] tempData = Directory.GetDirectories(tempFolder);
@@ -45,17 +36,6 @@ namespace Tests
                     Directory.Delete(folder, true);
                 }
             }
-        }
-
-        [ClassCleanup]
-        public static void Shutdown()
-        {
-        }
-
-        [TestInitialize]
-        public void BeforeEach()
-        {
-            success = false;
         }
 
         [TestCleanup]
@@ -327,6 +307,7 @@ namespace Tests
             Builder builder = new();
             CustomMapData.Load(mapDir);
             Project.Load(projectDir);
+            bool success;
             string script;
             (success, script) = builder.GenerateScript();
 
@@ -341,6 +322,7 @@ namespace Tests
             Builder builder = new();
             CustomMapData.Load(mapDir);
             Project.Load(projectDir);
+            bool success;
             string script;
             (success, script) = builder.GenerateScript();
 
@@ -349,12 +331,11 @@ namespace Tests
 
 
 
-        void ConvertMap_GenerateScript(string mapDir)
+        bool ConvertMap_GenerateScript(string mapDir)
         {
             TriggerConverter triggerConverter = new TriggerConverter(mapDir);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
             projectFile = triggerConverter.Convert(destination);
-            Builder builder = new();
 
             string projectFileContent = File.ReadAllText(projectFile);
             war3project = JsonConvert.DeserializeObject<War3Project>(projectFileContent);
@@ -365,10 +346,13 @@ namespace Tests
             CustomMapData.Load(mapDir);
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
             string script;
+            Builder builder = new();
             (success, script) = builder.GenerateScript();
 
             // Just for the sake of it
             CustomMapData.ReloadMapData();
+
+            return success;
         }
     }
 }

@@ -12,6 +12,7 @@ using GUI.Utility;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
@@ -26,21 +27,19 @@ using System.Windows.Shapes;
 
 namespace GUI.Components
 {
-    public partial class VariableControl : UserControl, IEditor
+    public partial class VariableControl : UserControl
     {
         public event Action OnChange;
 
         private Variable variable;
-        private ComboBoxItemType previousSelected;
-        private bool isLoading = true;
-        private int defaultSelected = 0;
-        private List<TreeItemExplorerElement> observers = new List<TreeItemExplorerElement>();
 
         private string previousText0 = "1";
         private string previousText1 = "1";
 
         private bool preventStateChange = true;
         private bool suppressUIEvents = false;
+
+        private VariableControlViewModel _viewModel;
 
         public VariableControl(Variable variable)
         {
@@ -49,108 +48,64 @@ namespace GUI.Components
             previousText1 = variable.ArraySize[1].ToString();
             InitializeComponent();
 
+            _viewModel = new VariableControlViewModel(variable);
+            DataContext = _viewModel;
+
             var usedByList = Project.CurrentProject.References.GetReferrers(variable);
-            if(usedByList.Count == 0)
+            usedByList.ForEach(r => _viewModel.ReferenceTriggers.Add(r));
+            if (usedByList.Count == 0)
             {
                 listViewUsedBy.Visibility = Visibility.Hidden;
                 lblUsedBy.Visibility = Visibility.Hidden;
             }
-            usedByList.ForEach(r => {
-                TreeItemHeader header = new TreeItemHeader(r.GetName(), "TC_TRIGGER_NEW");
-                ListViewItem item = new ListViewItem
-                {
-                    Content = header
-                };
-                listViewUsedBy.Items.Add(item);
-            });
-
-            if (variable._isLocal)
-            {
-                grid.Children.Remove(lblDimensions);
-                grid.Children.Remove(comboBoxArrayDimensions);
-                grid.Children.Remove(lblSize0);
-                grid.Children.Remove(lblSize1);
-                grid.Children.Remove(textBoxArraySize0);
-                grid.Children.Remove(textBoxArraySize1);
-                grid.Children.Remove(checkBoxIsArray);
-            }
-
-            List<Types> types = TriggerData.LoadAllVariableTypes();
-            for (int i = 0; i < types.Count; i++)
-            {
-                ComboBoxItemType item = new ComboBoxItemType();
-                item.Content = Locale.Translate(types[i].DisplayName);
-                item.Type = types[i].Key;
-
-                comboBoxVariableType.Items.Add(item);
-
-                if (variable.Type == item.Type)
-                {
-                    defaultSelected = i;
-                    previousSelected = item;
-                }
-            }
-
-            UpdateIdentifierText();
-            ParamTextBuilder controllerParamText = new ParamTextBuilder();
-            var inlines = controllerParamText.GenerateParamText(variable);
-            this.textblockInitialValue.Inlines.AddRange(inlines);
-
-            variable.ValuesChanged += Variable_ValuesChanged;
-            checkBoxIsArray.IsChecked = variable.IsArray;
-            textBoxArraySize0.IsEnabled = variable.IsArray;
-            comboBoxArrayDimensions.IsEnabled = variable.IsArray;
-            textBoxArraySize0.Text = previousText0;
-            textBoxArraySize1.Text = previousText1;
-            if (!variable.IsTwoDimensions)
-                comboBoxArrayDimensions.SelectedIndex = 0;
-            else
-            {
-                comboBoxArrayDimensions.SelectedIndex = 1;
-                textBoxArraySize1.IsEnabled = variable.IsArray;
-            }
 
             preventStateChange = false;
-        }
+            variable.PropertyChanged += Variable_ValuesChanged;
+            
+            textblockInitialValue.Inlines.Clear();
+            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+            var inlines = paramTextBuilder.GenerateParamText(variable);
+            textblockInitialValue.Inlines.AddRange(inlines);
 
-        private void Variable_ValuesChanged(object sender, EventArgs e)
-        {
-            suppressUIEvents = true;
-            Application.Current.Dispatcher.Invoke(delegate
+            // remove components for local variable
+            if(variable._isLocal)
             {
-                UpdateIdentifierText();
-                checkBoxIsArray.IsChecked = variable.IsArray;
-                comboBoxArrayDimensions.SelectedIndex = variable.IsTwoDimensions ? 1 : 0;
-                foreach (var i in comboBoxVariableType.Items)
-                {
-                    ComboBoxItemType item = (ComboBoxItemType)i;
-                    if (item.Type == variable.Type)
-                    {
-                        comboBoxVariableType.SelectedItem = item;
-                        break;
-                    }
-                }
+                grid.Children.Remove(lblDimensions);
+                grid.Children.Remove(lblSize0);
+                grid.Children.Remove(lblSize1);
+                grid.Children.Remove(checkBoxIsArray);
+                grid.Children.Remove(comboBoxArrayDimensions);
+                grid.Children.Remove(textBoxArraySize0);
+                grid.Children.Remove(textBoxArraySize1);
+            }
 
-                ParamTextBuilder controllerParamText = new ParamTextBuilder();
-                this.textblockInitialValue.Inlines.Clear();
-                var inlines = controllerParamText.GenerateParamText(variable);
-                this.textblockInitialValue.Inlines.AddRange(inlines);
-                OnStateChange();
-            });
-
-            suppressUIEvents = false;
+            this.Loaded += VariableControl_Loaded;
         }
 
-        private void comboBoxVariableType_Loaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Prevents 'Changed' events from firing when opening the control,
+        /// since they only hook after the values have been set.
+        /// </summary>
+        private void VariableControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!isLoading)
-                return;
-
-            comboBoxVariableType.SelectedIndex = defaultSelected;
-            isLoading = false;
+            this.comboBoxVariableType.SelectionChanged += comboBoxVariableType_SelectionChanged;
+            this.comboBoxArrayDimensions.SelectionChanged += comboBoxArrayDimensions_SelectionChanged;
+            this.textBoxArraySize0.TextChanged += textBoxArraySize0_TextChanged;
+            this.textBoxArraySize1.TextChanged += textBoxArraySize1_TextChanged;
         }
 
-        public void UpdateIdentifierText()
+        private void Variable_ValuesChanged()
+        {
+            textblockInitialValue.Inlines.Clear();
+            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+            var inlines = paramTextBuilder.GenerateParamText(variable);
+            textblockInitialValue.Inlines.AddRange(inlines);
+            UpdateIdentifierText();
+
+            OnChange?.Invoke();
+        }
+
+        private void UpdateIdentifierText()
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
@@ -160,19 +115,18 @@ namespace GUI.Components
 
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (isLoading || suppressUIEvents)
+            if (suppressUIEvents)
                 return;
 
             if (ResetVarRefs())
             {
-                var selected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
+                var selected = (War3Type)comboBoxVariableType.SelectedItem;
 
                 CommandVariableModifyType command = new CommandVariableModifyType(variable, selected.Type);
                 command.Execute();
                 OnStateChange();
 
-                previousSelected = (ComboBoxItemType)comboBoxVariableType.SelectedItem;
-                defaultSelected = comboBoxVariableType.SelectedIndex;
+                _viewModel.SelectedItemPrevious = (War3Type)comboBoxVariableType.SelectedItem;
 
                 ParamTextBuilder controllerParamText = new ParamTextBuilder();
                 this.textblockInitialValue.Inlines.Clear();
@@ -181,16 +135,13 @@ namespace GUI.Components
             }
             else
             {
-                comboBoxVariableType.SelectedItem = previousSelected;
+                comboBoxVariableType.SelectedItem = _viewModel.SelectedItemPrevious;
                 e.Handled = false;
             }
         }
 
         private void checkBoxIsArray_Click(object sender, RoutedEventArgs e)
         {
-            if (isLoading)
-                return;
-
             if (ResetVarRefs())
             {
                 CommandVariableModifyArray command = new CommandVariableModifyArray(variable, (bool)checkBoxIsArray.IsChecked);
@@ -212,9 +163,6 @@ namespace GUI.Components
 
         private void comboBoxArrayDimensions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (isLoading)
-                return;
-
             bool isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             if (ResetVarRefs())
             {
@@ -241,7 +189,7 @@ namespace GUI.Components
         private bool ResetVarRefs()
         {
             bool ok = true;
-            List<ExplorerElementTrigger> refs = Project.CurrentProject.References.GetReferrers(this.variable);
+            List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(this.variable);
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
@@ -252,39 +200,9 @@ namespace GUI.Components
             return ok;
         }
 
-        public void SetElementEnabled(bool isEnabled)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetElementInitiallyOn(bool isInitiallyOn)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Attach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
-        public void Detach(TreeItemExplorerElement explorerElement)
-        {
-            this.observers.Add(explorerElement);
-        }
-
         public void OnStateChange()
         {
-            foreach (var observer in observers)
-            {
-                observer.OnStateChange();
-            }
             OnChange?.Invoke();
-        }
-
-        public void OnRemoteChange()
-        {
-            // TODO: Why is this here?
-            throw new Exception("Hello. Notice this call plz.");
         }
 
         private void textBoxArraySize0_TextChanged(object sender, TextChangedEventArgs e)
@@ -331,20 +249,17 @@ namespace GUI.Components
 
         internal void Dispose()
         {
-            variable.ValuesChanged -= Variable_ValuesChanged;
+            variable.PropertyChanged -= Variable_ValuesChanged;
         }
 
         private void listViewUsedBy_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = listViewUsedBy.SelectedItem as ListViewItem;
-            if (item == null)
+            var element = listViewUsedBy.SelectedItem as ExplorerElement;
+            if (element == null)
                 return;
 
-            var header = item.Content as TreeItemHeader;
-            string name = header.GetDisplayText();
             var triggerExplorer = TriggerExplorer.Current;
-
-            triggerExplorer.Search(name);
+            triggerExplorer.NavigateToExplorerElement(element);
         }
     }
 }

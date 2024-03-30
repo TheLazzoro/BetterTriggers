@@ -1,19 +1,17 @@
+using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using War3Net.Build.Info;
 
 namespace Tests
 {
     [TestClass]
-    public class ProjectTest
+    public class ProjectTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -21,11 +19,11 @@ namespace Tests
         static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static IExplorerElement element1, element2, element3;
+        static ExplorerElement element1, element2, element3;
 
 
         [ClassInitialize]
-        public static void Init(TestContext context)
+        public static void BeforeAll(TestContext context)
         {
             Console.WriteLine("-----------");
             Console.WriteLine("RUNNING PROJECT TESTS");
@@ -89,7 +87,8 @@ namespace Tests
             string newName = "MyTrigger";
             string newFullPath = Path.Combine(Path.GetDirectoryName(element.GetPath()), newName + ".j");
 
-            project.RenameElement(element, "newName");
+            element.RenameText = "newName";
+            element.Rename();
             project.OnRenameElement(element.GetPath(), newFullPath);
 
             string expectedPath = newFullPath;

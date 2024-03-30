@@ -1,0 +1,14 @@
+{
+  "Id": 100663608,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "TasItemShopShortCuts",
+  "Type": "trigger",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

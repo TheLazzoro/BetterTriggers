@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI.Components"
+             xmlns:betterTriggers="clr-namespace:BetterTriggers.Models.EditorData;assembly=BetterTriggers"
              mc:Ignorable="d" 
              d:DesignHeight="450" Width="400" KeyDown="UserControl_KeyDown">
 
@@ -77,26 +78,28 @@
 
     <Grid>
 
-        <TreeView x:Name="treeViewTriggerExplorer" Background="{DynamicResource BackgroundDark}" AllowDrop="True" BorderBrush="{x:Null}" Drop="treeViewTriggerExplorer_Drop" KeyDown="treeViewTriggerExplorer_KeyDown" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewTriggerExplorer_MouseDoubleClick" >
-            <TreeView.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                      Color="Black" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                      Color="Black" />
-            </TreeView.Resources>
+        <TreeView
+            x:Name="treeViewTriggerExplorer"
+            ItemsSource="{Binding ProjectFiles}"
+            Background="{DynamicResource BackgroundDark}"
+            AllowDrop="True"
+            BorderBrush="{x:Null}"
+            Drop="treeViewTriggerExplorer_Drop"
+            KeyDown="treeViewTriggerExplorer_KeyDown"
+            ItemTemplate="{DynamicResource DataTemplateExplorerElements}"
+            >
 
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <!-- We have to select the item which is right-clicked on -->
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
-                    <EventSetter Event="TreeViewItem.Expanded" Handler="treeViewItem_Expanded"/>
-                    <EventSetter Event="TreeViewItem.Collapsed" Handler="treeViewItem_Collapsed"/>
+                    <EventSetter Event="TreeViewItem.MouseRightButtonUp" Handler="treeViewItem_MouseRightButtonUp"/>
+                    <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
+                    <EventSetter Event="TreeViewItem.Selected" Handler="treeViewItem_Selected" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                 </Style>
             </TreeView.ItemContainerStyle>
 
@@ -138,68 +141,55 @@
             </TreeView.ContextMenu>
         </TreeView>
 
-        <!-- New Search -->
         <Grid x:Name="searchMenu" Visibility="Hidden" KeyDown="searchMenu_KeyDown" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Rectangle Fill="{DynamicResource BackgroundLight}"></Rectangle>
-            <Label Content="Search:" Foreground="#ccc" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" />
-            <TextBox x:Name="searchBox" Height="22" Margin="60,0,25,0" TextChanged="searchBox_TextChanged" />
-            <Button x:Name="btnCloseSearchMenu" Margin="0,0,2,0" Width="20" Height="20" Style="{DynamicResource IconButton}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="btnCloseSearchMenu_Click"  >
+            <Rectangle Fill="{DynamicResource BackgroundLight}"/>
+            <Label Content="Search:"
+                   Foreground="{DynamicResource TextBrush}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Width="50" />
+            
+            <TextBox x:Name="searchBox"
+                     Height="22"
+                     Margin="60,0,25,0"
+                     TextChanged="searchBox_TextChanged" />
+            
+            <Button x:Name="btnCloseSearchMenu"
+                    Margin="0,0,2,0"
+                    Width="20"
+                    Height="20"
+                    Style="{DynamicResource IconButton}"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Click="btnCloseSearchMenu_Click" >
                 <Button.Content>
-                    <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
+                    <Image Source="{DynamicResource TabItemCloseImg}" Stretch="Fill"/>
                 </Button.Content>
             </Button>
-            <TreeView x:Name="treeViewSearch" Background="{DynamicResource BackgroundDark}" Grid.Row="1" BorderBrush="{DynamicResource BackgroundDark}" MouseRightButtonUp="treeViewTriggerExplorer_MouseRightButtonUp" MouseDoubleClick="treeViewSearch_MouseDoubleClick" KeyDown="treeViewSearch_KeyDown" >
-                <TreeView.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                      Color="Black" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                      Color="Black" />
-                </TreeView.Resources>
+            
+            <ListView x:Name="listViewSearch"
+                      Background="{DynamicResource BackgroundDark}"
+                      BorderBrush="{DynamicResource BackgroundDark}"
+                      ItemsSource="{Binding SearchedFiles}"
+                      ItemTemplate="{DynamicResource DataTemplateExplorerElementsSearch}"
+                      Grid.Row="1"
+                      KeyDown="listViewSearch_KeyDown" >
 
-            </TreeView>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <EventSetter Event="ListViewItem.MouseRightButtonUp" Handler="listViewItem_MouseRightButtonUp"/>
+                        <EventSetter Event="ListViewItem.MouseDoubleClick" Handler="listViewItem_MouseDoubleClick"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+            </ListView>
         </Grid>
-
-        <!-- Search Field DISABLED -->
-        <Border x:Name="searchField" Visibility="Hidden" Width="225" Height="45" Background="{DynamicResource BackgroundLight}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,22,0">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="-90"
-                              RenderingBias="Quality" ShadowDepth="2"/>
-            </Border.Effect>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="15" />
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="10" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="22" />
-                    <RowDefinition Height="10" />
-                </Grid.RowDefinitions>
-
-                <Label Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource TextBrush}">Search:</Label>
-                <TextBox x:Name="searchTextBox" Grid.Row="1" Grid.Column="1" KeyDown="searchTextBox_KeyDown" ></TextBox>
-                <Button x:Name="btnSearch" Grid.Row="1" Grid.Column="3" Click="btnSearch_Click" >Search</Button>
-                <Button x:Name="btnCloseSearchField" Width="20" Height="20" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCloseSearchField_Click"  >
-                    <Button.Content>
-                        <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
-                    </Button.Content>
-                </Button>
-            </Grid>
-        </Border>
 
     </Grid>
 </UserControl>

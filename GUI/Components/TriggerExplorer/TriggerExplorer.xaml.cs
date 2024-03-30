@@ -20,20 +20,20 @@ using System.Threading;
 using BetterTriggers.Utility;
 using GUI.Components.Dialogs;
 using GUI.Components.Tabs;
+using System.Windows.Media.Animation;
 
 namespace GUI.Components
 {
-    public partial class TriggerExplorer : UserControl, IDisposable
+    public partial class TriggerExplorer : UserControl
     {
         internal static TriggerExplorer Current;
 
-        public TreeItemExplorerElement map;
-        public TreeItemExplorerElement currentElement;
-        public event Action<TreeItemExplorerElement> OnOpenExplorerElement;
+        public TreeViewItem currentElement;
+        public event Action<ExplorerElement> OnOpenExplorerElement;
 
         // Drag and drop fields
         Point _startPoint;
-        TreeItemExplorerElement dragItem;
+        TreeViewItem dragItem;
         bool _IsDragging = false;
         TreeViewItem parentDropTarget;
         int insertIndex = 0; // used when a file is moved from one location to the other.
@@ -46,239 +46,126 @@ namespace GUI.Components
 
         BackgroundWorker searchWorker;
 
+        private TriggerExplorerViewModel viewModel;
+
         public TriggerExplorer()
         {
             InitializeComponent();
 
-            Project.CurrentProject.OnCreated += ContainerProject_OnElementCreated;
             searchWorker = new BackgroundWorker();
             searchWorker.WorkerReportsProgress = true;
             searchWorker.WorkerSupportsCancellation = true;
             searchWorker.DoWork += SearchWorker_DoWork;
             searchWorker.ProgressChanged += SearchWorker_ProgressChanged;
             searchWorker.RunWorkerCompleted += SearchWorker_RunWorkerCompleted;
-        }
 
+            viewModel = new TriggerExplorerViewModel();
+            DataContext = viewModel;
 
-        public void Dispose()
-        {
-            Project.CurrentProject.OnCreated -= ContainerProject_OnElementCreated;
-        }
-
-        public void Populate()
-        {
-            var root = Project.CurrentProject.GetRoot();
-            for (int i = 0; i < root.explorerElements.Count; i++)
-            {
-                RecursePopulate(map, root.explorerElements[i]);
-            }
-        }
-
-        private void RecursePopulate(TreeItemExplorerElement parent, IExplorerElement element)
-        {
-            var treeItem = new TreeItemExplorerElement(element);
-            element.Attach(treeItem); // attach treeItem to element so it can respond to events happening to the element.
-            parent.Items.Add(treeItem);
-
-            if (element is ExplorerElementFolder)
-            {
-                var folder = element as ExplorerElementFolder;
-                if (folder.isExpanded)
-                    treeItem.ExpandSubtree();
-
-                for (int i = 0; i < folder.explorerElements.Count; i++)
-                {
-                    var child = folder.explorerElements[i];
-                    RecursePopulate(treeItem, child);
-                }
-            }
-        }
-
-        public void OnSelectTab(TreeItemExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)
-        {
-            if (selectedItem.Ielement is ExplorerElementTrigger exTrig)
-                Project.CurrentProject.Triggers.SelectedTrigger = exTrig.trigger;
-
-            if (selectedItem.editor == null || selectedItem.tabItem == null)
-            {
-                if (selectedItem.Ielement is ExplorerElementRoot)
-                {
-                    var rootControl = new RootControl((ExplorerElementRoot)selectedItem.Ielement);
-                    rootControl.Attach(selectedItem);
-                    selectedItem.editor = rootControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementTrigger)
-                {
-                    var triggerControl = new TriggerControl((ExplorerElementTrigger)selectedItem.Ielement);
-                    triggerControl.Attach(selectedItem);
-                    selectedItem.editor = triggerControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementScript)
-                {
-                    var scriptControl = new ScriptControl((ExplorerElementScript)selectedItem.Ielement);
-                    scriptControl.Attach(selectedItem);
-                    selectedItem.editor = scriptControl;
-                }
-                else if (selectedItem.Ielement is ExplorerElementVariable)
-                {
-                    var element = (ExplorerElementVariable)selectedItem.Ielement;
-                    var variableControl = new VariableControl(element.variable);
-                    variableControl.Attach(selectedItem);
-                    selectedItem.editor = variableControl;
-                }
-
-                // select already open tab
-                for (int i = 0; i < tabViewModel.Tabs.Count; i++)
-                {
-                    var tab = tabViewModel.Tabs[i];
-                    if (tab.explorerElement.Ielement.GetPath() == selectedItem.Ielement.GetPath())
-                    {
-                        selectedItem.tabItem = tab;
-                        tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
-                        return;
-                    }
-                }
-
-                if (selectedItem.editor == null)
-                    return;
-
-                TabItemBT tabItem = new TabItemBT(selectedItem, tabViewModel);
-                tabViewModel.Tabs.Add(tabItem);
-                selectedItem.tabItem = tabItem;
-            }
-
-            if (selectedItem.tabItem != null)
-            {
-                if (!tabViewModel.Tabs.Contains(selectedItem.tabItem))
-                    tabViewModel.Tabs.Add(selectedItem.tabItem);
-
-                tabControl.SelectedIndex = tabViewModel.Tabs.IndexOf(selectedItem.tabItem);
-            }
-        }
-
-
-        public void OnCreateElement(string fullPath)
-        {
-            if (!FileSystemUtil.IsExtensionValid(System.IO.Path.GetExtension(fullPath)))
-                return;
-
-            var project = Project.CurrentProject;
-            var explorerElement = project.FindExplorerElement(project.GetRoot(), fullPath);
-            int insertIndex = explorerElement.GetParent().GetExplorerElements().IndexOf(explorerElement);
-
-            TreeItemExplorerElement treeItemExplorerElement = new TreeItemExplorerElement(explorerElement);
-            explorerElement.Attach(treeItemExplorerElement);
-            treeItemExplorerElement.OnCreated(insertIndex);
-        }
-
-        internal void OnMoveElement(TriggerExplorer te, string fullPath, int insertIndex)
-        {
-            TreeItemExplorerElement elementToMove = FindTreeNodeElement(te.map, fullPath);
-            TreeItemExplorerElement oldParent = elementToMove.Parent as TreeItemExplorerElement;
-            TreeItemExplorerElement newParent = FindTreeNodeDirectory(System.IO.Path.GetDirectoryName(fullPath));
-
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                if (newParent == null) // hack. idk why it fires twice
-                    return;
-
-                oldParent.Items.Remove(elementToMove);
-                newParent.Items.Insert(insertIndex, elementToMove);
-                elementToMove.IsSelected = true;
-            });
-        }
-
-        internal TreeItemExplorerElement FindTreeNodeElement(TreeItemExplorerElement parent, string path)
-        {
-            TreeItemExplorerElement node = null;
-
-            for (int i = 0; i < parent.Items.Count; i++)
-            {
-                TreeItemExplorerElement element = parent.Items[i] as TreeItemExplorerElement;
-                if (element.Ielement.GetPath() == path)
-                {
-                    node = element;
-                    break;
-                }
-                if (Directory.Exists(element.Ielement.GetPath()) && node == null)
-                {
-                    node = FindTreeNodeElement(element, path);
-                }
-            }
-
-            return node;
-        }
-
-        internal TreeItemExplorerElement FindTreeNodeDirectory(string directory)
-        {
-            var triggerExplorer = TriggerExplorer.Current;
-            if (directory == triggerExplorer.map.Ielement.GetPath())
-                return triggerExplorer.map;
-
-            return FindTreeNodeDirectory(triggerExplorer.map, directory);
-        }
-
-        private TreeItemExplorerElement FindTreeNodeDirectory(TreeItemExplorerElement parent, string directory)
-        {
-            TreeItemExplorerElement node = null;
-
-            for (int i = 0; i < parent.Items.Count; i++)
-            {
-                TreeItemExplorerElement element = parent.Items[i] as TreeItemExplorerElement;
-                if (Directory.Exists(element.Ielement.GetPath()) && node == null)
-                {
-                    if (element.Ielement.GetPath() == directory)
-                    {
-                        node = element;
-                        break;
-                    }
-                    else
-                    {
-                        node = FindTreeNodeDirectory(element, directory);
-                    }
-                }
-            }
-
-            return node;
-        }
-
-
-        // This function is invoked by a method in the container when a new file is created.
-        internal void ContainerProject_OnElementCreated(object sender, FileSystemEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(delegate
-            {
-                OnCreateElement(Project.CurrentProject.createdPath); // hack
-            });
+            KeyDown += TriggerExplorer_KeyDown;
         }
 
         /// <summary>
-        /// // It is necessary to traverse the item's parents since drag & drop picks up
-        /// things like 'TextBlock' and 'Border' on the drop target when dropping the 
-        /// dragged element.
+        /// Returns the underlying ExplorerElement from a given 'TreeViewItem'
         /// </summary>
-        /// <returns></returns>
-        private TreeItemExplorerElement GetTraversedTargetDropItem(FrameworkElement dropTarget)
+        public ExplorerElement? GetExplorerElementFromItem(TreeViewItem item)
         {
-            if (dropTarget == null || dropTarget is TreeView)
-                return null;
+            var explorerElement = item.DataContext as ExplorerElement;
+            return explorerElement;
+        }
 
-            TreeItemExplorerElement traversedTarget = null;
-            while (traversedTarget == null && dropTarget != null)
+        public ExplorerElement? GetExplorerElementFromItem(ListViewItem item)
+        {
+            var explorerElement = item.DataContext as ExplorerElement;
+            return explorerElement;
+        }
+
+        public TreeViewItem? GetTreeItemFromExplorerElement(ExplorerElement explorerElement)
+        {
+            List<ExplorerElement> list = new();
+            TreeViewItem? treeViewItem = null;
+
+            // walks up the element hierarchy until a parent attached to the TreeView is found.
+            while (treeViewItem == null)
             {
-                dropTarget = dropTarget.Parent as FrameworkElement;
-                if (dropTarget is TreeViewItem)
+                if(explorerElement == null)
                 {
-                    traversedTarget = (TreeItemExplorerElement)dropTarget;
+                    return null;
+                }
+
+                treeViewItem = treeViewTriggerExplorer.ItemContainerGenerator.ContainerFromItem(explorerElement) as TreeViewItem;
+                if (treeViewItem == null)
+                {
+                    list.Add(explorerElement);
+                    explorerElement = explorerElement.GetParent();
                 }
             }
 
-            return traversedTarget;
+            // walks down the tree until the TreeViewItem has been pulled out.
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                var element = list[i];
+                treeViewItem = treeViewItem.ItemContainerGenerator.ContainerFromItem(element) as TreeViewItem;
+            }
+
+            return treeViewItem;
+        }
+
+        private ExplorerElement? GetSelectedExplorerElement()
+        {
+            ExplorerElement item = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+            return item;
+        }
+
+        public void SetSelectedElement(ExplorerElement element)
+        {
+            currentElement = GetTreeItemFromExplorerElement(element);
+        }
+
+        private void TriggerExplorer_KeyDown(object sender, KeyEventArgs e)
+        {
+            var selected = GetSelectedExplorerElement();
+
+            if (e.Key == Key.F2)
+                SetSelectedRenameBoxVisible(true);
+            else if (e.Key == Key.Escape)
+                SetSelectedRenameBoxVisible(false);
+            if (e.Key == Key.Enter && selected.RenameBoxVisibility == Visibility.Visible)
+                RenameExplorerElement();
+        }
+
+        private void SetSelectedRenameBoxVisible(bool isVisible)
+        {
+            var selected = GetSelectedExplorerElement();
+            if (isVisible)
+            {
+                selected.RenameBoxVisibility = Visibility.Visible;
+            }
+            else
+                selected.RenameBoxVisibility = Visibility.Hidden;
+        }
+
+        private void RenameExplorerElement()
+        {
+            try
+            {
+                var selected = GetSelectedExplorerElement();
+                selected.Rename();
+            }
+            catch (Exception e)
+            {
+                Dialogs.MessageBox dialog = new Dialogs.MessageBox("Error renaming", e.Message);
+                dialog.ShowDialog();
+            }
         }
 
         private void treeViewItem_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && !_IsDragging && !contextMenu.IsVisible)
+            if (
+                e.LeftButton == MouseButtonState.Pressed
+                && !_IsDragging
+                && !contextMenu.IsVisible
+                )
             {
                 Point position = e.GetPosition(null);
                 if (Math.Abs(position.X - _startPoint.X) >
@@ -291,13 +178,19 @@ namespace GUI.Components
             }
         }
 
-
         private void StartDrag(MouseEventArgs e)
         {
-            _IsDragging = true;
-            dragItem = this.treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+            var explorerElement = this.treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+            dragItem = GetTreeItemFromExplorerElement(explorerElement);
+            if (dragItem == null)
+                return;
 
-            if (dragItem == null || dragItem.treeItemHeader.isRenaming)
+            if (explorerElement.ElementType == ExplorerElementEnum.Root)
+                return;
+
+            _IsDragging = true;
+
+            if (dragItem == null || explorerElement.IsRenaming)
             {
                 _IsDragging = false;
                 return;
@@ -316,14 +209,6 @@ namespace GUI.Components
             _IsDragging = false;
         }
 
-        public void CreateRootItem()
-        {
-            this.map = new TreeItemExplorerElement(Project.CurrentProject.projectFiles[0]);
-            treeViewTriggerExplorer.Items.Add(this.map);
-            this.map.IsExpanded = true;
-            this.map.IsSelected = true;
-        }
-
         private void treeViewItem_DragOver(object sender, DragEventArgs e)
         {
             if (dragItem == null)
@@ -332,11 +217,12 @@ namespace GUI.Components
             if (!dragItem.IsKeyboardFocused)
                 return;
 
-            TreeViewItem currentParent = dragItem.Parent as TreeViewItem;
-            if (currentParent == null)
+            var dragItemExplorerElement = GetExplorerElementFromItem(dragItem);
+            if (dragItemExplorerElement.ElementType == ExplorerElementEnum.Root)
                 return;
 
-            TreeItemExplorerElement dropTarget = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+            var currentParent = TreeViewItemHelper.GetTreeItemParent(dragItem);
+            TreeViewItem dropTarget = TreeViewItemHelper.GetTraversedTargetDropItem(e.Source as DependencyObject);
             int currentIndex = currentParent.Items.IndexOf(dragItem);
             if (dropTarget == null)
                 return;
@@ -351,18 +237,20 @@ namespace GUI.Components
             if (dropTarget == dragItem)
             {
                 parentDropTarget = null;
+                e.Handled = true;
                 return;
             }
 
             if (UIUtility.IsCircularParent(dragItem, dropTarget))
                 return;
 
-            if (dropTarget is TreeItemExplorerElement && !(dropTarget.Ielement is ExplorerElementRoot))
+            var explorerElementDropTarget = GetExplorerElementFromItem(dropTarget);
+            if (explorerElementDropTarget.ElementType != ExplorerElementEnum.Root)
             {
                 var relativePos = e.GetPosition(dropTarget);
                 TreeItemLocation location = UIUtility.TreeItemGetMouseLocation(dropTarget, relativePos);
 
-                if (dropTarget.Ielement is ExplorerElementFolder)
+                if (explorerElementDropTarget.ElementType == ExplorerElementEnum.Folder)
                     DragOverLogic(dropTarget, location, currentIndex);
                 else
                 {
@@ -374,26 +262,26 @@ namespace GUI.Components
                 }
 
             }
-            else
-                parentDropTarget = null;
+            //else
+            //parentDropTarget = null;
+
+            e.Handled = true;
         }
 
-        private void DragOverLogic(TreeItemExplorerElement dropTarget, TreeItemLocation location, int currentIndex)
+        private void DragOverLogic(TreeViewItem dropTarget, TreeItemLocation location, int currentIndex)
         {
+            var explorerElementDropTarget = GetExplorerElementFromItem(dropTarget);
             if (location == TreeItemLocation.Top)
             {
                 adorner = AdornerLayer.GetAdornerLayer(dropTarget);
                 lineIndicator = new TreeItemAdornerLine(dropTarget, true);
                 adorner.Add(lineIndicator);
 
-                parentDropTarget = (TreeViewItem)dropTarget.Parent;
-                insertIndex = parentDropTarget.Items.IndexOf(dropTarget);
-
-                // We detach the item before inserting, so the index goes one down.
-                if (dropTarget.Parent == dragItem.Parent && insertIndex > currentIndex)
-                    insertIndex--;
+                parentDropTarget = TreeViewItemHelper.GetTreeItemParent(dropTarget) as TreeViewItem;
+                var explorerParentDropTarget = explorerElementDropTarget.GetParent();
+                insertIndex = explorerParentDropTarget.ExplorerElements.IndexOf(explorerElementDropTarget);
             }
-            else if (location == TreeItemLocation.Middle && dropTarget.Ielement is ExplorerElementFolder)
+            else if (location == TreeItemLocation.Middle && explorerElementDropTarget.ElementType == ExplorerElementEnum.Folder)
             {
                 adorner = AdornerLayer.GetAdornerLayer(dropTarget);
                 dropTarget.Background = new SolidColorBrush(Color.FromArgb(100, 255, 255, 255));
@@ -409,8 +297,9 @@ namespace GUI.Components
                 lineIndicator = new TreeItemAdornerLine(dropTarget, false);
                 adorner.Add(lineIndicator);
 
-                parentDropTarget = (TreeViewItem)dropTarget.Parent;
-                insertIndex = parentDropTarget.Items.IndexOf(dropTarget) + 1;
+                parentDropTarget = TreeViewItemHelper.GetTreeItemParent(dropTarget) as TreeViewItem;
+                var explorerParentDropTarget = explorerElementDropTarget.GetParent();
+                insertIndex = explorerParentDropTarget.ExplorerElements.IndexOf(explorerElementDropTarget) + 1;
 
                 // We detach the item before inserting, so the index goes one down.
                 if (dropTarget.Parent == dragItem.Parent && insertIndex > currentIndex)
@@ -439,17 +328,19 @@ namespace GUI.Components
                 return;
 
             parentDropTarget.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-            var dragItemParent = (TreeItemExplorerElement)dragItem.Parent;
+            var dragItemParent = TreeViewItemHelper.GetTreeItemParent(dragItem);
+            var explorerElementDragItem = GetExplorerElementFromItem(dragItem);
             if (dragItemParent == parentDropTarget)
             {
-                Project.CurrentProject.RearrangeElement(dragItem.Ielement, insertIndex);
+                Project.CurrentProject.RearrangeElement(explorerElementDragItem, insertIndex);
                 return;
             }
 
-            var dropTarget = (TreeItemExplorerElement)parentDropTarget;
+            var dropTarget = parentDropTarget;
+            var explorerElementDropTarget = GetExplorerElementFromItem(dropTarget);
             try
             {
-                FileSystemUtil.Move(dragItem.Ielement.GetPath(), dropTarget.Ielement.GetPath(), this.insertIndex);
+                FileSystemUtil.Move(explorerElementDragItem.GetPath(), explorerElementDropTarget.GetPath(), this.insertIndex);
             }
             catch (Exception ex)
             {
@@ -461,69 +352,34 @@ namespace GUI.Components
             dragItem.IsSelected = true;
         }
 
-        private void treeViewItem_Expanded(object sender, RoutedEventArgs e)
-        {
-            var treeItem = (TreeItemExplorerElement)e.Source;
-            var explorerElement = treeItem.Ielement as ExplorerElementFolder;
-            if (explorerElement == null)
-                return;
-
-            explorerElement.isExpanded = true;
-        }
-
-        private void treeViewItem_Collapsed(object sender, RoutedEventArgs e)
-        {
-            var treeItem = (TreeItemExplorerElement)e.Source;
-            var explorerElement = treeItem.Ielement as ExplorerElementFolder;
-            if (explorerElement == null)
-                return;
-
-            explorerElement.isExpanded = false;
-        }
-
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
+            var selected = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+            if (selected == null)
+            {
+                return;
+            }
+
             if (e.Key == Key.Enter)
             {
-                var selected = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                if (selected != null)
-                    OnOpenExplorerElement?.Invoke(treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement);
+                OnOpenExplorerElement?.Invoke(selected);
             }
 
             else if (e.Key == Key.Delete)
             {
-                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                if (selectedElement == null || selectedElement == map)
-                    return;
-
-                List<ExplorerElementTrigger> refs = selectedElement.Ielement.GetReferrers();
-                if (refs.Count > 0)
-                {
-                    DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);
-                    dialogBox.ShowDialog();
-                    if (!dialogBox.OK)
-                        return;
-                }
-
-                FileSystemUtil.Delete(selectedElement.Ielement.GetPath());
+                DeleteElement(selected);
             }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                Project.CurrentProject.CopyExplorerElement(selectedElement.Ielement);
+                Project.CurrentProject.CopyExplorerElement(selected);
             }
             else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                Project.CurrentProject.CopyExplorerElement(selectedElement.Ielement, true);
+                Project.CurrentProject.CopyExplorerElement(selected, true);
             }
             else if (e.Key == Key.V && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                TreeItemExplorerElement selectedElement = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
-                IExplorerElement pasted = Project.CurrentProject.PasteExplorerElement(selectedElement.Ielement);
-
-                var parent = FindTreeNodeDirectory(pasted.GetParent().GetPath());
-                RecursePopulate(parent, pasted);
+                Project.CurrentProject.PasteExplorerElement(selected);
             }
             else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
@@ -531,9 +387,52 @@ namespace GUI.Components
             }
         }
 
-        private void treeViewTriggerExplorer_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void DeleteElement(ExplorerElement toDelete)
         {
-            TreeItemExplorerElement rightClickedElement = GetTraversedTargetDropItem(e.Source as FrameworkElement);
+            if (toDelete.ElementType == ExplorerElementEnum.Root)
+                return;
+
+            List<ExplorerElement> refs = toDelete.GetReferrers();
+            if (refs.Count > 0)
+            {
+                DialogBoxReferences dialogBox = new DialogBoxReferences(refs, ExplorerAction.Delete);
+                dialogBox.ShowDialog();
+                if (!dialogBox.OK)
+                    return;
+            }
+
+            DialogBox dialog = new DialogBox("Delete Element", $"Are you sure you want to delete '{toDelete.GetName()}' ?");
+            dialog.ShowDialog();
+            if (dialog.OK)
+            {
+                toDelete.Delete();
+            }
+        }
+
+        private void OpenContextMenu(ExplorerElement explorerElement, MouseButtonEventArgs e)
+        {
+            menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
+            menuElementEnabled.IsChecked = explorerElement.IsEnabled;
+            menuElementInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
+            menuElementEnabled.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger || explorerElement.ElementType == ExplorerElementEnum.Script;
+            menuElementInitiallyOn.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger;
+            menuRename.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuDelete.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuCut.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuCopy.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+
+            contextMenu.IsOpen = true;
+
+            e.Handled = true;
+        }
+
+        private void treeViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var rightClickedElement = sender as TreeViewItem;
+            if (rightClickedElement == null)
+                return;
+
+            var explorerElement = GetExplorerElementFromItem(rightClickedElement);
 
             if (rightClickedElement == null)
                 return;
@@ -542,46 +441,57 @@ namespace GUI.Components
             rightClickedElement.IsSelected = true;
             rightClickedElement.ContextMenu = contextMenu;
 
-            menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
-            menuElementEnabled.IsChecked = rightClickedElement.Ielement.GetEnabled();
-            menuElementInitiallyOn.IsChecked = rightClickedElement.Ielement.GetInitiallyOn();
-            menuElementEnabled.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger || rightClickedElement.Ielement is ExplorerElementScript;
-            menuElementInitiallyOn.IsEnabled = rightClickedElement.Ielement is ExplorerElementTrigger;
-            menuRename.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
-            menuDelete.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
-            menuCut.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
-            menuCopy.IsEnabled = rightClickedElement.Ielement is not ExplorerElementRoot;
+            OpenContextMenu(explorerElement, e);
+        }
+
+        private void listViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var rightClickedElement = sender as ListViewItem;
+            if (rightClickedElement == null)
+                return;
+
+            var explorerElement = GetExplorerElementFromItem(rightClickedElement);
+
+            if (rightClickedElement == null)
+                return;
+
+            rightClickedElement.IsSelected = true;
+            rightClickedElement.ContextMenu = contextMenu;
+
+            OpenContextMenu(explorerElement, e);
         }
 
         private void menuCut_Click(object sender, RoutedEventArgs e)
         {
             Project project = Project.CurrentProject;
-            project.CopyExplorerElement(currentElement.Ielement, true);
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            project.CopyExplorerElement(explorerElement, true);
         }
 
         private void menuCopy_Click(object sender, RoutedEventArgs e)
         {
             Project project = Project.CurrentProject;
-            project.CopyExplorerElement(currentElement.Ielement);
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            project.CopyExplorerElement(explorerElement);
         }
 
         private void menuPaste_Click(object sender, RoutedEventArgs e)
         {
             Project project = Project.CurrentProject;
-            IExplorerElement pasted = project.PasteExplorerElement(currentElement.Ielement);
-
-            var parent = FindTreeNodeDirectory(pasted.GetParent().GetPath());
-            RecursePopulate(parent, pasted);
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            project.PasteExplorerElement(explorerElement);
         }
 
         private void menuRename_Click(object sender, RoutedEventArgs e)
         {
-            currentElement.ShowRenameBox();
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            explorerElement.RenameBoxVisibility = Visibility.Visible;
         }
 
         private void menuDelete_Click(object sender, RoutedEventArgs e)
         {
-            FileSystemUtil.Delete(currentElement.Ielement.GetPath());
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            DeleteElement(explorerElement);
         }
 
         private void menuNewCategory_Click(object sender, RoutedEventArgs e)
@@ -606,93 +516,53 @@ namespace GUI.Components
 
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: This will not update the checkmark in the editor view.
-            currentElement.Ielement.SetEnabled(!currentElement.Ielement.GetEnabled());
-            if (currentElement.editor != null)
-                currentElement.editor.OnStateChange();
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            explorerElement.IsEnabled = !explorerElement.IsEnabled;
         }
 
         private void menuElementInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
-            currentElement.Ielement.SetInitiallyOn(!currentElement.Ielement.GetInitiallyOn());
-            if (currentElement.editor != null)
-                currentElement.editor.OnStateChange();
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            explorerElement.IsInitiallyOn = !explorerElement.IsInitiallyOn;
         }
 
         private void menuOpenInExplorer_Click(object sender, RoutedEventArgs e)
         {
-            FileSystemUtil.OpenInExplorer(currentElement.Ielement.GetPath());
+            var explorerElement = GetExplorerElementFromItem(currentElement);
+            FileSystemUtil.OpenInExplorer(explorerElement.GetPath());
         }
 
-        private void OpenSearchField()
+        public void NavigateToExplorerElement(ExplorerElement explorerElement)
         {
-            searchField.Visibility = searchField.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-            if (searchField.Visibility == Visibility.Visible)
-                searchTextBox.Focus();
-        }
-
-        private void CloseSearchField()
-        {
-            searchField.Visibility = Visibility.Hidden;
-            var treeItem = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
-            if (treeItem != null)
-                treeItem.Focus();
-        }
-
-        private void btnCloseSearchField_Click(object sender, RoutedEventArgs e)
-        {
-            CloseSearchField();
-        }
-
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            Search(searchTextBox.Text);
-        }
-
-        private void searchTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                Search(searchTextBox.Text);
-            else if (e.Key == Key.Escape)
-                CloseSearchField();
-        }
-
-        /// <summary>
-        /// Searches for a trigger element with the specified text, and brings the first matching result into view in the trigger explorer.
-        /// </summary>
-        internal void Search(string searchText)
-        {
-            TreeItemBT treeItem = SearchForElement(searchText, treeViewTriggerExplorer.Items[0] as TreeItemBT);
-            if (treeItem != null)
+            List<ExplorerElement> itemsToExpand = new();
+            while (true)
             {
-                TreeItemBT parent = treeItem.Parent as TreeItemBT;
-                while (parent != null)
-                {
-                    parent.IsExpanded = true;
-                    parent = parent.Parent as TreeItemBT;
-                }
-                treeItem.IsSelected = true;
-                treeItem.BringIntoView();
-                //treeItem.Focus();
+                itemsToExpand.Add(explorerElement);
+                explorerElement = explorerElement.GetParent();
+                if (explorerElement.ElementType == ExplorerElementEnum.Root)
+                    break;
             }
+
+            for (int i = itemsToExpand.Count - 1; i >= 0; i--)
+            {
+                explorerElement = itemsToExpand[i];
+                explorerElement.IsExpanded = true;
+            }
+
+            explorerElement.IsSelected = true;
         }
 
-        private TreeItemBT SearchForElement(string searchText, TreeItemBT parent)
+        private void treeViewItem_Selected(object sender, RoutedEventArgs e)
         {
-            if (parent.GetHeaderText() == searchText)
-                return parent;
+            // Only react to the Selected event raised by the TreeViewItem
+            // whose IsSelected property was modified. Ignore all ancestors
+            // who are merely reporting that a descendant's Selected fired.
+            if (!Object.ReferenceEquals(sender, e.OriginalSource))
+                return;
 
-            TreeItemBT treeItem = null;
-            if (parent.Items.Count > 0)
-            {
-                foreach (var item in parent.Items)
-                {
-                    treeItem = SearchForElement(searchText, item as TreeItemBT);
-                    if (treeItem != null)
-                        break;
-                }
-            }
-            return treeItem;
+            TreeViewItem item = e.OriginalSource as TreeViewItem;
+            if (item != null)
+                item.BringIntoView();
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
@@ -701,7 +571,7 @@ namespace GUI.Components
             {
                 if (searchMenu.Visibility == Visibility.Hidden)
                 {
-                    treeViewSearch.Items.Clear();
+                    viewModel.SearchedFiles.Clear();
                     searchMenu.Visibility = Visibility.Visible;
                 }
 
@@ -728,40 +598,40 @@ namespace GUI.Components
 
         private void DoSearch()
         {
-            treeViewSearch.Items.Clear();
+            viewModel.SearchedFiles.Clear();
             if (string.IsNullOrEmpty(searchBox.Text))
                 return;
 
-            treeItems = GetSubTreeItems(map);
+            Project project = Project.CurrentProject;
+            searchItems = project.GetAllExplorerElements();
             searchWord = searchBox.Text.ToLower();
             searchWorker.RunWorkerAsync();
         }
 
-        List<TreeItemExplorerElement> treeItems = new();
+        List<ExplorerElement> searchItems = new();
         string searchWord;
         private void SearchWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (e.ProgressPercentage < 100)
             {
-                TreeItemExplorerElement newItem = new TreeItemExplorerElement(e.UserState as IExplorerElement);
-                treeViewSearch.Items.Add(newItem);
+                viewModel.SearchedFiles.Add(e.UserState as ExplorerElement);
             }
         }
 
         private void SearchWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i < treeItems.Count; i++)
+            for (int i = 0; i < searchItems.Count; i++)
             {
-                var item = treeItems[i];
+                var explorerElement = searchItems[i];
                 if (searchWorker.CancellationPending)
                 {
                     e.Cancel = true;
                     break;
                 }
 
-                if (item.Ielement.GetName().ToLower().Contains(searchWord))
+                if (explorerElement.GetName().ToLower().Contains(searchWord))
                 {
-                    searchWorker.ReportProgress(0, item.Ielement);
+                    searchWorker.ReportProgress(0, explorerElement);
                     Thread.Sleep(5);
                 }
             }
@@ -769,24 +639,11 @@ namespace GUI.Components
             searchWorker.ReportProgress(100);
         }
 
-        private List<TreeItemExplorerElement> GetSubTreeItems(TreeItemExplorerElement source)
-        {
-            List<TreeItemExplorerElement> list = new();
-            var items = source.Items.SourceCollection.GetEnumerator();
-            while (items.MoveNext())
-            {
-                var item = (TreeItemExplorerElement)items.Current;
-                list.Add(item);
-                if (item.Items.Count > 0)
-                    list.AddRange(GetSubTreeItems(item)); // recurse
-            }
+        
 
-            return list;
-        }
-
-        private void treeViewTriggerExplorer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeItemExplorerElement selected = treeViewTriggerExplorer.SelectedItem as TreeItemExplorerElement;
+            var selected = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
             if (selected != null)
             {
                 OnOpenExplorerElement?.Invoke(selected);
@@ -794,9 +651,9 @@ namespace GUI.Components
             }
         }
 
-        private void treeViewSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeItemExplorerElement selected = treeViewSearch.SelectedItem as TreeItemExplorerElement;
+            var selected = listViewSearch.SelectedItem as ExplorerElement;
             if (selected != null)
             {
                 OnOpenExplorerElement?.Invoke(selected);
@@ -804,14 +661,18 @@ namespace GUI.Components
             }
         }
 
-        private void treeViewSearch_KeyDown(object sender, KeyEventArgs e)
+
+        private void listViewSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
                 return;
 
-            TreeItemExplorerElement selected = treeViewSearch.SelectedItem as TreeItemExplorerElement;
+            ListViewItem selected = listViewSearch.SelectedItem as ListViewItem;
             if (selected != null)
-                OnOpenExplorerElement?.Invoke(selected);
+            {
+                var explorerElement = GetExplorerElementFromItem(selected);
+                OnOpenExplorerElement?.Invoke(explorerElement);
+            }
         }
 
         private void btnCloseSearchMenu_Click(object sender, RoutedEventArgs e)

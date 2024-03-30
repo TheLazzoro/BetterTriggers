@@ -8,15 +8,15 @@ namespace BetterTriggers.Commands
     public class CommandExplorerElementMove : ICommand
     {
         string commandName = "Move Explorer Element";
-        IExplorerElement explorerElement;
-        IExplorerElement oldParent;
-        IExplorerElement newParent;
+        ExplorerElement explorerElement;
+        ExplorerElement oldParent;
+        ExplorerElement newParent;
         string oldFullPath;
         string newFullPath;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandExplorerElementMove(IExplorerElement explorerElement, string newFullPath, int NewInsertIndex)
+        public CommandExplorerElementMove(ExplorerElement explorerElement, string newFullPath, int NewInsertIndex)
         {
             var project = Project.CurrentProject;
             var rootNode = project.projectFiles[0];
@@ -40,7 +40,6 @@ namespace BetterTriggers.Commands
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(newParent, NewInsertIndex);
             project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
-            explorerElement.ChangedPosition();
 
             project.CommandManager.AddCommand(this);
         }
@@ -58,7 +57,6 @@ namespace BetterTriggers.Commands
 
             project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
-            explorerElement.ChangedPosition();
         }
 
         public void Undo()
@@ -73,7 +71,6 @@ namespace BetterTriggers.Commands
 
             project.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
-            explorerElement.ChangedPosition();
         }
 
         public string GetCommandName()

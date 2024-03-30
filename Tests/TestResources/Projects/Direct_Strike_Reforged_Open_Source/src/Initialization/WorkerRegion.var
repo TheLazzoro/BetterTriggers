@@ -1,0 +1,14 @@
+{
+  "Id": 100663296,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "WorkerRegion",
+  "Type": "rect",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

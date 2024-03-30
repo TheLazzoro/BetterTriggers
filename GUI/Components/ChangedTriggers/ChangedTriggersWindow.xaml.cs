@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace GUI.Components.ChangedTriggers
 {
@@ -20,29 +22,30 @@ namespace GUI.Components.ChangedTriggers
     /// </summary>
     public partial class ChangedTriggersWindow : Window
     {
-        public ChangedTriggersWindow(List<IExplorerElement> explorerElements)
+        public ChangedTriggersWindow(List<ExplorerElement> explorerElements)
         {
             InitializeComponent();
+
+            var viewModel = new ChangedTriggersViewModel();
+            DataContext = viewModel;
 
             for (int i = 0; i < explorerElements.Count; i++)
             {
                 var element = explorerElements[i];
-
-                ListViewItem item = new ListViewItem();
-                item.Content = element.GetName();
-                listView.Items.Add(item);
-
-                item.Selected += Item_Selected;
+                viewModel.ChangedElements.Add(element);
             }
+
         }
 
-        private void Item_Selected(object sender, RoutedEventArgs e)
+        private void ListViewItem_MouseDown(object sender, RoutedEventArgs e)
         {
             var item = e.Source as ListViewItem;
-            string name = item.Content as string;
-            var triggerExplorer = TriggerExplorer.Current;
+            if (item == null)
+                return;
 
-            triggerExplorer.Search(name);
+            ExplorerElement element = item.DataContext as ExplorerElement;
+            var triggerExplorer = TriggerExplorer.Current;
+            triggerExplorer.NavigateToExplorerElement(element);
         }
     }
 }

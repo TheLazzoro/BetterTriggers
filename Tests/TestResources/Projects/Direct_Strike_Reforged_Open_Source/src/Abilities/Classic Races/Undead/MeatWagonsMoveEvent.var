@@ -1,0 +1,14 @@
+{
+  "Id": 100663339,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "MeatWagonsMoveEvent",
+  "Type": "real",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

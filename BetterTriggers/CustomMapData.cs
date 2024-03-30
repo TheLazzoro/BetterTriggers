@@ -3,6 +3,7 @@ using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
+using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
@@ -166,13 +167,13 @@ namespace BetterTriggers
         /// Also checks for ID collisions.
         /// </summary>
         /// <returns>A list of modified triggers.</returns>
-        public static List<IExplorerElement> ReloadMapData()
+        public static List<ExplorerElement> ReloadMapData()
         {
             // Check for ID collisions
-            List<Tuple<ExplorerElementTrigger, ExplorerElementTrigger>> triggersWithIdCollision = new();
-            List<Tuple<ExplorerElementVariable, ExplorerElementVariable>> variablesWithIdCollision = new();
-            List<ExplorerElementTrigger> checkedTriggers = new List<ExplorerElementTrigger>();
-            List<ExplorerElementVariable> checkedVariables = new List<ExplorerElementVariable>();
+            List<Tuple<ExplorerElement, ExplorerElement>> triggersWithIdCollision = new();
+            List<Tuple<ExplorerElement, ExplorerElement>> variablesWithIdCollision = new();
+            List<ExplorerElement> checkedTriggers = new List<ExplorerElement>();
+            List<ExplorerElement> checkedVariables = new List<ExplorerElement>();
 
             var triggers = Project.CurrentProject.Triggers.GetAll();
             var variables = Project.CurrentProject.Variables.GetGlobals();
@@ -181,7 +182,7 @@ namespace BetterTriggers
                 checkedTriggers.ForEach(check =>
                 {
                     if (t.GetId() == check.GetId())
-                        triggersWithIdCollision.Add(new Tuple<ExplorerElementTrigger, ExplorerElementTrigger>(t, check));
+                        triggersWithIdCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(t, check));
                 });
 
                 checkedTriggers.Add(t);
@@ -191,7 +192,7 @@ namespace BetterTriggers
                 checkedVariables.ForEach(check =>
                 {
                     if (v.GetId() == check.GetId())
-                        variablesWithIdCollision.Add(new Tuple<ExplorerElementVariable, ExplorerElementVariable>(v, check));
+                        variablesWithIdCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(v, check));
                 });
 
                 checkedVariables.Add(v);
@@ -204,19 +205,20 @@ namespace BetterTriggers
             Project.CurrentProject.CommandManager.Reset();
             CustomMapData.Load();
             var changed = CustomMapData.RemoveInvalidReferences();
-            changed.ForEach(trig => Project.CurrentProject.UnsavedFiles.AddToUnsaved(trig));
+            changed.ForEach(trig => trig.AddToUnsaved());
 
             return changed;
         }
 
-        private static List<IExplorerElement> RemoveInvalidReferences()
+        private static List<ExplorerElement> RemoveInvalidReferences()
         {
-            List<IExplorerElement> modified = new List<IExplorerElement>();
+            List<ExplorerElement> modified = new List<ExplorerElement>();
             var triggers = Project.CurrentProject.Triggers.GetAll();
             for (int i = 0; i < triggers.Count; i++)
             {
-                bool wasRemoved = Project.CurrentProject.Triggers.RemoveInvalidReferences(triggers[i]);
-                if (wasRemoved)
+                TriggerValidator validator = new TriggerValidator(triggers[i]);
+                int invalidCount = validator.RemoveInvalidReferences();
+                if (invalidCount > 0)
                     modified.Add(triggers[i]);
 
                 triggers[i].Notify();

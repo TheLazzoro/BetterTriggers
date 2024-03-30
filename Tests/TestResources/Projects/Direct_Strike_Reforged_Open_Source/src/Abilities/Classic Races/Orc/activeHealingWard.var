@@ -1,0 +1,15 @@
+{
+  "Id": 100663468,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activeHealingWard",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

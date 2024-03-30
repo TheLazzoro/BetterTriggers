@@ -1,0 +1,14 @@
+{
+  "Id": 100663319,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "UnitBuildingSwap",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

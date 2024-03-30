@@ -8,13 +8,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Media.Animation;
+using War3Net.Build.Script;
 
 namespace BetterTriggers.Containers
 {
     public class Variables
     {
         public static bool includeLocals { get; set; } = true; // hack
-        public HashSet<ExplorerElementVariable> variableContainer = new HashSet<ExplorerElementVariable>();
+        public HashSet<ExplorerElement> variableContainer = new HashSet<ExplorerElement>();
         public HashSet<Variable> localVariableContainer = new HashSet<Variable>();
 
         /// <returns>Full path.</returns>
@@ -28,12 +30,12 @@ namespace BetterTriggers.Containers
             string name = GenerateName();
 
             // Default variable is always an integer on creation.
-            Variable variable = new Variable()
+            Variable_Saveable variable = new Variable_Saveable()
             {
                 Id = GenerateId(),
                 Name = name,
                 Type = "integer",
-                InitialValue = new Value() { value = "0" },
+                InitialValue = new Value_Saveable() { value = "0" },
                 ArraySize = new int[] { 1, 1 },
             };
             string json = JsonConvert.SerializeObject(variable);
@@ -43,16 +45,24 @@ namespace BetterTriggers.Containers
             return fullPath;
         }
 
-        public void CreateLocalVariable(Trigger trig, LocalVariable localVariable, List<TriggerElement> parent, int insertIndex)
+        public LocalVariable CreateLocalVariable(ExplorerElement explorerElement, int insertIndex)
         {
+            var trig = explorerElement.trigger;
+            TriggerElementCollection parent = trig.LocalVariables;
+            LocalVariable localVariable = new LocalVariable();
             localVariable.variable.Name = GenerateLocalName(trig);
             localVariable.variable.Id = GenerateId();
             localVariable.variable.Type = "integer";
             localVariable.variable.ArraySize = new int[] { 1, 1 };
             localVariable.variable.InitialValue = new Value() { value = "0" };
+            localVariable.DisplayText = localVariable.variable.Name;
+            localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
+            localVariableContainer.Add(localVariable.variable);
 
-            CommandTriggerElementCreate command = new CommandTriggerElementCreate(localVariable, parent, insertIndex);
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, localVariable, parent, insertIndex);
             command.Execute();
+
+            return localVariable;
         }
 
         public void RenameLocalVariable(Trigger trig, LocalVariable variable, string newName)
@@ -60,7 +70,12 @@ namespace BetterTriggers.Containers
             if (newName == variable.variable.Name)
                 return;
 
-            foreach (LocalVariable v in trig.LocalVariables)
+            if (string.IsNullOrEmpty(newName))
+            {
+                throw new Exception("Name cannot be empty.");
+            }
+
+            foreach (LocalVariable v in trig.LocalVariables.Elements)
             {
                 if (v.variable.Name == newName)
                     throw new Exception($"Local variable with name '{newName}' already exists.");
@@ -69,13 +84,13 @@ namespace BetterTriggers.Containers
             CommandLocalVariableRename command = new CommandLocalVariableRename(variable, newName);
             command.Execute();
         }
-        
+
         /// <summary>
         /// Returns true if initial value was removed.
         /// </summary>
-        internal bool RemoveInvalidReference(ExplorerElementVariable explorerElementVariable)
+        internal bool RemoveInvalidReference(ExplorerElement ExplorerElement)
         {
-            Variable variable = explorerElementVariable.variable;
+            Variable variable = ExplorerElement.variable;
             if (variable.InitialValue is Value value)
             {
                 bool dataExists = CustomMapData.ReferencedDataExists(value, variable.Type);
@@ -96,11 +111,15 @@ namespace BetterTriggers.Containers
             all.AddRange(GetGlobals().Select(v => v.variable)); // globals
             if (includeLocals)
             {
-                trig.LocalVariables.ForEach(e =>
-                { // locals
-                    var lv = (LocalVariable)e;
-                    all.Add(lv.variable);
-                });
+                bool isParameterFromVariableInitialValue = trig == null;
+                if (isParameterFromVariableInitialValue == false)
+                {
+                    trig.LocalVariables.Elements.ForEach(e =>
+                    { // locals
+                        var lv = (LocalVariable)e;
+                        all.Add(lv.variable);
+                    });
+                }
             }
 
             for (int i = 0; i < all.Count; i++)
@@ -168,7 +187,7 @@ namespace BetterTriggers.Containers
         }
 
 
-        internal void AddVariable(ExplorerElementVariable variable)
+        internal void AddVariable(ExplorerElement variable)
         {
             variableContainer.Add(variable);
         }
@@ -257,9 +276,9 @@ namespace BetterTriggers.Containers
             string name = baseName;
             int i = 0;
             bool validName = false;
-            while (!validName && trig.LocalVariables.Count > 0)
+            while (!validName && trig.LocalVariables.Elements.Count > 0)
             {
-                foreach (LocalVariable localVar in trig.LocalVariables)
+                foreach (LocalVariable localVar in trig.LocalVariables.Elements)
                 {
                     validName = name != localVar.variable.Name;
                     if (!validName)
@@ -284,7 +303,7 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-        public List<ExplorerElementVariable> GetGlobals()
+        public List<ExplorerElement> GetGlobals()
         {
             return variableContainer.ToList();
         }
@@ -309,9 +328,9 @@ namespace BetterTriggers.Containers
 
             if (trig != null) // for local variables
             {
-                for (int i = 0; i < trig.LocalVariables.Count; i++)
+                for (int i = 0; i < trig.LocalVariables.Elements.Count; i++)
                 {
-                    var localVar = (LocalVariable)trig.LocalVariables[i];
+                    var localVar = (LocalVariable)trig.LocalVariables.Elements[i];
                     if (localVar.variable.Id == Id)
                     {
                         var = localVar.variable;
@@ -380,11 +399,11 @@ namespace BetterTriggers.Containers
             return name;
         }
 
-        internal void Remove(ExplorerElementVariable variable)
+        internal void Remove(ExplorerElement variable)
         {
             variableContainer.Remove(variable);
         }
-        
+
         internal void AddLocalVariable(LocalVariable localVariable)
         {
             localVariableContainer.Add(localVariable.variable);

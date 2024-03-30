@@ -96,8 +96,8 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
 
-            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
-            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" IsChecked="True" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
+            <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
+            <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
             <CheckBox x:Name="checkBoxIsCustomScript" Content="Custom Script" IsChecked="false" Margin="10,0,0,0" Click="checkBoxIsCustomScript_Click"/>
             <CheckBox x:Name="checkBoxRunOnMapInit" Content="Run on Map Initialization" Margin="10,0,0,0" Click="checkBoxRunOnMapInit_Click"/>
 
@@ -112,20 +112,26 @@
         <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#00F0F0F0" Margin="0,3,0,0" />
         <Label Content="Trigger Functions:" VerticalAlignment="Top" Margin="0,10,0,0" Grid.Row="2"/>
 
-        <TreeView x:Name="treeViewTriggers" Background="{DynamicResource BackgroundDark}" BorderBrush="#00828790" Grid.Row="2" Margin="0,35,0,0" AllowDrop="True" SelectedItemChanged="treeViewTriggers_SelectedItemChanged" Drop="treeViewTriggers_Drop" KeyDown="treeViewTriggers_KeyDown" MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp" ContextMenuOpening="treeViewTriggers_ContextMenuOpening" PreviewKeyDown="treeViewTriggers_PreviewKeyDown">
-            <TreeView.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                      Color="Black" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                      Color="Black" />
-            </TreeView.Resources>
+        <TreeView x:Name="treeViewTriggers"
+                  ItemsSource="{Binding Elements}"
+                  Background="{DynamicResource BackgroundDark}"
+                  ItemTemplate="{DynamicResource TreeItemDataTemplateTriggers}"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.CacheLength="256"
+                  BorderBrush="#00828790"
+                  Grid.Row="2"
+                  Margin="0,35,0,0"
+                  AllowDrop="True"
+                  SelectedItemChanged="treeViewTriggers_SelectedItemChanged"
+                  Drop="treeViewTriggers_Drop"
+                  MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp"
+                  ContextMenuOpening="treeViewTriggers_ContextMenuOpening"
+                  MouseDown="treeViewTriggers_MouseDown"
+                  >
+                  <!-- PreviewKeyDown="treeViewTriggers_PreviewKeyDown" -->
 
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <!-- We have to select the item which is right-clicked on -->
                     <!--<EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>-->
                     <EventSetter Event="TreeViewItem.DragOver" Handler="treeViewItem_DragOver"/>
@@ -133,7 +139,13 @@
                     <EventSetter Event="TreeViewItem.MouseMove" Handler="treeViewItem_PreviewMouseMove"/>
                     <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
                     <EventSetter Event="TreeViewItem.KeyDown" Handler="treeViewItem_KeyDown"/>
+                    <EventSetter Event="TreeViewItem.Expanded" Handler="treeViewItem_IsExpanded"/>
+                    <EventSetter Event="TreeViewItem.Collapsed" Handler="treeViewItem_IsCollapsed"/>
                     <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
+                    <EventSetter Event="MouseEnter" Handler="TreeViewItem_OnMouseEnter" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                    <Setter Property="IsEnabled" Value="{Binding IsEnabledTreeItem}"/>
                 </Style>
             </TreeView.ItemContainerStyle>
 

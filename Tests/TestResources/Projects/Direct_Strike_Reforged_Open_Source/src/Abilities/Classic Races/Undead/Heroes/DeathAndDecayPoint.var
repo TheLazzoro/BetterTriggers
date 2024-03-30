@@ -1,0 +1,14 @@
+{
+  "Id": 100663417,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "DeathAndDecayPoint",
+  "Type": "location",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

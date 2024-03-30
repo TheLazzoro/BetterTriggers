@@ -15,7 +15,7 @@ namespace BetterTriggers.JsonBaseConverter
 
         public override bool CanConvert(System.Type objectType)
         {
-            return (objectType == typeof(Parameter));
+            return (objectType == typeof(Parameter_Saveable));
         }
 
         public object Create(Type objectType, JObject jObject)
@@ -26,23 +26,23 @@ namespace BetterTriggers.JsonBaseConverter
                 switch (type)
                 {
                     case 1:
-                        return new Function();
+                        return new Function_Saveable();
                     case 2:
-                        return new Constant();
+                        return new Constant_Saveable();
                     case 3:
-                        return new VariableRef();
+                        return new VariableRef_Saveable();
                     case 4:
-                        return new TriggerRef();
+                        return new TriggerRef_Saveable();
                     case 5:
-                        return new Value();
+                        return new Value_Saveable();
                     default:
-                        return new Parameter();
+                        return new Parameter_Saveable();
                 }
 
                 throw new ApplicationException(String.Format("The given parameter type {0} is not supported!", type));
             }
             else
-                return new Parameter();
+                return new Parameter_Saveable();
 
         }
 

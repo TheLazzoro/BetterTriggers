@@ -80,7 +80,6 @@ namespace GUI.Components
 
             // Autocomplete
             avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
-            avalonEditor.TextArea.Document.Changed += Document_Changed;
 
             // Hover over text
             this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
@@ -141,11 +140,11 @@ namespace GUI.Components
                     while (tabs.MoveNext())
                     {
                         var tab = tabs.Current;
-                        if (tab.explorerElement.editor is ScriptControl scriptControl)
+                        if (tab.Content is ScriptControl scriptControl)
                         {
                             scriptControl.RefreshFontSize();
                         }
-                        else if (tab.explorerElement.editor is RootControl rootControl)
+                        else if (tab.Content is RootControl rootControl)
                         {
                             rootControl.RefreshFontSize();
                         }
@@ -175,11 +174,6 @@ namespace GUI.Components
                 ShowAutoCompletion();
                 e.Handled = true; // prevents a space from being entered when opening autocomplete menu
             }
-        }
-
-        private void Document_Changed(object sender, ICSharpCode.AvalonEdit.Document.DocumentChangeEventArgs e)
-        {
-
         }
 
         private void ShowAutoCompletion()

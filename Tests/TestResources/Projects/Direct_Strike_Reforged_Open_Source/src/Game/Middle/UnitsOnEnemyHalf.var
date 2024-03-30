@@ -1,0 +1,14 @@
+{
+  "Id": 100663333,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "UnitsOnEnemyHalf",
+  "Type": "group",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

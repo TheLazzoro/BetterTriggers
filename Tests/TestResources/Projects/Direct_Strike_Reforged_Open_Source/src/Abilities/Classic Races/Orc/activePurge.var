@@ -1,0 +1,15 @@
+{
+  "Id": 100663463,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activePurge",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

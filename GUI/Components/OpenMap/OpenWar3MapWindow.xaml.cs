@@ -17,9 +17,15 @@ namespace GUI.Components.OpenMap
         private string currentDir;
         private bool useRelativeMapDirectory;
 
+        private OpenWar3MapViewModel _viewModel;
+
         public OpenWar3MapWindow()
         {
             InitializeComponent();
+
+            _viewModel = new OpenWar3MapViewModel();
+            DataContext = _viewModel;
+
             EditorSettings settings = EditorSettings.Load();
             this.Width = settings.selectMapWindowWidth;
             this.Height = settings.selectMapWindowHeight;
@@ -31,8 +37,8 @@ namespace GUI.Components.OpenMap
             useRelativeMapDirectory = project.UseRelativeMapDirectory;
             if (useRelativeMapDirectory)
             {
-                var root = (ExplorerElementRoot)Project.CurrentProject.projectFiles[0];
-                string rootDir = Path.GetDirectoryName(root.GetProjectPath());
+                var root = Project.CurrentProject.projectFiles[0];
+                string rootDir = Path.GetDirectoryName(root.GetPath());
                 path = Path.Combine(rootDir, "map");
                 btnBrowseFiles.Visibility = Visibility.Hidden;
                 if (!Directory.Exists(path))
@@ -77,14 +83,12 @@ namespace GUI.Components.OpenMap
                 var options = new EnumerationOptions();
                 options.IgnoreInaccessible = true;
                 string[] entries = Directory.GetFileSystemEntries(dir, "*", options);
-                treeViewFiles.Items.Clear();
+                _viewModel.Maps.Clear();
                 currentDir = dir;
                 textBox.Text = dir;
                 for (int i = 0; i < entries.Length; i++)
                 {
                     var entry = entries[i];
-                    string name = Path.GetFileName(entry);
-                    string category = TriggerCategory.TC_MAP;
                     string ext = Path.GetExtension(entry);
                     bool isMap = ext == ".w3x" || ext == ".w3m";
                     if (!isMap)
@@ -92,16 +96,11 @@ namespace GUI.Components.OpenMap
                         continue;
                     }
 
-                    TreeItemHeader header = new TreeItemHeader(name, category);
-                    TreeViewItem treeItem = new TreeViewItem();
-                    ListItemData listItemData = new ListItemData(entry, isMap);
-                    treeItem.Tag = listItemData;
-                    treeItem.Header = header;
-                    treeViewFiles.Items.Add(treeItem);
+                    _viewModel.Maps.Add(new MapFile(entry));
                 }
 
-                txtNoMapsFound.Visibility = treeViewFiles.Items.Count == 0 ? Visibility.Visible : Visibility.Hidden;
-                lblFound.Content = "Maps found: " + treeViewFiles.Items.Count;
+                txtNoMapsFound.Visibility = _viewModel.Maps.Count == 0 ? Visibility.Visible : Visibility.Hidden;
+                lblFound.Content = "Maps found: " + _viewModel.Maps.Count;
             }
             catch (Exception ex)
             {
@@ -127,18 +126,17 @@ namespace GUI.Components.OpenMap
 
         private void treeViewFiles_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeViewItem treeItem = treeViewFiles.SelectedItem as TreeViewItem;
+            var treeItem = treeViewFiles.SelectedItem as MapFile;
             if (treeItem == null)
             {
                 btnOK.IsEnabled = false;
                 return;
             }
 
-            ListItemData data = (ListItemData)treeItem.Tag;
-            SelectedPath = data.path;
+            SelectedPath = treeItem.FullPath;
             if(useRelativeMapDirectory)
             {
-                SelectedPath = Path.GetFileName(data.path);
+                SelectedPath = Path.GetFileName(treeItem.FullPath);
             }
             if(!Project.VerifyMapPath(SelectedPath))
             {

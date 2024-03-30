@@ -1,0 +1,14 @@
+{
+  "Id": 100663411,
+  "ArraySize": [
+    200,
+    1
+  ],
+  "Name": "TableBuildingTypes",
+  "Type": "unitcode",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

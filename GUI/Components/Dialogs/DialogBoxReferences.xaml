@@ -6,15 +6,25 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="DialogBox" Height="auto" Width="351" SizeToContent="Height" Background="{DynamicResource BackgroundDark}" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+        Title="DialogBox"
+        Height="400"
+        Width="351"
+        Background="{DynamicResource BackgroundMenu}"
+        WindowStartupLocation="CenterOwner"
+        KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="200*"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="textBlockMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" TextWrapping="Wrap" Margin="15,0,15,0" />
+
+        <ListView x:Name="listView" BorderBrush="Transparent" Grid.Row="2">
+            
+        </ListView>
+        
         <Button Content="OK" Click="OKButton_Click" HorizontalAlignment="Right" Margin="0,0,90,10" Grid.Row="3" Width="70" Height="25"/>
         <Button Content="Cancel" Click="CancelButton_Click" HorizontalAlignment="Right" Margin="0,0,5,10" Grid.Row="3" Width="70" Height="25"/>
     </Grid>

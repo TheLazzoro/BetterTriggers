@@ -5,13 +5,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Threading;
-using System.Windows;
 using War3Net.Build.Info;
 
 namespace Tests
 {
     [TestClass]
-    public class VariableTest
+    public class VariableTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -19,7 +18,7 @@ namespace Tests
         static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElementVariable element1, element2, element3;
+        static ExplorerElement element1, element2, element3;
 
 
         [ClassInitialize]
@@ -45,15 +44,15 @@ namespace Tests
 
             string fullPath = project.Variables.Create();
             project.OnCreateElement(fullPath);
-            element1 = project.lastCreated as ExplorerElementVariable;
+            element1 = project.lastCreated;
 
             fullPath = project.Variables.Create();
             project.OnCreateElement(fullPath);
-            element2 = project.lastCreated as ExplorerElementVariable;
+            element2 = project.lastCreated;
 
             fullPath = project.Variables.Create();
             project.OnCreateElement(fullPath);
-            element3 = project.lastCreated as ExplorerElementVariable;
+            element3 = project.lastCreated;
         }
 
         [TestCleanup]
@@ -68,7 +67,7 @@ namespace Tests
         {
             string fullPath = project.Variables.Create();
             project.OnCreateElement(fullPath);
-            var element = project.lastCreated as ExplorerElementVariable;
+            var element = project.lastCreated;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -80,10 +79,11 @@ namespace Tests
         public void OnPasteVariable()
         {
             project.CopyExplorerElement(element1);
-            var element = project.PasteExplorerElement(element3) as ExplorerElementVariable;
+            var element = project.PasteExplorerElement(element3);
 
             string expectedName = element1.variable.Name + "2";
             string actualName = element.variable.Name;
+            string actualName2 = element.GetName();
 
             int expectedArray0 = element1.variable.ArraySize[0];
             int expectedArray1 = element1.variable.ArraySize[1];
@@ -98,14 +98,15 @@ namespace Tests
             Assert.AreEqual(expectedArray1, actualArray1);
             Assert.AreEqual(expectedType, actualType);
             Assert.AreEqual(expectedName, actualName);
+            Assert.AreEqual(expectedName, actualName2);
         }
 
         [TestMethod]
         public void CloneLocalVariable()
         {
-            var trig = new Trigger();
-            LocalVariable variable = new LocalVariable();
-            project.Variables.CreateLocalVariable(trig, variable, trig.LocalVariables, 0);
+            var explorerElement = new ExplorerElement();
+            explorerElement.trigger = new Trigger();
+            var variable = project.Variables.CreateLocalVariable(explorerElement, 0);
 
             Assert.AreEqual("UntitledVariable", variable.variable.Name);
             Assert.AreEqual(true, variable.variable._isLocal);

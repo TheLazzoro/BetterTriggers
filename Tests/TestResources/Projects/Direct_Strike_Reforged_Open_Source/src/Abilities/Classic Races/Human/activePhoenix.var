@@ -1,0 +1,15 @@
+{
+  "Id": 100663517,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activePhoenix",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

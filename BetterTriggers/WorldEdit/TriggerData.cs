@@ -15,12 +15,13 @@ using War3Net.Build.Info;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BetterTriggers.Containers;
+using War3Net.Common.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
     public class TriggerData
     {
-        internal static Dictionary<string, ConstantTemplate> ConstantTemplates = new Dictionary<string, ConstantTemplate>();
+        internal static Dictionary<string, PresetTemplate> ConstantTemplates = new Dictionary<string, PresetTemplate>();
         internal static Dictionary<string, FunctionTemplate> EventTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> ConditionTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> ActionTemplates = new Dictionary<string, FunctionTemplate>();
@@ -115,42 +116,43 @@ namespace BetterTriggers.WorldEdit
 
                     CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
                     Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
+                    byte[] image = new byte[stream.Length];
+                    stream.CopyTo(image, 0, (int)stream.Length);
 
-                    System.Drawing.Bitmap image = Images.ReadImage(stream);
                     Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
                 }
 
-                System.Drawing.Bitmap img;
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png");
+                byte[] img;
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png");
                 Category.Create(TriggerCategory.TC_MAP, img, "???", false);
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png");
                 Category.Create(TriggerCategory.TC_ACTION, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png");
                 Category.Create(TriggerCategory.TC_CONDITION_NEW, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
                 Category.Create(TriggerCategory.TC_EVENT, img, "Event", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
                 Category.Create(TriggerCategory.TC_ERROR, img, "Error", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
                 Category.Create(TriggerCategory.TC_INVALID, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png");
                 Category.Create(TriggerCategory.TC_TRIGGER_NEW, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png");
                 Category.Create(TriggerCategory.TC_DIRECTORY, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
                 Category.Create(TriggerCategory.TC_SCRIPT, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-setvariables-alpha.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-setvariables-alpha.png");
                 Category.Create(TriggerCategory.TC_LOCAL_VARIABLE, img, "???", false);
 
-                img = new System.Drawing.Bitmap(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
                 Category.Create(TriggerCategory.TC_FRAMEHANDLE, img, "Frame", true);
 
             }
@@ -276,7 +278,7 @@ namespace BetterTriggers.WorldEdit
                 string codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
                 string displayText = Locale.Translate(values[3]);
 
-                ConstantTemplate constant = new ConstantTemplate()
+                PresetTemplate constant = new PresetTemplate()
                 {
                     value = key,
                     returnType = variableType,
@@ -291,10 +293,10 @@ namespace BetterTriggers.WorldEdit
 
             // --- TRIGGER FUNCTIONS --- //
 
-            LoadFunctions(data, "TriggerEvents", EventTemplates);
-            LoadFunctions(data, "TriggerConditions", ConditionTemplates);
-            LoadFunctions(data, "TriggerActions", ActionTemplates);
-            LoadFunctions(data, "TriggerCalls", CallTemplates);
+            LoadFunctions(data, "TriggerEvents", EventTemplates, TriggerElementType.Event);
+            LoadFunctions(data, "TriggerConditions", ConditionTemplates, TriggerElementType.Condition);
+            LoadFunctions(data, "TriggerActions", ActionTemplates, TriggerElementType.Action);
+            LoadFunctions(data, "TriggerCalls", CallTemplates, TriggerElementType.None);
 
             // --- INIT DEFAULTS --- //
             foreach (var function in Defaults)
@@ -309,7 +311,7 @@ namespace BetterTriggers.WorldEdit
 
                     string def = defaultsTxt[i];
                     ParameterTemplate oldParameter = template.parameters[i];
-                    ConstantTemplate constantTemplate = GetConstantTemplate(def);
+                    PresetTemplate constantTemplate = GetConstantTemplate(def);
                     FunctionTemplate functionTemplate = GetFunctionTemplate(def);
                     if (functionTemplate != null)
                         defaults.Add(functionTemplate);
@@ -335,7 +337,7 @@ namespace BetterTriggers.WorldEdit
         }
 
 
-        private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary)
+        private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary, TriggerElementType Type)
         {
             var section = data.Sections[sectionName];
             if (section == null)
@@ -428,7 +430,7 @@ namespace BetterTriggers.WorldEdit
                     // Some actions have 'nothing' as a parameter type. We don't want that.
                     parameters = parameters.Where(p => p.returnType != "nothing").ToList();
                     name = key;
-                    functionTemplate = new FunctionTemplate();
+                    functionTemplate = new FunctionTemplate(Type);
                     functionTemplate.value = key;
                     functionTemplate.parameters = parameters;
                     functionTemplate.returnType = returnType;
@@ -473,7 +475,7 @@ namespace BetterTriggers.WorldEdit
             if (function != null)
                 return function.returnType;
 
-            ConstantTemplate constant;
+            PresetTemplate constant;
             ConstantTemplates.TryGetValue(value, out constant);
             return constant.returnType;
         }
@@ -524,9 +526,9 @@ namespace BetterTriggers.WorldEdit
             return functionTemplate;
         }
 
-        private static ConstantTemplate GetConstantTemplate(string key)
+        private static PresetTemplate GetConstantTemplate(string key)
         {
-            ConstantTemplate constantTemplate;
+            PresetTemplate constantTemplate;
             ConstantTemplates.TryGetValue(key, out constantTemplate);
             return constantTemplate;
         }
@@ -539,7 +541,7 @@ namespace BetterTriggers.WorldEdit
         internal static string GetConstantCodeText(string identifier, ScriptLanguage language)
         {
             string codeText = string.Empty;
-            ConstantTemplate constant;
+            PresetTemplate constant;
             ConstantTemplates.TryGetValue(identifier, out constant);
             codeText = constant.codeText;
             if (language == ScriptLanguage.Lua)
@@ -555,7 +557,7 @@ namespace BetterTriggers.WorldEdit
 
         internal static bool ConstantExists(string value)
         {
-            ConstantTemplate temp;
+            PresetTemplate temp;
             bool exists = ConstantTemplates.TryGetValue(value, out temp);
             return exists;
         }
@@ -670,9 +672,9 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static List<ConstantTemplate> LoadAllConstants()
+        public static List<PresetTemplate> LoadAllConstants()
         {
-            List<ConstantTemplate> list = new List<ConstantTemplate>();
+            List<PresetTemplate> list = new List<PresetTemplate>();
             var enumerator = TriggerData.ConstantTemplates.GetEnumerator();
             while (enumerator.MoveNext())
             {

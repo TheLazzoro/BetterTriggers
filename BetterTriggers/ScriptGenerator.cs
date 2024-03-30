@@ -21,6 +21,7 @@ using War3Net.Build.Environment;
 using System.Text.RegularExpressions;
 using BetterTriggers.Utility;
 using System.Transactions;
+using System.Collections.ObjectModel;
 
 namespace BetterTriggers
 {
@@ -50,9 +51,9 @@ namespace BetterTriggers
 
         Project project;
         ScriptLanguage language;
-        List<ExplorerElementVariable> variables = new List<ExplorerElementVariable>();
-        List<ExplorerElementScript> scripts = new List<ExplorerElementScript>();
-        List<ExplorerElementTrigger> triggers = new List<ExplorerElementTrigger>();
+        List<ExplorerElement> variables = new List<ExplorerElement>();
+        List<ExplorerElement> scripts = new List<ExplorerElement>();
+        List<ExplorerElement> triggers = new List<ExplorerElement>();
         Dictionary<string, Tuple<Parameter, string>> generatedVarNames = new Dictionary<string, Tuple<Parameter, string>>(); // [value, [parameter, returnType] ]
         List<string> globalVarNames = new List<string>(); // Used in an edge case (old maps) where vars are multiple defined.
         CultureInfo enUS = new CultureInfo("en-US");
@@ -176,42 +177,35 @@ end
             return success;
         }
 
-        private void SortTriggerElements(IExplorerElement parent)
+        private void SortTriggerElements(ExplorerElement parent)
         {
             string script = string.Empty;
 
             // Gather all explorer elements
-            List<IExplorerElement> children = new List<IExplorerElement>();
-            if (parent is ExplorerElementRoot)
+            ObservableCollection<ExplorerElement> children = new ();
+            if (parent.ElementType == ExplorerElementEnum.Root || parent.ElementType == ExplorerElementEnum.Folder)
             {
-                var root = (ExplorerElementRoot)parent;
-                children = root.explorerElements;
-            }
-            else if (parent is ExplorerElementFolder)
-            {
-                var root = (ExplorerElementFolder)parent;
-                children = root.explorerElements;
+                children = parent.ExplorerElements;
             }
 
             for (int i = 0; i < children.Count; i++)
             {
-                var element = (IExplorerElement)children[i];
+                var element = children[i];
 
                 if (Directory.Exists(element.GetPath()))
                     SortTriggerElements(element);
-                else if (element is ExplorerElementTrigger)
+                else if (element.ElementType == ExplorerElementEnum.Trigger)
                 {
-                    triggers.Add(element as ExplorerElementTrigger);
+                    triggers.Add(element);
                 }
-                else if (element is ExplorerElementScript)
+                else if (element.ElementType == ExplorerElementEnum.Script)
                 {
-                    scripts.Add(element as ExplorerElementScript);
+                    scripts.Add(element);
                 }
-                else if (element is ExplorerElementVariable)
+                else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
                 {
-                    var variable = (ExplorerElementVariable)element;
-                    variable.variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
-                    variables.Add(element as ExplorerElementVariable);
+                    element.variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
+                    variables.Add(element);
                 }
             }
         }
@@ -289,7 +283,7 @@ end
             {
                 var function = functions[i];
                 List<Parameter> parameters = function.parameters;
-                int errors = project.Triggers.VerifyParameters(parameters);
+                int errors = VerifyParameters(parameters);
                 if (errors > 0)
                 {
                     functions.Remove(function);
@@ -1249,7 +1243,7 @@ end
 
             foreach (var t in triggers)
             {
-                if (!t.isEnabled)
+                if (!t.IsEnabled)
                     continue;
 
                 string triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
@@ -1631,7 +1625,7 @@ end
 
             foreach (var s in scripts)
             {
-                if (!s.isEnabled)
+                if (!s.IsEnabled)
                     continue;
 
                 script.Append(s.script);
@@ -1651,7 +1645,7 @@ end
 
             foreach (var i in triggers)
             {
-                if (!i.isEnabled)
+                if (!i.IsEnabled)
                     continue;
 
                 if (i.trigger.IsScript)
@@ -1717,7 +1711,7 @@ end
             return s.ToString();
         }
 
-        public string ConvertGUIToJass(ExplorerElementTrigger t, List<string> initialization_triggers)
+        public string ConvertGUIToJass(ExplorerElement t, List<string> initialization_triggers)
         {
             triggerName = Ascii.ReplaceNonASCII(t.GetName().Replace(" ", "_"), true);
             string triggerVarName = "gg_trg_" + triggerName;
@@ -1736,9 +1730,9 @@ end
             events.Append($"\t{set} {triggerVarName} = CreateTrigger(){newline}");
 
 
-            foreach (ECA e in t.trigger.Events)
+            foreach (ECA e in t.trigger.Events.Elements)
             {
-                if (!e.isEnabled || e is InvalidECA)
+                if (!e.IsEnabled || e is InvalidECA)
                     continue;
 
                 if (e.function.value == "MapInitializationEvent")
@@ -1759,7 +1753,7 @@ end
                 events.Append($"{_event} {newline}");
             }
 
-            foreach (LocalVariable localVar in t.trigger.LocalVariables)
+            foreach (LocalVariable localVar in t.trigger.LocalVariables.Elements)
             {
                 var v = localVar.variable;
                 localVariables.Add(v);
@@ -1790,7 +1784,7 @@ end
                 events.Insert(0, $"{globals}{newline}");
             }
 
-            foreach (ECA c in t.trigger.Conditions)
+            foreach (ECA c in t.trigger.Conditions.Elements)
             {
                 string condition = ConvertTriggerElementToJass(c, pre_actions, true);
                 if (condition == "")
@@ -1802,7 +1796,7 @@ end
             }
             actions.Insert(0, localVariableInit.ToString());
             actions.Insert(0, $"function {triggerActionName} {functionReturnsNothing}{newline}");
-            foreach (ECA a in t.trigger.Actions)
+            foreach (ECA a in t.trigger.Actions.Elements)
             {
                 actions.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, false)}{newline}");
             }
@@ -1817,7 +1811,7 @@ end
                 events.Append($"\t{call} TriggerAddCondition({triggerVarName}, Condition({function} Trig_{triggerName}_Conditions)){newline}");
             }
 
-            if (!t.isInitiallyOn)
+            if (!t.IsInitiallyOn)
                 events.Append($"\t{call} DisableTrigger({triggerVarName}){newline}");
 
             events.Append($"\t{call} TriggerAddAction({triggerVarName}, {function} {triggerActionName}){newline}");
@@ -1831,9 +1825,9 @@ end
 
         private string ConvertTriggerElementToJass(ECA t, PreActions pre_actions, bool nested)
         {
-            if (!t.isEnabled || t is InvalidECA)
+            if (!t.IsEnabled || t is InvalidECA)
                 return "";
-            if (project.Triggers.VerifyParameters(t.function.parameters) > 0)
+            if (VerifyParameters(t.function.parameters) > 0)
                 return "";
 
             StringBuilder script = new StringBuilder();
@@ -1853,7 +1847,7 @@ end
                 if (t is ForLoopAMultiple)
                 {
                     ForLoopAMultiple loopA = (ForLoopAMultiple)t;
-                    foreach (ECA action in loopA.Actions)
+                    foreach (ECA action in loopA.Actions.Elements)
                     {
                         script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                     }
@@ -1861,7 +1855,7 @@ end
                 else
                 {
                     ForLoopBMultiple loopB = (ForLoopBMultiple)t;
-                    foreach (ECA action in loopB.Actions)
+                    foreach (ECA action in loopB.Actions.Elements)
                     {
                         script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                     }
@@ -1889,7 +1883,7 @@ end
                 script.Append(ConvertParametersToJass(loopVar.function.parameters[1], returnTypes[1], pre_actions) + $"{newline}");
                 script.Append($"\t{startLoop}{varName}{array0}{array1} > {ConvertParametersToJass(loopVar.function.parameters[2], returnTypes[2], pre_actions)}{breakLoop}{newline}");
 
-                foreach (ECA action in loopVar.Actions)
+                foreach (ECA action in loopVar.Actions.Elements)
                 {
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
@@ -1904,11 +1898,11 @@ end
                 IfThenElse ifThenElse = (IfThenElse)t;
 
                 List<ECA> conditions = new List<ECA>();
-                ifThenElse.If.ForEach(c =>
+                ifThenElse.If.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
-                    if (cond.isEnabled && emptyParams == 0)
+                    int emptyParams = VerifyParameters(cond.function.parameters);
+                    if (cond.IsEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
 
@@ -1980,17 +1974,17 @@ end
 
                 //script.Append($") then{newline}");
 
-                foreach (ECA action in ifThenElse.Then)
+                foreach (ECA action in ifThenElse.Then.Elements)
                 {
-                    if (!action.isEnabled)
+                    if (!action.IsEnabled)
                         continue;
 
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
                 }
                 script.Append($"\telse{newline}");
-                foreach (ECA action in ifThenElse.Else)
+                foreach (ECA action in ifThenElse.Else.Elements)
                 {
-                    if (!action.isEnabled)
+                    if (!action.IsEnabled)
                         continue;
 
                     script.Append($"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}");
@@ -2013,7 +2007,7 @@ end
                 if (f.value == "ForForceMultiple")
                 {
                     ForForceMultiple forForce = (ForForceMultiple)t;
-                    foreach (ECA action in forForce.Actions)
+                    foreach (ECA action in forForce.Actions.Elements)
                     {
                         pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                     }
@@ -2021,7 +2015,7 @@ end
                 else
                 {
                     ForGroupMultiple forGroup = (ForGroupMultiple)t;
-                    foreach (ECA action in forGroup.Actions)
+                    foreach (ECA action in forGroup.Actions.Elements)
                     {
                         pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                     }
@@ -2049,7 +2043,7 @@ end
 
                 string pre = string.Empty;
                 string pre_content = string.Empty;
-                foreach (ECA action in enumDest.Actions)
+                foreach (ECA action in enumDest.Actions.Elements)
                 {
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
@@ -2077,7 +2071,7 @@ end
 
                 string pre = string.Empty;
                 string pre_content = string.Empty;
-                foreach (ECA action in enumDest.Actions)
+                foreach (ECA action in enumDest.Actions.Elements)
                 {
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
@@ -2105,7 +2099,7 @@ end
 
                 string pre = string.Empty;
                 string pre_content = string.Empty;
-                foreach (ECA action in enumItem.Actions)
+                foreach (ECA action in enumItem.Actions.Elements)
                 {
                     pre_content += $"\t{ConvertTriggerElementToJass(action, pre_actions, false)}{newline}";
                 }
@@ -2125,11 +2119,11 @@ end
             {
                 AndMultiple andMultiple = (AndMultiple)t;
                 List<ECA> conditions = new List<ECA>();
-                andMultiple.And.ForEach(c =>
+                andMultiple.And.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
-                    if (cond.isEnabled && emptyParams == 0)
+                    int emptyParams = VerifyParameters(cond.function.parameters);
+                    if (cond.IsEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
 
@@ -2197,11 +2191,11 @@ end
             {
                 OrMultiple orMultiple = (OrMultiple)t;
                 List<ECA> conditions = new List<ECA>();
-                orMultiple.Or.ForEach(c =>
+                orMultiple.Or.Elements.ForEach(c =>
                 {
                     ECA cond = (ECA)c;
-                    int emptyParams = project.Triggers.VerifyParameters(cond.function.parameters);
-                    if (cond.isEnabled && emptyParams == 0)
+                    int emptyParams = VerifyParameters(cond.function.parameters);
+                    if (cond.IsEnabled && emptyParams == 0)
                         conditions.Add(cond);
                 });
 
@@ -2274,7 +2268,7 @@ end
         {
             StringBuilder script = new StringBuilder();
 
-            int invalidParams = project.Triggers.VerifyParameters(f.parameters);
+            int invalidParams = VerifyParameters(f.parameters);
             if (invalidParams > 0)
                 return "";
 
@@ -2533,9 +2527,9 @@ end
                 }
                 output += ")";
             }
-            else if (parameter is Constant)
+            else if (parameter is Preset)
             {
-                Constant c = (Constant)parameter;
+                Preset c = (Preset)parameter;
                 if (Types.GetBaseType(returnType) == "string")
                     output += "\"" + TriggerData.GetConstantCodeText(c.value, language) + "\"";
                 else
@@ -2629,6 +2623,50 @@ end
             return output;
         }
 
+        /// <summary>
+        /// Returns amount of invalid parameters.
+        /// </summary>
+        private int VerifyParameters(List<Parameter> parameters)
+        {
+            int invalidCount = 0;
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                var parameter = parameters[i];
+                if (parameter.value == null && !(parameter is VariableRef) && !(parameter is TriggerRef))
+                    invalidCount++;
+
+                if (parameter is Function)
+                {
+                    var function = (Function)parameter;
+                    invalidCount += VerifyParameters(function.parameters);
+                }
+                else if (parameter is VariableRef varRef)
+                {
+                    var variable = Project.CurrentProject.Variables.GetVariableById_AllLocals(varRef.VariableId);
+                    if (variable == null)
+                        invalidCount++;
+                    else
+                    {
+                        List<Parameter> arrays = new List<Parameter>();
+                        if (variable.IsArray)
+                            arrays.Add(varRef.arrayIndexValues[0]);
+                        if (variable.IsArray && variable.IsTwoDimensions)
+                            arrays.Add(varRef.arrayIndexValues[1]);
+
+                        invalidCount += VerifyParameters(arrays);
+                    }
+                }
+                else if (parameter is TriggerRef triggerRef)
+                {
+                    var trigger = Project.CurrentProject.Triggers.GetById(triggerRef.TriggerId);
+                    if (trigger == null)
+                        invalidCount++;
+                }
+            }
+
+            return invalidCount;
+        }
 
         private string generate_function_name(string triggerName)
         {

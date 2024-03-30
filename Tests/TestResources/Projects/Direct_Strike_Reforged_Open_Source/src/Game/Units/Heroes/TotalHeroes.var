@@ -1,0 +1,14 @@
+{
+  "Id": 100663602,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "TotalHeroes",
+  "Type": "integer",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

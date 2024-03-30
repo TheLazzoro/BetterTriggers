@@ -48,7 +48,7 @@
     <Color x:Key="checkboxBackgroundHoverColor">#222</Color>
     <Color x:Key="checkboxBackgroundDisabledColor">#373737</Color>
     <Color x:Key="checkboxBackgroundBorderColor">#111</Color>
-    <Color x:Key="checkboxBackgroundBorderHoverColor">#111</Color>
+    <Color x:Key="checkboxBackgroundBorderHoverColor">#16c</Color>
     <Color x:Key="checkboxBackgroundBorderDisabledColor">#373737</Color>
     <Color x:Key="checkboxGlyphColor">#eee</Color>
     <Color x:Key="checkboxGlyphDisabledColor">#555</Color>
@@ -115,6 +115,11 @@
     <SolidColorBrush x:Key="ButtonIconHoverPressed" Color="{DynamicResource buttonIconHoverPressedColor}" />
     <SolidColorBrush x:Key="ButtonIconHoverBorder" Color="{DynamicResource buttonIconHoverBorderColor}" />
     <SolidColorBrush x:Key="ButtonIconHoverBorderPressed" Color="{DynamicResource buttonIconHoverBorderPressedColor}" />
+
+    <SolidColorBrush x:Key="TextBox.Background" Color="#282828" />
+    <SolidColorBrush x:Key="TextBox.Border" Color="#202020" />
+    <SolidColorBrush x:Key="TextBox.Border.MouseOver" Color="#202020" />
+    <SolidColorBrush x:Key="TextBox.Border.Focused" Color="#202020" />
 
     <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{DynamicResource comboBoxBorderColor}" />
     <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{DynamicResource comboBoxBackgroundColor}" />

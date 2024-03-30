@@ -1,0 +1,14 @@
+{
+  "Id": 100663439,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "Blademasters",
+  "Type": "group",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "Id": 100663302,
+  "ArraySize": [
+    2,
+    1
+  ],
+  "Name": "Teams",
+  "Type": "force",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

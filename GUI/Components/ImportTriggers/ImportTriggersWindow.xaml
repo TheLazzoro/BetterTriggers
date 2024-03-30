@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         UseLayoutRounding="True"
-        Title="Import Triggers" Height="450" Width="800" MinWidth="250" Background="{DynamicResource BackgroundDarker}" WindowStartupLocation="CenterOwner">
+        Title="Import Triggers" Height="450" Width="800" MinWidth="250" Background="{DynamicResource BackgroundMenu}" WindowStartupLocation="CenterOwner">
     <Grid
         x:Name="grid"
         >
@@ -59,10 +59,13 @@
         <TreeView
             x:Name="treeView"
             Background="{DynamicResource BackgroundDark}"
+            ItemsSource="{Binding ExplorerElements}"
+            ItemTemplate="{DynamicResource DataTemplateExplorerElements}"
             Grid.Row="2"
             Grid.RowSpan="2"
             Grid.ColumnSpan="2"
             Margin="0,0,5,0"
+            SelectedItemChanged="treeView_SelectedItemChanged"
         />
 
         <GridSplitter

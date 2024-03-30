@@ -11,7 +11,7 @@ using War3Net.Build.Info;
 namespace Tests
 {
     [TestClass]
-    public class FolderTest
+    public class FolderTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
@@ -19,7 +19,7 @@ namespace Tests
         static War3Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElementFolder element1;
+        static ExplorerElement element1;
 
 
         [ClassInitialize]
@@ -46,7 +46,7 @@ namespace Tests
 
             string fullPath = project.Folders.Create();
             project.OnCreateElement(fullPath);
-            element1 = project.lastCreated as ExplorerElementFolder;
+            element1 = project.lastCreated;
             project.currentSelectedElement = element1.GetPath();
 
             fullPath = project.Variables.Create();
@@ -68,7 +68,7 @@ namespace Tests
         {
             string fullPath = Project.CurrentProject.Folders.Create();
             Project.CurrentProject.OnCreateElement(fullPath);
-            var element = Project.CurrentProject.lastCreated as ExplorerElementFolder;
+            var element = Project.CurrentProject.lastCreated;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -81,22 +81,24 @@ namespace Tests
         {
             var root = Project.CurrentProject.projectFiles[0];
             Project.CurrentProject.CopyExplorerElement(element1);
-            var element = Project.CurrentProject.PasteExplorerElement(root) as ExplorerElementFolder;
+            var pastedElement = Project.CurrentProject.PasteExplorerElement(root);
 
-            int expectedElements = element1.explorerElements.Count;
-            int actualElements = element.explorerElements.Count;
+            int expectedElements = element1.ExplorerElements.Count;
+            int actualElements = pastedElement.ExplorerElements.Count;
 
-            Assert.AreEqual(element, Project.CurrentProject.lastCreated);
+            Assert.AreEqual(pastedElement, Project.CurrentProject.lastCreated);
             Assert.AreEqual(expectedElements, actualElements);
-            Assert.AreNotEqual(element.GetName(), element1.GetName());
+            Assert.AreNotEqual(pastedElement.GetName(), element1.GetName());
 
-            element.explorerElements.ForEach(el =>
+            foreach (var el in pastedElement.ExplorerElements)
             {
-                element1.explorerElements.ForEach(toCompare =>
+                foreach (var toCompare in element1.ExplorerElements)
                 {
-                    Assert.AreNotEqual(el.GetName(), toCompare.GetName());
-                });
-            });
+                    string expected = el.GetName();
+                    string actual = toCompare.GetName();
+                    Assert.AreNotEqual(expected, actual);
+                }
+            }
         }
     }
 }

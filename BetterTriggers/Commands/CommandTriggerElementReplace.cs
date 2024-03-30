@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using System.Collections.Generic;
 
@@ -7,13 +8,15 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementReplace : ICommand
     {
         string commandName = "Replace Trigger Element";
+        ExplorerElement explorerElement;
         TriggerElement toReplace;
         TriggerElement toInsert;
-        List<TriggerElement> parent;
+        TriggerElement parent;
         int insertIndex = 0;
 
-        public CommandTriggerElementReplace(TriggerElement toReplace, TriggerElement toInsert)
+        public CommandTriggerElementReplace(ExplorerElement explorerElement, TriggerElement toReplace, TriggerElement toInsert)
         {
+            this.explorerElement = explorerElement;
             this.toReplace = toReplace;
             this.toInsert = toInsert;
             this.parent = toReplace.GetParent();
@@ -23,26 +26,26 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             toReplace.RemoveFromParent();
-            toReplace.Deleted();
             toInsert.SetParent(parent, insertIndex);
-            toInsert.Created(insertIndex);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            explorerElement.InvokeChange();
+            toInsert.IsSelected = true;
         }
 
         public void Redo()
         {
             toReplace.RemoveFromParent();
-            toReplace.Deleted();
             toInsert.SetParent(parent, insertIndex);
-            toInsert.Created(insertIndex);
+            explorerElement.InvokeChange();
+            toInsert.IsSelected = true;
         }
 
         public void Undo()
         {
             toInsert.RemoveFromParent();
-            toInsert.Deleted();
             toReplace.SetParent(parent, insertIndex);
-            toReplace.Created(insertIndex);
+            explorerElement.InvokeChange();
+            toReplace.IsSelected = true;
         }
 
         public string GetCommandName()

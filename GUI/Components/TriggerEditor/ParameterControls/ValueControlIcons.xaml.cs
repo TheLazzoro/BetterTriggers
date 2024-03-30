@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
@@ -97,7 +98,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             try
             {
                 var bitmap = Icon.Get(textBoxAsset.Text);
-                imgPreview.Source = BitmapConverter.ToBitmapImage(bitmap);
+                imgPreview.Source = BitmapConverter.ByteToImage(bitmap);
                 EventHandler handler = SelectionChanged;
                 handler?.Invoke(this, e);
             }

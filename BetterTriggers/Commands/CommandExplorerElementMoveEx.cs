@@ -10,12 +10,12 @@ namespace BetterTriggers.Commands
     public class CommandExplorerElementMoveEx : ICommand
     {
         string commandName = "Move Trigger Element";
-        IExplorerElement explorerElement;
-        IExplorerElement Parent;
+        ExplorerElement explorerElement;
+        ExplorerElement Parent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandExplorerElementMoveEx(IExplorerElement explorerElement, int NewInsertIndex)
+        public CommandExplorerElementMoveEx(ExplorerElement explorerElement, int NewInsertIndex)
         {
             this.explorerElement = explorerElement;
             this.Parent = explorerElement.GetParent();
@@ -27,7 +27,6 @@ namespace BetterTriggers.Commands
         {
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, NewInsertIndex);
-            explorerElement.ChangedPosition();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -35,14 +34,12 @@ namespace BetterTriggers.Commands
         {
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, NewInsertIndex);
-            explorerElement.ChangedPosition();
         }
 
         public void Undo()
         {
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, OldInsertIndex);
-            explorerElement.ChangedPosition();
         }
 
         public string GetCommandName()

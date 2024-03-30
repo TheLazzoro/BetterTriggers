@@ -8,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Containers;
 
 namespace GUI.Components.Tabs
 {
@@ -29,20 +31,53 @@ namespace GUI.Components.Tabs
                 }
             }
         }
+        public string ToolTip
+        {
+            get => explorerElement.GetPath();
+        }
 
-        public IEditor Content { get; set; }
         public TabViewModel Parent;
-        public TreeItemExplorerElement explorerElement;
+        public ExplorerElement explorerElement;
+        public UserControl Content { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public TabItemBT(TreeItemExplorerElement explorerElement, TabViewModel parent)
+        public TabItemBT(ExplorerElement explorerElement, UserControl editor, TabViewModel parent)
         {
             this.explorerElement = explorerElement;
-            this.explorerElement.tabItem = this;
-            Header = explorerElement.Ielement.GetName();
-            Content = explorerElement.editor;
+            explorerElement.OnChanged += ExplorerElement_OnChanged;
+            explorerElement.OnSaved += ExplorerElement_OnSaved;
+            explorerElement.OnDeleted += ExplorerElement_OnDeleted;
+
+            Content = editor;
             Parent = parent;
+
+            bool isUnsaved = Project.CurrentProject.UnsavedFiles.Contains(explorerElement);
+            if (isUnsaved)
+                ExplorerElement_OnChanged();
+            else
+                ExplorerElement_OnSaved();
+        }
+
+        private void ExplorerElement_OnDeleted()
+        {
+            Parent.Tabs.Remove(this);
+        }
+
+        private void ExplorerElement_OnChanged()
+        {
+            if (explorerElement.ElementType == ExplorerElementEnum.Root)
+                Header = Project.CurrentProject.MapName + " *";
+            else
+                Header = explorerElement.GetName() + " *";
+        }
+
+        private void ExplorerElement_OnSaved()
+        {
+            if (explorerElement.ElementType == ExplorerElementEnum.Root)
+                Header = Project.CurrentProject.MapName;
+            else
+                Header = explorerElement.GetName();
         }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -53,10 +88,8 @@ namespace GUI.Components.Tabs
         public void Close()
         {
             Parent.Tabs.Remove(this);
-            if (explorerElement.editor is TriggerControl triggerControl)
-                triggerControl.Dispose();
-            explorerElement.editor = null;
-            explorerElement.tabItem = null;
+            explorerElement.OnChanged -= ExplorerElement_OnChanged;
+            explorerElement.OnSaved -= ExplorerElement_OnSaved;
         }
     }
 }

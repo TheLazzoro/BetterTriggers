@@ -218,7 +218,7 @@ namespace BetterTriggers.WorldEdit
                 string sort = unit.Sort;
                 string race = unit.Race;
                 string icon = unit.Icon;
-                Bitmap image = unit.Image;
+                byte[] image = unit.Image;
                 var unitType = new UnitType()
                 {
                     Id = baseUnit.ToString().Substring(0, 4),
@@ -242,7 +242,7 @@ namespace BetterTriggers.WorldEdit
                 string sort = baseUnit.Sort;
                 string race = baseUnit.Race;
                 string icon = baseUnit.Icon;
-                Bitmap image = baseUnit.Image;
+                byte[] image = baseUnit.Image;
 
                 var unitType = new UnitType()
                 {
@@ -267,7 +267,7 @@ namespace BetterTriggers.WorldEdit
             string icon = unitType.Icon;
             string sort = unitType.Sort;
             bool isSpecial = unitType.isSpecial;
-            Bitmap image = unitType.Image;
+            byte[] image = unitType.Image;
 
             foreach (var modification in modified.Modifications)
             {

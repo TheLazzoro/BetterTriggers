@@ -15,14 +15,12 @@ namespace GUI.Components.TriggerEditor
 {
     public class HyperlinkParameterVariable : HyperlinkBT
     {
-        internal ParameterFacadeVariable parameterFacade;
-        Variable variable;
+        private Variable variable;
 
-        public HyperlinkParameterVariable(ParameterFacadeVariable parameterFacade, string text)
-            : base(parameterFacade.GetParameter(0), text)
+        public HyperlinkParameterVariable(Variable variable, Parameter parameter, string text)
+            : base(parameter, text)
         {
-            this.parameterFacade = parameterFacade;
-            this.variable = parameterFacade.GetVariable();
+            this.variable = variable;
 
             this.Click += HyperlinkParameter_Click;
         }

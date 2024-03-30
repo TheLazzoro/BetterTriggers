@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using System.Collections.Generic;
 using System.Windows;
@@ -15,7 +15,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         /// </summary>
         /// <param name="returnType"></param>
         /// <param name="trig"></param>
-        public ParameterVariableControl(string returnType, BetterTriggers.Models.SaveableData.Trigger trig)
+        public ParameterVariableControl(string returnType, BetterTriggers.Models.EditorData.Trigger trig)
         {
             InitializeComponent();
 

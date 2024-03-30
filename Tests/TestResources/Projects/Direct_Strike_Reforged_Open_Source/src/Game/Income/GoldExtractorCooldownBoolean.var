@@ -1,0 +1,14 @@
+{
+  "Id": 100663358,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "GoldExtractorCooldownBoolean",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

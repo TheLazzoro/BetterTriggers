@@ -1,0 +1,14 @@
+{
+  "Id": 100663352,
+  "ArraySize": [
+    6,
+    1
+  ],
+  "Name": "TotalDamage",
+  "Type": "real",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -1,0 +1,340 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:betterTriggers="clr-namespace:BetterTriggers.Models.EditorData;assembly=BetterTriggers"
+                    
+                    >
+
+    <HierarchicalDataTemplate x:Key="DataTemplateExplorerElements"
+                              ItemsSource="{Binding ExplorerElements}"
+                              DataType="{x:Type TreeViewItem}"
+                              >
+        <Grid
+            ContextMenu="{Binding ContextMenu}"
+            Margin="-1, -1, 0, -1"
+            Height="18" >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding CheckBoxWidth}" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Focusable="False"
+                      IsChecked="{Binding IsChecked}"
+                      Visibility="{Binding CheckBoxVisibility}"
+                      VerticalAlignment="Center"
+                      Grid.Column="0"
+                      Margin="0,0,2,0" />
+
+            <Image x:Name="img"
+                   Width="16"
+                   Height="16"
+                   Stretch="Fill"
+                   RenderOptions.EdgeMode="Aliased"
+                   Grid.Column="1"
+                   Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding IconImage}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="False" >
+                                <Setter Property="Opacity" Value="0.5" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image x:Name="imgOverlay"
+                   Width="16"
+                   Height="16"
+                   Stretch="Fill"
+                   RenderOptions.EdgeMode="Aliased"
+                   Grid.Column="1"
+                   Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=HasErrors}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+
+                                <Setter Property="Source" Value="/Resources/Icons/trigger-invalid.png" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsEnabled}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+
+                                <Setter Property="Source" Value="/Resources/Icons/trigger-error.png" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <TextBlock x:Name="displayText"
+                       Text="{Binding DisplayText}"
+                       Grid.Column="2"
+                       Margin="5,0,0,0" >
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="True" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="False" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDim}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <TextBox x:Name="renameBox"
+                     Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
+                     Visibility="{Binding RenameBoxVisibility}"
+                     Grid.Column="2"
+                     FontFamily="Segoe UI">
+            </TextBox>
+
+        </Grid>
+    </HierarchicalDataTemplate>
+
+    <DataTemplate x:Key="DataTemplateExplorerElementsSearch"
+                          DataType="{x:Type ListViewItem}"
+                          >
+        <Grid
+        ContextMenu="{Binding ContextMenu}"
+        Margin="-1, -1, 0, -1"
+        Height="18" >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding CheckBoxWidth}" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Focusable="False"
+                  IsChecked="{Binding IsChecked}"
+                  Visibility="{Binding CheckBoxVisibility}"
+                  VerticalAlignment="Center"
+                  Grid.Column="0"
+                  Margin="0,0,2,0" />
+
+            <Image x:Name="img"
+               Width="16"
+               Height="16"
+               Stretch="Fill"
+               RenderOptions.EdgeMode="Aliased"
+               Grid.Column="1"
+               Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding IconImage}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="False" >
+                                <Setter Property="Opacity" Value="0.5" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image x:Name="imgOverlay"
+               Width="16"
+               Height="16"
+               Stretch="Fill"
+               RenderOptions.EdgeMode="Aliased"
+               Grid.Column="1"
+               Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=HasErrors}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+
+                                <Setter Property="Source" Value="/Resources/Icons/trigger-invalid.png" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsEnabled}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+
+                                <Setter Property="Source" Value="/Resources/Icons/trigger-error.png" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <TextBlock x:Name="displayText"
+                   Text="{Binding DisplayText}"
+                   Grid.Column="2"
+                   Margin="5,0,0,0" >
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="True" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="False" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDim}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <TextBox x:Name="renameBox"
+                 Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
+                 Visibility="{Binding RenameBoxVisibility}"
+                 Grid.Column="2"
+                 FontFamily="Segoe UI">
+            </TextBox>
+
+        </Grid>
+    </DataTemplate>
+
+    <HierarchicalDataTemplate x:Key="TreeItemDataTemplateTriggers"
+                          ItemsSource="{Binding Elements}"
+                          DataType="{x:Type TreeViewItem}"
+                          >
+        <Grid
+        ContextMenu="{Binding ContextMenu}"
+        Margin="-1, -1, 0, -1"
+        Height="18" >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image x:Name="img"
+               Width="16"
+               Height="16"
+               Stretch="Fill"
+               RenderOptions.EdgeMode="Aliased"
+               Grid.Column="0"
+               Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding IconImage}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <Image x:Name="imgOverlay"
+               Width="16"
+               Height="16"
+               Stretch="Fill"
+               RenderOptions.EdgeMode="Aliased"
+               Grid.Column="0"
+               Margin="0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsEnabled}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Source" Value="/Resources/Icons/editor-triggerfunctiondisabled.png" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=HasErrors}" Value="True" />
+                                    <Condition Binding="{Binding Path=IsEnabled}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Source" Value="/Resources/Icons/trigger-error.png" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <TextBlock x:Name="displayText"
+                   Text="{Binding DisplayText}"
+                   Grid.Column="1"
+                   Margin="5,0,0,0">
+
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource TextErrorBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=HasErrors}" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource TextErrorBrush}" />
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsEnabled}" Value="True" />
+                                    <Condition Binding="{Binding Path=HasErrors}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <TextBox x:Name="renameBox"
+                 Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
+                 Visibility="{Binding RenameBoxVisibility}"
+                 Grid.Column="2"
+                 FontFamily="Segoe UI">
+            </TextBox>
+
+        </Grid>
+    </HierarchicalDataTemplate>
+
+
+    <HierarchicalDataTemplate x:Key="ComboBoxVariableTypes"
+                          ItemsSource="{Binding War3Types}" >
+
+        <TextBlock Text="{Binding DisplayName}" />
+
+    </HierarchicalDataTemplate>
+
+    <DataTemplate x:Key="TriggerElementMenuItem">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding IconWidth}" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image x:Name="img"
+                   Visibility="{Binding IsIconVisible}"
+                   Width="16"
+                   Height="16"
+                   Stretch="Fill"
+                   RenderOptions.EdgeMode="Aliased"
+                   Grid.Column="0"
+                   Margin="0,0,5,0" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Source" Value="{Binding IconImage}" />
+                    </Style>
+                </Image.Style>
+            </Image>
+            <TextBlock Name="displayText"
+                       Text="{Binding DisplayText}"
+                       Grid.Column="1">
+            </TextBlock>
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding IsSelected}">
+                <Setter Property="Foreground" Value="{StaticResource Item.MouseOver.Border}" TargetName="displayText"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+</ResourceDictionary>

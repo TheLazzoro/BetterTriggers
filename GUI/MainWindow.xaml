@@ -347,7 +347,7 @@
                 <MenuItem Name="menuSave" Command="{StaticResource SaveProject}" InputGestureText="Ctrl+S" Header="Save All" />
                 <MenuItem Name="menuClose" Command="{StaticResource CloseProject}" Header="Close Project" />
                 <Separator Margin="0,5,0,4" />
-                <!--<MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />-->
+                <MenuItem Name="menuImportTriggers" Command="{StaticResource ImportTriggers}" Header="Import Triggers..." />
                 <MenuItem Name="menuProjectSettings" Command="{StaticResource OpenProjectSettings}" Header="Project Settings" />
                 <Separator />
                 <MenuItem Name="menuRecentFiles" Header="Recent Files"  MouseEnter="menuRecentFiles_MouseEnter" />
@@ -526,6 +526,9 @@
                 <ContextMenu x:Name="contextMenu" Foreground="{DynamicResource TextBrush2}" BorderBrush="#0000" Background="{DynamicResource BackgroundDark}">
                     <MenuItem x:Name="tabitem_Menu_Close" Header="Close" Click="tabitem_Menu_Close_Click" />
                     <MenuItem x:Name="tabitem_Menu_CloseAll" Header="Close All" Click="tabitem_Menu_CloseAll_Click" />
+                    <Separator Margin="0,5,0,4" />
+                    <MenuItem x:Name="tabitem_Menu_NavigateToElement" Header="Navigate To Element" Click="tabitem_Menu_NavigateToElement_Click" />
+                    <MenuItem x:Name="tabitem_Menu_OpenInExplorer" Header="Open Containing Folder" Click="tabitem_Menu_OpenInExplorer_Click" />
                 </ContextMenu>
             </TabControl.ContextMenu>
 
@@ -558,7 +561,7 @@
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Height="21" >
-                        <TextBlock Width="auto" Text="{Binding Header}" ToolTip="{Binding Header}" VerticalAlignment="Center" />
+                        <TextBlock Width="auto" Text="{Binding Header}" ToolTip="{Binding ToolTip}" VerticalAlignment="Center" />
                         <Button Style="{DynamicResource IconButton}" Width="20" Height="20" Click="ButtonTabItem_Click" >
                             <Button.Content>
                                 <Image Source="{DynamicResource TabItemCloseImg}" Stretch="None"/>

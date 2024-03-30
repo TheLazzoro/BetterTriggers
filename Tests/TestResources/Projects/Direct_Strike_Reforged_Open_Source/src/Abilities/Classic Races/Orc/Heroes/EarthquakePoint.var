@@ -1,0 +1,14 @@
+{
+  "Id": 100663415,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "EarthquakePoint",
+  "Type": "location",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,34 +10,35 @@ namespace BetterTriggers.Containers
 {
     public class UnsavedFiles
     {
-        private List<IExplorerElement> unsavedFiles = new List<IExplorerElement>();
+        private HashSet<ExplorerElement> unsavedFiles = new();
 
-        public void AddToUnsaved(IExplorerElement element)
+        public void AddToUnsaved(ExplorerElement element)
         {
-            if (unsavedFiles.Contains(element))
-                return;
-
             unsavedFiles.Add(element);
         }
 
-        public void RemoveFromUnsaved(IExplorerElement element)
+        public void RemoveFromUnsaved(ExplorerElement element)
         {
             unsavedFiles.Remove(element);
         }
 
-        internal List<IExplorerElement> GetAllUnsaved()
+        public void SaveAll()
         {
-            return unsavedFiles;
+            foreach (ExplorerElement element in unsavedFiles)
+            {
+                element.Save();
+            }
+            unsavedFiles.Clear();
+        }
+
+        public bool Contains(ExplorerElement element)
+        {
+            return unsavedFiles.Contains(element);
         }
 
         internal int Count()
         {
             return unsavedFiles.Count;
-        }
-
-        public void Clear()
-        {
-            unsavedFiles.Clear();
         }
     }
 }

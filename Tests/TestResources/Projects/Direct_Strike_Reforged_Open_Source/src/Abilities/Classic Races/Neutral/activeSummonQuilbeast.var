@@ -1,0 +1,15 @@
+{
+  "Id": 100663578,
+  "ArraySize": [
+    12,
+    1
+  ],
+  "Name": "activeSummonQuilbeast",
+  "Type": "boolean",
+  "IsArray": true,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "ParamType": 5,
+    "value": "true"
+  }
+}

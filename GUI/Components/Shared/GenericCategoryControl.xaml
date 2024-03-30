@@ -8,7 +8,11 @@
              d:DesignHeight="450" Width="auto">
     <Grid>
 
-        <ListView x:Name="listViewCategory" Grid.RowSpan="2" Grid.Column="0" Background="{DynamicResource BackgroundDark}" BorderBrush="#00ABADB3" SelectionChanged="listViewCategory_SelectionChanged" >
+        <ListView x:Name="listViewCategory"
+                  Grid.RowSpan="2"
+                  Grid.Column="0"
+                  BorderBrush="#00ABADB3"
+                  SelectionChanged="listViewCategory_SelectionChanged" >
         </ListView>
 
     </Grid>

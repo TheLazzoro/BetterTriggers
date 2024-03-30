@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTriggers.Models.EditorData;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,6 +15,24 @@ namespace GUI.Components.Tabs
         public TabViewModel()
         {
             Tabs = new ObservableCollection<TabItemBT>();
+        }
+
+        public bool Contains(ExplorerElement explorerElement)
+        {
+            return Tabs.Where(el => el.explorerElement == explorerElement).ToList().Count > 0;
+        }
+
+        public int IndexOf(ExplorerElement explorerElement)
+        {
+            for (int i = 0; i < Tabs.Count; i++)
+            {
+                if (Tabs[i].explorerElement == explorerElement)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 }

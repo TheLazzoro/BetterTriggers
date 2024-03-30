@@ -1,0 +1,14 @@
+{
+  "Id": 100663323,
+  "ArraySize": [
+    1,
+    1
+  ],
+  "Name": "Point4",
+  "Type": "location",
+  "IsArray": false,
+  "IsTwoDimensions": false,
+  "InitialValue": {
+    "value": null
+  }
+}

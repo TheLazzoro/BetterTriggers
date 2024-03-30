@@ -1,5 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using System.Collections.Generic;
 using System.Windows;
