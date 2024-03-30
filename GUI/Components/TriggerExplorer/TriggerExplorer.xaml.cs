@@ -546,7 +546,7 @@ namespace GUI.Components
             for (int i = itemsToExpand.Count - 1; i >= 0; i--)
             {
                 explorerElement = itemsToExpand[i];
-                explorerElement.IsExpanded = true;
+                explorerElement.IsExpandedTreeItem = true;
             }
 
             explorerElement.IsSelected = true;

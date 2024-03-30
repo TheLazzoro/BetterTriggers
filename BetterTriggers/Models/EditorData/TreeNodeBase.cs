@@ -143,7 +143,7 @@ namespace BetterTriggers.Models.EditorData
                 }
             }
         }
-        public bool IsExpanded
+        public bool IsExpandedTreeItem
         {
             get => _isExpanded;
             set

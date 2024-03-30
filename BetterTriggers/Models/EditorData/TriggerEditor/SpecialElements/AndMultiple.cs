@@ -25,6 +25,7 @@ namespace BetterTriggers.Models.EditorData
             function.value = "AndMultiple";
             Elements = new();
             And = new(TriggerElementType.Condition);
+            IsExpandedTreeItem = true;
         }
 
         public override AndMultiple Clone()

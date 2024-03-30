@@ -144,8 +144,8 @@
                     <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
                     <EventSetter Event="MouseEnter" Handler="TreeViewItem_OnMouseEnter" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                     <Setter Property="IsEnabled" Value="{Binding IsEnabledTreeItem}"/>
+                    <Setter Property="IsExpanded" Value="{Binding IsExpandedTreeItem, Mode=TwoWay}" />
                 </Style>
             </TreeView.ItemContainerStyle>
 

@@ -790,9 +790,6 @@
                     <DataTrigger Binding="{Binding IsSelected_Multi}" Value="True" >
                         <Setter Property="Background" Value="{DynamicResource TreeItemHighlight}" />
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsExpanded}" Value="True" >
-                        <Setter Property="IsExpanded" Value="True" />
-                    </DataTrigger>
                 </Style.Triggers>
                 <Style.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />

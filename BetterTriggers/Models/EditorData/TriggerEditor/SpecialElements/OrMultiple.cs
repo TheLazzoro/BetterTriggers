@@ -26,6 +26,7 @@ namespace BetterTriggers.Models.EditorData
             function.value = "OrMultiple";
             Elements = new();
             Or = new(TriggerElementType.Condition);
+            IsExpandedTreeItem = true;
         }
 
         public override OrMultiple Clone()

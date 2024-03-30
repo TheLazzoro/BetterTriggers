@@ -59,6 +59,7 @@ namespace BetterTriggers.Models.EditorData
             If = new(TriggerElementType.Condition);
             Then = new(TriggerElementType.Action);
             Else = new(TriggerElementType.Action);
+            IsExpandedTreeItem = true;
         }
 
         public override IfThenElse Clone()

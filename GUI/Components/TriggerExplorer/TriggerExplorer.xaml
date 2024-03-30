@@ -99,7 +99,7 @@
                     <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
                     <EventSetter Event="TreeViewItem.Selected" Handler="treeViewItem_Selected" />
                     <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpandedTreeItem, Mode=TwoWay}" />
                 </Style>
             </TreeView.ItemContainerStyle>
 

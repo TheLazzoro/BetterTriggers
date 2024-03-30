@@ -25,6 +25,7 @@ namespace BetterTriggers.Models.EditorData
             function.value = "EnumItemsInRectBJMultiple";
             Elements = new();
             Actions = new(TriggerElementType.Action);
+            IsExpandedTreeItem = true;
         }
 
         public override EnumItemsInRectBJ Clone()

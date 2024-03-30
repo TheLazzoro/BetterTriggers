@@ -9,6 +9,7 @@ namespace BetterTriggers.Models.EditorData
     {
         public TriggerElementCollection(TriggerElementType Type)
         {
+            IsExpandedTreeItem = true;
             ElementType = Type;
             Elements = new();
             Category category;

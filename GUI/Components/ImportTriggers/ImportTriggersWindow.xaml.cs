@@ -107,7 +107,7 @@ namespace GUI
                     }
                 }
 
-                rootElement.IsExpanded = true;
+                rootElement.IsExpandedTreeItem = true;
             }
             catch (Exception ex)
             {

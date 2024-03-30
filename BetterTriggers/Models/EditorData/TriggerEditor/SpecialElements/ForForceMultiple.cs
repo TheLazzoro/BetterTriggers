@@ -25,6 +25,7 @@ namespace BetterTriggers.Models.EditorData
             function.value = "ForForceMultiple";
             Elements = new();
             Actions = new(TriggerElementType.Action);
+            IsExpandedTreeItem = true;
         }
 
         public override ForForceMultiple Clone()

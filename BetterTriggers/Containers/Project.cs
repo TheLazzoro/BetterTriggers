@@ -152,7 +152,7 @@ namespace BetterTriggers.Containers
                 fileEntry.path = element.GetRelativePath();
                 fileEntry.isEnabled = element.IsEnabled;
                 fileEntry.isInitiallyOn = element.IsInitiallyOn;
-                fileEntry.isExpanded = element.IsExpanded;
+                fileEntry.isExpanded = element.IsExpandedTreeItem;
 
                 war3project.Files.Add(fileEntry);
 
@@ -171,7 +171,7 @@ namespace BetterTriggers.Containers
         private void RecurseSaveFileEntries(ExplorerElement parent, War3ProjectFileEntry parentEntry)
         {
             ObservableCollection<ExplorerElement> children = parent.ExplorerElements;
-            parentEntry.isExpanded = parent.IsExpanded;
+            parentEntry.isExpanded = parent.IsExpandedTreeItem;
 
             for (int i = 0; i < children.Count; i++)
             {
@@ -182,7 +182,7 @@ namespace BetterTriggers.Containers
                 fileEntryChild.path = element.GetRelativePath();
                 fileEntryChild.isEnabled = element.IsEnabled;
                 fileEntryChild.isInitiallyOn = element.IsInitiallyOn;
-                fileEntryChild.isExpanded = element.IsExpanded;
+                fileEntryChild.isExpanded = element.IsExpandedTreeItem;
 
                 parentEntry.Files.Add(fileEntryChild);
 
@@ -286,7 +286,7 @@ namespace BetterTriggers.Containers
             RecentFiles.AddProjectToRecent(projectPath);
 
             project.IsLoading = false;
-            project.GetRoot().IsExpanded = true;
+            project.GetRoot().IsExpandedTreeItem = true;
 
             return project;
         }
@@ -304,7 +304,7 @@ namespace BetterTriggers.Containers
             {
                 var folder = elementParent;
                 elementChildren = folder.ExplorerElements;
-                folder.IsExpanded = entryParent.isExpanded;
+                folder.IsExpandedTreeItem = entryParent.isExpanded;
             }
 
             int insertIndex = 0;
