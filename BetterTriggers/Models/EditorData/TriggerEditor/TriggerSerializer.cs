@@ -327,6 +327,7 @@ namespace BetterTriggers.Models.EditorData
                     converted = new LocalVariable
                     {
                         DisplayText = localVar.variable.Name,
+                        ElementType = TriggerElementType.LocalVariable,
                         variable = new Variable
                         {
                             _isLocal = true,

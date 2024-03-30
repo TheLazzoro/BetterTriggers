@@ -333,7 +333,7 @@ namespace GUI
                 switch (selectedItem.ElementType)
                 {
                     case ExplorerElementEnum.Folder:
-                        break;
+                        return;
                     case ExplorerElementEnum.GlobalVariable:
                         var variableControl = new VariableControl(selectedItem.variable);
                         editor = variableControl;

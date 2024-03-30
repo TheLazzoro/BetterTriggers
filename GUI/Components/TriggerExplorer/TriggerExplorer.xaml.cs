@@ -74,6 +74,12 @@ namespace GUI.Components
             return explorerElement;
         }
 
+        public ExplorerElement? GetExplorerElementFromItem(ListViewItem item)
+        {
+            var explorerElement = item.DataContext as ExplorerElement;
+            return explorerElement;
+        }
+
         public TreeViewItem? GetTreeItemFromExplorerElement(ExplorerElement explorerElement)
         {
             List<ExplorerElement> list = new();
@@ -231,6 +237,7 @@ namespace GUI.Components
             if (dropTarget == dragItem)
             {
                 parentDropTarget = null;
+                e.Handled = true;
                 return;
             }
 
@@ -402,6 +409,23 @@ namespace GUI.Components
             }
         }
 
+        private void OpenContextMenu(ExplorerElement explorerElement, MouseButtonEventArgs e)
+        {
+            menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
+            menuElementEnabled.IsChecked = explorerElement.IsEnabled;
+            menuElementInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
+            menuElementEnabled.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger || explorerElement.ElementType == ExplorerElementEnum.Script;
+            menuElementInitiallyOn.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger;
+            menuRename.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuDelete.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuCut.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuCopy.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+
+            contextMenu.IsOpen = true;
+
+            e.Handled = true;
+        }
+
         private void treeViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             var rightClickedElement = sender as TreeViewItem;
@@ -417,19 +441,24 @@ namespace GUI.Components
             rightClickedElement.IsSelected = true;
             rightClickedElement.ContextMenu = contextMenu;
 
-            menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
-            menuElementEnabled.IsChecked = explorerElement.IsEnabled;
-            menuElementInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
-            menuElementEnabled.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger || explorerElement.ElementType == ExplorerElementEnum.Script;
-            menuElementInitiallyOn.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger;
-            menuRename.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
-            menuDelete.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
-            menuCut.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
-            menuCopy.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            OpenContextMenu(explorerElement, e);
+        }
 
-            contextMenu.IsOpen = true;
+        private void listViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var rightClickedElement = sender as ListViewItem;
+            if (rightClickedElement == null)
+                return;
 
-            e.Handled = true;
+            var explorerElement = GetExplorerElementFromItem(rightClickedElement);
+
+            if (rightClickedElement == null)
+                return;
+
+            rightClickedElement.IsSelected = true;
+            rightClickedElement.ContextMenu = contextMenu;
+
+            OpenContextMenu(explorerElement, e);
         }
 
         private void menuCut_Click(object sender, RoutedEventArgs e)
@@ -542,7 +571,7 @@ namespace GUI.Components
             {
                 if (searchMenu.Visibility == Visibility.Hidden)
                 {
-                    treeViewSearch.Items.Clear();
+                    viewModel.SearchedFiles.Clear();
                     searchMenu.Visibility = Visibility.Visible;
                 }
 
@@ -569,7 +598,7 @@ namespace GUI.Components
 
         private void DoSearch()
         {
-            treeViewSearch.Items.Clear();
+            viewModel.SearchedFiles.Clear();
             if (string.IsNullOrEmpty(searchBox.Text))
                 return;
 
@@ -622,13 +651,23 @@ namespace GUI.Components
             }
         }
 
+        private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selected = listViewSearch.SelectedItem as ExplorerElement;
+            if (selected != null)
+            {
+                OnOpenExplorerElement?.Invoke(selected);
+                e.Handled = true; // prevents event from firing up the parent items
+            }
+        }
 
-        private void treeViewSearch_KeyDown(object sender, KeyEventArgs e)
+
+        private void listViewSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
                 return;
 
-            TreeViewItem selected = treeViewSearch.SelectedItem as TreeViewItem;
+            ListViewItem selected = listViewSearch.SelectedItem as ListViewItem;
             if (selected != null)
             {
                 var explorerElement = GetExplorerElementFromItem(selected);

@@ -38,12 +38,14 @@ namespace BetterTriggers.Models.EditorData
             {
                 _isInitiallyOn = value;
                 OnPropertyChanged();
+                OnToggleInitiallyOn?.Invoke();
             }
         }
         public event Action OnReload;
         public event Action OnChanged;
         public event Action OnSaved;
         public event Action OnDeleted;
+        public event Action OnToggleInitiallyOn;
         private string _path;
         private bool _isInitiallyOn = true;
         public DateTime LastWrite { get; private set; }

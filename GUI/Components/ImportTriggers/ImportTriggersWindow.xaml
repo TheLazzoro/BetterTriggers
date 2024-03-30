@@ -60,7 +60,7 @@
             x:Name="treeView"
             Background="{DynamicResource BackgroundDark}"
             ItemsSource="{Binding ExplorerElements}"
-            ItemTemplate="{DynamicResource TreeItemDataTemplate}"
+            ItemTemplate="{DynamicResource DataTemplateExplorerElements}"
             Grid.Row="2"
             Grid.RowSpan="2"
             Grid.ColumnSpan="2"

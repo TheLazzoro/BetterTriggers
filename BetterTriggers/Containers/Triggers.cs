@@ -257,6 +257,7 @@ namespace BetterTriggers.Containers
                     var variables = Project.CurrentProject.Variables;
                     clone.variable.Id = variables.GenerateId();
                     clone.variable.Name = variables.GenerateLocalName(destinationTrigger.trigger, clone.variable.Name);
+                    clone.DisplayText = clone.variable.Name;
                     pasted.Elements.Add(clone);
                     variables.AddLocalVariable(clone);
                 }

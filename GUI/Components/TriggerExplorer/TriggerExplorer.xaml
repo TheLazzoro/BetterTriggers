@@ -86,7 +86,7 @@
             BorderBrush="{x:Null}"
             Drop="treeViewTriggerExplorer_Drop"
             KeyDown="treeViewTriggerExplorer_KeyDown"
-            ItemTemplate="{DynamicResource TreeItemDataTemplate}"
+            ItemTemplate="{DynamicResource DataTemplateExplorerElements}"
             >
 
             <TreeView.ItemContainerStyle>
@@ -141,45 +141,54 @@
             </TreeView.ContextMenu>
         </TreeView>
 
-        <!-- New Search -->
         <Grid x:Name="searchMenu" Visibility="Hidden" KeyDown="searchMenu_KeyDown" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Rectangle Fill="{DynamicResource BackgroundLight}"></Rectangle>
-            <Label Content="Search:" Foreground="#ccc" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" />
-            <TextBox x:Name="searchBox" Height="22" Margin="60,0,25,0" TextChanged="searchBox_TextChanged" />
-            <Button x:Name="btnCloseSearchMenu" Margin="0,0,2,0" Width="20" Height="20" Style="{DynamicResource IconButton}" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="btnCloseSearchMenu_Click"  >
+            <Rectangle Fill="{DynamicResource BackgroundLight}"/>
+            <Label Content="Search:"
+                   Foreground="{DynamicResource TextBrush}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Width="50" />
+            
+            <TextBox x:Name="searchBox"
+                     Height="22"
+                     Margin="60,0,25,0"
+                     TextChanged="searchBox_TextChanged" />
+            
+            <Button x:Name="btnCloseSearchMenu"
+                    Margin="0,0,2,0"
+                    Width="20"
+                    Height="20"
+                    Style="{DynamicResource IconButton}"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Click="btnCloseSearchMenu_Click" >
                 <Button.Content>
-                    <Image Source="Resources/Icons/close-tab.png" Stretch="Fill"/>
+                    <Image Source="{DynamicResource TabItemCloseImg}" Stretch="Fill"/>
                 </Button.Content>
             </Button>
-            <TreeView x:Name="treeViewSearch"
+            
+            <ListView x:Name="listViewSearch"
                       Background="{DynamicResource BackgroundDark}"
-                      Grid.Row="1"
                       BorderBrush="{DynamicResource BackgroundDark}"
-                      KeyDown="treeViewSearch_KeyDown" >
-                <TreeView.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlight}, Path=Color}" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                      Color="Black" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                      Color="{Binding Source={StaticResource TreeItemHighlightInactive}, Path=Color}" />
-                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                      Color="Black" />
-                </TreeView.Resources>
+                      ItemsSource="{Binding SearchedFiles}"
+                      ItemTemplate="{DynamicResource DataTemplateExplorerElementsSearch}"
+                      Grid.Row="1"
+                      KeyDown="listViewSearch_KeyDown" >
 
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <EventSetter Event="TreeViewItem.MouseRightButtonUp" Handler="treeViewItem_MouseRightButtonUp"/>
-                        <EventSetter Event="TreeViewItem.MouseDoubleClick" Handler="treeViewItem_MouseDoubleClick"/>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                        <EventSetter Event="ListViewItem.MouseRightButtonUp" Handler="listViewItem_MouseRightButtonUp"/>
+                        <EventSetter Event="ListViewItem.MouseDoubleClick" Handler="listViewItem_MouseDoubleClick"/>
                     </Style>
-                </TreeView.ItemContainerStyle>
+                </ListView.ItemContainerStyle>
 
-            </TreeView>
+            </ListView>
         </Grid>
 
     </Grid>

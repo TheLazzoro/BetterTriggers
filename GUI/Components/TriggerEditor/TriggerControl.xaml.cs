@@ -73,10 +73,10 @@ namespace GUI.Components
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
             explorerElement.OnChanged += ExplorerElement_OnChanged;
             explorerElement.OnToggleEnable += ExplorerElement_OnToggleEnable;
+            explorerElement.OnToggleInitiallyOn += ExplorerElement_OnToggleInitiallyOn;
 
             KeyDown += TriggerControl_KeyDown;
         }
-
 
         public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)
         {
@@ -415,6 +415,7 @@ namespace GUI.Components
             if (dropTarget == dragItem)
             {
                 _treeItemParentDropTarget = null;
+                e.Handled = true;
                 return;
             }
 
@@ -1166,6 +1167,11 @@ namespace GUI.Components
         private void ExplorerElement_OnToggleEnable()
         {
             checkBoxIsEnabled.IsChecked = explorerElementTrigger.IsEnabled;
+        }
+
+        private void ExplorerElement_OnToggleInitiallyOn()
+        {
+            checkBoxIsInitiallyOn.IsChecked = explorerElementTrigger.IsInitiallyOn;
         }
 
 
