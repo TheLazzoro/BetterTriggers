@@ -112,13 +112,6 @@ namespace GUI.Components
             currentElement = GetTreeItemFromExplorerElement(element);
         }
 
-        public TextBox GetCurrentRenameBox()
-        {
-            var selected = treeViewTriggerExplorer.SelectedItem as TreeViewItem;
-            var renameBox = selected.FindName("renameBox") as TextBox;
-            return renameBox;
-        }
-
         private void TriggerExplorer_KeyDown(object sender, KeyEventArgs e)
         {
             var selected = GetSelectedExplorerElement();

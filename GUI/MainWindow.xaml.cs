@@ -366,12 +366,11 @@ namespace GUI
 
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var selected = e.NewValue as TreeViewItem;
+            var selected = e.NewValue as ExplorerElement;
             if (selected == null)
                 return;
 
-            var explorerElement = triggerExplorer.GetExplorerElementFromItem(selected);
-            Project.CurrentProject.currentSelectedElement = explorerElement.GetPath();
+            Project.CurrentProject.currentSelectedElement = selected.GetPath();
         }
 
         private void TriggerExplorer_OnOpenExplorerElement(ExplorerElement opened)

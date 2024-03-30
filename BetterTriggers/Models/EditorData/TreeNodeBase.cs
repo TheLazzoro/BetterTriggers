@@ -127,6 +127,10 @@ namespace BetterTriggers.Models.EditorData
             {
                 _isSelected = value;
                 OnPropertyChanged();
+                if (_isSelected == false)
+                {
+                    CancelRename();
+                }
             }
         }
         public bool IsExpanded
@@ -156,6 +160,12 @@ namespace BetterTriggers.Models.EditorData
             this._category = categoryStr;
             var category = Category.Get(_category);
             _icon = category.Icon;
+        }
+
+        public void CancelRename()
+        {
+            RenameBoxVisibility = Visibility.Hidden;
+            RenameText = DisplayText;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -124,7 +124,6 @@
                   AllowDrop="True"
                   SelectedItemChanged="treeViewTriggers_SelectedItemChanged"
                   Drop="treeViewTriggers_Drop"
-                  KeyDown="treeViewTriggers_KeyDown"
                   MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp"
                   ContextMenuOpening="treeViewTriggers_ContextMenuOpening"
                   MouseDown="treeViewTriggers_MouseDown"

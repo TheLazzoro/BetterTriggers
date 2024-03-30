@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -11,15 +12,6 @@ namespace BetterTriggers.Models.EditorData
     {
         public TriggerElementType ElementType { get; set; }
         public ObservableCollection<TriggerElement>? Elements { get; set; }
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set
-            {
-                _isSelected = value;
-                OnPropertyChanged();
-            }
-        }
         /// <summary>
         /// Fix for UI multi-select because 'IsSelected' calls itself recursively, causing a stackoverflow.
         /// </summary>
@@ -42,7 +34,6 @@ namespace BetterTriggers.Models.EditorData
             }
         }
         private TriggerElement? Parent;
-        private bool _isSelected;
         private bool _isSelected_Multi;
         private bool _isExpanded = true;
 

@@ -75,6 +75,8 @@ namespace GUI.Components
             explorerElement.OnChanged += ExplorerElement_OnChanged;
             explorerElement.OnToggleEnable += ExplorerElement_OnToggleEnable;
 
+            KeyDown += TriggerControl_KeyDown;
+
             // TODO: REFACTOR
             //TreeViewItem.OnMouseEnter += TreeViewItem_OnMouseEnter;
         }
@@ -674,20 +676,10 @@ namespace GUI.Components
         }
         */
 
-        private void treeViewTriggers_KeyDown(object sender, KeyEventArgs e)
+        private void TriggerControl_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
                 DeleteTriggerElement();
-            else if(e.Key == Key.Enter)
-            {
-                var selected = treeViewTriggers.SelectedItem as TriggerElement;
-                if(selected != null && selected.IsRenaming && selected.ElementType == TriggerElementType.LocalVariable)
-                {
-                    var localVar = selected as LocalVariable;
-                    var variables = Project.CurrentProject.Variables;
-                    variables.RenameLocalVariable(explorerElementTrigger.trigger, localVar, localVar.RenameText);
-                }
-            }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 CopyTriggerElement();
             else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
@@ -752,7 +744,7 @@ namespace GUI.Components
                 int index = parent.Elements.IndexOf(BottomSelected) + 1;
                 ToSelectAfterDeletion = parent.Elements[index];
             }
-            else if(parent.Elements.IndexOf(BottomSelected) == parent.Elements.Count - 1)
+            else if (parent.Elements.IndexOf(BottomSelected) == parent.Elements.Count - 1)
             {
                 // Selects the element coming before all the selected ones.
                 TriggerElement topSelected = elementsToDelete.Elements.First();
@@ -763,7 +755,7 @@ namespace GUI.Components
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
             command.Execute();
 
-            if(ToSelectAfterDeletion != null)
+            if (ToSelectAfterDeletion != null)
             {
                 ToSelectAfterDeletion.IsSelected = true;
             }
@@ -844,11 +836,12 @@ namespace GUI.Components
             }
 
             ShowTextEditor(isScript);
-            //OnStateChange();
+            explorerElementTrigger.AddToUnsaved();
         }
 
         private void ShowTextEditor(bool doShow)
         {
+            explorerElementTrigger.trigger.IsScript = doShow;
             if (doShow)
             {
                 if (!explorerElementTrigger.trigger.IsScript)
@@ -858,14 +851,13 @@ namespace GUI.Components
                     string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
                     explorerElementTrigger.trigger.Script = script;
                 }
-                
-                explorerElementTrigger.trigger.IsScript = doShow;
+
                 TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
                 TextEditor.avalonEditor.Text = explorerElementTrigger.trigger.Script;
                 TextEditor.avalonEditor.TextChanged += delegate
                 {
                     explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text;
-                    //OnStateChange();
+                    explorerElementTrigger.AddToUnsaved();
                 };
 
                 if (!grid.Children.Contains(TextEditor))
@@ -1052,7 +1044,7 @@ namespace GUI.Components
         private void textBoxComment_TextChanged(object sender, TextChangedEventArgs e)
         {
             explorerElementTrigger.trigger.Comment = textBoxComment.Text;
-            //OnStateChange();
+            explorerElementTrigger.AddToUnsaved();
         }
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -1070,7 +1062,27 @@ namespace GUI.Components
 
         private void treeViewItem_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            var selected = treeViewTriggers.SelectedItem as TriggerElement;
+
+            if (e.Key == Key.Enter && selected.IsRenaming)
+            {
+                if (selected is LocalVariable)
+                {
+                    var localVar = selected as LocalVariable;
+                    var variables = Project.CurrentProject.Variables;
+                    try
+                    {
+                        variables.RenameLocalVariable(explorerElementTrigger.trigger, localVar, localVar.RenameText);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dialogs.MessageBox dialog = new Dialogs.MessageBox("Rename local variable", ex.Message);
+                        dialog.ShowDialog();
+                    }
+                    selected.RenameBoxVisibility = Visibility.Hidden;
+                }
+            }
+            else if (e.Key == Key.Enter)
             {
                 ReplaceTriggerElement(selectedElementEnd);
                 e.Handled = true;
@@ -1081,7 +1093,7 @@ namespace GUI.Components
             }
             else if (e.Key == Key.Escape)
             {
-                selectedElementEnd.RenameBoxVisibility = Visibility.Hidden;
+                selectedElementEnd.CancelRename();
             }
         }
 
@@ -1166,7 +1178,7 @@ namespace GUI.Components
 
             if (selectedElementEnd.IsRenaming)
             {
-                selectedElementEnd.RenameBoxVisibility = Visibility.Hidden;
+                selectedElementEnd.CancelRename();
             }
         }
     }

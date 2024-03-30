@@ -134,7 +134,7 @@ namespace BetterTriggers.WorldEdit
 
         public List<ExplorerElement> ConvertAll_NoWrite()
         {
-            return ConvertSelectedTriggers(triggers.TriggerItems, triggers.Variables);
+            return ConvertSelectedTriggers(triggers.TriggerItems);
         }
 
         /// <summary>
@@ -321,7 +321,6 @@ namespace BetterTriggers.WorldEdit
 
         private List<ExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
         {
-            var triggerElementsToImport = new List<IExplorerElement>();
             var project = Project.CurrentProject;
             if (project == null)
             {

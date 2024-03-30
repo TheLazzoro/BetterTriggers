@@ -70,6 +70,11 @@ namespace BetterTriggers.Containers
             if (newName == variable.variable.Name)
                 return;
 
+            if (string.IsNullOrEmpty(newName))
+            {
+                throw new Exception("Name cannot be empty.");
+            }
+
             foreach (LocalVariable v in trig.LocalVariables.Elements)
             {
                 if (v.variable.Name == newName)
