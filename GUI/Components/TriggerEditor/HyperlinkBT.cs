@@ -61,8 +61,6 @@ namespace GUI.Components.TriggerEditor
         public void Disable()
         {
             this.IsEnabled = false;
-            this.Inlines.Clear();
-            this.Inlines.Add("Value");
             this.Foreground = new SolidColorBrush(Color.FromRgb(150, 150, 150));
         }
 
