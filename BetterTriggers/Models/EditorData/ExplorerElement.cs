@@ -54,6 +54,8 @@ namespace BetterTriggers.Models.EditorData
         public Trigger trigger;
         public Variable variable;
         public string script;
+        public ActionDefinition actionDefinition;
+        public ConditionDefinition conditionDefinition;
 
         public UserControl editor;
 

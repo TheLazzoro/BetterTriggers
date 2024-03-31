@@ -2,11 +2,11 @@
 {
     public enum ExplorerElementEnum
     {
+        None,
         Folder,
         GlobalVariable,
         Root,
         Script,
         Trigger,
-        None,
     }
 }

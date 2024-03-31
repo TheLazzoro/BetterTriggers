@@ -20,6 +20,6 @@ namespace BetterTriggers.Models.SaveableData
         /// Specifies the current editor version. Increment when new features to the file format are added.
         /// </summary>
         [JsonIgnore]
-        public const int EditorVersion = 3;
+        public const int EditorVersion = 4;
     }
 }

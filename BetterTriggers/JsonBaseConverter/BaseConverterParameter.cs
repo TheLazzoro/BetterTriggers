@@ -35,6 +35,8 @@ namespace BetterTriggers.JsonBaseConverter
                         return new TriggerRef_Saveable();
                     case 5:
                         return new Value_Saveable();
+                    case 6:
+                        return new FunctionDefinitionRef_Saveable();
                     default:
                         return new Parameter_Saveable();
                 }
