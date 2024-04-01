@@ -155,6 +155,17 @@ namespace BetterTriggers.WorldEdit
                 img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
                 Category.Create(TriggerCategory.TC_FRAMEHANDLE, img, "Frame", true);
 
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_actiondefinition.png");
+                Category.Create(TriggerCategory.TC_ACTION_DEF, img, "???", false);
+
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_conditiondefinition.png");
+                Category.Create(TriggerCategory.TC_CONDITION_DEF, img, "???", false);
+
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_functiondefinition.png");
+                Category.Create(TriggerCategory.TC_FUNCTION_DEF, img, "???", false);
+
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_tbd.png");
+                Category.Create(TriggerCategory.TC_UNKNOWN, img, "???", false);
             }
 
 

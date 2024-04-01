@@ -475,6 +475,21 @@
                     <Image Source="Resources/Icons/actions-setvariables.png" Stretch="None"/>
                 </Button.Content>
             </Button>
+            <Button x:Name="btnCreateActionDef" IsEnabled="False" ToolTip="WESTRING_TOOLBAR_SE_NEW_ACTION_DEFINITION" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateActionDefinition_Click">
+                <Button.Content>
+                    <Image Source="Resources/Icons/ui-editoricon-triggercategories_actiondefinition.png" Stretch="None"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="btnCreateConditionDef" IsEnabled="False" ToolTip="WESTRING_TOOLBAR_SE_NEW_CONDITION_DEFINITION" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateConditionDefinition_Click">
+                <Button.Content>
+                    <Image Source="Resources/Icons/ui-editoricon-triggercategories_conditiondefinition.png" Stretch="None"/>
+                </Button.Content>
+            </Button>
+            <Button x:Name="btnCreateFunctionDef" IsEnabled="False" ToolTip="WESTRING_TOOLBAR_SE_NEW_FUNCTION_DEFINITION" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateFunctionDefinition_Click">
+                <Button.Content>
+                    <Image Source="Resources/Icons/ui-editoricon-triggercategories_functiondefinition.png" Stretch="None"/>
+                </Button.Content>
+            </Button>
 
             <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="10,0,10,0" Width="1" Fill="{DynamicResource BackgroundLight}" />
 

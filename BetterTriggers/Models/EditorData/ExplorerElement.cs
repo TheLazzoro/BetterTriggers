@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -122,7 +123,7 @@ namespace BetterTriggers.Models.EditorData
 
                     case ".act":
                         ElementType = ExplorerElementEnum.ActionDefinition;
-                        SetCategory(TriggerCategory.TC_ACTION);
+                        SetCategory(TriggerCategory.TC_ACTION_DEF);
                         fileContent = ReadFile(path);
                         var savedActionDef = JsonConvert.DeserializeObject<ActionDefinition_Saveable>(fileContent);
                         actionDefinition = TriggerSerializer.DeserializeActionDefinition(savedActionDef);
@@ -132,7 +133,7 @@ namespace BetterTriggers.Models.EditorData
 
                     case ".cond":
                         ElementType = ExplorerElementEnum.ConditionDefinition;
-                        SetCategory(TriggerCategory.TC_CONDITION);
+                        SetCategory(TriggerCategory.TC_CONDITION_DEF);
                         fileContent = ReadFile(path);
                         var savedConditionDef = JsonConvert.DeserializeObject<ConditionDefinition_Saveable>(fileContent);
                         conditionDefinition = TriggerSerializer.DeserializeConditionDefinition(savedConditionDef);
@@ -142,7 +143,7 @@ namespace BetterTriggers.Models.EditorData
 
                     case ".func":
                         ElementType = ExplorerElementEnum.FunctionDefinition;
-                        SetCategory(TriggerCategory.TC_NOTING);
+                        SetCategory(TriggerCategory.TC_FUNCTION_DEF);
                         fileContent = ReadFile(path);
                         var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
                         functionDefinition = TriggerSerializer.DeserializeFunctionDefinition(savedFunctionDef);
@@ -152,6 +153,7 @@ namespace BetterTriggers.Models.EditorData
 
                     default:
                         ElementType = ExplorerElementEnum.None;
+                        SetCategory(TriggerCategory.TC_UNKNOWN);
                         break;
                 }
             }
@@ -487,7 +489,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void UpdateVariableIdentifier()
         {
-            if(ElementType == ExplorerElementEnum.GlobalVariable)
+            if (ElementType == ExplorerElementEnum.GlobalVariable)
             {
                 variable.Name = this.GetName();
             }
@@ -513,11 +515,38 @@ namespace BetterTriggers.Models.EditorData
             // TODO: switch case since action definitions etc. have been added
 
             var variables = Project.CurrentProject.Variables;
-            trigger.LocalVariables.Elements.ForEach(e =>
+            if (trigger != null)
             {
-                var lv = (LocalVariable)e;
-                variables.AddLocalVariable(lv);
-            });
+                trigger.LocalVariables.Elements.ForEach(e =>
+                {
+                    var lv = (LocalVariable)e;
+                    variables.AddLocalVariable(lv);
+                });
+            }
+            else if (actionDefinition != null)
+            {
+                actionDefinition.LocalVariables.Elements.ForEach(e =>
+                {
+                    var lv = (LocalVariable)e;
+                    variables.AddLocalVariable(lv);
+                });
+            }
+            else if (conditionDefinition != null)
+            {
+                conditionDefinition.LocalVariables.Elements.ForEach(e =>
+                {
+                    var lv = (LocalVariable)e;
+                    variables.AddLocalVariable(lv);
+                });
+            }
+            else if (functionDefinition != null)
+            {
+                functionDefinition.LocalVariables.Elements.ForEach(e =>
+                {
+                    var lv = (LocalVariable)e;
+                    variables.AddLocalVariable(lv);
+                });
+            }
         }
 
         private void RemoveLocalVariables()

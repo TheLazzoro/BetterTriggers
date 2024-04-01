@@ -54,6 +54,9 @@ namespace BetterTriggers.Containers
             Variables = new();
             Triggers = new();
             Scripts = new();
+            ActionDefinitions = new();
+            ConditionDefinitions = new();
+            FunctionDefinitions = new();
             References = new();
             UnsavedFiles = new();
             CommandManager = new();

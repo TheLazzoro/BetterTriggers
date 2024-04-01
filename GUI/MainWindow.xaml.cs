@@ -74,6 +74,9 @@ namespace GUI
             btnCreateTrigger.ToolTip = Locale.Translate(btnCreateTrigger.ToolTip as string);
             btnCreateScript.ToolTip = Locale.Translate(btnCreateScript.ToolTip as string);
             btnCreateVariable.ToolTip = Locale.Translate(btnCreateVariable.ToolTip as string);
+            btnCreateActionDef.ToolTip = Locale.Translate(btnCreateActionDef.ToolTip as string);
+            btnCreateConditionDef.ToolTip = Locale.Translate(btnCreateConditionDef.ToolTip as string);
+            btnCreateFunctionDef.ToolTip = Locale.Translate(btnCreateFunctionDef.ToolTip as string);
 
             btnCreateEvent.ToolTip = Locale.Translate(btnCreateEvent.ToolTip as string);
             btnCreateCondition.ToolTip = Locale.Translate(btnCreateCondition.ToolTip as string);
@@ -449,6 +452,21 @@ namespace GUI
             Project.CurrentProject.Variables.Create();
         }
 
+        private void btnCreateActionDefinition_Click(object sender, RoutedEventArgs e)
+        {
+            Project.CurrentProject.ActionDefinitions.Create();
+        }
+
+        private void btnCreateConditionDefinition_Click(object sender, RoutedEventArgs e)
+        {
+            Project.CurrentProject.ConditionDefinitions.Create();
+        }
+
+        private void btnCreateFunctionDefinition_Click(object sender, RoutedEventArgs e)
+        {
+            Project.CurrentProject.FunctionDefinitions.Create();
+        }
+
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
         {
             var selected = tabControl.SelectedItem as TabItemBT;
@@ -697,6 +715,9 @@ namespace GUI
             btnCreateTrigger.IsEnabled = enable;
             btnCreateScript.IsEnabled = enable;
             btnCreateVariable.IsEnabled = enable;
+            btnCreateActionDef.IsEnabled = enable;
+            btnCreateConditionDef.IsEnabled = enable;
+            btnCreateFunctionDef.IsEnabled = enable;
             btnSaveScript.IsEnabled = enable;
             btnTestMap.IsEnabled = enable;
             btnBuildMap.IsEnabled = enable;

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using BetterTriggers.Utility;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace BetterTriggers.Containers
 {
@@ -17,6 +19,48 @@ namespace BetterTriggers.Containers
         {
             actionDefinitionContainer.Add(actionDefinition);
             lastCreated = actionDefinition;
+        }
+
+        /// <returns>Full file path.</returns>
+        public string Create()
+        {
+            string directory = Project.CurrentProject.currentSelectedElement;
+            if (!Directory.Exists(directory))
+                directory = Path.GetDirectoryName(directory);
+
+            string name = GenerateActionDefName();
+
+            var actionDef = new ActionDefinition_Saveable()
+            {
+                Id = GenerateId(),
+            };
+            string json = JsonConvert.SerializeObject(actionDef);
+
+            string fullPath = Path.Combine(directory, name);
+            File.WriteAllText(fullPath, json);
+
+            return fullPath;
+        }
+
+
+        internal string GenerateActionDefName(string name = "Untitled Action Definition")
+        {
+            string generatedName = name;
+            bool ok = false;
+            int i = 0;
+            while (!ok)
+            {
+                if (!Contains(generatedName))
+                    ok = true;
+                else
+                {
+                    generatedName = name + i;
+                }
+
+                i++;
+            }
+
+            return generatedName + ".act";
         }
 
         public int GenerateId()

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using BetterTriggers.Utility;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace BetterTriggers.Containers
 {
@@ -17,6 +19,47 @@ namespace BetterTriggers.Containers
         {
             conditionDefinitionContainer.Add(conditionDefinition);
             lastCreated = conditionDefinition;
+        }
+
+        /// <returns>Full file path.</returns>
+        public string Create()
+        {
+            string directory = Project.CurrentProject.currentSelectedElement;
+            if (!Directory.Exists(directory))
+                directory = Path.GetDirectoryName(directory);
+
+            string name = GenerateConditionDefName();
+
+            var conditionDef = new ConditionDefinition_Saveable()
+            {
+                Id = GenerateId(),
+            };
+            string json = JsonConvert.SerializeObject(conditionDef);
+
+            string fullPath = Path.Combine(directory, name);
+            File.WriteAllText(fullPath, json);
+
+            return fullPath;
+        }
+
+        internal string GenerateConditionDefName(string name = "Untitled Condition Definition")
+        {
+            string generatedName = name;
+            bool ok = false;
+            int i = 0;
+            while (!ok)
+            {
+                if (!Contains(generatedName))
+                    ok = true;
+                else
+                {
+                    generatedName = name + i;
+                }
+
+                i++;
+            }
+
+            return generatedName + ".cond";
         }
 
         public int GenerateId()

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using BetterTriggers.Utility;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace BetterTriggers.Containers
 {
@@ -17,6 +19,47 @@ namespace BetterTriggers.Containers
         {
             functionDefinitionContainer.Add(functionDefinition);
             lastCreated = functionDefinition;
+        }
+
+        /// <returns>Full file path.</returns>
+        public string Create()
+        {
+            string directory = Project.CurrentProject.currentSelectedElement;
+            if (!Directory.Exists(directory))
+                directory = Path.GetDirectoryName(directory);
+
+            string name = GenerateFunctionDefName();
+
+            var functionDef = new FunctionDefinition_Saveable()
+            {
+                Id = GenerateId(),
+            };
+            string json = JsonConvert.SerializeObject(functionDef);
+
+            string fullPath = Path.Combine(directory, name);
+            File.WriteAllText(fullPath, json);
+
+            return fullPath;
+        }
+
+        internal string GenerateFunctionDefName(string name = "Untitled Function Definition")
+        {
+            string generatedName = name;
+            bool ok = false;
+            int i = 0;
+            while (!ok)
+            {
+                if (!Contains(generatedName))
+                    ok = true;
+                else
+                {
+                    generatedName = name + i;
+                }
+
+                i++;
+            }
+
+            return generatedName + ".func";
         }
 
         public int GenerateId()
