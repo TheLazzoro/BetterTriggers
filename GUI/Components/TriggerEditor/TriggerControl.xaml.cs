@@ -773,7 +773,7 @@ namespace GUI.Components
                 if (triggerElement != null)
                     triggerElements.Elements.Add(triggerElement);
             }
-            Project.CurrentProject.Triggers.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
+            Project.CurrentProject.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
         }
 
         private void PasteTriggerElement()
@@ -799,7 +799,7 @@ namespace GUI.Components
             if (attachTarget.ElementType != CopiedElements.CopiedTriggerElements.ElementType) // reject if TriggerElement types don't match. 
                 return;
 
-            var pasted = Project.CurrentProject.Triggers.PasteTriggerElements(explorerElementTrigger, attachTarget, insertIndex);
+            var pasted = Project.CurrentProject.PasteTriggerElements(explorerElementTrigger, attachTarget, insertIndex);
         }
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)

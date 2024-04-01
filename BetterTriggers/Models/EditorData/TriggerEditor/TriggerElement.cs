@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BetterTriggers.Commands;
+using BetterTriggers.Containers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -78,5 +80,6 @@ namespace BetterTriggers.Models.EditorData
         {
             return Elements.IndexOf(element);
         }
+
     }
 }

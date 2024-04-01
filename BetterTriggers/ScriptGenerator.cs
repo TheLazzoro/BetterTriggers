@@ -278,7 +278,7 @@ end
             // Generated variables
 
 
-            var functions = project.Triggers.GetFunctionsAll();
+            var functions = project.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];
@@ -499,7 +499,7 @@ end
             if (language != ScriptLanguage.Lua)
                 return;
 
-            var functions = project.Triggers.GetFunctionsAll();
+            var functions = project.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];

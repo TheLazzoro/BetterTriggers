@@ -610,6 +610,27 @@ namespace BetterTriggers.Containers
                 CopiedElements.CutExplorerElement = null;
         }
 
+        public void CopyTriggerElements(ExplorerElement copiedFrom, TriggerElementCollection copiedCollection, bool isCut = false)
+        {
+            var type = copiedCollection.Elements[0].ElementType;
+            TriggerElementCollection copiedItems = new TriggerElementCollection(type);
+            for (int i = 0; i < copiedCollection.Count(); i++)
+            {
+                var element = copiedCollection.Elements[i];
+                copiedItems.Elements.Add(element.Clone());
+            }
+
+            CopiedElements.CopiedTriggerElements = copiedItems;
+
+            if (isCut)
+            {
+                CopiedElements.CutTriggerElements = copiedCollection;
+                CopiedElements.CopiedFromTrigger = copiedFrom;
+            }
+            else
+                CopiedElements.CutTriggerElements = null;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -659,7 +680,7 @@ namespace BetterTriggers.Containers
 
                 // Adjusts local variable ids
                 List<int> blacklistedIds = new List<int>();
-                var varRefs = Triggers.GetVariableRefsFromTrigger(pasted);
+                var varRefs = VariableRef.GetVariableRefsFromTrigger(pasted);
                 pasted.trigger.LocalVariables.Elements.ForEach(v =>
                 {
                     var lv = (LocalVariable)v;
@@ -695,6 +716,64 @@ namespace BetterTriggers.Containers
             }
 
             AddElementToContainer(pasted);
+        }
+
+
+        /// <returns>A list of pasted elements.</returns>
+        public TriggerElementCollection PasteTriggerElements(ExplorerElement destinationTrigger, TriggerElement parentList, int insertIndex)
+        {
+            var copied = CopiedElements.CopiedTriggerElements;
+            var pasted = new TriggerElementCollection(copied.ElementType);
+            for (int i = 0; i < copied.Count(); i++)
+            {
+                if (copied.Elements[i] is ECA eca)
+                {
+                    pasted.Elements.Add(eca.Clone());
+                }
+                else if (copied.Elements[i] is LocalVariable localVar)
+                {
+                    var clone = localVar.Clone();
+                    var variables = this.Variables;
+                    clone.variable.Id = variables.GenerateId();
+                    clone.variable.Name = variables.GenerateLocalName(destinationTrigger.trigger, clone.variable.Name);
+                    clone.DisplayText = clone.variable.Name;
+                    pasted.Elements.Add(clone);
+                    variables.AddLocalVariable(clone);
+                }
+            }
+
+            if (CopiedElements.CutTriggerElements == null)
+            {
+                CommandTriggerElementPaste command = new CommandTriggerElementPaste(destinationTrigger, pasted, parentList, insertIndex);
+                command.Execute();
+            }
+            else
+            {
+                CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
+                command.Execute();
+            }
+
+            if (pasted.Elements.Count > 0)
+                pasted.Elements[pasted.Elements.Count - 1].IsSelected = true;
+
+            return pasted;
+        }
+
+        /// <returns>A list of every function in the entire project. This also includes inner functions in parameters.</returns>
+        public List<Function> GetFunctionsAll()
+        {
+            var triggers = Triggers.GetAll();
+            var actionDefinitions = ActionDefinitions.GetAll();
+            var conditionDefinitions = ConditionDefinitions.GetAll();
+            var functionDefinitions = FunctionDefinitions.GetAll();
+            
+            List<Function> functions = new List<Function>();
+            triggers.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+            actionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+            conditionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+            functionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+
+            return functions;
         }
 
         /// <summary>
