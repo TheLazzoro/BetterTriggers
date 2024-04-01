@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Models.SaveableData;
+using Cake.Incubator.AssertExtensions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ namespace BetterTriggers.Models.EditorData
         /// <summary>
         /// Transforms a trigger into a saveable trigger.
         /// </summary>
-        public static string Serialize(Trigger trigger)
+        public static string SerializeTrigger(Trigger trigger)
         {
             SaveableData.Trigger_Saveable saveableTrig = new Trigger_Saveable();
             saveableTrig.Id = trigger.Id;
@@ -40,6 +41,18 @@ namespace BetterTriggers.Models.EditorData
             converted.IsTwoDimensions = variable.IsTwoDimensions;
             converted.ArraySize = variable.ArraySize;
             converted.InitialValue = ConvertParameter(variable.InitialValue);
+
+            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+        }
+
+        internal static string SerializeActionDefinition(ActionDefinition actionDefinition)
+        {
+            var converted = new ActionDefinition_Saveable();
+            converted.Id = actionDefinition.Id;
+            converted.Comment = actionDefinition.Comment;
+            converted.Category = actionDefinition.Category;
+            converted.Actions = ConvertTriggerElements(actionDefinition.Actions.Elements);
+            converted.LocalVariables = ConvertTriggerElements(actionDefinition.LocalVariables.Elements);
 
             return JsonConvert.SerializeObject(converted, Formatting.Indented);
         }
@@ -237,6 +250,42 @@ namespace BetterTriggers.Models.EditorData
             variable.InitialValue = ConvertParameter_Deserialize(saveableVariable.InitialValue);
 
             return variable;
+        }
+
+        internal static ActionDefinition DeserializeActionDefinition(ActionDefinition_Saveable saveableActionDef)
+        {
+            var converted = new ActionDefinition();
+            converted.Id = saveableActionDef.Id;
+            converted.Comment = saveableActionDef.Comment;
+            converted.Category = saveableActionDef.Category;
+            converted.Actions = ConvertTriggerElements_Deserialize(saveableActionDef.Actions, TriggerElementType.Action);
+            converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableActionDef.LocalVariables, TriggerElementType.LocalVariable);
+
+            return converted;
+        }
+
+        internal static ConditionDefinition DeserializeConditionDefinition(ConditionDefinition_Saveable saveableConditionDef)
+        {
+            var converted = new ConditionDefinition();
+            converted.Id = saveableConditionDef.Id;
+            converted.Comment = saveableConditionDef.Comment;
+            converted.Category = saveableConditionDef.Category;
+            converted.Actions = ConvertTriggerElements_Deserialize(saveableConditionDef.Actions, TriggerElementType.Action);
+            converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableConditionDef.LocalVariables, TriggerElementType.LocalVariable);
+
+            return converted;
+        }
+
+        internal static FunctionDefinition DeserializeFunctionDefinition(FunctionDefinition_Saveable saveableFunctionDef)
+        {
+            var converted = new FunctionDefinition();
+            converted.Id = saveableFunctionDef.Id;
+            converted.Comment = saveableFunctionDef.Comment;
+            converted.Category = saveableFunctionDef.Category;
+            converted.Actions = ConvertTriggerElements_Deserialize(saveableFunctionDef.Actions, TriggerElementType.Action);
+            converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableFunctionDef.LocalVariables, TriggerElementType.LocalVariable);
+
+            return converted;
         }
 
         private static TriggerElementCollection ConvertTriggerElements_Deserialize(List<TriggerElement_Saveable> elements, TriggerElementType type)

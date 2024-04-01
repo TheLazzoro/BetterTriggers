@@ -7,21 +7,24 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.EditorData
 {
-    public class FunctionDefinition : ECA
+    public class FunctionDefinition : IReferable
     {
         public int Id;
         public string Comment;
+        public string Category;
         public string ReturnType;
         public List<Parameter> Parameters = new();
-        public List<TriggerElement> Actions = new();
-        public List<TriggerElement> LocalVariables = new();
+        public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
+        public TriggerElementCollection Actions = new(TriggerElementType.Action);
 
-        public override FunctionDefinition Clone()
+        public FunctionDefinition Clone()
         {
             FunctionDefinition cloned = new FunctionDefinition();
             cloned.Comment = new string(Comment);
-            this.Actions.ForEach(element => cloned.Actions.Add(element.Clone()));
-            this.LocalVariables.ForEach(element => cloned.LocalVariables.Add(element.Clone()));
+            cloned.Category = new string(Category);
+            cloned.ReturnType = new string(ReturnType);
+            cloned.LocalVariables = LocalVariables.Clone();
+            cloned.Actions = Actions.Clone();
 
             return cloned;
         }

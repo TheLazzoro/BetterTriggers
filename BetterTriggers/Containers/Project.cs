@@ -32,6 +32,9 @@ namespace BetterTriggers.Containers
         public Variables Variables { get; private set; }
         public Triggers Triggers { get; private set; }
         public Scripts Scripts { get; private set; }
+        public ActionDefinitions ActionDefinitions { get; private set; }
+        public ConditionDefinitions ConditionDefinitions { get; private set; }
+        public FunctionDefinitions FunctionDefinitions { get; private set; }
         public References References { get; private set; }
         public UnsavedFiles UnsavedFiles { get; private set; }
         public CommandManager CommandManager { get; private set; }

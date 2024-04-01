@@ -11,8 +11,9 @@ namespace BetterTriggers.Models.SaveableData
     {
         public int Id;
         public string Comment;
-        public List<Parameter> Parameters = new();
-        public List<TriggerElement> Actions = new();
-        public List<TriggerElement> LocalVariables = new();
+        public string Category;
+        public List<Parameter_Saveable> Parameters = new();
+        public List<TriggerElement_Saveable> Actions = new();
+        public List<TriggerElement_Saveable> LocalVariables = new();
     }
 }

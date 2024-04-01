@@ -56,6 +56,7 @@ namespace BetterTriggers.Models.EditorData
         public string script;
         public ActionDefinition actionDefinition;
         public ConditionDefinition conditionDefinition;
+        public FunctionDefinition functionDefinition;
 
         public UserControl editor;
 
@@ -78,9 +79,7 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement(string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
         {
             this.path = path;
-            bool isReadyForRead = false;
-            int sleepTolerance = 100;
-            string json = string.Empty;
+            string fileContent;
 
             if (Directory.Exists(path))
             {
@@ -95,28 +94,13 @@ namespace BetterTriggers.Models.EditorData
                     case ".trg":
                         ElementType = ExplorerElementEnum.Trigger;
                         SetCategory(TriggerCategory.TC_TRIGGER_NEW);
-                        while (!isReadyForRead)
-                        {
-                            try
-                            {
-                                json = File.ReadAllText(path);
-                                isReadyForRead = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                if (sleepTolerance < 0)
-                                    throw new Exception(ex.Message);
-
-                                Thread.Sleep(100);
-                                sleepTolerance--;
-                            }
-                        }
-                        var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(json);
+                        fileContent = ReadFile(path);
+                        var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(fileContent);
                         trigger = TriggerSerializer.Deserialize(savedTrigger);
                         StoreLocalVariables();
                         Project.CurrentProject.Triggers.AddTrigger(this);
-
                         break;
+
                     case ".j":
                     case ".lua":
                         ElementType = ExplorerElementEnum.Script;
@@ -124,34 +108,48 @@ namespace BetterTriggers.Models.EditorData
                         this.script = Project.CurrentProject.Scripts.LoadFromFile(path);
                         Project.CurrentProject.Scripts.AddScript(this);
                         break;
+
                     case ".var":
                         ElementType = ExplorerElementEnum.GlobalVariable;
                         SetCategory(TriggerCategory.TC_SETVARIABLE);
-                        while (!isReadyForRead)
-                        {
-                            try
-                            {
-                                json = File.ReadAllText(path);
-                                isReadyForRead = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                if (sleepTolerance < 0)
-                                    throw new Exception(ex.Message);
-
-                                Thread.Sleep(100);
-                                sleepTolerance--;
-                            }
-                        }
-
-                        var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(json);
+                        fileContent = ReadFile(path);
+                        var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(fileContent);
                         variable = TriggerSerializer.DeserializeVariable(savedVariable);
                         variable.PropertyChanged += AddToUnsaved;
-                        UpdateMetadata();
                         Project.CurrentProject.Variables.AddVariable(this);
-
                         variable.Name = Path.GetFileNameWithoutExtension(GetPath());
                         break;
+
+                    case ".act":
+                        ElementType = ExplorerElementEnum.ActionDefinition;
+                        SetCategory(TriggerCategory.TC_ACTION);
+                        fileContent = ReadFile(path);
+                        var savedActionDef = JsonConvert.DeserializeObject<ActionDefinition_Saveable>(fileContent);
+                        actionDefinition = TriggerSerializer.DeserializeActionDefinition(savedActionDef);
+                        StoreLocalVariables();
+                        Project.CurrentProject.ActionDefinitions.Add(this);
+                        break;
+
+                    case ".cond":
+                        ElementType = ExplorerElementEnum.ConditionDefinition;
+                        SetCategory(TriggerCategory.TC_CONDITION);
+                        fileContent = ReadFile(path);
+                        var savedConditionDef = JsonConvert.DeserializeObject<ConditionDefinition_Saveable>(fileContent);
+                        conditionDefinition = TriggerSerializer.DeserializeConditionDefinition(savedConditionDef);
+                        StoreLocalVariables();
+                        Project.CurrentProject.ConditionDefinitions.Add(this);
+                        break;
+
+                    case ".func":
+                        ElementType = ExplorerElementEnum.FunctionDefinition;
+                        SetCategory(TriggerCategory.TC_NOTING);
+                        fileContent = ReadFile(path);
+                        var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
+                        functionDefinition = TriggerSerializer.DeserializeFunctionDefinition(savedFunctionDef);
+                        StoreLocalVariables();
+                        Project.CurrentProject.FunctionDefinitions.Add(this);
+                        break;
+
                     default:
                         ElementType = ExplorerElementEnum.None;
                         break;
@@ -168,6 +166,31 @@ namespace BetterTriggers.Models.EditorData
 
 
             UpdateMetadata();
+        }
+
+        private string ReadFile(string path)
+        {
+            string content = string.Empty;
+            bool isReadyForRead = false;
+            int sleepTolerance = 100;
+            while (!isReadyForRead)
+            {
+                try
+                {
+                    content = File.ReadAllText(path);
+                    isReadyForRead = true;
+                }
+                catch (Exception ex)
+                {
+                    if (sleepTolerance < 0)
+                        throw new Exception(ex.Message);
+
+                    Thread.Sleep(100);
+                    sleepTolerance--;
+                }
+            }
+
+            return content;
         }
 
         public string GetName()
@@ -362,7 +385,7 @@ namespace BetterTriggers.Models.EditorData
                     File.WriteAllText(path, script);
                     break;
                 case ExplorerElementEnum.Trigger:
-                    fileContent = TriggerSerializer.Serialize(trigger);
+                    fileContent = TriggerSerializer.SerializeTrigger(trigger);
                     File.WriteAllText(path, fileContent);
                     break;
                 case ExplorerElementEnum.Folder:
@@ -487,6 +510,8 @@ namespace BetterTriggers.Models.EditorData
 
         private void StoreLocalVariables()
         {
+            // TODO: switch case since action definitions etc. have been added
+
             var variables = Project.CurrentProject.Variables;
             trigger.LocalVariables.Elements.ForEach(e =>
             {
@@ -497,6 +522,8 @@ namespace BetterTriggers.Models.EditorData
 
         private void RemoveLocalVariables()
         {
+            // TODO: switch case since action definitions etc. have been added
+
             var variables = Project.CurrentProject.Variables;
             trigger.LocalVariables.Elements.ForEach(e =>
             {

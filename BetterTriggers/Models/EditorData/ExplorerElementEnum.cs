@@ -8,5 +8,8 @@
         Root,
         Script,
         Trigger,
+        ActionDefinition,
+        ConditionDefinition,
+        FunctionDefinition,
     }
 }
