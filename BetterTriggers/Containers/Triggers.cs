@@ -170,7 +170,6 @@ namespace BetterTriggers.Containers
             return generatedName + ".trg";
         }
 
-
         /// <summary>
         /// Creates a list of saveable trigger refs
         /// </summary>
@@ -192,28 +191,6 @@ namespace BetterTriggers.Containers
             return list;
         }
 
-
-        public void CopyTriggerElements(ExplorerElement copiedFrom, TriggerElementCollection copiedCollection, bool isCut = false)
-        {
-            var type = copiedCollection.Elements[0].ElementType;
-            TriggerElementCollection copiedItems = new TriggerElementCollection(type);
-            for (int i = 0; i < copiedCollection.Count(); i++)
-            {
-                var element = copiedCollection.Elements[i];
-                copiedItems.Elements.Add(element.Clone());
-            }
-
-            CopiedElements.CopiedTriggerElements = copiedItems;
-
-            if (isCut)
-            {
-                CopiedElements.CutTriggerElements = copiedCollection;
-                CopiedElements.CopiedFromTrigger = copiedFrom;
-            }
-            else
-                CopiedElements.CutTriggerElements = null;
-        }
-        
         public string GetValueName(string key, string returnType)
         {
             string text = key;
