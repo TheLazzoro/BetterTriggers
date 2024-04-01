@@ -350,6 +350,9 @@ namespace GUI
                         editor = scriptControl;
                         break;
                     case ExplorerElementEnum.Trigger:
+                    case ExplorerElementEnum.ActionDefinition:
+                    case ExplorerElementEnum.ConditionDefinition:
+                    case ExplorerElementEnum.FunctionDefinition:
                         var triggerControl = new TriggerControl(selectedItem);
                         editor = triggerControl;
                         break;

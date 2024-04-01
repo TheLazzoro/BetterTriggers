@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class ConditionDefinition_Saveable : ECA
+    public class ConditionDefinition_Saveable
     {
         public int Id;
         public string Comment;

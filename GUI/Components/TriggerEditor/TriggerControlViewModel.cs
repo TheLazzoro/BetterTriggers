@@ -28,18 +28,34 @@ namespace GUI.Components.TriggerEditor
         {
             _explorerElement = explorerElement;
             var trigger = explorerElement.trigger;
-            _triggers = new()
-            {
-                trigger.Events,
-                trigger.Conditions,
-                trigger.LocalVariables,
-                trigger.Actions,
-            };
+            var actionDefinition = explorerElement.actionDefinition;
+            var conditionDefinition = explorerElement.conditionDefinition;
+            var functionDefinition = explorerElement.functionDefinition;
 
-            InitTriggerElementVisuals(trigger.Events.Elements);
-            InitTriggerElementVisuals(trigger.Conditions.Elements);
-            InitTriggerElementVisuals(trigger.LocalVariables.Elements);
-            InitTriggerElementVisuals(trigger.Actions.Elements);
+            if (trigger != null)
+            {
+                _triggers = new()
+                {
+                    trigger.Events,
+                    trigger.Conditions,
+                    trigger.LocalVariables,
+                    trigger.Actions,
+                };
+
+                InitTriggerElementVisuals(trigger.Events.Elements);
+                InitTriggerElementVisuals(trigger.Conditions.Elements);
+                InitTriggerElementVisuals(trigger.LocalVariables.Elements);
+                InitTriggerElementVisuals(trigger.Actions.Elements);
+            }
+            else if(actionDefinition != null)
+            {
+                _triggers = new()
+                {
+                    actionDefinition.Parameters,
+                    actionDefinition.LocalVariables,
+                    actionDefinition.Actions
+                };
+            }
         }
 
         private void InitTriggerElementVisuals(ObservableCollection<TriggerElement> elements)

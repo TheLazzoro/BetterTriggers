@@ -28,10 +28,26 @@ namespace BetterTriggers.Models.EditorData
         public static List<Parameter> GetParametersFromTrigger(ExplorerElement explorerElement)
         {
             List<Parameter> list = new List<Parameter>();
-            list.AddRange(GatherTriggerParameters(explorerElement.trigger.Events));
-            list.AddRange(GatherTriggerParameters(explorerElement.trigger.Conditions));
-            list.AddRange(GatherTriggerParameters(explorerElement.trigger.LocalVariables));
-            list.AddRange(GatherTriggerParameters(explorerElement.trigger.Actions));
+            switch (explorerElement.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    list.AddRange(GatherTriggerParameters(explorerElement.trigger.Events));
+                    list.AddRange(GatherTriggerParameters(explorerElement.trigger.Conditions));
+                    list.AddRange(GatherTriggerParameters(explorerElement.trigger.LocalVariables));
+                    list.AddRange(GatherTriggerParameters(explorerElement.trigger.Actions));
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    list.AddRange(GatherTriggerParameters(explorerElement.actionDefinition.Actions));
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    list.AddRange(GatherTriggerParameters(explorerElement.conditionDefinition.Actions));
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    list.AddRange(GatherTriggerParameters(explorerElement.functionDefinition.Actions));
+                    break;
+                default:
+                    break;
+            }
 
             return list;
         }

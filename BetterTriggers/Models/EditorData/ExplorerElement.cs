@@ -376,28 +376,41 @@ namespace BetterTriggers.Models.EditorData
                 return;
             }
 
-            string fileContent;
-            switch (ElementType)
+            if (ElementType == ExplorerElementEnum.Folder)
             {
-                case ExplorerElementEnum.GlobalVariable:
-                    fileContent = TriggerSerializer.SerializeVariable(variable);
-                    File.WriteAllText(path, fileContent);
-                    break;
-                case ExplorerElementEnum.Script:
-                    File.WriteAllText(path, script);
-                    break;
-                case ExplorerElementEnum.Trigger:
-                    fileContent = TriggerSerializer.SerializeTrigger(trigger);
-                    File.WriteAllText(path, fileContent);
-                    break;
-                case ExplorerElementEnum.Folder:
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    break;
-                default:
-                    break;
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            else
+            {
+                string fileContent = string.Empty;
+                switch (ElementType)
+                {
+                    case ExplorerElementEnum.GlobalVariable:
+                        fileContent = TriggerSerializer.SerializeVariable(variable);
+                        break;
+                    case ExplorerElementEnum.Script:
+                        fileContent = script;
+                        break;
+                    case ExplorerElementEnum.Trigger:
+                        fileContent = TriggerSerializer.SerializeTrigger(trigger);
+                        break;
+                    case ExplorerElementEnum.ActionDefinition:
+                        fileContent = TriggerSerializer.SerializeActionDefinition(actionDefinition);
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        fileContent = TriggerSerializer.SerializeConditionDefinition(conditionDefinition);
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        fileContent = TriggerSerializer.SerializeFunctionDefinition(functionDefinition);
+                        break;
+                    default:
+                        break;
+                }
+
+                File.WriteAllText(path, fileContent);
             }
 
             RemoveFromUnsaved();

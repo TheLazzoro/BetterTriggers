@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class ActionDefinition_Saveable : ECA, IReferable
+    public class ActionDefinition_Saveable : IReferable
     {
         public int Id;
         public string Comment;

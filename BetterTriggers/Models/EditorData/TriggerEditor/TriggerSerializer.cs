@@ -57,6 +57,32 @@ namespace BetterTriggers.Models.EditorData
             return JsonConvert.SerializeObject(converted, Formatting.Indented);
         }
 
+        internal static string SerializeConditionDefinition(ConditionDefinition conditionDefinition)
+        {
+            var converted = new ConditionDefinition_Saveable();
+            converted.Id = conditionDefinition.Id;
+            converted.Comment = conditionDefinition.Comment;
+            converted.ReturnType = conditionDefinition.ReturnType;
+            converted.Category = conditionDefinition.Category;
+            converted.Actions = ConvertTriggerElements(conditionDefinition.Actions.Elements);
+            converted.LocalVariables = ConvertTriggerElements(conditionDefinition.LocalVariables.Elements);
+
+            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+        }
+
+        internal static string SerializeFunctionDefinition(FunctionDefinition functionDefinition)
+        {
+            var converted = new FunctionDefinition_Saveable();
+            converted.Id = functionDefinition.Id;
+            converted.Comment = functionDefinition.Comment;
+            converted.ReturnType = functionDefinition.ReturnType;
+            converted.Category = functionDefinition.Category;
+            converted.Actions = ConvertTriggerElements(functionDefinition.Actions.Elements);
+            converted.LocalVariables = ConvertTriggerElements(functionDefinition.LocalVariables.Elements);
+
+            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+        }
+
         private static List<TriggerElement_Saveable> ConvertTriggerElements(ObservableCollection<TriggerElement> elements)
         {
             List<TriggerElement_Saveable> list = new();
