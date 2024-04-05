@@ -67,7 +67,6 @@ namespace GUI.Components
 
             if (explorerElementType == ExplorerElementEnum.Trigger)
             {
-
                 checkBoxIsEnabled.IsChecked = explorerElement.IsEnabled;
                 checkBoxIsInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
                 checkBoxIsCustomScript.IsChecked = explorerElement.trigger.IsScript;

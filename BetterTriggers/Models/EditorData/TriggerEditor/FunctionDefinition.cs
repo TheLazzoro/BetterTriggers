@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace BetterTriggers.Models.EditorData
         public int Id;
         public string Comment;
         public string Category;
-        public string ReturnType;
-        public List<Parameter> Parameters = new();
+        public ReturnType ReturnType;
+        public TriggerElementCollection Parameters = new(TriggerElementType.ParameterDef);
         public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
         public TriggerElementCollection Actions = new(TriggerElementType.Action);
 
@@ -22,7 +23,7 @@ namespace BetterTriggers.Models.EditorData
             FunctionDefinition cloned = new FunctionDefinition();
             cloned.Comment = new string(Comment);
             cloned.Category = new string(Category);
-            cloned.ReturnType = new string(ReturnType);
+            cloned.ReturnType = ReturnType.Clone();
             cloned.LocalVariables = LocalVariables.Clone();
             cloned.Actions = Actions.Clone();
 

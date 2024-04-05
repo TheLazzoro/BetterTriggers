@@ -60,6 +60,8 @@ namespace BetterTriggers.JsonBaseConverter
                         return new ActionDefinitionRef_Saveable();
                     case 14:
                         return new ConditionDefinitionRef_Saveable();
+                    case 15:
+                        return new FunctionDefinitionRef_Saveable();
                     default:
                         return new ECA_Saveable();
                 }

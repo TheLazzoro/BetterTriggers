@@ -75,7 +75,7 @@ namespace BetterTriggers.Models.EditorData
             var converted = new FunctionDefinition_Saveable();
             converted.Id = functionDefinition.Id;
             converted.Comment = functionDefinition.Comment;
-            converted.ReturnType = functionDefinition.ReturnType;
+            converted.ReturnType = functionDefinition.ReturnType.Type;
             converted.Category = functionDefinition.Category;
             converted.Actions = ConvertTriggerElements(functionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(functionDefinition.LocalVariables.Elements);
@@ -308,6 +308,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Id = saveableFunctionDef.Id;
             converted.Comment = saveableFunctionDef.Comment;
             converted.Category = saveableFunctionDef.Category;
+            converted.ReturnType = new ReturnType(saveableFunctionDef.ReturnType);
             converted.Actions = ConvertTriggerElements_Deserialize(saveableFunctionDef.Actions, TriggerElementType.Action);
             converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableFunctionDef.LocalVariables, TriggerElementType.LocalVariable);
 

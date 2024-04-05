@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.SaveableData
 {
-    public class FunctionDefinition_Saveable : Parameter_Saveable
+    public class FunctionDefinition_Saveable
     {
         public readonly int ElementType = 15; // DO NOT CHANGE
         public int Id;
