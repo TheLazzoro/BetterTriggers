@@ -1,4 +1,6 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
 using GUI.Utility;
 using System;
@@ -96,6 +98,16 @@ namespace GUI.Components.TriggerEditor
             {
                 var triggerElement = elements[i];
                 string category = TriggerData.GetCategoryTriggerElement(triggerElement);
+                if(triggerElement is ActionDefinitionRef actionDefRef)
+                {
+                    var definition = Project.CurrentProject.ActionDefinitions.FindByRef(actionDefRef);
+                    category = definition.actionDefinition.Category;
+                }
+                else if (triggerElement is ConditionDefinitionRef condDefRef)
+                {
+                    var definition = Project.CurrentProject.ConditionDefinitions.FindByRef(condDefRef);
+                    category = definition.actionDefinition.Category;
+                }
                 var paramBuilder = new ParamTextBuilder();
                 triggerElement.IconImage = Category.Get(category).Icon;
                 if (triggerElement is ECA eca)

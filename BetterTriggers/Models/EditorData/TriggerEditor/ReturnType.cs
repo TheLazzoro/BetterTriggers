@@ -8,25 +8,25 @@ namespace BetterTriggers.Models.EditorData
 {
     public class ReturnType : TriggerElement
     {
-        private string _type;
+        private War3Type _type;
 
-        public string Type
+        public War3Type War3Type
         {
             get => _type;
             set
             {
                 _type = value;
                 OnPropertyChanged();
-                DisplayText = "Return Type: " + Locale.Translate(_type);
+                DisplayText = "Return Type: " + _type.DisplayName;
             }
         }
 
         public ReturnType(string type = null)
         {
             if(type == null)
-                Type = "integer";
+                War3Type = War3Type.Get("integer");
             else
-                Type = type;
+                War3Type = War3Type.Get(type);
 
             ElementType = TriggerElementType.None;
             IconImage = Category.Get(TriggerCategory.TC_SCRIPT).Icon;
@@ -35,7 +35,7 @@ namespace BetterTriggers.Models.EditorData
         public override ReturnType Clone()
         {
             var cloned = new ReturnType();
-            cloned.Type = new string(Type);
+            cloned.War3Type = War3Type;
             return cloned;
         }
     }

@@ -5,6 +5,7 @@ using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using ICSharpCode.Decompiler.Metadata;
 using Newtonsoft.Json;
+using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -838,6 +839,64 @@ namespace BetterTriggers.Containers
 
             return list;
         }
+
+        /// <summary>
+        /// Returns all TriggerElements in the entire project.
+        /// </summary>
+        public List<TriggerElement> GetAllTriggerElements()
+        {
+            var triggerElements = new List<TriggerElement>();
+
+            var explorerElements = GetAllExplorerElements();
+            explorerElements.ForEach(ex =>
+            {
+                triggerElements.AddRange(GetTriggerElementsFromExplorerElement(ex));
+            });
+
+            return triggerElements;
+        }
+
+        public List<TriggerElement> GetTriggerElementsFromExplorerElement(ExplorerElement ex)
+        {
+            var triggerElements = new List<TriggerElement>();
+
+            switch (ex.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.Events));
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.Conditions));
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.LocalVariables));
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.Actions));
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.actionDefinition.Actions));
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.conditionDefinition.Actions));
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.functionDefinition.Actions));
+                    break;
+                default:
+                    break;
+            }
+
+            return triggerElements;
+        }
+
+        private List<TriggerElement> GetAllTriggerElements(TriggerElement parent)
+        {
+            var list = new List<TriggerElement>();
+            parent.Elements.ForEach(t =>
+            {
+                list.Add(t);
+                if (t.Elements != null && t.Elements.Count > 0)
+                    list.AddRange(GetAllTriggerElements(t));
+            });
+
+            return list;
+        }
+
 
         public static bool VerifyMapPath(string path)
         {

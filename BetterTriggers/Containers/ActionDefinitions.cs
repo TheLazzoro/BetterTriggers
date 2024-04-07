@@ -7,17 +7,18 @@ using System.Linq;
 using BetterTriggers.Utility;
 using Newtonsoft.Json;
 using System.IO;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 
 namespace BetterTriggers.Containers
 {
     public class ActionDefinitions
     {
-        private static HashSet<ExplorerElement> actionDefinitionContainer = new();
-        private static ExplorerElement lastCreated;
+        internal Dictionary<string, ExplorerElement> container = new();
+        private ExplorerElement lastCreated;
 
         public void Add(ExplorerElement actionDefinition)
         {
-            actionDefinitionContainer.Add(actionDefinition);
+            container.Add(actionDefinition.GetName(), actionDefinition);
             lastCreated = actionDefinition;
         }
 
@@ -70,10 +71,10 @@ namespace BetterTriggers.Containers
             while (!isIdValid)
             {
                 bool doesIdExist = false;
-                var enumerator = actionDefinitionContainer.GetEnumerator();
+                var enumerator = container.GetEnumerator();
                 while (!doesIdExist && enumerator.MoveNext())
                 {
-                    if (enumerator.Current.actionDefinition.Id == generatedId)
+                    if (enumerator.Current.Value.actionDefinition.Id == generatedId)
                         doesIdExist = true;
                 }
 
@@ -88,7 +89,7 @@ namespace BetterTriggers.Containers
 
         public int Count()
         {
-            return actionDefinitionContainer.Count;
+            return container.Count;
         }
 
         /// <summary>
@@ -100,9 +101,9 @@ namespace BetterTriggers.Containers
         {
             bool found = false;
 
-            foreach (var item in actionDefinitionContainer)
+            foreach (var item in container)
             {
-                if (item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.Value.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }
@@ -111,21 +112,26 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        internal string GetName(int id)
+        public ActionDefinition GetByKey(string key)
         {
-            var element = FindById(id);
-            return element.GetName();
+            container.TryGetValue(key, out var result);
+            return result.actionDefinition;
+        }
+
+        public ExplorerElement FindByRef(ActionDefinitionRef actionDefRef)
+        {
+            return FindById(actionDefRef.ActionDefinitionId);
         }
 
         public ExplorerElement FindById(int id)
         {
             ExplorerElement actionDefinition = null;
-            var enumerator = actionDefinitionContainer.GetEnumerator();
+            var enumerator = container.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                if (enumerator.Current.actionDefinition.Id == id)
+                if (enumerator.Current.Value.actionDefinition.Id == id)
                 {
-                    actionDefinition = enumerator.Current;
+                    actionDefinition = enumerator.Current.Value;
                     break;
                 }
             }
@@ -140,12 +146,12 @@ namespace BetterTriggers.Containers
 
         internal List<ExplorerElement> GetAll()
         {
-            return actionDefinitionContainer.Select(x => x).ToList();
+            return container.Select(x => x.Value).ToList();
         }
 
         public void Remove(ExplorerElement explorerElement)
         {
-            actionDefinitionContainer.Remove(explorerElement);
+            container.Remove(explorerElement.GetName());
         }
 
         internal ExplorerElement GetByReference(ActionDefinition actionDefinitionRef)
@@ -155,7 +161,7 @@ namespace BetterTriggers.Containers
 
         internal void Clear()
         {
-            actionDefinitionContainer.Clear();
+            container.Clear();
         }
     }
 }

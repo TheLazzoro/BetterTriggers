@@ -516,6 +516,12 @@ namespace BetterTriggers.Models.EditorData
                     return Project.CurrentProject.References.GetReferrers(variable);
                 case ExplorerElementEnum.Trigger:
                     return Project.CurrentProject.References.GetReferrers(trigger);
+                case ExplorerElementEnum.ActionDefinition:
+                    return Project.CurrentProject.References.GetReferrers(actionDefinition);
+                case ExplorerElementEnum.ConditionDefinition:
+                    return Project.CurrentProject.References.GetReferrers(conditionDefinition);
+                case ExplorerElementEnum.FunctionDefinition:
+                    return Project.CurrentProject.References.GetReferrers(functionDefinition);
                 case ExplorerElementEnum.Folder:
                     return ExplorerElements.SelectMany(el => el.GetReferrers()).ToList();
                 default:

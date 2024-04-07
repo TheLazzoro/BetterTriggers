@@ -204,7 +204,7 @@ namespace BetterTriggers.WorldEdit
                 customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt"));
                 customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt"));
             }
-            if(Casc.GameVersion.Minor >= 32)
+            if (Casc.GameVersion.Minor >= 32)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_32.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -249,7 +249,7 @@ namespace BetterTriggers.WorldEdit
                 string extends = split[3];
 
                 var _type = Types.Get(type);
-                if(_type != null)
+                if (_type != null)
                     Types.Get(type).Extends = extends;
             });
         }
@@ -523,7 +523,7 @@ namespace BetterTriggers.WorldEdit
 
             FunctionTemplate functionTemplate;
             FunctionsAll.TryGetValue(f.value, out functionTemplate);
-            if(functionTemplate != null)
+            if (functionTemplate != null)
                 functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
 
             return list;
@@ -580,6 +580,16 @@ namespace BetterTriggers.WorldEdit
 
             bool exists = false;
             exists = FunctionsAll.ContainsKey(function.value);
+
+            var project = Project.CurrentProject;
+            if(!exists)
+                exists = project.ActionDefinitions.container.ContainsKey(function.value);
+            if (!exists)
+                exists = project.ConditionDefinitions.container.ContainsKey(function.value);
+            if (!exists)
+                exists = project.FunctionDefinitions.container.ContainsKey(function.value);
+
+
             return exists;
         }
 
@@ -680,6 +690,22 @@ namespace BetterTriggers.WorldEdit
                 list.ForEach(call => call.returnType = "boolcall");
             }
 
+            var functionDefinitions = Project.CurrentProject.FunctionDefinitions.GetAll();
+            foreach (var funcDef in functionDefinitions)
+            {
+                if(funcDef.functionDefinition.ReturnType.War3Type.Type == returnType)
+                {
+                    FunctionTemplate template = new FunctionTemplate(TriggerElementType.ParameterDef)
+                    {
+                        name = funcDef.GetName(),
+                        value = funcDef.GetName(),
+                        paramText = funcDef.functionDefinition.ParamText,
+                        returnType = returnType,
+                    };
+                    list.Add(template);
+                }
+            }
+
             return list;
         }
 
@@ -706,6 +732,21 @@ namespace BetterTriggers.WorldEdit
                 if (template.value != "InvalidECA")
                     list.Add(template.Clone());
             }
+            var conditionDefs = Project.CurrentProject.ConditionDefinitions.GetAll();
+            foreach (var conditionDef in conditionDefs)
+            {
+                var functionTemplate = new FunctionTemplate(TriggerElementType.Condition)
+                {
+                    name = conditionDef.GetName(),
+                    value = conditionDef.GetName(),
+                    paramText = conditionDef.conditionDefinition.ParamText,
+                    category = conditionDef.conditionDefinition.Category,
+                    description = conditionDef.conditionDefinition.Comment,
+                };
+
+                list.Add(functionTemplate);
+            }
+
             return list;
         }
 
@@ -719,6 +760,21 @@ namespace BetterTriggers.WorldEdit
                 if (template.value != "InvalidECA")
                     list.Add(template.Clone());
             }
+            var actionDefs = Project.CurrentProject.ActionDefinitions.GetAll();
+            foreach (var actionDef in actionDefs)
+            {
+                var functionTemplate = new FunctionTemplate(TriggerElementType.Action)
+                {
+                    name = actionDef.GetName(),
+                    value = actionDef.GetName(),
+                    paramText = actionDef.actionDefinition.ParamText,
+                    category = actionDef.actionDefinition.Category,
+                    description = actionDef.actionDefinition.Comment,
+                };
+
+                list.Add(functionTemplate);
+            }
+
             return list;
         }
 

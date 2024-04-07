@@ -20,14 +20,13 @@ namespace GUI.Components.VariableEditor
     {
         private Variable _variable;
         private War3Type _selectedItem;
-        private static ObservableCollection<War3Type> _war3Types;
         private static War3Type defaultSelection;
 
         public string Identifier
         {
             get => _variable.GetIdentifierName();
         }
-        public ObservableCollection<War3Type> War3Types { get => _war3Types; }
+        public ObservableCollection<War3Type> War3Types { get => War3Type.War3Types; }
         public War3Type SelectedItem
         {
             get => _selectedItem;
@@ -92,24 +91,7 @@ namespace GUI.Components.VariableEditor
 
         public VariableControlViewModel(Variable variable)
         {
-            if (_war3Types == null)
-            {
-                _war3Types = new ObservableCollection<War3Type>();
-                List<Types> types = TriggerData.LoadAllVariableTypes();
-                for (int i = 0; i < types.Count; i++)
-                {
-                    string type = types[i].Key;
-                    string displayName = Locale.Translate(types[i].DisplayName);
-                    War3Type item = new War3Type(type, displayName);
-
-                    _war3Types.Add(item);
-
-                    if (type == "integer")
-                        defaultSelection = item;
-                }
-            }
-
-            foreach (War3Type item in _war3Types)
+            foreach (War3Type item in War3Types)
             {
                 if (item.Type == variable.Type)
                 {

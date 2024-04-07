@@ -46,7 +46,7 @@ namespace BetterTriggers.Models.EditorData
                 OnPropertyChanged();
             }
         }
-
+       
         public byte[] IconImage
         {
             get => _icon;

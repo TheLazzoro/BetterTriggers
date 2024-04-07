@@ -25,7 +25,7 @@ namespace BetterTriggers.Models.EditorData
         /// <summary>
         /// </summary>
         /// <returns>A list of every parameter in the given trigger.</returns>
-        public static List<Parameter> GetParametersFromTrigger(ExplorerElement explorerElement)
+        public static List<Parameter> GetParametersFromExplorerElement(ExplorerElement explorerElement)
         {
             List<Parameter> list = new List<Parameter>();
             switch (explorerElement.ElementType)

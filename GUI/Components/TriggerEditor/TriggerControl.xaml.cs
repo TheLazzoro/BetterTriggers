@@ -7,6 +7,7 @@ using BetterTriggers.WorldEdit;
 using Cake.Core.Scripting;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
+using GUI.Components.Return;
 using GUI.Utility;
 using Newtonsoft.Json;
 using System;
@@ -45,7 +46,8 @@ namespace GUI.Components
         private TreeItemAdornerLine lineIndicator;
         private TreeItemAdornerSquare squareIndicator;
 
-        private VariableControl variableControl;
+        private VariableControl _variableControl;
+        private ReturnTypeControl _returnTypeControl;
 
         public TriggerControl(ExplorerElement explorerElement)
         {
@@ -299,7 +301,7 @@ namespace GUI.Components
             }
         }
 
-        public void RefreshBottomControls()
+        private void RefreshBottomControls()
         {
             EditorSettings settings = EditorSettings.Load();
             if (settings.triggerEditorMode == 1)
@@ -319,11 +321,15 @@ namespace GUI.Components
             textblockParams.Inlines.Clear();
             textblockDescription.Text = string.Empty;
 
-            if (grid.Children.Contains(variableControl))
+            if (grid.Children.Contains(_variableControl))
             {
-                variableControl.OnChange -= VariableControl_OnChange;
-                variableControl.Dispose();
-                grid.Children.Remove(variableControl);
+                _variableControl.OnChange -= VariableControl_OnChange;
+                _variableControl.Dispose();
+                grid.Children.Remove(_variableControl);
+            }
+            if(grid.Children.Contains(_returnTypeControl))
+            {
+                grid.Children.Remove(_returnTypeControl);
             }
 
             if (triggerElement == null)
@@ -339,11 +345,18 @@ namespace GUI.Components
             }
             else if (triggerElement is LocalVariable localVar)
             {
-                variableControl = new VariableControl(localVar.variable);
-                variableControl.OnChange += VariableControl_OnChange;
-                grid.Children.Add(variableControl);
-                Grid.SetRow(variableControl, 3);
-                Grid.SetRowSpan(variableControl, 2);
+                _variableControl = new VariableControl(localVar.variable);
+                _variableControl.OnChange += VariableControl_OnChange;
+                grid.Children.Add(_variableControl);
+                Grid.SetRow(_variableControl, 3);
+                Grid.SetRowSpan(_variableControl, 2);
+            }
+            else if(triggerElement is ReturnType returnType)
+            {
+                _returnTypeControl = new (explorerElement.functionDefinition, returnType);
+                grid.Children.Add(_returnTypeControl);
+                Grid.SetRow(_returnTypeControl, 3);
+                Grid.SetRowSpan(_returnTypeControl, 2);
             }
         }
 

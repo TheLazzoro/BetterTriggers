@@ -13,6 +13,7 @@ namespace BetterTriggers.Models.EditorData
         public int Id;
         public string Comment;
         public string Category;
+        public string ParamText;
         public ReturnType ReturnType;
         public TriggerElementCollection Parameters = new(TriggerElementType.ParameterDef);
         public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
@@ -23,6 +24,7 @@ namespace BetterTriggers.Models.EditorData
             FunctionDefinition cloned = new FunctionDefinition();
             cloned.Comment = new string(Comment);
             cloned.Category = new string(Category);
+            cloned.ParamText = new string(ParamText);
             cloned.ReturnType = ReturnType.Clone();
             cloned.LocalVariables = LocalVariables.Clone();
             cloned.Actions = Actions.Clone();

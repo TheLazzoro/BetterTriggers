@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData.TriggerEditor;
+using BetterTriggers.Models.SaveableData;
 using Cake.Incubator.AssertExtensions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -75,7 +76,7 @@ namespace BetterTriggers.Models.EditorData
             var converted = new FunctionDefinition_Saveable();
             converted.Id = functionDefinition.Id;
             converted.Comment = functionDefinition.Comment;
-            converted.ReturnType = functionDefinition.ReturnType.Type;
+            converted.ReturnType = functionDefinition.ReturnType.War3Type.Type;
             converted.Category = functionDefinition.Category;
             converted.Actions = ConvertTriggerElements(functionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(functionDefinition.LocalVariables.Elements);
@@ -156,6 +157,16 @@ namespace BetterTriggers.Models.EditorData
                         case SetVariable:
                             SetVariable_Saveable SetVariable_Saveable = new();
                             ECA_Saveable = SetVariable_Saveable;
+                            break;
+                        case ActionDefinitionRef thing:
+                            ActionDefinitionRef_Saveable ActionDefinitionRef_Saveable = new();
+                            ActionDefinitionRef_Saveable.ActionDefinitionId = thing.ActionDefinitionId;
+                            ECA_Saveable = ActionDefinitionRef_Saveable;
+                            break;
+                        case ConditionDefinitionRef thing:
+                            ConditionDefinitionRef_Saveable ConditionDefinitionRef_Saveable = new();
+                            ConditionDefinitionRef_Saveable.ConditionDefinitionId = thing.ConditionDefinitionId;
+                            ECA_Saveable = ConditionDefinitionRef_Saveable;
                             break;
                         default:
                             break;
@@ -256,10 +267,10 @@ namespace BetterTriggers.Models.EditorData
             trigger.RunOnMapInit = saveableTrig.RunOnMapInit;
             trigger.Comment = saveableTrig.Comment;
 
-            trigger.Events         = ConvertTriggerElements_Deserialize(saveableTrig.Events, TriggerElementType.Event);
-            trigger.Conditions     = ConvertTriggerElements_Deserialize(saveableTrig.Conditions, TriggerElementType.Condition);
+            trigger.Events = ConvertTriggerElements_Deserialize(saveableTrig.Events, TriggerElementType.Event);
+            trigger.Conditions = ConvertTriggerElements_Deserialize(saveableTrig.Conditions, TriggerElementType.Condition);
             trigger.LocalVariables = ConvertTriggerElements_Deserialize(saveableTrig.LocalVariables, TriggerElementType.LocalVariable);
-            trigger.Actions        = ConvertTriggerElements_Deserialize(saveableTrig.Actions, TriggerElementType.Action);
+            trigger.Actions = ConvertTriggerElements_Deserialize(saveableTrig.Actions, TriggerElementType.Action);
 
             return trigger;
         }
@@ -334,44 +345,44 @@ namespace BetterTriggers.Models.EditorData
                             eca = andMultiple;
                             break;
                         case EnumDestructablesInRectAllMultiple_Saveable thing:
-                            EnumDestructablesInRectAllMultiple EnumDestRect_Saveable = new();
-                            EnumDestRect_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = EnumDestRect_Saveable;
+                            EnumDestructablesInRectAllMultiple EnumDestRect = new();
+                            EnumDestRect.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumDestRect;
                             break;
                         case EnumDestructiblesInCircleBJMultiple_Saveable thing:
-                            EnumDestructiblesInCircleBJMultiple EnumDestCircle_Saveable = new();
-                            EnumDestCircle_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = EnumDestCircle_Saveable;
+                            EnumDestructiblesInCircleBJMultiple EnumDestCircle = new();
+                            EnumDestCircle.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumDestCircle;
                             break;
                         case EnumItemsInRectBJ_Saveable thing:
-                            EnumItemsInRectBJ EnumItemsInRectBJ_Saveable = new();
-                            EnumItemsInRectBJ_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = EnumItemsInRectBJ_Saveable;
+                            EnumItemsInRectBJ EnumItemsInRectBJ = new();
+                            EnumItemsInRectBJ.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumItemsInRectBJ;
                             break;
                         case ForForceMultiple_Saveable thing:
-                            ForForceMultiple ForForceMultiple_Saveable = new();
-                            ForForceMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForForceMultiple_Saveable;
+                            ForForceMultiple ForForceMultiple = new();
+                            ForForceMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForForceMultiple;
                             break;
                         case ForGroupMultiple_Saveable thing:
-                            ForGroupMultiple ForGroupMultiple_Saveable = new();
-                            ForGroupMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForGroupMultiple_Saveable;
+                            ForGroupMultiple ForGroupMultiple = new();
+                            ForGroupMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForGroupMultiple;
                             break;
                         case ForLoopAMultiple_Saveable thing:
-                            ForLoopAMultiple ForLoopAMultiple_Saveable = new();
-                            ForLoopAMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForLoopAMultiple_Saveable;
+                            ForLoopAMultiple ForLoopAMultiple = new();
+                            ForLoopAMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopAMultiple;
                             break;
                         case ForLoopBMultiple_Saveable thing:
-                            ForLoopBMultiple ForLoopBMultiple_Saveable = new();
-                            ForLoopBMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForLoopBMultiple_Saveable;
+                            ForLoopBMultiple ForLoopBMultiple = new();
+                            ForLoopBMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopBMultiple;
                             break;
                         case ForLoopVarMultiple_Saveable thing:
-                            ForLoopVarMultiple ForLoopVarMultiple_Saveable = new();
-                            ForLoopVarMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForLoopVarMultiple_Saveable;
+                            ForLoopVarMultiple ForLoopVarMultiple = new();
+                            ForLoopVarMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopVarMultiple;
                             break;
                         case IfThenElse_Saveable thing:
                             IfThenElse IfThenElse_Saveable = new();
@@ -388,6 +399,16 @@ namespace BetterTriggers.Models.EditorData
                         case SetVariable_Saveable:
                             SetVariable SetVariable = new();
                             eca = SetVariable;
+                            break;
+                        case ActionDefinitionRef_Saveable thing:
+                            ActionDefinitionRef ActionDefinitionRef = new();
+                            ActionDefinitionRef.ActionDefinitionId = thing.ActionDefinitionId;
+                            eca = ActionDefinitionRef;
+                            break;
+                        case ConditionDefinitionRef_Saveable thing:
+                            ConditionDefinitionRef ConditionDefinitionRef = new();
+                            ConditionDefinitionRef.ConditionDefinitionId = thing.ConditionDefinitionId;
+                            eca = ConditionDefinitionRef;
                             break;
                         default:
                             break;

@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public static List<VariableRef> GetVariableRefsFromTrigger(ExplorerElement explorerElement)
         {
-            List<Parameter> _params = GetParametersFromTrigger(explorerElement);
+            List<Parameter> _params = GetParametersFromExplorerElement(explorerElement);
             List<VariableRef> variableRefs = new List<VariableRef>();
             _params.ForEach(p =>
             {

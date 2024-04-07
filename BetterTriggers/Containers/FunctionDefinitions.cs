@@ -12,12 +12,12 @@ namespace BetterTriggers.Containers
 {
     public class FunctionDefinitions
     {
-        private static HashSet<ExplorerElement> functionDefinitionContainer = new();
-        private static ExplorerElement lastCreated;
+        internal Dictionary<string, ExplorerElement> container = new();
+        private ExplorerElement lastCreated;
 
         public void Add(ExplorerElement functionDefinition)
         {
-            functionDefinitionContainer.Add(functionDefinition);
+            container.Add(functionDefinition.GetName(), functionDefinition);
             lastCreated = functionDefinition;
         }
 
@@ -69,10 +69,10 @@ namespace BetterTriggers.Containers
             while (!isIdValid)
             {
                 bool doesIdExist = false;
-                var enumerator = functionDefinitionContainer.GetEnumerator();
+                var enumerator = container.GetEnumerator();
                 while (!doesIdExist && enumerator.MoveNext())
                 {
-                    if (enumerator.Current.functionDefinition.Id == generatedId)
+                    if (enumerator.Current.Value.functionDefinition.Id == generatedId)
                         doesIdExist = true;
                 }
 
@@ -87,7 +87,7 @@ namespace BetterTriggers.Containers
 
         public int Count()
         {
-            return functionDefinitionContainer.Count;
+            return container.Count;
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace BetterTriggers.Containers
         {
             bool found = false;
 
-            foreach (var item in functionDefinitionContainer)
+            foreach (var item in container)
             {
-                if (item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.Value.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }
@@ -119,12 +119,12 @@ namespace BetterTriggers.Containers
         public ExplorerElement FindById(int id)
         {
             ExplorerElement functionDefinition = null;
-            var enumerator = functionDefinitionContainer.GetEnumerator();
+            var enumerator = container.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                if (enumerator.Current.actionDefinition.Id == id)
+                if (enumerator.Current.Value.actionDefinition.Id == id)
                 {
-                    functionDefinition = enumerator.Current;
+                    functionDefinition = enumerator.Current.Value;
                     break;
                 }
             }
@@ -139,12 +139,12 @@ namespace BetterTriggers.Containers
 
         internal List<ExplorerElement> GetAll()
         {
-            return functionDefinitionContainer.Select(x => x).ToList();
+            return container.Select(x => x.Value).ToList();
         }
 
         public void Remove(ExplorerElement explorerElement)
         {
-            functionDefinitionContainer.Remove(explorerElement);
+            container.Remove(explorerElement.GetName());
         }
 
         internal ExplorerElement GetByReference(ActionDefinition functionDefinitionRef)
@@ -154,7 +154,7 @@ namespace BetterTriggers.Containers
 
         internal void Clear()
         {
-            functionDefinitionContainer.Clear();
+            container.Clear();
         }
     }
 }

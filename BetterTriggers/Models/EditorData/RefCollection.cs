@@ -1,12 +1,16 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.EditorData
 {
     /// <summary>
-    /// A collection of variable or trigger references with the given Referable.
-    /// Refs can be removed and re-added to the Function they were attached to.
+    /// A collection of <see cref="VariableRef"/> or <see cref="TriggerRef"/> with the given Referable.
+    /// Refs can be removed and re-added to the <see cref="Function"/> they were attached to.
+    /// 
+    /// With the addition of <see cref="ActionDefinition"/> and <see cref="ConditionDefinition"/>
+    /// refs to those can also be removed and re-added to the <see cref="TriggerElementCollection"/>.
+    /// <see cref="FunctionDefinition"/> was also added and can be removed from the parameters of a <see cref="Function"/>.
     /// </summary>
     internal class RefCollection
     {
@@ -26,6 +30,16 @@ namespace BetterTriggers.Models.EditorData
         internal RefCollection(Trigger trigger)
         {
             CreateTrigRefs(trigger);
+        }
+
+        internal RefCollection(FunctionDefinition functionDefinition)
+        {
+            CreateFunctionDefRefs(functionDefinition);
+        }
+
+        internal RefCollection(ConditionDefinition conditionDefinition)
+        {
+            CreateConditionDefRefs(conditionDefinition);
         }
 
         internal RefCollection(ExplorerElement explorerElement)
@@ -76,6 +90,45 @@ namespace BetterTriggers.Models.EditorData
             });
         }
 
+        private void CreateFunctionDefRefs(FunctionDefinition functionDef)
+        {
+            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(functionDef);
+            var functions = Project.CurrentProject.GetFunctionsAll();
+            functions.ForEach(f =>
+            {
+                f.parameters.ForEach(p =>
+                {
+                    if (p is FunctionDefinitionRef funcDefRef)
+                    {
+                        if (funcDefRef.FunctionDefinitionId == functionDef.Id)
+                        {
+                            var refParent = new RefParent(funcDefRef, f);
+                            refParents.Add(refParent);
+                        }
+                    }
+                });
+            });
+        }
+
+        private void CreateConditionDefRefs(ConditionDefinition conditionDef)
+        {
+            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(conditionDef);
+            var functions = Project.CurrentProject.GetFunctionsAll();
+            var triggerElements = Project.CurrentProject.GetAllTriggerElements();
+
+            triggerElements.ForEach(t =>
+            {
+                if (t is ConditionDefinitionRef condDefRef)
+                {
+                    if (condDefRef.ConditionDefinitionId == conditionDef.Id)
+                    {
+                        var refParent = new RefParent(condDefRef);
+                        refParents.Add(refParent);
+                    }
+                }
+            });
+        }
+
         internal void RemoveRefsFromParent()
         {
             refParents.ForEach(r => r.RemoveFromParent());
@@ -114,20 +167,45 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
+        TriggerElement triggerElement;
+        TriggerElement parentTrigElement;
+        internal RefParent(TriggerElement triggerElement)
+        {
+            this.triggerElement = triggerElement;
+            parentTrigElement = triggerElement.GetParent();
+            index = parentTrigElement.Elements.IndexOf(triggerElement);
+        }
+
         internal void RemoveFromParent()
         {
-            parent.parameters.Remove(parameter);
-            parent.parameters.Insert(index, new Parameter());
-            if(setvarOldValue != null)
-                parent.parameters[1] = new Parameter();
+            if (parameter != null)
+            {
+                parent.parameters.Remove(parameter);
+                parent.parameters.Insert(index, new Parameter());
+                if (setvarOldValue != null)
+                    parent.parameters[1] = new Parameter();
+            }
+            else if (triggerElement != null)
+            {
+                parentTrigElement.Elements.Remove(triggerElement);
+                parentTrigElement.Elements.Insert(index, new InvalidECA());
+            }
         }
 
         internal void AddToParent()
         {
-            parent.parameters.RemoveAt(index);
-            parent.parameters.Insert(index, parameter);
-            if (setvarOldValue != null)
-                parent.parameters[1] = setvarOldValue;
+            if (parameter != null)
+            {
+                parent.parameters.RemoveAt(index);
+                parent.parameters.Insert(index, parameter);
+                if (setvarOldValue != null)
+                    parent.parameters[1] = setvarOldValue;
+            }
+            else if (triggerElement != null)
+            {
+                parentTrigElement.Elements.RemoveAt(index);
+                parentTrigElement.Elements.Insert(index, triggerElement);
+            }
         }
     }
 }

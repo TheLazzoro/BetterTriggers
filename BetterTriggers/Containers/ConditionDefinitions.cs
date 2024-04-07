@@ -7,17 +7,18 @@ using System.Linq;
 using BetterTriggers.Utility;
 using Newtonsoft.Json;
 using System.IO;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 
 namespace BetterTriggers.Containers
 {
     public class ConditionDefinitions
     {
-        private static HashSet<ExplorerElement> conditionDefinitionContainer = new();
-        private static ExplorerElement lastCreated;
+        internal Dictionary<string, ExplorerElement> container = new();
+        private ExplorerElement lastCreated;
 
         public void Add(ExplorerElement conditionDefinition)
         {
-            conditionDefinitionContainer.Add(conditionDefinition);
+            container.Add(conditionDefinition.GetName(), conditionDefinition);
             lastCreated = conditionDefinition;
         }
 
@@ -69,10 +70,10 @@ namespace BetterTriggers.Containers
             while (!isIdValid)
             {
                 bool doesIdExist = false;
-                var enumerator = conditionDefinitionContainer.GetEnumerator();
+                var enumerator = container.GetEnumerator();
                 while (!doesIdExist && enumerator.MoveNext())
                 {
-                    if (enumerator.Current.conditionDefinition.Id == generatedId)
+                    if (enumerator.Current.Value.conditionDefinition.Id == generatedId)
                         doesIdExist = true;
                 }
 
@@ -87,7 +88,7 @@ namespace BetterTriggers.Containers
 
         public int Count()
         {
-            return conditionDefinitionContainer.Count;
+            return container.Count;
         }
 
         /// <summary>
@@ -99,9 +100,9 @@ namespace BetterTriggers.Containers
         {
             bool found = false;
 
-            foreach (var item in conditionDefinitionContainer)
+            foreach (var item in container)
             {
-                if (item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.Value.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }
@@ -110,21 +111,32 @@ namespace BetterTriggers.Containers
             return found;
         }
 
+        internal ConditionDefinition GetByKey(string name)
+        {
+            container.TryGetValue(name, out var result);
+            return result.conditionDefinition;
+        }
+
         internal string GetName(int id)
         {
             var element = FindById(id);
             return element.GetName();
         }
 
+        public ExplorerElement FindByRef(ConditionDefinitionRef conditionDefRef)
+        {
+            return FindById(conditionDefRef.ConditionDefinitionId);
+        }
+
         public ExplorerElement FindById(int id)
         {
             ExplorerElement conditionDefinition = null;
-            var enumerator = conditionDefinitionContainer.GetEnumerator();
+            var enumerator = container.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                if (enumerator.Current.actionDefinition.Id == id)
+                if (enumerator.Current.Value.actionDefinition.Id == id)
                 {
-                    conditionDefinition = enumerator.Current;
+                    conditionDefinition = enumerator.Current.Value;
                     break;
                 }
             }
@@ -139,12 +151,12 @@ namespace BetterTriggers.Containers
 
         internal List<ExplorerElement> GetAll()
         {
-            return conditionDefinitionContainer.Select(x => x).ToList();
+            return container.Select(x => x.Value).ToList();
         }
 
         public void Remove(ExplorerElement explorerElement)
         {
-            conditionDefinitionContainer.Remove(explorerElement);
+            container.Remove(explorerElement.GetName());
         }
 
         internal ExplorerElement GetByReference(ConditionDefinition conditionDefinitionRef)
@@ -154,7 +166,8 @@ namespace BetterTriggers.Containers
 
         internal void Clear()
         {
-            conditionDefinitionContainer.Clear();
+            container.Clear();
         }
+
     }
 }
