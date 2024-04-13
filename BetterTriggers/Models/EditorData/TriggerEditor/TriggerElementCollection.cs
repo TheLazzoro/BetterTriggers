@@ -33,7 +33,7 @@ namespace BetterTriggers.Models.EditorData
                     break;
                 case TriggerElementType.ParameterDef:
                     DisplayText = "Parameters";
-                    category = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE);
+                    category = Category.Get(TriggerCategory.TC_PARAMETER);
                     break;
                 default:
                     category = Category.Get(TriggerCategory.TC_EVENT);

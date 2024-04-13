@@ -324,10 +324,20 @@ namespace GUI
             {
                 Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
                 EnableECAButtons(true);
+                EnableParameterButton(false);
+            }
+            else if(selectedItem.ElementType == ExplorerElementEnum.ActionDefinition
+                    || selectedItem.ElementType == ExplorerElementEnum.ConditionDefinition
+                    || selectedItem.ElementType == ExplorerElementEnum.FunctionDefinition)
+            {
+                Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
+                EnableECAButtons(true);
+                EnableParameterButton(true);
             }
             else
             {
                 EnableECAButtons(false);
+                EnableParameterButton(false);
             }
 
             if (!tabViewModel.Contains(selectedItem))
@@ -406,7 +416,10 @@ namespace GUI
             tabItem.Close();
 
             if (tabControl.Items.Count == 0)
+            {
                 EnableECAButtons(false);
+                EnableParameterButton(false);
+            }
         }
 
         private void btnNewMap_Click(object sender, RoutedEventArgs e)
@@ -734,6 +747,11 @@ namespace GUI
             btnCreateAction.IsEnabled = enable;
         }
 
+        private void EnableParameterButton(bool enable)
+        {
+            btnCreateParameter.IsEnabled = enable;
+        }
+
         private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
@@ -834,6 +852,7 @@ namespace GUI
             triggerExplorer = null;
             EnableToolbar(false);
             EnableECAButtons(false);
+            EnableParameterButton(false);
 
             Project.Close();
         }
@@ -963,6 +982,13 @@ namespace GUI
             var selected = tabControl.SelectedItem as TabItemBT;
             var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
+        }
+
+        private void btnCreateParameter_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
+            triggerControl.CreateParameter();
         }
 
         private void CommandBinding_Executed_ValidateTriggers(object sender, ExecutedRoutedEventArgs e)

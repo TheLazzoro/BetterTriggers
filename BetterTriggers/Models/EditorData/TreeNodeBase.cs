@@ -13,6 +13,7 @@ namespace BetterTriggers.Models.EditorData
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _displayText;
+        private string _suffixText;
         private string _renameText;
         private string _category;
         private byte[] _icon = new byte[0];
@@ -34,6 +35,15 @@ namespace BetterTriggers.Models.EditorData
             {
                 _displayText = value;
                 RenameText = value;
+                OnPropertyChanged();
+            }
+        }
+        public string SuffixText
+        {
+            get => _suffixText;
+            set
+            {
+                _suffixText = value;
                 OnPropertyChanged();
             }
         }

@@ -739,7 +739,23 @@ namespace BetterTriggers.Containers
                     var clone = localVar.Clone();
                     var variables = this.Variables;
                     clone.variable.Id = variables.GenerateId();
-                    clone.variable.Name = variables.GenerateLocalName(destinationTrigger.trigger, clone.variable.Name);
+                    switch (destinationTrigger.ElementType)
+                    {
+                        case ExplorerElementEnum.Trigger:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.trigger.LocalVariables, clone.variable.Name);
+                            break;
+                        case ExplorerElementEnum.ActionDefinition:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.actionDefinition.LocalVariables, clone.variable.Name);
+                            break;
+                        case ExplorerElementEnum.ConditionDefinition:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.conditionDefinition.LocalVariables, clone.variable.Name);
+                            break;
+                        case ExplorerElementEnum.FunctionDefinition:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.functionDefinition.LocalVariables, clone.variable.Name);
+                            break;
+                        default:
+                            break;
+                    }
                     clone.DisplayText = clone.variable.Name;
                     pasted.Elements.Add(clone);
                     variables.AddLocalVariable(clone);

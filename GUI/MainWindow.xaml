@@ -513,6 +513,11 @@
                     <Image Source="Resources/Icons/actions-setvariables-alpha.png" Stretch="None"/>
                 </Button.Content>
             </Button>
+            <Button x:Name="btnCreateParameter" IsEnabled="False" ToolTip="New Parameter" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnCreateParameter_Click" >
+                <Button.Content>
+                    <Image Source="Resources/Icons/actions-parameter-alpha.png" Stretch="None"/>
+                </Button.Content>
+            </Button>
             <Button x:Name="btnSaveScript" IsEnabled="False" ToolTip="WESTRING_MENU_VALIDATE_MAP_TRIGGERS" Style="{DynamicResource IconButton}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Click="btnSaveScript_Click">
                 <Button.Content>
                     <Image Source="Resources/Icons/editor-toolbar-mapvalidation.png" Stretch="None"/>

@@ -15,22 +15,49 @@ namespace BetterTriggers.Utility
     public class TriggerValidator
     {
         private bool _includeUnsetParameters;
+        private ExplorerElement _explorerElement;
         private Trigger _trigger;
+        private ActionDefinition _actionDefinition;
+        private ConditionDefinition _conditionDefinition;
+        private FunctionDefinition _functionDefinition;
 
         public TriggerValidator(ExplorerElement explorerElement, bool validateUnsetParameters = false)
         {
             _includeUnsetParameters = validateUnsetParameters;
+            _explorerElement = explorerElement;
             _trigger = explorerElement.trigger;
+            _actionDefinition = explorerElement.actionDefinition;
+            _conditionDefinition = explorerElement.conditionDefinition;
+            _functionDefinition = explorerElement.functionDefinition;
         }
 
         /// <returns>Whether the trigger had invalid references removed.</returns>
         public int RemoveInvalidReferences()
         {
             int removeCount = 0;
-            removeCount += RemoveInvalidReferences(_trigger.Events);
-            removeCount += RemoveInvalidReferences(_trigger.Conditions);
-            removeCount += RemoveInvalidReferences(_trigger.LocalVariables);
-            removeCount += RemoveInvalidReferences(_trigger.Actions);
+            switch (_explorerElement.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    removeCount += RemoveInvalidReferences(_trigger.Events);
+                    removeCount += RemoveInvalidReferences(_trigger.Conditions);
+                    removeCount += RemoveInvalidReferences(_trigger.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_trigger.Actions);
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    removeCount += RemoveInvalidReferences(_actionDefinition.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_actionDefinition.Actions);
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    removeCount += RemoveInvalidReferences(_conditionDefinition.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_conditionDefinition.Actions);
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    removeCount += RemoveInvalidReferences(_functionDefinition.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_functionDefinition.Actions);
+                    break;
+                default:
+                    break;
+            }
 
             return removeCount;
         }
@@ -146,7 +173,7 @@ namespace BetterTriggers.Utility
 
                 if (parameter is VariableRef varRef)
                 {
-                    Variable variable = Project.CurrentProject.Variables.GetById(varRef.VariableId, _trigger);
+                    Variable variable = Project.CurrentProject.Variables.GetById(varRef.VariableId, _explorerElement);
                     if (variable == null)
                     {
                         removeCount++;

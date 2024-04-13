@@ -166,6 +166,9 @@ namespace BetterTriggers.WorldEdit
 
                 img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_tbd.png");
                 Category.Create(TriggerCategory.TC_UNKNOWN, img, "???", false);
+
+                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-parameter-alpha.png");
+                Category.Create(TriggerCategory.TC_PARAMETER, img, "???", false);
             }
 
 
@@ -770,6 +773,7 @@ namespace BetterTriggers.WorldEdit
                     paramText = actionDef.actionDefinition.ParamText,
                     category = actionDef.actionDefinition.Category,
                     description = actionDef.actionDefinition.Comment,
+                    
                 };
 
                 list.Add(functionTemplate);

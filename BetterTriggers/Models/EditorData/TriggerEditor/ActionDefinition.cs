@@ -13,7 +13,7 @@ namespace BetterTriggers.Models.EditorData
         public string Comment;
         public string Category;
         public string ParamText;
-        public TriggerElementCollection Parameters = new(TriggerElementType.ParameterDef);
+        public ParameterDefinitionCollection Parameters = new(TriggerElementType.ParameterDef);
         public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
         public TriggerElementCollection Actions = new(TriggerElementType.Action);
 

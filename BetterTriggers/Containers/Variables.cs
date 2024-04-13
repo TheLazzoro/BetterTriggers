@@ -47,19 +47,35 @@ namespace BetterTriggers.Containers
 
         public LocalVariable CreateLocalVariable(ExplorerElement explorerElement, int insertIndex)
         {
-            var trig = explorerElement.trigger;
-            TriggerElementCollection parent = trig.LocalVariables;
+            TriggerElementCollection localVariables = null;
+            switch (explorerElement.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    localVariables = explorerElement.trigger.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    localVariables = explorerElement.actionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    localVariables = explorerElement.conditionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    localVariables = explorerElement.functionDefinition.LocalVariables;
+                    break;
+                default:
+                    break;
+            }
+
             LocalVariable localVariable = new LocalVariable();
-            localVariable.variable.Name = GenerateLocalName(trig);
-            localVariable.variable.Id = GenerateId();
             localVariable.variable.Type = "integer";
+            localVariable.variable.Name = GenerateLocalName(localVariables);
+            localVariable.variable.Id = GenerateId();
             localVariable.variable.ArraySize = new int[] { 1, 1 };
             localVariable.variable.InitialValue = new Value() { value = "0" };
-            localVariable.DisplayText = localVariable.variable.Name;
             localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
             localVariableContainer.Add(localVariable.variable);
 
-            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, localVariable, parent, insertIndex);
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, localVariable, localVariables, insertIndex);
             command.Execute();
 
             return localVariable;
@@ -81,7 +97,7 @@ namespace BetterTriggers.Containers
                     throw new Exception($"Local variable with name '{newName}' already exists.");
             }
 
-            CommandLocalVariableRename command = new CommandLocalVariableRename(variable, newName);
+            CommandTriggerElementRename command = new CommandTriggerElementRename(variable, newName);
             command.Execute();
         }
 
@@ -270,15 +286,15 @@ namespace BetterTriggers.Containers
             return generatedId;
         }
 
-        internal string GenerateLocalName(Trigger trig, string oldName = "UntitledVariable")
+        internal string GenerateLocalName(TriggerElementCollection localVariables, string oldName = "UntitledVariable")
         {
             string baseName = oldName;
             string name = baseName;
             int i = 0;
             bool validName = false;
-            while (!validName && trig.LocalVariables.Elements.Count > 0)
+            while (!validName && localVariables.Elements.Count > 0)
             {
-                foreach (LocalVariable localVar in trig.LocalVariables.Elements)
+                foreach (LocalVariable localVar in localVariables.Elements)
                 {
                     validName = name != localVar.variable.Name;
                     if (!validName)
@@ -308,7 +324,7 @@ namespace BetterTriggers.Containers
             return variableContainer.ToList();
         }
 
-        public Variable GetById(int Id, Trigger trig = null)
+        public Variable GetById(int Id, ExplorerElement explorerElement = null)
         {
             Variable var = null;
 
@@ -323,18 +339,37 @@ namespace BetterTriggers.Containers
                 }
             }
 
-            if (trig == null)
-                trig = Project.CurrentProject.Triggers.SelectedTrigger;
-
-            if (trig != null) // for local variables
+            if (explorerElement != null)
             {
-                for (int i = 0; i < trig.LocalVariables.Elements.Count; i++)
+                TriggerElementCollection localVariables = null;
+                switch (explorerElement.ElementType)
                 {
-                    var localVar = (LocalVariable)trig.LocalVariables.Elements[i];
-                    if (localVar.variable.Id == Id)
-                    {
-                        var = localVar.variable;
+                    case ExplorerElementEnum.Trigger:
+                        localVariables = explorerElement.trigger.LocalVariables;
                         break;
+                    case ExplorerElementEnum.ActionDefinition:
+                        localVariables = explorerElement.actionDefinition.LocalVariables;
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        localVariables = explorerElement.conditionDefinition.LocalVariables;
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        localVariables = explorerElement.functionDefinition.LocalVariables;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (localVariables != null) // for local variables
+                {
+                    for (int i = 0; i < localVariables.Elements.Count; i++)
+                    {
+                        var localVar = (LocalVariable)localVariables.Elements[i];
+                        if (localVar.variable.Id == Id)
+                        {
+                            var = localVar.variable;
+                            break;
+                        }
                     }
                 }
             }

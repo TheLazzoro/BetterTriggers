@@ -464,10 +464,8 @@ namespace BetterTriggers.Models.EditorData
                 this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
                 OnReload?.Invoke();
             }
-            else if (ElementType == ExplorerElementEnum.Trigger)
-            {
-                VerifyAndRemoveTriggerErrors();
-            }
+
+            VerifyAndRemoveTriggerErrors();
         }
 
         public void InvokeChange()
@@ -492,12 +490,9 @@ namespace BetterTriggers.Models.EditorData
 
         private void VerifyAndRemoveTriggerErrors()
         {
-            if (ElementType == ExplorerElementEnum.Trigger)
-            {
-                TriggerValidator validator = new TriggerValidator(this, true);
-                int errors = validator.RemoveInvalidReferences();
-                HasErrors = errors > 0;
-            }
+            TriggerValidator validator = new TriggerValidator(this, true);
+            int errors = validator.RemoveInvalidReferences();
+            HasErrors = errors > 0;
         }
 
         private void UpdateVariableIdentifier()

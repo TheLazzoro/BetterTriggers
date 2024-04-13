@@ -42,6 +42,11 @@ namespace BetterTriggers.Models.EditorData
             CreateConditionDefRefs(conditionDefinition);
         }
 
+        internal RefCollection(ParameterDefinition parameterDefinition)
+        {
+            CreateParameterDefRefs(parameterDefinition);
+        }
+
         internal RefCollection(ExplorerElement explorerElement)
         {
             if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
@@ -126,6 +131,27 @@ namespace BetterTriggers.Models.EditorData
                         refParents.Add(refParent);
                     }
                 }
+            });
+        }
+
+        private void CreateParameterDefRefs(ParameterDefinition parameterDef)
+        {
+            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(parameterDef);
+            var functions = Project.CurrentProject.GetFunctionsAll();
+
+            functions.ForEach(f =>
+            {
+                f.parameters.ForEach(p =>
+                {
+                    if (p is ParameterDefinitionRef condDefRef)
+                    {
+                        if (condDefRef.ParameterDefinitionId == parameterDef.Id)
+                        {
+                            var refParent = new RefParent(condDefRef, f);
+                            refParents.Add(refParent);
+                        }
+                    }
+                });
             });
         }
 

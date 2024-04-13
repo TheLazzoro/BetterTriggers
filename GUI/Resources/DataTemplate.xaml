@@ -211,6 +211,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="16" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <Image x:Name="img"
@@ -286,10 +287,30 @@
                 </TextBlock.Style>
             </TextBlock>
 
+            <TextBlock x:Name="suffixText"
+                       Text="{Binding SuffixText}"
+                       Grid.Column="3"
+                       Margin="5,0,0,0" >
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="True" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=IsInitiallyOn}" Value="False" >
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDim}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
             <TextBox x:Name="renameBox"
                  Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
                  Visibility="{Binding RenameBoxVisibility}"
-                 Grid.Column="2"
+                 Grid.Column="1"
+                 Grid.ColumnSpan="2"
                  FontFamily="Segoe UI">
             </TextBox>
 

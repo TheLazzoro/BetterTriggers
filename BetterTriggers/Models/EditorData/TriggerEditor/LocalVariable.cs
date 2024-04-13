@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTriggers.WorldEdit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,15 @@ namespace BetterTriggers.Models.EditorData
         {
             variable._isLocal = true;
             variable.IsArray = false; // forces locals to be non-arrays
+            variable.PropertyChanged += Variable_PropertyChanged;
+        }
+
+        private void Variable_PropertyChanged()
+        {
+            var type = Types.Get(variable.Type);
+
+            DisplayText = variable.Name;
+            SuffixText = $"<{Locale.Translate(type.DisplayName)}>";
         }
 
         public override LocalVariable Clone()
