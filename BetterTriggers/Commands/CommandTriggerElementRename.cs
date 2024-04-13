@@ -8,22 +8,25 @@ namespace BetterTriggers.Commands
     public class CommandTriggerElementRename : ICommand
     {
         string commandName = "Rename Local Variable";
+        ExplorerElement explorerElement;
         ParameterDefinition parameterDefinition;
         LocalVariable localVariable;
         string oldName;
         string newName;
         RefCollection refCollection;
 
-        public CommandTriggerElementRename(LocalVariable localVariable, string newName)
+        public CommandTriggerElementRename(ExplorerElement explorerElement, LocalVariable localVariable, string newName)
         {
+            this.explorerElement = explorerElement;
             this.localVariable = localVariable;
             this.oldName = localVariable.variable.Name;
             this.newName = newName;
             this.refCollection = new RefCollection(localVariable.variable);
         }
 
-        public CommandTriggerElementRename(ParameterDefinition parameterDefinition, string newName)
+        public CommandTriggerElementRename(ExplorerElement explorerElement, ParameterDefinition parameterDefinition, string newName)
         {
+            this.explorerElement = explorerElement;
             this.parameterDefinition = parameterDefinition;
             this.oldName = parameterDefinition.Name;
             this.newName = newName;
@@ -42,6 +45,7 @@ namespace BetterTriggers.Commands
                 parameterDefinition.Name = newName;
             }
             refCollection.Notify();
+            explorerElement.InvokeChange();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -57,6 +61,7 @@ namespace BetterTriggers.Commands
                 parameterDefinition.Name = newName;
             }
             refCollection.Notify();
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
@@ -71,6 +76,7 @@ namespace BetterTriggers.Commands
                 parameterDefinition.Name = newName;
             }
             refCollection.Notify();
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()

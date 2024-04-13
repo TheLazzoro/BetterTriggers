@@ -81,7 +81,7 @@ namespace BetterTriggers.Containers
             return localVariable;
         }
 
-        public void RenameLocalVariable(Trigger trig, LocalVariable variable, string newName)
+        public void RenameLocalVariable(ExplorerElement explorerElement, LocalVariable variable, string newName)
         {
             if (newName == variable.variable.Name)
                 return;
@@ -91,13 +91,32 @@ namespace BetterTriggers.Containers
                 throw new Exception("Name cannot be empty.");
             }
 
-            foreach (LocalVariable v in trig.LocalVariables.Elements)
+            TriggerElementCollection localVariables = null;
+            switch (explorerElement.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    localVariables = explorerElement.trigger.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    localVariables = explorerElement.actionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    localVariables = explorerElement.conditionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    localVariables = explorerElement.functionDefinition.LocalVariables;
+                    break;
+                default:
+                    break;
+            }
+
+            foreach (LocalVariable v in localVariables.Elements)
             {
                 if (v.variable.Name == newName)
                     throw new Exception($"Local variable with name '{newName}' already exists.");
             }
 
-            CommandTriggerElementRename command = new CommandTriggerElementRename(variable, newName);
+            CommandTriggerElementRename command = new CommandTriggerElementRename(explorerElement, variable, newName);
             command.Execute();
         }
 

@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using GUI.Components.ParameterEditor;
 
 namespace GUI.Components
 {
@@ -48,6 +49,7 @@ namespace GUI.Components
 
         private VariableControl _variableControl;
         private ReturnTypeControl _returnTypeControl;
+        private ParameterDefinitionControl _parameterDefinitionControl;
 
         public TriggerControl(ExplorerElement explorerElement)
         {
@@ -367,13 +369,18 @@ namespace GUI.Components
 
             if (grid.Children.Contains(_variableControl))
             {
-                _variableControl.OnChange -= VariableControl_OnChange;
+                _variableControl.OnChange -= OnChange;
                 _variableControl.Dispose();
                 grid.Children.Remove(_variableControl);
             }
             if (grid.Children.Contains(_returnTypeControl))
             {
                 grid.Children.Remove(_returnTypeControl);
+            }
+            if(grid.Children.Contains(_parameterDefinitionControl))
+            {
+                _parameterDefinitionControl.OnChanged -= OnChange;
+                grid.Children.Remove(_parameterDefinitionControl);
             }
 
             if (triggerElement == null)
@@ -390,7 +397,7 @@ namespace GUI.Components
             else if (triggerElement is LocalVariable localVar)
             {
                 _variableControl = new VariableControl(localVar.variable);
-                _variableControl.OnChange += VariableControl_OnChange;
+                _variableControl.OnChange += OnChange;
                 grid.Children.Add(_variableControl);
                 Grid.SetRow(_variableControl, 3);
                 Grid.SetRowSpan(_variableControl, 2);
@@ -402,9 +409,17 @@ namespace GUI.Components
                 Grid.SetRow(_returnTypeControl, 3);
                 Grid.SetRowSpan(_returnTypeControl, 2);
             }
+            else if(triggerElement is ParameterDefinition paramDef)
+            {
+                _parameterDefinitionControl = new ParameterDefinitionControl(paramDef);
+                _parameterDefinitionControl.OnChanged += OnChange;
+                grid.Children.Add(_parameterDefinitionControl);
+                Grid.SetRow(_parameterDefinitionControl, 3);
+                Grid.SetRowSpan(_parameterDefinitionControl, 2);
+            }
         }
 
-        private void VariableControl_OnChange()
+        private void OnChange()
         {
             explorerElement.AddToUnsaved();
         }
@@ -770,7 +785,7 @@ namespace GUI.Components
         public void DeleteTriggerElement()
         {
             var selectedElement = treeViewTriggers.SelectedItem as TriggerElement;
-            if (selectedElement == null)
+            if (selectedElement == null || selectedElement is TriggerElementCollection || selectedElement is ParameterDefinitionCollection)
                 return;
 
             TriggerElementCollection elementsToDelete = new(selectedElement.ElementType);
@@ -1166,7 +1181,7 @@ namespace GUI.Components
                     var variables = Project.CurrentProject.Variables;
                     try
                     {
-                        variables.RenameLocalVariable(explorerElement.trigger, localVar, localVar.RenameText);
+                        variables.RenameLocalVariable(explorerElement, localVar, localVar.RenameText);
                     }
                     catch (Exception ex)
                     {
@@ -1180,7 +1195,7 @@ namespace GUI.Components
                     var parent = parameterDef.GetParent() as ParameterDefinitionCollection;
                     try
                     {
-                        parent.RenameParameterDefinition(parameterDef);
+                        parent.RenameParameterDefinition(explorerElement, parameterDef);
                     }
                     catch (Exception ex)
                     {

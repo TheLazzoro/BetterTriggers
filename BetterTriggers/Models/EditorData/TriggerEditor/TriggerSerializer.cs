@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Models.SaveableData;
 using Cake.Incubator.AssertExtensions;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,6 +53,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Id = actionDefinition.Id;
             converted.Comment = actionDefinition.Comment;
             converted.Category = actionDefinition.Category;
+            converted.Parameters = ConvertParameterDefinitions(actionDefinition.Parameters);
             converted.Actions = ConvertTriggerElements(actionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(actionDefinition.LocalVariables.Elements);
 
@@ -65,6 +67,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Comment = conditionDefinition.Comment;
             converted.ReturnType = conditionDefinition.ReturnType;
             converted.Category = conditionDefinition.Category;
+            converted.Parameters = ConvertParameterDefinitions(conditionDefinition.Parameters);
             converted.Actions = ConvertTriggerElements(conditionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(conditionDefinition.LocalVariables.Elements);
 
@@ -78,6 +81,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Comment = functionDefinition.Comment;
             converted.ReturnType = functionDefinition.ReturnType.War3Type.Type;
             converted.Category = functionDefinition.Category;
+            converted.Parameters = ConvertParameterDefinitions(functionDefinition.Parameters);
             converted.Actions = ConvertTriggerElements(functionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(functionDefinition.LocalVariables.Elements);
 
@@ -201,6 +205,23 @@ namespace BetterTriggers.Models.EditorData
             return list;
         }
 
+        private static List<ParameterDefinition_Saveable> ConvertParameterDefinitions(ParameterDefinitionCollection paramCollection)
+        {
+            var list = new List<ParameterDefinition_Saveable>();
+            for (int i = 0; i < paramCollection.Count(); i++)
+            {
+                var paramDefinition = (ParameterDefinition)paramCollection.Elements[i];
+                var saveable = new ParameterDefinition_Saveable
+                {
+                    Id = paramDefinition.Id,
+                    Name = paramDefinition.Name,
+                    ReturnType = paramDefinition.ReturnType.Type
+                };
+                list.Add(saveable);
+            }
+            return list;
+        }
+
         private static Function_Saveable ConvertFunction(Function function)
         {
             Function_Saveable converted = new Function_Saveable();
@@ -295,6 +316,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Id = saveableActionDef.Id;
             converted.Comment = saveableActionDef.Comment;
             converted.Category = saveableActionDef.Category;
+            converted.Parameters = ConvertParameterDefinitions_Deserialize(saveableActionDef.Parameters);
             converted.Actions = ConvertTriggerElements_Deserialize(saveableActionDef.Actions, TriggerElementType.Action);
             converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableActionDef.LocalVariables, TriggerElementType.LocalVariable);
 
@@ -445,6 +467,24 @@ namespace BetterTriggers.Models.EditorData
             }
 
             return collection;
+        }
+
+        private static ParameterDefinitionCollection ConvertParameterDefinitions_Deserialize(List<ParameterDefinition_Saveable> parameter_Saveables)
+        {
+            var paramCollection = new ParameterDefinitionCollection(TriggerElementType.ParameterDef);
+            for (int i = 0; i < parameter_Saveables.Count; i++)
+            {
+                var saved = parameter_Saveables[i];
+                var paramDef = new ParameterDefinition
+                {
+                    Id = saved.Id,
+                    ReturnType = War3Type.Get(saved.ReturnType),
+                    ElementType = TriggerElementType.ParameterDef,
+                    Name = saved.Name,
+                };
+                paramDef.SetParent(paramCollection, i);
+            }
+            return paramCollection;
         }
 
         private static Function ConvertFunction_Deserialize(Function_Saveable function_Saveable)

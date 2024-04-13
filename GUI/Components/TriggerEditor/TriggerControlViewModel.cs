@@ -108,6 +108,10 @@ namespace GUI.Components.TriggerEditor
                     var definition = Project.CurrentProject.ConditionDefinitions.FindByRef(condDefRef);
                     category = definition.actionDefinition.Category;
                 }
+                else if(triggerElement is ParameterDefinition paramDef)
+                {
+                    category = TriggerCategory.TC_PARAMETER;
+                }
                 var paramBuilder = new ParamTextBuilder();
                 triggerElement.IconImage = Category.Get(category).Icon;
                 if (triggerElement is ECA eca)

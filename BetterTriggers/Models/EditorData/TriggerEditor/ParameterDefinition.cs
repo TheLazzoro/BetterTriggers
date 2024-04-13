@@ -18,18 +18,27 @@ namespace BetterTriggers.Models.EditorData
             {
                 _name = value;
                 OnPropertyChanged();
-                var type = Types.Get(ReturnType);
                 DisplayText = _name;
-                SuffixText = $"<{Locale.Translate(type.DisplayName)}>";
+                SuffixText = $"<{Locale.Translate(ReturnType.DisplayName)}>";
             }
         }
-        public string ReturnType;
+        public War3Type ReturnType
+        {
+            get => _returnType;
+            set
+            {
+                _returnType = value;
+                OnPropertyChanged();
+                SuffixText = $"<{Locale.Translate(ReturnType.DisplayName)}>";
+            }
+        }
 
         private string _name;
+        private War3Type _returnType;
 
         public ParameterDefinition()
         {
-            ReturnType = "integer";
+            ReturnType = War3Type.Get("integer");
             ElementType = TriggerElementType.ParameterDef;
             IconImage = Category.Get(TriggerCategory.TC_PARAMETER).Icon;
         }
@@ -37,11 +46,16 @@ namespace BetterTriggers.Models.EditorData
         public override ParameterDefinition Clone()
         {
             var clone = new ParameterDefinition();
-            clone.ReturnType = new string(ReturnType);
+            clone.ReturnType = ReturnType;
             clone.DisplayText = new string(DisplayText);
             IconImage.CopyTo(clone.IconImage, 0);
 
             return clone;
+        }
+
+        public string GetIdentifierName()
+        {
+            return "param_" + Name.Replace(" ", "_");
         }
     }
 }

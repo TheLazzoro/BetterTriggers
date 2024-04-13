@@ -23,7 +23,7 @@ namespace BetterTriggers.Models.EditorData
             command.Execute();
         }
 
-        public void RenameParameterDefinition(ParameterDefinition parameterDefinition)
+        public void RenameParameterDefinition(ExplorerElement explorerElement, ParameterDefinition parameterDefinition)
         {
             string newName = parameterDefinition.RenameText;
             if (newName == parameterDefinition.Name)
@@ -40,7 +40,7 @@ namespace BetterTriggers.Models.EditorData
                     throw new Exception($"Parameter with name '{newName}' already exists.");
             }
 
-            CommandTriggerElementRename command = new CommandTriggerElementRename(parameterDefinition, newName);
+            CommandTriggerElementRename command = new CommandTriggerElementRename(explorerElement, parameterDefinition, newName);
             command.Execute();
         }
 

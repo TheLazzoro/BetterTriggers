@@ -177,6 +177,30 @@ namespace BetterTriggers.Containers
             });
         }
 
+        /// <summary>
+        /// Refreshes references for a given <see cref="ParameterDefinition"/>.
+        /// </summary>
+        internal void UpdateReferences(ParameterDefinition parameterDef)
+        {
+            HashSet<ExplorerElement> empty = new HashSet<ExplorerElement>();
+            fromReference.Remove(parameterDef);
+            fromReference.Add(parameterDef, empty);
+
+            var elements = Project.CurrentProject.GetAllExplorerElements();
+            elements.ForEach(ex =>
+            {
+                var parameters = Parameter.GetParametersFromExplorerElement(ex);
+                parameters.ForEach(p =>
+                {
+                    if (p is ParameterDefinitionRef paramDefRef)
+                    {
+                        if (paramDefRef.ParameterDefinitionId == parameterDef.Id)
+                            AddReferrer(ex, parameterDef);
+                    }
+                });
+            });
+        }
+
         internal void UpdateReferencesAll()
         {
             var explorerElements = Project.CurrentProject.GetAllExplorerElements();
