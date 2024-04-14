@@ -69,12 +69,18 @@ namespace GUI
             Grid.SetRow(presetControl, 1);
             Grid.SetColumnSpan(presetControl, 2);
 
-            this.variableControl = new ParameterVariableControl(returnType, explorerElement.GetLocalVariables());
+            if (explorerElement == null)
+                this.variableControl = new ParameterVariableControl(returnType);
+            else
+                this.variableControl = new ParameterVariableControl(returnType, explorerElement.GetLocalVariables());
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);
 
-            this.parameterDefinitionControl = new ParameterParameterDefinitionControl(returnType, explorerElement.GetParameterCollection());
+            if (explorerElement == null)
+                this.parameterDefinitionControl = new ParameterParameterDefinitionControl(returnType);
+            else
+                this.parameterDefinitionControl = new ParameterParameterDefinitionControl(returnType, explorerElement.GetParameterCollection());
             grid.Children.Add(parameterDefinitionControl);
             Grid.SetRow(parameterDefinitionControl, 1);
             Grid.SetColumnSpan(parameterDefinitionControl, 2);
@@ -127,7 +133,7 @@ namespace GUI
                 radioBtnVariable.IsChecked = true;
                 parameterControl = variableControl;
             }
-            else if(parameter is ParameterDefinitionRef)
+            else if (parameter is ParameterDefinitionRef)
             {
                 radioBtnParameter.IsChecked = true;
                 parameterControl = parameterDefinitionControl;
@@ -150,9 +156,9 @@ namespace GUI
             ShowHideTabs(parameterControl);
             parameterControl.SetDefaultSelection(parameter);
 
-            if(function == null)
+            if (function == null)
             {
-                if(parameter is not Preset && parameter is not Value)
+                if (parameter is not Preset && parameter is not Value)
                 {
                     ShowHideTabs(presetControl);
                     radioBtnPreset.IsChecked = true;
@@ -204,7 +210,7 @@ namespace GUI
                 if ((bool)radioButton.IsChecked)
                     isChecked = true;
             }
-            if(!isChecked && radioButtonList.Items.Count > 0)
+            if (!isChecked && radioButtonList.Items.Count > 0)
             {
                 RadioButton radioButton = (RadioButton)radioButtonList.Items[0];
                 radioButton.IsChecked = true;
@@ -304,7 +310,7 @@ namespace GUI
                 this.Close();
             }
         }
-        
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             EditorSettings settings = EditorSettings.Load();

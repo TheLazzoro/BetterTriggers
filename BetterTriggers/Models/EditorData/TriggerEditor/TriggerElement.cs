@@ -53,6 +53,11 @@ namespace BetterTriggers.Models.EditorData
         {
             Parent?.Elements?.Insert(insertIndex, this);
             this.Parent = Parent;
+
+            if(this is LocalVariable localVar)
+            {
+                Project.CurrentProject.Variables.AddLocalVariable(localVar);
+            }
         }
 
         public void RemoveFromParent()

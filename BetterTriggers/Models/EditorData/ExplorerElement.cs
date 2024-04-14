@@ -275,10 +275,7 @@ namespace BetterTriggers.Models.EditorData
 
                 Parent = parent;
                 parent.GetExplorerElements().Insert(insertIndex, this);
-                if (ElementType == ExplorerElementEnum.Trigger)
-                {
-                    StoreLocalVariables();
-                }
+                StoreLocalVariables();
             });
         }
 
@@ -288,10 +285,7 @@ namespace BetterTriggers.Models.EditorData
             {
                 Parent.GetExplorerElements().Remove(this);
                 Parent = null;
-                if (ElementType == ExplorerElementEnum.Trigger)
-                {
-                    RemoveLocalVariables();
-                }
+                RemoveLocalVariables();
             });
         }
 
@@ -583,36 +577,11 @@ namespace BetterTriggers.Models.EditorData
 
         private void StoreLocalVariables()
         {
-            // TODO: switch case since action definitions etc. have been added
-
             var variables = Project.CurrentProject.Variables;
-            if (trigger != null)
+            var localVariables = GetLocalVariables();
+            if (localVariables != null)
             {
-                trigger.LocalVariables.Elements.ForEach(e =>
-                {
-                    var lv = (LocalVariable)e;
-                    variables.AddLocalVariable(lv);
-                });
-            }
-            else if (actionDefinition != null)
-            {
-                actionDefinition.LocalVariables.Elements.ForEach(e =>
-                {
-                    var lv = (LocalVariable)e;
-                    variables.AddLocalVariable(lv);
-                });
-            }
-            else if (conditionDefinition != null)
-            {
-                conditionDefinition.LocalVariables.Elements.ForEach(e =>
-                {
-                    var lv = (LocalVariable)e;
-                    variables.AddLocalVariable(lv);
-                });
-            }
-            else if (functionDefinition != null)
-            {
-                functionDefinition.LocalVariables.Elements.ForEach(e =>
+                localVariables.Elements.ForEach(e =>
                 {
                     var lv = (LocalVariable)e;
                     variables.AddLocalVariable(lv);
@@ -622,14 +591,16 @@ namespace BetterTriggers.Models.EditorData
 
         private void RemoveLocalVariables()
         {
-            // TODO: switch case since action definitions etc. have been added
-
             var variables = Project.CurrentProject.Variables;
-            trigger.LocalVariables.Elements.ForEach(e =>
+            var localVariables = GetLocalVariables();
+            if (localVariables != null)
             {
-                var lv = (LocalVariable)e;
-                variables.RemoveLocalVariable(lv);
-            });
+                localVariables.Elements.ForEach(e =>
+                {
+                    var lv = (LocalVariable)e;
+                    variables.RemoveLocalVariable(lv);
+                });
+            }
         }
     }
 }

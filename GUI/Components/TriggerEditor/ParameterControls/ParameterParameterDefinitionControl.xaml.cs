@@ -26,7 +26,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private ListViewItem selectedItem;
 
-        public ParameterParameterDefinitionControl(string returnType, ParameterDefinitionCollection? parameters)
+        public ParameterParameterDefinitionControl(string returnType, ParameterDefinitionCollection? parameters = null)
         {
             InitializeComponent();
 

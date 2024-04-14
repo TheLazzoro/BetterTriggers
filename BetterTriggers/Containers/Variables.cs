@@ -104,7 +104,7 @@ namespace BetterTriggers.Containers
             return false;
         }
 
-        private List<Variable> GetVariables(string returnType, TriggerElementCollection localVariables, bool includeLocals)
+        private List<Variable> GetVariables(string returnType, bool includeLocals, TriggerElementCollection? localVariables = null)
         {
             List<Variable> list = new List<Variable>();
             List<Variable> all = new List<Variable>();
@@ -139,7 +139,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
-        public List<VariableRef> GetVariableRefs(string returnType, TriggerElementCollection localVariables, bool includeLocals)
+        public List<VariableRef> GetVariableRefs(string returnType, bool includeLocals, TriggerElementCollection localVariables = null)
         {
             bool wasIntegervar = false;
             if (returnType == "integervar")
@@ -148,7 +148,7 @@ namespace BetterTriggers.Containers
                 returnType = "integer";
             }
 
-            List<Variable> variables = GetVariables(returnType, localVariables, includeLocals);
+            List<Variable> variables = GetVariables(returnType, includeLocals, localVariables);
             List<VariableRef> list = new List<VariableRef>();
 
             for (int i = 0; i < variables.Count; i++)
@@ -415,9 +415,9 @@ namespace BetterTriggers.Containers
             localVariableContainer.Remove(localVariable.variable);
         }
 
-        public Variable GetByReference(VariableRef variableRef)
+        public Variable GetByReference(VariableRef variableRef, ExplorerElement explorerElement = null)
         {
-            return GetById(variableRef.VariableId);
+            return GetById(variableRef.VariableId, explorerElement);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace GUI.Utility
                 else if (parameters[paramIndex] is VariableRef)
                 {
                     var variableRef = (VariableRef)parameters[paramIndex];
-                    var variable = project.Variables.GetByReference(variableRef);
+                    var variable = project.Variables.GetByReference(variableRef, _explorerElement);
                     string varName = string.Empty;
 
                     string expectedType = null;
@@ -299,7 +299,7 @@ namespace GUI.Utility
                 else if (parameters[paramIndex] is VariableRef)
                 {
                     var variableRef = (VariableRef)parameters[paramIndex];
-                    var variable = project.Variables.GetByReference(variableRef);
+                    var variable = project.Variables.GetByReference(variableRef, _explorerElement);
                     string varName = string.Empty;
 
                     string expectedType = null;
