@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Commands;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Utility;
 using ICSharpCode.Decompiler.DebugInfo;
 using System;
@@ -42,6 +43,20 @@ namespace BetterTriggers.Models.EditorData
 
             CommandTriggerElementRename command = new CommandTriggerElementRename(explorerElement, parameterDefinition, newName);
             command.Execute();
+        }
+
+        public ParameterDefinition? GetByReference(ParameterDefinitionRef paramDefRef)
+        {
+            for (int i = 0; i < Elements.Count; i++)
+            {
+                var element = (ParameterDefinition)Elements[i];
+                if (element.Id == paramDefRef.ParameterDefinitionId)
+                {
+                    return element;
+                }
+            }
+
+            return null;
         }
 
         private int GenerateId()

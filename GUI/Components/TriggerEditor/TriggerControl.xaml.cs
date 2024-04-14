@@ -254,7 +254,7 @@ namespace GUI.Components
                 Project.CurrentProject.Variables.CreateLocalVariable(explorerElement, insertIndex);
                 return;
             }
-            else if(type == TriggerElementType.ParameterDef)
+            else if (type == TriggerElementType.ParameterDef)
             {
                 ParameterDefinitionCollection parameterDefCollection = null;
                 switch (explorerElementType)
@@ -377,7 +377,7 @@ namespace GUI.Components
             {
                 grid.Children.Remove(_returnTypeControl);
             }
-            if(grid.Children.Contains(_parameterDefinitionControl))
+            if (grid.Children.Contains(_parameterDefinitionControl))
             {
                 _parameterDefinitionControl.OnChanged -= OnChange;
                 grid.Children.Remove(_parameterDefinitionControl);
@@ -392,7 +392,7 @@ namespace GUI.Components
                 var inlines = controllerTriggerTreeItem.GenerateParamText(explorerElement, eca);
                 textblockParams.Inlines.AddRange(inlines);
                 textblockDescription.Text = Locale.Translate(eca.function.value);
-                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(eca);
+                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(explorerElement, eca);
             }
             else if (triggerElement is LocalVariable localVar)
             {
@@ -409,7 +409,7 @@ namespace GUI.Components
                 Grid.SetRow(_returnTypeControl, 3);
                 Grid.SetRowSpan(_returnTypeControl, 2);
             }
-            else if(triggerElement is ParameterDefinition paramDef)
+            else if (triggerElement is ParameterDefinition paramDef)
             {
                 _parameterDefinitionControl = new ParameterDefinitionControl(paramDef);
                 _parameterDefinitionControl.OnChanged += OnChange;
@@ -800,28 +800,43 @@ namespace GUI.Components
                 return;
 
             // local variables
-            List<LocalVariable> inUse = new List<LocalVariable>();
-            elementsToDelete.Elements.ForEach(v =>
+            List<LocalVariable> localsInUse = new List<LocalVariable>();
+            List<ParameterDefinition> paramDefsInUse = new List<ParameterDefinition>();
+            elementsToDelete.Elements.ForEach(el =>
             {
-                var localVar = v as LocalVariable;
+                var localVar = el as LocalVariable;
+                var paramDef = el as ParameterDefinition;
                 if (localVar != null)
                 {
                     List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(localVar.variable);
                     if (refs.Count > 0)
-                        inUse.Add(localVar);
+                        localsInUse.Add(localVar);
                 }
-
+                else if(paramDef != null)
+                {
+                    List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(paramDef);
+                    if (refs.Count > 0)
+                        paramDefsInUse.Add(paramDef);
+                }
             });
-            if (inUse.Count > 0)
+            if (localsInUse.Count > 0)
             {
-                LocalsInUseWindow window = new LocalsInUseWindow(inUse);
+                InUseWindow window = new(localsInUse);
                 window.ShowDialog();
                 if (!window.OK)
                     return;
 
-                inUse.ForEach(v => Project.CurrentProject.Variables.RemoveLocalVariable(v));
+                localsInUse.ForEach(v => Project.CurrentProject.Variables.RemoveLocalVariable(v));
                 TriggerValidator validator = new TriggerValidator(explorerElement);
                 validator.RemoveInvalidReferences();
+            }
+            else if (paramDefsInUse.Count > 0)
+            {
+                InUseWindow window = new(paramDefsInUse);
+                window.ShowDialog();
+                if (!window.OK)
+                    return;
+
             }
 
             TriggerElement ToSelectAfterDeletion = null;
@@ -1190,7 +1205,7 @@ namespace GUI.Components
                     }
                     selected.RenameBoxVisibility = Visibility.Hidden;
                 }
-                else if(selected is ParameterDefinition parameterDef)
+                else if (selected is ParameterDefinition parameterDef)
                 {
                     var parent = parameterDef.GetParent() as ParameterDefinitionCollection;
                     try

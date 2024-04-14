@@ -116,7 +116,7 @@ namespace GUI.Components.TriggerEditor
                 triggerElement.IconImage = Category.Get(category).Icon;
                 if (triggerElement is ECA eca)
                 {
-                    triggerElement.DisplayText = paramBuilder.GenerateTreeItemText(eca);
+                    triggerElement.DisplayText = paramBuilder.GenerateTreeItemText(_explorerElement, eca);
                 }
                 if (triggerElement.Elements != null && triggerElement.Elements.Count > 0)
                 {

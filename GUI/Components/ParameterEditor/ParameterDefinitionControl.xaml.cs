@@ -23,6 +23,7 @@ namespace GUI.Components.ParameterEditor
     {
         private ParameterDefinition _definition;
         private ParameterDefinitionViewModel viewModel;
+        private War3Type previousSelected;
         public event Action OnChanged;
 
         public ParameterDefinitionControl(ParameterDefinition definition)
@@ -30,13 +31,14 @@ namespace GUI.Components.ParameterEditor
             InitializeComponent();
 
             _definition = definition;
+            previousSelected = definition.ReturnType;
             viewModel = new ParameterDefinitionViewModel(definition);
             DataContext = viewModel;
 
-            viewModel.OnChanged += ViewModel_OnChanged;
+            viewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
-        private void ViewModel_OnChanged()
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             OnChanged?.Invoke();
         }
@@ -54,10 +56,16 @@ namespace GUI.Components.ParameterEditor
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
                 dialog.ShowDialog();
                 if (!dialog.OK)
+                {
+                    comboBox.SelectionChanged -= ComboBox_SelectionChanged; // hack, but prevents dialog box from showing twice :)
+                    comboBox.SelectedItem = previousSelected;
+                    comboBox.SelectionChanged += ComboBox_SelectionChanged;
                     return;
+                }
             }
 
             var selected = comboBox.SelectedItem as War3Type;
+            previousSelected = selected;
             CommandParameterDefinitionModifyType command = new(_definition, selected);
             command.Execute();
         }

@@ -44,7 +44,7 @@ namespace GUI.Components.TriggerEditor
             if(createdTriggerElement != null)
             {
                 ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
-                createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(createdTriggerElement);
+                createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(explorerElement, createdTriggerElement);
             }
         }
 

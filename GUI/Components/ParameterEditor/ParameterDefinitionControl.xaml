@@ -46,7 +46,7 @@
                   Margin="5,4,0,4"
                   ItemsSource="{Binding War3Types}"
                   ItemTemplate="{DynamicResource ComboBoxVariableTypes}"
-                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedItem, Mode=OneWay}"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Grid.Column="1" SelectionChanged="ComboBox_SelectionChanged"

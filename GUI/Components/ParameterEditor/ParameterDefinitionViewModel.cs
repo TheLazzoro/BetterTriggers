@@ -12,9 +12,7 @@ namespace GUI.Components.ParameterEditor
     public class ParameterDefinitionViewModel : ViewModelBase
     {
         private ParameterDefinition _definition;
-        private War3Type _selectedItem;
 
-        public event Action OnChanged;
         public string IdentifierName
         {
             get => _definition.GetIdentifierName();
@@ -22,28 +20,19 @@ namespace GUI.Components.ParameterEditor
         public ObservableCollection<War3Type> War3Types { get => War3Type.War3Types; }
         public War3Type SelectedItem
         {
-            get => _selectedItem;
-            set
-            {
-                _selectedItem = value;
-                _definition.ReturnType = value;
-                OnPropertyChanged();
-                OnChanged?.Invoke();
-            }
+            get => _definition.ReturnType;
         }
 
         public ParameterDefinitionViewModel(ParameterDefinition definition)
         {
             _definition = definition;
-            for (int i = 0; i < War3Types.Count; i++)
-            {
-                var type = War3Types[i];
-                if (definition.ReturnType.Type == type.Type)
-                {
-                    SelectedItem = War3Types[i];
-                    break;
-                }
-            }
+            _definition.PropertyChanged += _definition_PropertyChanged;
+        }
+
+        private void _definition_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_definition.ReturnType))
+                OnPropertyChanged(nameof(SelectedItem));
         }
     }
 }

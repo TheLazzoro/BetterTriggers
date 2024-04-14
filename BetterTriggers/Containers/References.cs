@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using Cake.Common.Build.AppVeyor;
 
 namespace BetterTriggers.Containers
 {
@@ -110,6 +111,13 @@ namespace BetterTriggers.Containers
                     ExplorerElement element = functionDefinitions.FindById(functionDefRef.FunctionDefinitionId);
                     if (element != null)
                         AddReferrer(ex, element.functionDefinition);
+                }
+                else if (p is ParameterDefinitionRef paramDefRef)
+                {
+                    var paramCollection = ex.GetParameterCollection();
+                    var element = paramCollection.GetByReference(paramDefRef);
+                    if (element != null)
+                        AddReferrer(ex, element);
                 }
             });
 

@@ -15,32 +15,23 @@ namespace GUI.Components.Return
 {
     public class ReturnTypeViewModel : ViewModelBase
     {
-        private War3Type _selectedItem;
         private ReturnType _returnType;
         public ObservableCollection<War3Type> War3Types { get => War3Type.War3Types; }
         public War3Type SelectedItem
         {
-            get => _selectedItem;
-            set
-            {
-                _selectedItem = value;
-                _returnType.War3Type = value;
-                OnPropertyChanged();
-            }
+            get => _returnType.War3Type;
         }
 
         public ReturnTypeViewModel(ReturnType returnType)
         {
             _returnType = returnType;
-            for (int i = 0; i < War3Types.Count; i++)
-            {
-                var type = War3Types[i];
-                if(returnType.War3Type.Type == type.Type)
-                {
-                    SelectedItem = War3Types[i];
-                    break;
-                }
-            }
+            _returnType.PropertyChanged += _returnType_PropertyChanged;
+        }
+
+        private void _returnType_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_returnType.War3Type))
+                OnPropertyChanged(nameof(SelectedItem));
         }
     }
 }

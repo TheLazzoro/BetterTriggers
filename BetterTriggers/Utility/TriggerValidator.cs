@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
@@ -106,12 +107,12 @@ namespace BetterTriggers.Utility
                 else if (eca is AndMultiple)
                 {
                     var special = (AndMultiple)eca;
-                    removeCount += RemoveInvalidReferences( special.And);
+                    removeCount += RemoveInvalidReferences(special.And);
                 }
                 else if (eca is ForForceMultiple)
                 {
                     var special = (ForForceMultiple)eca;
-                    removeCount += RemoveInvalidReferences( special.Actions);
+                    removeCount += RemoveInvalidReferences(special.Actions);
                 }
                 else if (eca is ForGroupMultiple)
                 {
@@ -206,6 +207,24 @@ namespace BetterTriggers.Utility
                         parameters[i] = new Parameter();
                     }
                 }
+                else if (parameter is ParameterDefinitionRef paramDefRef)
+                {
+                    var paramDefCollection = _explorerElement.GetParameterCollection();
+                    if (paramDefCollection == null)
+                    {
+                        removeCount++;
+                        parameters[i] = new Parameter();
+                    }
+                    else
+                    {
+                        var reference = paramDefCollection.GetByReference(paramDefRef);
+                        if(reference == null)
+                        {
+                            removeCount++;
+                            parameters[i] = new Parameter();
+                        }
+                    }
+                }
                 else if (parameter is Value value)
                 {
                     bool refExists = CustomMapData.ReferencedDataExists(value, returnTypes[i]);
@@ -237,7 +256,7 @@ namespace BetterTriggers.Utility
                         removeCount++;
                     }
                 }
-                else if(_includeUnsetParameters)
+                else if (_includeUnsetParameters)
                 {
                     removeCount++;
                 }

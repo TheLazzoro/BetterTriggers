@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using GUI.Components.Settings;
 using System.Windows;
 using System.Windows.Documents;
@@ -82,6 +83,7 @@ namespace GUI.Components.TriggerEditor
                      parameter is Function ||
                      parameter is VariableRef ||
                      parameter is TriggerRef ||
+                     parameter is ParameterDefinitionRef ||
                      parameter is Value
                      )
                 this.SetResourceReference(Hyperlink.ForegroundProperty, EditorTheme.HyperlinkColor());

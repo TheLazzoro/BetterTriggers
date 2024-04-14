@@ -1,6 +1,7 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
@@ -8,6 +9,7 @@ using GUI.Components.TriggerEditor;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -30,8 +32,9 @@ namespace GUI.Utility
             project = Project.CurrentProject;
         }
 
-        public string GenerateTreeItemText(ECA eca)
+        public string GenerateTreeItemText(ExplorerElement explorerElement, ECA eca)
         {
+            _explorerElement = explorerElement;
             _eca = eca;
             StringBuilder sb = new StringBuilder();
             List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
@@ -132,6 +135,19 @@ namespace GUI.Utility
                         triggerName = project.Triggers.GetName(trigger.trigger.Id);
 
                     sb.Append(triggerName);
+                }
+                else if (parameters[paramIndex] is ParameterDefinitionRef paramDefRef)
+                {
+                    var parameterDefs = _explorerElement.GetParameterCollection();
+                    var paramDef = parameterDefs.GetByReference(paramDefRef);
+                    string name;
+
+                    if (paramDef == null)
+                        name = "null";
+                    else
+                        name = paramDef.Name;
+
+                    sb.Append(name);
                 }
                 else if (parameters[paramIndex] is Value)
                 {
@@ -322,6 +338,19 @@ namespace GUI.Utility
                         triggerName = project.Triggers.GetName(trigger.trigger.Id);
 
                     inlines.Add(AddHyperlink(triggerName, parameters, paramIndex, returnTypes[paramIndex]));
+                }
+                else if (parameters[paramIndex] is ParameterDefinitionRef paramDefRef)
+                {
+                    var parameterDefs = _explorerElement.GetParameterCollection();
+                    var paramDef = parameterDefs.GetByReference(paramDefRef);
+                    string name;
+
+                    if (paramDef == null)
+                        name = "null";
+                    else
+                        name = paramDef.Name;
+
+                    inlines.Add(AddHyperlink(name, parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is Value)
                 {

@@ -27,7 +27,7 @@
                   x:Name="comboBox"
                   ItemsSource="{Binding War3Types}"
                   ItemTemplate="{DynamicResource ComboBoxVariableTypes}"
-                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedItem, Mode=OneWay}"
                   Height="26"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"

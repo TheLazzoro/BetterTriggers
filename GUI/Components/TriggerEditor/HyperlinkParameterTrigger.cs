@@ -35,7 +35,7 @@ namespace GUI.Components.TriggerEditor
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var window = new ParameterWindow(parameter, returnType, eca.function, explorerElement.trigger);
+            var window = new ParameterWindow(parameter, returnType, eca.function, explorerElement);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.

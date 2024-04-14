@@ -1,6 +1,7 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.TriggerEditor.ParameterControls;
@@ -26,6 +27,7 @@ namespace GUI
         ParameterFunctionControl functionControl;
         ParameterPresetControl presetControl;
         ParameterVariableControl variableControl;
+        ParameterParameterDefinitionControl parameterDefinitionControl;
         ParameterValueControl valueControl;
         ParameterTriggerControl triggerRefControl;
         ParameterImportedControl importControl;
@@ -35,7 +37,7 @@ namespace GUI
         /// <summary>
         /// </summary>
         /// <param name="function">null indicates we're editing a variable initial value. Yes, very hacky.</param>
-        public ParameterWindow(Parameter parameter, string returnType, Function function = null, BetterTriggers.Models.EditorData.Trigger trig = null)
+        public ParameterWindow(Parameter parameter, string returnType, Function function = null, ExplorerElement explorerElement = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
@@ -67,10 +69,15 @@ namespace GUI
             Grid.SetRow(presetControl, 1);
             Grid.SetColumnSpan(presetControl, 2);
 
-            this.variableControl = new ParameterVariableControl(returnType, trig);
+            this.variableControl = new ParameterVariableControl(returnType, explorerElement.GetLocalVariables());
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);
+
+            this.parameterDefinitionControl = new ParameterParameterDefinitionControl(returnType, explorerElement.GetParameterCollection());
+            grid.Children.Add(parameterDefinitionControl);
+            Grid.SetRow(parameterDefinitionControl, 1);
+            Grid.SetColumnSpan(parameterDefinitionControl, 2);
 
             this.valueControl = new ParameterValueControl(returnType);
             grid.Children.Add(valueControl);
@@ -90,6 +97,7 @@ namespace GUI
             this.functionControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(functionControl); };
             this.presetControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(presetControl); };
             this.variableControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(variableControl); };
+            this.parameterDefinitionControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(parameterDefinitionControl); };
             this.triggerRefControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(triggerRefControl); };
             this.importControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(importControl); };
             this.valueControl.SelectionChanged += delegate { SetSelectedItem(valueControl); };
@@ -97,6 +105,7 @@ namespace GUI
             functionControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             presetControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             variableControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            parameterDefinitionControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             triggerRefControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             importControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             valueControl.OK += delegate { OK(); };
@@ -117,6 +126,11 @@ namespace GUI
             {
                 radioBtnVariable.IsChecked = true;
                 parameterControl = variableControl;
+            }
+            else if(parameter is ParameterDefinitionRef)
+            {
+                radioBtnParameter.IsChecked = true;
+                parameterControl = parameterDefinitionControl;
             }
             else if (parameter is Value && returnType != "skymodelstring" && returnType != "musictheme")
             {
@@ -179,6 +193,8 @@ namespace GUI
                 radioButtonList.Items.Remove(radioBtnPreset);
             if (variableControl.GetElementCount() == 0)
                 radioButtonList.Items.Remove(radioBtnVariable);
+            if (parameterDefinitionControl.GetElementCount() == 0)
+                radioButtonList.Items.Remove(radioBtnParameter);
 
             // Forces a radionbutton selection if none are selected by previous logic.
             bool isChecked = false;
@@ -205,6 +221,7 @@ namespace GUI
             functionControl.Visibility = Visibility.Hidden;
             presetControl.Visibility = Visibility.Hidden;
             variableControl.Visibility = Visibility.Hidden;
+            parameterDefinitionControl.Visibility = Visibility.Hidden;
             valueControl.Visibility = Visibility.Hidden;
             triggerRefControl.Visibility = Visibility.Hidden;
             importControl.Visibility = Visibility.Hidden;
@@ -248,6 +265,10 @@ namespace GUI
             ShowHideTabs(triggerRefControl);
         }
 
+        private void radioBtnParameter_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowHideTabs(parameterDefinitionControl);
+        }
 
         private void radioBtnValue_Checked(object sender, RoutedEventArgs e)
         {

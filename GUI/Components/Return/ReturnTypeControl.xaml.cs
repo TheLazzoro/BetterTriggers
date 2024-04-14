@@ -22,12 +22,14 @@ namespace GUI.Components.Return
     public partial class ReturnTypeControl : UserControl
     {
         private FunctionDefinition functionDefinition;
+        private War3Type previousSelected;
 
         public ReturnTypeControl(FunctionDefinition functionDefinition, ReturnType returnType)
         {
             InitializeComponent();
 
             this.functionDefinition = functionDefinition;
+            previousSelected = returnType.War3Type;
             DataContext = new ReturnTypeViewModel(returnType);
         }
 
@@ -44,10 +46,16 @@ namespace GUI.Components.Return
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
                 dialog.ShowDialog();
                 if (!dialog.OK)
+                {
+                    comboBox.SelectionChanged -= ComboBox_SelectionChanged; // hack, but prevents dialog box from showing twice :)
+                    comboBox.SelectedItem = previousSelected;
+                    comboBox.SelectionChanged += ComboBox_SelectionChanged;
                     return;
+                }
             }
 
             var selected = comboBox.SelectedItem as War3Type;
+            previousSelected = selected;
             CommandFunctionDefinitionModifyType command = new(functionDefinition, selected);
             command.Execute();
         }

@@ -47,24 +47,7 @@ namespace BetterTriggers.Containers
 
         public LocalVariable CreateLocalVariable(ExplorerElement explorerElement, int insertIndex)
         {
-            TriggerElementCollection localVariables = null;
-            switch (explorerElement.ElementType)
-            {
-                case ExplorerElementEnum.Trigger:
-                    localVariables = explorerElement.trigger.LocalVariables;
-                    break;
-                case ExplorerElementEnum.ActionDefinition:
-                    localVariables = explorerElement.actionDefinition.LocalVariables;
-                    break;
-                case ExplorerElementEnum.ConditionDefinition:
-                    localVariables = explorerElement.conditionDefinition.LocalVariables;
-                    break;
-                case ExplorerElementEnum.FunctionDefinition:
-                    localVariables = explorerElement.functionDefinition.LocalVariables;
-                    break;
-                default:
-                    break;
-            }
+            TriggerElementCollection localVariables = explorerElement.GetLocalVariables();
 
             LocalVariable localVariable = new LocalVariable();
             localVariable.variable.Type = "integer";
@@ -91,25 +74,7 @@ namespace BetterTriggers.Containers
                 throw new Exception("Name cannot be empty.");
             }
 
-            TriggerElementCollection localVariables = null;
-            switch (explorerElement.ElementType)
-            {
-                case ExplorerElementEnum.Trigger:
-                    localVariables = explorerElement.trigger.LocalVariables;
-                    break;
-                case ExplorerElementEnum.ActionDefinition:
-                    localVariables = explorerElement.actionDefinition.LocalVariables;
-                    break;
-                case ExplorerElementEnum.ConditionDefinition:
-                    localVariables = explorerElement.conditionDefinition.LocalVariables;
-                    break;
-                case ExplorerElementEnum.FunctionDefinition:
-                    localVariables = explorerElement.functionDefinition.LocalVariables;
-                    break;
-                default:
-                    break;
-            }
-
+            TriggerElementCollection localVariables = explorerElement.GetLocalVariables();
             foreach (LocalVariable v in localVariables.Elements)
             {
                 if (v.variable.Name == newName)
@@ -139,17 +104,17 @@ namespace BetterTriggers.Containers
             return false;
         }
 
-        private List<Variable> GetVariables(string returnType, Trigger trig, bool includeLocals)
+        private List<Variable> GetVariables(string returnType, TriggerElementCollection localVariables, bool includeLocals)
         {
             List<Variable> list = new List<Variable>();
             List<Variable> all = new List<Variable>();
             all.AddRange(GetGlobals().Select(v => v.variable)); // globals
             if (includeLocals)
             {
-                bool isParameterFromVariableInitialValue = trig == null;
+                bool isParameterFromVariableInitialValue = localVariables == null;
                 if (isParameterFromVariableInitialValue == false)
                 {
-                    trig.LocalVariables.Elements.ForEach(e =>
+                    localVariables.Elements.ForEach(e =>
                     { // locals
                         var lv = (LocalVariable)e;
                         all.Add(lv.variable);
@@ -174,7 +139,7 @@ namespace BetterTriggers.Containers
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
-        public List<VariableRef> GetVariableRefs(string returnType, Trigger trig, bool includeLocals)
+        public List<VariableRef> GetVariableRefs(string returnType, TriggerElementCollection localVariables, bool includeLocals)
         {
             bool wasIntegervar = false;
             if (returnType == "integervar")
@@ -183,7 +148,7 @@ namespace BetterTriggers.Containers
                 returnType = "integer";
             }
 
-            List<Variable> variables = GetVariables(returnType, trig, includeLocals);
+            List<Variable> variables = GetVariables(returnType, localVariables, includeLocals);
             List<VariableRef> list = new List<VariableRef>();
 
             for (int i = 0; i < variables.Count; i++)
@@ -360,25 +325,7 @@ namespace BetterTriggers.Containers
 
             if (explorerElement != null)
             {
-                TriggerElementCollection localVariables = null;
-                switch (explorerElement.ElementType)
-                {
-                    case ExplorerElementEnum.Trigger:
-                        localVariables = explorerElement.trigger.LocalVariables;
-                        break;
-                    case ExplorerElementEnum.ActionDefinition:
-                        localVariables = explorerElement.actionDefinition.LocalVariables;
-                        break;
-                    case ExplorerElementEnum.ConditionDefinition:
-                        localVariables = explorerElement.conditionDefinition.LocalVariables;
-                        break;
-                    case ExplorerElementEnum.FunctionDefinition:
-                        localVariables = explorerElement.functionDefinition.LocalVariables;
-                        break;
-                    default:
-                        break;
-                }
-
+                TriggerElementCollection localVariables = explorerElement.GetLocalVariables();
                 if (localVariables != null) // for local variables
                 {
                     for (int i = 0; i < localVariables.Elements.Count; i++)

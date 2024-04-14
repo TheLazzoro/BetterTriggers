@@ -262,6 +262,11 @@ namespace BetterTriggers.Models.EditorData
                     triggerRef_Saveable.TriggerId = triggerRef.TriggerId;
                     converted_param = triggerRef_Saveable;
                     break;
+                case ParameterDefinitionRef paramRef:
+                    ParameterDefinitionRef_Saveable paramRef_Saveable = new();
+                    paramRef_Saveable.ParameterDefinitionId = paramRef.ParameterDefinitionId;
+                    converted_param = paramRef_Saveable;
+                    break;
                 case Value:
                     Value_Saveable value = new();
                     converted_param = value;
@@ -526,6 +531,11 @@ namespace BetterTriggers.Models.EditorData
                     TriggerRef triggerRef = new();
                     triggerRef.TriggerId = triggerRef_Saveable.TriggerId;
                     converted_param = triggerRef;
+                    break;
+                case ParameterDefinitionRef_Saveable paramDefRef_Saveable:
+                    ParameterDefinitionRef paramRef = new();
+                    paramRef.ParameterDefinitionId = paramDefRef_Saveable.ParameterDefinitionId;
+                    converted_param = paramRef;
                     break;
                 case Value_Saveable:
                     Value value = new();

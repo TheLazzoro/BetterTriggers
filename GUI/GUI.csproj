@@ -364,6 +364,9 @@
     <Compile Update="Components\ScriptEditor\RootControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Components\TriggerEditor\ParameterControls\ParameterParameterDefinitionControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterTriggerControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -433,6 +436,9 @@
     <Page Update="Components\ScriptEditor\RootControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Components\TriggerEditor\ParameterControls\ParameterParameterDefinitionControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Components\TriggerEditor\ParameterControls\ParameterTriggerControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

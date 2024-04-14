@@ -330,6 +330,63 @@ namespace BetterTriggers.Models.EditorData
             return ExplorerElements;
         }
 
+        /// <summary>
+        /// Gets the collection of local variables from the <see cref="ExplorerElement"/>.
+        /// The collection is either attached to a <see cref="Trigger"/>, <see cref="ActionDefinition"/>,
+        /// <see cref="ConditionDefinition"/>, or <see cref="FunctionDefinition"/>.
+        /// </summary>
+        public TriggerElementCollection GetLocalVariables()
+        {
+            TriggerElementCollection localVariables = null;
+
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    localVariables = trigger.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    localVariables = actionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    localVariables = conditionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    localVariables = functionDefinition.LocalVariables;
+                    break;
+                default:
+                    break;
+            }
+
+            return localVariables;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ParameterDefinitionCollection"/> from the <see cref="ExplorerElement"/>.
+        /// The collection is either attached to a <see cref="ActionDefinition"/>,
+        /// <see cref="ConditionDefinition"/>, or <see cref="FunctionDefinition"/>.
+        /// </summary>
+        public ParameterDefinitionCollection GetParameterCollection()
+        {
+            ParameterDefinitionCollection parameterDefs = null;
+
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.ActionDefinition:
+                    parameterDefs = actionDefinition.Parameters;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    parameterDefs = conditionDefinition.Parameters;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    parameterDefs = functionDefinition.Parameters;
+                    break;
+                default:
+                    break;
+            }
+
+            return parameterDefs;
+        }
+
         public ExplorerElement Clone()
         {
             ExplorerElement newElement = new ExplorerElement();
