@@ -32,7 +32,13 @@ namespace BetterTriggers.Commands
             validator.RemoveInvalidReferences(listToPaste);
             for (int i = 0; i < listToPaste.Count(); i++)
             {
-                listToPaste.Elements[i].SetParent(parent, pastedIndex + i);
+                var toPaste = listToPaste.Elements[i];
+                toPaste.SetParent(parent, pastedIndex + i);
+                if(toPaste is ParameterDefinition paramDef)
+                {
+                    var paramParent = (ParameterDefinitionCollection)parent;
+                    paramDef.Name = paramParent.GenerateParameterDefName();
+                }
             }
 
             Project.CurrentProject.References.UpdateReferences(explorerElement);

@@ -83,6 +83,10 @@ namespace BetterTriggers.Utility
                     }
                     continue;
                 }
+                else if(triggerElement.Elements[i] is ParameterDefinition)
+                {
+                    continue;
+                }
 
                 var eca = (ECA)triggerElement.Elements[i];
                 bool ecaExists = TriggerData.FunctionExists(eca.function);

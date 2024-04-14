@@ -78,7 +78,7 @@ namespace BetterTriggers.Models.EditorData
             return id;
         }
 
-        private string GenerateParameterDefName()
+        internal string GenerateParameterDefName()
         {
             string name = "Untitled Parameter";
             int i = 0;

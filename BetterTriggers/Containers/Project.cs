@@ -760,6 +760,10 @@ namespace BetterTriggers.Containers
                     pasted.Elements.Add(clone);
                     variables.AddLocalVariable(clone);
                 }
+                else if (copied.Elements[i] is ParameterDefinition paramDefinition)
+                {
+                    pasted.Elements.Add(paramDefinition.Clone());
+                }
             }
 
             if (CopiedElements.CutTriggerElements == null)
