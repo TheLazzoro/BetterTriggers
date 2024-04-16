@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.EditorData
 {
-    public class Variable : IReferable
+    public class Variable : IReferable, INotifyPropertyChanged
     {
         public int Id { get; set; }
         public string Name
@@ -66,7 +66,7 @@ namespace BetterTriggers.Models.EditorData
         private bool _isTwoDimensions;
         private Parameter _initialValue;
 
-        public event Action? PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public bool _isLocal { get; internal set; }
 
@@ -94,9 +94,9 @@ namespace BetterTriggers.Models.EditorData
             return name;
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

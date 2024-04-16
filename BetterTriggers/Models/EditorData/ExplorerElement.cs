@@ -116,7 +116,7 @@ namespace BetterTriggers.Models.EditorData
                         fileContent = ReadFile(path);
                         var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(fileContent);
                         variable = TriggerSerializer.DeserializeVariable(savedVariable);
-                        variable.PropertyChanged += AddToUnsaved;
+                        variable.PropertyChanged += Variable_PropertyChanged; ;
                         Project.CurrentProject.Variables.AddVariable(this);
                         variable.Name = Path.GetFileNameWithoutExtension(GetPath());
                         break;
@@ -168,6 +168,11 @@ namespace BetterTriggers.Models.EditorData
 
 
             UpdateMetadata();
+        }
+
+        private void Variable_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            AddToUnsaved();
         }
 
         private string ReadFile(string path)

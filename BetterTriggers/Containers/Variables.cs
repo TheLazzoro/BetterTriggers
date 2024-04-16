@@ -49,12 +49,13 @@ namespace BetterTriggers.Containers
         {
             TriggerElementCollection localVariables = explorerElement.GetLocalVariables();
 
-            LocalVariable localVariable = new LocalVariable();
-            localVariable.variable.Type = "integer";
-            localVariable.variable.Name = GenerateLocalName(localVariables);
-            localVariable.variable.Id = GenerateId();
-            localVariable.variable.ArraySize = new int[] { 1, 1 };
-            localVariable.variable.InitialValue = new Value() { value = "0" };
+            Variable variable = new Variable();
+            variable.Type = "integer";
+            variable.Name = GenerateLocalName(localVariables);
+            variable.Id = GenerateId();
+            variable.ArraySize = new int[] { 1, 1 };
+            variable.InitialValue = new Value() { value = "0" };
+            LocalVariable localVariable = new LocalVariable(variable);
             localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
             localVariableContainer.Add(localVariable.variable);
 

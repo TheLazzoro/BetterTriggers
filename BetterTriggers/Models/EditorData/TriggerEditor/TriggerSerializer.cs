@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Models.SaveableData;
 using Cake.Incubator.AssertExtensions;
+using ICSharpCode.Decompiler.DebugInfo;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -448,21 +449,21 @@ namespace BetterTriggers.Models.EditorData
                 }
                 else if (element is LocalVariable_Saveable localVar)
                 {
-                    converted = new LocalVariable
+                    var variable = new Variable
+                    {
+                        _isLocal = true,
+                        Id = localVar.variable.Id,
+                        Name = localVar.variable.Name,
+                        ArraySize = localVar.variable.ArraySize,
+                        IsTwoDimensions = localVar.variable.IsTwoDimensions,
+                        IsArray = localVar.variable.IsArray,
+                        Type = localVar.variable.Type,
+                        InitialValue = ConvertParameter_Deserialize(localVar.variable.InitialValue)
+                    };
+                    converted = new LocalVariable(variable)
                     {
                         DisplayText = localVar.variable.Name,
                         ElementType = TriggerElementType.LocalVariable,
-                        variable = new Variable
-                        {
-                            _isLocal = true,
-                            Id = localVar.variable.Id,
-                            Name = localVar.variable.Name,
-                            ArraySize = localVar.variable.ArraySize,
-                            IsTwoDimensions = localVar.variable.IsTwoDimensions,
-                            IsArray = localVar.variable.IsArray,
-                            Type = localVar.variable.Type,
-                            InitialValue = ConvertParameter_Deserialize(localVar.variable.InitialValue)
-                        }
                     };
                 }
 

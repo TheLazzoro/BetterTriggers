@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace GUI.Components.VariableEditor
 {
@@ -106,10 +107,10 @@ namespace GUI.Components.VariableEditor
 
             _variable = variable;
             variable.PropertyChanged += Variable_PropertyChanged;
-            Variable_PropertyChanged(); // init
+            Variable_PropertyChanged(null, new PropertyChangedEventArgs(string.Empty)); // init
         }
 
-        private void Variable_PropertyChanged()
+        private void Variable_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(nameof(Identifier));
         }
