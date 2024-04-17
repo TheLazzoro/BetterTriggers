@@ -12,7 +12,7 @@ namespace BetterTriggers.Models.SaveableData
         public readonly int ElementType = 15; // DO NOT CHANGE
         public int Id;
         public string Comment;
-        public string Category;
+        public string Category = TriggerCategory.TC_FUNCTION_DEF; // default
         public string ReturnType;
         public List<ParameterDefinition_Saveable> Parameters = new();
         public List<TriggerElement_Saveable> Actions = new();

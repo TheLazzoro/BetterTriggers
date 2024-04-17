@@ -583,21 +583,37 @@ namespace BetterTriggers.Containers
         /// <param name="element"></param>
         public void RemoveElementFromContainer(ExplorerElement element)
         {
-            if (element.ElementType == ExplorerElementEnum.Folder)
+            switch (element.ElementType)
             {
-                for (int i = 0; i < element.GetExplorerElements().Count; i++)
-                {
-                    var subElement = element.GetExplorerElements()[i];
-                    RemoveElementFromContainer(subElement);
-                }
-                Folders.Remove(element);
+                case ExplorerElementEnum.Folder:
+                    for (int i = 0; i < element.GetExplorerElements().Count; i++)
+                    {
+                        var subElement = element.GetExplorerElements()[i];
+                        RemoveElementFromContainer(subElement);
+                    }
+                    Folders.Remove(element);
+                    break;
+                case ExplorerElementEnum.GlobalVariable:
+                    Variables.Remove(element);
+                    break;
+                case ExplorerElementEnum.Script:
+                    Scripts.Remove(element);
+                    break;
+                case ExplorerElementEnum.Trigger:
+                    Triggers.Remove(element);
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    ActionDefinitions.Remove(element);
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    ConditionDefinitions.Remove(element);
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    FunctionDefinitions.Remove(element);
+                    break;
+                default:
+                    break;
             }
-            else if (element.ElementType == ExplorerElementEnum.Trigger)
-                Triggers.Remove(element);
-            else if (element.ElementType == ExplorerElementEnum.Script)
-                Scripts.Remove(element);
-            else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
-                Variables.Remove(element);
         }
 
         public void CopyExplorerElement(ExplorerElement explorerElement, bool isCut = false)
@@ -790,7 +806,7 @@ namespace BetterTriggers.Containers
             var actionDefinitions = ActionDefinitions.GetAll();
             var conditionDefinitions = ConditionDefinitions.GetAll();
             var functionDefinitions = FunctionDefinitions.GetAll();
-            
+
             List<Function> functions = new List<Function>();
             triggers.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
             actionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));

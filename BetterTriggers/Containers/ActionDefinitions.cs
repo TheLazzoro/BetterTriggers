@@ -112,18 +112,18 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public ActionDefinition GetByKey(string key)
+        public ActionDefinition? GetByKey(string key)
         {
             container.TryGetValue(key, out var result);
             return result.actionDefinition;
         }
 
-        public ExplorerElement FindByRef(ActionDefinitionRef actionDefRef)
+        public ExplorerElement? FindByRef(ActionDefinitionRef actionDefRef)
         {
             return FindById(actionDefRef.ActionDefinitionId);
         }
 
-        public ExplorerElement FindById(int id)
+        public ExplorerElement? FindById(int id)
         {
             ExplorerElement actionDefinition = null;
             var enumerator = container.GetEnumerator();

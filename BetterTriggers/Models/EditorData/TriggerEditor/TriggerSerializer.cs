@@ -53,7 +53,6 @@ namespace BetterTriggers.Models.EditorData
             var converted = new ActionDefinition_Saveable();
             converted.Id = actionDefinition.Id;
             converted.Comment = actionDefinition.Comment;
-            converted.Category = actionDefinition.Category;
             converted.Parameters = ConvertParameterDefinitions(actionDefinition.Parameters);
             converted.Actions = ConvertTriggerElements(actionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(actionDefinition.LocalVariables.Elements);
@@ -67,7 +66,6 @@ namespace BetterTriggers.Models.EditorData
             converted.Id = conditionDefinition.Id;
             converted.Comment = conditionDefinition.Comment;
             converted.ReturnType = conditionDefinition.ReturnType;
-            converted.Category = conditionDefinition.Category;
             converted.Parameters = ConvertParameterDefinitions(conditionDefinition.Parameters);
             converted.Actions = ConvertTriggerElements(conditionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(conditionDefinition.LocalVariables.Elements);
@@ -316,12 +314,12 @@ namespace BetterTriggers.Models.EditorData
             return variable;
         }
 
-        internal static ActionDefinition DeserializeActionDefinition(ActionDefinition_Saveable saveableActionDef)
+        internal static ActionDefinition DeserializeActionDefinition(ExplorerElement explorerElement, ActionDefinition_Saveable saveableActionDef)
         {
-            var converted = new ActionDefinition();
+            var converted = new ActionDefinition(explorerElement);
+            converted.explorerElement = explorerElement;
             converted.Id = saveableActionDef.Id;
             converted.Comment = saveableActionDef.Comment;
-            converted.Category = saveableActionDef.Category;
             converted.Parameters = ConvertParameterDefinitions_Deserialize(saveableActionDef.Parameters);
             converted.Actions = ConvertTriggerElements_Deserialize(saveableActionDef.Actions, TriggerElementType.Action);
             converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableActionDef.LocalVariables, TriggerElementType.LocalVariable);
@@ -329,12 +327,11 @@ namespace BetterTriggers.Models.EditorData
             return converted;
         }
 
-        internal static ConditionDefinition DeserializeConditionDefinition(ConditionDefinition_Saveable saveableConditionDef)
+        internal static ConditionDefinition DeserializeConditionDefinition(ExplorerElement explorerElement, ConditionDefinition_Saveable saveableConditionDef)
         {
-            var converted = new ConditionDefinition();
+            var converted = new ConditionDefinition(explorerElement);
             converted.Id = saveableConditionDef.Id;
             converted.Comment = saveableConditionDef.Comment;
-            converted.Category = saveableConditionDef.Category;
             converted.Actions = ConvertTriggerElements_Deserialize(saveableConditionDef.Actions, TriggerElementType.Action);
             converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableConditionDef.LocalVariables, TriggerElementType.LocalVariable);
 

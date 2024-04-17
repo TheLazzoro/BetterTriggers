@@ -123,18 +123,18 @@ namespace BetterTriggers.Containers
             return element.GetName();
         }
 
-        public ExplorerElement FindByRef(ConditionDefinitionRef conditionDefRef)
+        public ExplorerElement? FindByRef(ConditionDefinitionRef conditionDefRef)
         {
             return FindById(conditionDefRef.ConditionDefinitionId);
         }
 
-        public ExplorerElement FindById(int id)
+        public ExplorerElement? FindById(int id)
         {
             ExplorerElement conditionDefinition = null;
             var enumerator = container.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                if (enumerator.Current.Value.actionDefinition.Id == id)
+                if (enumerator.Current.Value.conditionDefinition.Id == id)
                 {
                     conditionDefinition = enumerator.Current.Value;
                     break;

@@ -85,7 +85,7 @@ namespace BetterTriggers.Models.EditorData
             if (Directory.Exists(path))
             {
                 ElementType = ExplorerElementEnum.Folder;
-                SetCategory(TriggerCategory.TC_DIRECTORY);
+                CategoryStr = TriggerCategory.TC_DIRECTORY;
             }
             else if (File.Exists(path))
             {
@@ -94,7 +94,7 @@ namespace BetterTriggers.Models.EditorData
                 {
                     case ".trg":
                         ElementType = ExplorerElementEnum.Trigger;
-                        SetCategory(TriggerCategory.TC_TRIGGER_NEW);
+                        CategoryStr = TriggerCategory.TC_TRIGGER_NEW;
                         fileContent = ReadFile(path);
                         var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(fileContent);
                         trigger = TriggerSerializer.Deserialize(savedTrigger);
@@ -105,14 +105,14 @@ namespace BetterTriggers.Models.EditorData
                     case ".j":
                     case ".lua":
                         ElementType = ExplorerElementEnum.Script;
-                        SetCategory(TriggerCategory.TC_SCRIPT);
+                        CategoryStr = TriggerCategory.TC_SCRIPT;
                         this.script = Project.CurrentProject.Scripts.LoadFromFile(path);
                         Project.CurrentProject.Scripts.AddScript(this);
                         break;
 
                     case ".var":
                         ElementType = ExplorerElementEnum.GlobalVariable;
-                        SetCategory(TriggerCategory.TC_SETVARIABLE);
+                        CategoryStr = TriggerCategory.TC_SETVARIABLE;
                         fileContent = ReadFile(path);
                         var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(fileContent);
                         variable = TriggerSerializer.DeserializeVariable(savedVariable);
@@ -123,27 +123,27 @@ namespace BetterTriggers.Models.EditorData
 
                     case ".act":
                         ElementType = ExplorerElementEnum.ActionDefinition;
-                        SetCategory(TriggerCategory.TC_ACTION_DEF);
+                        CategoryStr = TriggerCategory.TC_ACTION_DEF;
                         fileContent = ReadFile(path);
                         var savedActionDef = JsonConvert.DeserializeObject<ActionDefinition_Saveable>(fileContent);
-                        actionDefinition = TriggerSerializer.DeserializeActionDefinition(savedActionDef);
+                        actionDefinition = TriggerSerializer.DeserializeActionDefinition(this, savedActionDef);
                         StoreLocalVariables();
                         Project.CurrentProject.ActionDefinitions.Add(this);
                         break;
 
                     case ".cond":
                         ElementType = ExplorerElementEnum.ConditionDefinition;
-                        SetCategory(TriggerCategory.TC_CONDITION_DEF);
+                        CategoryStr = TriggerCategory.TC_CONDITION_DEF;
                         fileContent = ReadFile(path);
                         var savedConditionDef = JsonConvert.DeserializeObject<ConditionDefinition_Saveable>(fileContent);
-                        conditionDefinition = TriggerSerializer.DeserializeConditionDefinition(savedConditionDef);
+                        conditionDefinition = TriggerSerializer.DeserializeConditionDefinition(this, savedConditionDef);
                         StoreLocalVariables();
                         Project.CurrentProject.ConditionDefinitions.Add(this);
                         break;
 
                     case ".func":
                         ElementType = ExplorerElementEnum.FunctionDefinition;
-                        SetCategory(TriggerCategory.TC_FUNCTION_DEF);
+                        CategoryStr = TriggerCategory.TC_FUNCTION_DEF;
                         fileContent = ReadFile(path);
                         var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
                         functionDefinition = TriggerSerializer.DeserializeFunctionDefinition(savedFunctionDef);
@@ -153,7 +153,7 @@ namespace BetterTriggers.Models.EditorData
 
                     default:
                         ElementType = ExplorerElementEnum.None;
-                        SetCategory(TriggerCategory.TC_UNKNOWN);
+                        CategoryStr = TriggerCategory.TC_UNKNOWN;
                         break;
                 }
             }
@@ -163,7 +163,7 @@ namespace BetterTriggers.Models.EditorData
                 var project = Project.CurrentProject;
                 DisplayText = Path.GetFileNameWithoutExtension(project.war3project.Name);
                 ElementType = ExplorerElementEnum.Root;
-                SetCategory(TriggerCategory.TC_MAP);
+                CategoryStr = TriggerCategory.TC_MAP;
             }
 
 

@@ -20,6 +20,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using GUI.Components.ParameterEditor;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 
 namespace GUI.Components
 {
@@ -134,6 +135,11 @@ namespace GUI.Components
             if (triggerElement == null)
             {
                 this.selectedItems = SelectItemsMultiple(null, null);
+                return;
+            }
+            
+            if(triggerElement is InvalidECA)
+            {
                 return;
             }
 

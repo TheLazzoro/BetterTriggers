@@ -498,6 +498,36 @@ namespace BetterTriggers.WorldEdit
         {
             List<string> list = new List<string>();
 
+            // TODO: This is slow.
+            var actionDefs = Project.CurrentProject.ActionDefinitions.GetAll();
+            for (int i = 0; i < actionDefs.Count(); i++)
+            {
+                var actionDef = actionDefs[i];
+                if(actionDef.GetName() == f.value)
+                {
+                    actionDef.actionDefinition.Parameters.Elements.ForEach(el =>
+                    {
+                        var parameter = (ParameterDefinition)el;
+                        list.Add(parameter.ReturnType.Type);
+                    });
+                    return list;
+                }
+            }
+            var conditionDefs = Project.CurrentProject.ConditionDefinitions.GetAll();
+            for (int i = 0; i < conditionDefs.Count(); i++)
+            {
+                var conditionDef = conditionDefs[i];
+                if (conditionDef.GetName() == f.value)
+                {
+                    conditionDef.conditionDefinition.Parameters.Elements.ForEach(el =>
+                    {
+                        var parameter = (ParameterDefinition)el;
+                        list.Add(parameter.ReturnType.Type);
+                    });
+                    return list;
+                }
+            }
+
             if (f.value == "SetVariable")
             {
                 VariableRef varRef = f.parameters[0] as VariableRef;
@@ -585,7 +615,7 @@ namespace BetterTriggers.WorldEdit
             exists = FunctionsAll.ContainsKey(function.value);
 
             var project = Project.CurrentProject;
-            if(!exists)
+            if (!exists)
                 exists = project.ActionDefinitions.container.ContainsKey(function.value);
             if (!exists)
                 exists = project.ConditionDefinitions.container.ContainsKey(function.value);
@@ -696,7 +726,7 @@ namespace BetterTriggers.WorldEdit
             var functionDefinitions = Project.CurrentProject.FunctionDefinitions.GetAll();
             foreach (var funcDef in functionDefinitions)
             {
-                if(funcDef.functionDefinition.ReturnType.War3Type.Type == returnType)
+                if (funcDef.functionDefinition.ReturnType.War3Type.Type == returnType)
                 {
                     FunctionTemplate template = new FunctionTemplate(TriggerElementType.ParameterDef)
                     {
@@ -743,7 +773,7 @@ namespace BetterTriggers.WorldEdit
                     name = conditionDef.GetName(),
                     value = conditionDef.GetName(),
                     paramText = conditionDef.conditionDefinition.ParamText,
-                    category = conditionDef.conditionDefinition.Category,
+                    category = conditionDef.conditionDefinition.explorerElement.CategoryStr,
                     description = conditionDef.conditionDefinition.Comment,
                 };
 
@@ -771,9 +801,8 @@ namespace BetterTriggers.WorldEdit
                     name = actionDef.GetName(),
                     value = actionDef.GetName(),
                     paramText = actionDef.actionDefinition.ParamText,
-                    category = actionDef.actionDefinition.Category,
+                    category = actionDef.actionDefinition.explorerElement.CategoryStr,
                     description = actionDef.actionDefinition.Comment,
-                    
                 };
 
                 list.Add(functionTemplate);

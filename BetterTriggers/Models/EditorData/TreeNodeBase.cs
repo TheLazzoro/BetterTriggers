@@ -56,6 +56,18 @@ namespace BetterTriggers.Models.EditorData
                 OnPropertyChanged();
             }
         }
+
+        public string CategoryStr
+        {
+            get => _category;
+            set
+            {
+                _category = value;
+                OnPropertyChanged();
+                var category = Category.Get(_category);
+                IconImage = category.Icon;
+            }
+        }
        
         public byte[] IconImage
         {
@@ -173,14 +185,6 @@ namespace BetterTriggers.Models.EditorData
             }
         }
         public event Action OnToggleEnable;
-
-
-        public void SetCategory(string categoryStr)
-        {
-            this._category = categoryStr;
-            var category = Category.Get(_category);
-            _icon = category.Icon;
-        }
 
         public void CancelRename()
         {

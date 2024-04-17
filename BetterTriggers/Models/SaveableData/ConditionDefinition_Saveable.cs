@@ -11,7 +11,7 @@ namespace BetterTriggers.Models.SaveableData
     {
         public int Id;
         public string Comment;
-        public string Category;
+        public string Category = TriggerCategory.TC_CONDITION_DEF; // default
         public string ReturnType;
         public List<ParameterDefinition_Saveable> Parameters = new();
         public List<TriggerElement_Saveable> Actions = new();

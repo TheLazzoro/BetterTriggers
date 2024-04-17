@@ -57,7 +57,8 @@ namespace GUI.Components.Loading
         {
             BetterTriggers.Init.OnNextData += Init_NextData;
 
-            isCascValid = Casc.Load();
+            string error;
+            (isCascValid, error) = Casc.Load();
             if(isCascValid)
             {
                 (sender as BackgroundWorker).ReportProgress(50);

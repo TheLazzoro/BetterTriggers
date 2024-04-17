@@ -37,10 +37,40 @@ namespace GUI.Utility
             _explorerElement = explorerElement;
             _eca = eca;
             StringBuilder sb = new StringBuilder();
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
-            string paramText = TriggerData.GetParamText(eca.function);
+            List<Inline> Inlines = new List<Inline>();
+            List<Inline> generated;
+            var returnTypes = new List<string>();
+            string paramText;
+            if (eca is ActionDefinitionRef actionDefRef)
+            {
+                var actionDef = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId).actionDefinition;
+                actionDef.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    returnTypes.Add(paramDef.ReturnType.Type);
+                });
+                paramText = actionDef.ParamText;
+                generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
+            }
+            else if (eca is ConditionDefinitionRef conditionDefRef)
+            {
+                var conditionDef = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId).conditionDefinition;
+                conditionDef.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    returnTypes.Add(paramDef.ReturnType.Type);
+                });
+                paramText = TriggerData.GetParamText(eca.function);
+                generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
+            }
+            else
+            {
+                returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
+                paramText = TriggerData.GetParamText(eca.function);
+                generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
+            }
+            
             GenerateTreeItemText(sb, eca.function.parameters, returnTypes, paramText);
-
 
             return sb.ToString();
         }
@@ -209,12 +239,43 @@ namespace GUI.Utility
 
         public List<Inline> GenerateParamText(ExplorerElement explorerElement, ECA eca)
         {
-            _eca = eca;
             _explorerElement = explorerElement;
+            _eca = eca;
             List<Inline> Inlines = new List<Inline>();
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
-            string paramText = TriggerData.GetParamText(eca.function);
-            var generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
+            List<Inline> generated;
+            var returnTypes = new List<string>();
+            if (eca is ActionDefinitionRef actionDefRef)
+            {
+                var actionDef = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId).actionDefinition;
+                string paramText = actionDef.ParamText;
+                actionDef.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    string type = paramDef.ReturnType.Type;
+                    returnTypes.Add(type);
+                });
+
+                generated = RecurseGenerateParamText(paramText, actionDefRef.function.parameters, returnTypes);
+            }
+            else if (eca is ConditionDefinitionRef conditionDefRef)
+            {
+                var conditionDef = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId).conditionDefinition;
+                string paramText = conditionDef.ParamText;
+                conditionDef.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    string type = paramDef.ReturnType.Type;
+                    returnTypes.Add(type);
+                });
+
+                generated = RecurseGenerateParamText(paramText, conditionDefRef.function.parameters, returnTypes);
+            }
+            else
+            {
+                returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
+                string paramText = TriggerData.GetParamText(eca.function);
+                generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
+            }
 
             // First and last inline must be a string.
             // Otherwise hyperlinks get cut from the treeitem header (WPF black magic).

@@ -16,7 +16,7 @@ namespace GUI.Components.OpenMap
         {
             FullPath = fullPath;
             DisplayText = Path.GetFileName(fullPath);
-            SetCategory(TriggerCategory.TC_MAP);
+            CategoryStr = TriggerCategory.TC_MAP;
         }
     }
 }

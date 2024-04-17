@@ -60,13 +60,31 @@ namespace BetterTriggers.Models.Templates
                 var definition = project.ActionDefinitions.GetByKey(name);
                 ActionDefinitionRef reference = new();
                 reference.ActionDefinitionId = definition.Id;
+                definition.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    parameters.Add(new ParameterTemplate
+                    {
+                        returnType = paramDef.ReturnType.Type
+                    });
+                });
+
                 eca = reference;
             }
             else if (project.ConditionDefinitions.Contains(name))
             {
                 var definition = project.ConditionDefinitions.GetByKey(name);
-                ActionDefinitionRef reference = new();
-                reference.ActionDefinitionId = definition.Id;
+                ConditionDefinitionRef reference = new();
+                reference.ConditionDefinitionId = definition.Id;
+                definition.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    parameters.Add(new ParameterTemplate
+                    {
+                        returnType = paramDef.ReturnType.Type
+                    });
+                });
+
                 eca = reference;
             }
             else
