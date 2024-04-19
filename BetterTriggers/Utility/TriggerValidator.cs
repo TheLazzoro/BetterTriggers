@@ -92,7 +92,9 @@ namespace BetterTriggers.Utility
                 bool ecaExists = TriggerData.FunctionExists(eca.function);
                 if (!ecaExists)
                 {
-                    triggerElement.Elements[i] = new InvalidECA();
+                    eca.RemoveFromParent();
+                    var invalid = new InvalidECA();
+                    invalid.SetParent(triggerElement, i);
                     removeCount += 1;
                 }
                 List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);

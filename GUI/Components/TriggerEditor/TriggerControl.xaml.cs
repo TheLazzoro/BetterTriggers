@@ -138,11 +138,6 @@ namespace GUI.Components
                 return;
             }
             
-            if(triggerElement is InvalidECA)
-            {
-                return;
-            }
-
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 selectedElementEnd = (TriggerElement)treeViewTriggers.SelectedItem;
             else
@@ -460,6 +455,11 @@ namespace GUI.Components
         {
             _IsDragging = true;
             var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
+            if(triggerElement is InvalidECA)
+            {
+                return;
+            }
+
             var treeItem = GetTreeViewItemFromTriggerElement(treeViewTriggers.SelectedItem as TriggerElement);
             dragItem = treeItem;
 
