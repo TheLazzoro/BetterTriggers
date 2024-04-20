@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using BetterTriggers.Containers;
 using War3Net.Common.Extensions;
+using System.Windows.Documents;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -491,7 +492,10 @@ namespace BetterTriggers.WorldEdit
 
             PresetTemplate constant;
             ConstantTemplates.TryGetValue(value, out constant);
-            return constant.returnType;
+            if(constant != null)
+                return constant.returnType;
+
+            return "nothing"; // hack?
         }
 
         public static List<string> GetParameterReturnTypes(Function f)
