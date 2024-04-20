@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI" xmlns:shared="clr-namespace:GUI.Components.Shared"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Trigger Element Menu" Height="450" Width="800" Background="{DynamicResource BackgroundLight}" Loaded="Window_Loaded" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
+        Title="Trigger Element Menu" Height="450" Width="800" Background="{DynamicResource BackgroundLight}" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged">
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="175"/>

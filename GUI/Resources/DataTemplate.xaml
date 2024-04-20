@@ -319,7 +319,7 @@
 
 
     <HierarchicalDataTemplate x:Key="ComboBoxVariableTypes"
-                          ItemsSource="{Binding War3Types}" >
+                              ItemsSource="{Binding War3Types}" >
 
         <TextBlock Text="{Binding DisplayName}" />
 

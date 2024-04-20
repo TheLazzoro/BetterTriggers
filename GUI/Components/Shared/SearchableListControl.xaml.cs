@@ -84,5 +84,6 @@ namespace GUI.Components.Shared
             else
                 Grid.SetColumnSpan(textBoxSearch, 2);
         }
+
     }
 }

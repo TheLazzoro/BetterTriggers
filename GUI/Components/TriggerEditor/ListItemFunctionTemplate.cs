@@ -23,6 +23,7 @@ namespace GUI.Components.TriggerEditor
             }
         }
 
+        
         private double _iconWidth = Double.NaN; // "auto" property in WPF
 
         public ListItemFunctionTemplate(FunctionTemplate template, Category category)
