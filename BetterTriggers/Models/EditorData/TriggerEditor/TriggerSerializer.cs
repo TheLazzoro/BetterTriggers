@@ -65,7 +65,6 @@ namespace BetterTriggers.Models.EditorData
             var converted = new ConditionDefinition_Saveable();
             converted.Id = conditionDefinition.Id;
             converted.Comment = conditionDefinition.Comment;
-            converted.ReturnType = conditionDefinition.ReturnType;
             converted.Parameters = ConvertParameterDefinitions(conditionDefinition.Parameters);
             converted.Actions = ConvertTriggerElements(conditionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(conditionDefinition.LocalVariables.Elements);
@@ -160,6 +159,10 @@ namespace BetterTriggers.Models.EditorData
                         case SetVariable:
                             SetVariable_Saveable SetVariable_Saveable = new();
                             ECA_Saveable = SetVariable_Saveable;
+                            break;
+                        case ReturnStatement:
+                            ReturnStatement_Saveable ReturnStatement_Saveable = new();
+                            ECA_Saveable = ReturnStatement_Saveable;
                             break;
                         case ActionDefinitionRef thing:
                             ActionDefinitionRef_Saveable ActionDefinitionRef_Saveable = new();
@@ -424,6 +427,10 @@ namespace BetterTriggers.Models.EditorData
                         case SetVariable_Saveable:
                             SetVariable SetVariable = new();
                             eca = SetVariable;
+                            break;
+                        case ReturnStatement_Saveable:
+                            ReturnStatement ReturnStatement = new();
+                            eca = ReturnStatement;
                             break;
                         case ActionDefinitionRef_Saveable thing:
                             ActionDefinitionRef ActionDefinitionRef = new();

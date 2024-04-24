@@ -25,9 +25,24 @@ namespace GUI.Components.TriggerEditor
         {
             this.parameters = parameters;
             this.index = index;
-            this.returnType = returnType;
             this.eca = eca;
             this.explorerElement = explorerElement;
+            if (eca is ReturnStatement returnStatement)
+            {
+                switch (explorerElement.ElementType)
+                {
+                    case ExplorerElementEnum.ConditionDefinition:
+                        this.returnType = "boolean";
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        this.returnType = explorerElement.functionDefinition.ReturnType.War3Type.Type;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+                this.returnType = returnType;
 
             this.Click += HyperlinkParameter_Click;
         }

@@ -33,7 +33,6 @@ namespace BetterTriggers.Models.EditorData
                 return sb.ToString();
             }
         }
-        public string ReturnType;
         public ParameterDefinitionCollection Parameters = new(TriggerElementType.ParameterDef);
         public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
         public TriggerElementCollection Actions = new(TriggerElementType.Action);
@@ -48,7 +47,6 @@ namespace BetterTriggers.Models.EditorData
             throw new NotImplementedException("Below constructor takes the old explorerElement. How do we get the new one in?");
             ConditionDefinition cloned = new ConditionDefinition(explorerElement);
             cloned.Comment = new string(Comment);
-            cloned.ReturnType = new string(ReturnType);
             cloned.LocalVariables = LocalVariables.Clone();
             cloned.Actions = Actions.Clone();
 

@@ -23,6 +23,7 @@ using BetterTriggers.Utility;
 using System.Transactions;
 using System.Collections.ObjectModel;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using ICSharpCode.Decompiler.TypeSystem;
 
 namespace BetterTriggers
 {
@@ -479,7 +480,9 @@ end
             CreateCameras(script);
 
             CreateCustomScripts(script);
+            GenerateFunctionDefinitions(script);
             GenerateActionDefinitions(script);
+            GenerateConditionDefinitions(script);
             GenerateTriggers(script);
             GenerateTriggerInitialization(script);
 
@@ -1655,22 +1658,6 @@ end
         }
 
 
-
-        private void GenerateActionDefinitions(StringBuilder script)
-        {
-            script.Append(separator);
-            script.Append($"{comment}{newline}");
-            script.Append($"{comment}  Action Definitions{newline}");
-            script.Append($"{comment}{newline}");
-            script.Append(separator);
-
-            foreach (var a in actionDefinitions)
-            {
-                currentExplorerElement = a;
-                script.Append(ConvertActionDefToJASS(a));
-            }
-        }
-
         private string GenerateLocalVariableDefinitions(ExplorerElement ex, StringBuilder sb)
         {
             localVariables = new List<Variable>();
@@ -1737,45 +1724,139 @@ end
             return localVariableInit.ToString();
         }
 
-        private string ConvertActionDefToJASS(ExplorerElement ex)
+
+        private void GenerateFunctionDefinitions(StringBuilder script)
         {
-            var actionDef = ex.actionDefinition;
-            var parameters = ex.actionDefinition.Parameters;
+            script.Append(separator);
+            script.Append($"{comment}{newline}");
+            script.Append($"{comment}  Function Definitions{newline}");
+            script.Append($"{comment}{newline}");
+            script.Append(separator);
+
+            foreach (var f in functionDefinitions)
+            {
+                currentExplorerElement = f;
+                script.Append(ConvertCustomDefinitionToJASS(f));
+            }
+        }
+
+        private void GenerateConditionDefinitions(StringBuilder script)
+        {
+            script.Append(separator);
+            script.Append($"{comment}{newline}");
+            script.Append($"{comment}  Condition Definitions{newline}");
+            script.Append($"{comment}{newline}");
+            script.Append(separator);
+
+            foreach (var c in conditionDefinitions)
+            {
+                currentExplorerElement = c;
+                script.Append(ConvertCustomDefinitionToJASS(c));
+            }
+        }
+
+        private void GenerateActionDefinitions(StringBuilder script)
+        {
+            script.Append(separator);
+            script.Append($"{comment}{newline}");
+            script.Append($"{comment}  Action Definitions{newline}");
+            script.Append($"{comment}{newline}");
+            script.Append(separator);
+
+            foreach (var a in actionDefinitions)
+            {
+                currentExplorerElement = a;
+                script.Append(ConvertCustomDefinitionToJASS(a));
+            }
+        }
+
+
+        private string ConvertCustomDefinitionToJASS(ExplorerElement ex)
+        {
+            ParameterDefinitionCollection parameters = null;
+            TriggerElementCollection actions = null;
+            string returnType = "nothing";
+            string functionNamePrefix = string.Empty;
+            string scriptCommentTitle = string.Empty;
+
+            switch (ex.ElementType)
+            {
+                case ExplorerElementEnum.ActionDefinition:
+                    parameters = ex.actionDefinition.Parameters;
+                    actions = ex.actionDefinition.Actions;
+                    returnType = "nothing";
+                    functionNamePrefix = "ActionDef_";
+                    scriptCommentTitle = "Action Definition";
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    parameters = ex.conditionDefinition.Parameters;
+                    actions = ex.conditionDefinition.Actions;
+                    returnType = "boolean";
+                    functionNamePrefix = "ConditionDef_";
+                    scriptCommentTitle = "Condition Definition";
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    parameters = ex.functionDefinition.Parameters;
+                    actions = ex.functionDefinition.Actions;
+                    returnType = ex.functionDefinition.ReturnType.War3Type.Type;
+                    functionNamePrefix = "FunctionDef_";
+                    scriptCommentTitle = "Function Definition";
+                    break;
+                default:
+                    break;
+            }
+
             triggerName = Ascii.ReplaceNonASCII(ex.GetName().Replace(" ", "_"), true);
 
             StringBuilder sb_parameters = new StringBuilder();
             StringBuilder sb = new StringBuilder();
 
-            sb_parameters.Append($"takes ");
+
+            if (language == ScriptLanguage.Jass)
+                sb_parameters.Append($"takes ");
+            else
+                sb_parameters.Append($"(");
+
             if (parameters.Count() == 0)
             {
-                sb_parameters.Append("nothing returns nothing");
+                if (language == ScriptLanguage.Jass)
+                    sb_parameters.Append($"nothing returns {returnType}");
+                else
+                    sb_parameters.Append($")");
             }
             else
             {
-                for (int i = 0; i < actionDef.Parameters.Count(); i++)
+                for (int i = 0; i < parameters.Count(); i++)
                 {
-                    var parameter = (ParameterDefinition)actionDef.Parameters.Elements[i];
+                    var parameter = (ParameterDefinition)parameters.Elements[i];
                     string parameterName = Ascii.ReplaceNonASCII(parameter.GetIdentifierName().Replace(" ", "_"), true);
-                    sb_parameters.Append($"{parameter.ReturnType.Type} {parameterName}");
-                    if (i < actionDef.Parameters.Count() - 1)
+                    string parameterText = language == ScriptLanguage.Jass ? $"{parameter.ReturnType.Type} {parameterName}" : $"{parameterName}";
+                    sb_parameters.Append(parameterText);
+
+                    if (i < parameters.Count() - 1)
                     {
                         sb_parameters.Append(", ");
                     }
                 }
-                sb_parameters.Append(" returns nothing");
+                if (language == ScriptLanguage.Jass)
+                    sb_parameters.Append($" returns {returnType}");
+                else
+                    sb_parameters.Append(")");
             }
 
-            sb.Append($"function ActionDef_{triggerName} {sb_parameters} {newline}");
+            sb.Append($"function {functionNamePrefix}{triggerName} {sb_parameters} {newline}");
             sb.Append(GenerateLocalVariableDefinitions(ex, sb));
             sb.Append(Environment.NewLine);
-            foreach (ECA a in actionDef.Actions.Elements)
+            PreActions pre_actions = new PreActions();
+            foreach (ECA a in actions.Elements)
             {
-                sb.Append($"\t{ConvertTriggerElementToJass(a, new PreActions(), false)}{newline}");
+                sb.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, false)}{newline}");
             }
             sb.Append($"{endfunction}{newline}{newline}{newline}");
 
-            return sb.ToString();
+            string finalFunction = $"{comment} {scriptCommentTitle} {triggerName}{newline}{separator}{pre_actions.GetGeneratedActions()}{sb.ToString()}";
+
+            return finalFunction;
         }
 
 
@@ -2521,6 +2602,14 @@ end
             {
                 return $"{newline}{comment} {f.parameters[0].value}";
             }
+
+            // Custom
+            else if (f.value == "ReturnStatement")
+            {
+                script.Append($"return {ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}");
+                return script.ToString();
+            }
+
 
 
             // --------------------- //
