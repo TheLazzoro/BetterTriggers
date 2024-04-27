@@ -100,7 +100,7 @@ namespace Tests
             expected.Add("location");
             expected.Add("real");
 
-            List<string> actual = TriggerData.GetParameterReturnTypes(function);
+            List<string> actual = TriggerData.GetParameterReturnTypes(function, null);
 
             for (int i = 0; i < expected.Count; i++)
             {
@@ -128,7 +128,7 @@ namespace Tests
             expected.Clear();
             expected.Add("integer");
             expected.Add("integer");
-            actual = TriggerData.GetParameterReturnTypes(function);
+            actual = TriggerData.GetParameterReturnTypes(function, null);
 
             for (int i = 0; i < expected.Count; i++)
             {
@@ -145,7 +145,7 @@ namespace Tests
             expected.Clear();
             expected.Add("null");
             expected.Add("null");
-            actual = TriggerData.GetParameterReturnTypes(function);
+            actual = TriggerData.GetParameterReturnTypes(function, null);
 
             for (int i = 0; i < expected.Count; i++)
             {
