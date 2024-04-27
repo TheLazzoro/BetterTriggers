@@ -8,6 +8,7 @@ using BetterTriggers.Utility;
 using Newtonsoft.Json;
 using System.IO;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using ICSharpCode.Decompiler.CSharp.Syntax;
 
 namespace BetterTriggers.Containers
 {
@@ -30,10 +31,18 @@ namespace BetterTriggers.Containers
                 directory = Path.GetDirectoryName(directory);
 
             string name = GenerateConditionDefName();
-
+            var returnStatement = new ReturnStatement_Saveable();
+            returnStatement.function.parameters.Add(new Value_Saveable()
+            {
+                value = "true"
+            });
             var conditionDef = new ConditionDefinition_Saveable()
             {
                 Id = GenerateId(),
+                Actions = new List<TriggerElement_Saveable>()
+                {
+                    returnStatement,
+                }
             };
             string json = JsonConvert.SerializeObject(conditionDef);
 

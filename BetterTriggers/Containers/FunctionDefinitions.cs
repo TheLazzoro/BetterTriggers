@@ -29,10 +29,18 @@ namespace BetterTriggers.Containers
                 directory = Path.GetDirectoryName(directory);
 
             string name = GenerateFunctionDefName();
-
+            var returnStatement = new ReturnStatement_Saveable();
+            returnStatement.function.parameters.Add(new Value_Saveable()
+            {
+                value = "0",
+            });
             var functionDef = new FunctionDefinition_Saveable()
             {
                 Id = GenerateId(),
+                Actions = new List<TriggerElement_Saveable>()
+                {
+                    returnStatement,
+                }
             };
             string json = JsonConvert.SerializeObject(functionDef);
 
