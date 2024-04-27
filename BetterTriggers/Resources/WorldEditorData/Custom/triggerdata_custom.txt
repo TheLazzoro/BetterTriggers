@@ -60,6 +60,11 @@ _DestroyGroup_DisplayName="Destroy Unit Group"
 _DestroyGroup_Parameters="Destroy ,~Unit Group,"
 _DestroyGroup_Category=TC_UNITGROUP
 
+ReturnStatement=2,Null
+_ReturnStatement_DisplayName="Return"
+_ReturnStatement_Parameters="Return ,~Value,"
+_ReturnStatement_Category=TC_NOTHING
+
 
 
 //***************************************************************************

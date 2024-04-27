@@ -65,7 +65,7 @@ namespace GUI.Utility
             }
             else
             {
-                returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
+                returnTypes = TriggerData.GetParameterReturnTypes(eca.function, _explorerElement);
                 paramText = TriggerData.GetParamText(eca.function);
                 generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
             }
@@ -99,12 +99,11 @@ namespace GUI.Utility
                 if (sb.Length > 0 && sb[sb.Length - 1] == ',')
                     sb.Remove(sb.Length - 1, 1); // Removes comma before param
 
-                if (parameters[paramIndex] is Function)
+                if (parameters[paramIndex] is Function function)
                 {
-                    var function = (Function)parameters[paramIndex];
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
-                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
                         sb.Append("(");
                         GenerateTreeItemText(sb, function.parameters, _returnTypes, TriggerData.GetParamText(function)); // recurse
                     }
@@ -113,12 +112,11 @@ namespace GUI.Utility
 
                     sb.Append(")");
                 }
-                else if (parameters[paramIndex] is Preset)
-                    sb.Append(TriggerData.GetParamDisplayName(parameters[paramIndex]));
+                else if (parameters[paramIndex] is Preset preset)
+                    sb.Append(TriggerData.GetParamDisplayName(preset));
 
-                else if (parameters[paramIndex] is VariableRef)
+                else if (parameters[paramIndex] is VariableRef variableRef)
                 {
-                    var variableRef = (VariableRef)parameters[paramIndex];
                     var variable = project.Variables.GetByReference(variableRef, _explorerElement);
                     string varName = string.Empty;
 
@@ -152,9 +150,8 @@ namespace GUI.Utility
                         GenerateTreeItemText(sb, variableRef.arrayIndexValues, _returnTypes, "[,~Number,][,~Number,]");
                     }
                 }
-                else if (parameters[paramIndex] is TriggerRef)
+                else if (parameters[paramIndex] is TriggerRef triggerRef)
                 {
-                    var triggerRef = (TriggerRef)parameters[paramIndex];
                     var trigger = project.Triggers.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
@@ -179,17 +176,9 @@ namespace GUI.Utility
 
                     sb.Append(name);
                 }
-                else if (parameters[paramIndex] is Value)
+                else if (parameters[paramIndex] is Value value)
                 {
-                    var value = (Value)parameters[paramIndex];
                     var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
-
-                    // This exists in case a variable has been changed
-                    //if (name == null || name == "")
-                    //{
-                    //    parameters[paramIndex] = new Parameter();
-                    //    name = "null";
-                    //}
                     sb.Append(name);
                 }
                 else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.
@@ -272,7 +261,7 @@ namespace GUI.Utility
             }
             else
             {
-                returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
+                returnTypes = TriggerData.GetParameterReturnTypes(eca.function, explorerElement);
                 string paramText = TriggerData.GetParamText(eca.function);
                 generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
             }
@@ -327,12 +316,11 @@ namespace GUI.Utility
 
 
 
-                if (parameters[paramIndex] is Function)
+                if (parameters[paramIndex] is Function function)
                 {
-                    var function = (Function)parameters[paramIndex];
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
-                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
                         if (settings.triggerEditorMode == 0)
                             inlines.Add(AddHyperlink("(", parameters, paramIndex, returnTypes[paramIndex]));
                         else
@@ -353,13 +341,12 @@ namespace GUI.Utility
                     run.FontSize = TriggerEditorFont.GetParameterFontSize();
                     inlines.Add(run);
                 }
-                else if (parameters[paramIndex] is Preset)
+                else if (parameters[paramIndex] is Preset preset)
                 {
-                    inlines.Add(AddHyperlink(TriggerData.GetParamDisplayName(parameters[paramIndex]), parameters, paramIndex, returnTypes[paramIndex]));
+                    inlines.Add(AddHyperlink(TriggerData.GetParamDisplayName(preset), parameters, paramIndex, returnTypes[paramIndex]));
                 }
-                else if (parameters[paramIndex] is VariableRef)
+                else if (parameters[paramIndex] is VariableRef variableRef)
                 {
-                    var variableRef = (VariableRef)parameters[paramIndex];
                     var variable = project.Variables.GetByReference(variableRef, _explorerElement);
                     string varName = string.Empty;
 
@@ -386,9 +373,8 @@ namespace GUI.Utility
                     else if (variable != null && variable.IsArray && variable.IsTwoDimensions)
                         inlines.AddRange(RecurseGenerateParamText("[,~Number,][,~Number,]", variableRef.arrayIndexValues, _returnTypes));
                 }
-                else if (parameters[paramIndex] is TriggerRef)
+                else if (parameters[paramIndex] is TriggerRef triggerRef)
                 {
-                    var triggerRef = (TriggerRef)parameters[paramIndex];
                     var trigger = project.Triggers.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
@@ -413,17 +399,9 @@ namespace GUI.Utility
 
                     inlines.Add(AddHyperlink(name, parameters, paramIndex, returnTypes[paramIndex]));
                 }
-                else if (parameters[paramIndex] is Value)
+                else if (parameters[paramIndex] is Value value)
                 {
-                    var value = (Value)parameters[paramIndex];
                     var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
-
-                    // This exists in case a variable has been changed
-                    //if (name == null || name == "")
-                    //{
-                    //    parameters[paramIndex] = new Parameter();
-                    //    name = "null";
-                    //}
                     inlines.Add(AddHyperlink(name, parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.

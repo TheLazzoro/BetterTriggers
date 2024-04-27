@@ -56,7 +56,7 @@ namespace GUI
                 if (parameter == function.parameters[0])
                     returnType = "AnyGlobal";
                 else if (parameter == function.parameters[1])
-                    returnType = Project.CurrentProject.Variables.GetById(variableRef.VariableId).Type;
+                    returnType = Project.CurrentProject.Variables.GetById(variableRef.VariableId, explorerElement).Type;
             }
 
             this.functionControl = new ParameterFunctionControl(returnType);

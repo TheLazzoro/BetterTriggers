@@ -98,7 +98,7 @@ namespace BetterTriggers.Utility
                     invalid.SetParent(triggerElement, i);
                     removeCount += 1;
                 }
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function, _explorerElement);
                 int invalidCount = VerifyParametersAndRemove(eca.function.parameters, returnTypes);
                 eca.HasErrors = invalidCount > 0;
                 removeCount += invalidCount;
@@ -251,7 +251,7 @@ namespace BetterTriggers.Utility
                         removeCount++;
                     }
 
-                    List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
+                    List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
                     removeCount += VerifyParametersAndRemove(function.parameters, _returnTypes);
                 }
                 else if (parameter is Preset preset)

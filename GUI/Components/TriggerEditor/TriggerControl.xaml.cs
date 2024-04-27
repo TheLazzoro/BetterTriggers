@@ -171,19 +171,28 @@ namespace GUI.Components
         private void IncludeLocalsInParameterMenu(TriggerElement triggerElement)
         {
             bool isActionOrConditionalInAction = false;
-            while (triggerElement != null && explorerElement.trigger != null)
+            TriggerElementCollection actions = null;
+            switch (explorerElementType)
             {
-                if (triggerElement == explorerElement.trigger.Actions)
-                {
-                    isActionOrConditionalInAction = true;
+                case ExplorerElementEnum.Trigger:
+                    actions = explorerElement.trigger.Actions;
                     break;
-                }
-
-                triggerElement = triggerElement.GetParent();
+                case ExplorerElementEnum.ActionDefinition:
+                    actions = explorerElement.actionDefinition.Actions;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    actions = explorerElement.conditionDefinition.Actions;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    actions = explorerElement.functionDefinition.Actions;
+                    break;
+                default:
+                    return;
             }
-            while (triggerElement != null && explorerElement.actionDefinition != null)
+            
+            while (triggerElement != null)
             {
-                if (triggerElement == explorerElement.actionDefinition.Actions)
+                if (triggerElement == actions)
                 {
                     isActionOrConditionalInAction = true;
                     break;

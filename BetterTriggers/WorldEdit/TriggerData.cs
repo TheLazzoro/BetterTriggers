@@ -492,13 +492,13 @@ namespace BetterTriggers.WorldEdit
 
             PresetTemplate constant;
             ConstantTemplates.TryGetValue(value, out constant);
-            if(constant != null)
+            if (constant != null)
                 return constant.returnType;
 
             return "nothing"; // hack?
         }
 
-        public static List<string> GetParameterReturnTypes(Function f)
+        public static List<string> GetParameterReturnTypes(Function f, ExplorerElement ex)
         {
             List<string> list = new List<string>();
 
@@ -507,7 +507,7 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < actionDefs.Count(); i++)
             {
                 var actionDef = actionDefs[i];
-                if(actionDef.GetName() == f.value)
+                if (actionDef.GetName() == f.value)
                 {
                     actionDef.actionDefinition.Parameters.Elements.ForEach(el =>
                     {
@@ -537,7 +537,7 @@ namespace BetterTriggers.WorldEdit
                 VariableRef varRef = f.parameters[0] as VariableRef;
                 if (varRef != null)
                 {
-                    Variable variable = Project.CurrentProject.Variables.GetByReference(f.parameters[0] as VariableRef);
+                    Variable variable = Project.CurrentProject.Variables.GetByReference(f.parameters[0] as VariableRef, ex);
                     if (variable != null)
                     {
                         list.Add(variable.Type);
@@ -555,6 +555,20 @@ namespace BetterTriggers.WorldEdit
                     list.Add("null");
                     list.Add("null");
                     return list;
+                }
+            }
+            else if (f.value == "ReturnStatement" && ex != null)
+            {
+                switch (ex.ElementType)
+                {
+                    case ExplorerElementEnum.ConditionDefinition:
+                        list.Add("boolean");
+                        return list;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        list.Add(ex.functionDefinition.ReturnType.War3Type.Type);
+                        return list;
+                    default:
+                        break;
                 }
             }
 
@@ -787,15 +801,20 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static List<FunctionTemplate> LoadAllActions()
+        public static List<FunctionTemplate> LoadAllActions(ExplorerElementEnum type)
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
             var enumerator = TriggerData.ActionTemplates.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 var template = enumerator.Current.Value;
-                if (template.value != "InvalidECA")
-                    list.Add(template.Clone());
+                if (type == ExplorerElementEnum.Trigger && template.value == "ReturnStatement")
+                    continue;
+
+                if (template.value == "InvalidECA")
+                    continue;
+
+                list.Add(template.Clone());
             }
             var actionDefs = Project.CurrentProject.ActionDefinitions.GetAll();
             foreach (var actionDef in actionDefs)
@@ -852,7 +871,7 @@ namespace BetterTriggers.WorldEdit
             TriggerData.ParamCodeText.TryGetValue(function.value, out paramText);
             if (paramText == null)
             {
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function, null);
                 paramText = function.value + "(";
                 for (int i = 0; i < function.parameters.Count; i++)
                 {

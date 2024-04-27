@@ -310,7 +310,7 @@ end
                     continue;
                 }
 
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function, currentExplorerElement);
                 for (int j = 0; j < parameters.Count; j++)
                 {
                     if (parameters[j] is Value)
@@ -2024,7 +2024,7 @@ end
 
             StringBuilder script = new StringBuilder();
             Function f = t.function;
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
 
 
             if (t is ForLoopAMultiple || t is ForLoopBMultiple)
@@ -2465,7 +2465,7 @@ end
                 return "";
 
 
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
 
             // ------------------------- //
             // --- SPECIALLY HANDLED --- //
@@ -2638,7 +2638,7 @@ end
                 f = f.Clone();
                 FunctionTemplate template;
                 TriggerData.FunctionsAll.TryGetValue(f.value, out template);
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
                 if (template != null && template.scriptName != null)
                     f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.
 

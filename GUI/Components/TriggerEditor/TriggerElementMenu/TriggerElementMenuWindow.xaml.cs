@@ -75,7 +75,7 @@ namespace GUI.Components.TriggerEditor
             }
             else if (triggerElementType == TriggerElementType.Action)
             {
-                templates = TriggerData.LoadAllActions();
+                templates = TriggerData.LoadAllActions(explorerElement.ElementType);
             }
 
             List<Searchable> objects = new List<Searchable>();
