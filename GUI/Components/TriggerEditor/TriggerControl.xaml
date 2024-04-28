@@ -5,74 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI"
              mc:Ignorable="d" Background="{DynamicResource BackgroundPanel}">
-    <UserControl.Resources>
-        <!-- Background -->
-        <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
-            <StackPanel Margin="-2,0,0,0" Background="{DynamicResource BackgroundMenu}"/>
-        </ItemsPanelTemplate>
-
-        <!-- Item customization -->
-        <ControlTemplate x:Key="MyMenuItemTemplateKey" TargetType="MenuItem">
-            <Grid Name="Border" Height="25">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="32" SharedSizeGroup="Icon"/>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut"/>
-                    <ColumnDefinition Width="13"/>
-                </Grid.ColumnDefinitions>
-
-                <ContentPresenter Name="HeaderHost" Grid.Column="1" ContentSource="Header" Margin="5,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True"/>
-                <TextBlock x:Name="InputGestureText" Grid.Column="2" Text="{TemplateBinding InputGestureText}" Margin="10,2,2,2" VerticalAlignment="Center" DockPanel.Dock="Right" />
-                <Border Name="BorderChecked" Grid.Column="3" CornerRadius="2" Background="Transparent" Margin="5,2,5,2"/>
-                <Border Name="BorderDisable" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsHighlighted" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="#880088FF"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter TargetName="Border" Property="Background" Value="#880088FF"/>
-                    <Setter TargetName="BorderDisable" Property="Background" Value="Green"/>
-                    <Setter TargetName="BorderChecked" Property="Background" Value="#00FF00"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter TargetName="BorderDisable" Property="Background" Value="#3FFFFFFF"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property="Foreground" Value="Black"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-
-        <!-- Extra styles -->
-        <Style x:Key="MyMenuItemStyle" TargetType="MenuItem">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Style.Triggers>
-                <Trigger Property="Role" Value="TopLevelItem">
-                    <Setter Property="Template" Value="{StaticResource MyMenuItemTemplateKey}"/>
-                </Trigger>
-
-                <Trigger Property="Role" Value="SubmenuItem">
-                    <Setter Property="Template" Value="{StaticResource MyMenuItemTemplateKey}"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Foreground" Value="#66CC66"/>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="{x:Type ContextMenu}">
-            <Setter Property="SnapsToDevicePixels"
-          Value="True" />
-            <Setter Property="HasDropShadow"
-          Value="True" />
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
-        </Style>
-    </UserControl.Resources>
-
 
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
@@ -90,11 +22,6 @@
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button Content="{Binding}" Margin="0,0,5,5" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
 
             <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" Margin="10,0,0,0" Click="checkBoxIsEnabled_Click" />
             <CheckBox x:Name="checkBoxIsInitiallyOn" Content="Initially On" Margin="10,0,0,0" Click="checkBoxIsInitiallyOn_Click"/>
@@ -150,7 +77,7 @@
             </TreeView.ItemContainerStyle>
 
             <TreeView.ContextMenu>
-                <ContextMenu Name="contextMenu" Background="{DynamicResource BackgroundDark}" Foreground="{DynamicResource TextBrush2}">
+                <ContextMenu Name="contextMenu">
                     <MenuItem x:Name="menuCut" Header="Cut" Click="menuCut_Click"></MenuItem>
                     <MenuItem x:Name="menuCopy" Header="Copy" Click="menuCopy_Click"></MenuItem>
                     <MenuItem  x:Name="menuCopyAsText" Header="Copy As Text" Click="menuCopyAsText_Click"></MenuItem>
@@ -180,7 +107,6 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator Background="{DynamicResource SeparatorBrush}"></Separator>
-                    <!--<MenuItem Header="Enable Function" IsCheckable="True" Style="{StaticResource MyMenuItemStyle}"/>-->
                     <MenuItem x:Name="menuFunctionEnabled" Header="Enable Function" IsCheckable="True" Click="menuFunctionEnabled_Click"/>
                 </ContextMenu>
             </TreeView.ContextMenu>

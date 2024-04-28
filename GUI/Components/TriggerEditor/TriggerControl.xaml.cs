@@ -137,7 +137,7 @@ namespace GUI.Components
                 this.selectedItems = SelectItemsMultiple(null, null);
                 return;
             }
-            
+
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 selectedElementEnd = (TriggerElement)treeViewTriggers.SelectedItem;
             else
@@ -189,7 +189,7 @@ namespace GUI.Components
                 default:
                     return;
             }
-            
+
             while (triggerElement != null)
             {
                 if (triggerElement == actions)
@@ -464,7 +464,7 @@ namespace GUI.Components
         {
             _IsDragging = true;
             var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
-            if(triggerElement is InvalidECA)
+            if (triggerElement is InvalidECA)
             {
                 return;
             }
@@ -827,7 +827,7 @@ namespace GUI.Components
                     if (refs.Count > 0)
                         localsInUse.Add(localVar);
                 }
-                else if(paramDef != null)
+                else if (paramDef != null)
                 {
                     List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(paramDef);
                     if (refs.Count > 0)
@@ -1028,7 +1028,6 @@ namespace GUI.Components
                 return;
 
             rightClickedElement.IsSelected = true;
-            rightClickedElement.ContextMenu = contextMenu;
             var triggerElement = GetTriggerElementFromItem(rightClickedElement);
 
             if (triggerElement is TriggerElementCollection collection)
@@ -1052,6 +1051,10 @@ namespace GUI.Components
                     menuFunctionEnabled.IsChecked = eca.IsEnabled;
                 }
             }
+
+            contextMenu.IsOpen = true;
+
+            e.Handled = true;
         }
 
         private void ContextMenuDisableNodeTypes(TriggerElement node)
@@ -1132,7 +1135,7 @@ namespace GUI.Components
             if (selectedElementEnd == null || triggerElement is not LocalVariable)
                 return;
 
-            triggerElement.RenameBoxVisibility = Visibility.Visible;
+            ShowRenameBox();
         }
 
         private void menuEvent_Click(object sender, RoutedEventArgs e)
@@ -1242,7 +1245,7 @@ namespace GUI.Components
             }
             else if (e.Key == Key.F2)
             {
-                selectedElementEnd.RenameBoxVisibility = Visibility.Visible;
+                ShowRenameBox();
             }
             else if (e.Key == Key.Escape)
             {
@@ -1287,9 +1290,18 @@ namespace GUI.Components
             e.Handled = true;
         }
 
-        public void OnRemoteChange()
+        private void ShowRenameBox()
         {
-            Refresh();
+            if(selectedElementEnd == null) return;
+
+            if (selectedElementEnd is LocalVariable || selectedElementEnd is ParameterDefinition)
+            {
+                selectedElementEnd.RenameBoxVisibility = Visibility.Visible;
+                var treeItem = GetTreeViewItemFromTriggerElement(selectedElementEnd);
+                var textBox = TreeViewItemHelper.FindChild<TextBox>(treeItem, "renameBox");
+                textBox.Focus();
+                textBox.SelectAll();
+            }
         }
 
         private void treeViewTriggers_ContextMenuOpening(object sender, ContextMenuEventArgs e)

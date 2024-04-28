@@ -137,9 +137,16 @@ namespace GUI.Components
         private void SetSelectedRenameBoxVisible(bool isVisible)
         {
             var selected = GetSelectedExplorerElement();
+            if (selected == null) return;
+            if (selected == Project.CurrentProject.GetRoot()) return;
+
             if (isVisible)
             {
                 selected.RenameBoxVisibility = Visibility.Visible;
+                var treeItem = GetTreeItemFromExplorerElement(selected);
+                var textBox = TreeViewItemHelper.FindChild<TextBox>(treeItem, "renameBox");
+                textBox.Focus();
+                textBox.SelectAll();
             }
             else
                 selected.RenameBoxVisibility = Visibility.Hidden;
@@ -439,7 +446,6 @@ namespace GUI.Components
 
             currentElement = rightClickedElement;
             rightClickedElement.IsSelected = true;
-            rightClickedElement.ContextMenu = contextMenu;
 
             OpenContextMenu(explorerElement, e);
         }

@@ -543,7 +543,7 @@
 
         <TabControl x:Name="tabControl" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" BorderThickness="0" Padding="0" SelectionChanged="tabControl_SelectionChanged" ContextMenuOpening="tabControl_ContextMenuOpening" >
             <TabControl.ContextMenu>
-                <ContextMenu x:Name="contextMenu" Foreground="{DynamicResource TextBrush2}" BorderBrush="#0000" Background="{DynamicResource BackgroundDark}">
+                <ContextMenu x:Name="contextMenu">
                     <MenuItem x:Name="tabitem_Menu_Close" Header="Close" Click="tabitem_Menu_Close_Click" />
                     <MenuItem x:Name="tabitem_Menu_CloseAll" Header="Close All" Click="tabitem_Menu_CloseAll_Click" />
                     <Separator Margin="0,5,0,4" />
@@ -623,75 +623,7 @@
                     </Setter>
                 </Style>
 
-
-
-                <!-- Background -->
-                <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
-                    <StackPanel Margin="-2,0,0,0" Background="{DynamicResource BackgroundPanel}"/>
-                </ItemsPanelTemplate>
-
-                <!-- Menu Item customization -->
-                <ControlTemplate x:Key="MyMenuItemTemplateKey" TargetType="MenuItem">
-                    <Grid Name="Border" Height="25">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="32" SharedSizeGroup="Icon"/>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut"/>
-                            <ColumnDefinition Width="13"/>
-                        </Grid.ColumnDefinitions>
-
-                        <ContentPresenter Name="HeaderHost" Grid.Column="1" ContentSource="Header" Margin="5,0,0,0" VerticalAlignment="Center" RecognizesAccessKey="True"/>
-                        <TextBlock x:Name="InputGestureText" Grid.Column="2" Text="{TemplateBinding InputGestureText}" Margin="10,2,2,2" VerticalAlignment="Center" DockPanel.Dock="Right" />
-                        <Border Name="BorderChecked" Grid.Column="3" CornerRadius="2" Background="Transparent" Margin="5,2,5,2"/>
-                        <Border Name="BorderDisable" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Transparent"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsHighlighted" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="#880088FF"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#880088FF"/>
-                            <Setter TargetName="BorderDisable" Property="Background" Value="Green"/>
-                            <Setter TargetName="BorderChecked" Property="Background" Value="#00FF00"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="BorderDisable" Property="Background" Value="#3FFFFFFF"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="True">
-                            <Setter Property="Foreground" Value="Black"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-
-                <!-- Extra styles -->
-                <Style x:Key="MyMenuItemStyle" TargetType="MenuItem">
-                    <Setter Property="OverridesDefaultStyle" Value="True"/>
-                    <Style.Triggers>
-                        <Trigger Property="Role" Value="TopLevelItem">
-                            <Setter Property="Template" Value="{StaticResource MyMenuItemTemplateKey}"/>
-                        </Trigger>
-
-                        <Trigger Property="Role" Value="SubmenuItem">
-                            <Setter Property="Template" Value="{StaticResource MyMenuItemTemplateKey}"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Foreground" Value="#66CC66"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="False">
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-                <Style TargetType="{x:Type ContextMenu}">
-                    <Setter Property="SnapsToDevicePixels"
-          Value="True" />
-                    <Setter Property="HasDropShadow"
-          Value="True" />
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
-                </Style>
             </TabControl.Resources>
-
         </TabControl>
 
     </Grid>
