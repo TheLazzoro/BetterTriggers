@@ -56,6 +56,14 @@ namespace BetterTriggers.JsonBaseConverter
                         return new EnumDestructiblesInCircleBJMultiple_Saveable();
                     case 12:
                         return new EnumItemsInRectBJ_Saveable();
+                    case 13:
+                        return new ActionDefinitionRef_Saveable();
+                    case 14:
+                        return new ConditionDefinitionRef_Saveable();
+                    case 15:
+                        return new FunctionDefinitionRef_Saveable();
+                    case 16:
+                        return new ReturnStatement_Saveable();
                     default:
                         return new ECA_Saveable();
                 }

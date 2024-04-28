@@ -38,7 +38,6 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             paramCollection[paramIndex] = paramToAdd;
-            Project.CurrentProject.References.UpdateReferences(explorerElement);
 
             // Special case
             if (eca is SetVariable)
@@ -51,8 +50,8 @@ namespace BetterTriggers.Commands
                 {
                     var setVarParamRef = setVarParam as VariableRef;
                     var setVarParamRefOld = oldParameter as VariableRef;
-                    var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef);
-                    var oldVar = Project.CurrentProject.Variables.GetByReference(setVarParamRefOld);
+                    var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef, explorerElement);
+                    var oldVar = Project.CurrentProject.Variables.GetByReference(setVarParamRefOld, explorerElement);
                     if (!Types.AreTypesEqual(newVar.Type, oldVar.Type))
                     {
                         doResetValue = true;
@@ -68,7 +67,7 @@ namespace BetterTriggers.Commands
                 else if (paramCollection[paramIndex] == setVarParam && setVarParam is VariableRef && oldParameter is not VariableRef)
                 {
                     var setVarParamRef = setVarParam as VariableRef;
-                    var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef);
+                    var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef, explorerElement);
                     var valueReturnType = TriggerData.GetReturnType(value.value);
                     if (valueReturnType != newVar.Type)
                     {
@@ -87,6 +86,7 @@ namespace BetterTriggers.Commands
                 }
             }
 
+            Project.CurrentProject.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }

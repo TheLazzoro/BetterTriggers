@@ -1,4 +1,6 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Utility;
 using System;
 using System.Collections.Generic;
@@ -50,7 +52,46 @@ namespace BetterTriggers.Models.Templates
 
         public ECA ToECA()
         {
-            ECA eca = TriggerElementFactory.Create(value);
+            var project = Project.CurrentProject;
+
+            ECA eca;
+            if (project.ActionDefinitions.Contains(name))
+            {
+                var definition = project.ActionDefinitions.GetByKey(name);
+                ActionDefinitionRef reference = new();
+                reference.ActionDefinitionId = definition.Id;
+                definition.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    parameters.Add(new ParameterTemplate
+                    {
+                        returnType = paramDef.ReturnType.Type
+                    });
+                });
+
+                eca = reference;
+            }
+            else if (project.ConditionDefinitions.Contains(name))
+            {
+                var definition = project.ConditionDefinitions.GetByKey(name);
+                ConditionDefinitionRef reference = new();
+                reference.ConditionDefinitionId = definition.Id;
+                definition.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    parameters.Add(new ParameterTemplate
+                    {
+                        returnType = paramDef.ReturnType.Type
+                    });
+                });
+
+                eca = reference;
+            }
+            else
+            {
+                eca = TriggerElementFactory.Create(value);
+            }
+
             eca.function = ToParameter();
             eca.ElementType = ElementType;
             return eca;

@@ -37,6 +37,8 @@ namespace BetterTriggers.Utility
                     return new EnumDestructiblesInCircleBJMultiple();
                 case "EnumItemsInRectBJMultiple":
                     return new EnumItemsInRectBJ();
+                case "ReturnStatement":
+                    return new ReturnStatement();
                 default:
                     return new ECA(name);
             }

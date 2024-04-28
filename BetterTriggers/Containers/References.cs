@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
+using Cake.Common.Build.AppVeyor;
 
 namespace BetterTriggers.Containers
 {
@@ -77,30 +79,62 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Updates a trigger with all variable and trigger refs.
         /// </summary>
-        internal void UpdateReferences(ExplorerElement t)
+        internal void UpdateReferences(ExplorerElement ex)
         {
             List<ExplorerElement> explorerElementVariables = new List<ExplorerElement>();
 
-            RemoveReferrer(t);
+            RemoveReferrer(ex);
 
-            var parameters = Triggers.GetParametersFromTrigger(t);
             var variables = Project.CurrentProject.Variables;
             var triggers = Project.CurrentProject.Triggers;
+            var functionDefinitions = Project.CurrentProject.FunctionDefinitions;
+            var actionDefinitions = Project.CurrentProject.ActionDefinitions;
+            var conditionDefinitions = Project.CurrentProject.ConditionDefinitions;
+
+            var parameters = Parameter.GetParametersFromExplorerElement(ex);
             parameters.ForEach(p =>
             {
-                if (p is VariableRef)
+                if (p is VariableRef varRef)
                 {
-                    VariableRef varRef = (VariableRef)p;
                     Variable element = variables.GetVariableById_AllLocals(varRef.VariableId);
                     if (element != null)
-                        AddReferrer(t, element);
+                        AddReferrer(ex, element);
                 }
-                else if (p is TriggerRef)
+                else if (p is TriggerRef tRef)
                 {
-                    TriggerRef tRef = (TriggerRef)p;
                     ExplorerElement element = triggers.GetById(tRef.TriggerId);
                     if(element != null)
-                        AddReferrer(t, element.trigger);
+                        AddReferrer(ex, element.trigger);
+                }
+                else if(p is FunctionDefinitionRef functionDefRef)
+                {
+                    ExplorerElement element = functionDefinitions.FindById(functionDefRef.FunctionDefinitionId);
+                    if (element != null)
+                        AddReferrer(ex, element.functionDefinition);
+                }
+                else if (p is ParameterDefinitionRef paramDefRef)
+                {
+                    var paramCollection = ex.GetParameterCollection();
+                    var element = paramCollection.GetByReference(paramDefRef);
+                    if (element != null)
+                        AddReferrer(ex, element);
+                }
+            });
+
+            var triggerElements = Project.CurrentProject.GetTriggerElementsFromExplorerElement(ex);
+            triggerElements.ForEach(t =>
+            {
+                if(t is ActionDefinitionRef actionDefRef)
+                {
+                    ExplorerElement element = actionDefinitions.FindById(actionDefRef.ActionDefinitionId);
+                    if (element != null)
+                        AddReferrer(ex, element.actionDefinition);
+                }
+                else if (t is ConditionDefinitionRef conditionDefRef)
+                {
+                    ExplorerElement element = conditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
+                    if (element != null)
+                        AddReferrer(ex, element.conditionDefinition);
                 }
             });
         }
@@ -114,7 +148,7 @@ namespace BetterTriggers.Containers
             var triggers = Project.CurrentProject.Triggers.GetAll();
             triggers.ForEach(exTrig =>
             {
-                var parameters = Triggers.GetParametersFromTrigger(exTrig);
+                var parameters = Parameter.GetParametersFromExplorerElement(exTrig);
                 parameters.ForEach(p =>
                 {
                     if (p is VariableRef varRef)
@@ -127,10 +161,58 @@ namespace BetterTriggers.Containers
 
         }
 
+        /// <summary>
+        /// Refreshes references for a given <see cref="FunctionDefinition"/>.
+        /// </summary>
+        internal void UpdateReferences(FunctionDefinition functionDef)
+        {
+            HashSet<ExplorerElement> empty = new HashSet<ExplorerElement>();
+            fromReference.Remove(functionDef);
+            fromReference.Add(functionDef, empty);
+
+            var elements = Project.CurrentProject.GetAllExplorerElements();
+            elements.ForEach(ex =>
+            {
+                var parameters = Parameter.GetParametersFromExplorerElement(ex);
+                parameters.ForEach(p =>
+                {
+                    if (p is FunctionDefinitionRef funcRef)
+                    {
+                        if (funcRef.FunctionDefinitionId == functionDef.Id)
+                            AddReferrer(ex, functionDef);
+                    }
+                });
+            });
+        }
+
+        /// <summary>
+        /// Refreshes references for a given <see cref="ParameterDefinition"/>.
+        /// </summary>
+        internal void UpdateReferences(ParameterDefinition parameterDef)
+        {
+            HashSet<ExplorerElement> empty = new HashSet<ExplorerElement>();
+            fromReference.Remove(parameterDef);
+            fromReference.Add(parameterDef, empty);
+
+            var elements = Project.CurrentProject.GetAllExplorerElements();
+            elements.ForEach(ex =>
+            {
+                var parameters = Parameter.GetParametersFromExplorerElement(ex);
+                parameters.ForEach(p =>
+                {
+                    if (p is ParameterDefinitionRef paramDefRef)
+                    {
+                        if (paramDefRef.ParameterDefinitionId == parameterDef.Id)
+                            AddReferrer(ex, parameterDef);
+                    }
+                });
+            });
+        }
+
         internal void UpdateReferencesAll()
         {
-            var triggers = Project.CurrentProject.Triggers.GetAll();
-            triggers.ForEach(trigger => UpdateReferences(trigger));
+            var explorerElements = Project.CurrentProject.GetAllExplorerElements();
+            explorerElements.ForEach(ex => UpdateReferences(ex));
         }
     }
 }

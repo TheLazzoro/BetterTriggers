@@ -47,8 +47,15 @@ namespace BetterTriggers.Commands
                 this.pastedIndex = pastedIndex - listToPaste.Count();
             }
 
-            for (int i = 0; i < listToPaste.Count(); i++) {
-                listToPaste.Elements[i].SetParent(pasteParent, pastedIndex + i);
+            for (int i = 0; i < listToPaste.Count(); i++)
+            {
+                var toPaste = listToPaste.Elements[i];
+                toPaste.SetParent(pasteParent, pastedIndex + i);
+                if (toPaste is ParameterDefinition paramDef)
+                {
+                    var paramParent = (ParameterDefinitionCollection)pasteParent;
+                    paramDef.Name = paramParent.GenerateParameterDefName();
+                }
             }
 
             Project.CurrentProject.References.UpdateReferences(from);

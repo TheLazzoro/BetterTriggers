@@ -258,7 +258,7 @@ namespace BetterTriggers.WorldEdit
                     {
                         if (trigger.ElementType == ExplorerElementEnum.Trigger)
                         {
-                            var functions = Triggers.GetFunctionsFromTrigger(trigger);
+                            var functions = Function.GetFunctionsFromTrigger(trigger);
                             foreach (var function in functions)
                             {
                                 foreach (var parameter in function.parameters)

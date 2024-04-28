@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,6 +55,9 @@ namespace BetterTriggers.Models.EditorData
         public Trigger trigger;
         public Variable variable;
         public string script;
+        public ActionDefinition actionDefinition;
+        public ConditionDefinition conditionDefinition;
+        public FunctionDefinition functionDefinition;
 
         public UserControl editor;
 
@@ -76,14 +80,12 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement(string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
         {
             this.path = path;
-            bool isReadyForRead = false;
-            int sleepTolerance = 100;
-            string json = string.Empty;
+            string fileContent;
 
             if (Directory.Exists(path))
             {
                 ElementType = ExplorerElementEnum.Folder;
-                SetCategory(TriggerCategory.TC_DIRECTORY);
+                CategoryStr = TriggerCategory.TC_DIRECTORY;
             }
             else if (File.Exists(path))
             {
@@ -92,66 +94,66 @@ namespace BetterTriggers.Models.EditorData
                 {
                     case ".trg":
                         ElementType = ExplorerElementEnum.Trigger;
-                        SetCategory(TriggerCategory.TC_TRIGGER_NEW);
-                        while (!isReadyForRead)
-                        {
-                            try
-                            {
-                                json = File.ReadAllText(path);
-                                isReadyForRead = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                if (sleepTolerance < 0)
-                                    throw new Exception(ex.Message);
-
-                                Thread.Sleep(100);
-                                sleepTolerance--;
-                            }
-                        }
-                        var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(json);
+                        CategoryStr = TriggerCategory.TC_TRIGGER_NEW;
+                        fileContent = ReadFile(path);
+                        var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(fileContent);
                         trigger = TriggerSerializer.Deserialize(savedTrigger);
                         StoreLocalVariables();
                         Project.CurrentProject.Triggers.AddTrigger(this);
-
                         break;
+
                     case ".j":
                     case ".lua":
                         ElementType = ExplorerElementEnum.Script;
-                        SetCategory(TriggerCategory.TC_SCRIPT);
+                        CategoryStr = TriggerCategory.TC_SCRIPT;
                         this.script = Project.CurrentProject.Scripts.LoadFromFile(path);
                         Project.CurrentProject.Scripts.AddScript(this);
                         break;
+
                     case ".var":
                         ElementType = ExplorerElementEnum.GlobalVariable;
-                        SetCategory(TriggerCategory.TC_SETVARIABLE);
-                        while (!isReadyForRead)
-                        {
-                            try
-                            {
-                                json = File.ReadAllText(path);
-                                isReadyForRead = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                if (sleepTolerance < 0)
-                                    throw new Exception(ex.Message);
-
-                                Thread.Sleep(100);
-                                sleepTolerance--;
-                            }
-                        }
-
-                        var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(json);
+                        CategoryStr = TriggerCategory.TC_SETVARIABLE;
+                        fileContent = ReadFile(path);
+                        var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(fileContent);
                         variable = TriggerSerializer.DeserializeVariable(savedVariable);
-                        variable.PropertyChanged += AddToUnsaved;
-                        UpdateMetadata();
+                        variable.PropertyChanged += Variable_PropertyChanged; ;
                         Project.CurrentProject.Variables.AddVariable(this);
-
                         variable.Name = Path.GetFileNameWithoutExtension(GetPath());
                         break;
+
+                    case ".act":
+                        ElementType = ExplorerElementEnum.ActionDefinition;
+                        CategoryStr = TriggerCategory.TC_ACTION_DEF;
+                        fileContent = ReadFile(path);
+                        var savedActionDef = JsonConvert.DeserializeObject<ActionDefinition_Saveable>(fileContent);
+                        actionDefinition = TriggerSerializer.DeserializeActionDefinition(this, savedActionDef);
+                        StoreLocalVariables();
+                        Project.CurrentProject.ActionDefinitions.Add(this);
+                        break;
+
+                    case ".cond":
+                        ElementType = ExplorerElementEnum.ConditionDefinition;
+                        CategoryStr = TriggerCategory.TC_CONDITION_DEF;
+                        fileContent = ReadFile(path);
+                        var savedConditionDef = JsonConvert.DeserializeObject<ConditionDefinition_Saveable>(fileContent);
+                        conditionDefinition = TriggerSerializer.DeserializeConditionDefinition(this, savedConditionDef);
+                        StoreLocalVariables();
+                        Project.CurrentProject.ConditionDefinitions.Add(this);
+                        break;
+
+                    case ".func":
+                        ElementType = ExplorerElementEnum.FunctionDefinition;
+                        CategoryStr = TriggerCategory.TC_FUNCTION_DEF;
+                        fileContent = ReadFile(path);
+                        var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
+                        functionDefinition = TriggerSerializer.DeserializeFunctionDefinition(savedFunctionDef);
+                        StoreLocalVariables();
+                        Project.CurrentProject.FunctionDefinitions.Add(this);
+                        break;
+
                     default:
                         ElementType = ExplorerElementEnum.None;
+                        CategoryStr = TriggerCategory.TC_UNKNOWN;
                         break;
                 }
             }
@@ -161,11 +163,41 @@ namespace BetterTriggers.Models.EditorData
                 var project = Project.CurrentProject;
                 DisplayText = Path.GetFileNameWithoutExtension(project.war3project.Name);
                 ElementType = ExplorerElementEnum.Root;
-                SetCategory(TriggerCategory.TC_MAP);
+                CategoryStr = TriggerCategory.TC_MAP;
             }
 
 
             UpdateMetadata();
+        }
+
+        private void Variable_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            AddToUnsaved();
+        }
+
+        private string ReadFile(string path)
+        {
+            string content = string.Empty;
+            bool isReadyForRead = false;
+            int sleepTolerance = 100;
+            while (!isReadyForRead)
+            {
+                try
+                {
+                    content = File.ReadAllText(path);
+                    isReadyForRead = true;
+                }
+                catch (Exception ex)
+                {
+                    if (sleepTolerance < 0)
+                        throw new Exception(ex.Message);
+
+                    Thread.Sleep(100);
+                    sleepTolerance--;
+                }
+            }
+
+            return content;
         }
 
         public string GetName()
@@ -248,10 +280,7 @@ namespace BetterTriggers.Models.EditorData
 
                 Parent = parent;
                 parent.GetExplorerElements().Insert(insertIndex, this);
-                if (ElementType == ExplorerElementEnum.Trigger)
-                {
-                    StoreLocalVariables();
-                }
+                StoreLocalVariables();
             });
         }
 
@@ -261,10 +290,7 @@ namespace BetterTriggers.Models.EditorData
             {
                 Parent.GetExplorerElements().Remove(this);
                 Parent = null;
-                if (ElementType == ExplorerElementEnum.Trigger)
-                {
-                    RemoveLocalVariables();
-                }
+                RemoveLocalVariables();
             });
         }
 
@@ -301,6 +327,63 @@ namespace BetterTriggers.Models.EditorData
             }
 
             return ExplorerElements;
+        }
+
+        /// <summary>
+        /// Gets the collection of local variables from the <see cref="ExplorerElement"/>.
+        /// The collection is either attached to a <see cref="Trigger"/>, <see cref="ActionDefinition"/>,
+        /// <see cref="ConditionDefinition"/>, or <see cref="FunctionDefinition"/>.
+        /// </summary>
+        public TriggerElementCollection GetLocalVariables()
+        {
+            TriggerElementCollection localVariables = null;
+
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    localVariables = trigger.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    localVariables = actionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    localVariables = conditionDefinition.LocalVariables;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    localVariables = functionDefinition.LocalVariables;
+                    break;
+                default:
+                    break;
+            }
+
+            return localVariables;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ParameterDefinitionCollection"/> from the <see cref="ExplorerElement"/>.
+        /// The collection is either attached to a <see cref="ActionDefinition"/>,
+        /// <see cref="ConditionDefinition"/>, or <see cref="FunctionDefinition"/>.
+        /// </summary>
+        public ParameterDefinitionCollection GetParameterCollection()
+        {
+            ParameterDefinitionCollection parameterDefs = null;
+
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.ActionDefinition:
+                    parameterDefs = actionDefinition.Parameters;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    parameterDefs = conditionDefinition.Parameters;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    parameterDefs = functionDefinition.Parameters;
+                    break;
+                default:
+                    break;
+            }
+
+            return parameterDefs;
         }
 
         public ExplorerElement Clone()
@@ -349,28 +432,41 @@ namespace BetterTriggers.Models.EditorData
                 return;
             }
 
-            string fileContent;
-            switch (ElementType)
+            if (ElementType == ExplorerElementEnum.Folder)
             {
-                case ExplorerElementEnum.GlobalVariable:
-                    fileContent = TriggerSerializer.SerializeVariable(variable);
-                    File.WriteAllText(path, fileContent);
-                    break;
-                case ExplorerElementEnum.Script:
-                    File.WriteAllText(path, script);
-                    break;
-                case ExplorerElementEnum.Trigger:
-                    fileContent = TriggerSerializer.Serialize(trigger);
-                    File.WriteAllText(path, fileContent);
-                    break;
-                case ExplorerElementEnum.Folder:
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    break;
-                default:
-                    break;
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            else
+            {
+                string fileContent = string.Empty;
+                switch (ElementType)
+                {
+                    case ExplorerElementEnum.GlobalVariable:
+                        fileContent = TriggerSerializer.SerializeVariable(variable);
+                        break;
+                    case ExplorerElementEnum.Script:
+                        fileContent = script;
+                        break;
+                    case ExplorerElementEnum.Trigger:
+                        fileContent = TriggerSerializer.SerializeTrigger(trigger);
+                        break;
+                    case ExplorerElementEnum.ActionDefinition:
+                        fileContent = TriggerSerializer.SerializeActionDefinition(actionDefinition);
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        fileContent = TriggerSerializer.SerializeConditionDefinition(conditionDefinition);
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        fileContent = TriggerSerializer.SerializeFunctionDefinition(functionDefinition);
+                        break;
+                    default:
+                        break;
+                }
+
+                File.WriteAllText(path, fileContent);
             }
 
             RemoveFromUnsaved();
@@ -424,10 +520,8 @@ namespace BetterTriggers.Models.EditorData
                 this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
                 OnReload?.Invoke();
             }
-            else if (ElementType == ExplorerElementEnum.Trigger)
-            {
-                VerifyAndRemoveTriggerErrors();
-            }
+
+            VerifyAndRemoveTriggerErrors();
         }
 
         public void InvokeChange()
@@ -452,17 +546,14 @@ namespace BetterTriggers.Models.EditorData
 
         private void VerifyAndRemoveTriggerErrors()
         {
-            if (ElementType == ExplorerElementEnum.Trigger)
-            {
-                TriggerValidator validator = new TriggerValidator(this, true);
-                int errors = validator.RemoveInvalidReferences();
-                HasErrors = errors > 0;
-            }
+            TriggerValidator validator = new TriggerValidator(this, true);
+            int errors = validator.RemoveInvalidReferences();
+            HasErrors = errors > 0;
         }
 
         private void UpdateVariableIdentifier()
         {
-            if(ElementType == ExplorerElementEnum.GlobalVariable)
+            if (ElementType == ExplorerElementEnum.GlobalVariable)
             {
                 variable.Name = this.GetName();
             }
@@ -476,6 +567,12 @@ namespace BetterTriggers.Models.EditorData
                     return Project.CurrentProject.References.GetReferrers(variable);
                 case ExplorerElementEnum.Trigger:
                     return Project.CurrentProject.References.GetReferrers(trigger);
+                case ExplorerElementEnum.ActionDefinition:
+                    return Project.CurrentProject.References.GetReferrers(actionDefinition);
+                case ExplorerElementEnum.ConditionDefinition:
+                    return Project.CurrentProject.References.GetReferrers(conditionDefinition);
+                case ExplorerElementEnum.FunctionDefinition:
+                    return Project.CurrentProject.References.GetReferrers(functionDefinition);
                 case ExplorerElementEnum.Folder:
                     return ExplorerElements.SelectMany(el => el.GetReferrers()).ToList();
                 default:
@@ -486,21 +583,29 @@ namespace BetterTriggers.Models.EditorData
         private void StoreLocalVariables()
         {
             var variables = Project.CurrentProject.Variables;
-            trigger.LocalVariables.Elements.ForEach(e =>
+            var localVariables = GetLocalVariables();
+            if (localVariables != null)
             {
-                var lv = (LocalVariable)e;
-                variables.AddLocalVariable(lv);
-            });
+                localVariables.Elements.ForEach(e =>
+                {
+                    var lv = (LocalVariable)e;
+                    variables.AddLocalVariable(lv);
+                });
+            }
         }
 
         private void RemoveLocalVariables()
         {
             var variables = Project.CurrentProject.Variables;
-            trigger.LocalVariables.Elements.ForEach(e =>
+            var localVariables = GetLocalVariables();
+            if (localVariables != null)
             {
-                var lv = (LocalVariable)e;
-                variables.RemoveLocalVariable(lv);
-            });
+                localVariables.Elements.ForEach(e =>
+                {
+                    var lv = (LocalVariable)e;
+                    variables.RemoveLocalVariable(lv);
+                });
+            }
         }
     }
 }

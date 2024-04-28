@@ -27,5 +27,19 @@ namespace BetterTriggers.Models.EditorData
                 arrayIndexValues = newArrayIndexValues,
             };
         }
+
+        public static List<VariableRef> GetVariableRefsFromTrigger(ExplorerElement explorerElement)
+        {
+            List<Parameter> _params = GetParametersFromExplorerElement(explorerElement);
+            List<VariableRef> variableRefs = new List<VariableRef>();
+            _params.ForEach(p =>
+            {
+                var varRef = p as VariableRef;
+                if (varRef != null)
+                    variableRefs.Add(varRef);
+            });
+
+            return variableRefs;
+        }
     }
 }

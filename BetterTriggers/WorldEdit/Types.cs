@@ -47,11 +47,6 @@ namespace BetterTriggers.WorldEdit
 
         public static bool IsHandle(string type)
         {
-            if(type == "unit")
-            {
-
-            }
-
             bool isHandle = false;
             Types t;
             types.TryGetValue(type, out t);

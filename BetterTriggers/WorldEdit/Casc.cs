@@ -25,8 +25,9 @@ namespace BetterTriggers.WorldEdit
         }
 
         /// <returns>Returns true if the CASC location is valid.</returns>
-        public static bool Load()
+        public static (bool, string) Load()
         {
+            string errorMsg = string.Empty;
             bool isValid = false;
             try
             {
@@ -47,9 +48,10 @@ namespace BetterTriggers.WorldEdit
             }
             catch (Exception ex)
             {
+                errorMsg = ex.Message;
             }
             
-            return isValid;
+            return (isValid, errorMsg);
         }
 
         public static CASCFolder GetWar3ModFolder()

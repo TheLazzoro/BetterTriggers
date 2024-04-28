@@ -213,15 +213,15 @@ namespace BetterTriggers
         private static List<ExplorerElement> RemoveInvalidReferences()
         {
             List<ExplorerElement> modified = new List<ExplorerElement>();
-            var triggers = Project.CurrentProject.Triggers.GetAll();
-            for (int i = 0; i < triggers.Count; i++)
+            var explorerElements = Project.CurrentProject.GetAllExplorerElements();
+            for (int i = 0; i < explorerElements.Count; i++)
             {
-                TriggerValidator validator = new TriggerValidator(triggers[i]);
+                TriggerValidator validator = new TriggerValidator(explorerElements[i]);
                 int invalidCount = validator.RemoveInvalidReferences();
                 if (invalidCount > 0)
-                    modified.Add(triggers[i]);
+                    modified.Add(explorerElements[i]);
 
-                triggers[i].Notify();
+                explorerElements[i].Notify();
             }
             var variables = Project.CurrentProject.Variables.GetGlobals();
             for (int i = 0; i < variables.Count; i++)

@@ -31,6 +31,10 @@ namespace BetterTriggers.Models.EditorData
                     DisplayText = "Actions";
                     category = Category.Get(TriggerCategory.TC_ACTION);
                     break;
+                case TriggerElementType.ParameterDef:
+                    DisplayText = "Parameters";
+                    category = Category.Get(TriggerCategory.TC_PARAMETER);
+                    break;
                 default:
                     category = Category.Get(TriggerCategory.TC_EVENT);
                     break;

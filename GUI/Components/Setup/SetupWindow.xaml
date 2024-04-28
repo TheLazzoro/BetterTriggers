@@ -16,6 +16,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="22"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -53,6 +54,6 @@
             <ComboBoxItem Content="Chinese (Taiwan)"></ComboBoxItem>
         </ComboBox>-->
 
-        <Button x:Name="btnContinue" Content="Continue"  Grid.Column="1" Grid.Row="10" Click="btnContinue_Click" />
+        <Button x:Name="btnContinue" Content="Continue"  Grid.Column="1" Grid.Row="7" Click="btnContinue_Click" />
     </Grid>
 </Window>

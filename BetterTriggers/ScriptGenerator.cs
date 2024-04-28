@@ -22,6 +22,8 @@ using System.Text.RegularExpressions;
 using BetterTriggers.Utility;
 using System.Transactions;
 using System.Collections.ObjectModel;
+using BetterTriggers.Models.EditorData.TriggerEditor;
+using ICSharpCode.Decompiler.TypeSystem;
 
 namespace BetterTriggers
 {
@@ -54,9 +56,13 @@ namespace BetterTriggers
         List<ExplorerElement> variables = new List<ExplorerElement>();
         List<ExplorerElement> scripts = new List<ExplorerElement>();
         List<ExplorerElement> triggers = new List<ExplorerElement>();
+        List<ExplorerElement> actionDefinitions = new List<ExplorerElement>();
+        List<ExplorerElement> conditionDefinitions = new List<ExplorerElement>();
+        List<ExplorerElement> functionDefinitions = new List<ExplorerElement>();
         Dictionary<string, Tuple<Parameter, string>> generatedVarNames = new Dictionary<string, Tuple<Parameter, string>>(); // [value, [parameter, returnType] ]
         List<string> globalVarNames = new List<string>(); // Used in an edge case (old maps) where vars are multiple defined.
         CultureInfo enUS = new CultureInfo("en-US");
+        ExplorerElement currentExplorerElement;
 
         string triggerName = string.Empty;
         List<string> initialization_triggers = new List<string>();
@@ -182,7 +188,7 @@ end
             string script = string.Empty;
 
             // Gather all explorer elements
-            ObservableCollection<ExplorerElement> children = new ();
+            ObservableCollection<ExplorerElement> children = new();
             if (parent.ElementType == ExplorerElementEnum.Root || parent.ElementType == ExplorerElementEnum.Folder)
             {
                 children = parent.ExplorerElements;
@@ -194,18 +200,32 @@ end
 
                 if (Directory.Exists(element.GetPath()))
                     SortTriggerElements(element);
-                else if (element.ElementType == ExplorerElementEnum.Trigger)
+                else
                 {
-                    triggers.Add(element);
-                }
-                else if (element.ElementType == ExplorerElementEnum.Script)
-                {
-                    scripts.Add(element);
-                }
-                else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
-                {
-                    element.variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
-                    variables.Add(element);
+                    switch (element.ElementType)
+                    {
+                        case ExplorerElementEnum.GlobalVariable:
+                            element.variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
+                            variables.Add(element);
+                            break;
+                        case ExplorerElementEnum.Script:
+                            scripts.Add(element);
+                            break;
+                        case ExplorerElementEnum.Trigger:
+                            triggers.Add(element);
+                            break;
+                        case ExplorerElementEnum.ActionDefinition:
+                            actionDefinitions.Add(element);
+                            break;
+                        case ExplorerElementEnum.ConditionDefinition:
+                            conditionDefinitions.Add(element);
+                            break;
+                        case ExplorerElementEnum.FunctionDefinition:
+                            functionDefinitions.Add(element);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -278,7 +298,7 @@ end
             // Generated variables
 
 
-            var functions = project.Triggers.GetFunctionsAll();
+            var functions = project.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];
@@ -290,7 +310,7 @@ end
                     continue;
                 }
 
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function, currentExplorerElement);
                 for (int j = 0; j < parameters.Count; j++)
                 {
                     if (parameters[j] is Value)
@@ -460,6 +480,9 @@ end
             CreateCameras(script);
 
             CreateCustomScripts(script);
+            GenerateFunctionDefinitions(script);
+            GenerateActionDefinitions(script);
+            GenerateConditionDefinitions(script);
             GenerateTriggers(script);
             GenerateTriggerInitialization(script);
 
@@ -499,7 +522,7 @@ end
             if (language != ScriptLanguage.Lua)
                 return;
 
-            var functions = project.Triggers.GetFunctionsAll();
+            var functions = project.GetFunctionsAll();
             for (int i = 0; i < functions.Count; i++)
             {
                 var function = functions[i];
@@ -1625,12 +1648,215 @@ end
 
             foreach (var s in scripts)
             {
+                currentExplorerElement = s;
                 if (!s.IsEnabled)
                     continue;
 
                 script.Append(s.script);
                 script.Append($"{newline}");
             }
+        }
+
+
+        private string GenerateLocalVariableDefinitions(ExplorerElement ex, StringBuilder sb)
+        {
+            localVariables = new List<Variable>();
+            localVariableDecl = new StringBuilder();
+            globalLocalCarries = new List<Variable>();
+            localVariableDecl = new StringBuilder();
+            StringBuilder localVariableInit = new StringBuilder();
+            int elementId = -1;
+
+            TriggerElementCollection localVariableCollection = null;
+
+            switch (ex.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    localVariableCollection = ex.trigger.LocalVariables;
+                    elementId = ex.trigger.Id;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    localVariableCollection = ex.actionDefinition.LocalVariables;
+                    elementId = ex.actionDefinition.Id;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    localVariableCollection = ex.conditionDefinition.LocalVariables;
+                    elementId = ex.conditionDefinition.Id;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    localVariableCollection = ex.functionDefinition.LocalVariables;
+                    elementId = ex.functionDefinition.Id;
+                    break;
+            }
+
+            foreach (LocalVariable localVar in localVariableCollection.Elements)
+            {
+                var v = localVar.variable;
+                localVariables.Add(v);
+                string name = v.GetIdentifierName();
+                string initialValue = ConvertParametersToJass(v.InitialValue, v.Type, new PreActions());
+                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(v.Type) : string.Empty;
+                initialValue = string.IsNullOrEmpty(initialValue) ? $" = {GetTypeInitialValue(type)}" : initialValue.Insert(0, " = ");
+
+
+                localVariableInit.Append($"\tlocal {type} {name}{initialValue}{newline}"); // used on first declaration
+                localVariableDecl.Append($"\tlocal {type} {name}{newline}"); // used in special trigger elements
+
+                Variable globalCarry = new Variable();
+                globalCarry.Name = $"{name}_c_{elementId}";
+                globalCarry.Type = type;
+                globalCarry.IsArray = localVar.variable.IsArray;
+                globalLocalCarries.Add(globalCarry);
+                sb.Insert(0, $"{endglobals}{newline}");
+                if (language == ScriptLanguage.Lua)
+                {
+                    sb.Insert(0, $" = nil{newline}");
+                }
+                else
+                {
+                    sb.Insert(0, $"{newline}");
+                }
+                sb.Insert(0, $"{type} {globalCarry.Name}");
+                sb.Insert(0, $"{globals}{newline}");
+            }
+
+
+            return localVariableInit.ToString();
+        }
+
+
+        private void GenerateFunctionDefinitions(StringBuilder script)
+        {
+            script.Append(separator);
+            script.Append($"{comment}{newline}");
+            script.Append($"{comment}  Function Definitions{newline}");
+            script.Append($"{comment}{newline}");
+            script.Append(separator);
+
+            foreach (var f in functionDefinitions)
+            {
+                currentExplorerElement = f;
+                script.Append(ConvertCustomDefinitionToJASS(f));
+            }
+        }
+
+        private void GenerateConditionDefinitions(StringBuilder script)
+        {
+            script.Append(separator);
+            script.Append($"{comment}{newline}");
+            script.Append($"{comment}  Condition Definitions{newline}");
+            script.Append($"{comment}{newline}");
+            script.Append(separator);
+
+            foreach (var c in conditionDefinitions)
+            {
+                currentExplorerElement = c;
+                script.Append(ConvertCustomDefinitionToJASS(c));
+            }
+        }
+
+        private void GenerateActionDefinitions(StringBuilder script)
+        {
+            script.Append(separator);
+            script.Append($"{comment}{newline}");
+            script.Append($"{comment}  Action Definitions{newline}");
+            script.Append($"{comment}{newline}");
+            script.Append(separator);
+
+            foreach (var a in actionDefinitions)
+            {
+                currentExplorerElement = a;
+                script.Append(ConvertCustomDefinitionToJASS(a));
+            }
+        }
+
+
+        private string ConvertCustomDefinitionToJASS(ExplorerElement ex)
+        {
+            ParameterDefinitionCollection parameters = null;
+            TriggerElementCollection actions = null;
+            string returnType = "nothing";
+            string functionNamePrefix = string.Empty;
+            string scriptCommentTitle = string.Empty;
+
+            switch (ex.ElementType)
+            {
+                case ExplorerElementEnum.ActionDefinition:
+                    parameters = ex.actionDefinition.Parameters;
+                    actions = ex.actionDefinition.Actions;
+                    returnType = "nothing";
+                    functionNamePrefix = "ActionDef_";
+                    scriptCommentTitle = "Action Definition";
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    parameters = ex.conditionDefinition.Parameters;
+                    actions = ex.conditionDefinition.Actions;
+                    returnType = "boolean";
+                    functionNamePrefix = "ConditionDef_";
+                    scriptCommentTitle = "Condition Definition";
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    parameters = ex.functionDefinition.Parameters;
+                    actions = ex.functionDefinition.Actions;
+                    returnType = ex.functionDefinition.ReturnType.War3Type.Type;
+                    functionNamePrefix = "FunctionDef_";
+                    scriptCommentTitle = "Function Definition";
+                    break;
+                default:
+                    break;
+            }
+
+            triggerName = Ascii.ReplaceNonASCII(ex.GetName().Replace(" ", "_"), true);
+
+            StringBuilder sb_parameters = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
+
+
+            if (language == ScriptLanguage.Jass)
+                sb_parameters.Append($"takes ");
+            else
+                sb_parameters.Append($"(");
+
+            if (parameters.Count() == 0)
+            {
+                if (language == ScriptLanguage.Jass)
+                    sb_parameters.Append($"nothing returns {returnType}");
+                else
+                    sb_parameters.Append($")");
+            }
+            else
+            {
+                for (int i = 0; i < parameters.Count(); i++)
+                {
+                    var parameter = (ParameterDefinition)parameters.Elements[i];
+                    string parameterName = Ascii.ReplaceNonASCII(parameter.GetIdentifierName().Replace(" ", "_"), true);
+                    string parameterText = language == ScriptLanguage.Jass ? $"{parameter.ReturnType.Type} {parameterName}" : $"{parameterName}";
+                    sb_parameters.Append(parameterText);
+
+                    if (i < parameters.Count() - 1)
+                    {
+                        sb_parameters.Append(", ");
+                    }
+                }
+                if (language == ScriptLanguage.Jass)
+                    sb_parameters.Append($" returns {returnType}");
+                else
+                    sb_parameters.Append(")");
+            }
+
+            sb.Append($"function {functionNamePrefix}{triggerName} {sb_parameters} {newline}");
+            sb.Append(GenerateLocalVariableDefinitions(ex, sb));
+            sb.Append(Environment.NewLine);
+            PreActions pre_actions = new PreActions();
+            foreach (ECA a in actions.Elements)
+            {
+                sb.Append($"\t{ConvertTriggerElementToJass(a, pre_actions, false)}{newline}");
+            }
+            sb.Append($"{endfunction}{newline}{newline}{newline}");
+
+            string finalFunction = $"{comment} {scriptCommentTitle} {triggerName}{newline}{separator}{pre_actions.GetGeneratedActions()}{sb.ToString()}";
+
+            return finalFunction;
         }
 
 
@@ -1645,6 +1871,7 @@ end
 
             foreach (var i in triggers)
             {
+                currentExplorerElement = i;
                 if (!i.IsEnabled)
                     continue;
 
@@ -1720,10 +1947,6 @@ end
             StringBuilder events = new StringBuilder();
             StringBuilder conditions = new StringBuilder();
             PreActions pre_actions = new PreActions();
-            StringBuilder localVariableInit = new StringBuilder();
-            localVariableDecl = new StringBuilder();
-            localVariables = new List<Variable>();
-            globalLocalCarries = new List<Variable>();
             StringBuilder actions = new StringBuilder();
 
             events.Append($"function InitTrig_{triggerName} {functionReturnsNothing}{newline}");
@@ -1753,37 +1976,6 @@ end
                 events.Append($"{_event} {newline}");
             }
 
-            foreach (LocalVariable localVar in t.trigger.LocalVariables.Elements)
-            {
-                var v = localVar.variable;
-                localVariables.Add(v);
-                string name = v.GetIdentifierName();
-                string initialValue = ConvertParametersToJass(v.InitialValue, v.Type, new PreActions());
-                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(v.Type) : string.Empty;
-                initialValue = string.IsNullOrEmpty(initialValue) ? $" = {GetTypeInitialValue(type)}" : initialValue.Insert(0, " = ");
-
-
-                localVariableInit.Append($"\tlocal {type} {name}{initialValue}{newline}"); // used on first declaration
-                localVariableDecl.Append($"\tlocal {type} {name}{newline}"); // used in special trigger elements
-
-                Variable globalCarry = new Variable();
-                globalCarry.Name = $"{name}_c_{t.trigger.Id}";
-                globalCarry.Type = type;
-                globalCarry.IsArray = localVar.variable.IsArray;
-                globalLocalCarries.Add(globalCarry);
-                events.Insert(0, $"{endglobals}{newline}");
-                if (language == ScriptLanguage.Lua)
-                {
-                    events.Insert(0, $" = nil{newline}");
-                }
-                else
-                {
-                    events.Insert(0, $"{newline}");
-                }
-                events.Insert(0, $"{type} {globalCarry.Name}");
-                events.Insert(0, $"{globals}{newline}");
-            }
-
             foreach (ECA c in t.trigger.Conditions.Elements)
             {
                 string condition = ConvertTriggerElementToJass(c, pre_actions, true);
@@ -1794,7 +1986,7 @@ end
                 conditions.Append($"\t\treturn false{newline}");
                 conditions.Append($"\t{endif}{newline}");
             }
-            actions.Insert(0, localVariableInit.ToString());
+            actions.Insert(0, GenerateLocalVariableDefinitions(t, events));
             actions.Insert(0, $"function {triggerActionName} {functionReturnsNothing}{newline}");
             foreach (ECA a in t.trigger.Actions.Elements)
             {
@@ -1832,7 +2024,7 @@ end
 
             StringBuilder script = new StringBuilder();
             Function f = t.function;
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
 
 
             if (t is ForLoopAMultiple || t is ForLoopBMultiple)
@@ -2260,11 +2452,11 @@ end
             }
             else
 
-                return ConvertFunctionToJass(f, pre_actions, nested);
+                return ConvertFunctionToJass(f, pre_actions, nested, t);
         }
 
 
-        private string ConvertFunctionToJass(Function f, PreActions pre_actions, bool nested)
+        private string ConvertFunctionToJass(Function f, PreActions pre_actions, bool nested, TriggerElement? triggerElement = null)
         {
             StringBuilder script = new StringBuilder();
 
@@ -2273,7 +2465,7 @@ end
                 return "";
 
 
-            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
+            List<string> returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
 
             // ------------------------- //
             // --- SPECIALLY HANDLED --- //
@@ -2411,6 +2603,14 @@ end
                 return $"{newline}{comment} {f.parameters[0].value}";
             }
 
+            // Custom
+            else if (f.value == "ReturnStatement")
+            {
+                script.Append($"return {ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}");
+                return script.ToString();
+            }
+
+
 
             // --------------------- //
             // --- REGULAR CALLS --- //
@@ -2418,9 +2618,9 @@ end
 
 
             if (!nested)
-                script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
+                script.Append($"{call} {ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions, false, triggerElement)}");
             else
-                script.Append($"{ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions)}");
+                script.Append($"{ConvertParametersToJass(f, TriggerData.GetReturnType(f.value), pre_actions, false, triggerElement)}");
 
 
             return script.ToString();
@@ -2428,7 +2628,7 @@ end
 
 
 
-        private string ConvertParametersToJass(Parameter parameter, string returnType, PreActions pre_actions, bool boolexprIsOn = false)
+        private string ConvertParametersToJass(Parameter parameter, string returnType, PreActions pre_actions, bool boolexprIsOn = false, TriggerElement? triggerElement = null)
         {
             string output = string.Empty;
 
@@ -2438,8 +2638,8 @@ end
                 f = f.Clone();
                 FunctionTemplate template;
                 TriggerData.FunctionsAll.TryGetValue(f.value, out template);
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(f);
-                if (template.scriptName != null)
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
+                if (template != null && template.scriptName != null)
                     f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.
 
                 if (returnType == "event")
@@ -2505,17 +2705,38 @@ end
                     return $"{ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[1], returnTypes[1], pre_actions, boolexprIsOn)} {ConvertParametersToJass(f.parameters[2], returnTypes[2], pre_actions, boolexprIsOn)}";
                 }
 
-                else if(f.value == "GetTriggerName")
+                else if (f.value == "GetTriggerName")
                 {
                     return $"\"{triggerName}\"";
                 }
-
 
                 // --------------------- //
                 // --- REGULAR CALLS --- //
                 // --------------------- //
 
-                output += f.value + "(";
+                else if (triggerElement is ActionDefinitionRef actionDefRef)
+                {
+                    var actionDef = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId);
+                    string name = Ascii.ReplaceNonASCII(actionDef.GetName().Replace(" ", "_"), true);
+                    output += "ActionDef_" + name + "(";
+                }
+                else if (triggerElement is ConditionDefinitionRef conditionDefRef) // TODO: Should this even be here?
+                {
+                    var conditionDef = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
+                    string name = Ascii.ReplaceNonASCII(conditionDef.GetName().Replace(" ", "_"), true);
+                    output += "ConditionDef_" + name + "(";
+                }
+                else if (f is FunctionDefinitionRef functionDefRef)
+                {
+                    var functionDef = Project.CurrentProject.FunctionDefinitions.FindById(functionDefRef.FunctionDefinitionId);
+                    string name = Ascii.ReplaceNonASCII(functionDef.GetName().Replace(" ", "_"), true);
+                    output += "FunctionDef_" + name + "(";
+                }
+                else
+                {
+                    output += f.value + "(";
+                }
+
                 for (int i = 0; i < f.parameters.Count; i++)
                 {
                     Parameter p = f.parameters[i];
@@ -2569,6 +2790,27 @@ end
                 string name = project.Triggers.GetName(trigger.Id);
 
                 output += "gg_trg_" + Ascii.ReplaceNonASCII(name.Replace(" ", "_"), true);
+            }
+            else if (parameter is ParameterDefinitionRef paramDefRef)
+            {
+                ParameterDefinitionCollection collection = null;
+                switch (currentExplorerElement.ElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        collection = currentExplorerElement.actionDefinition.Parameters;
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        collection = currentExplorerElement.conditionDefinition.Parameters;
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        collection = currentExplorerElement.functionDefinition.Parameters;
+                        break;
+                    default:
+                        break;
+                }
+                var paramDef = collection.GetByReference(paramDefRef);
+                string name = paramDef.GetIdentifierName();
+                output += Ascii.ReplaceNonASCII(name.Replace(" ", "_"), true);
             }
             else if (parameter is Value)
             {
@@ -2633,7 +2875,7 @@ end
             for (int i = 0; i < parameters.Count; i++)
             {
                 var parameter = parameters[i];
-                if (parameter.value == null && !(parameter is VariableRef) && !(parameter is TriggerRef))
+                if (parameter.value == null && !(parameter is VariableRef) && !(parameter is TriggerRef) && !(parameter is ParameterDefinitionRef))
                     invalidCount++;
 
                 if (parameter is Function)
@@ -2662,6 +2904,34 @@ end
                     var trigger = Project.CurrentProject.Triggers.GetById(triggerRef.TriggerId);
                     if (trigger == null)
                         invalidCount++;
+                }
+                else if (parameter is ParameterDefinitionRef paramDefRef)
+                {
+                    if (currentExplorerElement == null)
+                    {
+                        invalidCount++;
+                    }
+                    else
+                    {
+                        ParameterDefinitionCollection collection = null;
+                        switch (currentExplorerElement.ElementType)
+                        {
+                            case ExplorerElementEnum.ActionDefinition:
+                                collection = currentExplorerElement.actionDefinition.Parameters;
+                                break;
+                            case ExplorerElementEnum.ConditionDefinition:
+                                collection = currentExplorerElement.conditionDefinition.Parameters;
+                                break;
+                            case ExplorerElementEnum.FunctionDefinition:
+                                collection = currentExplorerElement.functionDefinition.Parameters;
+                                break;
+                            default:
+                                break;
+                        }
+                        var paramDef = collection.GetByReference(paramDefRef);
+                        if (paramDef == null)
+                            invalidCount++;
+                    }
                 }
             }
 

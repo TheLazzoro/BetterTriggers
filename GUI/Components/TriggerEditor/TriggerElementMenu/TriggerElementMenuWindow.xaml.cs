@@ -6,27 +6,34 @@ using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using GUI.Utility;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace GUI.Components.TriggerEditor
 {
     public partial class TriggerElementMenuWindow : Window
     {
-        public ECA createdTriggerElement;
+        public ECA createdTriggerElement { get; private set; }
+        public ECA previous { get; private set; }
+        private ECA selected;
 
-        private TriggerElementMenuViewModel _viewModel;
+        private TriggerElementType triggerElementType;
         private ExplorerElement explorerElement;
+        private ListItemFunctionTemplate defaultSelected;
 
         public TriggerElementMenuWindow(ExplorerElement explorerElement, TriggerElementType triggerElementType, ECA previous = null)
         {
             InitializeComponent();
 
             this.explorerElement = explorerElement;
-            _viewModel = new TriggerElementMenuViewModel(triggerElementType, previous);
-            DataContext = _viewModel;
+            this.triggerElementType = triggerElementType;
+            this.previous = previous;
 
             this.Owner = MainWindow.GetMainWindow();
 
@@ -37,20 +44,6 @@ namespace GUI.Components.TriggerEditor
             this.Top = settings.triggerWindowY;
 
             Closing += TriggerElementMenuWindow_Closing;
-        }
-
-        private void TriggerElementMenuWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if(createdTriggerElement != null)
-            {
-                ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
-                createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(createdTriggerElement);
-            }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            var selected = _viewModel.Selected;
 
             listControl.ListViewChanged += delegate
             {
@@ -71,15 +64,47 @@ namespace GUI.Components.TriggerEditor
                 this.Close();
             };
 
-            var searchables = _viewModel.Searchables;
-            listControl.SetSearchableList(searchables);
-
-            var selectedListItem = listControl.listView.ItemContainerGenerator.ContainerFromItem(_viewModel.Selected) as ListViewItem;
-            if (selectedListItem != null)
+            var templates = new List<FunctionTemplate>();
+            if (triggerElementType == TriggerElementType.Event)
             {
-                listControl.listView.ScrollIntoView(selectedListItem);
-                selectedListItem.Focus();
+                templates = TriggerData.LoadAllEvents();
             }
+            else if (triggerElementType == TriggerElementType.Condition)
+            {
+                templates = TriggerData.LoadAllConditions();
+            }
+            else if (triggerElementType == TriggerElementType.Action)
+            {
+                templates = TriggerData.LoadAllActions(explorerElement.ElementType);
+            }
+
+            List<Searchable> objects = new List<Searchable>();
+            for (int i = 0; i < templates.Count; i++)
+            {
+                var template = templates[i];
+                Category category = Category.Get(template.category);
+                ListItemFunctionTemplate listItem = new(template, category);
+
+                objects.Add(new Searchable()
+                {
+                    Object = listItem,
+                    Category = Locale.Translate(category.Name),
+                    Words = new List<string>()
+                    {
+                        listItem.DisplayText.ToLower(),
+                        template.value.ToLower()
+                    },
+                });
+
+                if (previous != null && previous.function.value == template.value)
+                {
+                    defaultSelected = listItem;
+                    listItem.IsSelected = true;
+                }
+            }
+
+            var searchables = new Searchables(objects);
+            listControl.SetSearchableList(searchables);
             listControl.checkBoxShowIcons.Visibility = Visibility.Visible;
 
             var categoryControl = new GenericCategoryControl(searchables);
@@ -87,11 +112,26 @@ namespace GUI.Components.TriggerEditor
             grid.Children.Add(categoryControl);
             Grid.SetRow(categoryControl, 1);
             Grid.SetRowSpan(categoryControl, 3);
+
+            // default selection
+            listControl.listView.Loaded += (s, e) => Dispatcher.InvokeAsync(() =>
+            {
+                listControl.listView.ScrollIntoView(defaultSelected);
+            });
+        }
+
+        private void TriggerElementMenuWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (createdTriggerElement != null)
+            {
+                ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+                createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(explorerElement, createdTriggerElement);
+            }
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            createdTriggerElement = _viewModel.Selected;
+            createdTriggerElement = selected;
             this.Close();
         }
 
@@ -102,7 +142,6 @@ namespace GUI.Components.TriggerEditor
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            var selected = _viewModel.Selected;
             if (e.Key == Key.Enter && selected != null)
             {
                 createdTriggerElement = selected;

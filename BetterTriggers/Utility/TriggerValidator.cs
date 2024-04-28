@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
@@ -15,22 +16,49 @@ namespace BetterTriggers.Utility
     public class TriggerValidator
     {
         private bool _includeUnsetParameters;
+        private ExplorerElement _explorerElement;
         private Trigger _trigger;
+        private ActionDefinition _actionDefinition;
+        private ConditionDefinition _conditionDefinition;
+        private FunctionDefinition _functionDefinition;
 
         public TriggerValidator(ExplorerElement explorerElement, bool validateUnsetParameters = false)
         {
             _includeUnsetParameters = validateUnsetParameters;
+            _explorerElement = explorerElement;
             _trigger = explorerElement.trigger;
+            _actionDefinition = explorerElement.actionDefinition;
+            _conditionDefinition = explorerElement.conditionDefinition;
+            _functionDefinition = explorerElement.functionDefinition;
         }
 
         /// <returns>Whether the trigger had invalid references removed.</returns>
         public int RemoveInvalidReferences()
         {
             int removeCount = 0;
-            removeCount += RemoveInvalidReferences(_trigger.Events);
-            removeCount += RemoveInvalidReferences(_trigger.Conditions);
-            removeCount += RemoveInvalidReferences(_trigger.LocalVariables);
-            removeCount += RemoveInvalidReferences(_trigger.Actions);
+            switch (_explorerElement.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    removeCount += RemoveInvalidReferences(_trigger.Events);
+                    removeCount += RemoveInvalidReferences(_trigger.Conditions);
+                    removeCount += RemoveInvalidReferences(_trigger.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_trigger.Actions);
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    removeCount += RemoveInvalidReferences(_actionDefinition.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_actionDefinition.Actions);
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    removeCount += RemoveInvalidReferences(_conditionDefinition.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_conditionDefinition.Actions);
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    removeCount += RemoveInvalidReferences(_functionDefinition.LocalVariables);
+                    removeCount += RemoveInvalidReferences(_functionDefinition.Actions);
+                    break;
+                default:
+                    break;
+            }
 
             return removeCount;
         }
@@ -55,15 +83,22 @@ namespace BetterTriggers.Utility
                     }
                     continue;
                 }
+                else if(triggerElement.Elements[i] is ParameterDefinition)
+                {
+                    continue;
+                }
 
                 var eca = (ECA)triggerElement.Elements[i];
                 bool ecaExists = TriggerData.FunctionExists(eca.function);
                 if (!ecaExists)
                 {
-                    triggerElement.Elements[i] = new InvalidECA();
+                    eca.RemoveFromParent();
+                    var invalid = new InvalidECA();
+                    invalid.IsEnabled = false;
+                    invalid.SetParent(triggerElement, i);
                     removeCount += 1;
                 }
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function, _explorerElement);
                 int invalidCount = VerifyParametersAndRemove(eca.function.parameters, returnTypes);
                 eca.HasErrors = invalidCount > 0;
                 removeCount += invalidCount;
@@ -79,12 +114,12 @@ namespace BetterTriggers.Utility
                 else if (eca is AndMultiple)
                 {
                     var special = (AndMultiple)eca;
-                    removeCount += RemoveInvalidReferences( special.And);
+                    removeCount += RemoveInvalidReferences(special.And);
                 }
                 else if (eca is ForForceMultiple)
                 {
                     var special = (ForForceMultiple)eca;
-                    removeCount += RemoveInvalidReferences( special.Actions);
+                    removeCount += RemoveInvalidReferences(special.Actions);
                 }
                 else if (eca is ForGroupMultiple)
                 {
@@ -146,7 +181,7 @@ namespace BetterTriggers.Utility
 
                 if (parameter is VariableRef varRef)
                 {
-                    Variable variable = Project.CurrentProject.Variables.GetById(varRef.VariableId, _trigger);
+                    Variable variable = Project.CurrentProject.Variables.GetById(varRef.VariableId, _explorerElement);
                     if (variable == null)
                     {
                         removeCount++;
@@ -179,6 +214,24 @@ namespace BetterTriggers.Utility
                         parameters[i] = new Parameter();
                     }
                 }
+                else if (parameter is ParameterDefinitionRef paramDefRef)
+                {
+                    var paramDefCollection = _explorerElement.GetParameterCollection();
+                    if (paramDefCollection == null)
+                    {
+                        removeCount++;
+                        parameters[i] = new Parameter();
+                    }
+                    else
+                    {
+                        var reference = paramDefCollection.GetByReference(paramDefRef);
+                        if(reference == null)
+                        {
+                            removeCount++;
+                            parameters[i] = new Parameter();
+                        }
+                    }
+                }
                 else if (parameter is Value value)
                 {
                     bool refExists = CustomMapData.ReferencedDataExists(value, returnTypes[i]);
@@ -198,7 +251,7 @@ namespace BetterTriggers.Utility
                         removeCount++;
                     }
 
-                    List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function);
+                    List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
                     removeCount += VerifyParametersAndRemove(function.parameters, _returnTypes);
                 }
                 else if (parameter is Preset preset)
@@ -210,7 +263,7 @@ namespace BetterTriggers.Utility
                         removeCount++;
                     }
                 }
-                else if(_includeUnsetParameters)
+                else if (_includeUnsetParameters)
                 {
                     removeCount++;
                 }

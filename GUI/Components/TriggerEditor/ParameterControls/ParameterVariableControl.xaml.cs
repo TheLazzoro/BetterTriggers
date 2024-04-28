@@ -14,8 +14,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         /// <summary>
         /// </summary>
         /// <param name="returnType"></param>
-        /// <param name="trig"></param>
-        public ParameterVariableControl(string returnType, BetterTriggers.Models.EditorData.Trigger trig)
+        /// <param name="localVariables"></param>
+        public ParameterVariableControl(string returnType, TriggerElementCollection? localVariables = null)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 returnType = "string";
 
             var project = Project.CurrentProject;
-            List<VariableRef> variables = project.Variables.GetVariableRefs(returnType, trig, Variables.includeLocals);
+            List<VariableRef> variables = project.Variables.GetVariableRefs(returnType, Variables.includeLocals, localVariables);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < variables.Count; i++)

@@ -104,7 +104,7 @@ namespace Tests
         [TestMethod]
         public void CloneLocalVariable()
         {
-            var explorerElement = new ExplorerElement();
+            var explorerElement = new ExplorerElement(ExplorerElementEnum.Trigger);
             explorerElement.trigger = new Trigger();
             var variable = project.Variables.CreateLocalVariable(explorerElement, 0);
 

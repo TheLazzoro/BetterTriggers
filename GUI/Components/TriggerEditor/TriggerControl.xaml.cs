@@ -7,6 +7,7 @@ using BetterTriggers.WorldEdit;
 using Cake.Core.Scripting;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
+using GUI.Components.Return;
 using GUI.Utility;
 using Newtonsoft.Json;
 using System;
@@ -18,6 +19,8 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using GUI.Components.ParameterEditor;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 
 namespace GUI.Components
 {
@@ -25,14 +28,15 @@ namespace GUI.Components
     {
         public TriggerControlViewModel ViewModel { get; }
 
-        public TextEditor TextEditor;
-        public ExplorerElement explorerElementTrigger; // needed to get file references to variables in TriggerElements
+        private TextEditor TextEditor;
+        private ExplorerElement explorerElement; // needed to get file references to variables in TriggerElements
+        private ExplorerElementEnum explorerElementType;
 
-        Point _startPoint;
-        TreeViewItem dragItem;
-        bool _IsDragging = false;
-        int insertIndex = 0;
-        TreeViewItem _treeItemParentDropTarget;
+        private Point _startPoint;
+        private TreeViewItem dragItem;
+        private bool _IsDragging = false;
+        private int insertIndex = 0;
+        private TreeViewItem _treeItemParentDropTarget;
 
         private TriggerElement selectedElement;
         private TriggerElement selectedElementEnd;
@@ -40,11 +44,13 @@ namespace GUI.Components
         private List<TriggerElement> selectedItems = new();
 
         // attaches to a treeviewitem
-        AdornerLayer adorner;
-        TreeItemAdornerLine lineIndicator;
-        TreeItemAdornerSquare squareIndicator;
+        private AdornerLayer adorner;
+        private TreeItemAdornerLine lineIndicator;
+        private TreeItemAdornerSquare squareIndicator;
 
-        VariableControl variableControl;
+        private VariableControl _variableControl;
+        private ReturnTypeControl _returnTypeControl;
+        private ParameterDefinitionControl _parameterDefinitionControl;
 
         public TriggerControl(ExplorerElement explorerElement)
         {
@@ -61,14 +67,26 @@ namespace GUI.Components
                 Grid.SetRowSpan(treeViewTriggers, 3);
             }
 
-            this.explorerElementTrigger = explorerElement;
+            this.explorerElement = explorerElement;
+            explorerElementType = explorerElement.ElementType;
 
-
-            checkBoxIsEnabled.IsChecked = explorerElement.IsEnabled;
-            checkBoxIsInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
-            checkBoxIsCustomScript.IsChecked = explorerElement.trigger.IsScript;
-            checkBoxRunOnMapInit.IsChecked = explorerElement.trigger.RunOnMapInit;
-            ShowTextEditor(explorerElement.trigger.IsScript);
+            if (explorerElementType == ExplorerElementEnum.Trigger)
+            {
+                checkBoxIsEnabled.IsChecked = explorerElement.IsEnabled;
+                checkBoxIsInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
+                checkBoxIsCustomScript.IsChecked = explorerElement.trigger.IsScript;
+                checkBoxRunOnMapInit.IsChecked = explorerElement.trigger.RunOnMapInit;
+                ShowTextEditor(explorerElement.trigger.IsScript);
+            }
+            else if (explorerElementType == ExplorerElementEnum.ActionDefinition
+                    || explorerElementType == ExplorerElementEnum.ConditionDefinition
+                    || explorerElementType == ExplorerElementEnum.FunctionDefinition)
+            {
+                checkBoxIsEnabled.Visibility = Visibility.Hidden;
+                checkBoxIsInitiallyOn.Visibility = Visibility.Hidden;
+                checkBoxIsCustomScript.Visibility = Visibility.Hidden;
+                checkBoxRunOnMapInit.Visibility = Visibility.Hidden;
+            }
 
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
             explorerElement.OnChanged += ExplorerElement_OnChanged;
@@ -153,14 +171,33 @@ namespace GUI.Components
         private void IncludeLocalsInParameterMenu(TriggerElement triggerElement)
         {
             bool isActionOrConditionalInAction = false;
+            TriggerElementCollection actions = null;
+            switch (explorerElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    actions = explorerElement.trigger.Actions;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    actions = explorerElement.actionDefinition.Actions;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    actions = explorerElement.conditionDefinition.Actions;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    actions = explorerElement.functionDefinition.Actions;
+                    break;
+                default:
+                    return;
+            }
+
             while (triggerElement != null)
             {
-                if (triggerElement == explorerElementTrigger.trigger.Actions)
+                if (triggerElement == actions)
                 {
                     isActionOrConditionalInAction = true;
                     break;
                 }
-                
+
                 triggerElement = triggerElement.GetParent();
             }
 
@@ -172,14 +209,12 @@ namespace GUI.Components
             RefreshBottomControls();
         }
 
-        public UserControl GetControl()
-        {
-            return this;
-        }
-
         public void CreateEvent()
         {
-            CreateTriggerElement(TriggerElementType.Event);
+            if (explorerElementType == ExplorerElementEnum.Trigger)
+            {
+                CreateTriggerElement(TriggerElementType.Event);
+            }
         }
 
         public void CreateCondition()
@@ -197,18 +232,64 @@ namespace GUI.Components
             CreateTriggerElement(TriggerElementType.LocalVariable);
         }
 
+        public void CreateParameter()
+        {
+            CreateTriggerElement(TriggerElementType.ParameterDef);
+        }
+
         private void CreateTriggerElement(TriggerElementType type)
         {
             int insertIndex = 0;
 
             if (type == TriggerElementType.LocalVariable)
             {
-                insertIndex = explorerElementTrigger.trigger.LocalVariables.Count();
-                Project.CurrentProject.Variables.CreateLocalVariable(explorerElementTrigger, insertIndex);
+                switch (explorerElementType)
+                {
+                    case ExplorerElementEnum.Trigger:
+                        insertIndex = explorerElement.trigger.LocalVariables.Count();
+                        break;
+                    case ExplorerElementEnum.ActionDefinition:
+                        insertIndex = explorerElement.actionDefinition.LocalVariables.Count();
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        insertIndex = explorerElement.conditionDefinition.LocalVariables.Count();
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        insertIndex = explorerElement.functionDefinition.LocalVariables.Count();
+                        break;
+                    default:
+                        break;
+                }
+
+                Project.CurrentProject.Variables.CreateLocalVariable(explorerElement, insertIndex);
+                return;
+            }
+            else if (type == TriggerElementType.ParameterDef)
+            {
+                ParameterDefinitionCollection parameterDefCollection = null;
+                switch (explorerElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        insertIndex = explorerElement.actionDefinition.LocalVariables.Count();
+                        parameterDefCollection = explorerElement.actionDefinition.Parameters;
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        insertIndex = explorerElement.conditionDefinition.LocalVariables.Count();
+                        parameterDefCollection = explorerElement.conditionDefinition.Parameters;
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        insertIndex = explorerElement.functionDefinition.LocalVariables.Count();
+                        parameterDefCollection = explorerElement.functionDefinition.Parameters;
+                        break;
+                    default:
+                        break;
+                }
+
+                parameterDefCollection.CreateParameterDefinition(explorerElement);
                 return;
             }
 
-            var menu = new TriggerElementMenuWindow(explorerElementTrigger, type);
+            var menu = new TriggerElementMenuWindow(explorerElement, type);
             menu.ShowDialog();
             ECA eca = menu.createdTriggerElement;
 
@@ -219,13 +300,13 @@ namespace GUI.Components
                 switch (type)
                 {
                     case TriggerElementType.Event:
-                        parent = explorerElementTrigger.trigger.Events;
+                        parent = explorerElement.trigger.Events;
                         break;
                     case TriggerElementType.Condition:
-                        parent = explorerElementTrigger.trigger.Conditions;
+                        parent = explorerElement.trigger.Conditions;
                         break;
                     case TriggerElementType.Action:
-                        parent = explorerElementTrigger.trigger.Actions;
+                        parent = explorerElement.trigger.Actions;
                         break;
                 }
             }
@@ -252,13 +333,13 @@ namespace GUI.Components
                 switch (type)
                 {
                     case TriggerElementType.Event:
-                        parent = explorerElementTrigger.trigger.Events;
+                        parent = explorerElement.trigger.Events;
                         break;
                     case TriggerElementType.Condition:
-                        parent = explorerElementTrigger.trigger.Conditions;
+                        parent = explorerElement.trigger.Conditions;
                         break;
                     case TriggerElementType.Action:
-                        parent = explorerElementTrigger.trigger.Actions;
+                        parent = explorerElement.trigger.Actions;
                         break;
                 }
 
@@ -270,13 +351,13 @@ namespace GUI.Components
 
             if (eca != null)
             {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElementTrigger, eca, parent, insertIndex);
+                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, eca, parent, insertIndex);
                 command.Execute();
                 eca.IsSelected = true;
             }
         }
 
-        public void RefreshBottomControls()
+        private void RefreshBottomControls()
         {
             EditorSettings settings = EditorSettings.Load();
             if (settings.triggerEditorMode == 1)
@@ -296,11 +377,20 @@ namespace GUI.Components
             textblockParams.Inlines.Clear();
             textblockDescription.Text = string.Empty;
 
-            if (grid.Children.Contains(variableControl))
+            if (grid.Children.Contains(_variableControl))
             {
-                variableControl.OnChange -= VariableControl_OnChange;
-                variableControl.Dispose();
-                grid.Children.Remove(variableControl);
+                _variableControl.OnChange -= OnChange;
+                _variableControl.Dispose();
+                grid.Children.Remove(_variableControl);
+            }
+            if (grid.Children.Contains(_returnTypeControl))
+            {
+                grid.Children.Remove(_returnTypeControl);
+            }
+            if (grid.Children.Contains(_parameterDefinitionControl))
+            {
+                _parameterDefinitionControl.OnChanged -= OnChange;
+                grid.Children.Remove(_parameterDefinitionControl);
             }
 
             if (triggerElement == null)
@@ -309,24 +399,39 @@ namespace GUI.Components
             if (triggerElement is ECA eca)
             {
                 ParamTextBuilder controllerTriggerTreeItem = new ParamTextBuilder();
-                var inlines = controllerTriggerTreeItem.GenerateParamText(explorerElementTrigger, eca);
+                var inlines = controllerTriggerTreeItem.GenerateParamText(explorerElement, eca);
                 textblockParams.Inlines.AddRange(inlines);
                 textblockDescription.Text = Locale.Translate(eca.function.value);
-                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(eca);
+                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(explorerElement, eca);
             }
             else if (triggerElement is LocalVariable localVar)
             {
-                variableControl = new VariableControl(localVar.variable);
-                variableControl.OnChange += VariableControl_OnChange;
-                grid.Children.Add(variableControl);
-                Grid.SetRow(variableControl, 3);
-                Grid.SetRowSpan(variableControl, 2);
+                _variableControl = new VariableControl(localVar.variable);
+                _variableControl.OnChange += OnChange;
+                grid.Children.Add(_variableControl);
+                Grid.SetRow(_variableControl, 3);
+                Grid.SetRowSpan(_variableControl, 2);
+            }
+            else if (triggerElement is ReturnType returnType)
+            {
+                _returnTypeControl = new(explorerElement.functionDefinition, returnType);
+                grid.Children.Add(_returnTypeControl);
+                Grid.SetRow(_returnTypeControl, 3);
+                Grid.SetRowSpan(_returnTypeControl, 2);
+            }
+            else if (triggerElement is ParameterDefinition paramDef)
+            {
+                _parameterDefinitionControl = new ParameterDefinitionControl(paramDef);
+                _parameterDefinitionControl.OnChanged += OnChange;
+                grid.Children.Add(_parameterDefinitionControl);
+                Grid.SetRow(_parameterDefinitionControl, 3);
+                Grid.SetRowSpan(_parameterDefinitionControl, 2);
             }
         }
 
-        private void VariableControl_OnChange()
+        private void OnChange()
         {
-            explorerElementTrigger.AddToUnsaved();
+            explorerElement.AddToUnsaved();
         }
 
         // TODO: There are two 'SelectedItemChanged' functions?
@@ -359,6 +464,11 @@ namespace GUI.Components
         {
             _IsDragging = true;
             var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
+            if (triggerElement is InvalidECA)
+            {
+                return;
+            }
+
             var treeItem = GetTreeViewItemFromTriggerElement(treeViewTriggers.SelectedItem as TriggerElement);
             dragItem = treeItem;
 
@@ -513,7 +623,7 @@ namespace GUI.Components
              * which could be an invalid trigger element location. */
             _treeItemParentDropTarget = null;
 
-            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElementTrigger, triggerElement, parent, insertIndex);
+            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElement, triggerElement, parent, insertIndex);
             command.Execute();
         }
 
@@ -690,7 +800,7 @@ namespace GUI.Components
         public void DeleteTriggerElement()
         {
             var selectedElement = treeViewTriggers.SelectedItem as TriggerElement;
-            if (selectedElement == null)
+            if (selectedElement == null || selectedElement is TriggerElementCollection || selectedElement is ParameterDefinitionCollection)
                 return;
 
             TriggerElementCollection elementsToDelete = new(selectedElement.ElementType);
@@ -705,28 +815,43 @@ namespace GUI.Components
                 return;
 
             // local variables
-            List<LocalVariable> inUse = new List<LocalVariable>();
-            elementsToDelete.Elements.ForEach(v =>
+            List<LocalVariable> localsInUse = new List<LocalVariable>();
+            List<ParameterDefinition> paramDefsInUse = new List<ParameterDefinition>();
+            elementsToDelete.Elements.ForEach(el =>
             {
-                var localVar = v as LocalVariable;
+                var localVar = el as LocalVariable;
+                var paramDef = el as ParameterDefinition;
                 if (localVar != null)
                 {
                     List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(localVar.variable);
                     if (refs.Count > 0)
-                        inUse.Add(localVar);
+                        localsInUse.Add(localVar);
                 }
-
+                else if (paramDef != null)
+                {
+                    List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(paramDef);
+                    if (refs.Count > 0)
+                        paramDefsInUse.Add(paramDef);
+                }
             });
-            if (inUse.Count > 0)
+            if (localsInUse.Count > 0)
             {
-                LocalsInUseWindow window = new LocalsInUseWindow(inUse);
+                InUseWindow window = new(localsInUse);
                 window.ShowDialog();
                 if (!window.OK)
                     return;
 
-                inUse.ForEach(v => Project.CurrentProject.Variables.RemoveLocalVariable(v));
-                TriggerValidator validator = new TriggerValidator(explorerElementTrigger);
+                localsInUse.ForEach(v => Project.CurrentProject.Variables.RemoveLocalVariable(v));
+                TriggerValidator validator = new TriggerValidator(explorerElement);
                 validator.RemoveInvalidReferences();
+            }
+            else if (paramDefsInUse.Count > 0)
+            {
+                InUseWindow window = new(paramDefsInUse);
+                window.ShowDialog();
+                if (!window.OK)
+                    return;
+
             }
 
             TriggerElement ToSelectAfterDeletion = null;
@@ -751,7 +876,7 @@ namespace GUI.Components
                 ToSelectAfterDeletion = parent.Elements[index];
             }
 
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElementTrigger, elementsToDelete);
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElement, elementsToDelete);
             command.Execute();
 
             if (ToSelectAfterDeletion != null)
@@ -773,7 +898,7 @@ namespace GUI.Components
                 if (triggerElement != null)
                     triggerElements.Elements.Add(triggerElement);
             }
-            Project.CurrentProject.Triggers.CopyTriggerElements(explorerElementTrigger, triggerElements, isCut);
+            Project.CurrentProject.CopyTriggerElements(explorerElement, triggerElements, isCut);
         }
 
         private void PasteTriggerElement()
@@ -799,23 +924,23 @@ namespace GUI.Components
             if (attachTarget.ElementType != CopiedElements.CopiedTriggerElements.ElementType) // reject if TriggerElement types don't match. 
                 return;
 
-            var pasted = Project.CurrentProject.Triggers.PasteTriggerElements(explorerElementTrigger, attachTarget, insertIndex);
+            var pasted = Project.CurrentProject.PasteTriggerElements(explorerElement, attachTarget, insertIndex);
         }
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
         {
-            var trigger = explorerElementTrigger.trigger;
-            explorerElementTrigger.IsEnabled = (bool)checkBoxIsEnabled.IsChecked;
+            var trigger = explorerElement.trigger;
+            explorerElement.IsEnabled = (bool)checkBoxIsEnabled.IsChecked;
         }
 
         private void checkBoxIsInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
-            explorerElementTrigger.IsInitiallyOn = (bool)checkBoxIsInitiallyOn.IsChecked;
+            explorerElement.IsInitiallyOn = (bool)checkBoxIsInitiallyOn.IsChecked;
         }
 
         private void checkBoxRunOnMapInit_Click(object sender, RoutedEventArgs e)
         {
-            explorerElementTrigger.trigger.RunOnMapInit = (bool)checkBoxRunOnMapInit.IsChecked;
+            explorerElement.trigger.RunOnMapInit = (bool)checkBoxRunOnMapInit.IsChecked;
         }
 
         private void checkBoxIsCustomScript_Click(object sender, RoutedEventArgs e)
@@ -827,7 +952,7 @@ namespace GUI.Components
                 dialog.ShowDialog();
                 if (!dialog.OK)
                 {
-                    explorerElementTrigger.trigger.Script = "";
+                    explorerElement.trigger.Script = "";
                     checkBoxIsCustomScript.IsChecked = true;
                     e.Handled = true;
                     return;
@@ -835,28 +960,28 @@ namespace GUI.Components
             }
 
             ShowTextEditor(isScript);
-            explorerElementTrigger.AddToUnsaved();
+            explorerElement.AddToUnsaved();
         }
 
         private void ShowTextEditor(bool doShow)
         {
-            explorerElementTrigger.trigger.IsScript = doShow;
+            explorerElement.trigger.IsScript = doShow;
             if (doShow)
             {
-                if (!explorerElementTrigger.trigger.IsScript)
+                if (!explorerElement.trigger.IsScript)
                 {
                     // Only generates a new script when the user has clicked the 'Custom Script' checkbox.
                     ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
-                    string script = scriptGenerator.ConvertGUIToJass(explorerElementTrigger, new List<string>());
-                    explorerElementTrigger.trigger.Script = script;
+                    string script = scriptGenerator.ConvertGUIToJass(explorerElement, new List<string>());
+                    explorerElement.trigger.Script = script;
                 }
 
-                TextEditor = new TextEditor(explorerElementTrigger.trigger.Script, Info.GetLanguage());
-                TextEditor.avalonEditor.Text = explorerElementTrigger.trigger.Script;
+                TextEditor = new TextEditor(explorerElement.trigger.Script, Info.GetLanguage());
+                TextEditor.avalonEditor.Text = explorerElement.trigger.Script;
                 TextEditor.avalonEditor.TextChanged += delegate
                 {
-                    explorerElementTrigger.trigger.Script = TextEditor.avalonEditor.Text;
-                    explorerElementTrigger.AddToUnsaved();
+                    explorerElement.trigger.Script = TextEditor.avalonEditor.Text;
+                    explorerElement.AddToUnsaved();
                 };
 
                 if (!grid.Children.Contains(TextEditor))
@@ -867,13 +992,13 @@ namespace GUI.Components
                 checkBoxList.Items.Remove(checkBoxRunOnMapInit);
                 checkBoxList.Items.Add(checkBoxRunOnMapInit);
 
-                explorerElementTrigger.trigger.RunOnMapInit = false;
-                for (int i = 0; i < explorerElementTrigger.trigger.Events.Count(); i++)
+                explorerElement.trigger.RunOnMapInit = false;
+                for (int i = 0; i < explorerElement.trigger.Events.Count(); i++)
                 {
-                    var _event = (ECA)explorerElementTrigger.trigger.Events.Elements[i];
+                    var _event = (ECA)explorerElement.trigger.Events.Elements[i];
                     if (_event.function.value == "MapInitializationEvent")
                     {
-                        explorerElementTrigger.trigger.RunOnMapInit = true;
+                        explorerElement.trigger.RunOnMapInit = true;
                         checkBoxRunOnMapInit.IsChecked = true;
                         break;
                     }
@@ -903,7 +1028,6 @@ namespace GUI.Components
                 return;
 
             rightClickedElement.IsSelected = true;
-            rightClickedElement.ContextMenu = contextMenu;
             var triggerElement = GetTriggerElementFromItem(rightClickedElement);
 
             if (triggerElement is TriggerElementCollection collection)
@@ -927,6 +1051,10 @@ namespace GUI.Components
                     menuFunctionEnabled.IsChecked = eca.IsEnabled;
                 }
             }
+
+            contextMenu.IsOpen = true;
+
+            e.Handled = true;
         }
 
         private void ContextMenuDisableNodeTypes(TriggerElement node)
@@ -1007,7 +1135,7 @@ namespace GUI.Components
             if (selectedElementEnd == null || triggerElement is not LocalVariable)
                 return;
 
-            triggerElement.RenameBoxVisibility = Visibility.Visible;
+            ShowRenameBox();
         }
 
         private void menuEvent_Click(object sender, RoutedEventArgs e)
@@ -1036,14 +1164,30 @@ namespace GUI.Components
                 return;
 
             var eca = selectedElementEnd as ECA;
-            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(explorerElementTrigger, eca);
+            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(explorerElement, eca);
             command.Execute();
         }
 
         private void textBoxComment_TextChanged(object sender, TextChangedEventArgs e)
         {
-            explorerElementTrigger.trigger.Comment = textBoxComment.Text;
-            explorerElementTrigger.AddToUnsaved();
+            switch (explorerElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    explorerElement.trigger.Comment = textBoxComment.Text;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    explorerElement.actionDefinition.Comment = textBoxComment.Text;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    explorerElement.conditionDefinition.Comment = textBoxComment.Text;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    explorerElement.functionDefinition.Comment = textBoxComment.Text;
+                    break;
+                default:
+                    break;
+            }
+            explorerElement.AddToUnsaved();
         }
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -1065,13 +1209,26 @@ namespace GUI.Components
 
             if (e.Key == Key.Enter && selected.IsRenaming)
             {
-                if (selected is LocalVariable)
+                if (selected is LocalVariable localVar)
                 {
-                    var localVar = selected as LocalVariable;
                     var variables = Project.CurrentProject.Variables;
                     try
                     {
-                        variables.RenameLocalVariable(explorerElementTrigger.trigger, localVar, localVar.RenameText);
+                        variables.RenameLocalVariable(explorerElement, localVar, localVar.RenameText);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dialogs.MessageBox dialog = new Dialogs.MessageBox("Rename local variable", ex.Message);
+                        dialog.ShowDialog();
+                    }
+                    selected.RenameBoxVisibility = Visibility.Hidden;
+                }
+                else if (selected is ParameterDefinition parameterDef)
+                {
+                    var parent = parameterDef.GetParent() as ParameterDefinitionCollection;
+                    try
+                    {
+                        parent.RenameParameterDefinition(explorerElement, parameterDef);
                     }
                     catch (Exception ex)
                     {
@@ -1088,7 +1245,7 @@ namespace GUI.Components
             }
             else if (e.Key == Key.F2)
             {
-                selectedElementEnd.RenameBoxVisibility = Visibility.Visible;
+                ShowRenameBox();
             }
             else if (e.Key == Key.Escape)
             {
@@ -1113,14 +1270,14 @@ namespace GUI.Components
             else
                 return;
 
-            TriggerElementMenuWindow window = new TriggerElementMenuWindow(explorerElementTrigger, elementType, eca);
+            TriggerElementMenuWindow window = new TriggerElementMenuWindow(explorerElement, elementType, eca);
             window.ShowDialog();
             ECA selected = window.createdTriggerElement;
 
             if (selected == null || selected.function.value == eca.function.value)
                 return;
 
-            CommandTriggerElementReplace command = new CommandTriggerElementReplace(explorerElementTrigger, eca, selected);
+            CommandTriggerElementReplace command = new CommandTriggerElementReplace(explorerElement, eca, selected);
             command.Execute();
         }
 
@@ -1133,9 +1290,18 @@ namespace GUI.Components
             e.Handled = true;
         }
 
-        public void OnRemoteChange()
+        private void ShowRenameBox()
         {
-            Refresh();
+            if(selectedElementEnd == null) return;
+
+            if (selectedElementEnd is LocalVariable || selectedElementEnd is ParameterDefinition)
+            {
+                selectedElementEnd.RenameBoxVisibility = Visibility.Visible;
+                var treeItem = GetTreeViewItemFromTriggerElement(selectedElementEnd);
+                var textBox = TreeViewItemHelper.FindChild<TextBox>(treeItem, "renameBox");
+                textBox.Focus();
+                textBox.SelectAll();
+            }
         }
 
         private void treeViewTriggers_ContextMenuOpening(object sender, ContextMenuEventArgs e)
@@ -1153,10 +1319,10 @@ namespace GUI.Components
             var triggerElement = selectedElementEnd;
 
             bool isECA = triggerElement is ECA;
-            bool isLocalVar = triggerElement is LocalVariable;
+            bool isRenameEnabled = triggerElement is LocalVariable || triggerElement is ParameterDefinition;
             menuFunctionEnabled.IsEnabled = isECA;
             menuFunctionEnabled.IsChecked = triggerElement.IsEnabled;
-            menuRename.IsEnabled = isLocalVar;
+            menuRename.IsEnabled = isRenameEnabled;
         }
 
         private void ExplorerElement_OnChanged()
@@ -1166,12 +1332,12 @@ namespace GUI.Components
 
         private void ExplorerElement_OnToggleEnable()
         {
-            checkBoxIsEnabled.IsChecked = explorerElementTrigger.IsEnabled;
+            checkBoxIsEnabled.IsChecked = explorerElement.IsEnabled;
         }
 
         private void ExplorerElement_OnToggleInitiallyOn()
         {
-            checkBoxIsInitiallyOn.IsChecked = explorerElementTrigger.IsInitiallyOn;
+            checkBoxIsInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
         }
 
 
@@ -1185,5 +1351,6 @@ namespace GUI.Components
                 selectedElementEnd.CancelRename();
             }
         }
+
     }
 }

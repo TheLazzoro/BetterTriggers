@@ -7,5 +7,6 @@
         Condition,
         LocalVariable,
         Action,
+        ParameterDef,
     }
 }

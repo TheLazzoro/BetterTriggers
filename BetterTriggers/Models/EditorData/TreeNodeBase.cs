@@ -13,6 +13,7 @@ namespace BetterTriggers.Models.EditorData
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private string _displayText;
+        private string _suffixText;
         private string _renameText;
         private string _category;
         private byte[] _icon = new byte[0];
@@ -37,6 +38,15 @@ namespace BetterTriggers.Models.EditorData
                 OnPropertyChanged();
             }
         }
+        public string SuffixText
+        {
+            get => _suffixText;
+            set
+            {
+                _suffixText = value;
+                OnPropertyChanged();
+            }
+        }
         public string RenameText
         {
             get => _renameText;
@@ -47,6 +57,18 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
+        public string CategoryStr
+        {
+            get => _category;
+            set
+            {
+                _category = value;
+                OnPropertyChanged();
+                var category = Category.Get(_category);
+                IconImage = category.Icon;
+            }
+        }
+       
         public byte[] IconImage
         {
             get => _icon;
@@ -163,14 +185,6 @@ namespace BetterTriggers.Models.EditorData
             }
         }
         public event Action OnToggleEnable;
-
-
-        public void SetCategory(string categoryStr)
-        {
-            this._category = categoryStr;
-            var category = Category.Get(_category);
-            _icon = category.Icon;
-        }
 
         public void CancelRename()
         {

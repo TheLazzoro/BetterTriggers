@@ -9,11 +9,18 @@ namespace GUI.Components.Dialogs
     public partial class MessageBox : Window
     {
         public bool OK = false;
-        
-        public MessageBox(string caption, string content)
+
+        public MessageBox(string caption, string content, Window? owner = null)
         {
             InitializeComponent();
-            this.Owner = MainWindow.GetMainWindow();
+            if(owner == null)
+            {
+                this.Owner = MainWindow.GetMainWindow();
+            }
+            else
+            {
+                this.Owner = owner;
+            }
 
             this.Title = caption;
             textBlockMessage.Text = content;

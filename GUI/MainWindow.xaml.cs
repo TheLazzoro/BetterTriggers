@@ -74,6 +74,9 @@ namespace GUI
             btnCreateTrigger.ToolTip = Locale.Translate(btnCreateTrigger.ToolTip as string);
             btnCreateScript.ToolTip = Locale.Translate(btnCreateScript.ToolTip as string);
             btnCreateVariable.ToolTip = Locale.Translate(btnCreateVariable.ToolTip as string);
+            btnCreateActionDef.ToolTip = Locale.Translate(btnCreateActionDef.ToolTip as string);
+            btnCreateConditionDef.ToolTip = Locale.Translate(btnCreateConditionDef.ToolTip as string);
+            btnCreateFunctionDef.ToolTip = Locale.Translate(btnCreateFunctionDef.ToolTip as string);
 
             btnCreateEvent.ToolTip = Locale.Translate(btnCreateEvent.ToolTip as string);
             btnCreateCondition.ToolTip = Locale.Translate(btnCreateCondition.ToolTip as string);
@@ -321,10 +324,20 @@ namespace GUI
             {
                 Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
                 EnableECAButtons(true);
+                EnableParameterButton(false);
+            }
+            else if(selectedItem.ElementType == ExplorerElementEnum.ActionDefinition
+                    || selectedItem.ElementType == ExplorerElementEnum.ConditionDefinition
+                    || selectedItem.ElementType == ExplorerElementEnum.FunctionDefinition)
+            {
+                Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
+                EnableECAButtons(true);
+                EnableParameterButton(true);
             }
             else
             {
                 EnableECAButtons(false);
+                EnableParameterButton(false);
             }
 
             if (!tabViewModel.Contains(selectedItem))
@@ -347,6 +360,9 @@ namespace GUI
                         editor = scriptControl;
                         break;
                     case ExplorerElementEnum.Trigger:
+                    case ExplorerElementEnum.ActionDefinition:
+                    case ExplorerElementEnum.ConditionDefinition:
+                    case ExplorerElementEnum.FunctionDefinition:
                         var triggerControl = new TriggerControl(selectedItem);
                         editor = triggerControl;
                         break;
@@ -400,7 +416,10 @@ namespace GUI
             tabItem.Close();
 
             if (tabControl.Items.Count == 0)
+            {
                 EnableECAButtons(false);
+                EnableParameterButton(false);
+            }
         }
 
         private void btnNewMap_Click(object sender, RoutedEventArgs e)
@@ -447,6 +466,21 @@ namespace GUI
         private void btnCreateVariable_Click(object sender, RoutedEventArgs e)
         {
             Project.CurrentProject.Variables.Create();
+        }
+
+        private void btnCreateActionDefinition_Click(object sender, RoutedEventArgs e)
+        {
+            Project.CurrentProject.ActionDefinitions.Create();
+        }
+
+        private void btnCreateConditionDefinition_Click(object sender, RoutedEventArgs e)
+        {
+            Project.CurrentProject.ConditionDefinitions.Create();
+        }
+
+        private void btnCreateFunctionDefinition_Click(object sender, RoutedEventArgs e)
+        {
+            Project.CurrentProject.FunctionDefinitions.Create();
         }
 
         private void btnCreateEvent_Click(object sender, RoutedEventArgs e)
@@ -697,6 +731,9 @@ namespace GUI
             btnCreateTrigger.IsEnabled = enable;
             btnCreateScript.IsEnabled = enable;
             btnCreateVariable.IsEnabled = enable;
+            btnCreateActionDef.IsEnabled = enable;
+            btnCreateConditionDef.IsEnabled = enable;
+            btnCreateFunctionDef.IsEnabled = enable;
             btnSaveScript.IsEnabled = enable;
             btnTestMap.IsEnabled = enable;
             btnBuildMap.IsEnabled = enable;
@@ -708,6 +745,11 @@ namespace GUI
             btnCreateCondition.IsEnabled = enable;
             btnCreateLocalVariable.IsEnabled = enable;
             btnCreateAction.IsEnabled = enable;
+        }
+
+        private void EnableParameterButton(bool enable)
+        {
+            btnCreateParameter.IsEnabled = enable;
         }
 
         private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -810,6 +852,7 @@ namespace GUI
             triggerExplorer = null;
             EnableToolbar(false);
             EnableECAButtons(false);
+            EnableParameterButton(false);
 
             Project.Close();
         }
@@ -939,6 +982,13 @@ namespace GUI
             var selected = tabControl.SelectedItem as TabItemBT;
             var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateLocalVariable();
+        }
+
+        private void btnCreateParameter_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
+            triggerControl.CreateParameter();
         }
 
         private void CommandBinding_Executed_ValidateTriggers(object sender, ExecutedRoutedEventArgs e)

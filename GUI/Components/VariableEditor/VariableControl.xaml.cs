@@ -94,7 +94,7 @@ namespace GUI.Components
             this.textBoxArraySize1.TextChanged += textBoxArraySize1_TextChanged;
         }
 
-        private void Variable_ValuesChanged()
+        private void Variable_ValuesChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             textblockInitialValue.Inlines.Clear();
             ParamTextBuilder paramTextBuilder = new ParamTextBuilder();

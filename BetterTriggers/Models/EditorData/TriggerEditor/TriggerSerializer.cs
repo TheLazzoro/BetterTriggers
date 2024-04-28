@@ -1,4 +1,8 @@
-﻿using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Models.EditorData.TriggerEditor;
+using BetterTriggers.Models.SaveableData;
+using Cake.Incubator.AssertExtensions;
+using ICSharpCode.Decompiler.DebugInfo;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +17,7 @@ namespace BetterTriggers.Models.EditorData
         /// <summary>
         /// Transforms a trigger into a saveable trigger.
         /// </summary>
-        public static string Serialize(Trigger trigger)
+        public static string SerializeTrigger(Trigger trigger)
         {
             SaveableData.Trigger_Saveable saveableTrig = new Trigger_Saveable();
             saveableTrig.Id = trigger.Id;
@@ -40,6 +44,44 @@ namespace BetterTriggers.Models.EditorData
             converted.IsTwoDimensions = variable.IsTwoDimensions;
             converted.ArraySize = variable.ArraySize;
             converted.InitialValue = ConvertParameter(variable.InitialValue);
+
+            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+        }
+
+        internal static string SerializeActionDefinition(ActionDefinition actionDefinition)
+        {
+            var converted = new ActionDefinition_Saveable();
+            converted.Id = actionDefinition.Id;
+            converted.Comment = actionDefinition.Comment;
+            converted.Parameters = ConvertParameterDefinitions(actionDefinition.Parameters);
+            converted.Actions = ConvertTriggerElements(actionDefinition.Actions.Elements);
+            converted.LocalVariables = ConvertTriggerElements(actionDefinition.LocalVariables.Elements);
+
+            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+        }
+
+        internal static string SerializeConditionDefinition(ConditionDefinition conditionDefinition)
+        {
+            var converted = new ConditionDefinition_Saveable();
+            converted.Id = conditionDefinition.Id;
+            converted.Comment = conditionDefinition.Comment;
+            converted.Parameters = ConvertParameterDefinitions(conditionDefinition.Parameters);
+            converted.Actions = ConvertTriggerElements(conditionDefinition.Actions.Elements);
+            converted.LocalVariables = ConvertTriggerElements(conditionDefinition.LocalVariables.Elements);
+
+            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+        }
+
+        internal static string SerializeFunctionDefinition(FunctionDefinition functionDefinition)
+        {
+            var converted = new FunctionDefinition_Saveable();
+            converted.Id = functionDefinition.Id;
+            converted.Comment = functionDefinition.Comment;
+            converted.ReturnType = functionDefinition.ReturnType.War3Type.Type;
+            converted.Category = functionDefinition.Category;
+            converted.Parameters = ConvertParameterDefinitions(functionDefinition.Parameters);
+            converted.Actions = ConvertTriggerElements(functionDefinition.Actions.Elements);
+            converted.LocalVariables = ConvertTriggerElements(functionDefinition.LocalVariables.Elements);
 
             return JsonConvert.SerializeObject(converted, Formatting.Indented);
         }
@@ -118,6 +160,20 @@ namespace BetterTriggers.Models.EditorData
                             SetVariable_Saveable SetVariable_Saveable = new();
                             ECA_Saveable = SetVariable_Saveable;
                             break;
+                        case ReturnStatement:
+                            ReturnStatement_Saveable ReturnStatement_Saveable = new();
+                            ECA_Saveable = ReturnStatement_Saveable;
+                            break;
+                        case ActionDefinitionRef thing:
+                            ActionDefinitionRef_Saveable ActionDefinitionRef_Saveable = new();
+                            ActionDefinitionRef_Saveable.ActionDefinitionId = thing.ActionDefinitionId;
+                            ECA_Saveable = ActionDefinitionRef_Saveable;
+                            break;
+                        case ConditionDefinitionRef thing:
+                            ConditionDefinitionRef_Saveable ConditionDefinitionRef_Saveable = new();
+                            ConditionDefinitionRef_Saveable.ConditionDefinitionId = thing.ConditionDefinitionId;
+                            ECA_Saveable = ConditionDefinitionRef_Saveable;
+                            break;
                         default:
                             break;
                     }
@@ -148,6 +204,23 @@ namespace BetterTriggers.Models.EditorData
 
             }
 
+            return list;
+        }
+
+        private static List<ParameterDefinition_Saveable> ConvertParameterDefinitions(ParameterDefinitionCollection paramCollection)
+        {
+            var list = new List<ParameterDefinition_Saveable>();
+            for (int i = 0; i < paramCollection.Count(); i++)
+            {
+                var paramDefinition = (ParameterDefinition)paramCollection.Elements[i];
+                var saveable = new ParameterDefinition_Saveable
+                {
+                    Id = paramDefinition.Id,
+                    Name = paramDefinition.Name,
+                    ReturnType = paramDefinition.ReturnType.Type
+                };
+                list.Add(saveable);
+            }
             return list;
         }
 
@@ -191,6 +264,11 @@ namespace BetterTriggers.Models.EditorData
                     triggerRef_Saveable.TriggerId = triggerRef.TriggerId;
                     converted_param = triggerRef_Saveable;
                     break;
+                case ParameterDefinitionRef paramRef:
+                    ParameterDefinitionRef_Saveable paramRef_Saveable = new();
+                    paramRef_Saveable.ParameterDefinitionId = paramRef.ParameterDefinitionId;
+                    converted_param = paramRef_Saveable;
+                    break;
                 case Value:
                     Value_Saveable value = new();
                     converted_param = value;
@@ -217,10 +295,10 @@ namespace BetterTriggers.Models.EditorData
             trigger.RunOnMapInit = saveableTrig.RunOnMapInit;
             trigger.Comment = saveableTrig.Comment;
 
-            trigger.Events         = ConvertTriggerElements_Deserialize(saveableTrig.Events, TriggerElementType.Event);
-            trigger.Conditions     = ConvertTriggerElements_Deserialize(saveableTrig.Conditions, TriggerElementType.Condition);
+            trigger.Events = ConvertTriggerElements_Deserialize(saveableTrig.Events, TriggerElementType.Event);
+            trigger.Conditions = ConvertTriggerElements_Deserialize(saveableTrig.Conditions, TriggerElementType.Condition);
             trigger.LocalVariables = ConvertTriggerElements_Deserialize(saveableTrig.LocalVariables, TriggerElementType.LocalVariable);
-            trigger.Actions        = ConvertTriggerElements_Deserialize(saveableTrig.Actions, TriggerElementType.Action);
+            trigger.Actions = ConvertTriggerElements_Deserialize(saveableTrig.Actions, TriggerElementType.Action);
 
             return trigger;
         }
@@ -237,6 +315,43 @@ namespace BetterTriggers.Models.EditorData
             variable.InitialValue = ConvertParameter_Deserialize(saveableVariable.InitialValue);
 
             return variable;
+        }
+
+        internal static ActionDefinition DeserializeActionDefinition(ExplorerElement explorerElement, ActionDefinition_Saveable saveableActionDef)
+        {
+            var converted = new ActionDefinition(explorerElement);
+            converted.explorerElement = explorerElement;
+            converted.Id = saveableActionDef.Id;
+            converted.Comment = saveableActionDef.Comment;
+            converted.Parameters = ConvertParameterDefinitions_Deserialize(saveableActionDef.Parameters);
+            converted.Actions = ConvertTriggerElements_Deserialize(saveableActionDef.Actions, TriggerElementType.Action);
+            converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableActionDef.LocalVariables, TriggerElementType.LocalVariable);
+
+            return converted;
+        }
+
+        internal static ConditionDefinition DeserializeConditionDefinition(ExplorerElement explorerElement, ConditionDefinition_Saveable saveableConditionDef)
+        {
+            var converted = new ConditionDefinition(explorerElement);
+            converted.Id = saveableConditionDef.Id;
+            converted.Comment = saveableConditionDef.Comment;
+            converted.Actions = ConvertTriggerElements_Deserialize(saveableConditionDef.Actions, TriggerElementType.Action);
+            converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableConditionDef.LocalVariables, TriggerElementType.LocalVariable);
+
+            return converted;
+        }
+
+        internal static FunctionDefinition DeserializeFunctionDefinition(FunctionDefinition_Saveable saveableFunctionDef)
+        {
+            var converted = new FunctionDefinition();
+            converted.Id = saveableFunctionDef.Id;
+            converted.Comment = saveableFunctionDef.Comment;
+            converted.Category = saveableFunctionDef.Category;
+            converted.ReturnType = new ReturnType(saveableFunctionDef.ReturnType);
+            converted.Actions = ConvertTriggerElements_Deserialize(saveableFunctionDef.Actions, TriggerElementType.Action);
+            converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableFunctionDef.LocalVariables, TriggerElementType.LocalVariable);
+
+            return converted;
         }
 
         private static TriggerElementCollection ConvertTriggerElements_Deserialize(List<TriggerElement_Saveable> elements, TriggerElementType type)
@@ -258,44 +373,44 @@ namespace BetterTriggers.Models.EditorData
                             eca = andMultiple;
                             break;
                         case EnumDestructablesInRectAllMultiple_Saveable thing:
-                            EnumDestructablesInRectAllMultiple EnumDestRect_Saveable = new();
-                            EnumDestRect_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = EnumDestRect_Saveable;
+                            EnumDestructablesInRectAllMultiple EnumDestRect = new();
+                            EnumDestRect.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumDestRect;
                             break;
                         case EnumDestructiblesInCircleBJMultiple_Saveable thing:
-                            EnumDestructiblesInCircleBJMultiple EnumDestCircle_Saveable = new();
-                            EnumDestCircle_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = EnumDestCircle_Saveable;
+                            EnumDestructiblesInCircleBJMultiple EnumDestCircle = new();
+                            EnumDestCircle.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumDestCircle;
                             break;
                         case EnumItemsInRectBJ_Saveable thing:
-                            EnumItemsInRectBJ EnumItemsInRectBJ_Saveable = new();
-                            EnumItemsInRectBJ_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = EnumItemsInRectBJ_Saveable;
+                            EnumItemsInRectBJ EnumItemsInRectBJ = new();
+                            EnumItemsInRectBJ.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = EnumItemsInRectBJ;
                             break;
                         case ForForceMultiple_Saveable thing:
-                            ForForceMultiple ForForceMultiple_Saveable = new();
-                            ForForceMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForForceMultiple_Saveable;
+                            ForForceMultiple ForForceMultiple = new();
+                            ForForceMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForForceMultiple;
                             break;
                         case ForGroupMultiple_Saveable thing:
-                            ForGroupMultiple ForGroupMultiple_Saveable = new();
-                            ForGroupMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForGroupMultiple_Saveable;
+                            ForGroupMultiple ForGroupMultiple = new();
+                            ForGroupMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForGroupMultiple;
                             break;
                         case ForLoopAMultiple_Saveable thing:
-                            ForLoopAMultiple ForLoopAMultiple_Saveable = new();
-                            ForLoopAMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForLoopAMultiple_Saveable;
+                            ForLoopAMultiple ForLoopAMultiple = new();
+                            ForLoopAMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopAMultiple;
                             break;
                         case ForLoopBMultiple_Saveable thing:
-                            ForLoopBMultiple ForLoopBMultiple_Saveable = new();
-                            ForLoopBMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForLoopBMultiple_Saveable;
+                            ForLoopBMultiple ForLoopBMultiple = new();
+                            ForLoopBMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopBMultiple;
                             break;
                         case ForLoopVarMultiple_Saveable thing:
-                            ForLoopVarMultiple ForLoopVarMultiple_Saveable = new();
-                            ForLoopVarMultiple_Saveable.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
-                            eca = ForLoopVarMultiple_Saveable;
+                            ForLoopVarMultiple ForLoopVarMultiple = new();
+                            ForLoopVarMultiple.Actions = ConvertTriggerElements_Deserialize(thing.Actions, TriggerElementType.Action);
+                            eca = ForLoopVarMultiple;
                             break;
                         case IfThenElse_Saveable thing:
                             IfThenElse IfThenElse_Saveable = new();
@@ -313,6 +428,20 @@ namespace BetterTriggers.Models.EditorData
                             SetVariable SetVariable = new();
                             eca = SetVariable;
                             break;
+                        case ReturnStatement_Saveable:
+                            ReturnStatement ReturnStatement = new();
+                            eca = ReturnStatement;
+                            break;
+                        case ActionDefinitionRef_Saveable thing:
+                            ActionDefinitionRef ActionDefinitionRef = new();
+                            ActionDefinitionRef.ActionDefinitionId = thing.ActionDefinitionId;
+                            eca = ActionDefinitionRef;
+                            break;
+                        case ConditionDefinitionRef_Saveable thing:
+                            ConditionDefinitionRef ConditionDefinitionRef = new();
+                            ConditionDefinitionRef.ConditionDefinitionId = thing.ConditionDefinitionId;
+                            eca = ConditionDefinitionRef;
+                            break;
                         default:
                             break;
                     }
@@ -324,21 +453,21 @@ namespace BetterTriggers.Models.EditorData
                 }
                 else if (element is LocalVariable_Saveable localVar)
                 {
-                    converted = new LocalVariable
+                    var variable = new Variable
+                    {
+                        _isLocal = true,
+                        Id = localVar.variable.Id,
+                        Name = localVar.variable.Name,
+                        ArraySize = localVar.variable.ArraySize,
+                        IsTwoDimensions = localVar.variable.IsTwoDimensions,
+                        IsArray = localVar.variable.IsArray,
+                        Type = localVar.variable.Type,
+                        InitialValue = ConvertParameter_Deserialize(localVar.variable.InitialValue)
+                    };
+                    converted = new LocalVariable(variable)
                     {
                         DisplayText = localVar.variable.Name,
                         ElementType = TriggerElementType.LocalVariable,
-                        variable = new Variable
-                        {
-                            _isLocal = true,
-                            Id = localVar.variable.Id,
-                            Name = localVar.variable.Name,
-                            ArraySize = localVar.variable.ArraySize,
-                            IsTwoDimensions = localVar.variable.IsTwoDimensions,
-                            IsArray = localVar.variable.IsArray,
-                            Type = localVar.variable.Type,
-                            InitialValue = ConvertParameter_Deserialize(localVar.variable.InitialValue)
-                        }
                     };
                 }
 
@@ -348,6 +477,24 @@ namespace BetterTriggers.Models.EditorData
             }
 
             return collection;
+        }
+
+        private static ParameterDefinitionCollection ConvertParameterDefinitions_Deserialize(List<ParameterDefinition_Saveable> parameter_Saveables)
+        {
+            var paramCollection = new ParameterDefinitionCollection(TriggerElementType.ParameterDef);
+            for (int i = 0; i < parameter_Saveables.Count; i++)
+            {
+                var saved = parameter_Saveables[i];
+                var paramDef = new ParameterDefinition
+                {
+                    Id = saved.Id,
+                    ReturnType = War3Type.Get(saved.ReturnType),
+                    ElementType = TriggerElementType.ParameterDef,
+                    Name = saved.Name,
+                };
+                paramDef.SetParent(paramCollection, i);
+            }
+            return paramCollection;
         }
 
         private static Function ConvertFunction_Deserialize(Function_Saveable function_Saveable)
@@ -389,6 +536,11 @@ namespace BetterTriggers.Models.EditorData
                     TriggerRef triggerRef = new();
                     triggerRef.TriggerId = triggerRef_Saveable.TriggerId;
                     converted_param = triggerRef;
+                    break;
+                case ParameterDefinitionRef_Saveable paramDefRef_Saveable:
+                    ParameterDefinitionRef paramRef = new();
+                    paramRef.ParameterDefinitionId = paramDefRef_Saveable.ParameterDefinitionId;
+                    converted_param = paramRef;
                     break;
                 case Value_Saveable:
                     Value value = new();

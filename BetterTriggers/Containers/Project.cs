@@ -5,6 +5,7 @@ using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using ICSharpCode.Decompiler.Metadata;
 using Newtonsoft.Json;
+using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,6 +33,9 @@ namespace BetterTriggers.Containers
         public Variables Variables { get; private set; }
         public Triggers Triggers { get; private set; }
         public Scripts Scripts { get; private set; }
+        public ActionDefinitions ActionDefinitions { get; private set; }
+        public ConditionDefinitions ConditionDefinitions { get; private set; }
+        public FunctionDefinitions FunctionDefinitions { get; private set; }
         public References References { get; private set; }
         public UnsavedFiles UnsavedFiles { get; private set; }
         public CommandManager CommandManager { get; private set; }
@@ -51,6 +55,9 @@ namespace BetterTriggers.Containers
             Variables = new();
             Triggers = new();
             Scripts = new();
+            ActionDefinitions = new();
+            ConditionDefinitions = new();
+            FunctionDefinitions = new();
             References = new();
             UnsavedFiles = new();
             CommandManager = new();
@@ -576,21 +583,37 @@ namespace BetterTriggers.Containers
         /// <param name="element"></param>
         public void RemoveElementFromContainer(ExplorerElement element)
         {
-            if (element.ElementType == ExplorerElementEnum.Folder)
+            switch (element.ElementType)
             {
-                for (int i = 0; i < element.GetExplorerElements().Count; i++)
-                {
-                    var subElement = element.GetExplorerElements()[i];
-                    RemoveElementFromContainer(subElement);
-                }
-                Folders.Remove(element);
+                case ExplorerElementEnum.Folder:
+                    for (int i = 0; i < element.GetExplorerElements().Count; i++)
+                    {
+                        var subElement = element.GetExplorerElements()[i];
+                        RemoveElementFromContainer(subElement);
+                    }
+                    Folders.Remove(element);
+                    break;
+                case ExplorerElementEnum.GlobalVariable:
+                    Variables.Remove(element);
+                    break;
+                case ExplorerElementEnum.Script:
+                    Scripts.Remove(element);
+                    break;
+                case ExplorerElementEnum.Trigger:
+                    Triggers.Remove(element);
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    ActionDefinitions.Remove(element);
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    ConditionDefinitions.Remove(element);
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    FunctionDefinitions.Remove(element);
+                    break;
+                default:
+                    break;
             }
-            else if (element.ElementType == ExplorerElementEnum.Trigger)
-                Triggers.Remove(element);
-            else if (element.ElementType == ExplorerElementEnum.Script)
-                Scripts.Remove(element);
-            else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
-                Variables.Remove(element);
         }
 
         public void CopyExplorerElement(ExplorerElement explorerElement, bool isCut = false)
@@ -605,6 +628,27 @@ namespace BetterTriggers.Containers
                 CopiedElements.CutExplorerElement = explorerElement;
             else
                 CopiedElements.CutExplorerElement = null;
+        }
+
+        public void CopyTriggerElements(ExplorerElement copiedFrom, TriggerElementCollection copiedCollection, bool isCut = false)
+        {
+            var type = copiedCollection.Elements[0].ElementType;
+            TriggerElementCollection copiedItems = new TriggerElementCollection(type);
+            for (int i = 0; i < copiedCollection.Count(); i++)
+            {
+                var element = copiedCollection.Elements[i];
+                copiedItems.Elements.Add(element.Clone());
+            }
+
+            CopiedElements.CopiedTriggerElements = copiedItems;
+
+            if (isCut)
+            {
+                CopiedElements.CutTriggerElements = copiedCollection;
+                CopiedElements.CopiedFromTrigger = copiedFrom;
+            }
+            else
+                CopiedElements.CutTriggerElements = null;
         }
 
         /// <summary>
@@ -656,7 +700,7 @@ namespace BetterTriggers.Containers
 
                 // Adjusts local variable ids
                 List<int> blacklistedIds = new List<int>();
-                var varRefs = Triggers.GetVariableRefsFromTrigger(pasted);
+                var varRefs = VariableRef.GetVariableRefsFromTrigger(pasted);
                 pasted.trigger.LocalVariables.Elements.ForEach(v =>
                 {
                     var lv = (LocalVariable)v;
@@ -692,6 +736,84 @@ namespace BetterTriggers.Containers
             }
 
             AddElementToContainer(pasted);
+        }
+
+
+        /// <returns>A list of pasted elements.</returns>
+        public TriggerElementCollection PasteTriggerElements(ExplorerElement destinationTrigger, TriggerElement parentList, int insertIndex)
+        {
+            var copied = CopiedElements.CopiedTriggerElements;
+            var pasted = new TriggerElementCollection(copied.ElementType);
+            for (int i = 0; i < copied.Count(); i++)
+            {
+                if (copied.Elements[i] is ECA eca)
+                {
+                    pasted.Elements.Add(eca.Clone());
+                }
+                else if (copied.Elements[i] is LocalVariable localVar)
+                {
+                    var clone = localVar.Clone();
+                    var variables = this.Variables;
+                    clone.variable.Id = variables.GenerateId();
+                    switch (destinationTrigger.ElementType)
+                    {
+                        case ExplorerElementEnum.Trigger:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.trigger.LocalVariables, clone.variable.Name);
+                            break;
+                        case ExplorerElementEnum.ActionDefinition:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.actionDefinition.LocalVariables, clone.variable.Name);
+                            break;
+                        case ExplorerElementEnum.ConditionDefinition:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.conditionDefinition.LocalVariables, clone.variable.Name);
+                            break;
+                        case ExplorerElementEnum.FunctionDefinition:
+                            clone.variable.Name = variables.GenerateLocalName(destinationTrigger.functionDefinition.LocalVariables, clone.variable.Name);
+                            break;
+                        default:
+                            break;
+                    }
+                    clone.DisplayText = clone.variable.Name;
+                    pasted.Elements.Add(clone);
+                    variables.AddLocalVariable(clone);
+                }
+                else if (copied.Elements[i] is ParameterDefinition paramDefinition)
+                {
+                    pasted.Elements.Add(paramDefinition.Clone());
+                }
+            }
+
+            if (CopiedElements.CutTriggerElements == null)
+            {
+                CommandTriggerElementPaste command = new CommandTriggerElementPaste(destinationTrigger, pasted, parentList, insertIndex);
+                command.Execute();
+            }
+            else
+            {
+                CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
+                command.Execute();
+            }
+
+            if (pasted.Elements.Count > 0)
+                pasted.Elements[pasted.Elements.Count - 1].IsSelected = true;
+
+            return pasted;
+        }
+
+        /// <returns>A list of every function in the entire project. This also includes inner functions in parameters.</returns>
+        public List<Function> GetFunctionsAll()
+        {
+            var triggers = Triggers.GetAll();
+            var actionDefinitions = ActionDefinitions.GetAll();
+            var conditionDefinitions = ConditionDefinitions.GetAll();
+            var functionDefinitions = FunctionDefinitions.GetAll();
+
+            List<Function> functions = new List<Function>();
+            triggers.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+            actionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+            conditionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+            functionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+
+            return functions;
         }
 
         /// <summary>
@@ -753,6 +875,64 @@ namespace BetterTriggers.Containers
 
             return list;
         }
+
+        /// <summary>
+        /// Returns all TriggerElements in the entire project.
+        /// </summary>
+        public List<TriggerElement> GetAllTriggerElements()
+        {
+            var triggerElements = new List<TriggerElement>();
+
+            var explorerElements = GetAllExplorerElements();
+            explorerElements.ForEach(ex =>
+            {
+                triggerElements.AddRange(GetTriggerElementsFromExplorerElement(ex));
+            });
+
+            return triggerElements;
+        }
+
+        public List<TriggerElement> GetTriggerElementsFromExplorerElement(ExplorerElement ex)
+        {
+            var triggerElements = new List<TriggerElement>();
+
+            switch (ex.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.Events));
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.Conditions));
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.LocalVariables));
+                    triggerElements.AddRange(GetAllTriggerElements(ex.trigger.Actions));
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.actionDefinition.Actions));
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.conditionDefinition.Actions));
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    triggerElements.AddRange(GetAllTriggerElements(ex.functionDefinition.Actions));
+                    break;
+                default:
+                    break;
+            }
+
+            return triggerElements;
+        }
+
+        private List<TriggerElement> GetAllTriggerElements(TriggerElement parent)
+        {
+            var list = new List<TriggerElement>();
+            parent.Elements.ForEach(t =>
+            {
+                list.Add(t);
+                if (t.Elements != null && t.Elements.Count > 0)
+                    list.AddRange(GetAllTriggerElements(t));
+            });
+
+            return list;
+        }
+
 
         public static bool VerifyMapPath(string path)
         {

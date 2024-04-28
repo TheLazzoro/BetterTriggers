@@ -15,16 +15,24 @@ using System.Windows.Shapes;
 
 namespace GUI.Components.TriggerEditor
 {
-    public partial class LocalsInUseWindow : Window
+    public partial class InUseWindow : Window
     {
         public bool OK;
 
-        public LocalsInUseWindow(List<LocalVariable> localVariables)
+        public InUseWindow(List<LocalVariable> localVariables)
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
 
             localVariables.ForEach(v => listView.Items.Add(v.variable.Name));
+        }
+
+        public InUseWindow(List<ParameterDefinition> paramDefs)
+        {
+            this.Owner = MainWindow.GetMainWindow();
+            InitializeComponent();
+
+            paramDefs.ForEach(v => listView.Items.Add(v.Name));
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

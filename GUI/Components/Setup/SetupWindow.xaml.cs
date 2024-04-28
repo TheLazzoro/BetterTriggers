@@ -1,6 +1,8 @@
 ﻿using BetterTriggers;
 using BetterTriggers.WorldEdit;
+using GUI.Components.Dialogs;
 using GUI.Components.Loading;
+using System;
 using System.Windows;
 
 namespace GUI.Components.Setup
@@ -24,7 +26,7 @@ namespace GUI.Components.Setup
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                if(dialog.SelectedPath != "")
+                if (dialog.SelectedPath != "")
                     textBoxRoot.Text = dialog.SelectedPath;
             }
         }
@@ -35,14 +37,22 @@ namespace GUI.Components.Setup
             settings.war3root = textBoxRoot.Text;
             EditorSettings.Save(settings);
 
-            if(Casc.Load())
+            bool validCasc;
+            string errorMsg;
+            (validCasc, errorMsg) = Casc.Load();
+            if (validCasc)
             {
                 LoadingCascWindow window = new LoadingCascWindow();
                 window.Show();
                 Close();
             }
             else
+            {
+                string hint = $"{Environment.NewLine}{Environment.NewLine}Hint: If this is the correct game directory, you can simply launch WC3, then close the game and re-launch Better Triggers. Sometimes a WC3 config file needs to be regenerated.";
+                var messageBox = new Dialogs.MessageBox("Error", "Error: " + errorMsg + hint, this);
+                messageBox.ShowDialog();
                 lblError.Visibility = Visibility.Visible;
+            }
         }
     }
 }
