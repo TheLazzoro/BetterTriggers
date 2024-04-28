@@ -47,7 +47,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Rectangle Grid.Row="1" Grid.RowSpan="9" Fill="#333"/>
+                    <Rectangle Grid.Row="1" Grid.RowSpan="9" Fill="{DynamicResource BackgroundDark}"/>
                     <Label x:Name="lblUnits" Content="Units" Grid.Row="1" Foreground="{DynamicResource TextBrush2}" />
                     <ItemsControl x:Name="itemControlUnits" Grid.Row="2" Grid.ColumnSpan="3" >
                         <ItemsControl.ItemsPanel>

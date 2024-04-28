@@ -14,6 +14,7 @@ namespace BetterTriggers.Models.EditorData
 
         public LocalVariable(Variable variable)
         {
+            ElementType = TriggerElementType.LocalVariable;
             this.variable = variable;
             variable._isLocal = true;
             variable.IsArray = false; // forces locals to be non-arrays

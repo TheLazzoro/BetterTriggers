@@ -427,6 +427,9 @@ namespace BetterTriggers.Models.EditorData
         /// </summary>
         public void Save()
         {
+            if (ElementType == ExplorerElementEnum.Root)
+                return;
+
             if (!Directory.Exists(Path.GetDirectoryName(this.path))) // Edge case when a folder containing the file was deleted.
             {
                 return;

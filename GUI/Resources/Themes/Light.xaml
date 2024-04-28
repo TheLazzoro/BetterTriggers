@@ -10,7 +10,7 @@
     <Color x:Key="backgroundDarkColor">#fff</Color>
     <Color x:Key="backgroundDarkerColor">#eee</Color>
     <Color x:Key="backgroundDarkestColor">#aaa</Color>
-    <Color x:Key="backgroundLightColor">#ccc</Color>
+    <Color x:Key="backgroundLightColor">#ddd</Color>
     <Color x:Key="backgroundPanelColor">#eee</Color>
     <Color x:Key="backgroundMenuColor">#eee</Color>
     <Color x:Key="topMenuBackgroundColor">#eee</Color>
