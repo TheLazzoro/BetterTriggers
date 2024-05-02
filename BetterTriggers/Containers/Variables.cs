@@ -50,7 +50,7 @@ namespace BetterTriggers.Containers
             TriggerElementCollection localVariables = explorerElement.GetLocalVariables();
 
             Variable variable = new Variable();
-            variable.Type = "integer";
+            variable.War3Type = War3Type.Get("integer");
             variable.Name = GenerateLocalName(localVariables);
             variable.Id = GenerateId();
             variable.ArraySize = new int[] { 1, 1 };
@@ -94,7 +94,7 @@ namespace BetterTriggers.Containers
             Variable variable = ExplorerElement.variable;
             if (variable.InitialValue is Value value)
             {
-                bool dataExists = CustomMapData.ReferencedDataExists(value, variable.Type);
+                bool dataExists = CustomMapData.ReferencedDataExists(value, variable.War3Type.Type);
                 if (!dataExists)
                 {
                     variable.InitialValue = new Parameter();
@@ -125,7 +125,7 @@ namespace BetterTriggers.Containers
 
             for (int i = 0; i < all.Count; i++)
             {
-                if (returnType != "AnyGlobal" && all[i].Type != returnType)
+                if (returnType != "AnyGlobal" && all[i].War3Type.Type != returnType)
                     continue;
 
                 var variable = all[i];

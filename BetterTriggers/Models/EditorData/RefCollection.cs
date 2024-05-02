@@ -14,15 +14,15 @@ namespace BetterTriggers.Models.EditorData
     /// </summary>
     internal class RefCollection
     {
+        public List<ExplorerElement> TriggersToUpdate { get; private set; } = new();
         List<RefParent> refParents = new List<RefParent>();
-        List<ExplorerElement> triggersToUpdate = new();
 
         internal RefCollection(Variable variable)
         {
             CreateVarRefs(variable);
         }
 
-        internal RefCollection(Variable variable, string newType)
+        internal RefCollection(Variable variable, War3Type newType)
         {
             CreateVarRefs(variable, newType);
         }
@@ -55,9 +55,9 @@ namespace BetterTriggers.Models.EditorData
                 CreateTrigRefs(explorerElement.trigger);
         }
 
-        private void CreateVarRefs(Variable variable, string newType = null)
+        private void CreateVarRefs(Variable variable, War3Type newType = null)
         {
-            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(variable);
+            this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(variable);
             var functions = Project.CurrentProject.GetFunctionsAll();
             functions.ForEach(f =>
             {
@@ -77,7 +77,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateTrigRefs(Trigger trigger)
         {
-            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(trigger);
+            this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(trigger);
             var functions = Project.CurrentProject.GetFunctionsAll();
             functions.ForEach(f =>
             {
@@ -97,7 +97,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateFunctionDefRefs(FunctionDefinition functionDef)
         {
-            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(functionDef);
+            this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(functionDef);
             var functions = Project.CurrentProject.GetFunctionsAll();
             functions.ForEach(f =>
             {
@@ -117,7 +117,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateConditionDefRefs(ConditionDefinition conditionDef)
         {
-            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(conditionDef);
+            this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(conditionDef);
             var functions = Project.CurrentProject.GetFunctionsAll();
             var triggerElements = Project.CurrentProject.GetAllTriggerElements();
 
@@ -136,7 +136,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void CreateParameterDefRefs(ParameterDefinition parameterDef)
         {
-            this.triggersToUpdate = Project.CurrentProject.References.GetReferrers(parameterDef);
+            this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(parameterDef);
             var functions = Project.CurrentProject.GetFunctionsAll();
 
             functions.ForEach(f =>
@@ -158,18 +158,18 @@ namespace BetterTriggers.Models.EditorData
         internal void RemoveRefsFromParent()
         {
             refParents.ForEach(r => r.RemoveFromParent());
-            triggersToUpdate.ForEach(t => t.Notify());
+            TriggersToUpdate.ForEach(t => t.Notify());
         }
 
         internal void AddRefsToParent()
         {
             refParents.ForEach(r => r.AddToParent());
-            triggersToUpdate.ForEach(t => t.Notify());
+            TriggersToUpdate.ForEach(t => t.Notify());
         }
 
         internal void Notify()
         {
-            triggersToUpdate.ForEach(t => t.Notify());
+            TriggersToUpdate.ForEach(t => t.Notify());
         }
     }
 
@@ -179,7 +179,7 @@ namespace BetterTriggers.Models.EditorData
         Parameter setvarOldValue; // hack for 'SetVariable' value undo/redo
         Function parent;
         int index;
-        internal RefParent(Parameter parameter, Function parent, string newType = null)
+        internal RefParent(Parameter parameter, Function parent, War3Type newType = null)
         {
             this.parameter = parameter;
             this.parent = parent;
@@ -188,7 +188,7 @@ namespace BetterTriggers.Models.EditorData
             {
                 var varRef = (VariableRef)parameter;
                 var variable = Project.CurrentProject.Variables.GetByReference(varRef);
-                if (variable.Type != newType)
+                if (variable.War3Type.Type != newType.Type)
                     setvarOldValue = parent.parameters[1];
             }
         }

@@ -52,7 +52,7 @@ namespace BetterTriggers.Commands
                     var setVarParamRefOld = oldParameter as VariableRef;
                     var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef, explorerElement);
                     var oldVar = Project.CurrentProject.Variables.GetByReference(setVarParamRefOld, explorerElement);
-                    if (!Types.AreTypesEqual(newVar.Type, oldVar.Type))
+                    if (!Types.AreTypesEqual(newVar.War3Type.Type, oldVar.War3Type.Type))
                     {
                         doResetValue = true;
                     }
@@ -69,7 +69,7 @@ namespace BetterTriggers.Commands
                     var setVarParamRef = setVarParam as VariableRef;
                     var newVar = Project.CurrentProject.Variables.GetByReference(setVarParamRef, explorerElement);
                     var valueReturnType = TriggerData.GetReturnType(value.value);
-                    if (valueReturnType != newVar.Type)
+                    if (valueReturnType != newVar.War3Type.Type)
                     {
                         doResetValue = true;
                     }

@@ -24,7 +24,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void Variable_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            var type = Types.Get(variable.Type);
+            var type = Types.Get(variable.War3Type.Type);
 
             DisplayText = variable.Name;
             SuffixText = $"<{Locale.Translate(type.DisplayName)}>";

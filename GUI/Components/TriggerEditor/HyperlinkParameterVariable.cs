@@ -27,7 +27,7 @@ namespace GUI.Components.TriggerEditor
 
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
-            var window = new ParameterWindow(parameter, variable.Type);
+            var window = new ParameterWindow(parameter, variable.War3Type.Type);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.

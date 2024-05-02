@@ -244,10 +244,10 @@ end
             for (int i = 0; i < constants.Count; i++)
             {
                 var constant = constants[i];
-                string varType = Types.GetBaseType(constant.Type);
+                string varType = Types.GetBaseType(constant.War3Type.Type);
                 if (language == ScriptLanguage.Lua)
                     varType = "";
-                script.Append($"{varType} {constant.Name} = {GetGlobalsStartValue(Types.GetBaseType(constant.Type))}{newline}");
+                script.Append($"{varType} {constant.Name} = {GetGlobalsStartValue(Types.GetBaseType(constant.War3Type.Type))}{newline}");
             }
             script.Append(endglobals + newline);
 
@@ -258,7 +258,7 @@ end
                 Variable variable = variables[i].variable.Clone();
 
                 InitGlobals.Add(variable);
-                string varType = Types.GetBaseType(variable.Type);
+                string varType = Types.GetBaseType(variable.War3Type.Type);
                 string array = string.Empty;
                 string dimensions = string.Empty;
                 if (language == ScriptLanguage.Jass)
@@ -335,12 +335,12 @@ end
                 if (variable.InitialValue is Value)
                 {
                     Value value = variable.InitialValue as Value;
-                    if (variable.Type == "unit")
-                        generatedVarNames.TryAdd("gg_unit_" + value.value, new Tuple<Parameter, string>(value, variable.Type));
-                    else if (variable.Type == "destructable")
-                        generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, variable.Type));
-                    else if (variable.Type == "item")
-                        generatedVarNames.TryAdd("gg_item_" + value.value, new Tuple<Parameter, string>(value, variable.Type));
+                    if (variable.War3Type.Type == "unit")
+                        generatedVarNames.TryAdd("gg_unit_" + value.value, new Tuple<Parameter, string>(value, variable.War3Type.Type));
+                    else if (variable.War3Type.Type == "destructable")
+                        generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, variable.War3Type.Type));
+                    else if (variable.War3Type.Type == "item")
+                        generatedVarNames.TryAdd("gg_item_" + value.value, new Tuple<Parameter, string>(value, variable.War3Type.Type));
                 }
             }
 
@@ -429,9 +429,9 @@ end
                     }
                 }
 
-                string initialValue = ConvertParametersToJass(variable.InitialValue, variable.Type, new PreActions() /* hack */ );
+                string initialValue = ConvertParametersToJass(variable.InitialValue, variable.War3Type.Type, new PreActions() /* hack */ );
                 if (string.IsNullOrEmpty(initialValue))
-                    initialValue = GetTypeInitialValue(variable.Type);
+                    initialValue = GetTypeInitialValue(variable.War3Type.Type);
 
                 if (initialValue == "null")
                     continue;
@@ -538,7 +538,7 @@ end
             script.Append($"bt_genericFrameEvent = 0.0 {newline}"); // HACK. Hardcoded
             realVarEventVariables.ToList().ForEach(v =>
             {
-                script.Append($"{v.Value.GetIdentifierName()} = {GetGlobalsStartValue(v.Value.Type)}{newline}");
+                script.Append($"{v.Value.GetIdentifierName()} = {GetGlobalsStartValue(v.Value.War3Type.Type)}{newline}");
             });
             script.Append($"end){newline}");
             script.Append($"{newline}");
@@ -1694,8 +1694,8 @@ end
                 var v = localVar.variable;
                 localVariables.Add(v);
                 string name = v.GetIdentifierName();
-                string initialValue = ConvertParametersToJass(v.InitialValue, v.Type, new PreActions());
-                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(v.Type) : string.Empty;
+                string initialValue = ConvertParametersToJass(v.InitialValue, v.War3Type.Type, new PreActions());
+                string type = language == ScriptLanguage.Jass ? Types.GetBaseType(v.War3Type.Type) : string.Empty;
                 initialValue = string.IsNullOrEmpty(initialValue) ? $" = {GetTypeInitialValue(type)}" : initialValue.Insert(0, " = ");
 
 
@@ -1704,7 +1704,7 @@ end
 
                 Variable globalCarry = new Variable();
                 globalCarry.Name = $"{name}_c_{elementId}";
-                globalCarry.Type = type;
+                globalCarry.War3Type = War3Type.Get(type);
                 globalCarry.IsArray = localVar.variable.IsArray;
                 globalLocalCarries.Add(globalCarry);
                 sb.Insert(0, $"{endglobals}{newline}");
@@ -1932,7 +1932,7 @@ end
             {
                 s.Append($"\t{set} ");
                 s.Append($"{v.GetIdentifierName()}");
-                s.Append($" = {GetGlobalsStartValue(Types.GetBaseType(v.Type))}");
+                s.Append($" = {GetGlobalsStartValue(Types.GetBaseType(v.War3Type.Type))}");
                 s.Append($"{newline}");
             });
             return s.ToString();

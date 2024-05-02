@@ -42,7 +42,7 @@ namespace GUI.Components.VariableList
             var variables = Project.CurrentProject.Variables.GetGlobals();
             variables.ForEach(v =>
             {
-                var item = new ListViewItem { Content = v.variable.Name, Tag = v.variable };
+                var item = new ListViewItem { Content = v.variable.Name, Tag = v };
                 objects.Add(new Searchable()
                 {
                     Object = item,
@@ -63,7 +63,8 @@ namespace GUI.Components.VariableList
             if (selected == null)
                 return;
 
-            VariableControl control = new VariableControl(selected.Tag as Variable);
+            ExplorerElement ex = (ExplorerElement)selected.Tag;
+            VariableControl control = new VariableControl(ex, ex.variable);
             if(this.control != null)
                 grid.Children.Remove(this.control);
             this.control = control;

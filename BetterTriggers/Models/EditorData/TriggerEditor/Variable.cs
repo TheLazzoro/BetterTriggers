@@ -21,12 +21,12 @@ namespace BetterTriggers.Models.EditorData
                 OnPropertyChanged();
             }
         }
-        public string Type
+        public War3Type War3Type
         {
-            get { return _type; }
+            get { return _war3Type; }
             set
             {
-                _type = value;
+                _war3Type = value;
                 OnPropertyChanged();
             }
         }
@@ -61,7 +61,7 @@ namespace BetterTriggers.Models.EditorData
 
         public bool SuppressChangedEvent = false;
         private string _name;
-        private string _type;
+        private War3Type _war3Type;
         private bool _isArray;
         private bool _isTwoDimensions;
         private Parameter _initialValue;
@@ -75,7 +75,7 @@ namespace BetterTriggers.Models.EditorData
             Variable cloned = new Variable();
             cloned.Id = Id;
             cloned.Name = new string(Name);
-            cloned.Type = new string(Type);
+            cloned.War3Type = War3Type;
             cloned.IsArray = IsArray;
             cloned.IsTwoDimensions = IsTwoDimensions;
             cloned.ArraySize = new int[2] { ArraySize[0], ArraySize[1] };

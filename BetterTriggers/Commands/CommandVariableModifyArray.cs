@@ -28,6 +28,7 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             project.References.UpdateReferences(variable);
             variable.IsArray = isArray;
+            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
 
             project.CommandManager.AddCommand(this);
         }
@@ -37,6 +38,7 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(variable);
             variable.IsArray = isArray;
+            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
         public void Undo()
@@ -44,6 +46,7 @@ namespace BetterTriggers.Commands
             variable.IsArray = !isArray;
             refCollection.AddRefsToParent();
             Project.CurrentProject.References.UpdateReferences(variable);
+            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
         public string GetCommandName()

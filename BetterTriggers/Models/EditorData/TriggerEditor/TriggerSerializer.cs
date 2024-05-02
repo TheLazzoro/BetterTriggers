@@ -39,7 +39,7 @@ namespace BetterTriggers.Models.EditorData
             Variable_Saveable converted = new Variable_Saveable();
             converted.Id = variable.Id;
             converted.Name = variable.Name;
-            converted.Type = variable.Type;
+            converted.Type = variable.War3Type.Type;
             converted.IsArray = variable.IsArray;
             converted.IsTwoDimensions = variable.IsTwoDimensions;
             converted.ArraySize = variable.ArraySize;
@@ -193,7 +193,7 @@ namespace BetterTriggers.Models.EditorData
                             ArraySize = localVar.variable.ArraySize,
                             IsTwoDimensions = localVar.variable.IsTwoDimensions,
                             IsArray = localVar.variable.IsArray,
-                            Type = localVar.variable.Type,
+                            Type = localVar.variable.War3Type.Type,
                             InitialValue = ConvertParameter(localVar.variable.InitialValue)
                         }
                     };
@@ -308,7 +308,7 @@ namespace BetterTriggers.Models.EditorData
             Variable variable = new Variable();
             variable.Id = saveableVariable.Id;
             variable.Name = saveableVariable.Name;
-            variable.Type = saveableVariable.Type;
+            variable.War3Type = War3Type.Get(saveableVariable.Type);
             variable.IsArray = saveableVariable.IsArray;
             variable.IsTwoDimensions = saveableVariable.IsTwoDimensions;
             variable.ArraySize = saveableVariable.ArraySize;
@@ -461,7 +461,7 @@ namespace BetterTriggers.Models.EditorData
                         ArraySize = localVar.variable.ArraySize,
                         IsTwoDimensions = localVar.variable.IsTwoDimensions,
                         IsArray = localVar.variable.IsArray,
-                        Type = localVar.variable.Type,
+                        War3Type = War3Type.Get(localVar.variable.Type),
                         InitialValue = ConvertParameter_Deserialize(localVar.variable.InitialValue)
                     };
                     converted = new LocalVariable(variable)

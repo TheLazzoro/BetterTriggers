@@ -125,7 +125,7 @@ namespace GUI.Utility
                     if (variable != null)
                     {
                         expectedType = Types.GetBaseType(returnTypes[paramIndex]);
-                        actualType = Types.GetBaseType(variable.Type);
+                        actualType = Types.GetBaseType(variable.War3Type.Type);
                     }
 
                     // This exists in case a variable has been changed
@@ -214,7 +214,7 @@ namespace GUI.Utility
             _variable = variable;
             var Inlines = new List<Inline>();
             var parameters = new List<Parameter>() { variable.InitialValue };
-            var returnTypes = new List<string>() { variable.Type };
+            var returnTypes = new List<string>() { variable.War3Type.Type };
             var generated = RecurseGenerateParamText("~Value", parameters, returnTypes);
 
             // First and last inline must be a string.
@@ -355,7 +355,7 @@ namespace GUI.Utility
                     if (variable != null)
                     {
                         expectedType = Types.GetBaseType(returnTypes[paramIndex]);
-                        actualType = Types.GetBaseType(variable.Type);
+                        actualType = Types.GetBaseType(variable.War3Type.Type);
                     }
 
                     // This exists in case a variable has been changed

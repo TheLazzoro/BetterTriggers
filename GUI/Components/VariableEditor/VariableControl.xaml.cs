@@ -32,6 +32,7 @@ namespace GUI.Components
         public event Action OnChange;
 
         private Variable variable;
+        private ExplorerElement explorerElement;
 
         private string previousText0 = "1";
         private string previousText1 = "1";
@@ -41,8 +42,9 @@ namespace GUI.Components
 
         private VariableControlViewModel _viewModel;
 
-        public VariableControl(Variable variable)
+        public VariableControl(ExplorerElement explorerElement, Variable variable)
         {
+            this.explorerElement = explorerElement;
             this.variable = variable;
             previousText0 = variable.ArraySize[0].ToString();
             previousText1 = variable.ArraySize[1].ToString();
@@ -94,7 +96,7 @@ namespace GUI.Components
             this.textBoxArraySize1.TextChanged += textBoxArraySize1_TextChanged;
         }
 
-        private void Variable_ValuesChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Variable_ValuesChanged(object? sender, PropertyChangedEventArgs e)
         {
             textblockInitialValue.Inlines.Clear();
             ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
@@ -115,14 +117,20 @@ namespace GUI.Components
 
         private void comboBoxVariableType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_viewModel.SuppressChangedEvents)
+            {
+                return;
+            }
+
             if (suppressUIEvents)
                 return;
 
             if (ResetVarRefs())
             {
+                this.comboBoxVariableType.SelectionChanged -= comboBoxVariableType_SelectionChanged;
                 var selected = (War3Type)comboBoxVariableType.SelectedItem;
 
-                CommandVariableModifyType command = new CommandVariableModifyType(variable, selected.Type);
+                CommandVariableModifyType command = new CommandVariableModifyType(explorerElement, variable, selected);
                 command.Execute();
                 OnStateChange();
 
@@ -132,6 +140,7 @@ namespace GUI.Components
                 this.textblockInitialValue.Inlines.Clear();
                 var inlines = controllerParamText.GenerateParamText(variable);
                 this.textblockInitialValue.Inlines.AddRange(inlines);
+                this.comboBoxVariableType.SelectionChanged += comboBoxVariableType_SelectionChanged;
             }
             else
             {
@@ -163,6 +172,11 @@ namespace GUI.Components
 
         private void comboBoxArrayDimensions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_viewModel.SuppressChangedEvents)
+            {
+                return;
+            }
+
             bool isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             if (ResetVarRefs())
             {

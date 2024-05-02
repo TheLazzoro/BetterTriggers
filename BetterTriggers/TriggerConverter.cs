@@ -578,7 +578,7 @@ namespace BetterTriggers.WorldEdit
                     InitialValue = initialValue,
                     IsArray = variableDefinition.IsArray,
                     IsTwoDimensions = false,
-                    Type = variableDefinition.Type
+                    War3Type = War3Type.Get(variableDefinition.Type)
                 }
             };
             return variable;

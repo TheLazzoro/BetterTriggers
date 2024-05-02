@@ -348,7 +348,7 @@ namespace GUI
                     case ExplorerElementEnum.Folder:
                         return;
                     case ExplorerElementEnum.GlobalVariable:
-                        var variableControl = new VariableControl(selectedItem.variable);
+                        var variableControl = new VariableControl(selectedItem, selectedItem.variable);
                         editor = variableControl;
                         break;
                     case ExplorerElementEnum.Root:

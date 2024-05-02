@@ -49,7 +49,8 @@
                   SelectedItem="{Binding SelectedItem, Mode=OneWay}"
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
-                  Grid.Column="1" SelectionChanged="ComboBox_SelectionChanged"
+                  Grid.Column="1"
+                  SelectionChanged="ComboBox_SelectionChanged"
     />
     </Grid>
 </UserControl>

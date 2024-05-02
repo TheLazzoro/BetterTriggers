@@ -25,6 +25,7 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
         public void Redo()
@@ -32,6 +33,7 @@ namespace BetterTriggers.Commands
             parameterDef.ReturnType = selectedType;
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
+            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
         public void Undo()
@@ -39,6 +41,7 @@ namespace BetterTriggers.Commands
             parameterDef.ReturnType = previousType;
             refCollection.AddRefsToParent();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
+            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
         public string GetCommandName()

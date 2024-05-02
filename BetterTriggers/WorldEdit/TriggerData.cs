@@ -470,7 +470,7 @@ namespace BetterTriggers.WorldEdit
                 Variable constant = new Variable()
                 {
                     Name = keyName,
-                    Type = type,
+                    War3Type = War3Type.Get(type),
                 };
 
                 customConstants.Add(constant);
@@ -540,8 +540,8 @@ namespace BetterTriggers.WorldEdit
                     Variable variable = Project.CurrentProject.Variables.GetByReference(f.parameters[0] as VariableRef, ex);
                     if (variable != null)
                     {
-                        list.Add(variable.Type);
-                        list.Add(variable.Type);
+                        list.Add(variable.War3Type.Type);
+                        list.Add(variable.War3Type.Type);
                     }
                     else
                     {

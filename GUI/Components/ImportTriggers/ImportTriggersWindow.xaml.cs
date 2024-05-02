@@ -167,7 +167,7 @@ namespace GUI
                 }
                 else if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
                 {
-                    control = new VariableControl(explorerElement.variable);
+                    control = new VariableControl(explorerElement, explorerElement.variable);
                     control.IsEnabled = false;
 
                     grid.Children.Add(control);

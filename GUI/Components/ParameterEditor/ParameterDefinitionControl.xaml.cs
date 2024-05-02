@@ -45,7 +45,7 @@ namespace GUI.Components.ParameterEditor
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsLoaded)
+            if (!IsLoaded || viewModel.SuppressChangedEvents)
             {
                 return;
             }

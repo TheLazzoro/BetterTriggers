@@ -204,11 +204,6 @@ namespace GUI.Components
             Variables.includeLocals = isActionOrConditionalInAction;
         }
 
-        private void Refresh()
-        {
-            RefreshBottomControls();
-        }
-
         public void CreateEvent()
         {
             if (explorerElementType == ExplorerElementEnum.Trigger)
@@ -406,7 +401,7 @@ namespace GUI.Components
             }
             else if (triggerElement is LocalVariable localVar)
             {
-                _variableControl = new VariableControl(localVar.variable);
+                _variableControl = new VariableControl(explorerElement, localVar.variable);
                 _variableControl.OnChange += OnChange;
                 grid.Children.Add(_variableControl);
                 Grid.SetRow(_variableControl, 3);
