@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using System;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.EditorData
@@ -35,6 +36,11 @@ namespace BetterTriggers.Models.EditorData
         internal RefCollection(FunctionDefinition functionDefinition)
         {
             CreateFunctionDefRefs(functionDefinition);
+        }
+
+        internal RefCollection(ActionDefinition actionDefinition)
+        {
+            CreateActionDefRefs(actionDefinition);
         }
 
         internal RefCollection(ConditionDefinition conditionDefinition)
@@ -115,6 +121,25 @@ namespace BetterTriggers.Models.EditorData
             });
         }
 
+        private void CreateActionDefRefs(ActionDefinition actionDef)
+        {
+            this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(actionDef);
+            var functions = Project.CurrentProject.GetFunctionsAll();
+            var triggerElements = Project.CurrentProject.GetAllTriggerElements();
+
+            triggerElements.ForEach(t =>
+            {
+                if (t is ActionDefinitionRef actionDefRef)
+                {
+                    if (actionDefRef.ActionDefinitionId == actionDef.Id)
+                    {
+                        var refParent = new RefParent(actionDefRef);
+                        refParents.Add(refParent);
+                    }
+                }
+            });
+        }
+
         private void CreateConditionDefRefs(ConditionDefinition conditionDef)
         {
             this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(conditionDef);
@@ -171,6 +196,25 @@ namespace BetterTriggers.Models.EditorData
         {
             TriggersToUpdate.ForEach(t => t.Notify());
         }
+
+
+        /// <summary>
+        /// Should only be used when refreshing a reference to an <see cref="ActionDefinition"/> or <see cref="ConditionDefinition"/>.
+        /// </summary>
+        internal void ResetParameters()
+        {
+            refParents.ForEach(t => t.ResetParameters());
+            TriggersToUpdate.ForEach(t => t.Notify());
+        }
+
+        /// <summary>
+        /// Should only be used when refreshing a reference to an <see cref="ActionDefinition"/> or <see cref="ConditionDefinition"/>.
+        /// </summary>
+        internal void RevertToOldParameters()
+        {
+            refParents.ForEach(t => t.RevertToOldParameters());
+            TriggersToUpdate.ForEach(t => t.Notify());
+        }
     }
 
     internal class RefParent
@@ -213,8 +257,9 @@ namespace BetterTriggers.Models.EditorData
             }
             else if (triggerElement != null)
             {
-                parentTrigElement.Elements.Remove(triggerElement);
-                parentTrigElement.Elements.Insert(index, new InvalidECA());
+                triggerElement.RemoveFromParent();
+                var invalid = new InvalidECA();
+                invalid.SetParent(parentTrigElement, index);
             }
         }
 
@@ -230,8 +275,42 @@ namespace BetterTriggers.Models.EditorData
             else if (triggerElement != null)
             {
                 parentTrigElement.Elements.RemoveAt(index);
-                parentTrigElement.Elements.Insert(index, triggerElement);
+                triggerElement.SetParent(parentTrigElement, index);
             }
+        }
+
+        List<Parameter> oldParameters;
+        List<Parameter> resetParameters;
+        internal void ResetParameters()
+        {
+            ECA eca = (ECA)triggerElement;
+            oldParameters = new List<Parameter>();
+            resetParameters = new List<Parameter>();
+            switch (triggerElement)
+            {
+                case ActionDefinitionRef actionDefRef:
+                    oldParameters = actionDefRef.function.parameters;
+                    var actionDef = Project.CurrentProject.ActionDefinitions.GetByReference(actionDefRef);
+                    var parameters = actionDef.GetParameterCollection();
+                    parameters.Elements.ForEach(p => resetParameters.Add(new Parameter()));
+                    break;
+                case ConditionDefinitionRef conditionDefRef:
+                    oldParameters = conditionDefRef.function.parameters;
+                    var conditionDef = Project.CurrentProject.ConditionDefinitions.GetByReference(conditionDefRef);
+                    var parameters1 = conditionDef.GetParameterCollection();
+                    parameters1.Elements.ForEach(p => resetParameters.Add(new Parameter()));
+                    break;
+                default:
+                    break;
+            }
+
+            eca.function.parameters = resetParameters;
+        }
+
+        internal void RevertToOldParameters()
+        {
+            ECA eca = (ECA)triggerElement;
+            eca.function.parameters = oldParameters;
         }
     }
 }

@@ -154,9 +154,9 @@ namespace BetterTriggers.Containers
             container.Remove(explorerElement.GetName());
         }
 
-        internal ExplorerElement GetByReference(ActionDefinition actionDefinitionRef)
+        internal ExplorerElement GetByReference(ActionDefinitionRef actionDefinitionRef)
         {
-            return FindById(actionDefinitionRef.Id);
+            return FindById(actionDefinitionRef.ActionDefinitionId);
         }
 
         internal void Clear()

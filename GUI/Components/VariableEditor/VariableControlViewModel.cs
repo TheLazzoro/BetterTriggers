@@ -113,6 +113,7 @@ namespace GUI.Components.VariableEditor
             SuppressChangedEvents = true;
             Identifier = _variable.GetIdentifierName();
             War3Type = _variable.War3Type;
+            SelectedItemPrevious = _variable.War3Type;
             IsArray = _variable.IsArray;
             IsTwoDimensions = _variable.IsTwoDimensions;
             DimensionsIndex = _variable.IsTwoDimensions ? 1 : 0;

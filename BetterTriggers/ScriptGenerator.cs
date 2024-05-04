@@ -239,15 +239,15 @@ end
             List<Variable> InitGlobals = new List<Variable>();
 
             // Better Trigger custom constants
-            var constants = TriggerData.customConstants;
+            var customPresets = TriggerData.customPresets;
             script.Append(globals + newline);
-            for (int i = 0; i < constants.Count; i++)
+            for (int i = 0; i < customPresets.Count; i++)
             {
-                var constant = constants[i];
-                string varType = Types.GetBaseType(constant.War3Type.Type);
+                var preset = customPresets[i];
+                string varType = Types.GetBaseType(preset.Type);
                 if (language == ScriptLanguage.Lua)
                     varType = "";
-                script.Append($"{varType} {constant.Name} = {GetGlobalsStartValue(Types.GetBaseType(constant.War3Type.Type))}{newline}");
+                script.Append($"{varType} {preset.Identifier} = {GetGlobalsStartValue(Types.GetBaseType(preset.Type))}{newline}");
             }
             script.Append(endglobals + newline);
 

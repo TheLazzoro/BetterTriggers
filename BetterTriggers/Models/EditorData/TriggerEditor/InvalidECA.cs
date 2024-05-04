@@ -10,7 +10,9 @@ namespace BetterTriggers.Models.EditorData
     {
         public InvalidECA()
         {
+            DisplayText = "Invalid trigger element";
             function.value = "InvalidECA";
+            IsEnabled = false;
         }
     }
 }

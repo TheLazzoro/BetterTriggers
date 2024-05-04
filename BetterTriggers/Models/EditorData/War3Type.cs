@@ -37,7 +37,9 @@ namespace BetterTriggers.Models.EditorData
             Init();
             War3TypesDictionary.TryGetValue(type, out War3Type result);
             if (result == null)
-                War3TypesDictionary.TryGetValue("integer", out result);
+            {
+                result  = new War3Type(type, type); // Blizzard bug. some previously selected variables are no longer selectable.
+            }
 
             return result;
         }

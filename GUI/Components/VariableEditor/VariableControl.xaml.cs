@@ -144,7 +144,9 @@ namespace GUI.Components
             }
             else
             {
+                comboBoxVariableType.SelectionChanged -= comboBoxVariableType_SelectionChanged;
                 comboBoxVariableType.SelectedItem = _viewModel.SelectedItemPrevious;
+                comboBoxVariableType.SelectionChanged += comboBoxVariableType_SelectionChanged;
                 e.Handled = false;
             }
         }

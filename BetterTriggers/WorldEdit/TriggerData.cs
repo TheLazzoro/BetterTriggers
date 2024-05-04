@@ -33,7 +33,7 @@ namespace BetterTriggers.WorldEdit
         internal static Dictionary<string, string> ParamCodeText = new Dictionary<string, string>();
         internal static Dictionary<string, string> FunctionCategories = new Dictionary<string, string>();
 
-        internal static List<Variable> customConstants = new List<Variable>();
+        internal static List<CustomPreset> customPresets = new List<CustomPreset>();
 
         private static Dictionary<FunctionTemplate, string> Defaults = new Dictionary<FunctionTemplate, string>(); // saves the raw default values so we can operate on them later.
         internal static string customBJFunctions_Jass;
@@ -56,7 +56,7 @@ namespace BetterTriggers.WorldEdit
             ParamDisplayNames.Clear();
             ParamCodeText.Clear();
             FunctionCategories.Clear();
-            customConstants.Clear();
+            customPresets.Clear();
             Category.Clear();
 
             if (isTest)
@@ -157,13 +157,13 @@ namespace BetterTriggers.WorldEdit
                 Category.Create(TriggerCategory.TC_FRAMEHANDLE, img, "Frame", true);
 
                 img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_actiondefinition.png");
-                Category.Create(TriggerCategory.TC_ACTION_DEF, img, "???", false);
+                Category.Create(TriggerCategory.TC_ACTION_DEF, img, "Custom", false);
 
                 img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_conditiondefinition.png");
-                Category.Create(TriggerCategory.TC_CONDITION_DEF, img, "???", false);
+                Category.Create(TriggerCategory.TC_CONDITION_DEF, img, "Custom", false);
 
                 img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_functiondefinition.png");
-                Category.Create(TriggerCategory.TC_FUNCTION_DEF, img, "???", false);
+                Category.Create(TriggerCategory.TC_FUNCTION_DEF, img, "Custom", false);
 
                 img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_tbd.png");
                 Category.Create(TriggerCategory.TC_UNKNOWN, img, "???", false);
@@ -467,13 +467,13 @@ namespace BetterTriggers.WorldEdit
                 string[] split = key.Value.Split(',');
                 string type = split[0];
 
-                Variable constant = new Variable()
+                var preset = new CustomPreset()
                 {
-                    Name = keyName,
-                    War3Type = War3Type.Get(type),
+                    Identifier = keyName,
+                    Type = type,
                 };
 
-                customConstants.Add(constant);
+                customPresets.Add(preset);
             }
         }
 

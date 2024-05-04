@@ -21,6 +21,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GUI.Components.ParameterEditor;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using GUI.Components.Dialogs;
 
 namespace GUI.Components
 {
@@ -76,7 +77,7 @@ namespace GUI.Components
                 checkBoxIsInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
                 checkBoxIsCustomScript.IsChecked = explorerElement.trigger.IsScript;
                 checkBoxRunOnMapInit.IsChecked = explorerElement.trigger.RunOnMapInit;
-                ShowTextEditor(explorerElement.trigger.IsScript);
+                ShowTextEditor(explorerElement.trigger.IsScript, false);
             }
             else if (explorerElementType == ExplorerElementEnum.ActionDefinition
                     || explorerElementType == ExplorerElementEnum.ConditionDefinition
@@ -261,24 +262,42 @@ namespace GUI.Components
             }
             else if (type == TriggerElementType.ParameterDef)
             {
+                IReferable referable = null;
+
                 ParameterDefinitionCollection parameterDefCollection = null;
                 switch (explorerElementType)
                 {
                     case ExplorerElementEnum.ActionDefinition:
+                        referable = explorerElement.actionDefinition;
                         insertIndex = explorerElement.actionDefinition.LocalVariables.Count();
                         parameterDefCollection = explorerElement.actionDefinition.Parameters;
                         break;
                     case ExplorerElementEnum.ConditionDefinition:
+                        referable = explorerElement.conditionDefinition;
                         insertIndex = explorerElement.conditionDefinition.LocalVariables.Count();
                         parameterDefCollection = explorerElement.conditionDefinition.Parameters;
                         break;
                     case ExplorerElementEnum.FunctionDefinition:
+                        referable = explorerElement.functionDefinition;
                         insertIndex = explorerElement.functionDefinition.LocalVariables.Count();
                         parameterDefCollection = explorerElement.functionDefinition.Parameters;
                         break;
                     default:
                         break;
                 }
+
+                var project = Project.CurrentProject;
+                var references = project.References.GetReferrers(referable);
+                if (references.Count > 0)
+                {
+                    DialogBoxReferences dialog = new DialogBoxReferences(references, ExplorerAction.Reset);
+                    dialog.ShowDialog();
+                    if(!dialog.OK)
+                    {
+                        return;
+                    }
+                }
+
 
                 parameterDefCollection.CreateParameterDefinition(explorerElement);
                 return;
@@ -954,16 +973,16 @@ namespace GUI.Components
                 }
             }
 
-            ShowTextEditor(isScript);
+            ShowTextEditor(isScript, true);
             explorerElement.AddToUnsaved();
         }
 
-        private void ShowTextEditor(bool doShow)
+        private void ShowTextEditor(bool doShow, bool doGenerate)
         {
             explorerElement.trigger.IsScript = doShow;
             if (doShow)
             {
-                if (!explorerElement.trigger.IsScript)
+                if (doGenerate)
                 {
                     // Only generates a new script when the user has clicked the 'Custom Script' checkbox.
                     ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
@@ -1287,7 +1306,7 @@ namespace GUI.Components
 
         private void ShowRenameBox()
         {
-            if(selectedElementEnd == null) return;
+            if (selectedElementEnd == null) return;
 
             if (selectedElementEnd is LocalVariable || selectedElementEnd is ParameterDefinition)
             {

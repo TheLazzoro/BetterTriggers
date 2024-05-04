@@ -376,7 +376,6 @@ namespace GUI
                 tabViewModel.Tabs.Add(tabItem);
             }
 
-            triggerExplorer.SetSelectedElement(selectedItem);
             tabControl.SelectedIndex = tabViewModel.IndexOf(selectedItem);
         }
 

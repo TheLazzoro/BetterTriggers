@@ -94,7 +94,6 @@ namespace BetterTriggers.Utility
                 {
                     eca.RemoveFromParent();
                     var invalid = new InvalidECA();
-                    invalid.IsEnabled = false;
                     invalid.SetParent(triggerElement, i);
                     removeCount += 1;
                 }

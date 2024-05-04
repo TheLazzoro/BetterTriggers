@@ -90,8 +90,8 @@ namespace Tests
             int actualArray0 = element.variable.ArraySize[0];
             int actualArray1 = element.variable.ArraySize[0];
 
-            string expectedType = element1.variable.War3Type;
-            string actualType = element.variable.War3Type;
+            string expectedType = element1.variable.War3Type.Type;
+            string actualType = element.variable.War3Type.Type;
 
             Assert.AreEqual(element, project.lastCreated);
             Assert.AreEqual(expectedArray0, actualArray0);

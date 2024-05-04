@@ -19,6 +19,7 @@
             BorderBrush="{x:Null}"
             Drop="treeViewTriggerExplorer_Drop"
             KeyDown="treeViewTriggerExplorer_KeyDown"
+            ContextMenuOpening="contextMenu_ContextMenuOpening"
             >
 
             <TreeView.ItemContainerStyle>
