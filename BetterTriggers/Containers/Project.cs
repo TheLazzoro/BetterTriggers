@@ -641,12 +641,10 @@ namespace BetterTriggers.Containers
             }
 
             CopiedElements.CopiedTriggerElements = copiedItems;
+            CopiedElements.CopiedFromTrigger = copiedFrom;
 
             if (isCut)
-            {
                 CopiedElements.CutTriggerElements = copiedCollection;
-                CopiedElements.CopiedFromTrigger = copiedFrom;
-            }
             else
                 CopiedElements.CutTriggerElements = null;
         }

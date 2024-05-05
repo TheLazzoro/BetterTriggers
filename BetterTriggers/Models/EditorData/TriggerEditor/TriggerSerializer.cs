@@ -335,6 +335,7 @@ namespace BetterTriggers.Models.EditorData
             var converted = new ConditionDefinition(explorerElement);
             converted.Id = saveableConditionDef.Id;
             converted.Comment = saveableConditionDef.Comment;
+            converted.Parameters = ConvertParameterDefinitions_Deserialize(saveableConditionDef.Parameters);
             converted.Actions = ConvertTriggerElements_Deserialize(saveableConditionDef.Actions, TriggerElementType.Action);
             converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableConditionDef.LocalVariables, TriggerElementType.LocalVariable);
 
@@ -348,6 +349,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Comment = saveableFunctionDef.Comment;
             converted.Category = saveableFunctionDef.Category;
             converted.ReturnType = new ReturnType(saveableFunctionDef.ReturnType);
+            converted.Parameters = ConvertParameterDefinitions_Deserialize(saveableFunctionDef.Parameters);
             converted.Actions = ConvertTriggerElements_Deserialize(saveableFunctionDef.Actions, TriggerElementType.Action);
             converted.LocalVariables = ConvertTriggerElements_Deserialize(saveableFunctionDef.LocalVariables, TriggerElementType.LocalVariable);
 

@@ -59,9 +59,13 @@ namespace GUI.Components.Settings
             var tabs = mainWindow.tabViewModel;
             for (int i = 0; i < tabs.Tabs.Count; i++)
             {
-                if (tabs.Tabs[i].explorerElement.ElementType == ExplorerElementEnum.Trigger)
-                    tabs.Tabs[i].explorerElement.Notify();
-                if (tabs.Tabs[i].explorerElement.editor is ScriptControl scriptControl)
+                var element = tabs.Tabs[i].explorerElement;
+                if (element.ElementType == ExplorerElementEnum.Trigger
+                    || element.ElementType == ExplorerElementEnum.ActionDefinition
+                    || element.ElementType == ExplorerElementEnum.ConditionDefinition
+                    || element.ElementType == ExplorerElementEnum.FunctionDefinition)
+                    element.Notify();
+                if (element.editor is ScriptControl scriptControl)
                     scriptControl.RefreshFontStyle();
             }
         }

@@ -21,15 +21,17 @@ namespace GUI.Components.ParameterEditor
 {
     public partial class ParameterDefinitionControl : UserControl
     {
+        private ExplorerElement _explorerElement;
         private ParameterDefinition _definition;
         private ParameterDefinitionViewModel viewModel;
         private War3Type previousSelected;
         public event Action OnChanged;
 
-        public ParameterDefinitionControl(ParameterDefinition definition)
+        public ParameterDefinitionControl(ExplorerElement explorerElement, ParameterDefinition definition)
         {
             InitializeComponent();
 
+            _explorerElement = explorerElement;
             _definition = definition;
             previousSelected = definition.ReturnType;
             viewModel = new ParameterDefinitionViewModel(definition);
@@ -50,7 +52,27 @@ namespace GUI.Components.ParameterEditor
                 return;
             }
 
+            // Gets a list of its own uses
             List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(_definition);
+
+            // Gets a list of all other explorer elements with a reference to this explorer element.
+            IReferable referable = null;
+            switch (_explorerElement.ElementType)
+            {
+                case ExplorerElementEnum.ActionDefinition:
+                    referable = _explorerElement.actionDefinition;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    referable = _explorerElement.conditionDefinition;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    referable = _explorerElement.functionDefinition;
+                    break;
+                default:
+                    break;
+            }
+
+            refs.AddRange(Project.CurrentProject.References.GetReferrers(referable));
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
@@ -66,7 +88,7 @@ namespace GUI.Components.ParameterEditor
 
             var selected = comboBox.SelectedItem as War3Type;
             previousSelected = selected;
-            CommandParameterDefinitionModifyType command = new(_definition, selected);
+            CommandParameterDefinitionModifyType command = new(_explorerElement, _definition, selected);
             command.Execute();
         }
     }

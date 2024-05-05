@@ -33,6 +33,26 @@ namespace BetterTriggers.Commands
                     this.refCollections.Add(refCollection);
                 }
             });
+
+            if (elementsToDelete.Elements[0] is ParameterDefinition)
+            {
+                RefCollection refCollection = null;
+                switch (element.ElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        refCollection = new RefCollection(element.actionDefinition);
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        refCollection = new RefCollection(element.conditionDefinition);
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        refCollection = new RefCollection(element.functionDefinition);
+                        break;
+                    default:
+                        break;
+                }
+                refCollections.Add(refCollection);
+            }
         }
 
         public void Execute()
@@ -40,6 +60,10 @@ namespace BetterTriggers.Commands
             for (int i = 0; i < elementsToDelete.Count(); i++)
             {
                 elementsToDelete.Elements[i].RemoveFromParent();
+            }
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.ResetParameters();
             }
 
             refCollections.ForEach(r => r.RemoveRefsFromParent());
@@ -55,6 +79,10 @@ namespace BetterTriggers.Commands
             {
                 elementsToDelete.Elements[i].RemoveFromParent();
             }
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.ResetParameters();
+            }
 
             refCollections.ForEach(r => r.RemoveRefsFromParent());
             Project.CurrentProject.References.UpdateReferences(explorerElement);
@@ -66,6 +94,10 @@ namespace BetterTriggers.Commands
             for (int i = 0; i < elementsToDelete.Count(); i++)
             {
                 elementsToDelete.Elements[i].SetParent(Parent, insertIndex + i);
+            }
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.RevertToOldParameters();
             }
 
             refCollections.ForEach(r => r.AddRefsToParent());

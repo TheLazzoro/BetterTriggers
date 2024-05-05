@@ -16,6 +16,7 @@ namespace BetterTriggers.Commands
         TriggerElement NewParent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
+        RefCollection refCollection;
 
         public CommandTriggerElementMove(ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElementCollection NewParent, int NewInsertIndex)
         {
@@ -25,6 +26,23 @@ namespace BetterTriggers.Commands
             this.OldInsertIndex = this.OldParent.IndexOf(triggerElement);
             this.NewParent = NewParent;
             this.NewInsertIndex = NewInsertIndex;
+            if (triggerElement is ParameterDefinition)
+            {
+                switch (explorerElement.ElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        refCollection = new RefCollection(explorerElement.actionDefinition);
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        refCollection = new RefCollection(explorerElement.conditionDefinition);
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        refCollection = new RefCollection(explorerElement.functionDefinition);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         public void Execute()
@@ -34,6 +52,10 @@ namespace BetterTriggers.Commands
             TriggerValidator validator = new TriggerValidator(explorerElement);
             validator.RemoveInvalidReferences(NewParent);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            if (refCollection != null)
+            {
+                refCollection.ResetParameters();
+            }
             explorerElement.InvokeChange();
         }
 
@@ -41,6 +63,10 @@ namespace BetterTriggers.Commands
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
+            if (refCollection != null)
+            {
+                refCollection.ResetParameters();
+            }
             explorerElement.InvokeChange();
         }
 
@@ -48,6 +74,10 @@ namespace BetterTriggers.Commands
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(OldParent, OldInsertIndex);
+            if (refCollection != null)
+            {
+                refCollection.RevertToOldParameters();
+            }
             explorerElement.InvokeChange();
         }
 

@@ -7,6 +7,7 @@ using System.Linq;
 using BetterTriggers.Utility;
 using Newtonsoft.Json;
 using System.IO;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 
 namespace BetterTriggers.Containers
 {
@@ -130,7 +131,7 @@ namespace BetterTriggers.Containers
             var enumerator = container.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                if (enumerator.Current.Value.actionDefinition.Id == id)
+                if (enumerator.Current.Value.functionDefinition.Id == id)
                 {
                     functionDefinition = enumerator.Current.Value;
                     break;
@@ -155,9 +156,9 @@ namespace BetterTriggers.Containers
             container.Remove(explorerElement.GetName());
         }
 
-        internal ExplorerElement GetByReference(ActionDefinition functionDefinitionRef)
+        internal ExplorerElement GetByReference(FunctionDefinitionRef functionDefinitionRef)
         {
-            return FindById(functionDefinitionRef.Id);
+            return FindById(functionDefinitionRef.FunctionDefinitionId);
         }
 
         internal void Clear()

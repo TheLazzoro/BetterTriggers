@@ -292,7 +292,7 @@ namespace GUI.Components
                 {
                     DialogBoxReferences dialog = new DialogBoxReferences(references, ExplorerAction.Reset);
                     dialog.ShowDialog();
-                    if(!dialog.OK)
+                    if (!dialog.OK)
                     {
                         return;
                     }
@@ -435,7 +435,7 @@ namespace GUI.Components
             }
             else if (triggerElement is ParameterDefinition paramDef)
             {
-                _parameterDefinitionControl = new ParameterDefinitionControl(paramDef);
+                _parameterDefinitionControl = new ParameterDefinitionControl(explorerElement, paramDef);
                 _parameterDefinitionControl.OnChanged += OnChange;
                 grid.Children.Add(_parameterDefinitionControl);
                 Grid.SetRow(_parameterDefinitionControl, 3);
@@ -562,7 +562,7 @@ namespace GUI.Components
                 return;
             }
 
-            if (triggerElementDropTarget is ECA || triggerElementDropTarget is LocalVariable)
+            if (triggerElementDropTarget is ECA || triggerElementDropTarget is LocalVariable || triggerElementDropTarget is ParameterDefinition)
             {
                 var relativePos = e.GetPosition(dropTarget);
                 bool inFirstHalf = UIUtility.IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
@@ -636,6 +636,38 @@ namespace GUI.Components
              * the element could jump to the last 'parentDropTarget',
              * which could be an invalid trigger element location. */
             _treeItemParentDropTarget = null;
+
+            if (triggerElement.ElementType == TriggerElementType.ParameterDef)
+            {
+                IReferable referable = null;
+                switch (explorerElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        referable = explorerElement.actionDefinition;
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        referable = explorerElement.conditionDefinition;
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        referable = explorerElement.functionDefinition;
+                        break;
+                    default:
+                        break;
+                }
+
+                var project = Project.CurrentProject;
+                var references = project.References.GetReferrers(referable);
+                references = references.Distinct().ToList();
+                if (references.Count > 0)
+                {
+                    DialogBoxReferences dialog = new DialogBoxReferences(references, ExplorerAction.Reset);
+                    dialog.ShowDialog();
+                    if (!dialog.OK)
+                    {
+                        return;
+                    }
+                }
+            }
 
             CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElement, triggerElement, parent, insertIndex);
             command.Execute();
@@ -890,6 +922,38 @@ namespace GUI.Components
                 ToSelectAfterDeletion = parent.Elements[index];
             }
 
+            if (selectedElement.ElementType == TriggerElementType.ParameterDef)
+            {
+                IReferable referable = null;
+                switch (explorerElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        referable = explorerElement.actionDefinition;
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        referable = explorerElement.conditionDefinition;
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        referable = explorerElement.functionDefinition;
+                        break;
+                    default:
+                        break;
+                }
+
+                var project = Project.CurrentProject;
+                var references = project.References.GetReferrers(referable);
+                references = references.Distinct().ToList();
+                if (references.Count > 0)
+                {
+                    DialogBoxReferences dialog = new DialogBoxReferences(references, ExplorerAction.Reset);
+                    dialog.ShowDialog();
+                    if (!dialog.OK)
+                    {
+                        return;
+                    }
+                }
+            }
+
             CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElement, elementsToDelete);
             command.Execute();
 
@@ -937,6 +1001,54 @@ namespace GUI.Components
                 return;
             if (attachTarget.ElementType != CopiedElements.CopiedTriggerElements.ElementType) // reject if TriggerElement types don't match. 
                 return;
+
+            if (attachTarget.ElementType == TriggerElementType.ParameterDef)
+            {
+                IReferable referableFrom = null;
+                IReferable referableTo = null;
+                switch (explorerElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        referableFrom = explorerElement.actionDefinition;
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        referableFrom = explorerElement.conditionDefinition;
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        referableFrom = explorerElement.functionDefinition;
+                        break;
+                    default:
+                        break;
+                }
+                switch (CopiedElements.CopiedFromTrigger.ElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        referableTo = CopiedElements.CopiedFromTrigger.actionDefinition;
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        referableTo = CopiedElements.CopiedFromTrigger.conditionDefinition;
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        referableTo = CopiedElements.CopiedFromTrigger.functionDefinition;
+                        break;
+                    default:
+                        break;
+                }
+
+                var project = Project.CurrentProject;
+                var references = project.References.GetReferrers(referableFrom);
+                references.AddRange(project.References.GetReferrers(referableTo));
+                references = references.Distinct().ToList();
+                if (references.Count > 0)
+                {
+                    DialogBoxReferences dialog = new DialogBoxReferences(references, ExplorerAction.Reset);
+                    dialog.ShowDialog();
+                    if (!dialog.OK)
+                    {
+                        return;
+                    }
+                }
+            }
 
             var pasted = Project.CurrentProject.PasteTriggerElements(explorerElement, attachTarget, insertIndex);
         }

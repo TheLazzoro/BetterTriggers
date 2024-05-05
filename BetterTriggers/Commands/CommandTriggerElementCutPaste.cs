@@ -21,6 +21,7 @@ namespace BetterTriggers.Commands
         TriggerElement listToPaste;
         TriggerElement cutParent;
         TriggerElement pasteParent;
+        List<RefCollection> refCollections = new List<RefCollection>();
 
         public CommandTriggerElementCutPaste(ExplorerElement from, ExplorerElement to, TriggerElement listToPaste, TriggerElement pasteParent, int pastedIndex)
         {
@@ -32,6 +33,42 @@ namespace BetterTriggers.Commands
             this.listToPaste = listToPaste;
             this.pasteParent = pasteParent;
             this.pastedIndex = pastedIndex;
+
+            if (listToCut.Elements[0] is ParameterDefinition)
+            {
+                RefCollection refCollection = null;
+                switch (from.ElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        refCollection = new RefCollection(from.actionDefinition);
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        refCollection = new RefCollection(from.conditionDefinition);
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        refCollection = new RefCollection(from.functionDefinition);
+                        break;
+                    default:
+                        break;
+                }
+                refCollections.Add(refCollection);
+
+                switch (to.ElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        refCollection = new RefCollection(to.actionDefinition);
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        refCollection = new RefCollection(to.conditionDefinition);
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        refCollection = new RefCollection(to.functionDefinition);
+                        break;
+                    default:
+                        break;
+                }
+                refCollections.Add(refCollection);
+            }
         }
 
         public void Execute()
@@ -58,6 +95,11 @@ namespace BetterTriggers.Commands
                 }
             }
 
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.ResetParameters();
+            }
+
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
             CopiedElements.CutTriggerElements = null; // Reset
@@ -78,6 +120,11 @@ namespace BetterTriggers.Commands
                 listToPaste.Elements[i].SetParent(pasteParent, pastedIndex + i);
             }
 
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.ResetParameters();
+            }
+
             Project.CurrentProject.References.UpdateReferences(from);
             Project.CurrentProject.References.UpdateReferences(to);
 
@@ -94,6 +141,10 @@ namespace BetterTriggers.Commands
             for (int i = 0; i < listToPaste.Count(); i++)
             {
                 listToPaste.Elements[i].RemoveFromParent();
+            }
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.RevertToOldParameters();
             }
 
             Project.CurrentProject.References.UpdateReferences(from);

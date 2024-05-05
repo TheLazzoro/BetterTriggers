@@ -17,6 +17,7 @@ namespace BetterTriggers.Commands
         ExplorerElement explorerElement;
         TriggerElement listToPaste;
         TriggerElement parent;
+        List<RefCollection> refCollections = new List<RefCollection>();
 
         public CommandTriggerElementPaste(ExplorerElement element, TriggerElementCollection listToPaste, TriggerElement parent, int pastedIndex)
         {
@@ -24,6 +25,26 @@ namespace BetterTriggers.Commands
             this.listToPaste = listToPaste;
             this.parent = parent;
             this.pastedIndex = pastedIndex;
+
+            if (listToPaste.Elements[0] is ParameterDefinition)
+            {
+                RefCollection refCollection = null;
+                switch (element.ElementType)
+                {
+                    case ExplorerElementEnum.ActionDefinition:
+                        refCollection = new RefCollection(element.actionDefinition);
+                        break;
+                    case ExplorerElementEnum.ConditionDefinition:
+                        refCollection = new RefCollection(element.conditionDefinition);
+                        break;
+                    case ExplorerElementEnum.FunctionDefinition:
+                        refCollection = new RefCollection(element.functionDefinition);
+                        break;
+                    default:
+                        break;
+                }
+                refCollections.Add(refCollection);
+            }
         }
 
         public void Execute()
@@ -40,6 +61,10 @@ namespace BetterTriggers.Commands
                     paramDef.Name = paramParent.GenerateParameterDefName();
                 }
             }
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.ResetParameters();
+            }
 
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             Project.CurrentProject.CommandManager.AddCommand(this);
@@ -52,7 +77,10 @@ namespace BetterTriggers.Commands
             {
                 listToPaste.Elements[i].SetParent(parent, pastedIndex + i);
             }
-
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.ResetParameters();
+            }
 
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
@@ -63,6 +91,10 @@ namespace BetterTriggers.Commands
             for (int i = 0; i < listToPaste.Count(); i++)
             {
                 listToPaste.Elements[i].RemoveFromParent();
+            }
+            foreach (var refCollection in refCollections)
+            {
+                refCollection.RevertToOldParameters();
             }
 
             Project.CurrentProject.References.UpdateReferences(explorerElement);
