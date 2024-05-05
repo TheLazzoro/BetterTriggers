@@ -2,6 +2,7 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Utility;
+using Cake.Incubator.EnumerableExtensions;
 using System;
 using System.Collections.Generic;
 
@@ -43,6 +44,24 @@ namespace BetterTriggers.Models.Templates
         public override Function ToParameter()
         {
             Function function = new Function();
+
+            if (Project.CurrentProject.FunctionDefinitions.Contains(name))
+            {
+                var definition = Project.CurrentProject.FunctionDefinitions.FindByName(name);
+                var reference = new FunctionDefinitionRef();
+                reference.FunctionDefinitionId = definition.Id;
+                definition.Parameters.Elements.ForEach(el =>
+                {
+                    var paramDef = (ParameterDefinition)el;
+                    this.parameters.Add(new ParameterTemplate
+                    {
+                        returnType = paramDef.ReturnType.Type
+                    });
+                });
+
+                function = reference;
+            }
+
             List<Parameter> parameters = new List<Parameter>();
             this.parameters.ForEach(p => parameters.Add(p.ToParameter()));
             function.value = new string(this.value);
@@ -63,7 +82,7 @@ namespace BetterTriggers.Models.Templates
                 definition.Parameters.Elements.ForEach(el =>
                 {
                     var paramDef = (ParameterDefinition)el;
-                    parameters.Add(new ParameterTemplate
+                    this.parameters.Add(new ParameterTemplate
                     {
                         returnType = paramDef.ReturnType.Type
                     });
@@ -79,7 +98,7 @@ namespace BetterTriggers.Models.Templates
                 definition.Parameters.Elements.ForEach(el =>
                 {
                     var paramDef = (ParameterDefinition)el;
-                    parameters.Add(new ParameterTemplate
+                    this.parameters.Add(new ParameterTemplate
                     {
                         returnType = paramDef.ReturnType.Type
                     });
@@ -95,13 +114,6 @@ namespace BetterTriggers.Models.Templates
             eca.function = ToParameter();
             eca.ElementType = ElementType;
             return eca;
-        }
-
-        public List<Parameter> ConvertParameters()
-        {
-            List<Parameter> parameters = new List<Parameter>();
-            this.parameters.ForEach(p => parameters.Add(p.ToParameter()));
-            return parameters;
         }
     }
 }

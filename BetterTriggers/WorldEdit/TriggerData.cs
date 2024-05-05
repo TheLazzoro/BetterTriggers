@@ -634,11 +634,11 @@ namespace BetterTriggers.WorldEdit
 
             var project = Project.CurrentProject;
             if (!exists)
-                exists = project.ActionDefinitions.container.ContainsKey(function.value);
+                exists = project.ActionDefinitions.Contains(function.value);
             if (!exists)
-                exists = project.ConditionDefinitions.container.ContainsKey(function.value);
+                exists = project.ConditionDefinitions.Contains(function.value);
             if (!exists)
-                exists = project.FunctionDefinitions.container.ContainsKey(function.value);
+                exists = project.FunctionDefinitions.Contains(function.value);
 
 
             return exists;

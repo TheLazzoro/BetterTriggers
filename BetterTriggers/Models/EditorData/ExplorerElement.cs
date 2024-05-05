@@ -488,23 +488,47 @@ namespace BetterTriggers.Models.EditorData
             var project = Project.CurrentProject;
             string oldPath = GetPath();
             string formattedName = string.Empty;
-            if (ElementType == ExplorerElementEnum.Folder)
+
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.Folder:
                 formattedName = RenameText;
-            else if (ElementType is ExplorerElementEnum.Trigger)
-            {
-                if (project.Triggers.Contains(RenameText))
-                    throw new Exception($"Trigger '{RenameText}' already exists.");
+                    break;
+                case ExplorerElementEnum.GlobalVariable:
+                    if (project.Variables.Contains(RenameText))
+                        throw new Exception($"Variable '{RenameText}' already exists.");
 
-                formattedName = RenameText + ".trg";
-            }
-            else if (ElementType == ExplorerElementEnum.Script)
-                formattedName = RenameText + ".j";
-            else if (ElementType == ExplorerElementEnum.GlobalVariable)
-            {
-                if (project.Variables.Contains(RenameText))
-                    throw new Exception($"Variable '{RenameText}' already exists.");
+                    formattedName = RenameText + ".var";
+                    break;
+                case ExplorerElementEnum.Script:
+                    formattedName = RenameText + ".j";
+                    break;
+                case ExplorerElementEnum.Trigger:
+                    if (project.Triggers.Contains(RenameText))
+                        throw new Exception($"Trigger '{RenameText}' already exists.");
 
-                formattedName = RenameText + ".var";
+                    formattedName = RenameText + ".trg";
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    if (project.ActionDefinitions.Contains(RenameText))
+                        throw new Exception($"Action Definition '{RenameText}' already exists.");
+
+                    formattedName = RenameText + ".act";
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    if (project.ConditionDefinitions.Contains(RenameText))
+                        throw new Exception($"Condition Definition '{RenameText}' already exists.");
+
+                    formattedName = RenameText + ".cond";
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    if (project.FunctionDefinitions.Contains(RenameText))
+                        throw new Exception($"Function Definition '{RenameText}' already exists.");
+
+                    formattedName = RenameText + ".func";
+                    break;
+                default:
+                    throw new Exception("Cannot rename unknown file types.");
             }
 
             FileSystemUtil.Rename(oldPath, formattedName);

@@ -93,11 +93,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 return null;
 
             var template = (FunctionTemplate)selectedItem.Tag;
-            var parameter = new Function()
-            {
-                value = template.value,
-                parameters = template.ConvertParameters(),
-            };
+            var parameter = template.ToParameter();
             return parameter;
         }
 

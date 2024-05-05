@@ -428,7 +428,7 @@ namespace GUI.Components
             }
             else if (triggerElement is ReturnType returnType)
             {
-                _returnTypeControl = new(explorerElement.functionDefinition, returnType);
+                _returnTypeControl = new(explorerElement, explorerElement.functionDefinition, returnType);
                 grid.Children.Add(_returnTypeControl);
                 Grid.SetRow(_returnTypeControl, 3);
                 Grid.SetRowSpan(_returnTypeControl, 2);

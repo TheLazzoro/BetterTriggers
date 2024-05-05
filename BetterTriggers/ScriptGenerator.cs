@@ -2636,11 +2636,15 @@ end
             {
                 Function f = (Function)parameter;
                 f = f.Clone();
-                FunctionTemplate template;
-                TriggerData.FunctionsAll.TryGetValue(f.value, out template);
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
-                if (template != null && template.scriptName != null)
-                    f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.
+                var returnTypes = new List<string>();
+                if (f is not FunctionDefinitionRef)
+                {
+                    FunctionTemplate template;
+                    TriggerData.FunctionsAll.TryGetValue(f.value, out template);
+                    returnTypes = TriggerData.GetParameterReturnTypes(f, currentExplorerElement);
+                    if (template != null && template.scriptName != null)
+                        f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.
+                }
 
                 if (returnType == "event")
                     returnTypes.Insert(0, "trigger");
@@ -2729,6 +2733,12 @@ end
                 else if (f is FunctionDefinitionRef functionDefRef)
                 {
                     var functionDef = Project.CurrentProject.FunctionDefinitions.FindById(functionDefRef.FunctionDefinitionId);
+                    var paramCollection = functionDef.GetParameterCollection();
+                    paramCollection.Elements.ForEach(p =>
+                    {
+                        var paramDef = (ParameterDefinition)p;
+                        returnTypes.Add(paramDef.ReturnType.Type);
+                    });
                     string name = Ascii.ReplaceNonASCII(functionDef.GetName().Replace(" ", "_"), true);
                     output += "FunctionDef_" + name + "(";
                 }

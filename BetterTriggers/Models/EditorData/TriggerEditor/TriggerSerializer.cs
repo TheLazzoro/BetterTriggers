@@ -2,6 +2,7 @@
 using BetterTriggers.Models.SaveableData;
 using Cake.Incubator.AssertExtensions;
 using ICSharpCode.Decompiler.DebugInfo;
+using ICSharpCode.Decompiler.IL;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -227,6 +228,13 @@ namespace BetterTriggers.Models.EditorData
         private static Function_Saveable ConvertFunction(Function function)
         {
             Function_Saveable converted = new Function_Saveable();
+            if(function is FunctionDefinitionRef funcDefRef)
+            {
+                var functionDefRefSaveable = new FunctionDefinitionRef_Saveable();
+                functionDefRefSaveable.FunctionDefinitionId = funcDefRef.FunctionDefinitionId;
+                converted = functionDefRefSaveable;
+            }
+
             converted.value = function.value;
             for (int i = 0; i < function.parameters.Count; i++)
             {
@@ -502,6 +510,13 @@ namespace BetterTriggers.Models.EditorData
         private static Function ConvertFunction_Deserialize(Function_Saveable function_Saveable)
         {
             Function converted = new Function();
+            if (function_Saveable is FunctionDefinitionRef_Saveable funcDefRefSaveable)
+            {
+                var functionDefRef = new FunctionDefinitionRef();
+                functionDefRef.FunctionDefinitionId = funcDefRefSaveable.FunctionDefinitionId;
+                converted = functionDefRef;
+            }
+
             converted.value = function_Saveable.value;
             for (int i = 0; i < function_Saveable.parameters.Count; i++)
             {

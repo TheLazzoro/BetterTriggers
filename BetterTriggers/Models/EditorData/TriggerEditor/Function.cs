@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -75,7 +76,6 @@ namespace BetterTriggers.Models.EditorData
             else if (explorerElement.conditionDefinition != null)
             {
                 list.AddRange(GatherFunctions(explorerElement.conditionDefinition.Actions));
-
             }
             else if (explorerElement.functionDefinition != null)
             {

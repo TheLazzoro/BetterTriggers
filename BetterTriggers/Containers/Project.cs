@@ -467,15 +467,18 @@ namespace BetterTriggers.Containers
 
         public void OnDeleteElement(string fullPath)
         {
-            var rootNode = projectFiles[0];
-            ExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
-            if (elementToDelete == null)
-                return;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var rootNode = projectFiles[0];
+                ExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
+                if (elementToDelete == null)
+                    return;
 
-            RemoveElementFromContainer(elementToDelete);
+                RemoveElementFromContainer(elementToDelete);
 
-            CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
-            command.Execute();
+                CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
+                command.Execute();
+            });
         }
 
 
@@ -909,12 +912,19 @@ namespace BetterTriggers.Containers
                     triggerElements.AddRange(GetAllTriggerElements(ex.conditionDefinition.Actions));
                     break;
                 case ExplorerElementEnum.FunctionDefinition:
-                    triggerElements.AddRange(GetAllTriggerElements(ex.functionDefinition.Actions));
+                    triggerElements.AddRange(GetTriggerElementsFromFunctionDefinition(ex.functionDefinition));
                     break;
                 default:
                     break;
             }
 
+            return triggerElements;
+        }
+
+        public List<TriggerElement> GetTriggerElementsFromFunctionDefinition(FunctionDefinition functionDefinition)
+        {
+            var triggerElements = new List<TriggerElement>();
+            triggerElements.AddRange(GetAllTriggerElements(functionDefinition.Actions));
             return triggerElements;
         }
 

@@ -13,7 +13,10 @@ namespace BetterTriggers.Models.EditorData.TriggerEditor
 
         public override FunctionDefinitionRef Clone()
         {
+            var function = base.Clone();
             var cloned = new FunctionDefinitionRef();
+            cloned.parameters = function.parameters;
+            cloned.value = function.value;
             cloned.FunctionDefinitionId = FunctionDefinitionId;
 
             return cloned;

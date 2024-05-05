@@ -120,16 +120,18 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        internal ConditionDefinition GetByKey(string name)
+        internal ConditionDefinition? GetByKey(string name)
         {
-            container.TryGetValue(name, out var result);
-            return result.conditionDefinition;
-        }
-
-        internal string GetName(int id)
-        {
-            var element = FindById(id);
-            return element.GetName();
+            ConditionDefinition conditionDefinition = null;
+            foreach (var item in container)
+            {
+                if (item.Value.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                {
+                    conditionDefinition = item.Value.conditionDefinition;
+                    break;
+                }
+            }
+            return conditionDefinition;
         }
 
         public ExplorerElement? FindByRef(ConditionDefinitionRef conditionDefRef)
@@ -171,11 +173,6 @@ namespace BetterTriggers.Containers
         internal ExplorerElement GetByReference(ConditionDefinitionRef conditionDefinitionRef)
         {
             return FindById(conditionDefinitionRef.ConditionDefinitionId);
-        }
-
-        internal void Clear()
-        {
-            container.Clear();
         }
 
     }

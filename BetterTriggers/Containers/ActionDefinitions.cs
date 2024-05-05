@@ -8,6 +8,7 @@ using BetterTriggers.Utility;
 using Newtonsoft.Json;
 using System.IO;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using System.Xml.Linq;
 
 namespace BetterTriggers.Containers
 {
@@ -112,10 +113,18 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        public ActionDefinition? GetByKey(string key)
+        public ActionDefinition? GetByKey(string name)
         {
-            container.TryGetValue(key, out var result);
-            return result.actionDefinition;
+            ActionDefinition actionDefinition = null;
+            foreach (var item in container)
+            {
+                if (item.Value.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                {
+                    actionDefinition = item.Value.actionDefinition;
+                    break;
+                }
+            }
+            return actionDefinition;
         }
 
         public ExplorerElement? FindByRef(ActionDefinitionRef actionDefRef)
@@ -159,9 +168,5 @@ namespace BetterTriggers.Containers
             return FindById(actionDefinitionRef.ActionDefinitionId);
         }
 
-        internal void Clear()
-        {
-            container.Clear();
-        }
     }
 }

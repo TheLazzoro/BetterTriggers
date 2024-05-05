@@ -83,7 +83,7 @@ namespace BetterTriggers.Utility
                     }
                     continue;
                 }
-                else if(triggerElement.Elements[i] is ParameterDefinition)
+                else if (triggerElement.Elements[i] is ParameterDefinition)
                 {
                     continue;
                 }
@@ -224,7 +224,7 @@ namespace BetterTriggers.Utility
                     else
                     {
                         var reference = paramDefCollection.GetByReference(paramDefRef);
-                        if(reference == null)
+                        if (reference == null)
                         {
                             removeCount++;
                             parameters[i] = new Parameter();
@@ -249,9 +249,11 @@ namespace BetterTriggers.Utility
                         parameters[i] = new Parameter();
                         removeCount++;
                     }
-
-                    List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
-                    removeCount += VerifyParametersAndRemove(function.parameters, _returnTypes);
+                    else
+                    {
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
+                        removeCount += VerifyParametersAndRemove(function.parameters, _returnTypes);
+                    }
                 }
                 else if (parameter is Preset preset)
                 {

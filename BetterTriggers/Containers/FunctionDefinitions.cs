@@ -119,12 +119,6 @@ namespace BetterTriggers.Containers
             return found;
         }
 
-        internal string GetName(int id)
-        {
-            var element = FindById(id);
-            return element.GetName();
-        }
-
         public ExplorerElement FindById(int id)
         {
             ExplorerElement functionDefinition = null;
@@ -164,6 +158,22 @@ namespace BetterTriggers.Containers
         internal void Clear()
         {
             container.Clear();
+        }
+
+        internal FunctionDefinition FindByName(string name)
+        {
+            FunctionDefinition functionDefinition = null;
+            var enumerator = container.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                if (enumerator.Current.Value.GetName() == name)
+                {
+                    functionDefinition = enumerator.Current.Value.functionDefinition;
+                    break;
+                }
+            }
+
+            return functionDefinition;
         }
     }
 }

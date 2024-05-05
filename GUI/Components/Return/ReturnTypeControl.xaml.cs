@@ -21,13 +21,15 @@ namespace GUI.Components.Return
 {
     public partial class ReturnTypeControl : UserControl
     {
+        private ExplorerElement explorerElement;
         private FunctionDefinition functionDefinition;
         private War3Type previousSelected;
 
-        public ReturnTypeControl(FunctionDefinition functionDefinition, ReturnType returnType)
+        public ReturnTypeControl(ExplorerElement explorerElement, FunctionDefinition functionDefinition, ReturnType returnType)
         {
             InitializeComponent();
 
+            this.explorerElement = explorerElement;
             this.functionDefinition = functionDefinition;
             previousSelected = returnType.War3Type;
             DataContext = new ReturnTypeViewModel(returnType);
@@ -56,7 +58,7 @@ namespace GUI.Components.Return
 
             var selected = comboBox.SelectedItem as War3Type;
             previousSelected = selected;
-            CommandFunctionDefinitionModifyType command = new(functionDefinition, selected);
+            CommandFunctionDefinitionModifyType command = new(explorerElement, functionDefinition, selected);
             command.Execute();
         }
     }
