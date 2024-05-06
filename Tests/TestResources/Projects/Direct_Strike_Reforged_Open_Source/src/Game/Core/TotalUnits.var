@@ -1,14 +1,1 @@
-{
-  "Id": 100663349,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "TotalUnits",
-  "Type": "integer",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663349,"ArraySize":[6,1],"Name":"TotalUnits","Type":"integer","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

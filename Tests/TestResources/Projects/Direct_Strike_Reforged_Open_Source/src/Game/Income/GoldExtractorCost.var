@@ -1,15 +1,1 @@
-{
-  "Id": 100663701,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "GoldExtractorCost",
-  "Type": "integer",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "ParamType": 5,
-    "value": "150"
-  }
-}
+{"Id":100663701,"ArraySize":[6,1],"Name":"GoldExtractorCost","Type":"integer","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"ParamType":5,"value":"150"}}

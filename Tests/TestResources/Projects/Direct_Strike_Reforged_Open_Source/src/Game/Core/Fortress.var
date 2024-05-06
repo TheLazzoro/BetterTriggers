@@ -1,14 +1,1 @@
-{
-  "Id": 100663306,
-  "ArraySize": [
-    2,
-    1
-  ],
-  "Name": "Fortress",
-  "Type": "unit",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663306,"ArraySize":[2,1],"Name":"Fortress","Type":"unit","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

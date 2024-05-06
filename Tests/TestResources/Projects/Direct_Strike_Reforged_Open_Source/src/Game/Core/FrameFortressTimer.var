@@ -1,14 +1,1 @@
-{
-  "Id": 100663557,
-  "ArraySize": [
-    2,
-    1
-  ],
-  "Name": "FrameFortressTimer",
-  "Type": "timer",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663557,"ArraySize":[2,1],"Name":"FrameFortressTimer","Type":"timer","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

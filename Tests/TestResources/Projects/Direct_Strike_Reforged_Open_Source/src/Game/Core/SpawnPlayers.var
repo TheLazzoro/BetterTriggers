@@ -1,14 +1,1 @@
-{
-  "Id": 100663309,
-  "ArraySize": [
-    2,
-    1
-  ],
-  "Name": "SpawnPlayers",
-  "Type": "integer",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663309,"ArraySize":[2,1],"Name":"SpawnPlayers","Type":"integer","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

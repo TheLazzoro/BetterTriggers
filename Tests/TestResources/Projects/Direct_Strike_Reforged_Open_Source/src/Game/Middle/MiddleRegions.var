@@ -1,14 +1,1 @@
-{
-  "Id": 100663301,
-  "ArraySize": [
-    35,
-    1
-  ],
-  "Name": "MiddleRegions",
-  "Type": "rect",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663301,"ArraySize":[35,1],"Name":"MiddleRegions","Type":"rect","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

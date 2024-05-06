@@ -1,14 +1,1 @@
-{
-  "Id": 100663431,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "ObsidianStatues",
-  "Type": "group",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663431,"ArraySize":[1,1],"Name":"ObsidianStatues","Type":"group","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

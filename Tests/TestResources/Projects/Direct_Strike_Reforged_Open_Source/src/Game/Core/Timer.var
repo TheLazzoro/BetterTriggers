@@ -1,14 +1,1 @@
-{
-  "Id": 100663308,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "Timer",
-  "Type": "timer",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663308,"ArraySize":[1,1],"Name":"Timer","Type":"timer","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

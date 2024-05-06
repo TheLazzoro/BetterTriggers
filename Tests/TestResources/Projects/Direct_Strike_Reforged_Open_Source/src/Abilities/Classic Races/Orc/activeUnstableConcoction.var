@@ -1,15 +1,1 @@
-{
-  "Id": 100663462,
-  "ArraySize": [
-    12,
-    1
-  ],
-  "Name": "activeUnstableConcoction",
-  "Type": "boolean",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "ParamType": 5,
-    "value": "true"
-  }
-}
+{"Id":100663462,"ArraySize":[12,1],"Name":"activeUnstableConcoction","Type":"boolean","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"ParamType":5,"value":"true"}}

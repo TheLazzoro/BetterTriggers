@@ -1,15 +1,1 @@
-{
-  "Id": 100663498,
-  "ArraySize": [
-    12,
-    1
-  ],
-  "Name": "activeBearForm",
-  "Type": "boolean",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "ParamType": 5,
-    "value": "true"
-  }
-}
+{"Id":100663498,"ArraySize":[12,1],"Name":"activeBearForm","Type":"boolean","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"ParamType":5,"value":"true"}}

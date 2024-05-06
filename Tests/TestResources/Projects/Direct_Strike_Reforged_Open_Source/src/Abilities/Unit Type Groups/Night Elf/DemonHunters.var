@@ -1,14 +1,1 @@
-{
-  "Id": 100663449,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "DemonHunters",
-  "Type": "group",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663449,"ArraySize":[1,1],"Name":"DemonHunters","Type":"group","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

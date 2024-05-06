@@ -1,14 +1,1 @@
-{
-  "Id": 100663395,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "XRVoteClickCheck",
-  "Type": "boolean",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663395,"ArraySize":[6,1],"Name":"XRVoteClickCheck","Type":"boolean","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

@@ -1,14 +1,1 @@
-{
-  "Id": 100663625,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "TasItemShop_Skill",
-  "Type": "abilcode",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663625,"ArraySize":[1,1],"Name":"TasItemShop_Skill","Type":"abilcode","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

@@ -1,14 +1,1 @@
-{
-  "Id": 100663363,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "DebugCounter",
-  "Type": "integer",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663363,"ArraySize":[1,1],"Name":"DebugCounter","Type":"integer","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

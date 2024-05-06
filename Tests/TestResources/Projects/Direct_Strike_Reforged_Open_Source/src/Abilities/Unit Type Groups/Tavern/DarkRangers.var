@@ -1,14 +1,1 @@
-{
-  "Id": 100663563,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "DarkRangers",
-  "Type": "group",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663563,"ArraySize":[1,1],"Name":"DarkRangers","Type":"group","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

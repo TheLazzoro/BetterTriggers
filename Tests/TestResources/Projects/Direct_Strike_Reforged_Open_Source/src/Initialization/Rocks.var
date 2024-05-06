@@ -1,14 +1,1 @@
-{
-  "Id": 100663393,
-  "ArraySize": [
-    100,
-    1
-  ],
-  "Name": "Rocks",
-  "Type": "destructable",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663393,"ArraySize":[100,1],"Name":"Rocks","Type":"destructable","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

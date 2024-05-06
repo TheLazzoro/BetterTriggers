@@ -1,14 +1,1 @@
-{
-  "Id": 100663678,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "TablePlayerRace",
-  "Type": "hashtable",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663678,"ArraySize":[1,1],"Name":"TablePlayerRace","Type":"hashtable","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

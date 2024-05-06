@@ -1,14 +1,1 @@
-{
-  "Id": 100663382,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "VisibilityModifier",
-  "Type": "fogmodifier",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663382,"ArraySize":[6,1],"Name":"VisibilityModifier","Type":"fogmodifier","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

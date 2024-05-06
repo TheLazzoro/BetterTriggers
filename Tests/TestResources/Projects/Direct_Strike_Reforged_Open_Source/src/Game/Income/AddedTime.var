@@ -1,14 +1,1 @@
-{
-  "Id": 100663311,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "AddedTime",
-  "Type": "real",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663311,"ArraySize":[6,1],"Name":"AddedTime","Type":"real","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

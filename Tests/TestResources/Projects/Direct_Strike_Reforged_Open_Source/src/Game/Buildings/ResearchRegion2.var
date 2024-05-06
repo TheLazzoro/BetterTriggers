@@ -1,14 +1,1 @@
-{
-  "Id": 100663321,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "ResearchRegion2",
-  "Type": "rect",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663321,"ArraySize":[6,1],"Name":"ResearchRegion2","Type":"rect","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

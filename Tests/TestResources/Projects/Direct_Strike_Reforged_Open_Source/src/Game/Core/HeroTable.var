@@ -1,14 +1,1 @@
-{
-  "Id": 100663315,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "HeroTable",
-  "Type": "hashtable",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663315,"ArraySize":[1,1],"Name":"HeroTable","Type":"hashtable","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

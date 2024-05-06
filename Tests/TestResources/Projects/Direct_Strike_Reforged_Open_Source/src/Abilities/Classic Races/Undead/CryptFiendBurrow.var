@@ -1,14 +1,1 @@
-{
-  "Id": 100663364,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "CryptFiendBurrow",
-  "Type": "group",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663364,"ArraySize":[1,1],"Name":"CryptFiendBurrow","Type":"group","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

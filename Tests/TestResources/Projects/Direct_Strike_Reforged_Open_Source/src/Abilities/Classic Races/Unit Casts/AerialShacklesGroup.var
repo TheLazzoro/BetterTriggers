@@ -1,14 +1,1 @@
-{
-  "Id": 100663362,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "AerialShacklesGroup",
-  "Type": "group",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663362,"ArraySize":[1,1],"Name":"AerialShacklesGroup","Type":"group","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

@@ -1,14 +1,1 @@
-{
-  "Id": 100664000,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "EventPlayerLeave",
-  "Type": "player",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100664000,"ArraySize":[1,1],"Name":"EventPlayerLeave","Type":"player","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

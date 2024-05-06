@@ -1,14 +1,1 @@
-{
-  "Id": 100663419,
-  "ArraySize": [
-    12,
-    1
-  ],
-  "Name": "ImmolationCounter",
-  "Type": "integer",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663419,"ArraySize":[12,1],"Name":"ImmolationCounter","Type":"integer","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

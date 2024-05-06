@@ -1,14 +1,1 @@
-{
-  "Id": 100663346,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "stringSeconds",
-  "Type": "string",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663346,"ArraySize":[1,1],"Name":"stringSeconds","Type":"string","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

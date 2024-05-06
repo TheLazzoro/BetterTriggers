@@ -1,14 +1,1 @@
-{
-  "Id": 100663343,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "intSeconds",
-  "Type": "integer",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663343,"ArraySize":[1,1],"Name":"intSeconds","Type":"integer","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

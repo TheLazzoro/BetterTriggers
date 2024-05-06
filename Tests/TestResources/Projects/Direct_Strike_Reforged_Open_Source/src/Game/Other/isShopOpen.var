@@ -1,14 +1,1 @@
-{
-  "Id": 100663631,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "isShopOpen",
-  "Type": "boolean",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663631,"ArraySize":[6,1],"Name":"isShopOpen","Type":"boolean","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

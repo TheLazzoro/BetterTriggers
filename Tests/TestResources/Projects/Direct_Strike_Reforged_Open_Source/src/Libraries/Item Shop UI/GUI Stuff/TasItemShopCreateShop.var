@@ -1,14 +1,1 @@
-{
-  "Id": 100663610,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "TasItemShopCreateShop",
-  "Type": "trigger",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663610,"ArraySize":[1,1],"Name":"TasItemShopCreateShop","Type":"trigger","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

@@ -1,14 +1,1 @@
-{
-  "Id": 100663330,
-  "ArraySize": [
-    2,
-    1
-  ],
-  "Name": "UnitExpirationTimer",
-  "Type": "timer",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663330,"ArraySize":[2,1],"Name":"UnitExpirationTimer","Type":"timer","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

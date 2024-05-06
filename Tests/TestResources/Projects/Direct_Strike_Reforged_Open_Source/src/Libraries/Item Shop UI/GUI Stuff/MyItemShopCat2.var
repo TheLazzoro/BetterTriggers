@@ -1,14 +1,1 @@
-{
-  "Id": 100663630,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "MyItemShopCat2",
-  "Type": "integer",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663630,"ArraySize":[1,1],"Name":"MyItemShopCat2","Type":"integer","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

@@ -1,14 +1,1 @@
-{
-  "Id": 100663397,
-  "ArraySize": [
-    14,
-    1
-  ],
-  "Name": "isBladestormOn",
-  "Type": "boolean",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663397,"ArraySize":[14,1],"Name":"isBladestormOn","Type":"boolean","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

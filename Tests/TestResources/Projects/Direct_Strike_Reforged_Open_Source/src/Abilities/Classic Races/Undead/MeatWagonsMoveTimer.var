@@ -1,14 +1,1 @@
-{
-  "Id": 100663340,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "MeatWagonsMoveTimer",
-  "Type": "timer",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663340,"ArraySize":[1,1],"Name":"MeatWagonsMoveTimer","Type":"timer","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

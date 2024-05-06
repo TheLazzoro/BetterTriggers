@@ -1,15 +1,1 @@
-{
-  "Id": 100663606,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "UnitLifespan",
-  "Type": "integer",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "ParamType": 5,
-    "value": "130"
-  }
-}
+{"Id":100663606,"ArraySize":[1,1],"Name":"UnitLifespan","Type":"integer","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"ParamType":5,"value":"130"}}

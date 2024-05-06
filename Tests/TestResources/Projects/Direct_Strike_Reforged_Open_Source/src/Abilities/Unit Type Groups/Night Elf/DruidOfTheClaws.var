@@ -1,14 +1,1 @@
-{
-  "Id": 100663434,
-  "ArraySize": [
-    1,
-    1
-  ],
-  "Name": "DruidOfTheClaws",
-  "Type": "group",
-  "IsArray": false,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663434,"ArraySize":[1,1],"Name":"DruidOfTheClaws","Type":"group","IsArray":false,"IsTwoDimensions":false,"InitialValue":{"value":null}}

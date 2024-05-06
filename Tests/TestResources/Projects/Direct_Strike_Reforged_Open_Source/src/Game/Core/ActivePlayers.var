@@ -1,14 +1,1 @@
-{
-  "Id": 100663305,
-  "ArraySize": [
-    6,
-    1
-  ],
-  "Name": "ActivePlayers",
-  "Type": "boolean",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663305,"ArraySize":[6,1],"Name":"ActivePlayers","Type":"boolean","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}

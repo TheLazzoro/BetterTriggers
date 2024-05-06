@@ -1,14 +1,1 @@
-{
-  "Id": 100663418,
-  "ArraySize": [
-    12,
-    1
-  ],
-  "Name": "DeathAndDecayActive",
-  "Type": "boolean",
-  "IsArray": true,
-  "IsTwoDimensions": false,
-  "InitialValue": {
-    "value": null
-  }
-}
+{"Id":100663418,"ArraySize":[12,1],"Name":"DeathAndDecayActive","Type":"boolean","IsArray":true,"IsTwoDimensions":false,"InitialValue":{"value":null}}
