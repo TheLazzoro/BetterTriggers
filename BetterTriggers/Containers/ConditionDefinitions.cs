@@ -14,12 +14,12 @@ namespace BetterTriggers.Containers
 {
     public class ConditionDefinitions
     {
-        internal Dictionary<string, ExplorerElement> container = new();
+        internal HashSet<ExplorerElement> container = new();
         private ExplorerElement lastCreated;
 
         public void Add(ExplorerElement conditionDefinition)
         {
-            container.Add(conditionDefinition.GetName(), conditionDefinition);
+            container.Add(conditionDefinition);
             lastCreated = conditionDefinition;
         }
 
@@ -82,7 +82,7 @@ namespace BetterTriggers.Containers
                 var enumerator = container.GetEnumerator();
                 while (!doesIdExist && enumerator.MoveNext())
                 {
-                    if (enumerator.Current.Value.conditionDefinition.Id == generatedId)
+                    if (enumerator.Current.conditionDefinition.Id == generatedId)
                         doesIdExist = true;
                 }
 
@@ -111,7 +111,7 @@ namespace BetterTriggers.Containers
 
             foreach (var item in container)
             {
-                if (item.Value.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
                     found = true;
                 }
@@ -125,9 +125,9 @@ namespace BetterTriggers.Containers
             ConditionDefinition conditionDefinition = null;
             foreach (var item in container)
             {
-                if (item.Value.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
+                if (item.GetName().ToLower() == name.ToLower()) // ToLower because filesystem is case-insensitive
                 {
-                    conditionDefinition = item.Value.conditionDefinition;
+                    conditionDefinition = item.conditionDefinition;
                     break;
                 }
             }
@@ -145,9 +145,9 @@ namespace BetterTriggers.Containers
             var enumerator = container.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                if (enumerator.Current.Value.conditionDefinition.Id == id)
+                if (enumerator.Current.conditionDefinition.Id == id)
                 {
-                    conditionDefinition = enumerator.Current.Value;
+                    conditionDefinition = enumerator.Current;
                     break;
                 }
             }
@@ -162,12 +162,12 @@ namespace BetterTriggers.Containers
 
         internal List<ExplorerElement> GetAll()
         {
-            return container.Select(x => x.Value).ToList();
+            return container.Select(x => x).ToList();
         }
 
         public void Remove(ExplorerElement explorerElement)
         {
-            container.Remove(explorerElement.GetName());
+            container.Remove(explorerElement);
         }
 
         internal ExplorerElement GetByReference(ConditionDefinitionRef conditionDefinitionRef)

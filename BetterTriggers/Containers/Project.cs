@@ -569,15 +569,32 @@ namespace BetterTriggers.Containers
         /// <param name="createdElement"></param>
         public void AddElementToContainer(ExplorerElement element)
         {
-            if (element.ElementType == ExplorerElementEnum.Folder)
-                Folders.AddFolder(element);
-            else if (element.ElementType == ExplorerElementEnum.Trigger)
-                Triggers.AddTrigger(element);
-            else if (element.ElementType == ExplorerElementEnum.Script)
-                Scripts.AddScript(element);
-            else if (element.ElementType == ExplorerElementEnum.GlobalVariable)
-                Variables.AddVariable(element);
-
+            switch (element.ElementType)
+            {
+                case ExplorerElementEnum.Folder:
+                    Folders.AddFolder(element);
+                    break;
+                case ExplorerElementEnum.GlobalVariable:
+                    Variables.AddVariable(element);
+                    break;
+                case ExplorerElementEnum.Script:
+                    Scripts.AddScript(element);
+                    break;
+                case ExplorerElementEnum.Trigger:
+                    Triggers.AddTrigger(element);
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    ActionDefinitions.Add(element);
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    ConditionDefinitions.Add(element);
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    FunctionDefinitions.Add(element);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
