@@ -16,9 +16,6 @@ using War3Net.Build.Info;
 
 namespace GUI.Components.Settings
 {
-    /// <summary>
-    /// Interaction logic for ProjectSettingsWindow.xaml
-    /// </summary>
     public partial class ProjectSettingsWindow : Window
     {
         public ProjectSettingsWindow()
@@ -34,6 +31,7 @@ namespace GUI.Components.Settings
                 comboboxMapScript.SelectedIndex = 1;
 
             checkboxRelativeMapPath.IsChecked = project.UseRelativeMapDirectory;
+            checkboxCompressFiles.IsChecked = project.CompressProjectFiles;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -45,6 +43,7 @@ namespace GUI.Components.Settings
                 project.Language = "lua";
 
             project.UseRelativeMapDirectory = (bool)checkboxRelativeMapPath.IsChecked;
+            project.CompressProjectFiles = (bool)checkboxCompressFiles.IsChecked;
             if(project.UseRelativeMapDirectory)
                 project.War3MapDirectory = Path.GetFileName(project.War3MapDirectory);
             else

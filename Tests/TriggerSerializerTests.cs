@@ -42,6 +42,7 @@ namespace Tests
             }
 
             var project = Project.Load(projectFile);
+            project.war3project.CompressProjectFiles = true; // the test files are compressed, so we need this.
             var allElements = project.GetAllExplorerElements();
             allElements.ForEach(el => el.AddToUnsaved());
             project.Save();

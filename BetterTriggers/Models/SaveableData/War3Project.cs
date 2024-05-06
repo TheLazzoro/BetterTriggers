@@ -14,6 +14,7 @@ namespace BetterTriggers.Models.SaveableData
         public string Comment;
         public string Header;
         public string War3MapDirectory;
+        public bool CompressProjectFiles;
         public List<War3ProjectFileEntry> Files;
 
         /// <summary>

@@ -21,17 +21,19 @@
                 Foreground="{DynamicResource TextBrush}"
                 Text="Map script:"
             />
-            <ComboBox
-                x:Name="comboboxMapScript"
-                Margin="0,0,0,10"
-                >
+            <ComboBox x:Name="comboboxMapScript"
+                      Margin="0,0,0,10" >
                 <ComboBoxItem Content="Jass"/>
                 <ComboBoxItem Content="Lua"/>
             </ComboBox>
-            <CheckBox
-                x:Name="checkboxRelativeMapPath"
-                Content="Use relative map path"
-                ToolTip="Enforces that the map should be located in the 'map' directory of this project&#x0a;and only saves the file name of the map in the project file.&#x0a;&#x0a;This option is mostly relevant for people collaborating using Git or other&#x0a;version control tools."
+            <CheckBox x:Name="checkboxRelativeMapPath"
+                      Margin="0,0,0,10"
+                      Content="Use relative map path"
+                      ToolTip="Enforces that the map should be located in the 'map' directory of this project&#x0a;and only saves the file name of the map in the project file.&#x0a;&#x0a;This option is mostly relevant for people collaborating using Git or other&#x0a;version control tools."
+            />
+            <CheckBox x:Name="checkboxCompressFiles"
+                      Content="Compress project files"
+                      ToolTip="Unformats the project files. The side-effect is they become less readable, especially for version control."
             />
         </StackPanel>
 

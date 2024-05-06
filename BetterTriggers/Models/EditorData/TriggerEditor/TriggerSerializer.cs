@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData.TriggerEditor;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Models.SaveableData;
 using Cake.Incubator.AssertExtensions;
 using ICSharpCode.Decompiler.DebugInfo;
@@ -32,7 +33,8 @@ namespace BetterTriggers.Models.EditorData
             saveableTrig.LocalVariables = ConvertTriggerElements(trigger.LocalVariables.Elements);
             saveableTrig.Actions = ConvertTriggerElements(trigger.Actions.Elements);
 
-            return JsonConvert.SerializeObject(saveableTrig, Formatting.Indented);
+            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            return JsonConvert.SerializeObject(saveableTrig, formatting);
         }
 
         internal static string SerializeVariable(Variable variable)
@@ -46,7 +48,8 @@ namespace BetterTriggers.Models.EditorData
             converted.ArraySize = variable.ArraySize;
             converted.InitialValue = ConvertParameter(variable.InitialValue);
 
-            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            return JsonConvert.SerializeObject(converted, formatting);
         }
 
         internal static string SerializeActionDefinition(ActionDefinition actionDefinition)
@@ -58,7 +61,8 @@ namespace BetterTriggers.Models.EditorData
             converted.Actions = ConvertTriggerElements(actionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(actionDefinition.LocalVariables.Elements);
 
-            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            return JsonConvert.SerializeObject(converted, formatting);
         }
 
         internal static string SerializeConditionDefinition(ConditionDefinition conditionDefinition)
@@ -70,7 +74,8 @@ namespace BetterTriggers.Models.EditorData
             converted.Actions = ConvertTriggerElements(conditionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(conditionDefinition.LocalVariables.Elements);
 
-            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            return JsonConvert.SerializeObject(converted, formatting);
         }
 
         internal static string SerializeFunctionDefinition(FunctionDefinition functionDefinition)
@@ -84,7 +89,8 @@ namespace BetterTriggers.Models.EditorData
             converted.Actions = ConvertTriggerElements(functionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(functionDefinition.LocalVariables.Elements);
 
-            return JsonConvert.SerializeObject(converted, Formatting.Indented);
+            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            return JsonConvert.SerializeObject(converted, formatting);
         }
 
         private static List<TriggerElement_Saveable> ConvertTriggerElements(ObservableCollection<TriggerElement> elements)
