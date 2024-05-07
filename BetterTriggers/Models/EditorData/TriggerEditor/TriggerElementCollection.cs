@@ -43,9 +43,9 @@ namespace BetterTriggers.Models.EditorData
             IconImage = category.Icon;
         }
 
-        public override TriggerElementCollection Clone()
+        public override ParameterDefinitionCollection Clone()
         {
-            TriggerElementCollection clone = new TriggerElementCollection(ElementType);
+            var clone = new ParameterDefinitionCollection(ElementType);
             this.Elements.ForEach(element => clone.Elements.Add(element.Clone()));
             return clone;
         }

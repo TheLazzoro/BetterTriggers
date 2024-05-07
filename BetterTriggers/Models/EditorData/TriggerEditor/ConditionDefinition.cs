@@ -44,9 +44,9 @@ namespace BetterTriggers.Models.EditorData
 
         public ConditionDefinition Clone()
         {
-            throw new NotImplementedException("Below constructor takes the old explorerElement. How do we get the new one in?");
             ConditionDefinition cloned = new ConditionDefinition(explorerElement);
             cloned.Comment = new string(Comment);
+            cloned.Parameters = Parameters.Clone();
             cloned.LocalVariables = LocalVariables.Clone();
             cloned.Actions = Actions.Clone();
 

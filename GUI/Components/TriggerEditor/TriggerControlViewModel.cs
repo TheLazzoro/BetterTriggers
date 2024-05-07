@@ -98,21 +98,13 @@ namespace GUI.Components.TriggerEditor
             {
                 var triggerElement = elements[i];
                 string category = TriggerData.GetCategoryTriggerElement(triggerElement);
-                if (triggerElement is ActionDefinitionRef actionDefRef)
+                if (triggerElement is ActionDefinitionRef)
                 {
-                    var definition = Project.CurrentProject.ActionDefinitions.FindByRef(actionDefRef);
-                    if (definition != null)
-                    {
-                        category = definition.actionDefinition.explorerElement.CategoryStr;
-                    }
+                    category = TriggerCategory.TC_ACTION_DEF;
                 }
                 else if (triggerElement is ConditionDefinitionRef condDefRef)
                 {
-                    var definition = Project.CurrentProject.ConditionDefinitions.FindByRef(condDefRef);
-                    if (definition != null)
-                    {
-                        category = definition.conditionDefinition.explorerElement.CategoryStr;
-                    }
+                    category = TriggerCategory.TC_CONDITION_DEF;
                 }
                 else if (triggerElement is ParameterDefinition paramDef)
                 {

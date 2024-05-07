@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection.Metadata;
 using System.Threading;
 using System.Windows;
@@ -146,7 +147,7 @@ namespace BetterTriggers.Models.EditorData
                         CategoryStr = TriggerCategory.TC_FUNCTION_DEF;
                         fileContent = ReadFile(path);
                         var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
-                        functionDefinition = TriggerSerializer.DeserializeFunctionDefinition(savedFunctionDef);
+                        functionDefinition = TriggerSerializer.DeserializeFunctionDefinition(this, savedFunctionDef);
                         StoreLocalVariables();
                         Project.CurrentProject.FunctionDefinitions.Add(this);
                         break;
@@ -409,9 +410,22 @@ namespace BetterTriggers.Models.EditorData
                     newElement.variable = this.variable.Clone();
                     break;
                 case ExplorerElementEnum.Script:
+                    newElement.script = new string(script);
                     break;
                 case ExplorerElementEnum.Trigger:
                     newElement.trigger = this.trigger.Clone();
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    newElement.actionDefinition = this.actionDefinition.Clone();
+                    newElement.actionDefinition.explorerElement = newElement;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    newElement.conditionDefinition = this.conditionDefinition.Clone();
+                    newElement.conditionDefinition.explorerElement = newElement;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    newElement.functionDefinition = this.functionDefinition.Clone();
+                    newElement.functionDefinition.explorerElement = newElement;
                     break;
                 case ExplorerElementEnum.Root:
                     throw new Exception("Cannot clone Root.");

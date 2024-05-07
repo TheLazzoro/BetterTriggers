@@ -708,6 +708,8 @@ namespace BetterTriggers.Containers
         /// <param name="pasted"></param>
         public void PrepareExplorerElement(ExplorerElement pasted)
         {
+            List<int> blacklistedIds = new List<int>();
+
             if (pasted.ElementType == ExplorerElementEnum.Trigger)
             {
                 string folder = Path.GetDirectoryName(pasted.GetPath());
@@ -717,7 +719,6 @@ namespace BetterTriggers.Containers
 
 
                 // Adjusts local variable ids
-                List<int> blacklistedIds = new List<int>();
                 var varRefs = VariableRef.GetVariableRefsFromTrigger(pasted);
                 pasted.trigger.LocalVariables.Elements.ForEach(v =>
                 {
@@ -751,6 +752,78 @@ namespace BetterTriggers.Containers
                 {
                     PrepareExplorerElement(children[i]);
                 }
+            }
+            else if(pasted.ElementType == ExplorerElementEnum.ActionDefinition)
+            {
+                string folder = Path.GetDirectoryName(pasted.GetPath());
+                string name = ActionDefinitions.GenerateActionDefName(pasted.GetName());
+                pasted.actionDefinition.Id = ActionDefinitions.GenerateId();
+                pasted.SetPath(Path.Combine(folder, name));
+
+
+                // Adjusts local variable ids
+                var varRefs = VariableRef.GetVariableRefsFromTrigger(pasted);
+                pasted.actionDefinition.LocalVariables.Elements.ForEach(v =>
+                {
+                    var lv = (LocalVariable)v;
+                    int oldId = lv.variable.Id;
+                    int newId = Variables.GenerateId(blacklistedIds);
+                    Variables.AddLocalVariable(lv);
+                    lv.variable.Id = newId;
+                    blacklistedIds.Add(newId);
+
+                    var matches = varRefs.Where(x => x.VariableId == oldId);
+                    foreach (var match in matches)
+                        match.VariableId = newId;
+                });
+            }
+            else if (pasted.ElementType == ExplorerElementEnum.ConditionDefinition)
+            {
+                string folder = Path.GetDirectoryName(pasted.GetPath());
+                string name = ConditionDefinitions.GenerateConditionDefName(pasted.GetName());
+                pasted.conditionDefinition.Id = ConditionDefinitions.GenerateId();
+                pasted.SetPath(Path.Combine(folder, name));
+
+
+                // Adjusts local variable ids
+                var varRefs = VariableRef.GetVariableRefsFromTrigger(pasted);
+                pasted.conditionDefinition.LocalVariables.Elements.ForEach(v =>
+                {
+                    var lv = (LocalVariable)v;
+                    int oldId = lv.variable.Id;
+                    int newId = Variables.GenerateId(blacklistedIds);
+                    Variables.AddLocalVariable(lv);
+                    lv.variable.Id = newId;
+                    blacklistedIds.Add(newId);
+
+                    var matches = varRefs.Where(x => x.VariableId == oldId);
+                    foreach (var match in matches)
+                        match.VariableId = newId;
+                });
+            }
+            else if (pasted.ElementType == ExplorerElementEnum.FunctionDefinition)
+            {
+                string folder = Path.GetDirectoryName(pasted.GetPath());
+                string name = FunctionDefinitions.GenerateFunctionDefName(pasted.GetName());
+                pasted.functionDefinition.Id = FunctionDefinitions.GenerateId();
+                pasted.SetPath(Path.Combine(folder, name));
+
+
+                // Adjusts local variable ids
+                var varRefs = VariableRef.GetVariableRefsFromTrigger(pasted);
+                pasted.functionDefinition.LocalVariables.Elements.ForEach(v =>
+                {
+                    var lv = (LocalVariable)v;
+                    int oldId = lv.variable.Id;
+                    int newId = Variables.GenerateId(blacklistedIds);
+                    Variables.AddLocalVariable(lv);
+                    lv.variable.Id = newId;
+                    blacklistedIds.Add(newId);
+
+                    var matches = varRefs.Where(x => x.VariableId == oldId);
+                    foreach (var match in matches)
+                        match.VariableId = newId;
+                });
             }
 
             AddElementToContainer(pasted);

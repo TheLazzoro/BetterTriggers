@@ -356,9 +356,9 @@ namespace BetterTriggers.Models.EditorData
             return converted;
         }
 
-        internal static FunctionDefinition DeserializeFunctionDefinition(FunctionDefinition_Saveable saveableFunctionDef)
+        internal static FunctionDefinition DeserializeFunctionDefinition(ExplorerElement explorerElement, FunctionDefinition_Saveable saveableFunctionDef)
         {
-            var converted = new FunctionDefinition();
+            var converted = new FunctionDefinition(explorerElement);
             converted.Id = saveableFunctionDef.Id;
             converted.Comment = saveableFunctionDef.Comment;
             converted.Category = saveableFunctionDef.Category;
