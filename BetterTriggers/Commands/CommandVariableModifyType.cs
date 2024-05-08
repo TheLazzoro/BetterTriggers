@@ -38,6 +38,7 @@ namespace BetterTriggers.Commands
             variable.War3Type = selectedType;
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(variable);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();
 
@@ -52,6 +53,7 @@ namespace BetterTriggers.Commands
             variable.War3Type = selectedType;
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(variable);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();
         }
@@ -64,6 +66,7 @@ namespace BetterTriggers.Commands
             variable.War3Type = previousType;
             refCollection.AddRefsToParent();
             Project.CurrentProject.References.UpdateReferences(variable);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();
         }

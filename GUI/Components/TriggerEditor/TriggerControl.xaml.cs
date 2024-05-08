@@ -22,6 +22,7 @@ using System.Windows.Media;
 using GUI.Components.ParameterEditor;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using GUI.Components.Dialogs;
+using System.Xml.Linq;
 
 namespace GUI.Components
 {
@@ -441,6 +442,27 @@ namespace GUI.Components
                 Grid.SetRow(_parameterDefinitionControl, 3);
                 Grid.SetRowSpan(_parameterDefinitionControl, 2);
             }
+        }
+
+        private void RefreshAllTreeElements()
+        {
+            if (!explorerElement.ShouldRefreshUIElements)
+            {
+                return;
+            }
+
+            var elements = Project.CurrentProject.GetTriggerElementsFromExplorerElement(explorerElement);
+            for (int i = 0; i < elements.Count; i++)
+            {
+                var eca = elements[i] as ECA;
+                if (eca == null)
+                    continue;
+
+                var controllerTriggerTreeItem = new ParamTextBuilder();
+                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(explorerElement, eca);
+            }
+
+            explorerElement.ShouldRefreshUIElements = false; // reset after one refresh
         }
 
         private void OnChange()
@@ -1454,6 +1476,7 @@ namespace GUI.Components
         private void ExplorerElement_OnChanged()
         {
             RefreshBottomControls();
+            RefreshAllTreeElements();
         }
 
         private void ExplorerElement_OnToggleEnable()

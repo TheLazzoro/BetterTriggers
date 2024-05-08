@@ -33,6 +33,7 @@ namespace BetterTriggers.Commands
             if (deletedElement is ExplorerElement)
                 Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
 
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             deletedElement.InvokeDelete();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
@@ -50,6 +51,7 @@ namespace BetterTriggers.Commands
             if (deletedElement is ExplorerElement)
                 Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
 
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             deletedElement.InvokeDelete();
         }
 
@@ -59,6 +61,7 @@ namespace BetterTriggers.Commands
             var project = Project.CurrentProject;
             project.EnableFileEvents(false);
 
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             project.RecurseCreateElementsWithContent(deletedElement);
             project.AddElementToContainer(deletedElement);
             deletedElement.UpdateMetadata(); // this is important because we do a pseudo-undo (create the file from scratch)

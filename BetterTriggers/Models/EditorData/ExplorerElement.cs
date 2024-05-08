@@ -43,6 +43,8 @@ namespace BetterTriggers.Models.EditorData
                 OnToggleInitiallyOn?.Invoke();
             }
         }
+
+        public bool ShouldRefreshUIElements { get; set; } // hack. I should structure my code better, but I'm tired of this project now.
         public event Action OnReload;
         public event Action OnChanged;
         public event Action OnSaved;
@@ -66,7 +68,7 @@ namespace BetterTriggers.Models.EditorData
         /// <summary>Reserved for copy-pasting purposes.</summary>
         public ExplorerElement() { }
 
-        /// <summary>Reserved for TriggerConverter.</summary>
+        /// <summary>Reserved for TriggerConverter and tests.</summary>
         public ExplorerElement(ExplorerElementEnum type)
         {
             ElementType = type;
@@ -565,6 +567,9 @@ namespace BetterTriggers.Models.EditorData
             VerifyAndRemoveTriggerErrors();
         }
 
+        /// <summary>
+        /// Expensive action that checks for errors, updates state and re-renders UI.
+        /// </summary>
         public void InvokeChange()
         {
             VerifyAndRemoveTriggerErrors();

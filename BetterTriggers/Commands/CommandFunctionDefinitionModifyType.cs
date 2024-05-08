@@ -43,6 +43,7 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             functionDef.ReturnType.War3Type = selectedType;
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.RemoveRefsFromParent();
             for (int i = 0; i < returnStatements.Count; i++)
             {
@@ -57,6 +58,7 @@ namespace BetterTriggers.Commands
         public void Redo()
         {
             functionDef.ReturnType.War3Type = selectedType;
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.RemoveRefsFromParent();
             for (int i = 0; i < returnStatements.Count; i++)
             {
@@ -70,6 +72,7 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             functionDef.ReturnType.War3Type = previousType;
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.AddRefsToParent();
             for (int i = 0; i < returnStatements.Count; i++)
             {

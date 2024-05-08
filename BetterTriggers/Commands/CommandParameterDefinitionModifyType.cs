@@ -41,6 +41,7 @@ namespace BetterTriggers.Commands
             refCollection.ResetParameters();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
             Project.CurrentProject.CommandManager.AddCommand(this);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
@@ -49,6 +50,7 @@ namespace BetterTriggers.Commands
             parameterDef.ReturnType = selectedType;
             refCollection.ResetParameters();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
@@ -57,6 +59,7 @@ namespace BetterTriggers.Commands
             parameterDef.ReturnType = previousType;
             refCollection.RevertToOldParameters();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 

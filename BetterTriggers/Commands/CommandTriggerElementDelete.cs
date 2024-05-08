@@ -27,7 +27,7 @@ namespace BetterTriggers.Commands
 
             elementsToDelete.Elements.ForEach(el =>
             {
-                if(el is LocalVariable localVar)
+                if (el is LocalVariable localVar)
                 {
                     RefCollection refCollection = new RefCollection(localVar.variable);
                     this.refCollections.Add(refCollection);
@@ -66,6 +66,7 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
 
+            refCollections.ForEach(r => r.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true));
             refCollections.ForEach(r => r.RemoveRefsFromParent());
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             Project.CurrentProject.CommandManager.AddCommand(this);
@@ -84,6 +85,7 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
 
+            refCollections.ForEach(r => r.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true));
             refCollections.ForEach(r => r.RemoveRefsFromParent());
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
@@ -100,6 +102,7 @@ namespace BetterTriggers.Commands
                 refCollection.RevertToOldParameters();
             }
 
+            refCollections.ForEach(r => r.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true));
             refCollections.ForEach(r => r.AddRefsToParent());
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();

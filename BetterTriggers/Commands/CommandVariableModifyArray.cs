@@ -28,6 +28,7 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             project.References.UpdateReferences(variable);
             variable.IsArray = isArray;
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
 
             project.CommandManager.AddCommand(this);
@@ -38,6 +39,7 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(variable);
             variable.IsArray = isArray;
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
@@ -46,6 +48,7 @@ namespace BetterTriggers.Commands
             variable.IsArray = !isArray;
             refCollection.AddRefsToParent();
             Project.CurrentProject.References.UpdateReferences(variable);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 

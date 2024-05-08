@@ -27,6 +27,7 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(variable);
             variable.IsTwoDimensions = isTwoDimensions;
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
 
             Project.CurrentProject.CommandManager.AddCommand(this);
@@ -37,6 +38,7 @@ namespace BetterTriggers.Commands
             refCollection.RemoveRefsFromParent();
             Project.CurrentProject.References.UpdateReferences(variable);
             variable.IsTwoDimensions = isTwoDimensions;
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 
@@ -45,6 +47,7 @@ namespace BetterTriggers.Commands
             variable.IsTwoDimensions = !isTwoDimensions;
             refCollection.AddRefsToParent();
             Project.CurrentProject.References.UpdateReferences(variable);
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
         }
 

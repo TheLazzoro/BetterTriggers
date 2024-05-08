@@ -25,8 +25,9 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
-            refCollection.Notify();
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
+            refCollection.Notify();
 
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
@@ -38,8 +39,9 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.EnableFileEvents(true);
             Project.CurrentProject.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
-            refCollection.Notify();
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
+            refCollection.Notify();
         }
 
         public void Undo()
@@ -49,8 +51,9 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.EnableFileEvents(true);
             Project.CurrentProject.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
 
-            refCollection.Notify();
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
+            refCollection.Notify();
         }
 
         public string GetCommandName()

@@ -362,6 +362,11 @@ namespace GUI.Components
                 return;
             }
 
+            if(e.Key == Key.Enter && selected.IsRenaming)
+            {
+                return;
+            }
+
             if (e.Key == Key.Enter)
             {
                 OnOpenExplorerElement?.Invoke(selected);

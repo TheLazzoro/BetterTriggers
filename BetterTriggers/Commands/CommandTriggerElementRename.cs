@@ -44,8 +44,9 @@ namespace BetterTriggers.Commands
             {
                 parameterDefinition.Name = newName;
             }
-            refCollection.Notify();
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
+            refCollection.Notify();
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
 
@@ -60,8 +61,9 @@ namespace BetterTriggers.Commands
             {
                 parameterDefinition.Name = newName;
             }
-            refCollection.Notify();
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
+            refCollection.Notify();
         }
 
         public void Undo()
@@ -75,8 +77,9 @@ namespace BetterTriggers.Commands
             {
                 parameterDefinition.Name = newName;
             }
-            refCollection.Notify();
+            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
+            refCollection.Notify();
         }
 
         public string GetCommandName()
