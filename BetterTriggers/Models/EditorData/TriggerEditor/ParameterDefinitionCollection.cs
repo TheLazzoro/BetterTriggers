@@ -45,6 +45,17 @@ namespace BetterTriggers.Models.EditorData
             command.Execute();
         }
 
+        public override ParameterDefinitionCollection Clone()
+        {
+            var clone = new ParameterDefinitionCollection(ElementType);
+            this.Elements.ForEach(element =>
+            {
+                var clonedChild = element.Clone();
+                clonedChild.SetParent(clone, clone.Elements.Count);
+            });
+            return clone;
+        }
+
         public ParameterDefinition? GetByReference(ParameterDefinitionRef paramDefRef)
         {
             for (int i = 0; i < Elements.Count; i++)

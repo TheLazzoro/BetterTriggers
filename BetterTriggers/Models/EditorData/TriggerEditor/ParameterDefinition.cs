@@ -47,6 +47,7 @@ namespace BetterTriggers.Models.EditorData
         public override ParameterDefinition Clone()
         {
             var clone = new ParameterDefinition();
+            clone.Name = new string(Name);
             clone.ReturnType = ReturnType;
             clone.DisplayText = new string(DisplayText);
             IconImage.CopyTo(clone.IconImage, 0);
