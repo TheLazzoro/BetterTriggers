@@ -91,9 +91,14 @@
                             <Image Source="/Resources/Icons/editor-triggerevent.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem x:Name="menuParameter" Header="New Parameter" Click="menuParameter_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/actions-parameter-alpha.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem x:Name="menuLocalVar" Header="New Local Variable" Click="menuLocalVar_Click">
                         <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/ui-editoricon-triggercategories_localvariable.png" />
+                            <Image Source="/Resources/Icons/actions-setvariables-alpha.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem x:Name="menuCondition" Header="New Condition" Click="menuCondition_Click">

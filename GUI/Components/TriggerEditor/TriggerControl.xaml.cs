@@ -236,28 +236,22 @@ namespace GUI.Components
 
         private void CreateTriggerElement(TriggerElementType type)
         {
+            if(type == TriggerElementType.Event && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
+            {
+                return;
+            }
+            else if (type == TriggerElementType.Condition && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
+            {
+                return;
+            }
+
+
             int insertIndex = 0;
 
+            var localVariables = explorerElement.GetLocalVariables();
             if (type == TriggerElementType.LocalVariable)
             {
-                switch (explorerElementType)
-                {
-                    case ExplorerElementEnum.Trigger:
-                        insertIndex = explorerElement.trigger.LocalVariables.Count();
-                        break;
-                    case ExplorerElementEnum.ActionDefinition:
-                        insertIndex = explorerElement.actionDefinition.LocalVariables.Count();
-                        break;
-                    case ExplorerElementEnum.ConditionDefinition:
-                        insertIndex = explorerElement.conditionDefinition.LocalVariables.Count();
-                        break;
-                    case ExplorerElementEnum.FunctionDefinition:
-                        insertIndex = explorerElement.functionDefinition.LocalVariables.Count();
-                        break;
-                    default:
-                        break;
-                }
-
+                insertIndex = localVariables.Count();
                 Project.CurrentProject.Variables.CreateLocalVariable(explorerElement, insertIndex);
                 return;
             }
@@ -270,17 +264,14 @@ namespace GUI.Components
                 {
                     case ExplorerElementEnum.ActionDefinition:
                         referable = explorerElement.actionDefinition;
-                        insertIndex = explorerElement.actionDefinition.LocalVariables.Count();
                         parameterDefCollection = explorerElement.actionDefinition.Parameters;
                         break;
                     case ExplorerElementEnum.ConditionDefinition:
                         referable = explorerElement.conditionDefinition;
-                        insertIndex = explorerElement.conditionDefinition.LocalVariables.Count();
                         parameterDefCollection = explorerElement.conditionDefinition.Parameters;
                         break;
                     case ExplorerElementEnum.FunctionDefinition:
                         referable = explorerElement.functionDefinition;
-                        insertIndex = explorerElement.functionDefinition.LocalVariables.Count();
                         parameterDefCollection = explorerElement.functionDefinition.Parameters;
                         break;
                     default:
@@ -308,6 +299,11 @@ namespace GUI.Components
             menu.ShowDialog();
             ECA eca = menu.createdTriggerElement;
 
+            if (eca == null)
+            {
+                return;
+            }
+
             TriggerElement parent = null;
             var selected = treeViewTriggers.SelectedItem as TriggerElement;
             if (selected == null)
@@ -321,7 +317,7 @@ namespace GUI.Components
                         parent = explorerElement.trigger.Conditions;
                         break;
                     case TriggerElementType.Action:
-                        parent = explorerElement.trigger.Actions;
+                        parent = explorerElement.GetActionCollection();
                         break;
                 }
             }
@@ -354,7 +350,7 @@ namespace GUI.Components
                         parent = explorerElement.trigger.Conditions;
                         break;
                     case TriggerElementType.Action:
-                        parent = explorerElement.trigger.Actions;
+                        parent = explorerElement.GetActionCollection();
                         break;
                 }
 
@@ -364,12 +360,9 @@ namespace GUI.Components
             var parentAsItem = GetTreeViewItemFromTriggerElement(parent);
             parentAsItem.IsExpanded = true;
 
-            if (eca != null)
-            {
-                CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, eca, parent, insertIndex);
-                command.Execute();
-                eca.IsSelected = true;
-            }
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, eca, parent, insertIndex);
+            command.Execute();
+            eca.IsSelected = true;
         }
 
         private void RefreshBottomControls()
@@ -1291,6 +1284,11 @@ namespace GUI.Components
             CreateEvent();
         }
 
+        private void menuParameter_Click(object sender, RoutedEventArgs e)
+        {
+            CreateParameter();
+        }
+
         private void menuLocalVar_Click(object sender, RoutedEventArgs e)
         {
             CreateLocalVariable();
@@ -1471,6 +1469,9 @@ namespace GUI.Components
             menuFunctionEnabled.IsEnabled = isECA;
             menuFunctionEnabled.IsChecked = triggerElement.IsEnabled;
             menuRename.IsEnabled = isRenameEnabled;
+            menuEvent.IsEnabled = explorerElementType is ExplorerElementEnum.Trigger;
+            menuCondition.IsEnabled = explorerElementType is ExplorerElementEnum.Trigger;
+            menuParameter.IsEnabled = explorerElementType is not ExplorerElementEnum.Trigger;
         }
 
         private void ExplorerElement_OnChanged()

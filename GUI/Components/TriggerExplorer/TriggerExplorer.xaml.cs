@@ -416,10 +416,37 @@ namespace GUI.Components
             }
         }
 
-        private void OpenContextMenu(MouseButtonEventArgs e)
+        private void OpenContextMenu(RoutedEventArgs e)
         {
             contextMenu.IsOpen = true;
             e.Handled = true;
+
+            var explorerElement = GetSelectedExplorerElement();
+            if (explorerElement == null)
+            {
+                menuPaste.IsEnabled = false;
+                menuElementEnabled.IsEnabled = false;
+                menuElementInitiallyOn.IsChecked = false;
+                menuElementEnabled.IsEnabled = false;
+                menuElementInitiallyOn.IsEnabled = false;
+                menuRename.IsEnabled = false;
+                menuDelete.IsEnabled = false;
+                menuCut.IsEnabled = false;
+                menuCopy.IsEnabled = false;
+                menuOpenInExplorer.IsEnabled = false;
+                return;
+            }
+
+            menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
+            menuElementEnabled.IsChecked = explorerElement.IsEnabled;
+            menuElementInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
+            menuElementEnabled.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger || explorerElement.ElementType == ExplorerElementEnum.Script;
+            menuElementInitiallyOn.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger;
+            menuRename.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuDelete.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuCut.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuCopy.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
+            menuOpenInExplorer.IsEnabled = true;
         }
 
         private void treeViewItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -679,32 +706,7 @@ namespace GUI.Components
 
         private void contextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            var explorerElement = GetSelectedExplorerElement();
-            if(explorerElement == null)
-            {
-                menuPaste.IsEnabled = false;
-                menuElementEnabled.IsEnabled = false;
-                menuElementInitiallyOn.IsChecked = false;
-                menuElementEnabled.IsEnabled = false;
-                menuElementInitiallyOn.IsEnabled = false;
-                menuRename.IsEnabled = false;
-                menuDelete.IsEnabled = false;
-                menuCut.IsEnabled = false;
-                menuCopy.IsEnabled = false;
-                menuOpenInExplorer.IsEnabled = false;
-                return;
-            }
-
-            menuPaste.IsEnabled = CopiedElements.CopiedExplorerElement != null;
-            menuElementEnabled.IsChecked = explorerElement.IsEnabled;
-            menuElementInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
-            menuElementEnabled.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger || explorerElement.ElementType == ExplorerElementEnum.Script;
-            menuElementInitiallyOn.IsEnabled = explorerElement.ElementType == ExplorerElementEnum.Trigger;
-            menuRename.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
-            menuDelete.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
-            menuCut.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
-            menuCopy.IsEnabled = explorerElement.ElementType is not ExplorerElementEnum.Root;
-            menuOpenInExplorer.IsEnabled = true;
+            OpenContextMenu(e);
         }
     }
 }

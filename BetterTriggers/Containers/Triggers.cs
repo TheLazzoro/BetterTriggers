@@ -26,29 +26,6 @@ namespace BetterTriggers.Containers
             lastCreated = trigger;
         }
 
-        public int GenerateId()
-        {
-            int generatedId = 0;
-            bool isIdValid = false;
-            while (!isIdValid)
-            {
-                bool doesIdExist = false;
-                var enumerator = triggerElementContainer.GetEnumerator();
-                while (!doesIdExist && enumerator.MoveNext())
-                {
-                    if (enumerator.Current.trigger.Id == generatedId)
-                        doesIdExist = true;
-                }
-
-                if (!doesIdExist)
-                    isIdValid = true;
-                else
-                    generatedId = RandomUtil.GenerateInt();
-            }
-
-            return generatedId;
-        }
-
         public int Count()
         {
             return triggerElementContainer.Count;
@@ -132,7 +109,8 @@ namespace BetterTriggers.Containers
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            string directory = Project.CurrentProject.currentSelectedElement;
+            var project = Project.CurrentProject;
+            string directory = project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -140,7 +118,7 @@ namespace BetterTriggers.Containers
 
             Trigger_Saveable trigger = new Trigger_Saveable()
             {
-                Id = GenerateId(),
+                Id = project.GenerateId(),
             };
             string json = JsonConvert.SerializeObject(trigger);
 

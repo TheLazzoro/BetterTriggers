@@ -87,6 +87,30 @@ namespace BetterTriggers.Utility
                 {
                     continue;
                 }
+                else if (triggerElement.Elements[i] is ActionDefinitionRef actionDefRef)
+                {
+                    var found = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId);
+                    if (found == null)
+                    {
+                        actionDefRef.RemoveFromParent();
+                        var invalid = new InvalidECA();
+                        invalid.SetParent(triggerElement, i);
+                        removeCount += 1;
+                        continue;
+                    }
+                }
+                else if (triggerElement.Elements[i] is ConditionDefinitionRef conditionDefRef)
+                {
+                    var found = Project.CurrentProject.ActionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
+                    if (found == null)
+                    {
+                        conditionDefRef.RemoveFromParent();
+                        var invalid = new InvalidECA();
+                        invalid.SetParent(triggerElement, i);
+                        removeCount += 1;
+                        continue;
+                    }
+                }
 
                 var eca = (ECA)triggerElement.Elements[i];
                 bool ecaExists = TriggerData.FunctionExists(eca.function);

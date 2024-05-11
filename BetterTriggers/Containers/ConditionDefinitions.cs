@@ -26,7 +26,8 @@ namespace BetterTriggers.Containers
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            string directory = Project.CurrentProject.currentSelectedElement;
+            var project = Project.CurrentProject;
+            string directory = project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -38,7 +39,7 @@ namespace BetterTriggers.Containers
             });
             var conditionDef = new ConditionDefinition_Saveable()
             {
-                Id = GenerateId(),
+                Id = project.GenerateId(),
                 Actions = new List<TriggerElement_Saveable>()
                 {
                     returnStatement,
@@ -72,39 +73,26 @@ namespace BetterTriggers.Containers
             return generatedName + ".cond";
         }
 
-        public int GenerateId()
-        {
-            int generatedId = 0;
-            bool isIdValid = false;
-            while (!isIdValid)
-            {
-                bool doesIdExist = false;
-                var enumerator = container.GetEnumerator();
-                while (!doesIdExist && enumerator.MoveNext())
-                {
-                    if (enumerator.Current.conditionDefinition.Id == generatedId)
-                        doesIdExist = true;
-                }
-
-                if (!doesIdExist)
-                    isIdValid = true;
-                else
-                    generatedId = RandomUtil.GenerateInt();
-            }
-
-            return generatedId;
-        }
-
         public int Count()
         {
             return container.Count;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>Returns true if an element with the given file name exists in the container.</returns>
+        public bool Contains(int id)
+        {
+            bool found = false;
+
+            foreach (var item in container)
+            {
+                if (item.conditionDefinition.Id == id)
+                {
+                    found = true;
+                }
+            }
+
+            return found;
+        }
+
         public bool Contains(string name)
         {
             bool found = false;

@@ -2,6 +2,7 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
+using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace BetterTriggers.Containers
             // Default variable is always an integer on creation.
             Variable_Saveable variable = new Variable_Saveable()
             {
-                Id = GenerateId(),
+                Id = project.GenerateId(),
                 Name = name,
                 Type = "integer",
                 InitialValue = new Value_Saveable() { value = "0" },
@@ -48,11 +49,12 @@ namespace BetterTriggers.Containers
         public LocalVariable CreateLocalVariable(ExplorerElement explorerElement, int insertIndex)
         {
             TriggerElementCollection localVariables = explorerElement.GetLocalVariables();
+            var project = Project.CurrentProject;
 
             Variable variable = new Variable();
             variable.War3Type = War3Type.Get("integer");
             variable.Name = GenerateLocalName(localVariables);
-            variable.Id = GenerateId();
+            variable.Id = project.GenerateId();
             variable.ArraySize = new int[] { 1, 1 };
             variable.InitialValue = new Value() { value = "0" };
             LocalVariable localVariable = new LocalVariable(variable);
@@ -214,7 +216,7 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Returns true if an element with the given id exists in the container.
         /// </summary>
-        internal bool Contains(int id)
+        internal bool Contains(int id, List<int> blacklist = null)
         {
             bool found = false;
             foreach (var variable in variableContainer)
@@ -227,48 +229,16 @@ namespace BetterTriggers.Containers
                 if (variable.Id == id)
                     found = true;
             }
-
-            return found;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="blacklist">Id's that cannot be used.</param>
-        /// <returns></returns>
-        internal int GenerateId(List<int> blacklist = null)
-        {
-            int generatedId = 0;
-            bool isIdValid = false;
-            while (!isIdValid)
+            if (blacklist != null)
             {
-                bool doesIdExist = false;
-                foreach (var variable in variableContainer)
+                foreach (var blacklistedId in blacklist)
                 {
-                    if (variable.variable.Id == generatedId)
-                        doesIdExist = true;
+                    if (blacklistedId == id)
+                        found = true;
                 }
-                foreach (var variable in localVariableContainer)
-                {
-                    if (variable.Id == generatedId)
-                        doesIdExist = true;
-                }
-                if (blacklist != null)
-                {
-                    foreach (var id in blacklist)
-                    {
-                        if (generatedId == id)
-                            doesIdExist = true;
-                    }
-                }
-
-                if (!doesIdExist)
-                    isIdValid = true;
-                else
-                    generatedId = RandomUtil.GenerateInt();
             }
 
-            return generatedId;
+            return found;
         }
 
         internal string GenerateLocalName(TriggerElementCollection localVariables, string oldName = "UntitledVariable")

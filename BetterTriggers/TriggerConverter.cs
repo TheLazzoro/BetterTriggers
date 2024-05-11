@@ -244,7 +244,7 @@ namespace BetterTriggers.WorldEdit
                 if (idAlreadyExists)
                 {
                     int oldId = id;
-                    int newId = isVariable ? project.Variables.GenerateId() : project.Triggers.GenerateId();
+                    int newId = isVariable ? project.GenerateId() : project.GenerateId();
                     if (element.ElementType == ExplorerElementEnum.Trigger)
                     {
                         element.trigger.Id = newId;

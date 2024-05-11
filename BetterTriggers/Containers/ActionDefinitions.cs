@@ -26,7 +26,8 @@ namespace BetterTriggers.Containers
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            string directory = Project.CurrentProject.currentSelectedElement;
+            var project = Project.CurrentProject;
+            string directory = project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -34,7 +35,7 @@ namespace BetterTriggers.Containers
 
             var actionDef = new ActionDefinition_Saveable()
             {
-                Id = GenerateId(),
+                Id = project.GenerateId(),
             };
             string json = JsonConvert.SerializeObject(actionDef);
 
@@ -65,27 +66,17 @@ namespace BetterTriggers.Containers
             return generatedName + ".act";
         }
 
-        public int GenerateId()
+        public bool Contains(int id)
         {
-            int generatedId = 0;
-            bool isIdValid = false;
-            while (!isIdValid)
+            bool found = false;
+            foreach (var item in container)
             {
-                bool doesIdExist = false;
-                var enumerator = container.GetEnumerator();
-                while (!doesIdExist && enumerator.MoveNext())
+                if (item.actionDefinition.Id == id)
                 {
-                    if (enumerator.Current.actionDefinition.Id == generatedId)
-                        doesIdExist = true;
+                    found = true;
                 }
-
-                if (!doesIdExist)
-                    isIdValid = true;
-                else
-                    generatedId = RandomUtil.GenerateInt();
             }
-
-            return generatedId;
+            return found;
         }
 
         public int Count()

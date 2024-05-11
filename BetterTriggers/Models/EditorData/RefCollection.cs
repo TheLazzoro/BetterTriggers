@@ -61,6 +61,10 @@ namespace BetterTriggers.Models.EditorData
                 CreateTrigRefs(explorerElement.trigger);
             else if (explorerElement.ElementType == ExplorerElementEnum.FunctionDefinition)
                 CreateFunctionDefRefs(explorerElement.functionDefinition);
+            else if (explorerElement.ElementType == ExplorerElementEnum.ActionDefinition)
+                CreateActionDefRefs(explorerElement.actionDefinition);
+            else if (explorerElement.ElementType == ExplorerElementEnum.ConditionDefinition)
+                CreateConditionDefRefs(explorerElement.conditionDefinition);
         }
 
         private void CreateVarRefs(Variable variable, War3Type newType = null)

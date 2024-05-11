@@ -714,7 +714,7 @@ namespace BetterTriggers.Containers
             {
                 string folder = Path.GetDirectoryName(pasted.GetPath());
                 string name = Triggers.GenerateTriggerName(pasted.GetName());
-                pasted.trigger.Id = Triggers.GenerateId();
+                pasted.trigger.Id = GenerateId();
                 pasted.SetPath(Path.Combine(folder, name));
 
 
@@ -724,7 +724,7 @@ namespace BetterTriggers.Containers
                 {
                     var lv = (LocalVariable)v;
                     int oldId = lv.variable.Id;
-                    int newId = Variables.GenerateId(blacklistedIds);
+                    int newId = GenerateId(blacklistedIds);
                     Variables.AddLocalVariable(lv);
                     lv.variable.Id = newId;
                     blacklistedIds.Add(newId);
@@ -740,7 +740,7 @@ namespace BetterTriggers.Containers
                 string folder = Path.GetDirectoryName(pasted.GetPath());
                 string name = Variables.GenerateName(pasted.GetName());
 
-                pasted.variable.Id = Variables.GenerateId();
+                pasted.variable.Id = GenerateId();
                 pasted.variable.Name = name;
                 pasted.SetPath(Path.Combine(folder, name + ".var"));
 
@@ -757,7 +757,7 @@ namespace BetterTriggers.Containers
             {
                 string folder = Path.GetDirectoryName(pasted.GetPath());
                 string name = ActionDefinitions.GenerateActionDefName(pasted.GetName());
-                pasted.actionDefinition.Id = ActionDefinitions.GenerateId();
+                pasted.actionDefinition.Id = GenerateId();
                 pasted.SetPath(Path.Combine(folder, name));
 
 
@@ -767,7 +767,7 @@ namespace BetterTriggers.Containers
                 {
                     var lv = (LocalVariable)v;
                     int oldId = lv.variable.Id;
-                    int newId = Variables.GenerateId(blacklistedIds);
+                    int newId = GenerateId(blacklistedIds);
                     Variables.AddLocalVariable(lv);
                     lv.variable.Id = newId;
                     blacklistedIds.Add(newId);
@@ -781,7 +781,7 @@ namespace BetterTriggers.Containers
             {
                 string folder = Path.GetDirectoryName(pasted.GetPath());
                 string name = ConditionDefinitions.GenerateConditionDefName(pasted.GetName());
-                pasted.conditionDefinition.Id = ConditionDefinitions.GenerateId();
+                pasted.conditionDefinition.Id = GenerateId();
                 pasted.SetPath(Path.Combine(folder, name));
 
 
@@ -791,7 +791,7 @@ namespace BetterTriggers.Containers
                 {
                     var lv = (LocalVariable)v;
                     int oldId = lv.variable.Id;
-                    int newId = Variables.GenerateId(blacklistedIds);
+                    int newId = GenerateId(blacklistedIds);
                     Variables.AddLocalVariable(lv);
                     lv.variable.Id = newId;
                     blacklistedIds.Add(newId);
@@ -805,7 +805,7 @@ namespace BetterTriggers.Containers
             {
                 string folder = Path.GetDirectoryName(pasted.GetPath());
                 string name = FunctionDefinitions.GenerateFunctionDefName(pasted.GetName());
-                pasted.functionDefinition.Id = FunctionDefinitions.GenerateId();
+                pasted.functionDefinition.Id = GenerateId();
                 pasted.SetPath(Path.Combine(folder, name));
 
 
@@ -815,7 +815,7 @@ namespace BetterTriggers.Containers
                 {
                     var lv = (LocalVariable)v;
                     int oldId = lv.variable.Id;
-                    int newId = Variables.GenerateId(blacklistedIds);
+                    int newId = GenerateId(blacklistedIds);
                     Variables.AddLocalVariable(lv);
                     lv.variable.Id = newId;
                     blacklistedIds.Add(newId);
@@ -845,7 +845,7 @@ namespace BetterTriggers.Containers
                 {
                     var clone = localVar.Clone();
                     var variables = this.Variables;
-                    clone.variable.Id = variables.GenerateId();
+                    clone.variable.Id = GenerateId();
                     switch (destinationTrigger.ElementType)
                     {
                         case ExplorerElementEnum.Trigger:
@@ -888,6 +888,28 @@ namespace BetterTriggers.Containers
                 pasted.Elements[pasted.Elements.Count - 1].IsSelected = true;
 
             return pasted;
+        }
+
+        /// <param name="blacklist">Id's that cannot be used.</param>
+        public int GenerateId(List<int> blacklist = null)
+        {
+            int id = 0;
+            while(id == 0)
+            {
+                id = RandomUtil.GenerateInt();
+                if (
+                    Variables.Contains(id, blacklist)
+                    || Triggers.Contains(id)
+                    || ActionDefinitions.Contains(id)
+                    || ConditionDefinitions.Contains(id)
+                    || FunctionDefinitions.Contains(id)
+                    )
+                {
+                    id = 0;
+                }
+            }
+
+            return id;
         }
 
         /// <returns>A list of every function in the entire project. This also includes inner functions in parameters.</returns>

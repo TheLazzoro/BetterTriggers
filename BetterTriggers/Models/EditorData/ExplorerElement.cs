@@ -389,6 +389,35 @@ namespace BetterTriggers.Models.EditorData
             return parameterDefs;
         }
 
+        /// <summary>
+        /// Gets a <see cref="TriggerElementCollection"/> from the <see cref="ExplorerElement"/>.
+        /// The collection is either attached to a <see cref="Trigger"/>, <see cref="ActionDefinition"/>,
+        /// <see cref="ConditionDefinition"/>, or <see cref="FunctionDefinition"/>.
+        /// </summary>
+        public TriggerElementCollection GetActionCollection()
+        {
+            TriggerElementCollection actions = null;
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    actions = trigger.Actions;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    actions = actionDefinition.Actions;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    actions = conditionDefinition.Actions;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    actions = functionDefinition.Actions;
+                    break;
+                default:
+                    break;
+            }
+
+            return actions;
+        }
+
         public ExplorerElement Clone()
         {
             ExplorerElement newElement = new ExplorerElement();
