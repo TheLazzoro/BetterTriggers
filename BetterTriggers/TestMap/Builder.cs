@@ -77,7 +77,8 @@ namespace BetterTriggers.TestMap
             }
 
             bool didWrite = false;
-            int attemptLimit = 1000;
+            int attemptLimit = 10;
+            string err = string.Empty;
             while (attemptLimit > 0 && !didWrite)
             {
                 try
@@ -89,10 +90,14 @@ namespace BetterTriggers.TestMap
                 {
                     Thread.Sleep(5);
                     attemptLimit--;
+                    if(attemptLimit <= 0)
+                    {
+                        err = ex.Message;
+                    }
                 }
             }
             if (!didWrite)
-                throw new Exception("Could not write to map.");
+                throw new Exception(err);
 
 
             return true;

@@ -28,20 +28,7 @@ namespace BetterTriggers.Commands
             this.NewInsertIndex = NewInsertIndex;
             if (triggerElement is ParameterDefinition)
             {
-                switch (explorerElement.ElementType)
-                {
-                    case ExplorerElementEnum.ActionDefinition:
-                        refCollection = new RefCollection(explorerElement.actionDefinition);
-                        break;
-                    case ExplorerElementEnum.ConditionDefinition:
-                        refCollection = new RefCollection(explorerElement.conditionDefinition);
-                        break;
-                    case ExplorerElementEnum.FunctionDefinition:
-                        refCollection = new RefCollection(explorerElement.functionDefinition);
-                        break;
-                    default:
-                        break;
-                }
+                refCollection = new RefCollection(explorerElement);
             }
         }
 

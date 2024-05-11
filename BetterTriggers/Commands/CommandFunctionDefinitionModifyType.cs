@@ -24,7 +24,7 @@ namespace BetterTriggers.Commands
             this.functionDef = functionDef;
             this.selectedType = selectedType;
             this.previousType = functionDef.ReturnType.War3Type;
-            this.refCollection = new RefCollection(functionDef);
+            this.refCollection = new RefCollection(explorerElement);
 
             // A way to reset all return statements
             var ecas = Project.CurrentProject.GetTriggerElementsFromFunctionDefinition(functionDef);

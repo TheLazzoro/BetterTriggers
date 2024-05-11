@@ -36,38 +36,8 @@ namespace BetterTriggers.Commands
 
             if (listToCut.Elements[0] is ParameterDefinition)
             {
-                RefCollection refCollection = null;
-                switch (from.ElementType)
-                {
-                    case ExplorerElementEnum.ActionDefinition:
-                        refCollection = new RefCollection(from.actionDefinition);
-                        break;
-                    case ExplorerElementEnum.ConditionDefinition:
-                        refCollection = new RefCollection(from.conditionDefinition);
-                        break;
-                    case ExplorerElementEnum.FunctionDefinition:
-                        refCollection = new RefCollection(from.functionDefinition);
-                        break;
-                    default:
-                        break;
-                }
-                refCollections.Add(refCollection);
-
-                switch (to.ElementType)
-                {
-                    case ExplorerElementEnum.ActionDefinition:
-                        refCollection = new RefCollection(to.actionDefinition);
-                        break;
-                    case ExplorerElementEnum.ConditionDefinition:
-                        refCollection = new RefCollection(to.conditionDefinition);
-                        break;
-                    case ExplorerElementEnum.FunctionDefinition:
-                        refCollection = new RefCollection(to.functionDefinition);
-                        break;
-                    default:
-                        break;
-                }
-                refCollections.Add(refCollection);
+                refCollections.Add(new RefCollection(from));
+                refCollections.Add(new RefCollection(to));
             }
         }
 

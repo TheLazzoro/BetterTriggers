@@ -56,7 +56,7 @@ namespace BetterTriggers.Containers
             bool found = false;
             foreach (var item in triggerElementContainer)
             {
-                if (item.GetId() == id)
+                if (item.trigger.Id == id)
                 {
                     found = true;
                 }

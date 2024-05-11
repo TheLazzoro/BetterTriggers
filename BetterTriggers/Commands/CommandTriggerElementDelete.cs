@@ -29,28 +29,14 @@ namespace BetterTriggers.Commands
             {
                 if (el is LocalVariable localVar)
                 {
-                    RefCollection refCollection = new RefCollection(localVar.variable);
+                    var refCollection = new RefCollection(localVar.variable);
                     this.refCollections.Add(refCollection);
                 }
             });
 
             if (elementsToDelete.Elements[0] is ParameterDefinition)
             {
-                RefCollection refCollection = null;
-                switch (element.ElementType)
-                {
-                    case ExplorerElementEnum.ActionDefinition:
-                        refCollection = new RefCollection(element.actionDefinition);
-                        break;
-                    case ExplorerElementEnum.ConditionDefinition:
-                        refCollection = new RefCollection(element.conditionDefinition);
-                        break;
-                    case ExplorerElementEnum.FunctionDefinition:
-                        refCollection = new RefCollection(element.functionDefinition);
-                        break;
-                    default:
-                        break;
-                }
+                var refCollection = new RefCollection(element);
                 refCollections.Add(refCollection);
             }
         }

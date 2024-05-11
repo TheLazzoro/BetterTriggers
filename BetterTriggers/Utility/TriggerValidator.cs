@@ -101,7 +101,7 @@ namespace BetterTriggers.Utility
                 }
                 else if (triggerElement.Elements[i] is ConditionDefinitionRef conditionDefRef)
                 {
-                    var found = Project.CurrentProject.ActionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
+                    var found = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
                     if (found == null)
                     {
                         conditionDefRef.RemoveFromParent();

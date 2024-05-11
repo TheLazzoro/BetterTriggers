@@ -28,26 +28,6 @@ namespace BetterTriggers.Models.EditorData
             CreateVarRefs(variable, newType);
         }
 
-        internal RefCollection(Trigger trigger)
-        {
-            CreateTrigRefs(trigger);
-        }
-
-        internal RefCollection(FunctionDefinition functionDefinition)
-        {
-            CreateFunctionDefRefs(functionDefinition);
-        }
-
-        internal RefCollection(ActionDefinition actionDefinition)
-        {
-            CreateActionDefRefs(actionDefinition);
-        }
-
-        internal RefCollection(ConditionDefinition conditionDefinition)
-        {
-            CreateConditionDefRefs(conditionDefinition);
-        }
-
         internal RefCollection(ParameterDefinition parameterDefinition)
         {
             CreateParameterDefRefs(parameterDefinition);
