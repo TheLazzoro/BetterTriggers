@@ -21,6 +21,7 @@ namespace BetterTriggers.Models.EditorData
         private bool _isEnabledTreeItem = true;
         private bool _hasErrors = false;
         private bool _isSelected;
+        private bool _isSelected_Multi;
         private bool _isExpanded;
         private bool _isChecked;
         private double _checkBoxWidth = 0;
@@ -163,6 +164,18 @@ namespace BetterTriggers.Models.EditorData
                 {
                     CancelRename();
                 }
+            }
+        }
+        /// <summary>
+        /// Fix for UI multi-select because 'IsSelected' calls itself recursively, causing a stackoverflow.
+        /// </summary>
+        public bool IsSelected_Multi
+        {
+            get => _isSelected_Multi;
+            set
+            {
+                _isSelected_Multi = value;
+                OnPropertyChanged();
             }
         }
         public bool IsExpandedTreeItem
