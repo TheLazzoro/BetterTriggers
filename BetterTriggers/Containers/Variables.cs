@@ -2,6 +2,7 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using System;
@@ -125,9 +126,11 @@ namespace BetterTriggers.Containers
                 }
             }
 
+            string baseType = Types.GetBaseType(returnType);
+
             for (int i = 0; i < all.Count; i++)
             {
-                if (returnType != "AnyGlobal" && all[i].War3Type.Type != returnType)
+                if (returnType != "AnyGlobal" && Types.GetBaseType(all[i].War3Type.Type) != baseType)
                     continue;
 
                 var variable = all[i];
@@ -144,10 +147,8 @@ namespace BetterTriggers.Containers
         /// <returns></returns>
         public List<VariableRef> GetVariableRefs(string returnType, bool includeLocals, TriggerElementCollection localVariables = null)
         {
-            bool wasIntegervar = false;
             if (returnType == "integervar")
             {
-                wasIntegervar = true;
                 returnType = "integer";
             }
 

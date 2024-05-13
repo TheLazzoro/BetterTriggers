@@ -50,6 +50,10 @@ BlzFrameSetEnableBTHint="Turns on/off interactivity/events of frame. A disabled 
 
 BlzFrameSetAlphaHint="Also affects child-frames when they don't have their own alpha."
 
+BlzFrameSetAbsPointBTHint="The center of the screen is (0.4, 0.3). More information can be found on www.hiveworkshop.com"
+
+BlzFrameSetSizeHint="A size of (0.8, 0.6) fills the entire original 4:3 aspect ratio screen with the frame. More information can be found on www.hiveworkshop.com"
+
 BlzFrameSetTextureHint="Overwrites some FDF setups."
 
 BlzFrameSetScaleHint="Also affects child-frames when they don't have their own scale."

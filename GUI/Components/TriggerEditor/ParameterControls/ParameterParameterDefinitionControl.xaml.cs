@@ -30,13 +30,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            string baseType = Types.GetBaseType(returnType);
             List<Searchable> objects = new List<Searchable>();
             if (parameters != null)
             {
                 for (int i = 0; i < parameters.Count(); i++)
                 {
                     var parameterDef = (ParameterDefinition)parameters.Elements[i];
-                    if (parameterDef.ReturnType.Type != returnType)
+                    if (Types.GetBaseType(parameterDef.ReturnType.Type) != baseType)
                         continue;
 
                     ListViewItem listItem = new ListViewItem();

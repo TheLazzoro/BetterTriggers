@@ -29,7 +29,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
-            var presets = TriggerData.LoadAllConstants();
+            var presets = TriggerData.LoadAllPresets();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < presets.Count; i++)
             {

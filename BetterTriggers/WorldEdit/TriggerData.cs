@@ -722,11 +722,12 @@ namespace BetterTriggers.WorldEdit
                 return list;
             }
 
+            string baseType = Types.GetBaseType(returnType);
             var enumCalls = TriggerData.CallTemplates.GetEnumerator();
             while (enumCalls.MoveNext())
             {
                 var template = enumCalls.Current.Value;
-                if (returnType == template.returnType)
+                if (baseType == Types.GetBaseType(template.returnType))
                     list.Add(template.Clone());
             }
             var enumConditions = TriggerData.ConditionTemplates.GetEnumerator();
@@ -744,7 +745,7 @@ namespace BetterTriggers.WorldEdit
             var functionDefinitions = Project.CurrentProject.FunctionDefinitions.GetAll();
             foreach (var funcDef in functionDefinitions)
             {
-                if (funcDef.functionDefinition.ReturnType.War3Type.Type == returnType)
+                if (Types.GetBaseType(funcDef.functionDefinition.ReturnType.War3Type.Type) == baseType)
                 {
                     FunctionTemplate template = new FunctionTemplate(TriggerElementType.ParameterDef)
                     {
@@ -760,7 +761,7 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static List<PresetTemplate> LoadAllConstants()
+        public static List<PresetTemplate> LoadAllPresets()
         {
             List<PresetTemplate> list = new List<PresetTemplate>();
             var enumerator = TriggerData.ConstantTemplates.GetEnumerator();

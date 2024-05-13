@@ -22,6 +22,7 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             createdElement.SetParent(parent, insertIndex);
+            createdElement.IsSelected = true;
 
             Project.CurrentProject.CommandManager.AddCommand(this);
         }
