@@ -66,6 +66,7 @@
     <None Remove="Resources\Icons\editor-triggerfunctiondisabled.png" />
     <None Remove="Resources\Icons\events-time.png" />
     <None Remove="Resources\Icons\green-check.png" />
+    <None Remove="Resources\Icons\icon-error.png" />
     <None Remove="Resources\Icons\information.png" />
     <None Remove="Resources\Icons\Keyword_16x.png" />
     <None Remove="Resources\Icons\Method_16x.png" />
@@ -88,6 +89,7 @@
     <None Remove="Resources\Icons\Warcraft_III_World_Editor.png" />
     <None Remove="Resources\map.png" />
     <None Remove="Resources\Orc.png" />
+    <None Remove="Resources\peon-confused.gif" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlighting.xml" />
     <None Remove="Resources\SyntaxHighlighting\JassHighlightingLight.xml" />
     <None Remove="Resources\SyntaxHighlighting\LuaHighlighting.xml" />
@@ -257,6 +259,9 @@
     <Content Include="Resources\Icons\green-check.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Icons\icon-error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\information.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -335,12 +340,16 @@
     <Content Include="Resources\Orc.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\peon-confused.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,89 @@
+﻿<Window x:Class="GUI.Components.Dialogs.CriticalErrorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display"
+        Title="Unexpected Error"
+        WindowStartupLocation="CenterOwner"
+        Height="400"
+        Width="600"
+        Background="{DynamicResource BackgroundMenu}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Image gif:ImageBehavior.AnimatedSource="/Resources/peon-confused.gif"
+               gif:ImageBehavior.RepeatBehavior="Forever"
+               Width="42"
+               Height="60"
+               Grid.Column="1"
+               />
+
+        <Image Source="/Resources/Icons/icon-error.png"
+               Width="48"
+               Height="48"
+               />
+
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Grid.Column="2"
+                   Foreground="{DynamicResource TextBrush2}"
+                   TextWrapping="Wrap" Margin="15,0,15,0">
+            An unexpected error occured. <LineBreak/>
+            Error log saved in the program directory. <LineBreak/><LineBreak/>
+            You can choose to either close the application, or proceed to use at your own risk.
+        </TextBlock>
+
+        <TabControl Grid.Row="1"
+                    BorderThickness="0"
+                    Background="Transparent"
+                    Grid.ColumnSpan="3">
+            <TabItem Header="Exception" >
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="textBoxException" 
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Stacktrace">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="textBoxStacktrace"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+
+
+        <Button Content="Continue"
+                Click="ContinueButton_Click"
+                HorizontalAlignment="Right"
+                Margin="0,0,115,0"
+                Grid.Row="3"
+                Grid.ColumnSpan="3"
+                Width="70"
+                Height="25"/>
+
+        <Button Content="Close Application"
+                Click="CloseButton_Click"
+                HorizontalAlignment="Right"
+                Margin="0,0,5,0"
+                Grid.Row="3"
+                Grid.ColumnSpan="3"
+                Width="100"
+                Height="25"/>
+    </Grid>
+</Window>

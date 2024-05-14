@@ -454,6 +454,34 @@
                 </Style.Triggers>
             </Style>
 
+            
+            <!-- TAB ITEM -->
+
+            <Style TargetType="TabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Border Name="Border" BorderThickness="1,1,1,0" HorizontalAlignment="Stretch" Width="auto" BorderBrush="{DynamicResource TopMenuButtonClicked}" CornerRadius="2,2,0,0" Margin="2,0" >
+                                <ContentPresenter x:Name="ContentSite"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        ContentSource="Header"
+                        Margin="10,2"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource BackgroundPanel}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush2}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource BackgroundDark}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrushDim}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
 
             <!-- LISTVIEWITEM -->

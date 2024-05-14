@@ -292,7 +292,7 @@ namespace BetterTriggers.Models.EditorData
                     }
                 }
             }
-            if (parameter != null)
+            else if (parameter != null)
             {
                 function = (Function)parameter;
                 oldParameters = function.parameters;

@@ -1,4 +1,5 @@
 ﻿using BetterTriggers;
+using GUI.Components.Dialogs;
 using GUI.Components.Settings;
 using System;
 using System.IO;
@@ -17,8 +18,10 @@ namespace GUI
                 Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "errors"));
 
             File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "errors/Error_" + DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss") + ".txt"), e.Exception.StackTrace);
-            System.Windows.MessageBox.Show(e.Exception.Message + "\n\nError log saved.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-            Application.Current.Shutdown();
+
+            CriticalErrorDialog dialog = new CriticalErrorDialog(e.Exception);
+            dialog.ShowDialog();
+
             e.Handled = true;
         }
 
