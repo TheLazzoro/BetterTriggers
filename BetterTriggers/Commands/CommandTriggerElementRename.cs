@@ -75,7 +75,7 @@ namespace BetterTriggers.Commands
             }
             else if (parameterDefinition != null)
             {
-                parameterDefinition.Name = newName;
+                parameterDefinition.Name = oldName;
             }
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();

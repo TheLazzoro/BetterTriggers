@@ -247,8 +247,8 @@ namespace BetterTriggers.Utility
                     }
                     else
                     {
-                        var reference = paramDefCollection.GetByReference(paramDefRef);
-                        if (reference == null)
+                        var paramDef = paramDefCollection.GetByReference(paramDefRef);
+                        if (paramDef == null)
                         {
                             removeCount++;
                             parameters[i] = new Parameter();

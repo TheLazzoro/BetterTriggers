@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using ICSharpCode.Decompiler.IL;
 using System;
 using System.Collections.Generic;
 
@@ -274,6 +275,23 @@ namespace BetterTriggers.Models.EditorData
             Function function = null;
             oldParameters = new List<Parameter>();
             resetParameters = new List<Parameter>();
+            if(parameter is ParameterDefinitionRef paramDefRef)
+            {
+                function = parent;
+                for (int i = 0; i < parent.parameters.Count; i++)
+                {
+                    var parameter = parent.parameters[i];
+                    oldParameters.Add(parameter);
+                    if (parameter == paramDefRef)
+                    {
+                        resetParameters.Add(new Parameter());
+                    }
+                    else
+                    {
+                        resetParameters.Add(parameter);
+                    }
+                }
+            }
             if (parameter != null)
             {
                 function = (Function)parameter;
@@ -311,7 +329,11 @@ namespace BetterTriggers.Models.EditorData
 
         internal void RevertToOldParameters()
         {
-            if (parameter != null)
+            if (parameter is ParameterDefinitionRef)
+            {
+                parent.parameters = oldParameters;
+            }
+            else if (parameter != null)
             {
                 var function = (Function)parameter;
                 function.parameters = oldParameters;

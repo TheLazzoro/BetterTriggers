@@ -10,7 +10,8 @@ namespace BetterTriggers.Commands
         ParameterDefinition parameterDef;
         War3Type selectedType;
         War3Type previousType;
-        RefCollection refCollection;
+        RefCollection refCollection1;
+        RefCollection refCollection2;
 
         public CommandParameterDefinitionModifyType(ExplorerElement explorerElement, ParameterDefinition parameterDef, War3Type selectedType)
         {
@@ -19,35 +20,42 @@ namespace BetterTriggers.Commands
             this.selectedType = selectedType;
             this.previousType = parameterDef.ReturnType;
 
-            refCollection = new RefCollection(explorerElement);
+            refCollection1 = new RefCollection(explorerElement);
+            refCollection2 = new RefCollection(parameterDef);
         }
 
         public void Execute()
         {
             parameterDef.ReturnType = selectedType;
-            refCollection.ResetParameters();
+            refCollection1.ResetParameters();
+            refCollection2.ResetParameters();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
             Project.CurrentProject.CommandManager.AddCommand(this);
-            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
-            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
+            refCollection1.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
+            refCollection1.TriggersToUpdate.ForEach(el => el.InvokeChange());
+            explorerElement.InvokeChange();
         }
 
         public void Redo()
         {
             parameterDef.ReturnType = selectedType;
-            refCollection.ResetParameters();
+            refCollection1.ResetParameters();
+            refCollection2.ResetParameters();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
-            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
-            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
+            refCollection1.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
+            refCollection1.TriggersToUpdate.ForEach(el => el.InvokeChange());
+            explorerElement.InvokeChange();
         }
 
         public void Undo()
         {
             parameterDef.ReturnType = previousType;
-            refCollection.RevertToOldParameters();
+            refCollection1.RevertToOldParameters();
+            refCollection2.RevertToOldParameters();
             Project.CurrentProject.References.UpdateReferences(parameterDef);
-            refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
-            refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
+            refCollection1.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
+            refCollection1.TriggersToUpdate.ForEach(el => el.InvokeChange());
+            explorerElement.InvokeChange();
         }
 
         public string GetCommandName()
