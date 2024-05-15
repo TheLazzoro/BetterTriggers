@@ -7,6 +7,7 @@ using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.About;
+using GUI.Components.BuildMap;
 using GUI.Components.CloseMap;
 using GUI.Components.Dialogs;
 using GUI.Components.Keybindings;
@@ -127,6 +128,9 @@ namespace GUI
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            BuildMapWindow buildMapWindow = new BuildMapWindow();
+            buildMapWindow.Show();
+
             EditorSettings settings = EditorSettings.Load();
             if (settings.useQuickStart)
             {

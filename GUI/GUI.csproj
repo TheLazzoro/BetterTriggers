@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Acolyte.gif" />
     <None Remove="Resources\editor-toolbar-triggeraddvariable.png" />
     <None Remove="Resources\editor-toolbar-triggercomment.png" />
     <None Remove="Resources\editor-triggeraction.png" />
@@ -100,6 +101,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Acolyte.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\actions-parameter-alpha.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -856,7 +856,13 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            
+
+            <Style TargetType="{x:Type GroupBox}">
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource TextBrush}"/>
+                <Setter Property="BorderThickness" Value="0.5" />
+                
+            </Style>
 
         </ResourceDictionary>
     </Application.Resources>

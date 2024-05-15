@@ -1,0 +1,99 @@
+﻿<Window x:Class="GUI.Components.BuildMap.BuildMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI.Components.BuildMap"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        mc:Ignorable="d"
+        Background="{DynamicResource BackgroundMenu}"
+        Title="Export Map"
+        Height="350"
+        Width="500"
+        Closing="Window_Closing">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="110" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="MPQ Archive Options"
+                  Grid.Row="1"
+                  Grid.Column="1">
+            <StackPanel >
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
+                        <Setter Property="Margin" Value="0,10,0,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <CheckBox x:Name="checkBoxRemoveListfile"
+                      Content="Remove Listfile"
+                      />
+                <CheckBox x:Name="checkBoxTriggerData"
+                      Content="Remove World Editor Data"
+                      />
+            </StackPanel>
+        </GroupBox>
+
+        <Grid Margin="1"
+              Grid.Row="2"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="25" />
+            </Grid.RowDefinitions>
+
+            <Image x:Name="gifAcolyte"
+                   gif:ImageBehavior.AnimatedSource="/Resources/Acolyte.gif"
+                   gif:ImageBehavior.RepeatBehavior="Forever"
+                   Grid.RowSpan="2"
+                   SnapsToDevicePixels="True"
+                   Visibility="Hidden"
+                   />
+            
+            <ProgressBar x:Name="progressBar"
+                         Grid.Row="1"
+                         Grid.Column="1"
+                         />
+            <Button x:Name="btnShowFolder"
+                    Content="Open Containing Folder"
+                    IsEnabled="False"
+                    Height="25"
+                    Width="150"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Grid.Column="1"/>
+        </Grid>
+
+        <StackPanel Grid.Row="4"
+                    Grid.ColumnSpan="3"
+                    Orientation="Horizontal"
+                    FlowDirection="RightToLeft">
+            <Button x:Name="btnCancel"
+                    Content="Cancel"
+                    Margin="15,0,0,0"
+                    Height="25"
+                    Width="70" />
+
+            <Button x:Name="btnExport"
+                    Content="Export"
+                    Margin="15,0,0,0"
+                    Grid.Row="2"
+                    Height="25"
+                    Width="70" 
+                    Click="btnExport_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -24,16 +24,16 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <Image Source="/Resources/Icons/icon-error.png"
+               Width="48"
+               Height="48"
+               />
+
         <Image gif:ImageBehavior.AnimatedSource="/Resources/peon-confused.gif"
                gif:ImageBehavior.RepeatBehavior="Forever"
                Width="42"
                Height="60"
                Grid.Column="1"
-               />
-
-        <Image Source="/Resources/Icons/icon-error.png"
-               Width="48"
-               Height="48"
                />
 
         <TextBlock HorizontalAlignment="Left"
