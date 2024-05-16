@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Forms.Design;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -128,9 +129,6 @@ namespace GUI
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            BuildMapWindow buildMapWindow = new BuildMapWindow();
-            buildMapWindow.Show();
-
             EditorSettings settings = EditorSettings.Load();
             if (settings.useQuickStart)
             {
@@ -706,7 +704,6 @@ namespace GUI
 
         private void BuildMap()
         {
-            Builder builder = new Builder();
             if (!Project.CurrentProject.War3MapDirExists())
             {
                 SelectWar3MapWindow window = new SelectWar3MapWindow();
@@ -718,7 +715,8 @@ namespace GUI
             }
             try
             {
-                builder.BuildMap();
+                BuildMapWindow window = new BuildMapWindow();
+                window.ShowDialog();
             }
             catch (Exception ex)
             {

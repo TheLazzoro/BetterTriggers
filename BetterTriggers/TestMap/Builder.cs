@@ -34,8 +34,7 @@ namespace BetterTriggers.TestMap
         /// <summary>
         /// Builds an MPQ archive.
         /// </summary>
-        /// <returns>Full path of the archive.</returns>
-        public bool BuildMap(string destinationDir = null)
+        public bool BuildMap(string destinationDir = null, bool includeMPQSettings = false)
         {
             (bool wasVerified, string script) = GenerateScript();
             if (!wasVerified)
@@ -49,7 +48,9 @@ namespace BetterTriggers.TestMap
             map.Info.ScriptLanguage = language;
             map.Script = script;
 
+
             // We need to add all arbitrary files into to the builder.
+            EditorSettings settings = EditorSettings.Load();
             MapBuilder builder = new MapBuilder(map);
             if (Directory.Exists(mapDir))
                 builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
@@ -59,6 +60,15 @@ namespace BetterTriggers.TestMap
                 builder.AddFiles(mpqArchive);
             }
 
+            // MPQ protection
+            if (includeMPQSettings)
+            {
+                if (settings.Export_RemoveTriggerData)
+                {
+                    map.Triggers = null;
+                }
+
+            }
 
             var archiveCreateOptions = new MpqArchiveCreateOptions
             {
@@ -72,13 +82,12 @@ namespace BetterTriggers.TestMap
                 archivePath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
             else
             {
-                EditorSettings settings = EditorSettings.Load();
                 archivePath = Path.Combine(destinationDir, settings.CopyLocation + ".w3x");
             }
 
             bool didWrite = false;
             int attemptLimit = 10;
-            string err = string.Empty;
+            Exception err = new Exception();
             while (attemptLimit > 0 && !didWrite)
             {
                 try
@@ -90,14 +99,37 @@ namespace BetterTriggers.TestMap
                 {
                     Thread.Sleep(5);
                     attemptLimit--;
-                    if(attemptLimit <= 0)
+                    if (attemptLimit <= 0)
                     {
-                        err = ex.Message;
+                        err = ex;
                     }
                 }
             }
             if (!didWrite)
-                throw new Exception(err);
+                throw err;
+
+            if (includeMPQSettings)
+            {
+                if (settings.Export_RemoveListfile)
+                {
+                    string tempFile = Path.Combine(GetProgramTempPath(), "tempfile.w3x");
+                    if (File.Exists(tempFile))
+                        File.Delete(tempFile);
+
+                    IEnumerable<MpqFile> mpqFiles = null;
+                    using (var stream = new FileStream(archivePath, FileMode.Open))
+                    {
+                        File.Copy(archivePath, tempFile);
+                        using (var stream2 = new FileStream(tempFile, FileMode.Open))
+                        {
+                            var archive = MpqArchive.Open(stream2, false);
+                            mpqFiles = archive.GetMpqFiles();
+                        }
+                    }
+                    File.Delete(archivePath);
+                    MpqArchive.Create(archivePath, mpqFiles, archiveCreateOptions);
+                }
+            }
 
 
             return true;
@@ -145,5 +177,16 @@ namespace BetterTriggers.TestMap
             Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{archivePath}\"");
         }
 
+
+        private string GetProgramTempPath()
+        {
+            string tempPath = Path.Combine(Path.GetTempPath(), "BetterTriggers");
+            if (!Directory.Exists(tempPath))
+            {
+                Directory.CreateDirectory(tempPath);
+            }
+
+            return tempPath;
+        }
     }
 }

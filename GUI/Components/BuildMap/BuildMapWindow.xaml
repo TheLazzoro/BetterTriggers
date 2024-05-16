@@ -10,6 +10,7 @@
         Title="Export Map"
         Height="350"
         Width="500"
+        WindowStartupLocation="CenterOwner"
         Closing="Window_Closing">
     <Grid>
 
@@ -25,7 +26,7 @@
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Header="MPQ Archive Options"
+        <GroupBox Header="Map Compression &amp; Protection Options"
                   Grid.Row="1"
                   Grid.Column="1">
             <StackPanel >
@@ -38,7 +39,7 @@
                       Content="Remove Listfile"
                       />
                 <CheckBox x:Name="checkBoxTriggerData"
-                      Content="Remove World Editor Data"
+                      Content="Remove Trigger Data"
                       />
             </StackPanel>
         </GroupBox>
@@ -54,6 +55,13 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="25" />
             </Grid.RowDefinitions>
+
+            <Image x:Name="imgMap"
+                   Margin="10,0,10,0"
+                   VerticalAlignment="Bottom"
+                   Source="/Resources/Icons/Warcraft_III_World_Editor.png"
+                   Grid.RowSpan="2"
+                   />
 
             <Image x:Name="gifAcolyte"
                    gif:ImageBehavior.AnimatedSource="/Resources/Acolyte.gif"
@@ -74,7 +82,8 @@
                     Width="150"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Grid.Column="1"/>
+                    Grid.Column="1"
+                    Click="btnShowFolder_Click"/>
         </Grid>
 
         <StackPanel Grid.Row="4"

@@ -21,6 +21,7 @@ namespace BetterTriggers.Containers
         public static Project CurrentProject { get; private set; }
 
         public string src;
+        public string dist;
         public string MapName { get; private set; }
         public string ProjectPath { get; private set; }
         public War3Project war3project;
@@ -239,6 +240,7 @@ namespace BetterTriggers.Containers
             war3project.Version = War3Project.EditorVersion; // updates version.
             war3project.GameVersion = Casc.GameVersion; // updates game version.
             project.src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
+            project.dist = Path.Combine(Path.GetDirectoryName(projectPath), "dist");
             project.war3project = war3project;
             project.projectFiles = new();
             project.projectFiles.Add(new ExplorerElement(project.src, ExplorerElementEnum.Root));

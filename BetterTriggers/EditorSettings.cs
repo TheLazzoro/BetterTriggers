@@ -61,6 +61,9 @@ namespace BetterTriggers
 
         public bool GUINewElementIcon      = false;
 
+        public bool Export_RemoveListfile  = false;
+        public bool Export_RemoveTriggerData = false;
+
         private EditorSettings() { }
 
         public static EditorSettings Load()
