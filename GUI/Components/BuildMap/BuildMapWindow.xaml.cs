@@ -29,10 +29,15 @@ namespace GUI.Components.BuildMap
         private Exception _error;
         private event Action _finished;
 
+        private BuildMapViewModel _viewModel;
+
         public BuildMapWindow()
         {
             Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+
+            _viewModel = new BuildMapViewModel();
+            DataContext = _viewModel;
 
             var settings = EditorSettings.Load();
             War3Project project = Project.CurrentProject.war3project;
@@ -40,7 +45,10 @@ namespace GUI.Components.BuildMap
             checkBoxRemoveListfile.IsChecked = settings.Export_RemoveListfile;
             checkBoxTriggerData.IsChecked = settings.Export_RemoveTriggerData;
             checkBoxObfuscate.IsChecked = settings.Export_Obfuscate;
-            if(language != ScriptLanguage.Jass)
+            checkBoxCompress.IsChecked = settings.Export_Compress;
+            checkBoxAdvanced.IsChecked = settings.Export_Compress_Advanced;
+            textboxBlockSize.Value = settings.Export_Compress_BlockSize;
+            if (language != ScriptLanguage.Jass)
             {
                 checkBoxObfuscate.IsEnabled = false;
                 checkBoxObfuscate.Content += " (Only available in Jass mode)";
@@ -53,6 +61,9 @@ namespace GUI.Components.BuildMap
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
             var settings = EditorSettings.Load();
+            settings.Export_Compress = (bool)checkBoxCompress.IsChecked;
+            settings.Export_Compress_Advanced = (bool)checkBoxAdvanced.IsChecked;
+            settings.Export_Compress_BlockSize = (ushort)textboxBlockSize.Value;
             settings.Export_RemoveListfile = (bool)checkBoxRemoveListfile.IsChecked;
             settings.Export_RemoveTriggerData = (bool)checkBoxTriggerData.IsChecked;
             settings.Export_Obfuscate = (bool)checkBoxObfuscate.IsChecked;
@@ -62,6 +73,9 @@ namespace GUI.Components.BuildMap
             progressBar.IsIndeterminate = true;
             btnExport.IsEnabled = false;
             btnCancel.IsEnabled = false;
+            checkBoxCompress.IsEnabled = false;
+            checkBoxAdvanced.IsEnabled = false;
+            textboxBlockSize.IsEnabled = false;
             checkBoxRemoveListfile.IsEnabled = false;
             checkBoxTriggerData.IsEnabled = false;
             checkBoxObfuscate.IsEnabled = false;

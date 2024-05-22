@@ -12,6 +12,7 @@ using War3Net.Build.Info;
 using War3Net.Build;
 using War3Net.IO.Mpq;
 using JassObfuscator;
+using War3Net.IO.Compression;
 
 namespace BetterTriggers.TestMap
 {
@@ -84,11 +85,17 @@ namespace BetterTriggers.TestMap
 
             }
 
+            ushort blockSize = 3;
+            if (settings.Export_Compress)
+                blockSize = 8;
+            if (settings.Export_Compress && settings.Export_Compress_Advanced)
+                blockSize = settings.Export_Compress_BlockSize;
+
             var archiveCreateOptions = new MpqArchiveCreateOptions
             {
                 ListFileCreateMode = MpqFileCreateMode.Overwrite,
                 AttributesCreateMode = MpqFileCreateMode.Prune,
-                //BlockSize = 3,
+                BlockSize = blockSize,
             };
 
             string src = Path.GetDirectoryName(Project.CurrentProject.src);
@@ -141,10 +148,12 @@ namespace BetterTriggers.TestMap
                         }
                     }
                     File.Delete(archivePath);
-                    MpqArchive.Create(archivePath, mpqFiles, archiveCreateOptions);
+                    using (var s = new FileStream(archivePath, FileMode.Create))
+                    {
+                        MpqArchive.Create(s, mpqFiles, archiveCreateOptions);
+                    }
                 }
             }
-
 
             return true;
         }

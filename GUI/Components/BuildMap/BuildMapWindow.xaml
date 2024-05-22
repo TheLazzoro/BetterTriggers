@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.Components.BuildMap"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Background="{DynamicResource BackgroundMenu}"
         Title="Export Map"
@@ -29,22 +30,65 @@
         <GroupBox Header="Map Compression &amp; Protection Options"
                   Grid.Row="1"
                   Grid.Column="1">
-            <StackPanel >
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
-                        <Setter Property="Margin" Value="0,10,0,0"/>
-                    </Style>
-                </StackPanel.Resources>
-                <CheckBox x:Name="checkBoxRemoveListfile"
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Margin" Value="0,10,0,0"/>
+                        </Style>
+                        <Style TargetType="{x:Type toolkit:IntegerUpDown}" BasedOn="{StaticResource {x:Type toolkit:IntegerUpDown}}">
+                            <Setter Property="Margin" Value="0,5,0,0"/>
+                            <Setter Property="Width" Value="125" />
+                        </Style>
+                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                            <Setter Property="Margin" Value="0,10,0,0" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <CheckBox x:Name="checkBoxCompress" 
+                              IsChecked="{Binding Compress, Mode=TwoWay}"
+                              Content="Compress"
+                              />
+                    <CheckBox x:Name="checkBoxAdvanced"
+                              IsEnabled="{Binding Compress}"
+                              IsChecked="{Binding Compress_Advanced, Mode=TwoWay}"
+                              Content="Advanced"
+                              />
+
+                    <TextBlock Text="Block Size:"
+                               IsEnabled="{Binding Compress_Advanced}"/>
+                    
+                    <toolkit:IntegerUpDown x:Name="textboxBlockSize"
+                                           IsEnabled="{Binding Compress_Advanced}"
+                                           HorizontalAlignment="Left"
+                                           AllowTextInput="False"
+                                           FormatString="N0"
+                                           Minimum="0" />
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Margin" Value="0,10,0,0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <CheckBox x:Name="checkBoxRemoveListfile"
                       Content="Remove Listfile"
                       />
-                <CheckBox x:Name="checkBoxTriggerData"
+                    <CheckBox x:Name="checkBoxTriggerData"
                       Content="Remove Trigger Data"
                       />
-                <CheckBox x:Name="checkBoxObfuscate"
+                    <CheckBox x:Name="checkBoxObfuscate"
                       Content="Obfuscate Script"
                       />
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </GroupBox>
 
         <Grid Margin="1"
@@ -73,7 +117,7 @@
                    SnapsToDevicePixels="True"
                    Visibility="Hidden"
                    />
-            
+
             <ProgressBar x:Name="progressBar"
                          Grid.Row="1"
                          Grid.Column="1"
