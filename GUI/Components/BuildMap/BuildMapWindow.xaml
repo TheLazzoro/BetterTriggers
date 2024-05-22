@@ -41,6 +41,9 @@
                 <CheckBox x:Name="checkBoxTriggerData"
                       Content="Remove Trigger Data"
                       />
+                <CheckBox x:Name="checkBoxObfuscate"
+                      Content="Obfuscate Script"
+                      />
             </StackPanel>
         </GroupBox>
 
@@ -94,7 +97,7 @@
                     Content="Cancel"
                     Margin="15,0,0,0"
                     Height="25"
-                    Width="70" />
+                    Width="70" Click="btnCancel_Click" />
 
             <Button x:Name="btnExport"
                     Content="Export"

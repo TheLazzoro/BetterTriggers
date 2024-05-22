@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.Utility;
 using GUI.Components.Dialogs;
@@ -18,6 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using War3Net.Build.Info;
 
 namespace GUI.Components.BuildMap
 {
@@ -33,8 +35,16 @@ namespace GUI.Components.BuildMap
             InitializeComponent();
 
             var settings = EditorSettings.Load();
+            War3Project project = Project.CurrentProject.war3project;
+            var language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
             checkBoxRemoveListfile.IsChecked = settings.Export_RemoveListfile;
             checkBoxTriggerData.IsChecked = settings.Export_RemoveTriggerData;
+            checkBoxObfuscate.IsChecked = settings.Export_Obfuscate;
+            if(language != ScriptLanguage.Jass)
+            {
+                checkBoxObfuscate.IsEnabled = false;
+                checkBoxObfuscate.Content += " (Only available in Jass mode)";
+            }
 
             _thread = new Thread(ExportMapAsync);
             _finished += Export_Finished;
@@ -45,6 +55,7 @@ namespace GUI.Components.BuildMap
             var settings = EditorSettings.Load();
             settings.Export_RemoveListfile = (bool)checkBoxRemoveListfile.IsChecked;
             settings.Export_RemoveTriggerData = (bool)checkBoxTriggerData.IsChecked;
+            settings.Export_Obfuscate = (bool)checkBoxObfuscate.IsChecked;
 
             imgMap.Visibility = Visibility.Hidden;
             gifAcolyte.Visibility = Visibility.Visible;
@@ -53,6 +64,7 @@ namespace GUI.Components.BuildMap
             btnCancel.IsEnabled = false;
             checkBoxRemoveListfile.IsEnabled = false;
             checkBoxTriggerData.IsEnabled = false;
+            checkBoxObfuscate.IsEnabled = false;
             _thread.Start();
         }
 
@@ -113,6 +125,11 @@ namespace GUI.Components.BuildMap
         private void btnShowFolder_Click(object sender, RoutedEventArgs e)
         {
             FileSystemUtil.OpenInExplorer(Project.CurrentProject.dist);
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

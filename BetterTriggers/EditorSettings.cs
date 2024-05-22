@@ -63,6 +63,7 @@ namespace BetterTriggers
 
         public bool Export_RemoveListfile  = false;
         public bool Export_RemoveTriggerData = false;
+        public bool Export_Obfuscate       = false;
 
         private EditorSettings() { }
 

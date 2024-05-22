@@ -11,20 +11,27 @@ using System.Threading.Tasks;
 using War3Net.Build.Info;
 using War3Net.Build;
 using War3Net.IO.Mpq;
+using JassObfuscator;
 
 namespace BetterTriggers.TestMap
 {
     public class Builder
     {
+        private ScriptLanguage _language;
+
+        public Builder()
+        {
+            War3Project project = Project.CurrentProject.war3project;
+            _language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
+        }
+
         public (bool, string) GenerateScript()
         {
             War3Project project = Project.CurrentProject.war3project;
             if (project == null)
                 return (false, null);
 
-            ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
-
-            ScriptGenerator scriptGenerator = new ScriptGenerator(language);
+            ScriptGenerator scriptGenerator = new ScriptGenerator(_language);
             bool success = scriptGenerator.GenerateScript();
 
             return (success, scriptGenerator.GeneratedScript);
@@ -36,21 +43,28 @@ namespace BetterTriggers.TestMap
         /// </summary>
         public bool BuildMap(string destinationDir = null, bool includeMPQSettings = false)
         {
+            EditorSettings settings = EditorSettings.Load();
             (bool wasVerified, string script) = GenerateScript();
             if (!wasVerified)
                 return false;
 
-            War3Project project = Project.CurrentProject.war3project;
-            ScriptLanguage language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
+            if (includeMPQSettings)
+            {
+                if (settings.Export_Obfuscate && _language == ScriptLanguage.Jass)
+                {
+                    string commonJ = ScriptGenerator.PathCommonJ;
+                    string blizzardJ = ScriptGenerator.PathBlizzardJ;
+                    script = Obfuscator.Obfuscate(script, commonJ, blizzardJ);
+                }
+            }
 
             string mapDir = Project.CurrentProject.GetFullMapPath();
             var map = Map.Open(mapDir);
-            map.Info.ScriptLanguage = language;
+            map.Info.ScriptLanguage = _language;
             map.Script = script;
 
 
             // We need to add all arbitrary files into to the builder.
-            EditorSettings settings = EditorSettings.Load();
             MapBuilder builder = new MapBuilder(map);
             if (Directory.Exists(mapDir))
                 builder.AddFiles(mapDir, "*", SearchOption.AllDirectories);
