@@ -160,12 +160,15 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
     <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource buttonBorderColor}" />
+    <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#9000" />
     <SolidColorBrush x:Key="ButtonPressBrush" Color="{DynamicResource buttonPressColor}" />
 
     <SolidColorBrush x:Key="ListItemForeground" Color="{DynamicResource listItemForegroundColor}" />
     <SolidColorBrush x:Key="ListItemForegroundSelected" Color="{DynamicResource listItemForegroundSelectedColor}" />
     <SolidColorBrush x:Key="ListItemBackgroundHover" Color="{DynamicResource listItemBackgroundHoverColor}" />
     <SolidColorBrush x:Key="ListItemBackgroundSelected" Color="{DynamicResource listItemBackgroundSelectedColor}" />
+
+    <SolidColorBrush x:Key="ProgressBarBorder" Color="#202020" />
 
     <SolidColorBrush x:Key="TexteditorBackground" Color="{DynamicResource texteditorBackgroundColor}" />
     <SolidColorBrush x:Key="TexteditorForeground" Color="{DynamicResource texteditorForegroundColor}" />

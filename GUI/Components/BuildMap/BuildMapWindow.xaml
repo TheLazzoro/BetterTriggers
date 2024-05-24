@@ -9,9 +9,10 @@
         mc:Ignorable="d"
         Background="{DynamicResource BackgroundMenu}"
         Title="Export Map"
-        Height="350"
+        Height="360"
         Width="500"
         WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
         Closing="Window_Closing">
     <Grid>
 
@@ -119,6 +120,7 @@
                    />
 
             <ProgressBar x:Name="progressBar"
+                         IsIndeterminate="True"
                          Grid.Row="1"
                          Grid.Column="1"
                          />
