@@ -24,6 +24,7 @@ using System.Transactions;
 using System.Collections.ObjectModel;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using ICSharpCode.Decompiler.TypeSystem;
+using Newtonsoft.Json.Linq;
 
 namespace BetterTriggers
 {
@@ -155,7 +156,7 @@ end
             StringBuilder script = Generate();
 
             string tempPath = language == ScriptLanguage.Jass ? "Resources/vJass.j" : "Resources/Lua.lua";
-            var scriptFileToInput = Path.Combine(System.IO.Directory.GetCurrentDirectory(), tempPath);
+            var scriptFileToInput = Path.Combine(Directory.GetCurrentDirectory(), tempPath);
             File.WriteAllText(scriptFileToInput, script.ToString());
 
             if (language == ScriptLanguage.Jass)
@@ -238,7 +239,7 @@ end
 
             List<Variable> InitGlobals = new List<Variable>();
 
-            // Better Trigger custom constants
+            // Better Trigger custom presets
             var customPresets = TriggerData.customPresets;
             script.Append(globals + newline);
             for (int i = 0; i < customPresets.Count; i++)
@@ -297,37 +298,72 @@ end
 
             // Generated variables
 
-
-            var functions = project.GetFunctionsAll();
-            for (int i = 0; i < functions.Count; i++)
+            if (project.war3project.GenerateAllObjectVariables)
             {
-                var function = functions[i];
-                List<Parameter> parameters = function.parameters;
-                int errors = VerifyParameters(parameters);
-                if (errors > 0)
+                var units = Units.GetAll();
+                units.ForEach(u =>
                 {
-                    functions.Remove(function);
-                    continue;
-                }
-
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function, currentExplorerElement);
-                for (int j = 0; j < parameters.Count; j++)
-                {
-                    if (parameters[j] is Value)
+                    var value = new Value
                     {
-                        Value value = parameters[j] as Value;
-                        if (value.value == "")
-                            continue;
+                        value = $"{u.ToString()}_{u.CreationNumber.ToString("D4")}"
+                    };
+                    generatedVarNames.TryAdd($"gg_unit_" + value.value, new Tuple<Parameter, string>(value, "unit"));
+                });
 
-                        if (returnTypes[j] == "unit")
-                            generatedVarNames.TryAdd("gg_unit_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
-                        else if (returnTypes[j] == "destructable")
-                            generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
-                        else if (returnTypes[j] == "item")
-                            generatedVarNames.TryAdd("gg_item_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
+                var dests = Destructibles.GetAll();
+                dests.ForEach(d =>
+                {
+                    var value = new Value
+                    {
+                        value = $"{d.ToString()}_{d.CreationNumber.ToString("D4")}"
+                    };
+                    generatedVarNames.TryAdd($"gg_dest_" + value.value, new Tuple<Parameter, string>(value, "destructable"));
+                });
+
+                var items = Units.GetMapItemsAll();
+                items.ForEach(i =>
+                {
+                    var value = new Value
+                    {
+                        value = $"{i.ToString()}_{i.CreationNumber.ToString("D4")}"
+                    };
+                    generatedVarNames.TryAdd($"gg_item_" + value.value, new Tuple<Parameter, string>(value, "item"));
+                });
+            }
+            else // Generate only those referenced by parameters
+            {
+
+                var functions = project.GetFunctionsAll();
+                for (int i = 0; i < functions.Count; i++)
+                {
+                    var function = functions[i];
+                    List<Parameter> parameters = function.parameters;
+                    int errors = VerifyParameters(parameters);
+                    if (errors > 0)
+                    {
+                        continue;
+                    }
+
+                    List<string> returnTypes = TriggerData.GetParameterReturnTypes(function, currentExplorerElement);
+                    for (int j = 0; j < parameters.Count; j++)
+                    {
+                        if (parameters[j] is Value)
+                        {
+                            Value value = parameters[j] as Value;
+                            if (value.value == "")
+                                continue;
+
+                            if (returnTypes[j] == "unit")
+                                generatedVarNames.TryAdd("gg_unit_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
+                            else if (returnTypes[j] == "destructable")
+                                generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
+                            else if (returnTypes[j] == "item")
+                                generatedVarNames.TryAdd("gg_item_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
+                        }
                     }
                 }
             }
+
             var all_variables = Project.CurrentProject.Variables.GetAll();
             for (int i = 0; i < all_variables.Count; i++)
             {
@@ -747,10 +783,10 @@ end
             foreach (var d in dests)
             {
                 var id = d.ToString();
-                var x = d.Position.X.ToString(enUS);
-                var y = d.Position.Y.ToString(enUS);
-                var angle = ((180 / Math.PI) * d.Rotation).ToString(enUS); // radians to degrees
-                var scale = d.Scale.X.ToString(enUS);
+                var x = d.Position.X.ToString("0.000", enUS);
+                var y = d.Position.Y.ToString("0.000", enUS);
+                var angle = ((180 / Math.PI) * d.Rotation).ToString("0.000", enUS); // radians to degrees
+                var scale = d.Scale.X.ToString("0.000", enUS);
                 var variation = d.Variation;
                 var skin = Int32Extensions.ToRawcode(d.SkinId);
 
@@ -792,8 +828,8 @@ end
                     continue;
 
                 var id = i.ToString();
-                var x = i.Position.X.ToString(enUS);
-                var y = i.Position.Y.ToString(enUS);
+                var x = i.Position.X.ToString("0.000", enUS);
+                var y = i.Position.Y.ToString("0.000", enUS);
                 var skinId = Int32Extensions.ToRawcode(i.SkinId);
 
                 var varName = $"gg_item_{i.ToString()}_{i.CreationNumber.ToString("D4")}";
@@ -865,18 +901,18 @@ end
 
 
                 script.Append($"{set} {id} = CreateCameraSetup(){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ZOFFSET, {c.ZOffset.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ROTATION, {c.Rotation.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ANGLE_OF_ATTACK, {c.AngleOfAttack.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_TARGET_DISTANCE, {c.TargetDistance.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ROLL, {c.Roll.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FIELD_OF_VIEW, {c.FieldOfView.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FARZ, {c.FarClippingPlane.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_NEARZ, {c.NearClippingPlane.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_PITCH, {c.LocalPitch.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_YAW, {c.LocalYaw.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_ROLL, {c.LocalRoll.ToString(enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetDestPosition({id}, {c.TargetPosition.X.ToString(enUS)}, {c.TargetPosition.Y.ToString(enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ZOFFSET, {c.ZOffset.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ROTATION, {c.Rotation.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ANGLE_OF_ATTACK, {c.AngleOfAttack.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_TARGET_DISTANCE, {c.TargetDistance.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ROLL, {c.Roll.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FIELD_OF_VIEW, {c.FieldOfView.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FARZ, {c.FarClippingPlane.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_NEARZ, {c.NearClippingPlane.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_PITCH, {c.LocalPitch.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_YAW, {c.LocalYaw.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_ROLL, {c.LocalRoll.ToString("0.000", enUS)}, 0.0){newline}");
+                script.Append($"{call} CameraSetupSetDestPosition({id}, {c.TargetPosition.X.ToString("0.000", enUS)}, {c.TargetPosition.Y.ToString("0.000", enUS)}, 0.0){newline}");
                 script.Append($"{newline}");
             }
 
@@ -928,7 +964,7 @@ end
                     script.Append($"{call} SetSoundDistanceCutoff({id}, {s.DistanceCutoff}){newline}");
                 script.Append($"{call} SetSoundVolume({id}, {s.Volume}){newline}");
                 if (pitch != 1)
-                    script.Append($"{call} SetSoundPitch({id}, {pitch.ToString(enUS)}){newline}");
+                    script.Append($"{call} SetSoundPitch({id}, {pitch.ToString("0.000", enUS)}){newline}");
             }
             foreach (var s in music)
             {

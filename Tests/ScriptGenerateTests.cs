@@ -124,7 +124,7 @@ namespace Tests
         public void ConvertMap_GenerateScript_WoW_Dungeons_Classic()
         {
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/WoW Dungeons Classic 3.9.w3x");
-            ConvertMap_GenerateScript(mapDir);
+            ConvertMap_GenerateScript(mapDir, true); // this one creates variables for all preplaced map objects.
 
             Assert.IsTrue(success, failedMsg);
         }
@@ -304,9 +304,9 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
-            Builder builder = new();
             CustomMapData.Load(mapDir);
             Project.Load(projectDir);
+            Builder builder = new();
             bool success;
             string script;
             (success, script) = builder.GenerateScript();
@@ -319,9 +319,9 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/Frames_Map.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/map/Map.w3x");
-            Builder builder = new();
             CustomMapData.Load(mapDir);
             Project.Load(projectDir);
+            Builder builder = new();
             bool success;
             string script;
             (success, script) = builder.GenerateScript();
@@ -331,7 +331,7 @@ namespace Tests
 
 
 
-        bool ConvertMap_GenerateScript(string mapDir)
+        bool ConvertMap_GenerateScript(string mapDir, bool GenerateAllMapObjectVariables = false)
         {
             TriggerConverter triggerConverter = new TriggerConverter(mapDir);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
@@ -340,6 +340,7 @@ namespace Tests
             string projectFileContent = File.ReadAllText(projectFile);
             war3project = JsonConvert.DeserializeObject<War3Project>(projectFileContent);
             war3project.War3MapDirectory = mapDir;
+            war3project.GenerateAllObjectVariables = GenerateAllMapObjectVariables;
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
             Project.Load(projectFile);

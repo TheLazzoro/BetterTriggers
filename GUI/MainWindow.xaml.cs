@@ -436,6 +436,8 @@ namespace GUI
         private void btnSaveAll_Click(object sender, RoutedEventArgs e)
         {
             var project = Project.CurrentProject;
+            if(project == null) return;
+
             project.Save();
         }
 

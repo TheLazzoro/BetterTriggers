@@ -33,7 +33,7 @@ namespace BetterTriggers.Models.EditorData
             saveableTrig.LocalVariables = ConvertTriggerElements(trigger.LocalVariables.Elements);
             saveableTrig.Actions = ConvertTriggerElements(trigger.Actions.Elements);
 
-            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            var formatting = GetFormatting();
             return JsonConvert.SerializeObject(saveableTrig, formatting);
         }
 
@@ -48,7 +48,7 @@ namespace BetterTriggers.Models.EditorData
             converted.ArraySize = variable.ArraySize;
             converted.InitialValue = ConvertParameter(variable.InitialValue);
 
-            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            var formatting = GetFormatting();
             return JsonConvert.SerializeObject(converted, formatting);
         }
 
@@ -61,7 +61,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Actions = ConvertTriggerElements(actionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(actionDefinition.LocalVariables.Elements);
 
-            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            var formatting = GetFormatting();
             return JsonConvert.SerializeObject(converted, formatting);
         }
 
@@ -74,7 +74,7 @@ namespace BetterTriggers.Models.EditorData
             converted.Actions = ConvertTriggerElements(conditionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(conditionDefinition.LocalVariables.Elements);
 
-            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            var formatting = GetFormatting();
             return JsonConvert.SerializeObject(converted, formatting);
         }
 
@@ -89,8 +89,18 @@ namespace BetterTriggers.Models.EditorData
             converted.Actions = ConvertTriggerElements(functionDefinition.Actions.Elements);
             converted.LocalVariables = ConvertTriggerElements(functionDefinition.LocalVariables.Elements);
 
-            var formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            var formatting = GetFormatting();
             return JsonConvert.SerializeObject(converted, formatting);
+        }
+
+        private static Formatting GetFormatting()
+        {
+            var formatting = Formatting.Indented;
+            if (Project.CurrentProject != null)
+            {
+                formatting = Project.CurrentProject.war3project.CompressProjectFiles ? Formatting.None : Formatting.Indented;
+            }
+            return formatting;
         }
 
         private static List<TriggerElement_Saveable> ConvertTriggerElements(ObservableCollection<TriggerElement> elements)

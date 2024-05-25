@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="Project Settings" Height="200" Width="280" MinWidth="200" MinHeight="150" WindowStartupLocation="CenterOwner" Background="{DynamicResource BackgroundDark}">
+        Title="Project Settings" Height="240" Width="300" MinWidth="250" MinHeight="220" WindowStartupLocation="CenterOwner" Background="{DynamicResource BackgroundDark}">
     <Grid
             Margin="10"
         >
@@ -32,8 +32,14 @@
                       ToolTip="Enforces that the map should be located in the 'map' directory of this project&#x0a;and only saves the file name of the map in the project file.&#x0a;&#x0a;This option is mostly relevant for people collaborating using Git or other&#x0a;version control tools."
             />
             <CheckBox x:Name="checkboxCompressFiles"
+                      Margin="0,0,0,10"
                       Content="Compress project files"
-                      ToolTip="Unformats the project files. The side-effect is they become less readable, especially for version control."
+                      ToolTip="Unformats the project files, reducing the file size. The side-effect is they become less readable, especially for version control."
+            />
+            <CheckBox x:Name="checkboxGenerateAllObjects"
+                      Margin="0,0,0,10"
+                      Content="Generate all map object variables"
+                      ToolTip="Generates variables for all preplaced units, items, destructibles etc."
             />
         </StackPanel>
 

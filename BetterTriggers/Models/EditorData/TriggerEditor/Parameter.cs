@@ -150,6 +150,10 @@ namespace BetterTriggers.Models.EditorData
                     Function f = (Function)parameters[i];
                     list.AddRange(GetElementParametersAll(f.parameters));
                 }
+                if (parameters[i] is VariableRef varRef)
+                {
+                    list.AddRange(GetElementParametersAll(varRef.arrayIndexValues));
+                }
             }
 
             return list;

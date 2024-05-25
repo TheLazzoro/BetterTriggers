@@ -32,6 +32,7 @@ namespace GUI.Components.Settings
 
             checkboxRelativeMapPath.IsChecked = project.UseRelativeMapDirectory;
             checkboxCompressFiles.IsChecked = project.CompressProjectFiles;
+            checkboxGenerateAllObjects.IsChecked = project.GenerateAllObjectVariables;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -44,7 +45,8 @@ namespace GUI.Components.Settings
 
             project.UseRelativeMapDirectory = (bool)checkboxRelativeMapPath.IsChecked;
             project.CompressProjectFiles = (bool)checkboxCompressFiles.IsChecked;
-            if(project.UseRelativeMapDirectory)
+            project.GenerateAllObjectVariables = (bool)checkboxGenerateAllObjects.IsChecked;
+            if (project.UseRelativeMapDirectory)
                 project.War3MapDirectory = Path.GetFileName(project.War3MapDirectory);
             else
             {
