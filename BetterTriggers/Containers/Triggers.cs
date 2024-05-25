@@ -16,7 +16,6 @@ namespace BetterTriggers.Containers
 {
     public class Triggers
     {
-        public Trigger SelectedTrigger { get; set; }
         private HashSet<ExplorerElement> triggerElementContainer = new HashSet<ExplorerElement>();
         private ExplorerElement lastCreated;
 

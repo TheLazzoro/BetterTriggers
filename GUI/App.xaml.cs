@@ -28,7 +28,7 @@ namespace GUI
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             EditorSettings settings = EditorSettings.Load();
-            EditorTheme.Change((EditorThemeUnion) settings.editorAppearance);
+            EditorTheme.Change(settings.editorAppearance);
         }
 
         public void ChangeTheme(Uri uri)

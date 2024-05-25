@@ -42,6 +42,7 @@ namespace BetterTriggers.Commands
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
             refCollection.Notify();
+            explorerElement.IsSelected = true;
         }
 
         public void Undo()
@@ -54,6 +55,7 @@ namespace BetterTriggers.Commands
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
             refCollection.Notify();
+            explorerElement.IsSelected = true;
         }
 
         public string GetCommandName()

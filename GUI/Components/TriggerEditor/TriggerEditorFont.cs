@@ -22,7 +22,7 @@ namespace GUI.Components.TriggerEditor
         public static FontFamily GetParameterFont()
         {
             var settings = EditorSettings.Load();
-            if (settings.triggerEditorMode == 1)
+            if (settings.triggerEditorMode == TriggerEditorMode.CliCli)
                 return Default;
 
             return Verdana;
@@ -31,7 +31,7 @@ namespace GUI.Components.TriggerEditor
         public static double GetTreeItemFontSize()
         {
             var settings = EditorSettings.Load();
-            if (settings.triggerEditorMode == 1)
+            if (settings.triggerEditorMode == TriggerEditorMode.CliCli)
                 return 12;
 
             return 12;
@@ -40,7 +40,7 @@ namespace GUI.Components.TriggerEditor
         public static double GetParameterFontSize()
         {
             var settings = EditorSettings.Load();
-            if (settings.triggerEditorMode == 1)
+            if (settings.triggerEditorMode == TriggerEditorMode.CliCli)
                 return 12;
 
             return 18;

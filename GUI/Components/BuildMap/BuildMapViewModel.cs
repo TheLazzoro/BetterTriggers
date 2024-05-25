@@ -1,4 +1,5 @@
-﻿using GUI.Components.Shared;
+﻿using BetterTriggers;
+using GUI.Components.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,5 +35,11 @@ namespace GUI.Components.BuildMap
             }
         }
 
+        public BuildMapViewModel()
+        {
+            EditorSettings settings = EditorSettings.Load();
+            Compress = settings.Export_Compress;
+            Compress_Advanced = settings.Export_Compress_Advanced;
+        }
     }
 }

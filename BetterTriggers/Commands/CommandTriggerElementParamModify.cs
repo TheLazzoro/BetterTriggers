@@ -89,6 +89,7 @@ namespace BetterTriggers.Commands
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
             Project.CurrentProject.CommandManager.AddCommand(this);
+            eca.IsSelected = true;
         }
 
         public void Redo()
@@ -102,6 +103,7 @@ namespace BetterTriggers.Commands
             paramCollection[paramIndex] = paramToAdd;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
+            eca.IsSelected = true;
         }
 
         public void Undo()
@@ -115,6 +117,7 @@ namespace BetterTriggers.Commands
             paramCollection[paramIndex] = oldParameter;
             Project.CurrentProject.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
+            eca.IsSelected = true;
         }
 
         public string GetCommandName()

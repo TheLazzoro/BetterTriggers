@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class TriggerControlViewModel
+    public class TriggerControlViewModel : IDisposable
     {
         private ExplorerElement _explorerElement;
         private ObservableCollection<TriggerElement> _triggers;
@@ -29,6 +29,7 @@ namespace GUI.Components.TriggerEditor
         public TriggerControlViewModel(ExplorerElement explorerElement)
         {
             _explorerElement = explorerElement;
+            ExplorerElement.CurrentToRender = explorerElement;
             var trigger = explorerElement.trigger;
             var actionDefinition = explorerElement.actionDefinition;
             var conditionDefinition = explorerElement.conditionDefinition;
@@ -124,6 +125,11 @@ namespace GUI.Components.TriggerEditor
                     }
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _triggers.Clear();
         }
     }
 }

@@ -72,6 +72,7 @@ namespace BetterTriggers.Commands
 
             project.EnableFileEvents(true);
             refCollection.AddRefsToParent();
+            deletedElement.IsSelected = true;
         }
 
         public string GetCommandName()

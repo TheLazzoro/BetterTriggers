@@ -44,6 +44,7 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
             explorerElement.InvokeChange();
+            triggerElement.IsSelected = true;
         }
 
         public void Redo()
@@ -55,6 +56,7 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
             explorerElement.InvokeChange();
+            triggerElement.IsSelected = true;
         }
 
         public void Undo()
@@ -66,6 +68,7 @@ namespace BetterTriggers.Commands
                 refCollection.RevertToOldParameters();
             }
             explorerElement.InvokeChange();
+            triggerElement.IsSelected = true;
         }
 
         public string GetCommandName()

@@ -56,10 +56,12 @@ namespace BetterTriggers.Commands
             {
                 localVariable.variable.Name = newName;
                 localVariable.DisplayText = newName;
+                localVariable.IsSelected = true;
             }
             else if (parameterDefinition != null)
             {
                 parameterDefinition.Name = newName;
+                parameterDefinition.IsSelected = true;
             }
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
@@ -72,10 +74,12 @@ namespace BetterTriggers.Commands
             {
                 localVariable.variable.Name = oldName;
                 localVariable.DisplayText = oldName;
+                localVariable.IsSelected = true;
             }
             else if (parameterDefinition != null)
             {
                 parameterDefinition.Name = oldName;
+                parameterDefinition.IsSelected = true;
             }
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();

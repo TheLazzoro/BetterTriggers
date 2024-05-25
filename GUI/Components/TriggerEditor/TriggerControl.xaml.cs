@@ -62,7 +62,7 @@ namespace GUI.Components
             DataContext = ViewModel;
 
             EditorSettings settings = EditorSettings.Load();
-            if (settings.triggerEditorMode == 1)
+            if (settings.triggerEditorMode == TriggerEditorMode.CliCli)
             {
                 bottomControl.Visibility = Visibility.Hidden;
                 bottomSplitter.Visibility = Visibility.Hidden;
@@ -92,10 +92,28 @@ namespace GUI.Components
 
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
             explorerElement.OnChanged += ExplorerElement_OnChanged;
+            explorerElement.OnReload += ExplorerElement_OnChanged;
             explorerElement.OnToggleEnable += ExplorerElement_OnToggleEnable;
             explorerElement.OnToggleInitiallyOn += ExplorerElement_OnToggleInitiallyOn;
+            explorerElement.OnCloseEditor += Dispose;
 
             KeyDown += TriggerControl_KeyDown;
+        }
+
+        private void Dispose()
+        {
+            treeViewTriggers.SelectedItemChanged -= TreeViewTriggers_SelectedItemChanged;
+            explorerElement.OnChanged -= ExplorerElement_OnChanged;
+            explorerElement.OnReload -= ExplorerElement_OnChanged;
+            explorerElement.OnToggleEnable -= ExplorerElement_OnToggleEnable;
+            explorerElement.OnToggleInitiallyOn -= ExplorerElement_OnToggleInitiallyOn;
+            explorerElement.OnCloseEditor -= Dispose;
+            KeyDown -= TriggerControl_KeyDown;
+            ViewModel.Dispose();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
 
         public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)
@@ -368,7 +386,7 @@ namespace GUI.Components
         private void RefreshBottomControls()
         {
             EditorSettings settings = EditorSettings.Load();
-            if (settings.triggerEditorMode == 1)
+            if (settings.triggerEditorMode == TriggerEditorMode.CliCli)
             {
                 bottomControl.Visibility = Visibility.Hidden;
                 bottomSplitter.Visibility = Visibility.Hidden;
@@ -404,13 +422,14 @@ namespace GUI.Components
             if (triggerElement == null)
                 return;
 
+            ExplorerElement.CurrentToRender = explorerElement;
             if (triggerElement is ECA eca)
             {
-                ParamTextBuilder controllerTriggerTreeItem = new ParamTextBuilder();
-                var inlines = controllerTriggerTreeItem.GenerateParamText(explorerElement, eca);
+                ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+                var inlines = paramTextBuilder.GenerateParamText(explorerElement, eca);
                 textblockParams.Inlines.AddRange(inlines);
                 textblockDescription.Text = Locale.Translate(eca.function.value);
-                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(explorerElement, eca);
+                eca.DisplayText = paramTextBuilder.GenerateTreeItemText(explorerElement, eca);
             }
             else if (triggerElement is LocalVariable localVar)
             {
@@ -451,8 +470,9 @@ namespace GUI.Components
                 if (eca == null)
                     continue;
 
-                var controllerTriggerTreeItem = new ParamTextBuilder();
-                eca.DisplayText = controllerTriggerTreeItem.GenerateTreeItemText(explorerElement, eca);
+                ExplorerElement.CurrentToRender = explorerElement;
+                var paramTextBuilder = new ParamTextBuilder();
+                eca.DisplayText = paramTextBuilder.GenerateTreeItemText(explorerElement, eca);
             }
 
             explorerElement.ShouldRefreshUIElements = false; // reset after one refresh
@@ -493,12 +513,12 @@ namespace GUI.Components
         {
             _IsDragging = true;
             var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
-            if (triggerElement is InvalidECA)
+            if (triggerElement == null || triggerElement is InvalidECA)
             {
                 return;
             }
 
-            var treeItem = GetTreeViewItemFromTriggerElement(treeViewTriggers.SelectedItem as TriggerElement);
+            var treeItem = GetTreeViewItemFromTriggerElement(triggerElement as TriggerElement);
             dragItem = treeItem;
 
             if (dragItem == null || triggerElement.IsRenaming)
@@ -1235,30 +1255,33 @@ namespace GUI.Components
         {
             string text = string.Empty;
             indent = string.Empty;
-            //text += RecurseCopyText(categoryEvent);
-            //text += RecurseCopyText(categoryCondition);
-            //text += RecurseCopyText(categoryAction);
+
+            var elements = explorerElement.GetTopLevelTriggerElements();
+            foreach (var element in elements)
+            {
+                text += RecurseCopyText(element);
+            }
 
             Clipboard.SetText(text);
         }
 
-        //private string RecurseCopyText(TreeItemBT item)
-        //{
-        //    string output = string.Empty;
-        //    output += $"{indent}{item.GetHeaderText()}\n";
+        private string RecurseCopyText(TriggerElement item)
+        {
+            string output = string.Empty;
+            output += $"{indent}{item.DisplayText}\n";
 
-        //    if (item.Items.Count > 0)
-        //    {
-        //        indent += "  ";
-        //        foreach (var child in item.Items)
-        //        {
-        //            output += RecurseCopyText((TreeItemBT)child);
-        //        }
-        //        indent = indent.Substring(0, indent.Length - 2);
-        //    }
+            if (item.Elements != null && item.Elements.Count > 0)
+            {
+                indent += "  ";
+                foreach (var child in item.Elements)
+                {
+                    output += RecurseCopyText(child);
+                }
+                indent = indent.Substring(0, indent.Length - 2);
+            }
 
-        //    return output;
-        //}
+            return output;
+        }
 
         private void menuPaste_Click(object sender, RoutedEventArgs e)
         {

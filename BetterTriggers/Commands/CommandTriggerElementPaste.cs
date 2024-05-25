@@ -58,9 +58,11 @@ namespace BetterTriggers.Commands
 
         public void Redo()
         {
+            listToPaste.Elements[0].IsSelected = true;
             for (int i = 0; i < listToPaste.Count(); i++)
             {
                 listToPaste.Elements[i].SetParent(parent, pastedIndex + i);
+                listToPaste.Elements[i].IsSelected_Multi = true;
             }
             if (refCollection != null)
             {

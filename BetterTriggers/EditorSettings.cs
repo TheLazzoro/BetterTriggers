@@ -46,8 +46,8 @@ namespace BetterTriggers
         public int variableListWindowWidth = 1000;
         public int variableListWindowHeight = 450;
 
-        public int editorAppearance        = 0;
-        public int triggerEditorMode       = 0;
+        public EditorAppearance editorAppearance = 0;
+        public TriggerEditorMode triggerEditorMode = 0;
         public double textEditorFontSize   = 12;
         public string textEditorFontStyle  = "Consolas";
 
@@ -103,5 +103,19 @@ namespace BetterTriggers
             instance = settings;
             File.WriteAllText(Path.Combine(dir, fileName), JsonConvert.SerializeObject(instance, Formatting.Indented));
         }
+    }
+
+
+    public enum EditorAppearance
+    {
+        Dark = 0,
+        Light = 1,
+        Night = 2
+    }
+
+    public enum TriggerEditorMode
+    {
+        Default = 0,
+        CliCli = 1
     }
 }

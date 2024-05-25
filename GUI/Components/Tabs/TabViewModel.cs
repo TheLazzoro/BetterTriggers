@@ -34,5 +34,18 @@ namespace GUI.Components.Tabs
 
             return -1;
         }
+        
+        public void CloseAll()
+        {
+            int tabCount = Tabs.Count;
+            for (int i = 0; i < tabCount; i++)
+            {
+                Tabs[0].Close();
+            }
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
     }
 }

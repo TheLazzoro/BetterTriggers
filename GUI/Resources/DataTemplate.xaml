@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:betterTriggers="clr-namespace:BetterTriggers.Models.EditorData;assembly=BetterTriggers"
+                    xmlns:inlineConverter="clr-namespace:GUI.Components.TriggerEditor.WPF_BindingInlinesInTextBlock"
                     
                     >
 
@@ -202,9 +203,12 @@
                           ItemsSource="{Binding Elements}"
                           DataType="{x:Type TreeViewItem}"
                           >
-        <Grid
-        Margin="-1, -1, 0, -1"
-        Height="18" >
+        <HierarchicalDataTemplate.Resources>
+            <inlineConverter:StringToInlinesConverter x:Key="stringToInlinesConverter" />
+        </HierarchicalDataTemplate.Resources>
+        
+        <Grid Margin="-1, -1, 0, -1"
+              Height="18" >
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="16" />
@@ -260,7 +264,7 @@
             </Image>
 
             <TextBlock x:Name="displayText"
-                   Text="{Binding DisplayText}"
+                   inlineConverter:Attached.Inlines="{Binding DisplayText, Converter={StaticResource stringToInlinesConverter}}"
                    Grid.Column="1"
                    Margin="5,0,0,0">
 

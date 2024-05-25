@@ -54,7 +54,7 @@ namespace GUI.Components
             this.tooltip.FontFamily = new FontFamily(settings.textEditorFontStyle);
 
             string uri = string.Empty;
-            if (settings.editorAppearance == 1)
+            if (settings.editorAppearance == EditorAppearance.Light)
             {
                 uri = language == ScriptLanguage.Jass ?
                     "Resources/SyntaxHighlighting/JassHighlightingLight.xml" :

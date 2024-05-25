@@ -21,6 +21,7 @@ namespace BetterTriggers.Models.EditorData
 {
     public class ExplorerElement : TreeNodeBase
     {
+        public static ExplorerElement CurrentToRender { get; set; } // hack
         public ExplorerElementEnum ElementType { get; private set; }
         public string path
         {
@@ -49,6 +50,7 @@ namespace BetterTriggers.Models.EditorData
         public event Action OnChanged;
         public event Action OnSaved;
         public event Action OnDeleted;
+        public event Action OnCloseEditor;
         public event Action OnToggleInitiallyOn;
         private string _path;
         private bool _isInitiallyOn = true;
@@ -332,6 +334,37 @@ namespace BetterTriggers.Models.EditorData
             return ExplorerElements;
         }
 
+        public List<TriggerElement> GetTopLevelTriggerElements()
+        {
+            List<TriggerElement> elements = new List<TriggerElement>();
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    elements.Add(trigger.Events);
+                    elements.Add(trigger.Conditions);
+                    elements.Add(trigger.Actions);
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    elements.Add(actionDefinition.Parameters);
+                    elements.Add(actionDefinition.LocalVariables);
+                    elements.Add(actionDefinition.Actions);
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    elements.Add(conditionDefinition.Parameters);
+                    elements.Add(conditionDefinition.LocalVariables);
+                    elements.Add(conditionDefinition.Actions);
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    elements.Add(functionDefinition.Parameters);
+                    elements.Add(functionDefinition.LocalVariables);
+                    elements.Add(functionDefinition.Actions);
+                    break;
+                default:
+                    break;
+            }
+            return elements;
+        }
+
         /// <summary>
         /// Gets the collection of local variables from the <see cref="ExplorerElement"/>.
         /// The collection is either attached to a <see cref="Trigger"/>, <see cref="ActionDefinition"/>,
@@ -537,7 +570,7 @@ namespace BetterTriggers.Models.EditorData
             switch (ElementType)
             {
                 case ExplorerElementEnum.Folder:
-                formattedName = RenameText;
+                    formattedName = RenameText;
                     break;
                 case ExplorerElementEnum.GlobalVariable:
                     if (project.Variables.Contains(RenameText))
@@ -590,9 +623,9 @@ namespace BetterTriggers.Models.EditorData
             if (ElementType == ExplorerElementEnum.Script)
             {
                 this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
-                OnReload?.Invoke();
             }
 
+            OnReload?.Invoke();
             VerifyAndRemoveTriggerErrors();
         }
 
@@ -605,6 +638,11 @@ namespace BetterTriggers.Models.EditorData
             UpdateVariableIdentifier();
             OnChanged?.Invoke();
             AddToUnsaved();
+        }
+
+        public void InvokeEditorClosing()
+        {
+            OnCloseEditor?.Invoke();
         }
 
         public void InvokeDelete()

@@ -23,7 +23,7 @@ namespace GUI.Components.ScriptEditor
             Text = text;
             header = new TextBlock();
             this.description = new TextBlock();
-            if (settings.editorAppearance == 1)
+            if (settings.editorAppearance == EditorAppearance.Light)
             {
                 header.Inlines.Add(text);
             }

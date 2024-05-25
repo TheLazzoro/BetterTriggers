@@ -35,6 +35,7 @@ namespace BetterTriggers.Commands
             project.EnableFileEvents(false);
             project.RecurseCreateElementsWithContent(createdElement);
             project.EnableFileEvents(true);
+            createdElement.IsSelected = true;
         }
 
         public void Undo()

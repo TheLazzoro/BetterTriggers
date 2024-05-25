@@ -30,7 +30,7 @@ namespace GUI.Components.TriggerEditor
                 decorations.Add(underline);
                 this.TextDecorations = decorations;
             }
-            else if (settings.triggerEditorMode == 1)
+            else if (settings.triggerEditorMode == TriggerEditorMode.CliCli)
             {
                 this.TextDecorations = new TextDecorationCollection(); // none
             }

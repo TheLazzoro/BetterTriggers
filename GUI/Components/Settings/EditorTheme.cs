@@ -9,28 +9,21 @@ using System.Windows.Media;
 
 namespace GUI.Components.Settings
 {
-    public enum EditorThemeUnion
-    {
-        Default,
-        Light,
-        Night,
-    }
-
     public static class EditorTheme
     {
-        public static void Change(EditorThemeUnion theme)
+        public static void Change(EditorAppearance theme)
         {
             EditorSettings settings = EditorSettings.Load();
-            settings.editorAppearance = (int)theme;
+            settings.editorAppearance = theme;
             switch (theme)
             {
-                case EditorThemeUnion.Default:
+                case EditorAppearance.Dark:
                     DefaultTheme();
                     break;
-                case EditorThemeUnion.Light:
+                case EditorAppearance.Light:
                     LightTheme();
                     break;
-                case EditorThemeUnion.Night:
+                case EditorAppearance.Night:
                     NightTheme();
                     break;
                 default:
@@ -47,7 +40,7 @@ namespace GUI.Components.Settings
         public static string HyperlinkColor()
         {
             EditorSettings settings = EditorSettings.Load();
-            if(settings.triggerEditorMode == 0)
+            if(settings.triggerEditorMode == TriggerEditorMode.Default)
                 return "HyperlinkDefaultBrush";
             else
                 return "HyperlinkCliCliBrush";

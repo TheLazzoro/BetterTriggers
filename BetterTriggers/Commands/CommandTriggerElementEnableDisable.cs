@@ -30,12 +30,14 @@ namespace BetterTriggers.Commands
         {
             _eca.IsEnabled = !_eca.IsEnabled;
             _explorerElement.InvokeChange();
+            _eca.IsSelected = true;
         }
 
         public void Undo()
         {
             _eca.IsEnabled = !_eca.IsEnabled;
             _explorerElement.InvokeChange();
+            _eca.IsSelected = true;
         }
 
         public string GetCommandName()

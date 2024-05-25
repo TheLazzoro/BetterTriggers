@@ -79,9 +79,11 @@ namespace BetterTriggers.Commands
 
         public void Undo()
         {
+            elementsToDelete.Elements[0].IsSelected = true;
             for (int i = 0; i < elementsToDelete.Count(); i++)
             {
                 elementsToDelete.Elements[i].SetParent(Parent, insertIndex + i);
+                elementsToDelete.Elements[i].IsSelected_Multi = true;
             }
             foreach (var refCollection in refCollections)
             {

@@ -55,6 +55,7 @@ namespace BetterTriggers.Commands
 
 
             project.CommandManager.AddCommand(this);
+            toPaste.IsSelected = true;
         }
 
         public void Redo()
@@ -70,6 +71,7 @@ namespace BetterTriggers.Commands
             toPaste.SetParent(pasteParent, pastedIndex);
 
             project.EnableFileEvents(true);
+            toPaste.IsSelected = true;
         }
 
         public void Undo()

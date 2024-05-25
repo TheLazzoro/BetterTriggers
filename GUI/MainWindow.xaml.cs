@@ -324,7 +324,7 @@ namespace GUI
         {
             if (selectedItem.ElementType == ExplorerElementEnum.Trigger)
             {
-                Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
+                ExplorerElement.CurrentToRender = selectedItem;
                 EnableECAButtons(true);
                 EnableParameterButton(false);
             }
@@ -332,7 +332,7 @@ namespace GUI
                     || selectedItem.ElementType == ExplorerElementEnum.ConditionDefinition
                     || selectedItem.ElementType == ExplorerElementEnum.FunctionDefinition)
             {
-                Project.CurrentProject.Triggers.SelectedTrigger = selectedItem.trigger;
+                ExplorerElement.CurrentToRender = selectedItem;
                 EnableECAButtons(true);
                 EnableParameterButton(true);
             }
@@ -628,7 +628,7 @@ namespace GUI
                 }
             }
 
-            tabViewModel.Tabs.Clear();
+            tabViewModel.CloseAll();
             if (triggerExplorer != null)
             {
                 var parent = (Grid)triggerExplorer.Parent;
@@ -848,7 +848,7 @@ namespace GUI
             }
 
             SaveLastOpenedTabs();
-            tabViewModel.Tabs.Clear();
+            tabViewModel.CloseAll();
             mainGrid.Children.Remove(triggerExplorer);
             triggerExplorer = null;
             EnableToolbar(false);
@@ -1006,8 +1006,7 @@ namespace GUI
 
         private void CommandBinding_Executed_BuildMap(object sender, ExecutedRoutedEventArgs e)
         {
-            Builder builder = new Builder();
-            builder.BuildMap();
+            BuildMap();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -1108,7 +1107,7 @@ namespace GUI
 
         private void tabitem_Menu_CloseAll_Click(object sender, RoutedEventArgs e)
         {
-            tabViewModel.Tabs.Clear();
+            tabViewModel.CloseAll();
         }
 
         private void tabitem_Menu_Close_Click(object sender, RoutedEventArgs e)

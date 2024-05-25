@@ -47,7 +47,7 @@ namespace GUI.Components.Tabs
             this.explorerElement = explorerElement;
             explorerElement.OnChanged += ExplorerElement_OnChanged;
             explorerElement.OnSaved += ExplorerElement_OnSaved;
-            explorerElement.OnDeleted += ExplorerElement_OnDeleted;
+            explorerElement.OnDeleted += Close;
 
             Content = editor;
             Parent = parent;
@@ -57,11 +57,6 @@ namespace GUI.Components.Tabs
                 ExplorerElement_OnChanged();
             else
                 ExplorerElement_OnSaved();
-        }
-
-        private void ExplorerElement_OnDeleted()
-        {
-            Parent.Tabs.Remove(this);
         }
 
         private void ExplorerElement_OnChanged()
@@ -90,6 +85,7 @@ namespace GUI.Components.Tabs
             Parent.Tabs.Remove(this);
             explorerElement.OnChanged -= ExplorerElement_OnChanged;
             explorerElement.OnSaved -= ExplorerElement_OnSaved;
+            explorerElement.InvokeEditorClosing();
         }
     }
 }

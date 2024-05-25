@@ -42,6 +42,7 @@ namespace BetterTriggers.Commands
             project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
             project.CommandManager.AddCommand(this);
+            explorerElement.IsSelected = true;
         }
 
         public void Redo()
@@ -56,7 +57,7 @@ namespace BetterTriggers.Commands
 
 
             project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
-
+            explorerElement.IsSelected = true;
         }
 
         public void Undo()
@@ -70,7 +71,7 @@ namespace BetterTriggers.Commands
             project.EnableFileEvents(true);
 
             project.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
-
+            explorerElement.IsSelected = true;
         }
 
         public string GetCommandName()

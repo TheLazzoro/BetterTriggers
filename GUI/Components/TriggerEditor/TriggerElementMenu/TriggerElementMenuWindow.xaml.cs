@@ -125,6 +125,7 @@ namespace GUI.Components.TriggerEditor
             if (createdTriggerElement != null)
             {
                 ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+                ExplorerElement.CurrentToRender = explorerElement;
                 createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(explorerElement, createdTriggerElement);
             }
         }

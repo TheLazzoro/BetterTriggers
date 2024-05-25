@@ -24,8 +24,8 @@ namespace GUI.Components.Settings
             checkBoxFixedSeed.IsChecked = settings.FixedRandomSeed;
             checkBoxNoWFPause.IsChecked = settings.NoWindowsFocusPause;
             textBoxCopiedMapFile.Text = settings.CopyLocation;
-            comboboxTriggerStyle.SelectedIndex = settings.triggerEditorMode;
-            comboboxEditorAppearance.SelectedIndex = settings.editorAppearance;
+            comboboxTriggerStyle.SelectedIndex = (int)settings.triggerEditorMode;
+            comboboxEditorAppearance.SelectedIndex = (int)settings.editorAppearance;
             checkBoxQuickStart.IsChecked = settings.useQuickStart;
 
             foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
@@ -47,7 +47,7 @@ namespace GUI.Components.Settings
             settings.FixedRandomSeed = (bool)checkBoxFixedSeed.IsChecked;
             settings.NoWindowsFocusPause = (bool)checkBoxNoWFPause.IsChecked;
             settings.CopyLocation = textBoxCopiedMapFile.Text;
-            settings.triggerEditorMode = comboboxTriggerStyle.SelectedIndex;
+            settings.triggerEditorMode = (TriggerEditorMode)comboboxTriggerStyle.SelectedIndex;
             settings.textEditorFontStyle = comboboxScriptFont.Text;
             settings.useQuickStart = (bool)checkBoxQuickStart.IsChecked;
 
@@ -64,7 +64,10 @@ namespace GUI.Components.Settings
                     || element.ElementType == ExplorerElementEnum.ActionDefinition
                     || element.ElementType == ExplorerElementEnum.ConditionDefinition
                     || element.ElementType == ExplorerElementEnum.FunctionDefinition)
+                {
+                    element.ShouldRefreshUIElements = true;
                     element.Notify();
+                }
                 if (element.editor is ScriptControl scriptControl)
                     scriptControl.RefreshFontStyle();
             }
@@ -74,7 +77,7 @@ namespace GUI.Components.Settings
         {
             if (this.IsLoaded)
             {
-                EditorTheme.Change((EditorThemeUnion)comboboxEditorAppearance.SelectedIndex);
+                EditorTheme.Change((EditorAppearance)comboboxEditorAppearance.SelectedIndex);
             }
         }
     }
