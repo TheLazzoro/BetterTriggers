@@ -138,7 +138,7 @@ namespace GUI.Components.BuildMap
 
         private void btnShowFolder_Click(object sender, RoutedEventArgs e)
         {
-            FileSystemUtil.OpenInExplorer(Project.CurrentProject.dist);
+            FileSystemUtil.OpenInExplorer(Project.CurrentProject.dist, false);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

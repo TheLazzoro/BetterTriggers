@@ -84,11 +84,18 @@ namespace BetterTriggers.Utility
                 Directory.Move(oldFullPath, newFullPath);
         }
 
-        public static void OpenInExplorer(string fullPath)
+        public static void OpenInExplorer(string fullPath, bool doSelect = true)
         {
             if (File.Exists(fullPath) || Directory.Exists(fullPath))
             {
-                Process.Start("explorer.exe", "/select, " + fullPath);
+                if (doSelect)
+                {
+                    Process.Start("explorer.exe", "/select, " + fullPath);
+                }
+                else
+                {
+                    Process.Start("explorer.exe", fullPath);
+                }
             }
         }
 
