@@ -57,9 +57,7 @@ namespace BetterTriggers
         List<ExplorerElement> variables = new List<ExplorerElement>();
         List<ExplorerElement> scripts = new List<ExplorerElement>();
         List<ExplorerElement> triggers = new List<ExplorerElement>();
-        List<ExplorerElement> actionDefinitions = new List<ExplorerElement>();
-        List<ExplorerElement> conditionDefinitions = new List<ExplorerElement>();
-        List<ExplorerElement> functionDefinitions = new List<ExplorerElement>();
+        List<ExplorerElement> customDefinitions = new List<ExplorerElement>();
         Dictionary<string, Tuple<Parameter, string>> generatedVarNames = new Dictionary<string, Tuple<Parameter, string>>(); // [value, [parameter, returnType] ]
         List<string> globalVarNames = new List<string>(); // Used in an edge case (old maps) where vars are multiple defined.
         CultureInfo enUS = new CultureInfo("en-US");
@@ -216,13 +214,9 @@ end
                             triggers.Add(element);
                             break;
                         case ExplorerElementEnum.ActionDefinition:
-                            actionDefinitions.Add(element);
-                            break;
                         case ExplorerElementEnum.ConditionDefinition:
-                            conditionDefinitions.Add(element);
-                            break;
                         case ExplorerElementEnum.FunctionDefinition:
-                            functionDefinitions.Add(element);
+                            customDefinitions.Add(element);
                             break;
                         default:
                             break;
@@ -516,9 +510,7 @@ end
             CreateCameras(script);
 
             CreateCustomScripts(script);
-            GenerateFunctionDefinitions(script);
-            GenerateActionDefinitions(script);
-            GenerateConditionDefinitions(script);
+            GenerateCustomDefinitions(script);
             GenerateTriggers(script);
             GenerateTriggerInitialization(script);
 
@@ -1760,49 +1752,18 @@ end
             return localVariableInit.ToString();
         }
 
-
-        private void GenerateFunctionDefinitions(StringBuilder script)
+        private void GenerateCustomDefinitions(StringBuilder script)
         {
             script.Append(separator);
             script.Append($"{comment}{newline}");
-            script.Append($"{comment}  Function Definitions{newline}");
+            script.Append($"{comment}  Custom Action-, Condition-, and Function Definitions{newline}");
             script.Append($"{comment}{newline}");
             script.Append(separator);
 
-            foreach (var f in functionDefinitions)
+            foreach (var f in customDefinitions)
             {
                 currentExplorerElement = f;
                 script.Append(ConvertCustomDefinitionToJASS(f));
-            }
-        }
-
-        private void GenerateConditionDefinitions(StringBuilder script)
-        {
-            script.Append(separator);
-            script.Append($"{comment}{newline}");
-            script.Append($"{comment}  Condition Definitions{newline}");
-            script.Append($"{comment}{newline}");
-            script.Append(separator);
-
-            foreach (var c in conditionDefinitions)
-            {
-                currentExplorerElement = c;
-                script.Append(ConvertCustomDefinitionToJASS(c));
-            }
-        }
-
-        private void GenerateActionDefinitions(StringBuilder script)
-        {
-            script.Append(separator);
-            script.Append($"{comment}{newline}");
-            script.Append($"{comment}  Action Definitions{newline}");
-            script.Append($"{comment}{newline}");
-            script.Append(separator);
-
-            foreach (var a in actionDefinitions)
-            {
-                currentExplorerElement = a;
-                script.Append(ConvertCustomDefinitionToJASS(a));
             }
         }
 
