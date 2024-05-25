@@ -54,8 +54,8 @@
                   MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp"
                   ContextMenuOpening="treeViewTriggers_ContextMenuOpening"
                   MouseDown="treeViewTriggers_MouseDown"
+                  PreviewKeyDown="treeViewTriggers_PreviewKeyDown" 
                   >
-                  <!-- PreviewKeyDown="treeViewTriggers_PreviewKeyDown" -->
 
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">

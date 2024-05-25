@@ -254,7 +254,7 @@ namespace GUI.Components
 
         private void CreateTriggerElement(TriggerElementType type)
         {
-            if(type == TriggerElementType.Event && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
+            if (type == TriggerElementType.Event && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
             {
                 return;
             }
@@ -790,7 +790,6 @@ namespace GUI.Components
             triggerElement.IsExpanded = false;
         }
 
-        /*
         /// <summary>
         /// Custom arrow key navigation. WPF's built-in TreeView navigation is slow and buggy once treeitems get complex headers.
         /// 
@@ -801,22 +800,23 @@ namespace GUI.Components
         {
             if (e.Key == Key.Down && treeViewTriggers.SelectedItem != null)
             {
-                var current = (TreeViewItem)treeViewTriggers.SelectedItem;
-                if (current.Items.Count > 0 && current.IsExpanded)
+                var current = (TriggerElement)treeViewTriggers.SelectedItem;
+                if (current.Elements != null && current.Elements.Count > 0 && current.IsExpanded)
                 {
-                    var item = (TreeViewItem)current.Items[0];
+                    var item = current.Elements[0];
                     item.IsSelected = true;
                     e.Handled = true;
                 }
                 else
                 {
-                    if (current.Parent is TreeViewItem parent)
+                    var parent = current.GetParent();
+                    if (parent is not null)
                     {
-                        int curIndex = parent.Items.IndexOf(current);
+                        int curIndex = parent.Elements.IndexOf(current);
                         int newIndex = curIndex + 1;
-                        if (newIndex != parent.Items.Count)
+                        if (newIndex != parent.Elements.Count)
                         {
-                            var newItem = (TreeViewItem)parent.Items[newIndex];
+                            var newItem = parent.Elements[newIndex];
                             newItem.IsSelected = true;
                             e.Handled = true;
                         }
@@ -830,10 +830,11 @@ namespace GUI.Components
 
             else if (e.Key == Key.Up && treeViewTriggers.SelectedItem != null)
             {
-                var current = (TreeViewItem)treeViewTriggers.SelectedItem;
-                if (current.Parent is TreeViewItem parent)
+                var current = (TriggerElement)treeViewTriggers.SelectedItem;
+                var parent = current.GetParent();
+                if (parent is not null)
                 {
-                    int curIndex = parent.Items.IndexOf(current);
+                    int curIndex = parent.Elements.IndexOf(current);
                     int newIndex = curIndex - 1;
                     if (newIndex < 0)
                     {
@@ -842,15 +843,15 @@ namespace GUI.Components
                     }
                     else
                     {
-                        var newItem = (TreeViewItem)parent.Items[newIndex];
+                        var newItem = parent.Elements[newIndex];
                         var tmp = newItem;
-                        if (tmp.HasItems)
+                        if (tmp.Elements != null && tmp.Elements.Count > 0)
                         {
                             bool didSelect = false;
                             while (!didSelect)
                             {
-                                tmp = (TreeViewItem)tmp.Items[tmp.Items.Count - 1];
-                                if (!tmp.HasItems || !tmp.IsExpanded)
+                                tmp = tmp.Elements[tmp.Elements.Count - 1];
+                                if (tmp.Elements == null || tmp.Elements.Count == 0 || !tmp.IsExpanded)
                                 {
                                     didSelect = true;
                                     newItem = tmp;
@@ -864,7 +865,6 @@ namespace GUI.Components
                 }
             }
         }
-        */
 
         private void TriggerControl_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1418,7 +1418,10 @@ namespace GUI.Components
             }
             else if (e.Key == Key.Escape)
             {
-                selectedElementEnd.CancelRename();
+                if (selectedElementEnd != null)
+                {
+                    selectedElementEnd.CancelRename();
+                }
             }
         }
 
