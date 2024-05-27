@@ -85,7 +85,10 @@ namespace GUI.Components.VerifyTriggers
         {
             try
             {
-                modifiedElements = CustomMapData.ReloadMapData();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    modifiedElements = CustomMapData.ReloadMapData();
+                });
             }
             catch (IdCollisionException ex)
             {
