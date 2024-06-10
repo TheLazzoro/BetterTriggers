@@ -96,6 +96,10 @@ namespace BetterTriggers.Models.EditorData
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
+            if (SuppressChangedEvent)
+            {
+                return;
+            }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }

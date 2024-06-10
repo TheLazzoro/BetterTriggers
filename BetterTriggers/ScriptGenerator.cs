@@ -204,7 +204,9 @@ end
                     switch (element.ElementType)
                     {
                         case ExplorerElementEnum.GlobalVariable:
+                            element.variable.SuppressChangedEvent = true;
                             element.variable.Name = Path.GetFileNameWithoutExtension(element.GetPath()); // hack
+                            element.variable.SuppressChangedEvent = false;
                             variables.Add(element);
                             break;
                         case ExplorerElementEnum.Script:
