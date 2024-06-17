@@ -76,6 +76,7 @@ namespace GUI.Components
             }
 
             var searchPanel = SearchPanel.Install(avalonEditor);
+            searchPanel.MarkerBrush = new SolidColorBrush(Color.FromArgb(150, 200, 100, 0));
             avalonEditor.Text = content;
 
             // Autocomplete
