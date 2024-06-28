@@ -14,7 +14,11 @@ namespace BetterTriggers.Models.EditorData.TriggerEditor
         public override ConditionDefinitionRef Clone()
         {
             var cloned = new ConditionDefinitionRef();
+            cloned.function = this.function.Clone();
             cloned.ConditionDefinitionId = ConditionDefinitionId;
+            cloned.ElementType = ElementType;
+            cloned.IconImage = new byte[IconImage.Length];
+            IconImage.CopyTo(cloned.IconImage, 0);
 
             return cloned;
         }

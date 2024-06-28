@@ -70,6 +70,8 @@ namespace BetterTriggers.Utility
 
             for (int i = 0; i < triggerElement.Elements.Count; i++)
             {
+                var eca = triggerElement.Elements[i] as ECA;
+                bool ecaExists = false;
                 if (triggerElement.Elements[i] is LocalVariable localVar)
                 {
                     if (localVar.variable.InitialValue is Value value)
@@ -90,6 +92,7 @@ namespace BetterTriggers.Utility
                 else if (triggerElement.Elements[i] is ActionDefinitionRef actionDefRef)
                 {
                     var found = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId);
+                    ecaExists = found != null;
                     if (found == null)
                     {
                         actionDefRef.RemoveFromParent();
@@ -102,6 +105,7 @@ namespace BetterTriggers.Utility
                 else if (triggerElement.Elements[i] is ConditionDefinitionRef conditionDefRef)
                 {
                     var found = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
+                    ecaExists = found != null;
                     if (found == null)
                     {
                         conditionDefRef.RemoveFromParent();
@@ -111,9 +115,11 @@ namespace BetterTriggers.Utility
                         continue;
                     }
                 }
+                else
+                {
+                    ecaExists = TriggerData.FunctionExists(eca.function);
+                }
 
-                var eca = (ECA)triggerElement.Elements[i];
-                bool ecaExists = TriggerData.FunctionExists(eca.function);
                 if (!ecaExists)
                 {
                     eca.RemoveFromParent();

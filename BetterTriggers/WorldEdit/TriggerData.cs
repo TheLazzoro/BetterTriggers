@@ -630,7 +630,10 @@ namespace BetterTriggers.WorldEdit
                 return false;
 
             bool exists = false;
-            exists = FunctionsAll.ContainsKey(function.value);
+            if (function.value != null)
+            {
+                exists = FunctionsAll.ContainsKey(function.value);
+            }
 
             var project = Project.CurrentProject;
             if (!exists)
