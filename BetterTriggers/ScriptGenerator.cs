@@ -1819,7 +1819,7 @@ end
             if (parameters.Count() == 0)
             {
                 if (language == ScriptLanguage.Jass)
-                    sb_parameters.Append($"nothing returns {returnType}");
+                    sb_parameters.Append($"nothing returns {Types.GetBaseType(returnType)}");
                 else
                     sb_parameters.Append($")");
             }
@@ -1829,7 +1829,7 @@ end
                 {
                     var parameter = (ParameterDefinition)parameters.Elements[i];
                     string parameterName = Ascii.ReplaceNonASCII(parameter.GetIdentifierName().Replace(" ", "_"), true);
-                    string parameterText = language == ScriptLanguage.Jass ? $"{parameter.ReturnType.Type} {parameterName}" : $"{parameterName}";
+                    string parameterText = language == ScriptLanguage.Jass ? $"{Types.GetBaseType(parameter.ReturnType.Type)} {parameterName}" : $"{parameterName}";
                     sb_parameters.Append(parameterText);
 
                     if (i < parameters.Count() - 1)
@@ -1838,7 +1838,7 @@ end
                     }
                 }
                 if (language == ScriptLanguage.Jass)
-                    sb_parameters.Append($" returns {returnType}");
+                    sb_parameters.Append($" returns {Types.GetBaseType(returnType)}");
                 else
                     sb_parameters.Append(")");
             }
