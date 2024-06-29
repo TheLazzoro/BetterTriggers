@@ -60,11 +60,11 @@ namespace GUI.Utility
         }
 
 
-        private static string JassTypewordBrush;
-        private static string JassKeywordBrush;
-        private static string LuaKeywordBrush;
-        private static string JassFunctionBrush;
-        private static string JassVariableBrush;
+        internal static string JassTypewordBrush;
+        internal static string JassKeywordBrush;
+        internal static string LuaKeywordBrush;
+        internal static string JassFunctionBrush;
+        internal static string JassVariableBrush;
         public static List<Inline> CodeColor(string text, ScriptLanguage language)
         {
             if (JassTypewordBrush == null)

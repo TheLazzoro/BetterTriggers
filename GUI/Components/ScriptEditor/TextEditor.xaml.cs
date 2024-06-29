@@ -1,32 +1,21 @@
 ﻿using BetterTriggers;
-using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
 using GUI.Components.ScriptEditor;
 using GUI.Utility;
 using ICSharpCode.AvalonEdit.CodeCompletion;
-using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Xml;
 using War3Net.Build.Info;
@@ -53,6 +42,44 @@ namespace GUI.Components
             this.tooltip = new ToolTip();
             this.tooltip.FontFamily = new FontFamily(settings.textEditorFontStyle);
 
+            ReloadTextEditorTheme();
+            InitializeCompletionData();
+
+            var searchPanel = SearchPanel.Install(avalonEditor);
+            searchPanel.MarkerBrush = new SolidColorBrush(Color.FromArgb(150, 200, 100, 0));
+            avalonEditor.Text = content;
+
+            // Autocomplete
+            avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
+            avalonEditor.TextArea.TextEntering += TextArea_TextEntering;
+            avalonEditor.TextArea.SelectionChanged += TextArea_SelectionChanged;
+
+            // Hover over text
+            this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
+            this.avalonEditor.MouseHoverStopped += AvalonEditor_MouseHoverStopped;
+
+            // change font size
+            this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
+        }
+
+        public void Dispose()
+        {
+            // Autocomplete
+            avalonEditor.TextArea.KeyDown -= TextArea_KeyDown;
+            avalonEditor.TextArea.TextEntering -= TextArea_TextEntering;
+            avalonEditor.TextArea.SelectionChanged -= TextArea_SelectionChanged;
+            // Hover over text
+            this.avalonEditor.MouseHover -= AvalonEditor_MouseHover;
+            this.avalonEditor.MouseHoverStopped -= AvalonEditor_MouseHoverStopped;
+            // change font size
+            this.avalonEditor.TextArea.MouseWheel -= TextArea_MouseWheel;
+
+            CloseAutoCompletion();
+        }
+
+        public void ReloadTextEditorTheme()
+        {
+            EditorSettings settings = EditorSettings.Load();
             string uri = string.Empty;
             if (settings.editorAppearance == EditorAppearance.Light)
             {
@@ -66,6 +93,8 @@ namespace GUI.Components
                     "Resources/SyntaxHighlighting/JassHighlighting.xml" :
                     "Resources/SyntaxHighlighting/LuaHighlighting.xml";
             }
+            avalonEditor.TextArea.Caret.CaretBrush = (SolidColorBrush)Application.Current.Resources["TextBrush2"];
+
             // Sets syntax highlighting in the comment field
             using (Stream s = Application.GetResourceStream(new Uri(uri, UriKind.Relative)).Stream)
             {
@@ -75,23 +104,31 @@ namespace GUI.Components
                 }
             }
 
-            var searchPanel = SearchPanel.Install(avalonEditor);
-            searchPanel.MarkerBrush = new SolidColorBrush(Color.FromArgb(150, 200, 100, 0));
-            avalonEditor.Text = content;
+        }
 
-            // Autocomplete
-            avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
+        public void ChangeFontSize()
+        {
+            EditorSettings settings = EditorSettings.Load();
+            this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
+        }
 
-            // Hover over text
-            this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
-            this.avalonEditor.MouseHoverStopped += AvalonEditor_MouseHoverStopped;
+        internal void ChangeFontStyle()
+        {
+            EditorSettings settings = EditorSettings.Load();
+            this.avalonEditor.TextArea.FontFamily = new FontFamily(settings.textEditorFontStyle);
+        }
 
-            // change font size
-            this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
 
-
-            if (completionCollection == null && !isLoadingScriptData)
+        public void InitializeCompletionData(bool reload = false)
+        {
+            if ((completionCollection == null || reload) && !isLoadingScriptData)
             {
+                TextFormatter.JassTypewordBrush = null;
+                TextFormatter.JassKeywordBrush = null;
+                TextFormatter.LuaKeywordBrush = null;
+                TextFormatter.JassFunctionBrush = null;
+                TextFormatter.JassVariableBrush = null;
+
                 isLoadingScriptData = true;
                 this.language = language;
                 Thread newWindowThread = new Thread(AddCompletionDataThread);
@@ -156,33 +193,48 @@ namespace GUI.Components
             }
         }
 
-        public void ChangeFontSize()
+        private void TextArea_TextEntering(object sender, TextCompositionEventArgs e)
         {
-            EditorSettings settings = EditorSettings.Load();
-            this.avalonEditor.TextArea.FontSize = settings.textEditorFontSize;
-        }
-
-        internal void ChangeFontStyle()
-        {
-            EditorSettings settings = EditorSettings.Load();
-            this.avalonEditor.TextArea.FontFamily = new FontFamily(settings.textEditorFontStyle);
+            HandleKeyPress(e.Text);
         }
 
         private void TextArea_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            if (e.Key == Key.Escape)
             {
-                ShowAutoCompletion();
+                CloseAutoCompletion();
+            }
+            else if (e.Key == Key.Space && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                CloseAutoCompletion();
+                HandleKeyPress();
                 e.Handled = true; // prevents a space from being entered when opening autocomplete menu
+            }
+            else if (e.Key == Key.Space)
+            {
+                CloseAutoCompletion();
             }
         }
 
-        private void ShowAutoCompletion()
+        private void CloseAutoCompletion()
+        {
+            if (completionWindow != null)
+            {
+                completionWindow.Close();
+                completionWindow = null;
+            }
+        }
+
+        private void HandleKeyPress(string toInsert = null)
         {
             var caret = avalonEditor.TextArea.Caret;
             int caretPos = caret.Offset - 1;
             int i = caretPos;
             string word = string.Empty;
+            if (toInsert != null)
+            {
+                word = toInsert;
+            }
             bool wordFound = false;
             while (i > 0 && !wordFound)
             {
@@ -203,39 +255,53 @@ namespace GUI.Components
             Array.Reverse(charArray);
             word = new string(charArray);
 
-            // open completion window
-            EditorSettings settings = EditorSettings.Load();
-            completionWindow = new CompletionWindow(avalonEditor.TextArea);
-            completionWindow.ResizeMode = ResizeMode.NoResize;
-            //completionWindow.Foreground = (SolidColorBrush)new BrushConverter().ConvertFromString("#CCC");
-            completionWindow.Background = (SolidColorBrush)Application.Current.Resources["TexteditorBackgroundAutocomplete"];
-            completionWindow.BorderBrush = (SolidColorBrush)Application.Current.Resources["BorderBrush"];
-            completionWindow.BorderThickness = new Thickness(0.3);
-            completionWindow.Width = 400;
-            completionWindow.FontFamily = new FontFamily(settings.textEditorFontStyle);
-            completionWindow.UseLayoutRounding = true;
-            IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
-            var items = completionCollection.Search(word);
-            data.AddRange(items);
-            if (items.Count == 0)
+            // cancel autocompletion window if the string is a number
+            if (float.TryParse(word, out float value))
             {
-                completionWindow = null;
                 return;
             }
 
-            completionWindow.Show();
+            // open completion window
+            EditorSettings settings = EditorSettings.Load();
+            if (completionWindow == null)
+            {
+                completionWindow = new CompletionWindow(avalonEditor.TextArea);
+                completionWindow.ResizeMode = ResizeMode.NoResize;
+                completionWindow.Background = (SolidColorBrush)Application.Current.Resources["TexteditorBackgroundAutocomplete"];
+                completionWindow.BorderBrush = (SolidColorBrush)Application.Current.Resources["BorderBrush"];
+                completionWindow.BorderThickness = new Thickness(0.3);
+                completionWindow.Width = 400;
+                completionWindow.FontFamily = new FontFamily(settings.textEditorFontStyle);
+                completionWindow.UseLayoutRounding = true;
+                completionWindow.CompletionList.InsertionRequested += CompletionList_InsertionRequested;
+                completionWindow.Show();
+                completionWindow.KeyDown += CompletionWindow_KeyDown;
+            }
+
+
+            IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+            var items = completionCollection.Search(word);
+            data.Clear();
+            data.AddRange(items);
+            if (items.Count == 0)
+            {
+                CloseAutoCompletion();
+                return;
+            }
             completionWindow.CompletionList.SelectItem(word);
-            completionWindow.Closed += delegate
+        }
+
+        private void CompletionWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
             {
-                completionWindow = null;
-            };
-            completionWindow.CompletionList.SizeChanged += delegate
-            {
-                if (completionWindow.CompletionList.ListBox.Items.Count == 0)
-                {
-                    completionWindow.Close();
-                }
-            };
+                CloseAutoCompletion();
+            }
+        }
+
+        private void CompletionList_InsertionRequested(object? sender, EventArgs e)
+        {
+            CloseAutoCompletion();
         }
 
         private void AvalonEditor_MouseHover(object sender, MouseEventArgs e)
@@ -309,6 +375,11 @@ namespace GUI.Components
         private void AvalonEditor_MouseHoverStopped(object sender, MouseEventArgs e)
         {
             tooltip.IsOpen = false;
+        }
+
+        private void TextArea_SelectionChanged(object? sender, EventArgs e)
+        {
+            CloseAutoCompletion();
         }
 
     }

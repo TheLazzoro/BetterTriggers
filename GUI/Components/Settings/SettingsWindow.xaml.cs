@@ -78,6 +78,15 @@ namespace GUI.Components.Settings
             if (this.IsLoaded)
             {
                 EditorTheme.Change((EditorAppearance)comboboxEditorAppearance.SelectedIndex);
+
+                var mainWindow = MainWindow.GetMainWindow();
+                var tabs = mainWindow.tabViewModel;
+                for (int i = 0; i < tabs.Tabs.Count; i++)
+                {
+                    var element = tabs.Tabs[i].explorerElement;
+                    if (element.editor is ScriptControl scriptControl)
+                        scriptControl.ReloadTextEditorTheme();
+                }
             }
         }
     }

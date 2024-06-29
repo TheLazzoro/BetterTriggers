@@ -38,6 +38,7 @@ namespace GUI.Components
             };
 
             explorerElementScript.OnReload += ExplorerElementScript_OnReload;
+            explorerElementScript.OnCloseEditor += ExplorerElementScript_OnCloseEditor;
         }
 
         private void ExplorerElementScript_OnReload()
@@ -86,6 +87,21 @@ namespace GUI.Components
         internal void RefreshFontStyle()
         {
             textEditor.ChangeFontStyle();
+        }
+
+        internal void ReloadTextEditorTheme()
+        {
+            textEditor.ReloadTextEditorTheme();
+            textEditor.InitializeCompletionData(true);
+        }
+
+
+        private void ExplorerElementScript_OnCloseEditor()
+        {
+            textEditor.Dispose();
+
+            explorerElementScript.OnReload -= ExplorerElementScript_OnReload;
+            explorerElementScript.OnCloseEditor -= ExplorerElementScript_OnCloseEditor;
         }
     }
 }
