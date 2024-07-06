@@ -258,10 +258,6 @@ namespace GUI.Components
             {
                 return;
             }
-            else if (type == TriggerElementType.Condition && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
-            {
-                return;
-            }
 
 
             int insertIndex = 0;
@@ -313,15 +309,6 @@ namespace GUI.Components
                 return;
             }
 
-            var menu = new TriggerElementMenuWindow(explorerElement, type);
-            menu.ShowDialog();
-            ECA eca = menu.createdTriggerElement;
-
-            if (eca == null)
-            {
-                return;
-            }
-
             TriggerElement parent = null;
             var selected = treeViewTriggers.SelectedItem as TriggerElement;
             if (selected == null)
@@ -357,8 +344,14 @@ namespace GUI.Components
                     insertIndex = 0;
                 }
             }
+
             if (parent == null)
             {
+                if (type == TriggerElementType.Condition && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
+                {
+                    return;
+                }
+
                 switch (type)
                 {
                     case TriggerElementType.Event:
@@ -373,6 +366,15 @@ namespace GUI.Components
                 }
 
                 insertIndex = parent.Count();
+            }
+
+            var menu = new TriggerElementMenuWindow(explorerElement, type);
+            menu.ShowDialog();
+            ECA eca = menu.createdTriggerElement;
+
+            if (eca == null)
+            {
+                return;
             }
 
             var parentAsItem = GetTreeViewItemFromTriggerElement(parent);
@@ -1495,9 +1497,10 @@ namespace GUI.Components
             menuFunctionEnabled.IsEnabled = isECA;
             menuFunctionEnabled.IsChecked = triggerElement.IsEnabled;
             menuRename.IsEnabled = isRenameEnabled;
-            menuEvent.IsEnabled = explorerElementType is ExplorerElementEnum.Trigger;
-            menuCondition.IsEnabled = explorerElementType is ExplorerElementEnum.Trigger;
-            menuParameter.IsEnabled = explorerElementType is not ExplorerElementEnum.Trigger;
+            menuEvent.IsEnabled = triggerElement.ElementType == TriggerElementType.Event;
+            menuCondition.IsEnabled = triggerElement.ElementType == TriggerElementType.Condition;
+            menuParameter.IsEnabled = triggerElement.ElementType == TriggerElementType.ParameterDef;
+            menuAction.IsEnabled = triggerElement.ElementType == TriggerElementType.Action;
         }
 
         private void ExplorerElement_OnChanged()
