@@ -275,7 +275,11 @@ namespace BetterTriggers.Containers
             project.totalFiles = files.Length;
             project.loadedFiles = 0;
             List<string> fileCheckList = new List<string>();
-            fileCheckList.AddRange(files);
+            for (int i = 0; i < files.Length; i++)
+            {
+                string path = files[i].ToLower();
+                fileCheckList.Add(path);
+            }
 
             // Recurse through elements found in the project file
             project.RecurseLoad(projectRootEntry, project.GetRoot(), fileCheckList);
@@ -323,7 +327,7 @@ namespace BetterTriggers.Containers
                 string path = Path.Combine(src, entryChild.path);
                 if (File.Exists(path) || Directory.Exists(path))
                 {
-                    fileCheckList.Remove(path);
+                    fileCheckList.Remove(path.ToLower());
                     ExplorerElement explorerElementChild = new ExplorerElement(path);
                     explorerElementChild.IsEnabled = entryChild.isEnabled;
                     explorerElementChild.IsInitiallyOn = entryChild.isInitiallyOn;

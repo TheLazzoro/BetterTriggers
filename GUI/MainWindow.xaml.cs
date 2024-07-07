@@ -661,6 +661,10 @@ namespace GUI
         private void OpenLastOpenedTabs()
         {
             Project project = Project.CurrentProject;
+            if(project == null)
+            {
+                return;
+            }
             var lastOpenedTabs = LastOpenedTabs.Load(project.GetRoot().GetName());
             var explorerElements = project.GetAllExplorerElements();
             if (lastOpenedTabs.Tabs != null)
