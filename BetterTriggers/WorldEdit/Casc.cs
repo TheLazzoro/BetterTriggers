@@ -14,6 +14,7 @@ namespace BetterTriggers.WorldEdit
         private static bool _onlineMode = false;
         private static string product = "w3";
         private static CASCFolder war3_w3mod;
+        private static CASCFolder war3_x86_64;
         private static CASCHandler casc;
 
         public static CASCHandler GetCasc()
@@ -69,15 +70,15 @@ namespace BetterTriggers.WorldEdit
 
         public static CASCFolder Getx86Folder()
         {
-            if (war3_w3mod == null)
+            if (war3_x86_64 == null)
             {
                 var casc = GetCasc();
                 var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
                 casc.Root.MergeInstall(casc.Install);
-                war3_w3mod = (CASCFolder)fldr.Entries["x86_64"];
+                war3_x86_64 = (CASCFolder)fldr.Entries["x86_64"];
             }
 
-            return war3_w3mod;
+            return war3_x86_64;
         }
 
         public static void SaveFile(CASCFile file, string fullPath)

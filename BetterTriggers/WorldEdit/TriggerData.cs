@@ -75,6 +75,11 @@ namespace BetterTriggers.WorldEdit
             else
             {
                 string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
+                if(!Directory.Exists(baseDir))
+                {
+                    Directory.CreateDirectory(baseDir);
+                }
+
                 pathCommonJ = baseDir + "common.j";
                 pathBlizzardJ = baseDir + "Blizzard.j";
                 ScriptGenerator.PathCommonJ = pathCommonJ;
@@ -87,6 +92,16 @@ namespace BetterTriggers.WorldEdit
                 units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
                 CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
                 Casc.SaveFile(blizzardJ, pathBlizzardJ);
+
+                var jasshelperFolder = (CASCFolder)Casc.Getx86Folder().Entries["jasshelper"];
+                foreach (var item in jasshelperFolder.Entries)
+                {
+                    string path = Path.Combine(baseDir, item.Key);
+                    if (!File.Exists(path))
+                    {
+                        Casc.SaveFile((CASCFile)item.Value, path);
+                    }
+                }
 
 
                 var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
