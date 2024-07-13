@@ -61,20 +61,20 @@ namespace BetterTriggers.WorldEdit
 
             if (isTest)
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/triggerdata.txt");
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "TestResources\\triggerdata.txt");
                 string triggerdata = File.ReadAllText(path);
                 data = IniFileConverter.GetIniData(triggerdata);
 
-                string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
+                string baseDir = Directory.GetCurrentDirectory() + "\\Resources\\JassHelper\\";
                 pathCommonJ = Path.Combine(baseDir, "common.txt");
                 pathBlizzardJ = Path.Combine(baseDir, "Blizzardj.txt");
                 ScriptGenerator.PathCommonJ = pathCommonJ;
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
-                ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/clijasshelper.exe";
+                ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}\\Resources\\JassHelper\\clijasshelper.exe";
             }
             else
             {
-                string baseDir = Directory.GetCurrentDirectory() + "/Resources/JassHelper/";
+                string baseDir = Directory.GetCurrentDirectory() + "\\Resources\\JassHelper\\";
                 if(!Directory.Exists(baseDir))
                 {
                     Directory.CreateDirectory(baseDir);
@@ -84,7 +84,7 @@ namespace BetterTriggers.WorldEdit
                 pathBlizzardJ = baseDir + "Blizzard.j";
                 ScriptGenerator.PathCommonJ = pathCommonJ;
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
-                ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}/Resources/JassHelper/jasshelper.exe";
+                ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}\\Resources\\JassHelper\\jasshelper.exe";
 
                 var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
                 CASCFile commonJ = (CASCFile)units.Entries["common.j"];

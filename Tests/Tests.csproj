@@ -21,6 +21,8 @@
     <None Remove="Resources\JassHelper\Blizzardj.txt" />
     <None Remove="Resources\JassHelper\clijasshelper.exe" />
     <None Remove="Resources\JassHelper\common.txt" />
+    <None Remove="Resources\JassHelper\pjass.exe" />
+    <None Remove="Resources\JassHelper\sfmpq.dll" />
     <None Remove="TestResources\abilitybuffdata.slk" />
     <None Remove="TestResources\abilitydata.slk" />
     <None Remove="TestResources\abilityskin.txt" />
@@ -1119,6 +1121,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\JassHelper\common.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\pjass.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\sfmpq.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\abilitybuffdata.slk">
