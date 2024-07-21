@@ -134,14 +134,14 @@ namespace GUI.Components.OpenMap
             }
 
             SelectedPath = treeItem.FullPath;
-            if(useRelativeMapDirectory)
-            {
-                SelectedPath = Path.GetFileName(treeItem.FullPath);
-            }
             if(!Project.VerifyMapPath(SelectedPath))
             {
                 btnOK.IsEnabled = false;
                 return;
+            }
+            if(useRelativeMapDirectory)
+            {
+                SelectedPath = Path.GetFileName(treeItem.FullPath);
             }
 
             btnOK.IsEnabled = true;
