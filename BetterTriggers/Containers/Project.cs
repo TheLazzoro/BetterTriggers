@@ -1061,26 +1061,17 @@ namespace BetterTriggers.Containers
         }
 
 
-        public static bool VerifyMapPath(string path)
+        public static bool VerifyMapPath(string fullPath)
         {
-            if (CurrentProject != null)
-            {
-                bool useRelativeMapDir = CurrentProject.war3project.UseRelativeMapDirectory;
-                if (useRelativeMapDir)
-                {
-                    path = CurrentProject.GetFullMapPath(path);
-                }
-            }
-
             bool verified = false;
-            if (File.Exists(path))
+            if (File.Exists(fullPath))
             {
                 if (Path.HasExtension(".w3x") || Path.HasExtension(".w3m"))
                     verified = true;
             }
-            else if (Directory.Exists(path))
+            else if (Directory.Exists(fullPath))
             {
-                if (File.Exists(Path.Combine(path, "war3map.w3i")))
+                if (File.Exists(Path.Combine(fullPath, "war3map.w3i")))
                     verified = true;
             }
 
