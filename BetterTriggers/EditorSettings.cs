@@ -64,6 +64,7 @@ namespace BetterTriggers
         public bool Export_RemoveListfile  = false;
         public bool Export_RemoveTriggerData = false;
         public bool Export_Obfuscate       = false;
+        public bool Export_IncludeTriggerData = false;
         public bool Export_Compress        = false;
         public bool Export_Compress_Advanced = false;
         public ushort Export_Compress_BlockSize = 3;

@@ -44,10 +44,12 @@ namespace GUI.Components.BuildMap
             var language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
             checkBoxRemoveListfile.IsChecked = settings.Export_RemoveListfile;
             checkBoxTriggerData.IsChecked = settings.Export_RemoveTriggerData;
+            checkBoxIncludeTriggerData.IsChecked = settings.Export_IncludeTriggerData;
             checkBoxObfuscate.IsChecked = settings.Export_Obfuscate;
             checkBoxCompress.IsChecked = settings.Export_Compress;
             checkBoxAdvanced.IsChecked = settings.Export_Compress_Advanced;
             textboxBlockSize.Value = settings.Export_Compress_BlockSize;
+            HandleRemoveTriggerData();
             if (language != ScriptLanguage.Jass)
             {
                 checkBoxObfuscate.IsEnabled = false;
@@ -61,6 +63,7 @@ namespace GUI.Components.BuildMap
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
             var settings = EditorSettings.Load();
+            settings.Export_IncludeTriggerData = (bool)checkBoxIncludeTriggerData.IsChecked;
             settings.Export_Compress = (bool)checkBoxCompress.IsChecked;
             settings.Export_Compress_Advanced = (bool)checkBoxAdvanced.IsChecked;
             settings.Export_Compress_BlockSize = (ushort)textboxBlockSize.Value;
@@ -144,6 +147,21 @@ namespace GUI.Components.BuildMap
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void checkBoxTriggerData_Click(object sender, RoutedEventArgs e)
+        {
+            HandleRemoveTriggerData();
+        }
+
+        private void HandleRemoveTriggerData()
+        {
+            bool removeTriggerData = checkBoxTriggerData.IsChecked == true;
+            checkBoxIncludeTriggerData.IsEnabled = !removeTriggerData;
+            if(removeTriggerData)
+            {
+                checkBoxIncludeTriggerData.IsChecked = false;
+            }
         }
     }
 }
