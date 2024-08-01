@@ -10,6 +10,6 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 {
     public class ParameterVariableControlViewModel : ViewModelBase
     {
-        public ObservableCollection<VariableItem> Variables = new ObservableCollection<VariableItem>();
+        public ObservableCollection<VariableItem> Variables { get; set; } = new ObservableCollection<VariableItem>();
     }
 }
