@@ -275,20 +275,20 @@ namespace BetterTriggers.Models.EditorData
             Function function = null;
             oldParameters = new List<Parameter>();
             resetParameters = new List<Parameter>();
-            if(parameter is ParameterDefinitionRef paramDefRef)
+            if(parameter is ParameterDefinitionRef paramDefRef || parameter is VariableRef || parameter is TriggerRef)
             {
                 function = parent;
                 for (int i = 0; i < parent.parameters.Count; i++)
                 {
-                    var parameter = parent.parameters[i];
-                    oldParameters.Add(parameter);
-                    if (parameter == paramDefRef)
+                    var _parameter = parent.parameters[i];
+                    oldParameters.Add(_parameter);
+                    if (_parameter == parameter)
                     {
                         resetParameters.Add(new Parameter());
                     }
                     else
                     {
-                        resetParameters.Add(parameter);
+                        resetParameters.Add(_parameter);
                     }
                 }
             }
@@ -329,7 +329,7 @@ namespace BetterTriggers.Models.EditorData
 
         internal void RevertToOldParameters()
         {
-            if (parameter is ParameterDefinitionRef)
+            if (parameter is ParameterDefinitionRef || parameter is VariableRef || parameter is TriggerRef)
             {
                 parent.parameters = oldParameters;
             }

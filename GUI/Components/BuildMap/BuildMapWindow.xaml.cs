@@ -76,6 +76,7 @@ namespace GUI.Components.BuildMap
             progressBar.IsIndeterminate = true;
             btnExport.IsEnabled = false;
             btnCancel.IsEnabled = false;
+            checkBoxIncludeTriggerData.IsEnabled = false;
             checkBoxCompress.IsEnabled = false;
             checkBoxAdvanced.IsEnabled = false;
             textboxBlockSize.IsEnabled = false;
@@ -134,6 +135,11 @@ namespace GUI.Components.BuildMap
             }
             else
             {
+                Title = "Export Failed";
+                gifAcolyte.Visibility = Visibility.Hidden;
+                imgMap.Visibility = Visibility.Visible;
+                progressBar.Foreground = (Brush)FindResource("TextErrorBrush");
+                progressBar.Value = 100;
                 Dialogs.MessageBox dialog = new Dialogs.MessageBox("Error", _error.Message, this);
                 dialog.ShowDialog();
             }

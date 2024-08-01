@@ -1,15 +1,34 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
+using GUI.Components.VariableEditor;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
-    public partial class ParameterVariableControl : UserControl, IParameterControl
+    public class VariableItem
     {
-        private ListViewItem selectedItem;
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public VariableRef VariableRef { get; set; }
+
+        public VariableItem(string name, bool isLocal, VariableRef variableRef)
+        {
+            this.Name = name;
+            this.Type = isLocal ? "Local" : "Global";
+            this.VariableRef = variableRef;
+        }
+    }
+
+
+    public partial class ParameterVariableControl : UserControl, IParameterControl, ISearchablesObserverList
+    {
+        private VariableItem selectedItem;
+        private Searchables searchables;
+        private ParameterVariableControlViewModel viewModel;
 
         /// <summary>
         /// </summary>
@@ -19,34 +38,38 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         {
             InitializeComponent();
 
+            viewModel = new ParameterVariableControlViewModel();
+            DataContext = viewModel;
+
             if (returnType == "VarAsString_Real")
                 returnType = "real";
             else if (returnType == "StringExt")
                 returnType = "string";
 
             var project = Project.CurrentProject;
-            List<VariableRef> variables = project.Variables.GetVariableRefs(returnType, Variables.includeLocals, localVariables);
+            List<Variable> variables = project.Variables.GetVariables(returnType, Variables.includeLocals, localVariables);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < variables.Count; i++)
             {
-                string varName = project.Variables.GetVariableNameById(variables[i].VariableId);
-                ListViewItem listItem = new ListViewItem();
-                listItem.Content = varName;
-                listItem.Tag = variables[i];
+                var variable = variables[i];
+                var variableRef = project.Variables.GetVariableRef(variable);
+                var variableItem = new VariableItem(variable.Name, variable._isLocal, variableRef);
 
                 objects.Add(new Searchable()
                 {
-                    Object = listItem,
+                    Object = variableItem,
                     Words = new List<string>()
                     {
-                        varName.ToLower()
+                        variable.Name.ToLower(),
                     },
                 });
             }
-            var searchables = new Searchables(objects);
-            listControl.SetSearchableList(searchables);
-            listControl.listView.SelectionChanged += ListView_SelectionChanged;
+            listView.SelectionChanged += ListView_SelectionChanged;
+
+            searchables = new Searchables(objects);
+            searchables.AttachList(this);
+            searchables.Search("");
         }
 
         public void SetDefaultSelection(Parameter parameter)
@@ -61,9 +84,9 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             if (selected == null)
                 return;
 
-            while (!found && i < listControl.listView.Items.Count)
+            while (!found && i < listView.Items.Count)
             {
-                var item = listControl.listView.Items[i] as ListViewItem;
+                var item = listView.Items[i] as ListViewItem;
                 var variableRef = item.Tag as VariableRef;
                 var variable = project.Variables.GetByReference(variableRef);
                 if (variable == selected)
@@ -74,15 +97,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             if (!found)
                 return;
 
-            var defaultSelected = listControl.listView.Items[i] as ListViewItem;
+            var defaultSelected = listView.Items[i] as ListViewItem;
             defaultSelected.IsSelected = true;
-            listControl.listView.ScrollIntoView(defaultSelected);
+            listView.ScrollIntoView(defaultSelected);
         }
 
 
         public int GetElementCount()
         {
-            return listControl.listView.Items.Count;
+            return searchables.GetAllObject().Count;
         }
 
         public Parameter GetSelectedItem()
@@ -90,7 +113,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             if (selectedItem == null)
                 return null;
 
-            var variables = (VariableRef)selectedItem.Tag;
+            var variables = selectedItem.VariableRef;
             return variables;
         }
 
@@ -99,9 +122,25 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             this.Visibility = visibility;
         }
 
+        public void Update()
+        {
+            viewModel.Variables.Clear();
+            var variables = searchables.GetObjects();
+            foreach (var searchItem in variables)
+            {
+                var variableItem = (VariableItem)searchItem.Object;
+                viewModel.Variables.Add(variableItem);
+            }
+        }
+
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedItem = listControl.listView.SelectedItem as ListViewItem;
+            selectedItem = listView.SelectedItem as VariableItem;
+        }
+
+        private void textBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            searchables.Search(textBoxSearch.Text);
         }
     }
 }

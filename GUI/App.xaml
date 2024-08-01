@@ -580,7 +580,83 @@
 
 
 
+            <!-- LISTVIEW MULTIPLE COLUMNS -->
 
+            <Style x:Key="GridViewColumnHeaderGripper" TargetType="{x:Type Thumb}">
+                <Setter Property="Width" Value="18"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                <Rectangle HorizontalAlignment="Center" Width="1" Fill="{DynamicResource ListViewHeader.Border}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="listViewHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="GridViewColumnHeader">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver"/>
+                                        <VisualState x:Name="Pressed"/>
+                                        <VisualState x:Name="Disabled"/>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Border x:Name="HeaderBorder" BorderThickness="0,0,0,1" Padding="2,1,2,1" BorderBrush="{DynamicResource ListViewHeader.Border}" Background="{DynamicResource ListViewHeader.Background}">
+                                    <ContentPresenter x:Name="HeaderContent" Margin="0,0,0,1" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                                <Thumb x:Name="PART_HeaderGripper" HorizontalAlignment="Right" Margin="0,0,-9,0" Style="{StaticResource GridViewColumnHeaderGripper}"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" TargetName="HeaderBorder" Value="{DynamicResource ListViewHeader.Background.Disabled}"/>
+                                    <Setter Property="BorderBrush" TargetName="HeaderBorder" Value="{DynamicResource ListViewHeader.Border.Disabled}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="HeaderBorder" Value="{DynamicResource ListViewHeader.Background.MouseOver}"/>
+                                    <Setter Property="BorderBrush" TargetName="HeaderBorder" Value="{DynamicResource ListViewHeader.Border.MouseOver}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" TargetName="HeaderBorder" Value="{DynamicResource ListViewHeader.Background.Pressed}"/>
+                                    <Setter Property="BorderBrush" TargetName="HeaderBorder" Value="{DynamicResource ListViewHeader.Border.Pressed}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Role" Value="Floating">
+                        <Setter Property="Opacity" Value="0.7"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GridViewColumnHeader">
+                                    <Canvas Name="PART_FloatingHeaderCanvas">
+                                        <Rectangle Fill="#60000000" Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}"/>
+                                    </Canvas>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                    <Trigger Property="Role" Value="Padding">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GridViewColumnHeader">
+                                    <Border Name="HeaderBorder" BorderThickness="0,0,0,1" Background="{DynamicResource ListViewHeader.Backdrop}" BorderBrush="{DynamicResource ListViewHeader.Border}"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
 
             <!-- COMBOBOX -->

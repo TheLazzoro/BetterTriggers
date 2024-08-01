@@ -102,7 +102,7 @@ namespace GUI
 
             this.functionControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(functionControl); };
             this.presetControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(presetControl); };
-            this.variableControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(variableControl); };
+            this.variableControl.listView.SelectionChanged += delegate { SetSelectedItem(variableControl); };
             this.parameterDefinitionControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(parameterDefinitionControl); };
             this.triggerRefControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(triggerRefControl); };
             this.importControl.listControl.listView.SelectionChanged += delegate { SetSelectedItem(importControl); };
@@ -110,7 +110,7 @@ namespace GUI
 
             functionControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             presetControl.listControl.listView.MouseDoubleClick += btnOK_Click;
-            variableControl.listControl.listView.MouseDoubleClick += btnOK_Click;
+            variableControl.listView.MouseDoubleClick += btnOK_Click;
             parameterDefinitionControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             triggerRefControl.listControl.listView.MouseDoubleClick += btnOK_Click;
             importControl.listControl.listView.MouseDoubleClick += btnOK_Click;

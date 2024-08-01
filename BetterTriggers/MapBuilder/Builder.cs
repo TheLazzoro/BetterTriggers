@@ -64,6 +64,12 @@ namespace BetterTriggers.TestMap
             map.Info.ScriptLanguage = _language;
             map.Script = script;
 
+            if(settings.Export_IncludeTriggerData)
+            {
+                var bt2we = new BT2WE(map);
+                bt2we.Convert();
+            }
+
 
             // We need to add all arbitrary files into to the builder.
             MapBuilder builder = new MapBuilder(map);

@@ -168,6 +168,16 @@
     <SolidColorBrush x:Key="ListItemBackgroundHover" Color="{DynamicResource listItemBackgroundHoverColor}" />
     <SolidColorBrush x:Key="ListItemBackgroundSelected" Color="{DynamicResource listItemBackgroundSelectedColor}" />
 
+    <SolidColorBrush x:Key="ListViewHeader.Backdrop" Color="Transparent" />
+    <SolidColorBrush x:Key="ListViewHeader.Background" Color="#FDFDFD" />
+    <SolidColorBrush x:Key="ListViewHeader.Background.Disabled" Color="#AAA" />
+    <SolidColorBrush x:Key="ListViewHeader.Background.MouseOver" Color="#E3F7FF" />
+    <SolidColorBrush x:Key="ListViewHeader.Background.Pressed" Color="#B9E9FC" />
+    <SolidColorBrush x:Key="ListViewHeader.Border" Color="#DDD" />
+    <SolidColorBrush x:Key="ListViewHeader.Border.Disabled" Color="Transparent" />
+    <SolidColorBrush x:Key="ListViewHeader.Border.MouseOver" Color="#88CBED" />
+    <SolidColorBrush x:Key="ListViewHeader.Border.Pressed" Color="#7A9EB1" />
+
     <SolidColorBrush x:Key="ProgressBarBorder" Color="#6000" />
 
     <SolidColorBrush x:Key="TexteditorBackground" Color="{DynamicResource texteditorBackgroundColor}" />
