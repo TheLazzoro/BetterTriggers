@@ -82,6 +82,7 @@ namespace BetterTriggers
                     triggerCategory.Id = id;
                     triggerCategory.ParentId = parentId;
                     triggerCategory.Name = explorerElement.GetName();
+                    triggerItems.Add(triggerCategory);
                     break;
                 case ExplorerElementEnum.GlobalVariable:
                     countVariable++;
@@ -115,9 +116,9 @@ namespace BetterTriggers
                     id = 0;
                     root.Id = id;
                     root.ParentId = -1;
-                    root.Name = _project.MapName;
+                    root.Name = _project.MapName + ".w3x";
                     _map.CustomTextTriggers.GlobalCustomScriptComment = _project.war3project.Comment;
-                    _map.CustomTextTriggers.GlobalCustomScriptCode.Code = _project.war3project.Header;
+                    _map.CustomTextTriggers.GlobalCustomScriptCode.Code = _project.war3project.Header + "\0"; // Add NUL char
                     triggerItems.Add(root);
                     break;
                 case ExplorerElementEnum.Script:
@@ -131,7 +132,7 @@ namespace BetterTriggers
                     script.IsInitiallyOn = true;
                     script.IsCustomTextTrigger = true;
                     var customTextTrigger = new CustomTextTrigger();
-                    customTextTrigger.Code = explorerElement.script;
+                    customTextTrigger.Code = explorerElement.script + "\0"; // Add NUL char
                     _map.CustomTextTriggers.CustomTextTriggers.Add(customTextTrigger);
                     triggerItems.Add(script);
                     break;
@@ -161,7 +162,7 @@ namespace BetterTriggers
                     }
 
                     var customTextTrigger2 = new CustomTextTrigger();
-                    customTextTrigger2.Code = customTriggerTextCode;
+                    customTextTrigger2.Code = customTriggerTextCode + "\0"; // Add NUL char
                     _map.CustomTextTriggers.CustomTextTriggers.Add(customTextTrigger2);
                     triggerItems.Add(triggerDefinition);
                     break;
@@ -312,44 +313,45 @@ namespace BetterTriggers
                     case Value value:
                         converted.Type = TriggerFunctionParameterType.String;
                         string prefix = string.Empty;
-                        bool replaceNonAscii = false;
+                        bool isVariable = false;
                         if (returnType == "unit")
                         {
                             prefix = "gg_unit_";
-                            replaceNonAscii = true;
+                            isVariable = true;
                         }
                         else if (returnType == "item")
                         {
                             prefix = "gg_item_";
-                            replaceNonAscii = true;
+                            isVariable = true;
                         }
                         else if (returnType == "destructable")
                         {
                             prefix = "gg_dest_";
-                            replaceNonAscii = true;
+                            isVariable = true;
                         }
                         else if (returnType == "rect")
                         {
                             prefix = "gg_rct_";
-                            replaceNonAscii = true;
+                            isVariable = true;
                         }
                         else if (returnType == "camerasetup")
                         {
                             prefix = "gg_cam_";
-                            replaceNonAscii = true;
+                            isVariable = true;
                         }
                         else if (returnType == "sound")
                         {
                             prefix = "gg_snd_";
-                            replaceNonAscii = true;
+                            isVariable = true;
                         }
                         else if (returnType == "string" || returnType == "StringExt")
                         {
                             paramValue = AddTriggerString(paramValue);
                         }
 
-                        if (replaceNonAscii)
+                        if (isVariable)
                         {
+                            converted.Type = TriggerFunctionParameterType.Variable;
                             paramValue = Ascii.ReplaceNonASCII(paramValue.Replace(" ", "_")).Insert(0, prefix);
                         }
                         
