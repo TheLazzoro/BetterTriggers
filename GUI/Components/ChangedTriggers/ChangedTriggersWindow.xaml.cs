@@ -17,9 +17,6 @@ using System.Xml.Linq;
 
 namespace GUI.Components.ChangedTriggers
 {
-    /// <summary>
-    /// Interaction logic for ChangedTriggersWindow.xaml
-    /// </summary>
     public partial class ChangedTriggersWindow : Window
     {
         public ChangedTriggersWindow(List<ExplorerElement> explorerElements)

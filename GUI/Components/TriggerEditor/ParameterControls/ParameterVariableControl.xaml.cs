@@ -14,6 +14,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public string Name { get; set; }
         public string Type { get; set; }
         public VariableRef VariableRef { get; set; }
+        public bool IsSelected { get; set; }
 
         public VariableItem(string name, bool isLocal, VariableRef variableRef)
         {
@@ -29,12 +30,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private VariableItem selectedItem;
         private Searchables searchables;
         private ParameterVariableControlViewModel viewModel;
+        private ExplorerElement? explorerElement;
 
         /// <summary>
         /// </summary>
         /// <param name="returnType"></param>
         /// <param name="localVariables"></param>
-        public ParameterVariableControl(string returnType, TriggerElementCollection? localVariables = null)
+        public ParameterVariableControl(string returnType, ExplorerElement? explorerElement = null)
         {
             InitializeComponent();
 
@@ -46,6 +48,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             else if (returnType == "StringExt")
                 returnType = "string";
 
+
+            this.explorerElement = explorerElement;
+            TriggerElementCollection? localVariables = null;
+            if(explorerElement != null)
+            {
+                localVariables = explorerElement.GetLocalVariables();
+            }
             var project = Project.CurrentProject;
             List<Variable> variables = project.Variables.GetVariables(returnType, Variables.includeLocals, localVariables);
             List<Searchable> objects = new List<Searchable>();
@@ -79,27 +88,27 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             bool found = false;
             Variable selected = null;
             if (parameter is VariableRef)
-                selected = project.Variables.GetByReference(parameter as VariableRef);
+                selected = project.Variables.GetByReference(parameter as VariableRef, explorerElement);
 
             if (selected == null)
                 return;
 
-            while (!found && i < listView.Items.Count)
+            var items = searchables.GetAllObject();
+            VariableItem defaultSelected = null;
+            while (!found && i < items.Count)
             {
-                var item = listView.Items[i] as ListViewItem;
-                var variableRef = item.Tag as VariableRef;
-                var variable = project.Variables.GetByReference(variableRef);
+                var variableItem = (VariableItem)items[i].Object;
+                var variable = project.Variables.GetByReference(variableItem.VariableRef, explorerElement);
                 if (variable == selected)
+                {
+                    variableItem.IsSelected = true;
+                    defaultSelected = variableItem;
+                    listView.ScrollIntoView(defaultSelected);
                     found = true;
+                }
                 else
                     i++;
             }
-            if (!found)
-                return;
-
-            var defaultSelected = listView.Items[i] as ListViewItem;
-            defaultSelected.IsSelected = true;
-            listView.ScrollIntoView(defaultSelected);
         }
 
 

@@ -164,7 +164,7 @@ namespace GUI.Components.BuildMap
         {
             bool removeTriggerData = checkBoxTriggerData.IsChecked == true;
             checkBoxIncludeTriggerData.IsEnabled = !removeTriggerData;
-            if(removeTriggerData)
+            if (removeTriggerData)
             {
                 checkBoxIncludeTriggerData.IsChecked = false;
             }

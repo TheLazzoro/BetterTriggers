@@ -90,6 +90,22 @@ namespace GUI.Components
                 checkBoxRunOnMapInit.Visibility = Visibility.Hidden;
             }
 
+            switch (explorerElement.ElementType)
+            {
+                case ExplorerElementEnum.Trigger:
+                    this.textBoxComment.Text = explorerElement.trigger.Comment;
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    this.textBoxComment.Text = explorerElement.actionDefinition.Comment;
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    this.textBoxComment.Text = explorerElement.conditionDefinition.Comment;
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    this.textBoxComment.Text = explorerElement.functionDefinition.Comment;
+                    break;
+            }
+
             treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
             explorerElement.OnChanged += ExplorerElement_OnChanged;
             explorerElement.OnReload += ExplorerElement_OnChanged;
@@ -98,6 +114,7 @@ namespace GUI.Components
             explorerElement.OnCloseEditor += Dispose;
 
             KeyDown += TriggerControl_KeyDown;
+            textBoxComment.TextChanged += textBoxComment_TextChanged;
         }
 
         private void Dispose()

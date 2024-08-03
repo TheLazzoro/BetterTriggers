@@ -14,7 +14,6 @@ namespace BetterTriggers
     {
         private Project _project;
         private Map _map;
-        private Dictionary<ExplorerElement, int> _folderIds = new Dictionary<ExplorerElement, int>();
 
         public BT2WE(Map map)
         {
@@ -34,11 +33,11 @@ namespace BetterTriggers
             var functionDefinitions = _project.FunctionDefinitions.GetAll();
 
             int localVarCount = triggers.Where(t => t.GetLocalVariables().Count() > 0).Count();
-            int varCustomFeaturesCount = variables.Where(v => v.IsTwoDimensions).Count();
+            var varCustomFeatures = variables.Where(v => v.IsTwoDimensions).ToList();
 
             if (
                 localVarCount > 0
-                || varCustomFeaturesCount > 0
+                || varCustomFeatures.Count > 0
                 || actionDefinitions.Count > 0
                 || conditionDefinitions.Count > 0
                 || functionDefinitions.Count > 0
@@ -47,87 +46,142 @@ namespace BetterTriggers
                 throw new Exception("Map contains custom Better Triggers data. Conversion is not possible.");
             }
 
-            var triggerItems = RecurseThroughTriggers(_project.GetRoot());
+            _map.CustomTextTriggers.CustomTextTriggers.Clear();
+            RecurseThroughTriggers(_project.GetRoot(), -1);
             var mapTriggers = new MapTriggers(MapTriggersFormatVersion.v7, MapTriggersSubVersion.v4);
+            mapTriggers.GameVersion = 2;
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.RootCategory, countRoot);
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.UNK1, 0);
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.Category, countCategory);
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.Gui, countGui);
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.Comment, 0);
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.Script, countScript);
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.Variable, countVariable);
+            mapTriggers.TriggerItemCounts.Add(TriggerItemType.UNK7, 0);
             mapTriggers.TriggerItems.AddRange(triggerItems);
+            mapTriggers.Variables.AddRange(variableDefinitions);
             _map.Triggers = mapTriggers;
         }
 
-        private List<TriggerItem> RecurseThroughTriggers(ExplorerElement parent)
+        List<TriggerItem> triggerItems = new List<TriggerItem>();
+        List<VariableDefinition> variableDefinitions = new List<VariableDefinition>();
+        int countRoot = 0;
+        int countCategory = 0;
+        int countGui = 0;
+        int countScript = 0;
+        int countVariable = 0;
+        private void RecurseThroughTriggers(ExplorerElement explorerElement, int parentId)
         {
-            var triggerItems = new List<TriggerItem>();
-            _folderIds.TryGetValue(parent, out int parentId);
-            var children = parent.GetExplorerElements();
-            for (int i = 0; i < children.Count; i++)
+            int id = 0;
+            switch (explorerElement.ElementType)
             {
-                var explorerElement = children[i];
-                switch (explorerElement.ElementType)
-                {
-                    case ExplorerElementEnum.Folder:
-                        int id = _project.GenerateId();
-                        var triggerCategory = new TriggerCategoryDefinition();
-                        triggerCategory.Id = id;
-                        triggerCategory.ParentId = parentId;
-                        triggerCategory.Name = explorerElement.GetName();
-                        _folderIds.Add(explorerElement, id);
-                        triggerItems.AddRange(RecurseThroughTriggers(explorerElement));
-                        break;
-                    case ExplorerElementEnum.GlobalVariable:
-                        var variable = explorerElement.variable;
-                        var variableDefiniton = new TriggerDefinition(TriggerItemType.Variable);
-                        variableDefiniton.ParentId = parentId;
-                        variableDefiniton.Id = explorerElement.GetId();
-                        variableDefiniton.Name = explorerElement.GetName();
-                        triggerItems.Add(variableDefiniton);
-                        break;
-                    case ExplorerElementEnum.Root:
-                        var root = new TriggerCategoryDefinition(TriggerItemType.RootCategory);
-                        root.Id = 0;
-                        root.ParentId = -1;
-                        root.Name = _project.MapName;
-                        _map.CustomTextTriggers.GlobalCustomScriptComment = _project.war3project.Comment;
-                        _map.CustomTextTriggers.GlobalCustomScriptCode.Code = _project.war3project.Header;
-                        _folderIds.Add(explorerElement, root.Id);
-                        break;
-                    case ExplorerElementEnum.Script:
-                        var script = new TriggerDefinition(TriggerItemType.Script);
-                        script.Id = _project.GenerateId();
-                        script.ParentId = parentId;
-                        script.Name = explorerElement.GetName();
-                        script.IsEnabled = explorerElement.IsEnabled;
-                        script.IsInitiallyOn = true;
-                        var customTextTrigger = new CustomTextTrigger();
-                        customTextTrigger.Code = explorerElement.script;
-                        _map.CustomTextTriggers.CustomTextTriggers.Add(customTextTrigger);
-                        triggerItems.Add(script);
-                        break;
-                    case ExplorerElementEnum.Trigger:
-                        var trigger = explorerElement.trigger;
-                        var triggerDefinition = new TriggerDefinition(TriggerItemType.Gui);
-                        triggerDefinition.Id = explorerElement.GetId();
-                        triggerDefinition.Name = explorerElement.GetName();
-                        triggerDefinition.Description = explorerElement.trigger.Comment;
-                        triggerDefinition.ParentId = parentId;
-                        triggerDefinition.RunOnMapInit = trigger.RunOnMapInit;
-                        triggerDefinition.IsEnabled = explorerElement.IsEnabled;
-                        triggerDefinition.IsInitiallyOn = explorerElement.IsInitiallyOn;
+                case ExplorerElementEnum.Folder:
+                    countCategory++;
+                    id = _project.GenerateId();
+                    var triggerCategory = new TriggerCategoryDefinition();
+                    triggerCategory.Id = id;
+                    triggerCategory.ParentId = parentId;
+                    triggerCategory.Name = explorerElement.GetName();
+                    break;
+                case ExplorerElementEnum.GlobalVariable:
+                    countVariable++;
+                    id = explorerElement.GetId();
+                    var variable = explorerElement.variable;
+                    var variableDefiniton = new TriggerVariableDefinition(TriggerItemType.Variable);
+                    variableDefiniton.ParentId = parentId;
+                    variableDefiniton.Id = id;
+                    variableDefiniton.Name = explorerElement.GetName();
+                    triggerItems.Add(variableDefiniton);
+
+                    string initialValue = string.Empty;
+                    if (!string.IsNullOrEmpty(variable.InitialValue.value))
+                    {
+                        initialValue = variable.InitialValue.value;
+                    }
+                    var variableDefinition2 = new VariableDefinition();
+                    variableDefinition2.Id = id;
+                    variableDefinition2.ParentId = parentId;
+                    variableDefinition2.Name = explorerElement.GetName();
+                    variableDefinition2.InitialValue = initialValue;
+                    variableDefinition2.Type = variable.War3Type.Type;
+                    variableDefinition2.IsArray = variable.IsArray;
+                    variableDefinition2.ArraySize = variable.ArraySize[0];
+                    variableDefinitions.Add(variableDefinition2);
+
+                    break;
+                case ExplorerElementEnum.Root:
+                    countRoot++;
+                    var root = new TriggerCategoryDefinition(TriggerItemType.RootCategory);
+                    id = 0;
+                    root.Id = id;
+                    root.ParentId = -1;
+                    root.Name = _project.MapName;
+                    _map.CustomTextTriggers.GlobalCustomScriptComment = _project.war3project.Comment;
+                    _map.CustomTextTriggers.GlobalCustomScriptCode.Code = _project.war3project.Header;
+                    triggerItems.Add(root);
+                    break;
+                case ExplorerElementEnum.Script:
+                    countScript++;
+                    id = _project.GenerateId();
+                    var script = new TriggerDefinition(TriggerItemType.Script);
+                    script.Id = id;
+                    script.ParentId = parentId;
+                    script.Name = explorerElement.GetName();
+                    script.IsEnabled = explorerElement.IsEnabled;
+                    script.IsInitiallyOn = true;
+                    script.IsCustomTextTrigger = true;
+                    var customTextTrigger = new CustomTextTrigger();
+                    customTextTrigger.Code = explorerElement.script;
+                    _map.CustomTextTriggers.CustomTextTriggers.Add(customTextTrigger);
+                    triggerItems.Add(script);
+                    break;
+                case ExplorerElementEnum.Trigger:
+                    countGui++;
+                    id = explorerElement.GetId();
+                    var trigger = explorerElement.trigger;
+                    var triggerDefinition = new TriggerDefinition(TriggerItemType.Gui);
+                    triggerDefinition.Id = id;
+                    triggerDefinition.Name = explorerElement.GetName();
+                    triggerDefinition.Description = explorerElement.trigger.Comment;
+                    triggerDefinition.ParentId = parentId;
+                    triggerDefinition.RunOnMapInit = trigger.RunOnMapInit;
+                    triggerDefinition.IsEnabled = explorerElement.IsEnabled;
+                    triggerDefinition.IsInitiallyOn = explorerElement.IsInitiallyOn;
+                    triggerDefinition.IsCustomTextTrigger = explorerElement.trigger.IsScript;
+                    string customTriggerTextCode = string.Empty;
+                    if (triggerDefinition.IsCustomTextTrigger)
+                    {
+                        customTriggerTextCode = explorerElement.script;
+                    }
+                    else
+                    {
                         triggerDefinition.Functions.AddRange(ConvertTriggerElements(trigger.Events));
                         triggerDefinition.Functions.AddRange(ConvertTriggerElements(trigger.Conditions));
                         triggerDefinition.Functions.AddRange(ConvertTriggerElements(trigger.Actions));
-                        triggerItems.Add(triggerDefinition);
-                        break;
-                    default:
-                        continue;
-                }
+                    }
+
+                    var customTextTrigger2 = new CustomTextTrigger();
+                    customTextTrigger2.Code = customTriggerTextCode;
+                    _map.CustomTextTriggers.CustomTextTriggers.Add(customTextTrigger2);
+                    triggerItems.Add(triggerDefinition);
+                    break;
             }
 
-            return triggerItems;
+            if (explorerElement.ElementType == ExplorerElementEnum.Folder || explorerElement.ElementType == ExplorerElementEnum.Root)
+            {
+                var children = explorerElement.GetExplorerElements();
+                for (int i = 0; i < children.Count; i++)
+                {
+                    var child = children[i];
+                    RecurseThroughTriggers(child, id);
+                }
+            }
         }
 
         /// <param name="triggerElementCollection">The collection/branch attached to a trigger element</param>
         /// <param name="branch">In an if-then-else block, if=0 then=1 else=2</param>
         /// <returns></returns>
-        private List<TriggerFunction> ConvertTriggerElements(TriggerElementCollection triggerElementCollection, int branch = 0)
+        private List<TriggerFunction> ConvertTriggerElements(TriggerElementCollection triggerElementCollection, int? branch = null)
         {
             var triggerFunctions = new List<TriggerFunction>();
 
@@ -139,6 +193,20 @@ namespace BetterTriggers
                 triggerFunction.Name = eca.function.value;
                 triggerFunction.IsEnabled = eca.IsEnabled;
                 triggerFunction.Branch = branch;
+                switch (eca.ElementType)
+                {
+                    case TriggerElementType.Event:
+                        triggerFunction.Type = TriggerFunctionType.Event;
+                        break;
+                    case TriggerElementType.Condition:
+                        triggerFunction.Type = TriggerFunctionType.Condition;
+                        break;
+                    case TriggerElementType.Action:
+                        triggerFunction.Type = TriggerFunctionType.Action;
+                        break;
+                    default:
+                        break;
+                }
                 triggerFunction.Parameters.AddRange(ConvertTriggerFunctionParameters(eca.function.parameters, returnTypes));
                 triggerFunctions.Add(triggerFunction);
 
@@ -182,7 +250,17 @@ namespace BetterTriggers
                     case Function function:
                         converted.Type = TriggerFunctionParameterType.Function;
                         converted.Value = paramValue;
-                        converted.Function = new TriggerFunction();
+                        if (function.parameters.Count > 0)
+                        {
+                            converted.Function = new TriggerFunction();
+                            converted.Function.Name = paramValue;
+                            converted.Function.Type = TriggerFunctionType.Call;
+                            if(WorldEdit.TriggerData.ConditionTemplates.TryGetValue(paramValue, out var temp))
+                            {
+                                converted.Function.Type = TriggerFunctionType.Condition;
+                            }
+                            converted.Function.IsEnabled = true;
+                        }
                         if (
                             paramValue == "ForGroup"
                             || paramValue == "ForLoopA"
@@ -200,7 +278,10 @@ namespace BetterTriggers
                         }
 
                         var returnTypes1 = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(function, null);
-                        converted.Function.Parameters.AddRange(ConvertTriggerFunctionParameters(function.parameters, returnTypes1));
+                        if (converted.Function != null)
+                        {
+                            converted.Function.Parameters.AddRange(ConvertTriggerFunctionParameters(function.parameters, returnTypes1));
+                        }
 
                         break;
                     case Preset:
@@ -231,6 +312,7 @@ namespace BetterTriggers
                         paramValue = Ascii.ReplaceNonASCII(element.GetName().Replace(" ", "_"));
                         break;
                     case Value value:
+                        converted.Type = TriggerFunctionParameterType.String;
                         string prefix = string.Empty;
                         if (returnType == "unit")
                             prefix = "gg_unit_";

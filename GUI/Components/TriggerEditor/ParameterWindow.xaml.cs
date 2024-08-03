@@ -72,7 +72,7 @@ namespace GUI
             if (explorerElement == null)
                 this.variableControl = new ParameterVariableControl(returnType);
             else
-                this.variableControl = new ParameterVariableControl(returnType, explorerElement.GetLocalVariables());
+                this.variableControl = new ParameterVariableControl(returnType, explorerElement);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);
