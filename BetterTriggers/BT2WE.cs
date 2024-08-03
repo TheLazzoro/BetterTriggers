@@ -240,16 +240,15 @@ namespace BetterTriggers
                 {
                     paramValue = string.Empty;
                 }
+                
 
                 var converted = new TriggerFunctionParameter();
-                converted.Value = paramValue;
                 functionParameters.Add(converted);
 
                 switch (parameter)
                 {
                     case Function function:
                         converted.Type = TriggerFunctionParameterType.Function;
-                        converted.Value = paramValue;
                         if (function.parameters.Count > 0)
                         {
                             converted.Function = new TriggerFunction();
@@ -286,7 +285,6 @@ namespace BetterTriggers
                         break;
                     case Preset:
                         converted.Type = TriggerFunctionParameterType.Preset;
-                        converted.Value = paramValue;
                         break;
                     case VariableRef varRef:
                         converted.Type = TriggerFunctionParameterType.Variable;
@@ -314,29 +312,75 @@ namespace BetterTriggers
                     case Value value:
                         converted.Type = TriggerFunctionParameterType.String;
                         string prefix = string.Empty;
+                        bool replaceNonAscii = false;
                         if (returnType == "unit")
+                        {
                             prefix = "gg_unit_";
+                            replaceNonAscii = true;
+                        }
                         else if (returnType == "item")
+                        {
                             prefix = "gg_item_";
+                            replaceNonAscii = true;
+                        }
                         else if (returnType == "destructable")
+                        {
                             prefix = "gg_dest_";
+                            replaceNonAscii = true;
+                        }
                         else if (returnType == "rect")
+                        {
                             prefix = "gg_rct_";
+                            replaceNonAscii = true;
+                        }
                         else if (returnType == "camerasetup")
+                        {
                             prefix = "gg_cam_";
+                            replaceNonAscii = true;
+                        }
                         else if (returnType == "sound")
+                        {
                             prefix = "gg_snd_";
+                            replaceNonAscii = true;
+                        }
+                        else if (returnType == "string" || returnType == "StringExt")
+                        {
+                            paramValue = AddTriggerString(paramValue);
+                        }
 
-                        paramValue = Ascii.ReplaceNonASCII(paramValue.Replace(" ", "_")).Insert(0, prefix);
+                        if (replaceNonAscii)
+                        {
+                            paramValue = Ascii.ReplaceNonASCII(paramValue.Replace(" ", "_")).Insert(0, prefix);
+                        }
+                        
 
                         break;
                     default:
                         break;
                 }
 
+                converted.Value = paramValue;
             }
 
             return functionParameters;
+        }
+
+        /// <summary>
+        /// Returns the TRIGSTR_XXX reference.
+        /// </summary>
+        private string AddTriggerString(string stringToAdd)
+        {
+            int index = _map.TriggerStrings.Strings.Count - 2;
+            var lastString = _map.TriggerStrings.Strings[index];
+
+            var triggerString = new TriggerString();
+            triggerString.Key = lastString.Key + 1;
+            triggerString.Value = stringToAdd;
+            triggerString.EmptyLineCount = 1;
+            triggerString.KeyPrecision = (uint)Math.Floor(Math.Log10(triggerString.Key) + 1);
+            _map.TriggerStrings.Strings.Insert(index + 1, triggerString);
+
+            return $"TRIGSTR_{triggerString.Key}";
         }
     }
 }
