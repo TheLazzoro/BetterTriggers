@@ -107,6 +107,7 @@ namespace BetterTriggers
                     variableDefinition2.Type = variable.War3Type.Type;
                     variableDefinition2.IsArray = variable.IsArray;
                     variableDefinition2.ArraySize = variable.ArraySize[0];
+                    variableDefinition2.Unk = 1;
                     variableDefinitions.Add(variableDefinition2);
 
                     break;
