@@ -161,8 +161,6 @@ namespace BetterTriggers.TestMap
                     }
                 }
             }
-
-            Map.Open(archivePath);
         }
 
         public void TestMap()
