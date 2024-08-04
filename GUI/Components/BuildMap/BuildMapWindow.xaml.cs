@@ -140,8 +140,18 @@ namespace GUI.Components.BuildMap
                 imgMap.Visibility = Visibility.Visible;
                 progressBar.Foreground = (Brush)FindResource("TextErrorBrush");
                 progressBar.Value = 100;
-                Dialogs.MessageBox dialog = new Dialogs.MessageBox("Error", _error.Message, this);
-                dialog.ShowDialog();
+
+                if (_error is ContainsBTDataException ex)
+                {
+                    var errorWindow = new ErrorBTOnlyDataWindow(ex.ExplorerElementsWithBTData);
+                    errorWindow.Show();
+                    Close();
+                }
+                else
+                {
+                    Dialogs.MessageBox dialog = new Dialogs.MessageBox("Error", _error.Message, this);
+                    dialog.ShowDialog();
+                }
             }
         }
 

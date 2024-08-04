@@ -41,7 +41,7 @@ namespace BetterTriggers.TestMap
         string archivePath;
         /// <summary>
         /// Builds an MPQ archive.
-        /// Throws <see cref="Exception"/> on errors.
+        /// Throws <see cref="Exception"/> and <see cref="ContainsBTDataException"/> on errors.
         /// </summary>
         public void BuildMap(string destinationDir = null, bool includeMPQSettings = false)
         {

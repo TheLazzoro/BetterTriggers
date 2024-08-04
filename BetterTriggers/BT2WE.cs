@@ -1,7 +1,9 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
+using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,27 +28,76 @@ namespace BetterTriggers
         internal void Convert()
         {
             _project = Project.CurrentProject;
+            var explorerElementsWithBTOnlyFeatures = new List<Tuple<ExplorerElement, string>>(); // [explorer element, error reason]
+
             var triggers = _project.Triggers.GetAll();
-            var variables = _project.Variables.GetAll();
+            var variables = _project.Variables.GetGlobals();
+            var elementsWithLocals = triggers.Where(t => t.GetLocalVariables().Count() > 0);
+            var varCustomFeatures = variables.Where(v => v.variable.IsTwoDimensions).ToList();
             var actionDefinitions = _project.ActionDefinitions.GetAll();
             var conditionDefinitions = _project.ConditionDefinitions.GetAll();
             var functionDefinitions = _project.FunctionDefinitions.GetAll();
 
-            int localVarCount = triggers.Where(t => t.GetLocalVariables().Count() > 0).Count();
-            var varCustomFeatures = variables.Where(v => v.IsTwoDimensions).ToList();
-
-            if (
-                localVarCount > 0
-                || varCustomFeatures.Count > 0
-                || actionDefinitions.Count > 0
-                || conditionDefinitions.Count > 0
-                || functionDefinitions.Count > 0
-                )
+            foreach (var item in elementsWithLocals)
             {
-                throw new Exception("Map contains custom Better Triggers data. Conversion is not possible.");
+                explorerElementsWithBTOnlyFeatures.Add(new(item, "Cannot convert local variables."));
+            }
+            foreach (var item in varCustomFeatures)
+            {
+                explorerElementsWithBTOnlyFeatures.Add(new(item, "Is a two-dimensional variable."));
+            }
+            foreach (var item in actionDefinitions)
+            {
+                explorerElementsWithBTOnlyFeatures.Add(new(item, "Cannot convert action definitions."));
+            }
+            foreach (var item in conditionDefinitions)
+            {
+                explorerElementsWithBTOnlyFeatures.Add(new(item, "Cannot convert condition definitions."));
+            }
+            foreach (var item in functionDefinitions)
+            {
+                explorerElementsWithBTOnlyFeatures.Add(new(item, "Cannot convert function definitions."));
             }
 
-            if(_map.CustomTextTriggers == null)
+
+            var allExplorerElements = _project.GetAllExplorerElements();
+            for (int i = 0; i < allExplorerElements.Count; i++)
+            {
+                var explorerElement = allExplorerElements[i];
+                var functions = Function.GetFunctionsFromTrigger(explorerElement);
+                for (int j = 0; j < functions.Count; j++)
+                {
+                    var function = functions[j];
+                    bool btOnlyData;
+                    for (int k = 0; k < function.parameters.Count; k++)
+                    {
+                        var parameter = function.parameters[k];
+                        if (parameter.value == null)
+                        {
+                            continue;
+                        }
+
+                        btOnlyData = WorldEdit.TriggerData.IsBTOnlyData(parameter.value);
+                        if (btOnlyData)
+                        {
+                            explorerElementsWithBTOnlyFeatures.Add(new(explorerElement, $"Uses Better Triggers-only function: '{parameter.value}'"));
+                        }
+                    }
+
+                    btOnlyData = WorldEdit.TriggerData.IsBTOnlyData(function.value);
+                    if (btOnlyData)
+                    {
+                        explorerElementsWithBTOnlyFeatures.Add(new(explorerElement, $"Uses Better Triggers-only function: '{function.value}'"));
+                    }
+                }
+            }
+
+            if (explorerElementsWithBTOnlyFeatures.Count > 0)
+            {
+                throw new ContainsBTDataException(explorerElementsWithBTOnlyFeatures, "Map contains custom Better Triggers data. Conversion is not possible.");
+            }
+
+            if (_map.CustomTextTriggers == null)
             {
                 _map.CustomTextTriggers = new MapCustomTextTriggers(MapCustomTextTriggersFormatVersion.v1, MapCustomTextTriggersSubVersion.v4);
             }
