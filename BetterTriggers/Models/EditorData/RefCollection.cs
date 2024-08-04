@@ -237,7 +237,7 @@ namespace BetterTriggers.Models.EditorData
 
         internal void RemoveFromParent()
         {
-            if (parameter != null)
+            if (parameter != null && parent.parameters.Contains(parameter))
             {
                 parent.parameters.Remove(parameter);
                 parent.parameters.Insert(index, new Parameter());
