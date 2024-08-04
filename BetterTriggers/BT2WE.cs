@@ -46,6 +46,10 @@ namespace BetterTriggers
                 throw new Exception("Map contains custom Better Triggers data. Conversion is not possible.");
             }
 
+            if(_map.CustomTextTriggers == null)
+            {
+                _map.CustomTextTriggers = new MapCustomTextTriggers(MapCustomTextTriggersFormatVersion.v1, MapCustomTextTriggersSubVersion.v4);
+            }
             _map.CustomTextTriggers.CustomTextTriggers.Clear();
             RecurseThroughTriggers(_project.GetRoot(), -1);
             var mapTriggers = new MapTriggers(MapTriggersFormatVersion.v7, MapTriggersSubVersion.v4);
@@ -118,6 +122,10 @@ namespace BetterTriggers
                     root.Id = id;
                     root.ParentId = -1;
                     root.Name = _project.MapName + ".w3x";
+                    if (_map.CustomTextTriggers.GlobalCustomScriptCode == null)
+                    {
+                        _map.CustomTextTriggers.GlobalCustomScriptCode = new CustomTextTrigger();
+                    }
                     _map.CustomTextTriggers.GlobalCustomScriptComment = _project.war3project.Comment;
                     _map.CustomTextTriggers.GlobalCustomScriptCode.Code = _project.war3project.Header + "\0"; // Add NUL char
                     triggerItems.Add(root);
@@ -317,6 +325,7 @@ namespace BetterTriggers
                         converted.Type = TriggerFunctionParameterType.Variable;
                         var element = _project.Triggers.GetById(triggerRef.TriggerId);
                         // TODO: Verify if we need the ASCII replace method here
+                        paramValue = element.GetName();
                         paramValue = Ascii.ReplaceNonASCII(element.GetName().Replace(" ", "_"));
                         break;
                     case Value value:

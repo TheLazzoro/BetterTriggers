@@ -63,6 +63,8 @@ namespace Tests
 
             var project = Project.Load(projectFile);
             CustomMapData.Load(mapPath);
+            CustomMapData.ReloadMapData();
+
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
             Builder builder = new();
             builder.BuildMap();

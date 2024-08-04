@@ -320,7 +320,6 @@
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapUnits.doo" />
     <None Remove="TestResources\Maps\Risk Forever %282.5.7%29.w3x" />
-    <None Remove="TestResources\Maps\Sailor Moon Castle Defence v2.7.w3x" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.imp" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.mmp" />
@@ -2012,9 +2011,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Risk Forever (2.5.7).w3x">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestResources\Maps\Sailor Moon Castle Defence v2.7.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Sheol_131.w3x\war3map.doo">
@@ -4454,12 +4450,6 @@
     <Content Include="TestResources\Projects\Direct_Strike_Reforged_Open_Source\src\Abilities\Unit Type Groups\Human\Spellbreaker.var">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="TestResources\Maps\Boss_Battle-1.5.2_open.w3x">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
