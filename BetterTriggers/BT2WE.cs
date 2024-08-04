@@ -242,7 +242,7 @@ namespace BetterTriggers
                 {
                     paramValue = string.Empty;
                 }
-                
+
 
                 var converted = new TriggerFunctionParameter();
                 functionParameters.Add(converted);
@@ -256,9 +256,17 @@ namespace BetterTriggers
                             converted.Function = new TriggerFunction();
                             converted.Function.Name = paramValue;
                             converted.Function.Type = TriggerFunctionType.Call;
-                            if(WorldEdit.TriggerData.ConditionTemplates.TryGetValue(paramValue, out var temp))
+                            if (WorldEdit.TriggerData.EventTemplates.TryGetValue(paramValue, out var temp))
+                            {
+                                converted.Function.Type = TriggerFunctionType.Event;
+                            }
+                            else if (WorldEdit.TriggerData.ConditionTemplates.TryGetValue(paramValue, out var temp2))
                             {
                                 converted.Function.Type = TriggerFunctionType.Condition;
+                            }
+                            else if (WorldEdit.TriggerData.ActionTemplates.TryGetValue(paramValue, out var temp3))
+                            {
+                                converted.Function.Type = TriggerFunctionType.Action;
                             }
                             converted.Function.IsEnabled = true;
                         }
@@ -355,7 +363,7 @@ namespace BetterTriggers
                             converted.Type = TriggerFunctionParameterType.Variable;
                             paramValue = Ascii.ReplaceNonASCII(paramValue.Replace(" ", "_")).Insert(0, prefix);
                         }
-                        
+
 
                         break;
                     default:
