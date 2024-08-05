@@ -5,9 +5,11 @@ using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using War3Net.Build;
+using War3Net.IO.Mpq;
 
 namespace Tests
 {
@@ -16,7 +18,6 @@ namespace Tests
     {
         static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
         private string projectFile;
-        private bool success;
 
         [ClassInitialize]
         public static void Init(TestContext context)
@@ -77,10 +78,13 @@ namespace Tests
                 {
                     var map = Map.Open(stream);
                     Assert.IsNotNull(map);
-                    success = true;
-                    stream.Dispose();
                 }
             }
+
+            // Forces streams to be collected (War3Net does not close all streams correctly when loading a map).
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
 
             Project.Close();
         }
