@@ -33,7 +33,7 @@
         <Label Content="Trigger Comment:" VerticalAlignment="Top" Margin="0,24,0,0"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <TextBox x:Name="textBoxComment" Foreground="{DynamicResource CodeComment}" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="textBoxComment_TextChanged"/>
+            <TextBox x:Name="textBoxComment" Foreground="{DynamicResource CodeComment}" TextWrapping="Wrap" AcceptsReturn="True"/>
         </ScrollViewer>
 
         <GridSplitter Grid.Row="2" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#00F0F0F0" Margin="0,3,0,0" />

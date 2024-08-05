@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Background="{DynamicResource BackgroundMenu}"
         Title="Export Map"
-        Height="360"
+        Height="390"
         Width="500"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
@@ -33,7 +33,7 @@
                   Grid.Column="1">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="180" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
@@ -51,19 +51,27 @@
                         </Style>
                     </StackPanel.Resources>
 
+                    <CheckBox x:Name="checkBoxIncludeTriggerData" 
+                              IsEnabled="False"
+                              Content="Include Trigger Data"
+                              ToolTip="Transforms triggers from this project into triggers that are readable by the World Editor."
+                              />
+
                     <CheckBox x:Name="checkBoxCompress" 
                               IsChecked="{Binding Compress, Mode=TwoWay}"
                               Content="Compress"
+                              ToolTip="Reduces map size."
                               />
                     <CheckBox x:Name="checkBoxAdvanced"
                               IsEnabled="{Binding Compress}"
                               IsChecked="{Binding Compress_Advanced, Mode=TwoWay}"
                               Content="Advanced"
+                              ToolTip="Enables customization of ZLib block size."
                               />
 
                     <TextBlock Text="Block Size:"
                                IsEnabled="{Binding Compress_Advanced}"/>
-                    
+
                     <toolkit:IntegerUpDown x:Name="textboxBlockSize"
                                            IsEnabled="{Binding Compress_Advanced}"
                                            HorizontalAlignment="Left"
@@ -83,7 +91,7 @@
                       Content="Remove Listfile"
                       />
                     <CheckBox x:Name="checkBoxTriggerData"
-                      Content="Remove Trigger Data"
+                      Content="Remove Trigger Data" Click="checkBoxTriggerData_Click"
                       />
                     <CheckBox x:Name="checkBoxObfuscate"
                       Content="Obfuscate Script"
@@ -123,7 +131,7 @@
                          Grid.Row="1"
                          Grid.Column="1"
                          />
-            
+
             <Button x:Name="btnShowFolder"
                     Content="Open Containing Folder"
                     IsEnabled="False"

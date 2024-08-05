@@ -153,7 +153,7 @@ end
             SortTriggerElements(inMemoryFiles[0]); // root node.
             StringBuilder script = Generate();
 
-            string tempPath = language == ScriptLanguage.Jass ? "Resources/vJass.j" : "Resources/Lua.lua";
+            string tempPath = language == ScriptLanguage.Jass ? "Resources\\vJass.j" : "Resources\\Lua.lua";
             var scriptFileToInput = Path.Combine(Directory.GetCurrentDirectory(), tempPath);
             File.WriteAllText(scriptFileToInput, script.ToString());
 

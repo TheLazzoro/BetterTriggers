@@ -70,6 +70,7 @@
     <None Remove="Resources\Icons\icon-error.png" />
     <None Remove="Resources\Icons\icons8-arrow-down-24.png" />
     <None Remove="Resources\Icons\icons8-arrow-up-24.png" />
+    <None Remove="Resources\Icons\icons8-warning-48.png" />
     <None Remove="Resources\Icons\information.png" />
     <None Remove="Resources\Icons\Keyword_16x.png" />
     <None Remove="Resources\Icons\Method_16x.png" />
@@ -274,6 +275,9 @@
     <Content Include="Resources\Icons\icons8-arrow-up-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Icons\icons8-warning-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icons\information.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -360,7 +364,7 @@
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.3.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 

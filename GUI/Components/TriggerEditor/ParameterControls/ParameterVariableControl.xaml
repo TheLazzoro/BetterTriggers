@@ -18,7 +18,32 @@
             <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
 
-        <shared:SearchableListControl x:Name="listControl" Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="2,0,0,5"/>
+        <Label Content="Search:" Grid.Row="0" HorizontalAlignment="Left" Foreground="{DynamicResource TextBrush2}"/>
+        <CheckBox x:Name="checkBoxShowIcons" Content="Show Icons" Visibility="Hidden" Grid.Column="1" VerticalAlignment="Center" Margin="15,0,0,0" />
+        <TextBox x:Name="textBoxSearch" Height="20" Grid.ColumnSpan="2" Margin="60,0,5,0" Foreground="{DynamicResource TextBrush2}" TextChanged="textBoxSearch_TextChanged" />
+
+          <!--ItemTemplate="{DynamicResource TriggerElementMenuItem}"-->
+        <ListView x:Name="listView"
+          ItemsSource="{Binding Variables}"
+          Grid.Row="1"
+          Grid.RowSpan="3"
+          Grid.ColumnSpan="2"
+          BorderBrush="#00ABADB3"
+          BorderThickness="2"
+          Margin="0,0,0,5">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource listViewItemMultiColumn}">
+                    <Setter Property="Padding" Value="4,1,1,1" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource listViewHeaderStyle}">
+                    <GridViewColumn x:Name="columnHeader1" Width="350" Header="Variable" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn x:Name="columnHeader2" Width="100" Header="Type" DisplayMemberBinding="{Binding Type}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </UserControl>

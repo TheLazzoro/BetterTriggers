@@ -22,7 +22,7 @@ namespace BetterTriggers.WorldEdit
 {
     public class TriggerData
     {
-        internal static Dictionary<string, PresetTemplate> ConstantTemplates = new Dictionary<string, PresetTemplate>();
+        internal static Dictionary<string, PresetTemplate> PresetTemplates = new Dictionary<string, PresetTemplate>();
         internal static Dictionary<string, FunctionTemplate> EventTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> ConditionTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> ActionTemplates = new Dictionary<string, FunctionTemplate>();
@@ -42,12 +42,15 @@ namespace BetterTriggers.WorldEdit
         public static string pathCommonJ;
         public static string pathBlizzardJ;
 
+        private static HashSet<string> btOnlyData = new HashSet<string>();
+        private static bool isBT = false;
+
         public static void Load(bool isTest)
         {
             IniData data = null;
 
             Types.Clear();
-            ConstantTemplates.Clear();
+            PresetTemplates.Clear();
             EventTemplates.Clear();
             ConditionTemplates.Clear();
             ActionTemplates.Clear();
@@ -194,6 +197,8 @@ namespace BetterTriggers.WorldEdit
 
             // --- LOAD CUSTOM DATA --- //
 
+            isBT = true;
+
             // --- Loads in all editor versions --- //
 
             customBJFunctions_Jass = string.Empty;
@@ -300,7 +305,6 @@ namespace BetterTriggers.WorldEdit
             var triggerParams = data.Sections["TriggerParams"];
             foreach (var preset in triggerParams)
             {
-
                 string[] values = preset.Value.Split(",");
                 string key = preset.KeyName;
 
@@ -308,16 +312,20 @@ namespace BetterTriggers.WorldEdit
                 string codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
                 string displayText = Locale.Translate(values[3]);
 
-                PresetTemplate constant = new PresetTemplate()
+                PresetTemplate presetTemplate = new PresetTemplate()
                 {
                     value = key,
                     returnType = variableType,
                     name = displayText,
-                    codeText = codeText
+                    codeText = codeText,
                 };
-                ConstantTemplates.Add(key, constant);
+                PresetTemplates.Add(key, presetTemplate);
                 ParamDisplayNames.Add(key, displayText);
                 ParamCodeText.Add(key, codeText);
+                if (isBT)
+                {
+                    btOnlyData.Add(key);
+                }
             }
 
 
@@ -341,7 +349,7 @@ namespace BetterTriggers.WorldEdit
 
                     string def = defaultsTxt[i];
                     ParameterTemplate oldParameter = template.parameters[i];
-                    PresetTemplate constantTemplate = GetConstantTemplate(def);
+                    PresetTemplate constantTemplate = GetPresetTemplate(def);
                     FunctionTemplate functionTemplate = GetFunctionTemplate(def);
                     if (functionTemplate != null)
                         defaults.Add(functionTemplate);
@@ -464,6 +472,10 @@ namespace BetterTriggers.WorldEdit
                     functionTemplate.value = key;
                     functionTemplate.parameters = parameters;
                     functionTemplate.returnType = returnType;
+                    if(isBT)
+                    {
+                        btOnlyData.Add(key);
+                    }
                 }
             }
         }
@@ -489,6 +501,7 @@ namespace BetterTriggers.WorldEdit
                 };
 
                 customPresets.Add(preset);
+                btOnlyData.Add(keyName);
             }
         }
 
@@ -506,7 +519,7 @@ namespace BetterTriggers.WorldEdit
                 return function.returnType;
 
             PresetTemplate constant;
-            ConstantTemplates.TryGetValue(value, out constant);
+            PresetTemplates.TryGetValue(value, out constant);
             if (constant != null)
                 return constant.returnType;
 
@@ -603,10 +616,10 @@ namespace BetterTriggers.WorldEdit
             return functionTemplate;
         }
 
-        private static PresetTemplate GetConstantTemplate(string key)
+        private static PresetTemplate GetPresetTemplate(string key)
         {
             PresetTemplate constantTemplate;
-            ConstantTemplates.TryGetValue(key, out constantTemplate);
+            PresetTemplates.TryGetValue(key, out constantTemplate);
             return constantTemplate;
         }
 
@@ -619,7 +632,7 @@ namespace BetterTriggers.WorldEdit
         {
             string codeText = string.Empty;
             PresetTemplate constant;
-            ConstantTemplates.TryGetValue(identifier, out constant);
+            PresetTemplates.TryGetValue(identifier, out constant);
             codeText = constant.codeText;
             if (language == ScriptLanguage.Lua)
             {
@@ -635,7 +648,7 @@ namespace BetterTriggers.WorldEdit
         internal static bool ConstantExists(string value)
         {
             PresetTemplate temp;
-            bool exists = ConstantTemplates.TryGetValue(value, out temp);
+            bool exists = PresetTemplates.TryGetValue(value, out temp);
             return exists;
         }
 
@@ -782,7 +795,7 @@ namespace BetterTriggers.WorldEdit
         public static List<PresetTemplate> LoadAllPresets()
         {
             List<PresetTemplate> list = new List<PresetTemplate>();
-            var enumerator = TriggerData.ConstantTemplates.GetEnumerator();
+            var enumerator = TriggerData.PresetTemplates.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 var template = enumerator.Current.Value;
@@ -917,6 +930,12 @@ namespace BetterTriggers.WorldEdit
                 category = TriggerCategory.TC_LOCAL_VARIABLE;
 
             return category;
+        }
+
+        public static bool IsBTOnlyData(string value)
+        {
+            bool isBTOnlyData = btOnlyData.Contains(value);
+            return isBTOnlyData;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 
 namespace Tests
 {
+    [TestClass]
     public class ImageTest : TestBase
     {
         static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + "/Resources/Images";
