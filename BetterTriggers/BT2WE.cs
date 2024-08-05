@@ -80,14 +80,16 @@ namespace BetterTriggers
                         btOnlyData = WorldEdit.TriggerData.IsBTOnlyData(parameter.value);
                         if (btOnlyData)
                         {
-                            explorerElementsWithBTOnlyFeatures.Add(new(explorerElement, $"Uses Better Triggers-only function: '{parameter.value}'"));
+                            string displayName = WorldEdit.TriggerData.GetParamDisplayName(parameter);
+                            explorerElementsWithBTOnlyFeatures.Add(new(explorerElement, $"Uses Better Triggers-only parameter: '{displayName}' ({parameter.value})"));
                         }
                     }
 
                     btOnlyData = WorldEdit.TriggerData.IsBTOnlyData(function.value);
                     if (btOnlyData)
                     {
-                        explorerElementsWithBTOnlyFeatures.Add(new(explorerElement, $"Uses Better Triggers-only function: '{function.value}'"));
+                        string displayName = WorldEdit.TriggerData.GetFuntionDisplayName(function.value);
+                        explorerElementsWithBTOnlyFeatures.Add(new(explorerElement, $"Uses Better Triggers-only function: '{displayName}' ({function.value})"));
                     }
                 }
             }

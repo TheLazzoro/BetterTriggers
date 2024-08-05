@@ -866,6 +866,18 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
+        public static string GetFuntionDisplayName(string key)
+        {
+            FunctionTemplate functionTemplate;
+            FunctionsAll.TryGetValue(key, out functionTemplate);
+            if(functionTemplate == null)
+            {
+                return string.Empty;
+            }
+
+            return functionTemplate.name;
+        }
+
         public static string GetParamDisplayName(Parameter parameter)
         {
             if (parameter is Value)

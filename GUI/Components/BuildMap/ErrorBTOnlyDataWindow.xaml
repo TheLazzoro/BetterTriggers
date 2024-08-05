@@ -8,8 +8,8 @@
         Title="Error"
         Background="{DynamicResource BackgroundMenu}"
         WindowStartupLocation="CenterOwner"
-        Height="350"
-        Width="600">
+        Height="500"
+        Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
@@ -50,7 +50,7 @@
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource listViewHeaderStyle}">
                     <GridViewColumn x:Name="columnHeader1" Width="200" Header="Element" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn x:Name="columnHeader2" Width="300" Header="Error" DisplayMemberBinding="{Binding ErrorDescription}" />
+                    <GridViewColumn x:Name="columnHeader2" Width="500" Header="Error" DisplayMemberBinding="{Binding ErrorDescription}" />
                 </GridView>
             </ListView.View>
         </ListView>
