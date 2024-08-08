@@ -3,6 +3,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
+using Cake.Incubator.AssertExtensions;
 using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
@@ -278,7 +279,8 @@ namespace BetterTriggers
                     for (int c = 0; c < eca.Elements.Count; c++)
                     {
                         var collection = eca.Elements[c];
-                        ConvertTriggerElements(collection as TriggerElementCollection, c);
+                        var childElements = ConvertTriggerElements(collection as TriggerElementCollection, c);
+                        triggerFunction.ChildFunctions.AddRange(childElements);
                     }
                 }
             }
@@ -286,10 +288,6 @@ namespace BetterTriggers
             return triggerFunctions;
         }
 
-        /// TODO: This method does not implement a solution for TRIGSTR parameters,
-        /// and thus strings we be inlined in the WTG as opposed to listed in the WTS.
-        /// Compare with <see cref="TriggerConverter"/>
-        /// Needs testing.
         private List<TriggerFunctionParameter> ConvertTriggerFunctionParameters(List<Parameter> parameters, List<string> returnTypes)
         {
             var functionParameters = new List<TriggerFunctionParameter>();
@@ -312,25 +310,23 @@ namespace BetterTriggers
                 {
                     case Function function:
                         converted.Type = TriggerFunctionParameterType.Function;
-                        if (function.parameters.Count > 0)
+                        converted.Function = new TriggerFunction();
+                        converted.Function.Name = paramValue;
+                        converted.Function.Type = TriggerFunctionType.Call;
+                        if (WorldEdit.TriggerData.EventTemplates.TryGetValue(paramValue, out var temp))
                         {
-                            converted.Function = new TriggerFunction();
-                            converted.Function.Name = paramValue;
-                            converted.Function.Type = TriggerFunctionType.Call;
-                            if (WorldEdit.TriggerData.EventTemplates.TryGetValue(paramValue, out var temp))
-                            {
-                                converted.Function.Type = TriggerFunctionType.Event;
-                            }
-                            else if (WorldEdit.TriggerData.ConditionTemplates.TryGetValue(paramValue, out var temp2))
-                            {
-                                converted.Function.Type = TriggerFunctionType.Condition;
-                            }
-                            else if (WorldEdit.TriggerData.ActionTemplates.TryGetValue(paramValue, out var temp3))
-                            {
-                                converted.Function.Type = TriggerFunctionType.Action;
-                            }
-                            converted.Function.IsEnabled = true;
+                            converted.Function.Type = TriggerFunctionType.Event;
                         }
+                        else if (WorldEdit.TriggerData.ConditionTemplates.TryGetValue(paramValue, out var temp2))
+                        {
+                            converted.Function.Type = TriggerFunctionType.Condition;
+                        }
+                        else if (WorldEdit.TriggerData.ActionTemplates.TryGetValue(paramValue, out var temp3))
+                        {
+                            converted.Function.Type = TriggerFunctionType.Action;
+                        }
+                        converted.Function.IsEnabled = true;
+
                         if (
                             paramValue == "ForGroup"
                             || paramValue == "ForLoopA"
@@ -348,7 +344,7 @@ namespace BetterTriggers
                         }
 
                         var returnTypes1 = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(function, null);
-                        if (converted.Function != null)
+                        if (function.parameters.Count > 0)
                         {
                             converted.Function.Parameters.AddRange(ConvertTriggerFunctionParameters(function.parameters, returnTypes1));
                         }
@@ -371,15 +367,13 @@ namespace BetterTriggers
                             returnTypesArrayIndex.Add("integer");
                             converted.ArrayIndexer = ConvertTriggerFunctionParameters(arrayIndexParameter, returnTypesArrayIndex).FirstOrDefault();
                         }
-                        converted.Value = variable.Name;
+                        paramValue = variable.Name;
                         break;
                     case TriggerRef triggerRef:
 
                         converted.Type = TriggerFunctionParameterType.Variable;
                         var element = _project.Triggers.GetById(triggerRef.TriggerId);
-                        // TODO: Verify if we need the ASCII replace method here
-                        paramValue = element.GetName();
-                        paramValue = Ascii.ReplaceNonASCII(element.GetName().Replace(" ", "_"));
+                        paramValue = "gg_trg_" + Ascii.ReplaceNonASCII(element.GetName().Replace(" ", "_"));
                         break;
                     case Value value:
                         converted.Type = TriggerFunctionParameterType.String;
