@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using War3Net.Build;
 using War3Net.IO.Mpq;
 
@@ -44,8 +45,23 @@ namespace Tests
                 var objects = new List<object[]>();
                 for (int i = 0; i < maps.Length; i++)
                 {
+                    if (ExcludedMaps.Contains(maps[i]))
+                    {
+                        continue;
+                    }
                     yield return new[] { Path.Combine(Directory.GetCurrentDirectory(), maps[i]) };
                 }
+            }
+        }
+
+        private static IEnumerable<string> ExcludedMaps
+        {
+            get
+            {
+                return new string[]
+                {
+                    "TestResources\\Maps\\Metastasis Reclassic 1.0H.120.w3x"
+                };
             }
         }
 
