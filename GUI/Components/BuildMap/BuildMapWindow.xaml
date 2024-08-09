@@ -54,7 +54,7 @@
                     <CheckBox x:Name="checkBoxIncludeTriggerData" 
                               IsEnabled="False"
                               Content="Include Trigger Data"
-                              ToolTip="Includes all GUI triggers from this project in the exported map."
+                              ToolTip="Copies all your trigger data back into the map for use in the World Editor&#x0a;in case you no longer wish to work in Better Triggers."
                               />
 
                     <CheckBox x:Name="checkBoxCompress" 
