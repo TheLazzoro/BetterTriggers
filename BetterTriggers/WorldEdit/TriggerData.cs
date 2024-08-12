@@ -347,7 +347,7 @@ namespace BetterTriggers.WorldEdit
                     if (defaultsTxt.Length < template.parameters.Count)
                         continue;
 
-                    string def = defaultsTxt[i];
+                    string def = defaultsTxt[i].Replace("\"", string.Empty); // Some default values are quoted - e.g. we don't want quotes around string values
                     ParameterTemplate oldParameter = template.parameters[i];
                     PresetTemplate constantTemplate = GetPresetTemplate(def);
                     FunctionTemplate functionTemplate = GetFunctionTemplate(def);
