@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
+using BetterTriggers.Logging;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
@@ -144,6 +145,9 @@ namespace GUI
             {
                 Task.Run(CheckVersionOnStart);
             }
+
+            LoggingService service = new LoggingService();
+            service.SubmitSession();
         }
 
         private async Task CheckVersionOnStart()
