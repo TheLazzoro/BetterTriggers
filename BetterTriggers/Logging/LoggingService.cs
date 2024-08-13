@@ -14,7 +14,7 @@ namespace BetterTriggers.Logging
 #if DEBUG
         private string _url = "https://localhost:7030/Api";
 #else
-        private string url = "https://bettertriggers.com/Api";
+        private string _url = "https://bettertriggers.com/Api";
 #endif
 
 
@@ -37,7 +37,7 @@ namespace BetterTriggers.Logging
                 var client = new HttpClient();
                 var json = JsonConvert.SerializeObject(dto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://localhost:7030/Api/SubmitError", content);
+                await client.PostAsync(_url + "/SubmitError", content);
             }
             catch (Exception)
             {
@@ -58,7 +58,7 @@ namespace BetterTriggers.Logging
                 var client = new HttpClient();
                 var json = JsonConvert.SerializeObject(dto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://localhost:7030/Api/RegisterSession", content);
+                await client.PostAsync(_url + "/RegisterSession", content);
             }
             catch (Exception)
             {
