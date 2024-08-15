@@ -380,6 +380,7 @@
             <MenuItem x:Name="menuHelp" Header="Help" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
                 <MenuItem  Name="menuItemHelp" Header="Better Triggers Help..." Click="menuItemHelp_Click" />
                 <MenuItem  Name="menuItemCheckVersion" Header="Check Version" Click="menuItemCheckVersion_Click" />
+                <MenuItem  Name="menuItemReportIssue" Header="Report Issue" Click="menuItemReportIssue_Click" />
                 <Separator/>
                 <MenuItem  Name="menuItemAbout" Header="About..." Click="menuItemAbout_Click" />
             </MenuItem>

@@ -19,6 +19,7 @@ using GUI.Components.SelectMap;
 using GUI.Components.Settings;
 using GUI.Components.Setup;
 using GUI.Components.Tabs;
+using GUI.Components.UserReports;
 using GUI.Components.VariableList;
 using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
@@ -1153,6 +1154,12 @@ namespace GUI
         private void menuItemCheckVersion_Click(object sender, RoutedEventArgs e)
         {
             var window = new NewVersionWindow();
+            window.ShowDialog();
+        }
+
+        private void menuItemReportIssue_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new ReportIssueWindow();
             window.ShowDialog();
         }
     }

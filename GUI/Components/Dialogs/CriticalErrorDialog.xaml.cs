@@ -23,7 +23,7 @@ namespace GUI.Components.Dialogs
             textBoxStacktrace.Text = ex.StackTrace;
             SystemSounds.Exclamation.Play();
 
-            Task.Factory.StartNew(SubmitError);
+            SubmitError();
         }
 
         private void SubmitError()
@@ -40,6 +40,23 @@ namespace GUI.Components.Dialogs
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void textBoxReport_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            textBoxWatermark.Visibility = textBoxReport.Text.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
+            btnSubmitReport.IsEnabled = textBoxReport.Text.Length > 0;
+        }
+
+        private void btnSubmitReport_Click(object sender, RoutedEventArgs e)
+        {
+            btnSubmitReport.IsEnabled = false;
+            textBoxReport.IsEnabled = false;
+            var service = new LoggingService();
+            service.SubmitError(_exception, textBoxReport.Text);
+
+            var dialog = new MessageBox("Error Submitted", "Your error report was submitted!", this);
+            dialog.ShowDialog();
         }
     }
 }

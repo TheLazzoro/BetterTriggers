@@ -50,6 +50,21 @@
                     BorderThickness="0"
                     Background="Transparent"
                     Grid.ColumnSpan="3">
+            <TabItem Header="Report" >
+                <Grid>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBox x:Name="textBoxReport"
+                                AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 TextChanged="textBoxReport_TextChanged"/>
+                    </ScrollViewer>
+                    <TextBlock x:Name="textBoxWatermark"
+                               Text="Describe what happened..."
+                               IsHitTestVisible="False"
+                               Margin="3,0,0,0"
+                               Foreground="{DynamicResource TextBlockBrush}" />
+                </Grid>
+            </TabItem>
             <TabItem Header="Exception" >
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <TextBox x:Name="textBoxException" 
@@ -67,6 +82,16 @@
         </TabControl>
 
 
+        <Button Content="Submit Report"
+                x:Name="btnSubmitReport"
+                IsEnabled="False"
+                Click="btnSubmitReport_Click"
+                HorizontalAlignment="Left"
+                Margin="5,0,0,0"
+                Grid.Row="3"
+                Grid.ColumnSpan="3"
+                Width="100"
+                Height="25"/>
 
         <Button Content="Continue"
                 Click="ContinueButton_Click"

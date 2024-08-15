@@ -18,32 +18,21 @@ namespace BetterTriggers.Logging
 #endif
 
 
-        public void SubmitError(Exception ex)
-        {
-            Task.Run(() => Async_SubmitError(ex));
-        }
-
         public void SubmitSession()
         {
             Task.Run(() => Async_SubmitSession());
         }
 
-
-        private async void Async_SubmitError(Exception ex)
+        public void SubmitError(Exception ex, string comment = null)
         {
-            try
-            {
-                var dto = new ErrorDTO(ex);
-                var client = new HttpClient();
-                var json = JsonConvert.SerializeObject(dto);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync(_url + "/SubmitError", content);
-            }
-            catch (Exception)
-            {
-
-            }
+            Task.Run(() => Async_SubmitError(ex, comment));
         }
+
+        public void SubmitReport(string comment)
+        {
+            Task.Run(() => Async_SubmitReport(comment));
+        }
+
 
         private async void Async_SubmitSession()
         {
@@ -59,6 +48,39 @@ namespace BetterTriggers.Logging
                 var json = JsonConvert.SerializeObject(dto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 await client.PostAsync(_url + "/RegisterSession", content);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private async void Async_SubmitError(Exception ex, string comment = null)
+        {
+            try
+            {
+                var dto = new ErrorDTO(ex);
+                dto.Comment = comment;
+                var client = new HttpClient();
+                var json = JsonConvert.SerializeObject(dto);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                await client.PostAsync(_url + "/SubmitError", content);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private async void Async_SubmitReport(string comment)
+        {
+            try
+            {
+                var dto = new IssueDTO(comment);
+                var client = new HttpClient();
+                var json = JsonConvert.SerializeObject(dto);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                await client.PostAsync(_url + "/SubmitIssue", content);
             }
             catch (Exception)
             {
