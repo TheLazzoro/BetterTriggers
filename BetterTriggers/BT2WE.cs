@@ -45,7 +45,7 @@ namespace BetterTriggers
             }
             foreach (var item in varCustomFeatures)
             {
-                explorerElementsWithBTOnlyFeatures.Add(new(item, "Is a two-dimensional variable."));
+                explorerElementsWithBTOnlyFeatures.Add(new(item, "Is a two-dimensional array."));
             }
             foreach (var item in actionDefinitions)
             {
