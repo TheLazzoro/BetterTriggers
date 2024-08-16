@@ -50,6 +50,21 @@
                     BorderThickness="0"
                     Background="Transparent"
                     Grid.ColumnSpan="3">
+            <TabItem Header="Report" >
+                <Grid>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBox x:Name="textBoxReport"
+                                AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 TextChanged="textBoxReport_TextChanged"/>
+                    </ScrollViewer>
+                    <TextBlock x:Name="textBoxWatermark"
+                               Text="Describe what happened..."
+                               IsHitTestVisible="False"
+                               Margin="3,0,0,0"
+                               Foreground="{DynamicResource TextBlockBrush}" />
+                </Grid>
+            </TabItem>
             <TabItem Header="Exception" >
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <TextBox x:Name="textBoxException" 
@@ -67,6 +82,44 @@
         </TabControl>
 
 
+        <Button Content="Submit Report"
+                x:Name="btnSubmitReport"
+                IsEnabled="False"
+                Click="btnSubmitReport_Click"
+                HorizontalAlignment="Left"
+                Margin="5,0,0,0"
+                Grid.Row="3"
+                Grid.ColumnSpan="3"
+                Width="100"
+                Height="25"/>
+
+        <ProgressBar x:Name="progressBar"
+                     IsIndeterminate="True"
+                     Visibility="Collapsed"
+                     Width="100"
+                     Height="15"
+                     HorizontalAlignment="Left"
+                     Margin="0,0,0,0"
+                     Grid.Column="3"
+                     Grid.Row="2"/>
+
+        <Image x:Name="greenCheck"
+               Source="/Resources/Icons/icons8-check-48.png"
+               Visibility="Collapsed"
+               Width="24"
+               Height="24"
+               HorizontalAlignment="Left"
+               Margin="0,0,0,0"
+               Grid.Column="3"
+               Grid.Row="2"/>
+
+        <TextBlock x:Name="textResponseMsg"
+                   Foreground="{DynamicResource TextBrush}"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Grid.Column="3"
+                   Margin="30,0,0,0"/>
 
         <Button Content="Continue"
                 Click="ContinueButton_Click"
