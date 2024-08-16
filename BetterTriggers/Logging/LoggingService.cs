@@ -23,17 +23,6 @@ namespace BetterTriggers.Logging
             Task.Run(() => Async_SubmitSession());
         }
 
-        public void SubmitError(Exception ex, string comment = null)
-        {
-            Task.Run(() => Async_SubmitError(ex, comment));
-        }
-
-        public void SubmitReport(string comment)
-        {
-            Task.Run(() => Async_SubmitReport(comment));
-        }
-
-
         private async void Async_SubmitSession()
         {
             try
@@ -55,7 +44,7 @@ namespace BetterTriggers.Logging
             }
         }
 
-        private async void Async_SubmitError(Exception ex, string comment = null)
+        public async Task SubmitError_Async(Exception ex, string comment = null)
         {
             try
             {
@@ -72,7 +61,7 @@ namespace BetterTriggers.Logging
             }
         }
 
-        private async void Async_SubmitReport(string comment)
+        public async Task<bool> SubmitReport_Async(string comment)
         {
             try
             {
@@ -80,12 +69,17 @@ namespace BetterTriggers.Logging
                 var client = new HttpClient();
                 var json = JsonConvert.SerializeObject(dto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                await client.PostAsync(_url + "/SubmitIssue", content);
+                var reponse = await client.PostAsync(_url + "/SubmitIssue", content);
+                if (reponse.IsSuccessStatusCode)
+                {
+                    return true;
+                }
             }
             catch (Exception)
             {
-
             }
+
+            return false;
         }
     }
 }

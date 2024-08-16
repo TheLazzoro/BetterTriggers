@@ -33,15 +33,31 @@ namespace GUI.Components.UserReports
             UpdateMaxCharsText();
         }
 
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private async void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
+            textResponseMsg.Text = string.Empty;
+            redCross.Visibility = Visibility.Collapsed;
+            progressBar.Visibility = Visibility.Visible;
+            btnSubmit.IsEnabled = false;
             var service = new LoggingService();
-            service.SubmitReport(textBoxReport.Text);
+            bool success = await service.SubmitReport_Async(textBoxReport.Text);
 
-            var dialog = new Dialogs.MessageBox("Issue Submitted", "Your issue has been submitted!", this);
-            dialog.ShowDialog();
+            if(success)
+            {
+                greenCheck.Visibility = Visibility.Visible;
+                progressBar.Visibility = Visibility.Collapsed;
+                textResponseMsg.Text = "Issue has been submitted";
 
-            this.Close();
+                await Task.Delay(5000);
+                this.Close();
+            }
+            else
+            {
+                btnSubmit.IsEnabled = true;
+                progressBar.Visibility = Visibility.Collapsed;
+                redCross.Visibility = Visibility.Visible;
+                textResponseMsg.Text = "An error occurred while trying to submit";
+            }
         }
 
         private void UpdateMaxCharsText()

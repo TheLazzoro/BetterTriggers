@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.Components.UserReports"
+        xmlns:components="clr-namespace:GUI.Components"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Title="Report Issue"
         WindowStartupLocation="CenterOwner"
@@ -36,8 +38,41 @@
                    Foreground="{DynamicResource TextBrush}"
                    Margin="10,5,0,0"
                    Grid.Row="2"
-                   Text="asdasd"
                    />
+
+        <ProgressBar x:Name="progressBar"
+                     IsIndeterminate="True"
+                     Visibility="Collapsed"
+                     Width="100"
+                     Height="15"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,90,0"
+                     Grid.Row="2"/>
+
+        <Image x:Name="greenCheck"
+               Source="/Resources/Icons/icons8-check-48.png"
+               Visibility="Collapsed"
+               Width="24"
+               Height="24"
+               HorizontalAlignment="Right"
+               Margin="0,0,80,0"
+               Grid.Row="2"/>
+
+        <Image x:Name="redCross"
+               Source="/Resources/Icons/icons8-cross-48.png"
+               Visibility="Collapsed"
+               Width="24"
+               Height="24"
+               HorizontalAlignment="Right"
+               Margin="0,0,80,0"
+               Grid.Row="2"/>
+
+        <TextBlock x:Name="textResponseMsg"
+                   Foreground="{DynamicResource TextBrush}"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,120,0"/>
 
         <Button x:Name="btnSubmit"
                 Content="Submit"

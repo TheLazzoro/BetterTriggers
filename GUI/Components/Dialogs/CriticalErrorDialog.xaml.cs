@@ -23,13 +23,13 @@ namespace GUI.Components.Dialogs
             textBoxStacktrace.Text = ex.StackTrace;
             SystemSounds.Exclamation.Play();
 
-            SubmitError();
+            Task.Factory.StartNew(SubmitError);
         }
 
-        private void SubmitError()
+        private async void SubmitError()
         {
             var service = new LoggingService();
-            service.SubmitError(_exception);
+            await service.SubmitError_Async(_exception);
         }
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
@@ -48,15 +48,17 @@ namespace GUI.Components.Dialogs
             btnSubmitReport.IsEnabled = textBoxReport.Text.Length > 0;
         }
 
-        private void btnSubmitReport_Click(object sender, RoutedEventArgs e)
+        private async void btnSubmitReport_Click(object sender, RoutedEventArgs e)
         {
             btnSubmitReport.IsEnabled = false;
             textBoxReport.IsEnabled = false;
+            progressBar.Visibility = Visibility.Visible;
             var service = new LoggingService();
-            service.SubmitError(_exception, textBoxReport.Text);
+            await service.SubmitError_Async(_exception, textBoxReport.Text);
 
-            var dialog = new MessageBox("Error Submitted", "Your error report was submitted!", this);
-            dialog.ShowDialog();
+            greenCheck.Visibility = Visibility.Visible;
+            progressBar.Visibility = Visibility.Collapsed;
+            textResponseMsg.Text = "Your error report has been submitted!";
         }
     }
 }
