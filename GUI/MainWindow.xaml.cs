@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
+using BetterTriggers.Logging;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
@@ -18,6 +19,7 @@ using GUI.Components.SelectMap;
 using GUI.Components.Settings;
 using GUI.Components.Setup;
 using GUI.Components.Tabs;
+using GUI.Components.UserReports;
 using GUI.Components.VariableList;
 using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
@@ -144,6 +146,9 @@ namespace GUI
             {
                 Task.Run(CheckVersionOnStart);
             }
+
+            LoggingService service = new LoggingService();
+            service.SubmitSession();
         }
 
         private async Task CheckVersionOnStart()
@@ -1149,6 +1154,12 @@ namespace GUI
         private void menuItemCheckVersion_Click(object sender, RoutedEventArgs e)
         {
             var window = new NewVersionWindow();
+            window.ShowDialog();
+        }
+
+        private void menuItemReportIssue_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new ReportIssueWindow();
             window.ShowDialog();
         }
     }

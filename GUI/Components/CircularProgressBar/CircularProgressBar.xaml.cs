@@ -11,7 +11,7 @@ namespace GUI.Components
     /// A circular type progress bar, that is simliar to popular web based
     /// progress bars
     /// </summary>
-    public partial class CircularProgressBar
+    public partial class CircularProgressBar : UserControl
     {
         #region Data
         private readonly DispatcherTimer animationTimer;
