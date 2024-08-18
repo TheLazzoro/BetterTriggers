@@ -17,6 +17,7 @@ using BetterTriggers.Containers;
 using War3Net.Common.Extensions;
 using System.Windows.Documents;
 using BetterTriggers.WorldEdit.GameDataReader;
+using System.Windows.Input;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -78,7 +79,7 @@ namespace BetterTriggers.WorldEdit
             else
             {
                 string baseDir = Directory.GetCurrentDirectory() + "\\Resources\\JassHelper\\";
-                if(!Directory.Exists(baseDir))
+                if (!Directory.Exists(baseDir))
                 {
                     Directory.CreateDirectory(baseDir);
                 }
@@ -354,6 +355,36 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
+            // --- LOAD DISPLAY NAMES FOR v1.31 and others?
+
+            if (WarcraftStorageReader.IsReforged)
+            {
+                var file = WarcraftStorageReader.ReadAllText(@"_locales\enus.w3mod\ui\triggerstrings.txt");
+                var iniData = new Utility.IniParser.IniData(file);
+
+                foreach (var section in iniData.Sections.Values)
+                {
+                    string lastKeyword = string.Empty;
+                    foreach (var key in section.Keys)
+                    {
+                        FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
+                        if (functionTemplate == null)
+                        {
+                            continue;
+                        }
+                        else if (key.Key == lastKeyword)
+                        {
+                            functionTemplate.paramText = key.Value.Replace("\"", "");
+                            ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
+                            continue;
+                        }
+
+                        lastKeyword = key.Key;
+                        functionTemplate.name = key.Value.Replace("\"", string.Empty);
+                    }
+                }
+            }
+
             // --- INIT DEFAULTS --- //
             foreach (var function in Defaults)
             {
@@ -490,7 +521,7 @@ namespace BetterTriggers.WorldEdit
                     functionTemplate.value = key;
                     functionTemplate.parameters = parameters;
                     functionTemplate.returnType = returnType;
-                    if(isBT)
+                    if (isBT)
                     {
                         btOnlyData.Add(key);
                     }
@@ -888,7 +919,7 @@ namespace BetterTriggers.WorldEdit
         {
             FunctionTemplate functionTemplate;
             FunctionsAll.TryGetValue(key, out functionTemplate);
-            if(functionTemplate == null)
+            if (functionTemplate == null)
             {
                 return string.Empty;
             }
