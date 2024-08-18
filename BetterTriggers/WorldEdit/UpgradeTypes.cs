@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
 using IniParser.Model;
 using System;
@@ -83,7 +84,7 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void LoadFromCASC(bool isTest)
+        internal static void LoadFromGameStorage(bool isTest)
         {
             upgrades = new Dictionary<string, UpgradeType>();
             Stream upgradedata;
@@ -103,32 +104,26 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
                 /* TODO:
                  * We are loading too many upgrades from this.
                  * There are 'upgrades' for 'Chaos Conversions' and other stuff
                  * which are not actual upgrades that show up in the object editor.
                 */
-                CASCFile abilityData = (CASCFile)units.Entries["upgradedata.slk"];
-                upgradedata = Casc.GetCasc().OpenFile(abilityData.FullName);
+                upgradedata = WarcraftStorageReader.OpenFile(@"units\upgradedata.slk");
 
-                CASCFile humanUp = (CASCFile)units.Entries["humanupgradefunc.txt"];
-                CASCFile orcUp = (CASCFile)units.Entries["orcupgradefunc.txt"];
-                CASCFile undeadUp = (CASCFile)units.Entries["undeadupgradefunc.txt"];
-                CASCFile nightelfUp = (CASCFile)units.Entries["nightelfupgradefunc.txt"];
-                CASCFile campaignUp = (CASCFile)units.Entries["campaignupgradefunc.txt"];
-                StreamReader sr;
+                var files = new[]
+                {
+                    @"units\humanupgradefunc.txt",
+                    @"units\orcupgradefunc.txt",
+                    @"units\undeadupgradefunc.txt",
+                    @"units\nightelfupgradefunc.txt",
+                    @"units\campaignupgradefunc.txt"
+                };
                 StringBuilder text = new StringBuilder();
-                sr = new StreamReader(Casc.GetCasc().OpenFile(humanUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(orcUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(undeadUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(nightelfUp.FullName));
-                text.Append(sr.ReadToEnd());
-                sr = new StreamReader(Casc.GetCasc().OpenFile(campaignUp.FullName));
-                text.Append(sr.ReadToEnd());
+                foreach (var file in files)
+                {
+                    text.Append(new StreamReader(WarcraftStorageReader.OpenFile(file)).ReadToEnd());
+                }
                 upgradeFunc = IniFileConverter.GetIniData(text.ToString());
             }
 

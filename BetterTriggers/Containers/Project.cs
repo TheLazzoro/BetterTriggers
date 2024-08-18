@@ -2,7 +2,7 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
 using ICSharpCode.Decompiler.Metadata;
 using Newtonsoft.Json;
 using NuGet.Packaging;

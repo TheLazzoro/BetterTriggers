@@ -2,7 +2,6 @@
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
@@ -17,6 +16,7 @@ using System.Text.RegularExpressions;
 using BetterTriggers.Containers;
 using War3Net.Common.Extensions;
 using System.Windows.Documents;
+using BetterTriggers.WorldEdit.GameDataReader;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -89,27 +89,18 @@ namespace BetterTriggers.WorldEdit
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
                 ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}\\Resources\\JassHelper\\jasshelper.exe";
 
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-                CASCFile commonJ = (CASCFile)units.Entries["common.j"];
-                Casc.SaveFile(commonJ, pathCommonJ);
-                units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-                CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
-                Casc.SaveFile(blizzardJ, pathBlizzardJ);
+                WarcraftStorageReader.Export(@"scripts\common.j", pathCommonJ);
+                WarcraftStorageReader.Export(@"scripts\Blizzard.j", pathBlizzardJ);
 
-                var jasshelperFolder = (CASCFolder)Casc.Getx86Folder().Entries["jasshelper"];
-                foreach (var item in jasshelperFolder.Entries)
-                {
-                    string path = Path.Combine(baseDir, item.Key);
-                    if (!File.Exists(path))
-                    {
-                        Casc.SaveFile((CASCFile)item.Value, path);
-                    }
-                }
+                WarcraftStorageReader.Export_x86(@"jasshelper\jasshelper-license.txt", Path.Combine(baseDir, "jasshelper-license.txt"));
+                WarcraftStorageReader.Export_x86(@"jasshelper\jasshelper.exe", Path.Combine(baseDir, "jasshelper.exe"));
+                WarcraftStorageReader.Export_x86(@"jasshelper\pjass-readme.txt", Path.Combine(baseDir, "pjass-readme.txt"));
+                WarcraftStorageReader.Export_x86(@"jasshelper\pjass.exe", Path.Combine(baseDir, "pjass.exe"));
+                WarcraftStorageReader.Export_x86(@"jasshelper\sfmpq-license.txt", Path.Combine(baseDir, "sfmpq-license.txt"));
+                WarcraftStorageReader.Export_x86(@"jasshelper\sfmpq.dll", Path.Combine(baseDir, "sfmpq.dll"));
 
 
-                var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
-                CASCFile triggerData = (CASCFile)ui.Entries["triggerdata.txt"];
-                var file = Casc.GetCasc().OpenFile(triggerData.FullName);
+                var file = WarcraftStorageReader.OpenFile(@"ui\triggerdata.txt");
                 var reader = new StreamReader(file);
                 var text = reader.ReadToEnd();
 
@@ -118,8 +109,7 @@ namespace BetterTriggers.WorldEdit
                 // --- TRIGGER CATEGORIES --- //
 
                 var triggerCategories = data.Sections["TriggerCategories"];
-                var replText = (CASCFolder)Casc.GetWar3ModFolder().Entries["replaceabletextures"];
-                var worldEditUI = (CASCFolder)replText.Entries["worldeditui"];
+                string imageExt = WarcraftStorageReader.GameVersion < new Version(1, 32) ? ".blp" : ".dds";
                 foreach (var category in triggerCategories)
                 {
                     string[] values = category.Value.Split(",");
@@ -128,13 +118,12 @@ namespace BetterTriggers.WorldEdit
                         continue;
 
                     string WE_STRING = values[0];
-                    string texturePath = Path.GetFileName(values[1] + ".dds");
+                    string texturePath = Path.GetFileName(values[1] + imageExt);
                     bool shouldDisplay = true;
                     if (values.Length == 3)
                         shouldDisplay = false;
 
-                    CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
-                    Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
+                    Stream stream = WarcraftStorageReader.OpenFile(Path.Combine(@"replaceabletextures\worldeditui", texturePath));
                     byte[] image = new byte[stream.Length];
                     stream.CopyTo(image, 0, (int)stream.Length);
 
@@ -215,7 +204,7 @@ namespace BetterTriggers.WorldEdit
 
             // --- Loads depending on version --- //
 
-            if (Casc.GameVersion.Minor >= 31)
+            if (WarcraftStorageReader.GameVersion.Minor >= 31)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -228,13 +217,13 @@ namespace BetterTriggers.WorldEdit
                 customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt"));
                 customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt"));
             }
-            if (Casc.GameVersion.Minor >= 32)
+            if (WarcraftStorageReader.GameVersion.Minor >= 32)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_32.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadTriggerDataFromIni(dataCustom);
             }
-            if (Casc.GameVersion.Minor >= 33)
+            if (WarcraftStorageReader.GameVersion.Minor >= 33)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_33.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);

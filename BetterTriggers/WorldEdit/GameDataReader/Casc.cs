@@ -6,11 +6,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using CASCLib;
 
-namespace BetterTriggers.WorldEdit
+namespace BetterTriggers.WorldEdit.GameDataReader
 {
-    public class Casc
+    internal class Casc
     {
-        public static System.Version GameVersion { get; set; }
+        public static Version GameVersion { get; set; }
         private static bool _onlineMode = false;
         private static string product = "w3";
         private static CASCFolder war3_w3mod;
@@ -51,7 +51,7 @@ namespace BetterTriggers.WorldEdit
             {
                 errorMsg = ex.Message;
             }
-            
+
             return (isValid, errorMsg);
         }
 
@@ -62,7 +62,7 @@ namespace BetterTriggers.WorldEdit
                 var casc = GetCasc();
                 var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
                 casc.Root.MergeInstall(casc.Install);
-                war3_w3mod = (CASCFolder)fldr.Entries["War3.w3mod"];
+                war3_w3mod = fldr.Folders["War3.w3mod"];
             }
 
             return war3_w3mod;
@@ -75,7 +75,7 @@ namespace BetterTriggers.WorldEdit
                 var casc = GetCasc();
                 var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
                 casc.Root.MergeInstall(casc.Install);
-                war3_x86_64 = (CASCFolder)fldr.Entries["x86_64"];
+                war3_x86_64 = fldr.Folders["x86_64"];
             }
 
             return war3_x86_64;
@@ -83,7 +83,7 @@ namespace BetterTriggers.WorldEdit
 
         public static void SaveFile(CASCFile file, string fullPath)
         {
-            var stream = Casc.GetCasc().OpenFile(file.FullName);
+            var stream = GetCasc().OpenFile(file.FullName);
 
             var dir = Path.GetDirectoryName(fullPath);
             var name = Path.GetFileName(fullPath);

@@ -10,6 +10,11 @@ using System.IO;
 using IniParser.Parser;
 using BetterTriggers.Utility;
 using BetterTriggers.Models.War3Data;
+using BetterTriggers.WorldEdit.GameDataReader;
+using Newtonsoft.Json.Bson;
+using War3Net.IO.Slk;
+using NuGet.ContentModel;
+using War3Net.Build.Widget;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -26,14 +31,13 @@ namespace BetterTriggers.WorldEdit
         internal static void Load(bool isTest = false)
         {
             assetModels.Clear();
-            var unitData = UnitTypes.GetBase();
-            var destData = DestructibleTypes.GetBase();
-            var doodData = DoodadTypes.GetBase();
-            var itemData = ItemTypes.GetBase();
+
 
             // some asset strings occur multiple times
             HashSet<AssetModel> hashset = new HashSet<AssetModel>();
             Stream abilityskin;
+
+            List<Stream> filesWithAbilityArt = new List<Stream>();
 
             if (isTest)
             {
@@ -41,81 +45,112 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                CASCFile cascFile = (CASCFile)units.Entries["abilityskin.txt"];
-                abilityskin = Casc.GetCasc().OpenFile(cascFile.FullName);
+                if (!isTest && WarcraftStorageReader.GameVersion < new Version(1, 32))
+                {
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\campaignabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\campaignunitfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\commonabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\humanabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\humanunitfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\itemabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\neutralabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\neutralunitfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\nightelfabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\nightelfunitfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\orcabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\orcunitfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\undeadabilityfunc.txt"));
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\undeadunitfunc.txt"));
+                }
+                else
+                {
+                    filesWithAbilityArt.Add(WarcraftStorageReader.OpenFile(@"units\abilityskin.txt"));
+                }
             }
 
-            StreamReader reader = new StreamReader(abilityskin);
-            string text = reader.ReadToEnd();
-            abilityskin.Close();
-
-            var data = IniFileConverter.GetIniData(text);
-
-            var enumSections = data.Sections.GetEnumerator();
-            while (enumSections.MoveNext())
+            foreach (var stream in filesWithAbilityArt)
             {
-                var section = enumSections.Current;
-                var enumKeys = section.Keys.GetEnumerator();
-                var category = string.Empty;
-                while (enumKeys.MoveNext())
+                StreamReader reader = new StreamReader(stream);
+                string text = reader.ReadToEnd();
+                stream.Close();
+
+                var data = IniFileConverter.GetIniData(text);
+
+                var enumSections = data.Sections.GetEnumerator();
+                while (enumSections.MoveNext())
                 {
-                    var key = enumKeys.Current;
-                    if (key.KeyName == "Art" || key.KeyName == "Researchart")
-                        new Icon(key.Value, AbilityTypes.GetName(section.SectionName), "Ability");
-                    else if(key.KeyName == "Buffart")
-                        new Icon(key.Value, BuffTypes.GetName(section.SectionName), "Buff");
-
-                    if (key.KeyName == "skinType")
-                        category = key.Value;
-                    if (key.KeyName == "Targetart" ||
-                        key.KeyName == "Specialart" ||
-                        key.KeyName == "Missileart" ||
-                        key.KeyName == "Casterart" ||
-                        key.KeyName == "Buffart" ||
-                        key.KeyName == "Effectart"
-                        )
+                    var section = enumSections.Current;
+                    var enumKeys = section.Keys.GetEnumerator();
+                    var category = string.Empty;
+                    while (enumKeys.MoveNext())
                     {
-                        if (key.Value != "")
-                        {
-                            string displayName = Locale.GetDisplayName(section.SectionName);
-                            if (displayName == null)
-                                displayName = "";
+                        var key = enumKeys.Current;
+                        if (key.KeyName == "Art" || key.KeyName == "Researchart")
+                            new Icon(key.Value, AbilityTypes.GetName(section.SectionName), "Ability");
+                        else if (key.KeyName == "Buffart")
+                            new Icon(key.Value, BuffTypes.GetName(section.SectionName), "Buff");
 
-                            switch (key.KeyName)
+                        if (key.KeyName == "skinType")
+                            category = key.Value;
+                        if (key.KeyName == "Targetart" ||
+                            key.KeyName == "Specialart" ||
+                            key.KeyName == "Missileart" ||
+                            key.KeyName == "Casterart" ||
+                            key.KeyName == "Buffart" ||
+                            key.KeyName == "Effectart"
+                            )
+                        {
+                            if (key.Value != "")
                             {
-                                case "Targetart":
-                                    displayName += " <Target>";
-                                    break;
-                                case "Specialart":
-                                    displayName += " <Special>";
-                                    break;
-                                case "Missileart":
-                                    displayName += " <Missile>";
-                                    break;
-                                case "Casterart":
-                                    displayName += " <Caster>";
-                                    break;
-                                case "Effectart":
-                                    displayName += " <Effect>";
-                                    break;
-                                default:
-                                    break;
-                            }
-                            string[] paths = key.Value.Split(',');
-                            foreach (var path in paths)
-                            {
-                                hashset.Add(new AssetModel()
+                                string displayName = Locale.GetDisplayName(section.SectionName);
+                                if (displayName == null)
+                                    displayName = "";
+
+                                switch (key.KeyName)
                                 {
-                                    DisplayName = displayName,
-                                    Path = path,
-                                    Category = category
-                                });
+                                    case "Targetart":
+                                        displayName += " <Target>";
+                                        break;
+                                    case "Specialart":
+                                        displayName += " <Special>";
+                                        break;
+                                    case "Missileart":
+                                        displayName += " <Missile>";
+                                        break;
+                                    case "Casterart":
+                                        displayName += " <Caster>";
+                                        break;
+                                    case "Effectart":
+                                        displayName += " <Effect>";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                string[] paths = key.Value.Split(',');
+                                foreach (var path in paths)
+                                {
+                                    hashset.Add(new AssetModel()
+                                    {
+                                        DisplayName = displayName,
+                                        Path = path,
+                                        Category = category
+                                    });
+                                }
                             }
                         }
                     }
                 }
             }
+
+            AddAssetModels(hashset);
+        }
+
+        private static void AddAssetModels(HashSet<AssetModel> hashset)
+        {
+            var unitData = UnitTypes.GetBase();
+            var destData = DestructibleTypes.GetBase();
+            var doodData = DoodadTypes.GetBase();
+            var itemData = ItemTypes.GetBase();
 
             // TODO: wtf
             for (int i = 0; i < unitData.Count; i++)
@@ -129,13 +164,13 @@ namespace BetterTriggers.WorldEdit
             }
             for (int i = 0; i < destData.Count; i++)
             {
-                if(destData[i].Model != null)
-                hashset.Add(new AssetModel()
-                {
-                    DisplayName = destData[i].DisplayName == null ? "" : destData[i].DisplayName,
-                    Path = destData[i].Model,
-                    Category = "Destructible"
-                });
+                if (destData[i].Model != null)
+                    hashset.Add(new AssetModel()
+                    {
+                        DisplayName = destData[i].DisplayName == null ? "" : destData[i].DisplayName,
+                        Path = destData[i].Model,
+                        Category = "Destructible"
+                    });
             }
             for (int i = 0; i < doodData.Count; i++)
             {

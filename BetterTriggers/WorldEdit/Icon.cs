@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -55,8 +56,8 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
-            if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(path, ".dds")))
-                return Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(path, ".dds")));
+            if (WarcraftStorageReader.FileExists(Path.ChangeExtension(path, ".dds")))
+                return Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(path, ".dds")));
 
             return null;
         }

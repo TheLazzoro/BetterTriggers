@@ -1,8 +1,10 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
 using IniParser.Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -97,7 +99,7 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void LoadFromCASC(bool isTest)
+        internal static void LoadFromGameStorage(bool isTest)
         {
             unitTypes = new Dictionary<string, UnitType>();
 
@@ -108,6 +110,12 @@ namespace BetterTriggers.WorldEdit
             IniData campaignFunc;
 
             IsTest = isTest;
+
+            if(!isTest && WarcraftStorageReader.GameVersion < new Version(1, 32))
+            {
+                LoadFromMpq();
+                return;
+            }
 
             if (isTest)
             {
@@ -125,13 +133,9 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                CASCFile cascFile = (CASCFile)units.Entries["unitdata.slk"];
-                CASCFile unitSkins = (CASCFile)units.Entries["unitskin.txt"];
-                CASCFile campaignFuncFile = (CASCFile)units.Entries["campaignunitfunc.txt"];
-                using (Stream unitDataSlk = Casc.GetCasc().OpenFile(cascFile.FullName))
-                using (Stream unitSkin = Casc.GetCasc().OpenFile(unitSkins.FullName))
-                using (Stream campaignFuncStream = Casc.GetCasc().OpenFile(campaignFuncFile.FullName))
+                using (Stream unitDataSlk = WarcraftStorageReader.OpenFile(@"units\unitdata.slk"))
+                using (Stream unitSkin = WarcraftStorageReader.OpenFile(@"units\unitskin.txt"))
+                using (Stream campaignFuncStream = WarcraftStorageReader.OpenFile(@"units\campaignunitfunc.txt"))
                 {
                     reader = new StreamReader(unitSkin);
                     text = reader.ReadToEnd();
@@ -182,10 +186,101 @@ namespace BetterTriggers.WorldEdit
                 new Icon(icon, UnitTypes.GetName(unitType.Id), "Unit");
 
                 if (!isTest)
-                    unitType.Image = Images.ReadImage(Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(icon, ".dds")));
+                    unitType.Image = Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(icon, ".dds")));
             }
 
             var campaignSections = campaignFunc.Sections;
+            var enumerator = campaignSections.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var section = enumerator.Current;
+                string sectionName = section.SectionName;
+                var keys = section.Keys.GetEnumerator();
+                while (keys.MoveNext())
+                {
+                    var key = keys.Current;
+                    if (key.KeyName == "ScoreScreenIcon")
+                        new Icon(key.Value, UnitTypes.GetName(sectionName), "Unit - Special");
+                }
+            }
+        }
+
+        private static void LoadFromMpq()
+        {
+            StreamReader reader;
+            SylkTable table;
+            SylkTable uiTable;
+            string text = string.Empty;
+            IniData campaignFunc;
+
+
+            using (Stream slk = WarcraftStorageReader.OpenFile(@"units\unitdata.slk"))
+                table = new SylkParser().Parse(slk);
+            using (Stream txt = WarcraftStorageReader.OpenFile(@"units\campaignunitfunc.txt"))
+                campaignFunc = IniFileConverter.GetIniData(new StreamReader(txt).ReadToEnd());
+            using (Stream slk = WarcraftStorageReader.OpenFile(@"units\unitui.slk"))
+                uiTable = new SylkParser().Parse(slk);
+
+            var files = new string[] { "HumanUnitFunc.txt", "NeutralUnitFunc.txt", "NightElfUnitFunc.txt", "OrcUnitFunc.txt", "UndeadUnitFunc.txt" };
+            foreach (var file in files)
+            {
+                using (Stream unitSkin = WarcraftStorageReader.OpenFile(Path.Combine("units", file)))
+                    text += new StreamReader(unitSkin).ReadToEnd();
+                text += "\r\n";
+            }
+
+            int count = table.Count();
+            for (int i = 1; i < count; i++)
+            {
+                var row = table.ElementAt(i);
+                UnitType unitType = new UnitType()
+                {
+                    Id = (string)row.GetValue(0),
+                    Sort = (string)row.GetValue(1),
+                    Race = (string)row.GetValue(3),
+                };
+                if (unitType.Id == null)
+                {
+                    continue;
+                }
+
+                unitTypes.TryAdd(unitType.Id, unitType);
+            }
+
+            for (int i = 0; i < uiTable.Count(); i++)
+            {
+                var row = uiTable.ElementAt(i);
+                var id = (string)row.GetValue(0);
+                if (id != null && unitTypes.TryGetValue(id, out var u))
+                {
+                    u.Model = (string)row.GetValue(1);
+                    u.isSpecial = row.GetValue(7) is 1;
+                }
+            }
+
+
+            var campaignSections = campaignFunc.Sections;
+            var data = IniFileConverter.GetIniData(text);
+            var unitTypesList = GetBase();
+            for (int i = 0; i < unitTypesList.Count; i++)
+            {
+                var unitType = unitTypesList[i];
+                unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
+                unitType.isCampaign = campaignSections.ContainsSection(unitType.Id);
+
+                var section = data[unitType.Id];
+                if (section.Count == 0)
+                {
+                    continue;
+                }
+
+                unitType.Icon = section["Art"];
+
+                new Icon(unitType.Icon, UnitTypes.GetName(unitType.Id), "Unit");
+
+                unitType.Image = Images.ReadImage(WarcraftStorageReader.OpenFile(unitType.Icon));
+            }
+
             var enumerator = campaignSections.GetEnumerator();
             while (enumerator.MoveNext())
             {
@@ -287,8 +382,8 @@ namespace BetterTriggers.WorldEdit
                     Stream stream = null;
                     if (!IsTest)
                     {
-                        if (Casc.GetCasc().FileExists("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds")))
-                            stream = Casc.GetCasc().OpenFile("War3.w3mod/" + Path.ChangeExtension(iconPath, ".dds"));
+                        if (WarcraftStorageReader.FileExists(Path.ChangeExtension(iconPath, ".dds")))
+                            stream = WarcraftStorageReader.OpenFile(Path.ChangeExtension(iconPath, ".dds"));
                     }
 
                     if (stream == null)

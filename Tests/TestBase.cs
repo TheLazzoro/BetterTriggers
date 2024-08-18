@@ -1,5 +1,5 @@
 ﻿using BetterTriggers;
-using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
 using System;
 using System.Windows;
 
@@ -17,9 +17,9 @@ namespace Tests
             {
                 new Application(); // Hack. Instantiates a new WPF application.
             }
-            if(Casc.GameVersion == null)
+            if(WarcraftStorageReader.GameVersion == null)
             {
-                Casc.GameVersion = new Version(1, 36, 1);
+                WarcraftStorageReader.GameVersion = new Version(1, 36, 1);
             }
             if(!Init.HasLoaded)
             {

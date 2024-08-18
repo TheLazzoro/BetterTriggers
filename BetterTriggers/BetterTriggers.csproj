@@ -308,7 +308,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCnEncoder.Net" Version="1.2.3" />
-    <PackageReference Include="CascLib" Version="1.0.19" />
+    <PackageReference Include="CascLib" Version="1.0.23" />
     <PackageReference Include="DotNetProjects.WpfToolkit.Input" Version="6.1.94" />
     <PackageReference Include="ini-parser" Version="2.5.2" />
     <PackageReference Include="JASS-Obfuscator" Version="1.0.3" />

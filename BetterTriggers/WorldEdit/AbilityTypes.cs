@@ -1,11 +1,8 @@
 ﻿using BetterTriggers.Models.War3Data;
-using CASCLib;
-using System;
+using BetterTriggers.WorldEdit.GameDataReader;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
@@ -79,7 +76,7 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void LoadFromCASC(bool isTest)
+        internal static void LoadFromGameStorage(bool isTest)
         {
             abilities = new Dictionary<string, AbilityType>();
 
@@ -90,14 +87,7 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                /* TODO:
-                 * We are loading too many abilities from this.
-                 * There are 'abilities' for 'Chaos Conversions' and other stuff
-                 * which are not actual abilites that show up in the object editor.
-                */
-                CASCFile abilityData = (CASCFile)units.Entries["abilitydata.slk"];
-                abilitydata = Casc.GetCasc().OpenFile(abilityData.FullName);
+                abilitydata = WarcraftStorageReader.OpenFile(@"units\abilitydata.slk");
             }
 
             SylkParser sylkParser = new SylkParser();

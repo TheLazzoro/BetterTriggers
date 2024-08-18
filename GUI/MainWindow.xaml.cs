@@ -5,7 +5,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components;
 using GUI.Components.About;
 using GUI.Components.BuildMap;
@@ -118,7 +118,7 @@ namespace GUI
 
             menuTools.Header = Locale.Translate(menuTools.Header as string);
 
-            btnGameVersion.Content = "Game Version: " + Casc.GameVersion;
+            btnGameVersion.Content = "Game Version: " + WarcraftStorageReader.GameVersion;
 
             // Load keybindings
             Keybindings keybindings = Keybindings.Load();
