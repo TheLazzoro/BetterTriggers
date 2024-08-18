@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 {
     internal class GameMpq
     {
-        private MpqArchive[] archives = null;
+        private List<MpqArchive> archives = null;
         private string[] files = new string[]{
                         "war3.mpq",
                         "War3x.mpq",
@@ -19,14 +20,27 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public (bool, string) Load(string path)
         {
+            string war3exe = Path.Combine(path, "Warcraft III.exe");
+            var info = FileVersionInfo.GetVersionInfo(war3exe);
+            WarcraftStorageReader.GameVersion = new Version(info.FileVersion);
+
             string errorMsg = string.Empty;
             try
             {
-                archives = new MpqArchive[4];
-                
+                archives = new List<MpqArchive>();
+
                 for (var i = 0; i < files.Length; i++)
                 {
-                    archives[i] = MpqArchive.Open(files[i]);
+                    string fullPath = Path.Combine(path, files[i]);
+                    try
+                    {
+                        var mpqArchive = MpqArchive.Open(fullPath);
+                        archives.Add(mpqArchive);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
 
                 return (true, errorMsg);

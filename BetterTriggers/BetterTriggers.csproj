@@ -22,6 +22,14 @@
     <None Remove="Resources\Icons\_trigger-error.png" />
     <None Remove="Resources\Icons\_ui-editoricon-triggercategories_element.png" />
     <None Remove="Resources\Icons\_ui-editoricon-triggercategories_folder.png" />
+    <None Remove="Resources\JassHelper\GOLD Parser-LICENSE.txt" />
+    <None Remove="Resources\JassHelper\jasshelper-LICENSE.txt" />
+    <None Remove="Resources\JassHelper\jasshelper.conf" />
+    <None Remove="Resources\JassHelper\jasshelper.exe" />
+    <None Remove="Resources\JassHelper\pjass-readme.txt" />
+    <None Remove="Resources\JassHelper\pjass.exe" />
+    <None Remove="Resources\JassHelper\sfmpq-LICENSE.txt" />
+    <None Remove="Resources\JassHelper\sfmpq.dll" />
     <None Remove="Resources\KeywordsJass.txt" />
     <None Remove="Resources\KeywordsLua.txt" />
     <None Remove="Resources\MapTemplate\war3map.doo" />
@@ -122,6 +130,30 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\_ui-editoricon-triggercategories_folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\GOLD Parser-LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\jasshelper-LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\jasshelper.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\jasshelper.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\pjass-readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\pjass.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\sfmpq-LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\JassHelper\sfmpq.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\PrimitiveTypesJass.txt">

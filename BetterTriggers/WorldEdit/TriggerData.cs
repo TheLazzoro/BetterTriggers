@@ -92,14 +92,6 @@ namespace BetterTriggers.WorldEdit
                 WarcraftStorageReader.Export(@"scripts\common.j", pathCommonJ);
                 WarcraftStorageReader.Export(@"scripts\Blizzard.j", pathBlizzardJ);
 
-                WarcraftStorageReader.Export_x86(@"jasshelper\jasshelper-license.txt", Path.Combine(baseDir, "jasshelper-license.txt"));
-                WarcraftStorageReader.Export_x86(@"jasshelper\jasshelper.exe", Path.Combine(baseDir, "jasshelper.exe"));
-                WarcraftStorageReader.Export_x86(@"jasshelper\pjass-readme.txt", Path.Combine(baseDir, "pjass-readme.txt"));
-                WarcraftStorageReader.Export_x86(@"jasshelper\pjass.exe", Path.Combine(baseDir, "pjass.exe"));
-                WarcraftStorageReader.Export_x86(@"jasshelper\sfmpq-license.txt", Path.Combine(baseDir, "sfmpq-license.txt"));
-                WarcraftStorageReader.Export_x86(@"jasshelper\sfmpq.dll", Path.Combine(baseDir, "sfmpq.dll"));
-
-
                 var file = WarcraftStorageReader.OpenFile(@"ui\triggerdata.txt");
                 var reader = new StreamReader(file);
                 var text = reader.ReadToEnd();
