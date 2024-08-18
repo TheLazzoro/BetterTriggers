@@ -8,7 +8,7 @@ namespace GUI.Components.Loading
 {
     public partial class LoadingCascWindow : Window
     {
-        bool isCascValid = false;
+        bool isStorageValid = false;
         BackgroundWorker workerVerify;
 
         public LoadingCascWindow()
@@ -54,8 +54,8 @@ namespace GUI.Components.Loading
             BetterTriggers.Init.OnNextData += Init_NextData;
 
             string error;
-            (isCascValid, error) = WarcraftStorageReader.Load();
-            if (isCascValid)
+            (isStorageValid, error) = WarcraftStorageReader.Load();
+            if (isStorageValid)
             {
                 try
                 {

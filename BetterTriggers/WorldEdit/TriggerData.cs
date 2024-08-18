@@ -319,23 +319,29 @@ namespace BetterTriggers.WorldEdit
 
             // --- LOAD DISPLAY NAMES FOR LEGACY VERSIONS --- //
 
-            if(WarcraftStorageReader.IsReforged == false)
+            if (WarcraftStorageReader.IsReforged == false)
             {
-                string file = WarcraftStorageReader.ReadAllText(@"ui\triggerstrings.txt", "War3xLocal.mpq");
-                var iniData = IniFileConverter.GetIniData(file);
-                foreach (var section in iniData.Sections)
+                var file = WarcraftStorageReader.ReadAllText(@"ui\triggerstrings.txt", "War3xLocal.mpq");
+                var iniData = new Utility.IniParser.IniData(file);
+                foreach (var section in iniData.Sections.Values)
                 {
                     string lastKeyword = string.Empty;
                     foreach (var key in section.Keys)
                     {
-                        FunctionsAll.TryGetValue(key.KeyName, out var functionTemplate);
-                        if(functionTemplate == null || key.KeyName == lastKeyword)
+                        FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
+                        if (functionTemplate == null)
                         {
                             continue;
                         }
+                        else if (key.Key == lastKeyword)
+                        {
+                            functionTemplate.paramText = key.Value.Value.Replace("\"", "");
+                            ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
+                            continue;
+                        }
 
-                        lastKeyword = key.Value;
-                        functionTemplate.name = key.Value.Replace("\"", "");
+                        lastKeyword = key.Key;
+                        functionTemplate.name = key.Value.Value.Replace("\"", "");
                     }
                 }
             }
