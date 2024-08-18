@@ -69,7 +69,7 @@ namespace BetterTriggers.Utility.IniParser
                 string key = line.Substring(0, keyEndIndex);
                 string value = line.Substring(valueStartIndex, line.Length - valueStartIndex);
                 var iniKey = new IniKey(key, value);
-                section.Keys.TryAdd(key, iniKey);
+                section.Keys.Add(iniKey);
             }
         }
 

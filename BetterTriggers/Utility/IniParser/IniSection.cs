@@ -9,7 +9,7 @@ namespace BetterTriggers.Utility.IniParser
     internal class IniSection
     {
         internal string SectionName;
-        internal Dictionary<string, IniKey> Keys = new Dictionary<string, IniKey>();
+        internal List<IniKey> Keys = new List<IniKey>();
 
     }
 }

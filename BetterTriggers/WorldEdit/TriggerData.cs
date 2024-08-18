@@ -335,13 +335,13 @@ namespace BetterTriggers.WorldEdit
                         }
                         else if (key.Key == lastKeyword)
                         {
-                            functionTemplate.paramText = key.Value.Value.Replace("\"", "");
+                            functionTemplate.paramText = key.Value.Replace("\"", "");
                             ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
                             continue;
                         }
 
                         lastKeyword = key.Key;
-                        functionTemplate.name = key.Value.Value.Replace("\"", "");
+                        functionTemplate.name = key.Value.Replace("\"", "");
                     }
                 }
             }
