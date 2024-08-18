@@ -221,7 +221,7 @@ namespace BetterTriggers.WorldEdit
             using (Stream slk = WarcraftStorageReader.OpenFile(@"units\unitui.slk"))
                 uiTable = new SylkParser().Parse(slk);
 
-            var files = new string[] { "HumanUnitFunc.txt", "NeutralUnitFunc.txt", "NightElfUnitFunc.txt", "OrcUnitFunc.txt", "UndeadUnitFunc.txt" };
+            var files = new string[] { "CampaignUnitFunc.txt", "HumanUnitFunc.txt", "NeutralUnitFunc.txt", "NightElfUnitFunc.txt", "OrcUnitFunc.txt", "UndeadUnitFunc.txt" };
             foreach (var file in files)
             {
                 using (Stream unitSkin = WarcraftStorageReader.OpenFile(Path.Combine("units", file)))

@@ -317,6 +317,29 @@ namespace BetterTriggers.WorldEdit
             LoadFunctions(data, "TriggerActions", ActionTemplates, TriggerElementType.Action);
             LoadFunctions(data, "TriggerCalls", CallTemplates, TriggerElementType.None);
 
+            // --- LOAD DISPLAY NAMES FOR LEGACY VERSIONS --- //
+
+            if(WarcraftStorageReader.IsReforged == false)
+            {
+                string file = WarcraftStorageReader.ReadAllText(@"ui\triggerstrings.txt", "War3xLocal.mpq");
+                var iniData = IniFileConverter.GetIniData(file);
+                foreach (var section in iniData.Sections)
+                {
+                    string lastKeyword = string.Empty;
+                    foreach (var key in section.Keys)
+                    {
+                        FunctionsAll.TryGetValue(key.KeyName, out var functionTemplate);
+                        if(functionTemplate == null || key.KeyName == lastKeyword)
+                        {
+                            continue;
+                        }
+
+                        lastKeyword = key.Value;
+                        functionTemplate.name = key.Value.Replace("\"", "");
+                    }
+                }
+            }
+
             // --- INIT DEFAULTS --- //
             foreach (var function in Defaults)
             {

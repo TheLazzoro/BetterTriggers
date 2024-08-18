@@ -46,7 +46,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             return mpq.FileExists(path);
         }
 
-        public static Stream OpenFile(string path)
+        public static Stream OpenFile(string path, string archiveName = null)
         {
             if (IsReforged)
             {
@@ -55,7 +55,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
                 return Casc.GetCasc().OpenFile(path);
             }
 
-            return mpq.Open(path);
+            return mpq.Open(path, archiveName);
         }
 
         public static Stream OpenFile_x86(string path)
@@ -68,6 +68,41 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             }
 
             return mpq.Open(path);
+        }
+
+        public static string ReadAllText(string path, string archiveName = null)
+        {
+            var stream = OpenFile(path, archiveName);
+            if (stream != null)
+            {
+                return new StreamReader(stream).ReadToEnd();
+            }
+
+            return string.Empty;
+        }
+
+        public static string[] ReadAllLines(string path, string archiveName = null)
+        {
+            var stream = OpenFile(path, archiveName);
+            if (stream != null)
+            {
+                var liens = new List<string>();
+                var reader = new StreamReader(stream);
+
+                while (true)
+                {
+                    var line = reader.ReadLine();
+                    if (line == null)
+                    {
+                        break;
+                    }
+                    liens.Add(line);
+                }
+
+                return liens.ToArray();
+            }
+
+            return null;
         }
 
         public static void Export(string srcPath, string destPath)

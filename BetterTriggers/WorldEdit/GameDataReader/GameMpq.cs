@@ -11,7 +11,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 {
     internal class GameMpq
     {
-        private List<MpqArchive> archives = null;
+        private Dictionary<string, MpqArchive> archives = null;
         private string[] files = new string[]{
                         "war3.mpq",
                         "War3x.mpq",
@@ -27,7 +27,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             string errorMsg = string.Empty;
             try
             {
-                archives = new List<MpqArchive>();
+                archives = new Dictionary<string, MpqArchive>();
 
                 for (var i = 0; i < files.Length; i++)
                 {
@@ -35,7 +35,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
                     try
                     {
                         var mpqArchive = MpqArchive.Open(fullPath);
-                        archives.Add(mpqArchive);
+                        archives.Add(files[i], mpqArchive);
                     }
                     catch (Exception)
                     {
@@ -55,7 +55,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public bool FileExists(string path)
         {
-            foreach (var archive in archives)
+            foreach (var archive in archives.Values)
             {
                 if (archive.FileExists(path))
                 {
@@ -65,9 +65,20 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             return false;
         }
 
-        public Stream Open(string path)
+        public Stream Open(string path, string archiveName = null)
         {
-            foreach (var archive in archives)
+            if(archiveName != null)
+            {
+                foreach (var archive in archives)
+                {
+                    if (archive.Key == archiveName && archive.Value.FileExists(path))
+                    {
+                        return MpqFile.OpenRead(archive.Value, path);
+                    }
+                }
+            }
+
+            foreach (var archive in archives.Values)
             {
                 if (archive.FileExists(path))
                 {
