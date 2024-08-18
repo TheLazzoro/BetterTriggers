@@ -116,8 +116,16 @@ namespace BetterTriggers.WorldEdit
                         shouldDisplay = false;
 
                     Stream stream = WarcraftStorageReader.OpenFile(Path.Combine(@"replaceabletextures\worldeditui", texturePath));
-                    byte[] image = new byte[stream.Length];
-                    stream.CopyTo(image, 0, (int)stream.Length);
+                    byte[] image;
+                    if (imageExt == ".blp")
+                    {
+                        image = Images.ReadImage(stream);
+                    }
+                    else
+                    {
+                        image = new byte[stream.Length];
+                        stream.CopyTo(image, 0, (int)stream.Length);
+                    }
 
                     Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
                 }
