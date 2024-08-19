@@ -12,7 +12,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
     {
         private static GameMpq mpq = null;
 
-        public static bool IsReforged { get; private set; } = false;
+        public static bool IsReforged { get; set; } = false;
         public static Version GameVersion = new Version();
 
         public static (bool, string) Load()

@@ -23,6 +23,7 @@ namespace Tests
             }
             if(!Init.HasLoaded)
             {
+                WarcraftStorageReader.IsReforged = true;
                 Init.Initialize(true);
             }
         }
