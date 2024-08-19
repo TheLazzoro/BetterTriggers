@@ -32,6 +32,7 @@
     <None Remove="Resources\JassHelper\sfmpq.dll" />
     <None Remove="Resources\KeywordsJass.txt" />
     <None Remove="Resources\KeywordsLua.txt" />
+    <None Remove="Resources\MapTemplate\template.w3m" />
     <None Remove="Resources\MapTemplate\war3map.doo" />
     <None Remove="Resources\MapTemplate\war3map.mmp" />
     <None Remove="Resources\MapTemplate\war3map.shd" />
@@ -156,6 +157,9 @@
     <Content Include="Resources\JassHelper\sfmpq.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\MapTemplate\template.w3m">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\PrimitiveTypesJass.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -165,43 +169,43 @@
     <Content Include="Resources\KeywordsLua.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.doo">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.mmp">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.mmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.shd">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.shd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.w3c">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.w3c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.w3e">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.w3e">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.w3i">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.w3i">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.w3r">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.w3r">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.wct">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.wct">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.wpm">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.wpm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.wtg">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.wtg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3map.wts">
+    <Content Include="Resources\MapTemplate\FolderMap\war3map.wts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3mapMap.blp">
+    <Content Include="Resources\MapTemplate\FolderMap\war3mapMap.blp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\MapTemplate\war3mapUnits.doo">
+    <Content Include="Resources\MapTemplate\FolderMap\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\WorldEditorData\abilityskinstrings.txt">

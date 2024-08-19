@@ -22,7 +22,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
         {
             string war3exe = Path.Combine(path, "Warcraft III.exe");
             var info = FileVersionInfo.GetVersionInfo(war3exe);
-            WarcraftStorageReader.GameVersion = new Version(info.FileVersion);
+            WarcraftStorageReader.GameVersion = new Version(info.FileVersion.Replace(" ", string.Empty).Replace(',', '.'));
 
             string errorMsg = string.Empty;
             try

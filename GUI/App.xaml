@@ -1025,7 +1025,14 @@
 
             <!-- RADIOBUTTON -->
             <Style TargetType="RadioButton">
-                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="{DynamicResource TextErrorBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <Style TargetType="{x:Type ListView}">

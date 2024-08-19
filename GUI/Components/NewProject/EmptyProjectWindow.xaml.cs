@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components.NewProject;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,10 @@ namespace GUI.Components.NewProject
             InitializeComponent();
 
             radBtnJass.IsChecked = true;
+            if(WarcraftStorageReader.GameVersion < new Version(1, 31))
+            {
+                radBtnLua.IsEnabled = false;
+            }
         }
 
         private void btnProjectDestination_Click(object sender, RoutedEventArgs e)

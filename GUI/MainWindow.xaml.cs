@@ -1012,7 +1012,15 @@ namespace GUI
         private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
         {
             Builder builder = new Builder();
-            builder.TestMap();
+            try
+            {
+                builder.TestMap();
+            }
+            catch (Exception ex)
+            {
+                Components.Dialogs.MessageBox dialogBox = new Components.Dialogs.MessageBox("Error", ex.Message);
+                dialogBox.ShowDialog();
+            }
         }
 
         private void CommandBinding_Executed_BuildMap(object sender, ExecutedRoutedEventArgs e)
