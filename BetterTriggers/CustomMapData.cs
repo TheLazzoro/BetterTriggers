@@ -170,19 +170,24 @@ namespace BetterTriggers
         public static List<ExplorerElement> ReloadMapData()
         {
             // Check for ID collisions
-            List<Tuple<ExplorerElement, ExplorerElement>> triggersWithIdCollision = new();
-            List<Tuple<ExplorerElement, ExplorerElement>> variablesWithIdCollision = new();
+            List<Tuple<ExplorerElement, ExplorerElement>> idCollision = new();
             List<ExplorerElement> checkedTriggers = new List<ExplorerElement>();
             List<ExplorerElement> checkedVariables = new List<ExplorerElement>();
+            List<ExplorerElement> checkedActionDefs = new List<ExplorerElement>();
+            List<ExplorerElement> checkedConditionDefs = new List<ExplorerElement>();
+            List<ExplorerElement> checkedFunctionDefs = new List<ExplorerElement>();
 
             var triggers = Project.CurrentProject.Triggers.GetAll();
             var variables = Project.CurrentProject.Variables.GetGlobals();
+            var actionsDefs = Project.CurrentProject.ActionDefinitions.GetAll();
+            var conditionDefs = Project.CurrentProject.ConditionDefinitions.GetAll();
+            var functionDefs = Project.CurrentProject.FunctionDefinitions.GetAll();
             triggers.ForEach(t =>
             {
                 checkedTriggers.ForEach(check =>
                 {
                     if (t.GetId() == check.GetId())
-                        triggersWithIdCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(t, check));
+                        idCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(t, check));
                 });
 
                 checkedTriggers.Add(t);
@@ -192,14 +197,45 @@ namespace BetterTriggers
                 checkedVariables.ForEach(check =>
                 {
                     if (v.GetId() == check.GetId())
-                        variablesWithIdCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(v, check));
+                        idCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(v, check));
                 });
 
                 checkedVariables.Add(v);
             });
-            if (triggersWithIdCollision.Count > 0 || variablesWithIdCollision.Count > 0)
+            actionsDefs.ForEach(v =>
             {
-                throw new IdCollisionException(triggersWithIdCollision, variablesWithIdCollision);
+                checkedActionDefs.ForEach(check =>
+                {
+                    if (v.GetId() == check.GetId())
+                        idCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(v, check));
+                });
+
+                checkedActionDefs.Add(v);
+            });
+            conditionDefs.ForEach(v =>
+            {
+                checkedConditionDefs.ForEach(check =>
+                {
+                    if (v.GetId() == check.GetId())
+                        idCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(v, check));
+                });
+
+                checkedConditionDefs.Add(v);
+            });
+            functionDefs.ForEach(v =>
+            {
+                checkedFunctionDefs.ForEach(check =>
+                {
+                    if (v.GetId() == check.GetId())
+                        idCollision.Add(new Tuple<ExplorerElement, ExplorerElement>(v, check));
+                });
+
+                checkedFunctionDefs.Add(v);
+            });
+
+            if (idCollision.Count > 0)
+            {
+                throw new IdCollisionException(idCollision);
             }
 
             Project.CurrentProject.CommandManager.Reset();

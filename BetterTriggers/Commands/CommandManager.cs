@@ -7,6 +7,7 @@ namespace BetterTriggers.Commands
     /// </summary>
     public class CommandManager
     {
+        public bool HasUnsavedChanges;
         private Stack<ICommand> undoStack = new Stack<ICommand>();
         private Stack<ICommand> redoStack = new Stack<ICommand>();
         private string nameCommandToUndo;
@@ -18,6 +19,7 @@ namespace BetterTriggers.Commands
             redoStack.Clear();
 
             nameCommandToUndo = command.GetCommandName();
+            HasUnsavedChanges = true;
         }
 
         public void Reset()

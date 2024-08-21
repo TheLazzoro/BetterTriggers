@@ -9,15 +9,14 @@ namespace BetterTriggers.Models
 {
     public class IdCollisionException : Exception
     {
-        public List<Tuple<ExplorerElement, ExplorerElement>> triggers { get; }
+        public List<Tuple<ExplorerElement, ExplorerElement>> IdCollisions { get; }
         public List<Tuple<ExplorerElement, ExplorerElement>> variables { get; }
         public override string Message { get; }
 
 
-        public IdCollisionException(List<Tuple<ExplorerElement, ExplorerElement>> triggers, List<Tuple<ExplorerElement, ExplorerElement>> variables)
+        public IdCollisionException(List<Tuple<ExplorerElement, ExplorerElement>> idCollisions)
         {
-            this.triggers = triggers;
-            this.variables = variables;
+            this.IdCollisions = idCollisions;
             Message = "Detected ID-collisions between triggers or variables!";
         }
     }
