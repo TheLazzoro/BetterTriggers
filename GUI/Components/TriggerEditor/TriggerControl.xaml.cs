@@ -306,7 +306,7 @@ namespace GUI.Components
                         parameterDefCollection = explorerElement.functionDefinition.Parameters;
                         break;
                     default:
-                        break;
+                        return;
                 }
 
                 var project = Project.CurrentProject;
