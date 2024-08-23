@@ -705,6 +705,11 @@ namespace BetterTriggers.Containers
                 insertIndex = parent.GetExplorerElements().IndexOf(pasteTarget);
             }
 
+            if(CopiedElements.CopiedExplorerElement == null)
+            {
+                return null;
+            }
+
             var pasted = CopiedElements.CopiedExplorerElement.Clone();
             if (CopiedElements.CutExplorerElement == null)
                 PrepareExplorerElement(pasted);
