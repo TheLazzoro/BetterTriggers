@@ -12,10 +12,11 @@ namespace BetterTriggers.WorldEdit.GameDataReader
     {
         private static GameMpq mpq = null;
         public static Version GameVersion = new Version();
-        public static string ImageExt = ".blp";
+        public static string ImageExt;
 
         public static (bool, string) Load()
         {
+            ImageExt = ".blp";
             EditorSettings settings = EditorSettings.Load();
             var isCasc = File.Exists(Path.Combine(settings.war3root, @"Data\data\data.000"));
             if (isCasc)

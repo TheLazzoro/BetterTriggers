@@ -275,12 +275,13 @@ namespace BetterTriggers.WorldEdit
             {
                 return;
             }
+
             string file;
-            Utility.IniParser.IniData iniData;
-
-            // --- LOAD DISPLAY NAMES FOR LEGACY VERSIONS --- //
-
-            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30 && WarcraftStorageReader.GameVersion < WarcraftVersion._1_31)
+            if(WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+            {
+                file = WarcraftStorageReader.ReadAllText(@"_locales\enus.w3mod\ui\triggerstrings.txt", "War3xLocal.mpq");
+            }
+            else if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30 && WarcraftStorageReader.GameVersion < WarcraftVersion._1_31)
             {
                 file = WarcraftStorageReader.ReadAllText_Local_1_30(@"ui\triggerstrings.txt");
             }
@@ -289,7 +290,7 @@ namespace BetterTriggers.WorldEdit
                 file = WarcraftStorageReader.ReadAllText(@"ui\triggerstrings.txt", "War3xLocal.mpq");
             }
 
-            iniData = new Utility.IniParser.IniData(file);
+            var iniData = new Utility.IniParser.IniData(file);
             foreach (var section in iniData.Sections.Values)
             {
                 string lastKeyword = string.Empty;
@@ -309,40 +310,6 @@ namespace BetterTriggers.WorldEdit
 
                     lastKeyword = key.Key;
                     functionTemplate.name = key.Value.Replace("\"", "");
-                }
-            }
-
-            // --- LOAD DISPLAY NAMES FOR v1.31 and others?
-
-            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30 && WarcraftStorageReader.GameVersion < WarcraftVersion._1_31)
-            {
-                file = WarcraftStorageReader.ReadAllText_Local_1_30(@"ui\triggerstrings.txt");
-            }
-            else
-            {
-                file = WarcraftStorageReader.ReadAllText(@"_locales\enus.w3mod\ui\triggerstrings.txt", "War3xLocal.mpq");
-            }
-            iniData = new Utility.IniParser.IniData(file);
-
-            foreach (var section in iniData.Sections.Values)
-            {
-                string lastKeyword = string.Empty;
-                foreach (var key in section.Keys)
-                {
-                    FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
-                    if (functionTemplate == null)
-                    {
-                        continue;
-                    }
-                    else if (key.Key == lastKeyword)
-                    {
-                        functionTemplate.paramText = key.Value.Replace("\"", "");
-                        ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
-                        continue;
-                    }
-
-                    lastKeyword = key.Key;
-                    functionTemplate.name = key.Value.Replace("\"", string.Empty);
                 }
             }
         }
