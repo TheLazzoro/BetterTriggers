@@ -1,9 +1,11 @@
 ﻿using BetterTriggers.Containers;
+using BetterTriggers.Logging;
 using BetterTriggers.WorldEdit;
 using GUI.Components.OpenMap;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -99,19 +101,40 @@ namespace GUI.Components.NewProject
 
         private void WorkerVerify_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            btnCancel.IsEnabled = true;
-            btnCancel.Content = "Close";
-            lblConverting.Content = "Conversion Complete!";
-            progressBar.IsIndeterminate = false;
-            progressBar.Value = 100;
-            btnOpen.Visibility = Visibility.Visible;
+            if (e.ProgressPercentage == 0)
+            {
+                progressBar.IsIndeterminate = false;
+                lblConverting.Content = string.Empty;
+                var exception = e.UserState as Exception;
+                var dialog = new Dialogs.MessageBox("Error", exception.Message);
+                dialog.ShowDialog();
+            }
+            else if (e.ProgressPercentage == 100)
+            {
+                btnCancel.IsEnabled = true;
+                btnCancel.Content = "Close";
+                lblConverting.Content = "Conversion Complete!";
+                progressBar.IsIndeterminate = false;
+                progressBar.Value = 100;
+                btnOpen.Visibility = Visibility.Visible;
+            }
         }
 
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            TriggerConverter converter = new TriggerConverter(mapPath);
-            ProjectLocation = converter.Convert(FinalPath);
-            (sender as BackgroundWorker).ReportProgress(100);
+            try
+            {
+                TriggerConverter converter = new TriggerConverter(mapPath);
+                ProjectLocation = converter.Convert(FinalPath);
+                (sender as BackgroundWorker).ReportProgress(100);
+            }
+            catch (Exception ex)
+            {
+                (sender as BackgroundWorker).ReportProgress(0, ex);
+
+                LoggingService service = new LoggingService();
+                Task.Factory.StartNew(() => service.SubmitError_Async(ex, "-- LOGGED BY SYSTEM --"));
+            }
         }
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)

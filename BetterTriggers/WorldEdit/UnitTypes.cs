@@ -379,6 +379,11 @@ namespace BetterTriggers.WorldEdit
                 else if (Int32Extensions.ToRawcode(modification.Id) == "uico")
                 {
                     string iconPath = modification.Value as string;
+                    if(string.IsNullOrEmpty(iconPath))
+                    {
+                        continue;
+                    }
+
                     Stream stream = null;
                     if (!IsTest)
                     {

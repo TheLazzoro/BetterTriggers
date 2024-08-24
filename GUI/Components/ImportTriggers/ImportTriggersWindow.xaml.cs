@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
+using BetterTriggers.Logging;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -111,6 +113,9 @@ namespace GUI
             }
             catch (Exception ex)
             {
+                LoggingService service = new LoggingService();
+                Task.Factory.StartNew(() => service.SubmitError_Async(ex, "-- LOGGED BY SYSTEM --"));
+
                 Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", ex.Message);
                 messageBox.ShowDialog();
             }
@@ -138,7 +143,7 @@ namespace GUI
                     triggerControl.checkBoxList.IsEnabled = false;
                     triggerControl.checkBoxRunOnMapInit.IsEnabled = false;
                     triggerControl.textBoxComment.IsReadOnly = true;
-                    
+
                     var trigger = explorerElement.trigger;
                     trigger.Events.IsEnabledTreeItem = false;
                     trigger.Conditions.IsEnabledTreeItem = false;
@@ -201,26 +206,29 @@ namespace GUI
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            //try
-            //{
-                TriggerConverter triggerConverter = new TriggerConverter(mapPath, Project.CurrentProject.GetFullMapPath());
+            TriggerConverter triggerConverter = new TriggerConverter(mapPath, Project.CurrentProject.GetFullMapPath());
+            try
+            {
                 triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
                 triggerConverter.WriteConvertedTriggers(elementsToImport);
                 worker.ReportProgress(100);
                 triggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
-            //}
-            //catch (Exception ex)
-            //{
-            //    errorMsg = ex.Message;
-            //    worker.ReportProgress(-1);
-            //    TriggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
-            //}
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                worker.ReportProgress(-1);
+                triggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
+
+                LoggingService service = new LoggingService();
+                Task.Factory.StartNew(() => service.SubmitError_Async(ex, "-- LOGGED BY SYSTEM --"));
+            }
         }
 
         private void TriggerConverter_OnExplorerElementImported(string fullPath)
         {
             itemsImported.Add(fullPath);
-            float percent = (float)itemsImported.Count / elementsToImport.Count * 100; 
+            float percent = (float)itemsImported.Count / elementsToImport.Count * 100;
             worker.ReportProgress((int)percent);
         }
 

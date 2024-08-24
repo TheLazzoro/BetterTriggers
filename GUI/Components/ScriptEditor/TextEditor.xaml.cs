@@ -32,6 +32,8 @@ namespace GUI.Components
         {
             InitializeComponent();
 
+            this.language = language;
+
             EditorSettings settings = EditorSettings.Load();
             this.avalonEditor.Margin = new Thickness(0, 0, 0, 0);
             this.avalonEditor.SetResourceReference(TextEditor.BackgroundProperty, "TexteditorBackground");
