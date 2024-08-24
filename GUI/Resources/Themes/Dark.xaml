@@ -5,6 +5,7 @@
     <Color x:Key="textColor2">#eee</Color>
     <Color x:Key="textColorDim">#999</Color>
     <Color x:Key="textErrorColor">#FFFF5454</Color>
+    <Color x:Key="textWarningColor">#FFAA54</Color>
     <Color x:Key="textBlockColor">#aaa</Color>
     <Color x:Key="separatorColor">#555</Color>
     <Color x:Key="backgroundDarkColor">#282828</Color>
@@ -89,6 +90,7 @@
     <SolidColorBrush x:Key="TextBrush2" Color="{DynamicResource textColor2}" />
     <SolidColorBrush x:Key="TextBrushDim" Color="{DynamicResource textColorDim}" />
     <SolidColorBrush x:Key="TextErrorBrush" Color="{DynamicResource textErrorColor}" />
+    <SolidColorBrush x:Key="TextWarningBrush" Color="{DynamicResource textWarningColor}" />
     <SolidColorBrush x:Key="TextBlockBrush" Color="{DynamicResource textBlockColor}" />
     <SolidColorBrush x:Key="SeparatorBrush" Color="{DynamicResource separatorColor}" />
     <SolidColorBrush x:Key="BackgroundDark" Color="{DynamicResource backgroundDarkColor}" />

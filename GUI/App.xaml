@@ -849,7 +849,6 @@
                 <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
                 <Setter Property="Background" Value="{DynamicResource CheckboxBackground}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource CheckboxBackgroundBorder}"/>
-                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="BorderThickness" Value="1"/>
@@ -887,6 +886,9 @@
                                     <Setter Property="Fill" TargetName="optionMark" Value="{DynamicResource CheckboxGlyphDisabled}"/>
                                     <Setter Property="Fill" TargetName="indeterminateMark" Value="{DynamicResource CheckboxGlyphDisabled}"/>
                                     <Setter Property="Foreground" Value="{DynamicResource TextBrushDim}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="true">
                                     <Setter Property="Background" TargetName="checkBoxBorder" Value="{DynamicResource CheckboxBackground}"/>
