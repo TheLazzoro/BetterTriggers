@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BetterTriggers.WorldEdit.GameDataReader;
+using System;
 
 namespace BetterTriggers.Logging
 {
@@ -6,6 +7,7 @@ namespace BetterTriggers.Logging
     {
         public string Message { get; set; }
         public Version AppVersion { get; set; }
+        public Version GameVersion { get; set; }
 
         public IssueDTO(string message)
         {
@@ -15,6 +17,7 @@ namespace BetterTriggers.Logging
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
             AppVersion = new Version(version);
+            GameVersion = WarcraftStorageReader.GameVersion;
         }
     }
 }

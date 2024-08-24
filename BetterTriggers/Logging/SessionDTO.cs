@@ -10,5 +10,7 @@ namespace BetterTriggers.Logging
     {
         public string MachineName { get; set; }
         public string SystemLanguage { get; set; }
+        public Version AppVersion { get; set; }
+        public Version GameVersion { get; set; }
     }
 }

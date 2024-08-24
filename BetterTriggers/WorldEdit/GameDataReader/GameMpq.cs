@@ -21,10 +21,19 @@ namespace BetterTriggers.WorldEdit.GameDataReader
         public (bool, string) Load(string path)
         {
             string war3exe = Path.Combine(path, "Warcraft III.exe");
-            var info = FileVersionInfo.GetVersionInfo(war3exe);
-            WarcraftStorageReader.GameVersion = new Version(info.FileVersion.Replace(" ", string.Empty).Replace(',', '.'));
-
             string errorMsg = string.Empty;
+
+            try
+            {
+                var info = FileVersionInfo.GetVersionInfo(war3exe);
+                WarcraftStorageReader.GameVersion = new Version(info.FileVersion.Replace(" ", string.Empty).Replace(',', '.'));
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                return (false, errorMsg);
+            }
+
             try
             {
                 archives = new Dictionary<string, MpqArchive>();
@@ -67,7 +76,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public Stream Open(string path, string archiveName = null)
         {
-            if(archiveName != null)
+            if (archiveName != null)
             {
                 foreach (var archive in archives)
                 {

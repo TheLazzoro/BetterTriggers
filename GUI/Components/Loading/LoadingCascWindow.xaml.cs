@@ -54,7 +54,16 @@ namespace GUI.Components.Loading
             BetterTriggers.Init.OnNextData += Init_NextData;
 
             string error;
-            (isStorageValid, error) = WarcraftStorageReader.Load();
+            try
+            {
+                (isStorageValid, error) = WarcraftStorageReader.Load();
+            }
+            catch (Exception)
+            {
+                (sender as BackgroundWorker).ReportProgress(0);
+                BetterTriggers.Init.OnNextData -= Init_NextData;
+                return;
+            }
             if (isStorageValid)
             {
                 try

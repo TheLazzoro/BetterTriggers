@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BetterTriggers.WorldEdit.GameDataReader;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace BetterTriggers.Logging
         public string StackTrace { get; set; }
         public string TargetSite { get; set; }
         public Version AppVersion { get; set; }
+        public Version GameVersion { get; set; }
 
         internal ErrorDTO(Exception e)
         {
@@ -27,6 +29,7 @@ namespace BetterTriggers.Logging
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
             AppVersion = new Version(version);
+            GameVersion = WarcraftStorageReader.GameVersion;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BetterTriggers.WorldEdit.GameDataReader;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,11 +28,18 @@ namespace BetterTriggers.Logging
         {
             try
             {
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetEntryAssembly();
+                System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+                string version = fvi.FileVersion;
+                var AppVersion = new Version(version);
+
                 CultureInfo ci = CultureInfo.InstalledUICulture;
                 var dto = new SessionDTO
                 {
                     MachineName = Environment.MachineName,
                     SystemLanguage = ci.Name,
+                    AppVersion = AppVersion,
+                    GameVersion = WarcraftStorageReader.GameVersion,
                 };
                 var client = new HttpClient();
                 var json = JsonConvert.SerializeObject(dto);
