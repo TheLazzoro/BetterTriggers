@@ -36,13 +36,12 @@ namespace BetterTriggers.Utility
             {
                 var blp = new BlpFile(stream);
                 var bitmapSource = blp.GetBitmapSource();
-                JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-                encoder.QualityLevel = 100;
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
                 using (MemoryStream ms = new MemoryStream())
                 {
                     encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
                     encoder.Save(ms);
-                    return ms.ToArray(); ;
+                    return ms.ToArray();
                 }
             }
             else if (format.StartsWith("DDS"))

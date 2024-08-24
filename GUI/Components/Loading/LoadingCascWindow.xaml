@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label x:Name="lblInfo" Content="Verifying CASC..." Grid.Column="1" VerticalAlignment="Bottom" Foreground="{StaticResource TextBrush2}"/>
+        <Label x:Name="lblInfo" Content="Verifying Warcraft III installation..." Grid.Column="1" VerticalAlignment="Bottom" Foreground="{StaticResource TextBrush2}"/>
         <ProgressBar Grid.Column="1" Grid.Row="1" IsIndeterminate="True" />
         <Label x:Name="lblInfo2" Content="" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Foreground="{StaticResource TextBrush2}"/>
         

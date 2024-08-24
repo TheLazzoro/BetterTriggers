@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
@@ -11,10 +12,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -54,7 +57,7 @@ namespace BetterTriggers.WorldEdit
             return doodads.Select(kvp => kvp.Value).ToList();
         }
 
-        internal static DoodadType GetDoodadType(string doodcode) 
+        internal static DoodadType GetDoodadType(string doodcode)
         {
             DoodadType doodad;
             doodadsCustom.TryGetValue(doodcode, out doodad);
@@ -84,11 +87,17 @@ namespace BetterTriggers.WorldEdit
             return doodType.DisplayName;
         }
 
-        internal static void LoadFromCASC(bool isTest)
+        internal static void LoadFromGameStorage(bool isTest)
         {
             doodads = new Dictionary<string, DoodadType>();
 
             string text;
+
+            if (!isTest && WarcraftStorageReader.GameVersion < new Version(1, 32))
+            {
+                LoadFromMpq();
+                return;
+            }
 
             if (isTest)
             {
@@ -100,9 +109,7 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var folderDoodads = (CASCFolder)Casc.GetWar3ModFolder().Entries["doodads"];
-                CASCFile doodadSkins = (CASCFile)folderDoodads.Entries["doodadskins.txt"];
-                using (Stream doodadskin = Casc.GetCasc().OpenFile(doodadSkins.FullName))
+                using (Stream doodadskin = WarcraftStorageReader.OpenFile(@"doodads\doodadskins.txt"))
                 {
                     var reader = new StreamReader(doodadskin);
                     text = reader.ReadToEnd();
@@ -127,6 +134,30 @@ namespace BetterTriggers.WorldEdit
                     Model = model,
                 };
                 doodads.Add(id, doodad);
+            }
+        }
+
+        private static void LoadFromMpq()
+        {
+            SylkParser sylkParser = new SylkParser();
+            SylkTable table;
+            using (Stream doodads = WarcraftStorageReader.OpenFile(@"doodads\doodads.slk"))
+            {
+                table = sylkParser.Parse(doodads);
+            }
+
+            var count = table.Count();
+            for (int i = 1; i < count; i++)
+            {
+                var row = table.ElementAt(i);
+                var doodad = new DoodadType()
+                {
+                    DoodCode = (string)row.GetValue(0),
+                    Model = (string)row.GetValue(4),
+                    DisplayName = Locale.Translate((string)row.GetValue(6)),
+                };
+
+                doodads.Add(doodad.DoodCode, doodad);
             }
         }
 

@@ -1,7 +1,5 @@
-﻿using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.WorldEdit;
 using System;
-using System.IO;
 
 namespace BetterTriggers
 {
@@ -34,25 +32,25 @@ namespace BetterTriggers
 
             NextData = "Units";
             OnNextData?.Invoke();
-            UnitTypes.LoadFromCASC(isTest);
+            UnitTypes.LoadFromGameStorage(isTest);
             NextData = "Abilities";
             OnNextData?.Invoke();
-            AbilityTypes.LoadFromCASC(isTest);
+            AbilityTypes.LoadFromGameStorage(isTest);
             NextData = "Buffs";
             OnNextData?.Invoke();
-            BuffTypes.LoadFromCASC(isTest);
+            BuffTypes.LoadFromGameStorage(isTest);
             NextData = "Destructibles";
             OnNextData?.Invoke();
-            DestructibleTypes.LoadFromCASC(isTest);
+            DestructibleTypes.LoadFromGameStorage(isTest);
             NextData = "Doodads";
             OnNextData?.Invoke();
-            DoodadTypes.LoadFromCASC(isTest);
+            DoodadTypes.LoadFromGameStorage(isTest);
             NextData = "Items";
             OnNextData?.Invoke();
-            ItemTypes.LoadFromCASC(isTest);
+            ItemTypes.LoadFromGameStorage(isTest);
             NextData = "Upgrades";
             OnNextData?.Invoke();
-            UpgradeTypes.LoadFromCASC(isTest);
+            UpgradeTypes.LoadFromGameStorage(isTest);
 
             NextData = "Misc Data";
             OnNextData?.Invoke();

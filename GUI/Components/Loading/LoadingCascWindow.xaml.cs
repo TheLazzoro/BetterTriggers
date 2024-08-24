@@ -1,5 +1,6 @@
-﻿using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components.Setup;
+using System;
 using System.ComponentModel;
 using System.Windows;
 
@@ -7,7 +8,7 @@ namespace GUI.Components.Loading
 {
     public partial class LoadingCascWindow : Window
     {
-        bool isCascValid = false;
+        bool isStorageValid = false;
         BackgroundWorker workerVerify;
 
         public LoadingCascWindow()
@@ -26,12 +27,7 @@ namespace GUI.Components.Loading
 
         private void WorkerVerify_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            /*
-            if(e.ProgressPercentage == 0)
-                lblInfo.Content = "Loading CASC data...";
-            */
-
-            if(e.ProgressPercentage == 0)
+            if (e.ProgressPercentage == 0)
             {
                 SetupWindow window = new SetupWindow();
                 window.Show();
@@ -45,7 +41,7 @@ namespace GUI.Components.Loading
             {
                 lblInfo2.Content = BetterTriggers.Init.NextData + "...";
             }
-            else if(e.ProgressPercentage == 100)
+            else if (e.ProgressPercentage == 100)
             {
                 MainWindow window = new MainWindow();
                 window.Show();
@@ -58,12 +54,19 @@ namespace GUI.Components.Loading
             BetterTriggers.Init.OnNextData += Init_NextData;
 
             string error;
-            (isCascValid, error) = Casc.Load();
-            if(isCascValid)
+            (isStorageValid, error) = WarcraftStorageReader.Load();
+            if (isStorageValid)
             {
-                (sender as BackgroundWorker).ReportProgress(50);
-                BetterTriggers.Init.Initialize(false);
-                (sender as BackgroundWorker).ReportProgress(100);
+                try
+                {
+                    (sender as BackgroundWorker).ReportProgress(50);
+                    BetterTriggers.Init.Initialize(false);
+                    (sender as BackgroundWorker).ReportProgress(100);
+                }
+                catch (Exception)
+                {
+                    (sender as BackgroundWorker).ReportProgress(0);
+                }
             }
             else
                 (sender as BackgroundWorker).ReportProgress(0);

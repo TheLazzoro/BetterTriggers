@@ -95,6 +95,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void textBoxAsset_TextChanged(object sender, TextChangedEventArgs e)
         {
+            textblockError.Text = string.Empty;
             try
             {
                 var bitmap = Icon.Get(textBoxAsset.Text);
@@ -104,8 +105,8 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             }
             catch (Exception ex)
             {
-                Dialogs.MessageBox messageBox = new Dialogs.MessageBox("Error", ex.Message);
-                messageBox.ShowDialog();
+                textblockError.Text = "Could not read image";
+                imgPreview.Source = null;
             }
         }
     }

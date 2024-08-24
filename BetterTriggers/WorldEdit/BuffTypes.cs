@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Models.War3Data;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void LoadFromCASC(bool isTest)
+        internal static void LoadFromGameStorage(bool isTest)
         {
             buffs = new Dictionary<string, BuffType>();
 
@@ -93,14 +94,7 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                /* TODO:
-                 * We are loading too many buffs from this.
-                 * There are 'buffs' for other stuff which are not
-                 * actual buffs that show up in the object editor.
-                */
-                CASCFile abilityData = (CASCFile)units.Entries["abilitybuffdata.slk"];
-                buffdata = Casc.GetCasc().OpenFile(abilityData.FullName);
+                buffdata = WarcraftStorageReader.OpenFile(@"units\abilitybuffdata.slk");
             }
 
             SylkParser sylkParser = new SylkParser();

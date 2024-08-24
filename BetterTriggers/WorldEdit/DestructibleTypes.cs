@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
@@ -10,10 +11,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -91,7 +94,7 @@ namespace BetterTriggers.WorldEdit
             return name;
         }
 
-        internal static void LoadFromCASC(bool isTest)
+        internal static void LoadFromGameStorage(bool isTest)
         {
             destructibles = new Dictionary<string, DestructibleType>();
 
@@ -99,6 +102,12 @@ namespace BetterTriggers.WorldEdit
             SylkTable table;
             StreamReader reader;
             string text;
+
+            if (!isTest && WarcraftStorageReader.GameVersion < new Version(1, 32))
+            {
+                LoadFromMpq();
+                return;
+            }
 
             if (isTest)
             {
@@ -112,11 +121,8 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var cascFolder = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                CASCFile destSkins = (CASCFile)cascFolder.Entries["destructableskin.txt"];
-                CASCFile destData = (CASCFile)cascFolder.Entries["destructabledata.slk"];
-                using (Stream destructibleskin = Casc.GetCasc().OpenFile(destSkins.FullName))
-                using (Stream destructibleDataSLK = Casc.GetCasc().OpenFile(destData.FullName))
+                using (Stream destructibleskin = WarcraftStorageReader.OpenFile(@"units\destructableskin.txt"))
+                using (Stream destructibleDataSLK = WarcraftStorageReader.OpenFile(@"units\destructabledata.slk"))
                 {
                     table = sylkParser.Parse(destructibleDataSLK);
                     reader = new StreamReader(destructibleskin);
@@ -149,6 +155,33 @@ namespace BetterTriggers.WorldEdit
                 var section = data[destType.DestCode];
                 string model = section["file"];
                 destType.Model = model;
+            }
+        }
+
+        private static void LoadFromMpq()
+        {
+            SylkParser sylkParser = new SylkParser();
+            SylkTable table;
+            StreamReader reader;
+
+            using (Stream destructibleDataSLK = WarcraftStorageReader.OpenFile(@"units\destructabledata.slk"))
+            {
+                table = sylkParser.Parse(destructibleDataSLK);
+            }
+
+            int count = table.Count();
+            for (int i = 1; i < count; i++)
+            {
+                var row = table.ElementAt(i);
+                DestructibleType destType = new DestructibleType()
+                {
+                    DestCode = (string)row.GetValue(0),
+                    Model = (string)row.GetValue(4),
+                    DisplayName = Locale.Translate((string)row.GetValue(10)),
+                    EditorSuffix = Locale.Translate((string)row.GetValue(11)),
+                };
+
+                destructibles.TryAdd(destType.DestCode, destType);
             }
         }
 

@@ -1,8 +1,10 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Threading;
 using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
+using War3Net.IO.Slk;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -82,12 +85,18 @@ namespace BetterTriggers.WorldEdit
             return itemType.DisplayName;
         }
 
-        internal static void LoadFromCASC(bool isTest)
+        internal static void LoadFromGameStorage(bool isTest)
         {
             items = new Dictionary<string, ItemType>();
 
             Stream itemskin;
             Stream itemfunc;
+
+            if (!isTest && WarcraftStorageReader.GameVersion < new Version(1, 32))
+            {
+                LoadFromMpq();
+                return;
+            }
 
             if (isTest)
             {
@@ -96,11 +105,8 @@ namespace BetterTriggers.WorldEdit
             }
             else
             {
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["units"];
-                CASCFile itemSkins = (CASCFile)units.Entries["itemskin.txt"];
-                CASCFile itemfuncs = (CASCFile)units.Entries["itemfunc.txt"];
-                itemskin = Casc.GetCasc().OpenFile(itemSkins.FullName);
-                itemfunc = Casc.GetCasc().OpenFile(itemfuncs.FullName);
+                itemskin = WarcraftStorageReader.OpenFile(@"units\itemskin.txt");
+                itemfunc = WarcraftStorageReader.OpenFile(@"units\itemfunc.txt");
             }
 
 
@@ -143,6 +149,50 @@ namespace BetterTriggers.WorldEdit
 
             itemfunc.Close();
 
+        }
+
+        private static void LoadFromMpq()
+        {
+            SylkParser sylkParser = new SylkParser();
+            SylkTable table;
+            Stream itemfunc;
+
+            itemfunc = WarcraftStorageReader.OpenFile(@"units\itemfunc.txt");
+            using (Stream itemData = WarcraftStorageReader.OpenFile(@"units\itemdata.slk"))
+            {
+                table = sylkParser.Parse(itemData);
+            }
+
+            var count = table.Count();
+            for (int i = 1; i < count; i++)
+            {
+                var row = table.ElementAt(i);
+                var id = (string)row.GetValue(0);
+                var item = new ItemType()
+                {
+                    ItemCode = id,
+                    DisplayName = Locale.GetDisplayName(id),
+                    Model = (string)row.GetValue(28),
+                };
+                items.TryAdd(item.ItemCode, item);
+            }
+
+            // --- Itemfunc (art) --- //
+
+            var reader = new StreamReader(itemfunc);
+            var text = reader.ReadToEnd();
+            var data = IniFileConverter.GetIniData(text);
+            var sections = data.Sections.GetEnumerator();
+            while (sections.MoveNext())
+            {
+                string sectionName = sections.Current.SectionName;
+                var keys = sections.Current.Keys;
+                string path = keys["Art"];
+                if (path != null)
+                    new Icon(path, ItemTypes.GetName(sectionName), "Item");
+            }
+
+            itemfunc.Close();
         }
 
         internal static void Load()

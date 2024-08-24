@@ -13,6 +13,7 @@ using War3Net.Build;
 using War3Net.IO.Mpq;
 using JassObfuscator;
 using War3Net.IO.Compression;
+using BetterTriggers.WorldEdit.GameDataReader;
 
 namespace BetterTriggers.TestMap
 {
@@ -43,7 +44,7 @@ namespace BetterTriggers.TestMap
         /// Builds an MPQ archive.
         /// Throws <see cref="Exception"/> and <see cref="ContainsBTDataException"/> on errors.
         /// </summary>
-        public void BuildMap(string destinationDir = null, bool includeMPQSettings = false)
+        public void BuildMap(string destinationDir = null, bool includeMPQSettings = false, bool isTest = false)
         {
             EditorSettings settings = EditorSettings.Load();
             (bool wasVerified, string script) = GenerateScript();
@@ -65,7 +66,7 @@ namespace BetterTriggers.TestMap
             map.Info.ScriptLanguage = _language;
             map.Script = script;
 
-            if (settings.Export_IncludeTriggerData)
+            if (settings.Export_IncludeTriggerData && isTest == false)
             {
                 var bt2we = new BT2WE(map);
                 bt2we.Convert();
@@ -83,7 +84,7 @@ namespace BetterTriggers.TestMap
             }
 
             // MPQ protection
-            if (includeMPQSettings)
+            if (includeMPQSettings && isTest == false)
             {
                 if (settings.Export_RemoveTriggerData)
                 {
@@ -93,9 +94,9 @@ namespace BetterTriggers.TestMap
             }
 
             ushort blockSize = 3;
-            if (settings.Export_Compress)
+            if (settings.Export_Compress && isTest == false)
                 blockSize = 8;
-            if (settings.Export_Compress && settings.Export_Compress_Advanced)
+            if (settings.Export_Compress && settings.Export_Compress_Advanced && isTest == false)
                 blockSize = settings.Export_Compress_BlockSize;
 
             var archiveCreateOptions = new MpqArchiveCreateOptions
@@ -136,7 +137,7 @@ namespace BetterTriggers.TestMap
             if (!didWrite)
                 throw err;
 
-            if (includeMPQSettings)
+            if (includeMPQSettings && isTest == false)
             {
                 if (settings.Export_RemoveListfile)
                 {
@@ -166,17 +167,18 @@ namespace BetterTriggers.TestMap
         public void TestMap()
         {
             string destinationDir = Path.GetTempPath();
-            try
-            {
-                BuildMap(destinationDir);
-            }
-            catch (Exception)
-            {
-                return;
-            }
+            BuildMap(destinationDir, isTest: true);
 
             EditorSettings settings = EditorSettings.Load();
             string war3Exe = Path.Combine(settings.war3root, "_retail_/x86_64/Warcraft III.exe");
+            if (!File.Exists(war3Exe))
+            {
+                war3Exe = Path.Combine(settings.war3root, "x86_64/Warcraft III.exe");
+            }
+            if (!File.Exists(war3Exe))
+            {
+                war3Exe = Path.Combine(settings.war3root, "Warcraft III.exe");
+            }
 
             int difficulty = settings.Difficulty;
             string windowMode;
@@ -198,14 +200,40 @@ namespace BetterTriggers.TestMap
             int fixedseed = settings.FixedRandomSeed == true ? 1 : 0;
             string nowfpause = settings.NoWindowsFocusPause == true ? "-nowfpause " : "";
 
-            string launchArgs = $"-launch " +
-                $"-mapdiff {difficulty} " +
-                $"-windowmode {windowMode} " +
-                $"-hd {hd} " +
-                $"-teen {teen} " +
-                $"-testmapprofile {playerProfile} " +
-                $"-fixedseed {fixedseed} " +
-                $"{nowfpause}";
+            string launchArgs = string.Empty;
+            if (WarcraftStorageReader.GameVersion >= new Version(1, 32))
+            {
+                launchArgs += "-launch ";
+                launchArgs += $"-windowmode {windowMode} ";
+                launchArgs += $"-hd {hd} ";
+                launchArgs += $"-teen {teen} ";
+                launchArgs += $"{nowfpause}";
+                launchArgs += $"-mapdiff {difficulty} ";
+                launchArgs += $"-testmapprofile {playerProfile} ";
+                launchArgs += $"-fixedseed {fixedseed} ";
+            }
+            else if(WarcraftStorageReader.GameVersion >= new Version(1, 31))
+            {
+                launchArgs += $"-windowmode {windowMode} ";
+                launchArgs += nowfpause;
+            }
+            else
+            {
+                switch (settings.WindowMode)
+                {
+                    case 0:
+                        launchArgs += "-window ";
+                        break;
+                    case 1:
+                        launchArgs += "-fullscreen ";
+                        break;
+                    default:
+                        launchArgs += "-nativefullscr ";
+                        break;
+                }
+
+                launchArgs += nowfpause;
+            }
 
             Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{archivePath}\"");
         }

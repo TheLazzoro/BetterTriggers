@@ -2,7 +2,6 @@
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
 using CASCLib;
 using IniParser.Model;
 using IniParser.Parser;
@@ -17,6 +16,8 @@ using System.Text.RegularExpressions;
 using BetterTriggers.Containers;
 using War3Net.Common.Extensions;
 using System.Windows.Documents;
+using BetterTriggers.WorldEdit.GameDataReader;
+using System.Windows.Input;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -78,7 +79,7 @@ namespace BetterTriggers.WorldEdit
             else
             {
                 string baseDir = Directory.GetCurrentDirectory() + "\\Resources\\JassHelper\\";
-                if(!Directory.Exists(baseDir))
+                if (!Directory.Exists(baseDir))
                 {
                     Directory.CreateDirectory(baseDir);
                 }
@@ -89,27 +90,10 @@ namespace BetterTriggers.WorldEdit
                 ScriptGenerator.PathBlizzardJ = pathBlizzardJ;
                 ScriptGenerator.JassHelper = $"{System.IO.Directory.GetCurrentDirectory()}\\Resources\\JassHelper\\jasshelper.exe";
 
-                var units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-                CASCFile commonJ = (CASCFile)units.Entries["common.j"];
-                Casc.SaveFile(commonJ, pathCommonJ);
-                units = (CASCFolder)Casc.GetWar3ModFolder().Entries["scripts"];
-                CASCFile blizzardJ = (CASCFile)units.Entries["Blizzard.j"];
-                Casc.SaveFile(blizzardJ, pathBlizzardJ);
+                WarcraftStorageReader.Export(@"scripts\common.j", pathCommonJ);
+                WarcraftStorageReader.Export(@"scripts\Blizzard.j", pathBlizzardJ);
 
-                var jasshelperFolder = (CASCFolder)Casc.Getx86Folder().Entries["jasshelper"];
-                foreach (var item in jasshelperFolder.Entries)
-                {
-                    string path = Path.Combine(baseDir, item.Key);
-                    if (!File.Exists(path))
-                    {
-                        Casc.SaveFile((CASCFile)item.Value, path);
-                    }
-                }
-
-
-                var ui = (CASCFolder)Casc.GetWar3ModFolder().Entries["ui"];
-                CASCFile triggerData = (CASCFile)ui.Entries["triggerdata.txt"];
-                var file = Casc.GetCasc().OpenFile(triggerData.FullName);
+                var file = WarcraftStorageReader.OpenFile(@"ui\triggerdata.txt");
                 var reader = new StreamReader(file);
                 var text = reader.ReadToEnd();
 
@@ -118,8 +102,7 @@ namespace BetterTriggers.WorldEdit
                 // --- TRIGGER CATEGORIES --- //
 
                 var triggerCategories = data.Sections["TriggerCategories"];
-                var replText = (CASCFolder)Casc.GetWar3ModFolder().Entries["replaceabletextures"];
-                var worldEditUI = (CASCFolder)replText.Entries["worldeditui"];
+                string imageExt = WarcraftStorageReader.ImageExt;
                 foreach (var category in triggerCategories)
                 {
                     string[] values = category.Value.Split(",");
@@ -128,15 +111,22 @@ namespace BetterTriggers.WorldEdit
                         continue;
 
                     string WE_STRING = values[0];
-                    string texturePath = Path.GetFileName(values[1] + ".dds");
+                    string texturePath = Path.GetFileName(values[1] + imageExt);
                     bool shouldDisplay = true;
                     if (values.Length == 3)
                         shouldDisplay = false;
 
-                    CASCFile icon = (CASCFile)worldEditUI.Entries[texturePath];
-                    Stream stream = Casc.GetCasc().OpenFile(icon.FullName);
-                    byte[] image = new byte[stream.Length];
-                    stream.CopyTo(image, 0, (int)stream.Length);
+                    Stream stream = WarcraftStorageReader.OpenFile(Path.Combine(@"replaceabletextures\worldeditui", texturePath));
+                    byte[] image;
+                    if (imageExt == ".blp")
+                    {
+                        image = Images.ReadImage(stream);
+                    }
+                    else
+                    {
+                        image = new byte[stream.Length];
+                        stream.CopyTo(image, 0, (int)stream.Length);
+                    }
 
                     Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
                 }
@@ -192,7 +182,8 @@ namespace BetterTriggers.WorldEdit
 
 
 
-            LoadTriggerDataFromIni(data);
+            LoadTriggerDataFromIni(data, isTest);
+            LoadTranslations(isTest);
 
 
             // --- LOAD CUSTOM DATA --- //
@@ -206,7 +197,7 @@ namespace BetterTriggers.WorldEdit
 
             var textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom.txt"));
             var dataCustom = IniFileConverter.GetIniData(textCustom);
-            LoadTriggerDataFromIni(dataCustom);
+            LoadTriggerDataFromIni(dataCustom, isTest);
 
             textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom.txt"));
             dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -215,11 +206,11 @@ namespace BetterTriggers.WorldEdit
 
             // --- Loads depending on version --- //
 
-            if (Casc.GameVersion.Minor >= 31)
+            if (WarcraftStorageReader.GameVersion.Minor >= 31)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
-                LoadTriggerDataFromIni(dataCustom);
+                LoadTriggerDataFromIni(dataCustom, isTest);
 
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -228,17 +219,17 @@ namespace BetterTriggers.WorldEdit
                 customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt"));
                 customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt"));
             }
-            if (Casc.GameVersion.Minor >= 32)
+            if (WarcraftStorageReader.GameVersion.Minor >= 32)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_32.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
-                LoadTriggerDataFromIni(dataCustom);
+                LoadTriggerDataFromIni(dataCustom, isTest);
             }
-            if (Casc.GameVersion.Minor >= 33)
+            if (WarcraftStorageReader.GameVersion.Minor >= 33)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_33.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
-                LoadTriggerDataFromIni(dataCustom);
+                LoadTriggerDataFromIni(dataCustom, isTest);
 
                 //textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom_33.txt"));
                 //dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -278,7 +269,52 @@ namespace BetterTriggers.WorldEdit
             });
         }
 
-        private static void LoadTriggerDataFromIni(IniData data)
+        private static void LoadTranslations(bool isTest)
+        {
+            if (isTest)
+            {
+                return;
+            }
+
+            string file;
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+            {
+                file = WarcraftStorageReader.ReadAllText(@"_locales\enus.w3mod\ui\triggerstrings.txt", "War3xLocal.mpq");
+            }
+            else if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30 && WarcraftStorageReader.GameVersion < WarcraftVersion._1_31)
+            {
+                file = WarcraftStorageReader.ReadAllText_Local_1_30(@"ui\triggerstrings.txt");
+            }
+            else
+            {
+                file = WarcraftStorageReader.ReadAllText(@"ui\triggerstrings.txt", "War3xLocal.mpq");
+            }
+
+            var iniData = new Utility.IniParser.IniData(file);
+            foreach (var section in iniData.Sections.Values)
+            {
+                string lastKeyword = string.Empty;
+                foreach (var key in section.Keys)
+                {
+                    FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
+                    if (functionTemplate == null)
+                    {
+                        continue;
+                    }
+                    else if (key.Key == lastKeyword)
+                    {
+                        functionTemplate.paramText = key.Value.Replace("\"", "");
+                        ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
+                        continue;
+                    }
+
+                    lastKeyword = key.Key;
+                    functionTemplate.name = key.Value.Replace("\"", "");
+                }
+            }
+        }
+
+        private static void LoadTriggerDataFromIni(IniData data, bool isTest)
         {
 
             // --- TRIGGER TYPES (GUI VARIABLE TYPE DEFINITIONS) --- //
@@ -288,12 +324,27 @@ namespace BetterTriggers.WorldEdit
             {
                 string[] values = type.Value.Split(",");
                 string key = type.KeyName;
-                bool canBeGlobal = values[1] == "1" ? true : false;
-                bool canBeCompared = values[2] == "1" ? true : false;
-                string displayName = values[3];
+                bool canBeGlobal;
+                bool canBeCompared;
+                string displayName;
                 string baseType = null;
-                if (values.Length >= 5)
-                    baseType = values[4];
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_28)
+                {
+                    canBeGlobal = values[1] == "1" ? true : false;
+                    canBeCompared = values[2] == "1" ? true : false;
+                    displayName = values[3];
+                    if (values.Length >= 5)
+                        baseType = values[4];
+                }
+                else
+                {
+                    canBeGlobal = values[0] == "1" ? true : false;
+                    canBeCompared = values[1] == "1" ? true : false;
+                    displayName = values[2];
+                    if (values.Length >= 4)
+                        baseType = values[3];
+                }
+
 
                 Types.Create(key, canBeGlobal, canBeCompared, displayName, baseType);
             }
@@ -308,9 +359,21 @@ namespace BetterTriggers.WorldEdit
                 string[] values = preset.Value.Split(",");
                 string key = preset.KeyName;
 
-                string variableType = values[1];
-                string codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
-                string displayText = Locale.Translate(values[3]);
+                string variableType;
+                string codeText;
+                string displayText;
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_28)
+                {
+                    variableType = values[1];
+                    codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
+                    displayText = Locale.Translate(values[3]);
+                }
+                else
+                {
+                    variableType = values[0];
+                    codeText = values[1].Replace("\"", "").Replace("`", "").Replace("|", "\"");
+                    displayText = Locale.Translate(values[2]);
+                }
 
                 PresetTemplate presetTemplate = new PresetTemplate()
                 {
@@ -335,6 +398,8 @@ namespace BetterTriggers.WorldEdit
             LoadFunctions(data, "TriggerConditions", ConditionTemplates, TriggerElementType.Condition);
             LoadFunctions(data, "TriggerActions", ActionTemplates, TriggerElementType.Action);
             LoadFunctions(data, "TriggerCalls", CallTemplates, TriggerElementType.None);
+
+
 
             // --- INIT DEFAULTS --- //
             foreach (var function in Defaults)
@@ -459,7 +524,10 @@ namespace BetterTriggers.WorldEdit
                     }
                     else if (sectionName == "TriggerCalls")
                     {
-                        returnType = _params[2];
+                        if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_28)
+                            returnType = _params[2];
+                        else
+                            returnType = _params[1];
                         for (int i = 3; i < _params.Length; i++)
                         {
                             parameters.Add(new ParameterTemplate() { returnType = _params[i] });
@@ -472,7 +540,7 @@ namespace BetterTriggers.WorldEdit
                     functionTemplate.value = key;
                     functionTemplate.parameters = parameters;
                     functionTemplate.returnType = returnType;
-                    if(isBT)
+                    if (isBT)
                     {
                         btOnlyData.Add(key);
                     }
@@ -870,7 +938,7 @@ namespace BetterTriggers.WorldEdit
         {
             FunctionTemplate functionTemplate;
             FunctionsAll.TryGetValue(key, out functionTemplate);
-            if(functionTemplate == null)
+            if (functionTemplate == null)
             {
                 return string.Empty;
             }

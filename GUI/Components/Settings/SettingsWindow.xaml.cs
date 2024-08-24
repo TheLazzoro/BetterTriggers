@@ -1,5 +1,6 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Models.EditorData;
+using BetterTriggers.WorldEdit.GameDataReader;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -34,6 +35,21 @@ namespace GUI.Components.Settings
                 int itemIndex = comboboxScriptFont.Items.Add(fontFamily.Source);
                 if (settings.textEditorFontStyle == fontFamily.Source)
                     comboboxScriptFont.SelectedIndex = itemIndex;
+            }
+
+            if(WarcraftStorageReader.GameVersion < WarcraftVersion._1_32)
+            {
+                lblError.Visibility = Visibility.Visible;
+                comboboxDiff.IsEnabled = false;
+                comboboxAssetMode.IsEnabled = false;
+                comboboxTeenData.IsEnabled = false;
+                textBoxPlayerProfile.IsEnabled = false;
+                checkBoxFixedSeed.IsEnabled = false;
+
+                lblDiff.Foreground = (SolidColorBrush)Application.Current.FindResource("TextBrushDim");
+                lblAssetMode.Foreground = (SolidColorBrush)Application.Current.FindResource("TextBrushDim");
+                lblTeenData.Foreground = (SolidColorBrush)Application.Current.FindResource("TextBrushDim");
+                lblPlayerProfile.Foreground = (SolidColorBrush)Application.Current.FindResource("TextBrushDim");
             }
         }
 

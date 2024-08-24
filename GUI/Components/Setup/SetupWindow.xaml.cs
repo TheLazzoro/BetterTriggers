@@ -1,5 +1,5 @@
 ﻿using BetterTriggers;
-using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components.Dialogs;
 using GUI.Components.Loading;
 using System;
@@ -39,7 +39,7 @@ namespace GUI.Components.Setup
 
             bool validCasc;
             string errorMsg;
-            (validCasc, errorMsg) = Casc.Load();
+            (validCasc, errorMsg) = WarcraftStorageReader.Load();
             if (validCasc)
             {
                 LoadingCascWindow window = new LoadingCascWindow();

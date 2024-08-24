@@ -2,7 +2,7 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CSharpLua;
 using ICSharpCode.Decompiler.Metadata;
 using Newtonsoft.Json;
@@ -84,7 +84,8 @@ namespace BetterTriggers.Containers
                 Language = language == ScriptLanguage.Jass ? "jass" : "lua",
                 Header = "",
                 Files = new List<War3ProjectFileEntry>(),
-                War3MapDirectory = mapFolder
+                War3MapDirectory = mapFolder,
+                GameVersion = WarcraftStorageReader.GameVersion
             };
 
             string projectFile = JsonConvert.SerializeObject(project);
@@ -98,14 +99,22 @@ namespace BetterTriggers.Containers
             // template map
             if (doCreateMap)
             {
-                Directory.CreateDirectory(mapFolder);
-                string templateFolder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Resources/MapTemplate");
-                string[] files = Directory.GetFiles(templateFolder);
-                foreach (var file in files)
+                if (WarcraftStorageReader.GameVersion >= new Version(1, 31, 1, 12164))
                 {
-                    byte[] content = File.ReadAllBytes(file);
-                    string filename = Path.GetFileName(file);
-                    File.WriteAllBytes(Path.Combine(mapFolder, filename), content);
+                    Directory.CreateDirectory(mapFolder);
+                    string templateFolder = Path.Combine(Directory.GetCurrentDirectory(), "Resources/MapTemplate/FolderMap");
+                    string[] files = Directory.GetFiles(templateFolder);
+                    foreach (var file in files)
+                    {
+                        byte[] content = File.ReadAllBytes(file);
+                        string filename = Path.GetFileName(file);
+                        File.WriteAllBytes(Path.Combine(mapFolder, filename), content);
+                    }
+                }
+                else
+                {
+                    string mapTemplate = Path.Combine(Directory.GetCurrentDirectory(), "Resources/MapTemplate/template.w3m");
+                    File.Copy(mapTemplate, mapFolder);
                 }
             }
 
@@ -231,8 +240,8 @@ namespace BetterTriggers.Containers
             if (war3project.Version > War3Project.EditorVersion)
                 throw new Exception($"Project failed to load. Requires newer editor version.\n\nProject version: {war3project.Version}\nEditor version: {War3Project.EditorVersion}");
 
-            if (war3project.GameVersion > Casc.GameVersion)
-                throw new Exception($"Project failed to load. Requires newer game version.\n\nProject version: {war3project.GameVersion}\nGame version: {Casc.GameVersion}");
+            if (war3project.GameVersion > WarcraftStorageReader.GameVersion)
+                throw new Exception($"Project failed to load. Requires newer game version.\n\nProject version: {war3project.GameVersion}\nGame version: {WarcraftStorageReader.GameVersion}");
 
 
             Project project = new Project();
@@ -242,7 +251,7 @@ namespace BetterTriggers.Containers
             project.war3project = war3project;
 
             war3project.Version = War3Project.EditorVersion; // updates version.
-            war3project.GameVersion = Casc.GameVersion; // updates game version.
+            war3project.GameVersion = WarcraftStorageReader.GameVersion; // updates game version.
             project.src = Path.Combine(Path.GetDirectoryName(projectPath), "src");
             project.dist = Path.Combine(Path.GetDirectoryName(projectPath), "dist");
             project.war3project = war3project;
@@ -774,7 +783,7 @@ namespace BetterTriggers.Containers
                     PrepareExplorerElement(children[i]);
                 }
             }
-            else if(pasted.ElementType == ExplorerElementEnum.ActionDefinition)
+            else if (pasted.ElementType == ExplorerElementEnum.ActionDefinition)
             {
                 string folder = Path.GetDirectoryName(pasted.GetPath());
                 string name = ActionDefinitions.GenerateActionDefName(pasted.GetName());
@@ -915,7 +924,7 @@ namespace BetterTriggers.Containers
         public int GenerateId(List<int> blacklist = null)
         {
             int id = 0;
-            while(id == 0)
+            while (id == 0)
             {
                 id = RandomUtil.GenerateInt();
                 if (
