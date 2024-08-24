@@ -13,6 +13,7 @@ using War3Net.Build;
 using War3Net.IO.Mpq;
 using JassObfuscator;
 using War3Net.IO.Compression;
+using BetterTriggers.WorldEdit.GameDataReader;
 
 namespace BetterTriggers.TestMap
 {
@@ -174,7 +175,7 @@ namespace BetterTriggers.TestMap
             {
                 war3Exe = Path.Combine(settings.war3root, "x86_64/Warcraft III.exe");
             }
-            else if (!File.Exists(war3Exe))
+            if (!File.Exists(war3Exe))
             {
                 war3Exe = Path.Combine(settings.war3root, "Warcraft III.exe");
             }
@@ -199,14 +200,40 @@ namespace BetterTriggers.TestMap
             int fixedseed = settings.FixedRandomSeed == true ? 1 : 0;
             string nowfpause = settings.NoWindowsFocusPause == true ? "-nowfpause " : "";
 
-            string launchArgs = $"-launch " +
-                $"-mapdiff {difficulty} " +
-                $"-windowmode {windowMode} " +
-                $"-hd {hd} " +
-                $"-teen {teen} " +
-                $"-testmapprofile {playerProfile} " +
-                $"-fixedseed {fixedseed} " +
-                $"{nowfpause}";
+            string launchArgs = string.Empty;
+            if (WarcraftStorageReader.GameVersion >= new Version(1, 32))
+            {
+                launchArgs += "-launch ";
+                launchArgs += $"-windowmode {windowMode} ";
+                launchArgs += $"-hd {hd} ";
+                launchArgs += $"-teen {teen} ";
+                launchArgs += $"{nowfpause}";
+                launchArgs += $"-mapdiff {difficulty} ";
+                launchArgs += $"-testmapprofile {playerProfile} ";
+                launchArgs += $"-fixedseed {fixedseed} ";
+            }
+            else if(WarcraftStorageReader.GameVersion >= new Version(1, 31))
+            {
+                launchArgs += $"-windowmode {windowMode} ";
+                launchArgs += nowfpause;
+            }
+            else
+            {
+                switch (settings.WindowMode)
+                {
+                    case 0:
+                        launchArgs += "-window ";
+                        break;
+                    case 1:
+                        launchArgs += "-fullscreen ";
+                        break;
+                    default:
+                        launchArgs += "-nativefullscr ";
+                        break;
+                }
+
+                launchArgs += nowfpause;
+            }
 
             Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{archivePath}\"");
         }
