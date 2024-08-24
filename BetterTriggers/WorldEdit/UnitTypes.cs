@@ -186,7 +186,7 @@ namespace BetterTriggers.WorldEdit
                 new Icon(icon, UnitTypes.GetName(unitType.Id), "Unit");
 
                 if (!isTest)
-                    unitType.Image = Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(icon, ".dds")));
+                    unitType.Image = Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(icon, WarcraftStorageReader.ImageExt)));
             }
 
             var campaignSections = campaignFunc.Sections;
@@ -382,8 +382,8 @@ namespace BetterTriggers.WorldEdit
                     Stream stream = null;
                     if (!IsTest)
                     {
-                        if (WarcraftStorageReader.FileExists(Path.ChangeExtension(iconPath, ".dds")))
-                            stream = WarcraftStorageReader.OpenFile(Path.ChangeExtension(iconPath, ".dds"));
+                        if (WarcraftStorageReader.FileExists(Path.ChangeExtension(iconPath, WarcraftStorageReader.ImageExt)))
+                            stream = WarcraftStorageReader.OpenFile(Path.ChangeExtension(iconPath, WarcraftStorageReader.ImageExt));
                     }
 
                     if (stream == null)

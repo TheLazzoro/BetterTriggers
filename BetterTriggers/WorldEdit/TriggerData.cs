@@ -102,7 +102,7 @@ namespace BetterTriggers.WorldEdit
                 // --- TRIGGER CATEGORIES --- //
 
                 var triggerCategories = data.Sections["TriggerCategories"];
-                string imageExt = WarcraftStorageReader.GameVersion < new Version(1, 32) ? ".blp" : ".dds";
+                string imageExt = WarcraftStorageReader.ImageExt;
                 foreach (var category in triggerCategories)
                 {
                     string[] values = category.Value.Split(",");
@@ -182,7 +182,8 @@ namespace BetterTriggers.WorldEdit
 
 
 
-            LoadTriggerDataFromIni(data);
+            LoadTriggerDataFromIni(data, isTest);
+            LoadTranslations(isTest);
 
 
             // --- LOAD CUSTOM DATA --- //
@@ -196,7 +197,7 @@ namespace BetterTriggers.WorldEdit
 
             var textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom.txt"));
             var dataCustom = IniFileConverter.GetIniData(textCustom);
-            LoadTriggerDataFromIni(dataCustom);
+            LoadTriggerDataFromIni(dataCustom, isTest);
 
             textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom.txt"));
             dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -209,7 +210,7 @@ namespace BetterTriggers.WorldEdit
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
-                LoadTriggerDataFromIni(dataCustom);
+                LoadTriggerDataFromIni(dataCustom, isTest);
 
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -222,13 +223,13 @@ namespace BetterTriggers.WorldEdit
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_32.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
-                LoadTriggerDataFromIni(dataCustom);
+                LoadTriggerDataFromIni(dataCustom, isTest);
             }
             if (WarcraftStorageReader.GameVersion.Minor >= 33)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_33.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
-                LoadTriggerDataFromIni(dataCustom);
+                LoadTriggerDataFromIni(dataCustom, isTest);
 
                 //textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom_33.txt"));
                 //dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -268,7 +269,85 @@ namespace BetterTriggers.WorldEdit
             });
         }
 
-        private static void LoadTriggerDataFromIni(IniData data)
+        private static void LoadTranslations(bool isTest)
+        {
+            if (isTest)
+            {
+                return;
+            }
+            string file;
+            Utility.IniParser.IniData iniData;
+
+            // --- LOAD DISPLAY NAMES FOR LEGACY VERSIONS --- //
+
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30 && WarcraftStorageReader.GameVersion < WarcraftVersion._1_31)
+            {
+                file = WarcraftStorageReader.ReadAllText_Local_1_30(@"ui\triggerstrings.txt");
+            }
+            else
+            {
+                file = WarcraftStorageReader.ReadAllText(@"ui\triggerstrings.txt", "War3xLocal.mpq");
+            }
+
+            iniData = new Utility.IniParser.IniData(file);
+            foreach (var section in iniData.Sections.Values)
+            {
+                string lastKeyword = string.Empty;
+                foreach (var key in section.Keys)
+                {
+                    FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
+                    if (functionTemplate == null)
+                    {
+                        continue;
+                    }
+                    else if (key.Key == lastKeyword)
+                    {
+                        functionTemplate.paramText = key.Value.Replace("\"", "");
+                        ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
+                        continue;
+                    }
+
+                    lastKeyword = key.Key;
+                    functionTemplate.name = key.Value.Replace("\"", "");
+                }
+            }
+
+            // --- LOAD DISPLAY NAMES FOR v1.31 and others?
+
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30 && WarcraftStorageReader.GameVersion < WarcraftVersion._1_31)
+            {
+                file = WarcraftStorageReader.ReadAllText_Local_1_30(@"ui\triggerstrings.txt");
+            }
+            else
+            {
+                file = WarcraftStorageReader.ReadAllText(@"_locales\enus.w3mod\ui\triggerstrings.txt", "War3xLocal.mpq");
+            }
+            iniData = new Utility.IniParser.IniData(file);
+
+            foreach (var section in iniData.Sections.Values)
+            {
+                string lastKeyword = string.Empty;
+                foreach (var key in section.Keys)
+                {
+                    FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
+                    if (functionTemplate == null)
+                    {
+                        continue;
+                    }
+                    else if (key.Key == lastKeyword)
+                    {
+                        functionTemplate.paramText = key.Value.Replace("\"", "");
+                        ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
+                        continue;
+                    }
+
+                    lastKeyword = key.Key;
+                    functionTemplate.name = key.Value.Replace("\"", string.Empty);
+                }
+            }
+        }
+
+        private static void LoadTriggerDataFromIni(IniData data, bool isTest)
         {
 
             // --- TRIGGER TYPES (GUI VARIABLE TYPE DEFINITIONS) --- //
@@ -326,64 +405,7 @@ namespace BetterTriggers.WorldEdit
             LoadFunctions(data, "TriggerActions", ActionTemplates, TriggerElementType.Action);
             LoadFunctions(data, "TriggerCalls", CallTemplates, TriggerElementType.None);
 
-            // --- LOAD DISPLAY NAMES FOR LEGACY VERSIONS --- //
 
-            if (WarcraftStorageReader.IsReforged == false)
-            {
-                var file = WarcraftStorageReader.ReadAllText(@"ui\triggerstrings.txt", "War3xLocal.mpq");
-                var iniData = new Utility.IniParser.IniData(file);
-                foreach (var section in iniData.Sections.Values)
-                {
-                    string lastKeyword = string.Empty;
-                    foreach (var key in section.Keys)
-                    {
-                        FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
-                        if (functionTemplate == null)
-                        {
-                            continue;
-                        }
-                        else if (key.Key == lastKeyword)
-                        {
-                            functionTemplate.paramText = key.Value.Replace("\"", "");
-                            ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
-                            continue;
-                        }
-
-                        lastKeyword = key.Key;
-                        functionTemplate.name = key.Value.Replace("\"", "");
-                    }
-                }
-            }
-
-            // --- LOAD DISPLAY NAMES FOR v1.31 and others?
-
-            if (WarcraftStorageReader.IsReforged)
-            {
-                var file = WarcraftStorageReader.ReadAllText(@"_locales\enus.w3mod\ui\triggerstrings.txt");
-                var iniData = new Utility.IniParser.IniData(file);
-
-                foreach (var section in iniData.Sections.Values)
-                {
-                    string lastKeyword = string.Empty;
-                    foreach (var key in section.Keys)
-                    {
-                        FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
-                        if (functionTemplate == null)
-                        {
-                            continue;
-                        }
-                        else if (key.Key == lastKeyword)
-                        {
-                            functionTemplate.paramText = key.Value.Replace("\"", "");
-                            ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
-                            continue;
-                        }
-
-                        lastKeyword = key.Key;
-                        functionTemplate.name = key.Value.Replace("\"", string.Empty);
-                    }
-                }
-            }
 
             // --- INIT DEFAULTS --- //
             foreach (var function in Defaults)

@@ -17,13 +17,9 @@ namespace Tests
             {
                 new Application(); // Hack. Instantiates a new WPF application.
             }
-            if(WarcraftStorageReader.GameVersion == null)
-            {
-                WarcraftStorageReader.GameVersion = new Version(1, 36, 1);
-            }
             if(!Init.HasLoaded)
             {
-                WarcraftStorageReader.IsReforged = true;
+                WarcraftStorageReader.GameVersion = new Version(1, 36, 1);
                 Init.Initialize(true);
             }
         }

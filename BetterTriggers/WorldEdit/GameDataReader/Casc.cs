@@ -14,7 +14,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
         private static bool _onlineMode = false;
         private static string product = "w3";
         private static CASCFolder war3_w3mod;
-        private static CASCFolder war3_x86_64;
+        private static CASCFolder war3_locale_1_30;
         private static CASCHandler casc;
 
         public static CASCHandler GetCasc()
@@ -28,6 +28,8 @@ namespace BetterTriggers.WorldEdit.GameDataReader
         /// <returns>Returns true if the CASC location is valid.</returns>
         public static (bool, string) Load()
         {
+            war3_w3mod = null;
+            war3_locale_1_30 = null;
             string errorMsg = string.Empty;
             bool isValid = false;
             try
@@ -68,17 +70,30 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             return war3_w3mod;
         }
 
-        public static CASCFolder Getx86Folder()
+        public static CASCFolder GetWar3MpqFolder_1_30()
         {
-            if (war3_x86_64 == null)
+            if (war3_w3mod == null)
             {
                 var casc = GetCasc();
                 var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
                 casc.Root.MergeInstall(casc.Install);
-                war3_x86_64 = fldr.Folders["x86_64"];
+                war3_w3mod = fldr.Folders["war3.mpq"];
             }
 
-            return war3_x86_64;
+            return war3_w3mod;
+        }
+
+        public static CASCFolder GetWar3LocaleFolder_1_30()
+        {
+            if (war3_locale_1_30 == null)
+            {
+                var casc = GetCasc();
+                var fldr = casc.Root.SetFlags(LocaleFlags.enGB, false);
+                casc.Root.MergeInstall(casc.Install);
+                war3_locale_1_30 = fldr.Folders["enus-war3local.mpq"];
+            }
+
+            return war3_locale_1_30;
         }
 
         public static void SaveFile(CASCFile file, string fullPath)

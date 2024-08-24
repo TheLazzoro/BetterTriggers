@@ -40,26 +40,26 @@ namespace BetterTriggers.WorldEdit
                     return Images.ReadImage(fs);
                 }
             }
-            if(File.Exists(fullMapPath))
+            if (File.Exists(fullMapPath))
             {
-                var imports = CustomMapData.MPQMap.ImportedFiles.Files;
-                var pathFormatted = path.Replace('/', '\\');
-                for (int i = 0; i < imports.Count; i++)
+                if (CustomMapData.MPQMap.ImportedFiles != null)
                 {
-                    if(imports[i].FullPath.ToLower() == pathFormatted.ToLower())
+                    var imports = CustomMapData.MPQMap.ImportedFiles.Files;
+                    var pathFormatted = path.Replace('/', '\\');
+                    for (int i = 0; i < imports.Count; i++)
                     {
-                        MpqArchive mpq = MpqArchive.Open(fullMapPath);
-                        Stream stream = MpqFile.OpenRead(mpq, pathFormatted);
-                        mpq.Dispose();
-                        return Images.ReadImage(stream);
+                        if (imports[i].FullPath.ToLower() == pathFormatted.ToLower())
+                        {
+                            MpqArchive mpq = MpqArchive.Open(fullMapPath);
+                            Stream stream = MpqFile.OpenRead(mpq, pathFormatted);
+                            mpq.Dispose();
+                            return Images.ReadImage(stream);
+                        }
                     }
                 }
             }
 
-            if (WarcraftStorageReader.FileExists(Path.ChangeExtension(path, ".dds")))
-                return Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(path, ".dds")));
-
-            return null;
+            return Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(path, WarcraftStorageReader.ImageExt)));
         }
 
         public static List<Icon> GetAll()

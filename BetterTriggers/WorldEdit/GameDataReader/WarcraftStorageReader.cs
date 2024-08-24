@@ -11,15 +11,14 @@ namespace BetterTriggers.WorldEdit.GameDataReader
     public class WarcraftStorageReader
     {
         private static GameMpq mpq = null;
-
-        public static bool IsReforged { get; set; } = false;
         public static Version GameVersion = new Version();
+        public static string ImageExt = ".blp";
 
         public static (bool, string) Load()
         {
             EditorSettings settings = EditorSettings.Load();
-            IsReforged = File.Exists(Path.Combine(settings.war3root, @"Data\data\data.000"));
-            if (IsReforged)
+            var isCasc = File.Exists(Path.Combine(settings.war3root, @"Data\data\data.000"));
+            if (isCasc)
             {
                 var result = Casc.Load();
                 bool success = result.Item1;
@@ -27,6 +26,11 @@ namespace BetterTriggers.WorldEdit.GameDataReader
                 if (success)
                 {
                     GameVersion = Casc.GameVersion;
+                    if (GameVersion >= WarcraftVersion._1_32)
+                    {
+                        ImageExt = ".dds";
+                    }
+
                     return (true, errorMsg);
                 }
                 return (false, errorMsg);
@@ -37,20 +41,33 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public static bool FileExists(string path)
         {
-            if (IsReforged)
+            if (GameVersion >= WarcraftVersion._1_31)
             {
                 var file = Casc.GetWar3ModFolder();
                 path = Path.Combine(file.Name, path);
                 return Casc.GetCasc().FileExists(path);
             }
+            else if( GameVersion >= WarcraftVersion._1_30)
+            {
+                var file = Casc.GetWar3MpqFolder_1_30();
+                path = Path.Combine(file.Name, path);
+                return Casc.GetCasc().FileExists(path);
+            }
+
             return mpq.FileExists(path);
         }
 
         public static Stream OpenFile(string path, string archiveName = null)
         {
-            if (IsReforged)
+            if (GameVersion >= WarcraftVersion._1_31)
             {
                 var file = Casc.GetWar3ModFolder();
+                path = Path.Combine(file.Name, path);
+                return Casc.GetCasc().OpenFile(path);
+            }
+            else if (GameVersion >= WarcraftVersion._1_30)
+            {
+                var file = Casc.GetWar3MpqFolder_1_30();
                 path = Path.Combine(file.Name, path);
                 return Casc.GetCasc().OpenFile(path);
             }
@@ -58,21 +75,22 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             return mpq.Open(path, archiveName);
         }
 
-        public static Stream OpenFile_x86(string path)
-        {
-            if (IsReforged)
-            {
-                var file = Casc.Getx86Folder();
-                path = Path.Combine(file.Name, path);
-                return Casc.GetCasc().OpenFile(path);
-            }
-
-            return mpq.Open(path);
-        }
-
         public static string ReadAllText(string path, string archiveName = null)
         {
             var stream = OpenFile(path, archiveName);
+            if (stream != null)
+            {
+                return new StreamReader(stream).ReadToEnd();
+            }
+
+            return string.Empty;
+        }
+
+        public static string ReadAllText_Local_1_30(string path)
+        {
+            var file = Casc.GetWar3LocaleFolder_1_30();
+            path = Path.Combine(file.Name, path);
+            var stream = Casc.GetCasc().OpenFile(path);
             if (stream != null)
             {
                 return new StreamReader(stream).ReadToEnd();
@@ -111,14 +129,5 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             using var destStream = File.Create(destPath);
             stream.CopyTo(destStream);
         }
-
-        public static void Export_x86(string srcPath, string destPath)
-        {
-            var stream = OpenFile_x86(srcPath);
-            using var destStream = File.Create(destPath);
-            stream.CopyTo(destStream);
-        }
-
-
     }
 }

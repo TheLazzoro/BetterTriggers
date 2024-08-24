@@ -98,7 +98,7 @@ namespace BetterTriggers
             List<string> genericData = new List<string>();
             List<string> unitData = new List<string>();
 
-            if (WarcraftStorageReader.IsReforged)
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30)
             {
                 unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\campaignunitstrings.txt"));
                 unitData.Add(File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + @"\Resources\WorldEditorData\humanunitstrings.txt"));
