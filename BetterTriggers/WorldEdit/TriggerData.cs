@@ -277,7 +277,7 @@ namespace BetterTriggers.WorldEdit
             }
 
             string file;
-            if(WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
             {
                 file = WarcraftStorageReader.ReadAllText(@"_locales\enus.w3mod\ui\triggerstrings.txt", "War3xLocal.mpq");
             }
@@ -324,12 +324,27 @@ namespace BetterTriggers.WorldEdit
             {
                 string[] values = type.Value.Split(",");
                 string key = type.KeyName;
-                bool canBeGlobal = values[1] == "1" ? true : false;
-                bool canBeCompared = values[2] == "1" ? true : false;
-                string displayName = values[3];
+                bool canBeGlobal;
+                bool canBeCompared;
+                string displayName;
                 string baseType = null;
-                if (values.Length >= 5)
-                    baseType = values[4];
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_28)
+                {
+                    canBeGlobal = values[1] == "1" ? true : false;
+                    canBeCompared = values[2] == "1" ? true : false;
+                    displayName = values[3];
+                    if (values.Length >= 5)
+                        baseType = values[4];
+                }
+                else
+                {
+                    canBeGlobal = values[0] == "1" ? true : false;
+                    canBeCompared = values[1] == "1" ? true : false;
+                    displayName = values[2];
+                    if (values.Length >= 4)
+                        baseType = values[3];
+                }
+
 
                 Types.Create(key, canBeGlobal, canBeCompared, displayName, baseType);
             }
@@ -344,9 +359,21 @@ namespace BetterTriggers.WorldEdit
                 string[] values = preset.Value.Split(",");
                 string key = preset.KeyName;
 
-                string variableType = values[1];
-                string codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
-                string displayText = Locale.Translate(values[3]);
+                string variableType;
+                string codeText;
+                string displayText;
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_28)
+                {
+                    variableType = values[1];
+                    codeText = values[2].Replace("\"", "").Replace("`", "").Replace("|", "\"");
+                    displayText = Locale.Translate(values[3]);
+                }
+                else
+                {
+                    variableType = values[0];
+                    codeText = values[1].Replace("\"", "").Replace("`", "").Replace("|", "\"");
+                    displayText = Locale.Translate(values[2]);
+                }
 
                 PresetTemplate presetTemplate = new PresetTemplate()
                 {
@@ -497,7 +524,10 @@ namespace BetterTriggers.WorldEdit
                     }
                     else if (sectionName == "TriggerCalls")
                     {
-                        returnType = _params[2];
+                        if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_28)
+                            returnType = _params[2];
+                        else
+                            returnType = _params[1];
                         for (int i = 3; i < _params.Length; i++)
                         {
                             parameters.Add(new ParameterTemplate() { returnType = _params[i] });
