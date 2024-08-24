@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GUI.Utility
 {
@@ -20,10 +21,10 @@ namespace GUI.Utility
         public static bool IsCircularParent(TreeViewItem dragItem, TreeViewItem dropTarget)
         {
             bool IsCircularParent = false;
-            TreeViewItem parent = dropTarget;
-            while (IsCircularParent == false && parent is TreeViewItem)
+            DependencyObject parent = dropTarget;
+            while (IsCircularParent == false)
             {
-                parent = parent.Parent as TreeViewItem;
+                parent = VisualTreeHelper.GetParent(parent);
                 if (parent == null)
                     break;
 

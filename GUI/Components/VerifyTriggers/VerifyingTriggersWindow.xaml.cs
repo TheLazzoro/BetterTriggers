@@ -42,23 +42,16 @@ namespace GUI.Components.VerifyTriggers
             if (collisionError != null)
             {
                 int index = 0;
-                string[] items = new string[collisionError.triggers.Count + collisionError.variables.Count];
-                if (collisionError.triggers.Count > 0)
+                string[] items = new string[collisionError.IdCollisions.Count + collisionError.IdCollisions.Count];
+                if (collisionError.IdCollisions.Count > 0)
                 {
-                    collisionError.triggers.ForEach(t =>
+                    collisionError.IdCollisions.ForEach(t =>
                     {
                         items[index] = $"{t.Item1.GetName()} <-> {t.Item2.GetName()}";
                         index++;
                     });
                 }
-                if (collisionError.variables.Count > 0)
-                {
-                    collisionError.variables.ForEach(v =>
-                    {
-                        items[index] = $"{v.Item1.GetName()} <-> {v.Item2.GetName()}";
-                        index++;
-                    });
-                }
+                
                 string message = $"{collisionError.Message}{Environment.NewLine}{Environment.NewLine}Triggers or variables with the same ID are not allowed.{Environment.NewLine}You need to resolve these manually in a text editor.{Environment.NewLine}";
                 Dialogs.MessageBoxWithList messageBox = new Dialogs.MessageBoxWithList("ID Collisions", message, items);
                 messageBox.ShowDialog();

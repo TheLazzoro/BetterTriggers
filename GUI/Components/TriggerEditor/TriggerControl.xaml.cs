@@ -306,7 +306,7 @@ namespace GUI.Components
                         parameterDefCollection = explorerElement.functionDefinition.Parameters;
                         break;
                     default:
-                        break;
+                        return;
                 }
 
                 var project = Project.CurrentProject;
@@ -620,26 +620,16 @@ namespace GUI.Components
             {
                 var relativePos = e.GetPosition(dropTarget);
                 bool inFirstHalf = UIUtility.IsMouseInFirstHalf(dropTarget, relativePos, Orientation.Vertical);
-                if (inFirstHalf)
-                {
-                    adorner = AdornerLayer.GetAdornerLayer(dropTarget);
-                    lineIndicator = new TreeItemAdornerLine(dropTarget, true);
-                    adorner.Add(lineIndicator);
+                int aboveBelow = inFirstHalf ? 0 : 1;
 
-                    var parentDropTarget = triggerElementDropTarget.GetParent();
-                    insertIndex = parentDropTarget.IndexOf(triggerElementDropTarget);
-                }
-                else
-                {
-                    adorner = AdornerLayer.GetAdornerLayer(dropTarget);
-                    lineIndicator = new TreeItemAdornerLine(dropTarget, false);
-                    adorner.Add(lineIndicator);
+                adorner = AdornerLayer.GetAdornerLayer(dropTarget);
+                lineIndicator = new TreeItemAdornerLine(dropTarget, inFirstHalf);
+                adorner.Add(lineIndicator);
 
-                    var parentDropTarget = triggerElementDropTarget.GetParent();
-                    insertIndex = parentDropTarget.IndexOf(triggerElementDropTarget) + 1;
-                    var treeItemParentDropTarget = GetTreeViewItemFromTriggerElement(parentDropTarget);
-                    _treeItemParentDropTarget = treeItemParentDropTarget;
-                }
+                var parentDropTarget = triggerElementDropTarget.GetParent();
+                insertIndex = parentDropTarget.IndexOf(triggerElementDropTarget) + aboveBelow;
+                var treeItemParentDropTarget = GetTreeViewItemFromTriggerElement(parentDropTarget);
+                _treeItemParentDropTarget = treeItemParentDropTarget;
 
                 // We detach the item before inserting, so the index goes one down.
                 if (dropTarget.Parent == dragItem.Parent && insertIndex > currentIndex)

@@ -6,6 +6,7 @@ using BetterTriggers.WorldEdit.GameDataReader;
 using ICSharpCode.Decompiler.Metadata;
 using Newtonsoft.Json;
 using NuGet.Packaging;
+using NuGet.Packaging.Signing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -157,6 +158,8 @@ namespace BetterTriggers.Containers
             // Write to unsaved
             UnsavedFiles.SaveAll();
 
+            CommandManager.HasUnsavedChanges = false;
+
             // Write to project file
             var root = projectFiles[0];
             war3project.Files = new List<War3ProjectFileEntry>();
@@ -286,12 +289,12 @@ namespace BetterTriggers.Containers
             List<string> fileCheckList = new List<string>();
             for (int i = 0; i < files.Length; i++)
             {
-                string path = files[i].ToLower();
+                string path = files[i];
                 fileCheckList.Add(path);
             }
 
             // Recurse through elements found in the project file
-            project.RecurseLoad(projectRootEntry, project.GetRoot(), fileCheckList);
+            project.RecurseLoad(projectRootEntry, project.GetRoot(), files, fileCheckList);
 
             // Loop through elements not found
             LoadingUnknownFilesEvent?.Invoke();
@@ -314,7 +317,7 @@ namespace BetterTriggers.Containers
         }
 
 
-        private void RecurseLoad(War3ProjectFileEntry entryParent, ExplorerElement elementParent, List<string> fileCheckList)
+        private void RecurseLoad(War3ProjectFileEntry entryParent, ExplorerElement elementParent, string[] files, List<string> fileCheckList)
         {
             ObservableCollection<ExplorerElement> elementChildren = null;
             if (elementParent.ElementType == ExplorerElementEnum.Root)
@@ -336,14 +339,20 @@ namespace BetterTriggers.Containers
                 string path = Path.Combine(src, entryChild.path);
                 if (File.Exists(path) || Directory.Exists(path))
                 {
-                    fileCheckList.Remove(path.ToLower());
+                    int indexOfTruePathName = files.IndexOf(n => n.Equals(path, StringComparison.OrdinalIgnoreCase));
+                    if(indexOfTruePathName < 0)
+                    {
+                        continue;
+                    }
+                    path = files[indexOfTruePathName];
+                    fileCheckList.Remove(path);
                     ExplorerElement explorerElementChild = new ExplorerElement(path);
                     explorerElementChild.IsEnabled = entryChild.isEnabled;
                     explorerElementChild.IsInitiallyOn = entryChild.isInitiallyOn;
                     explorerElementChild.SetParent(elementParent, insertIndex);
                     insertIndex++;
                     if (Directory.Exists(explorerElementChild.GetPath()))
-                        RecurseLoad(entryChild, explorerElementChild, fileCheckList);
+                        RecurseLoad(entryChild, explorerElementChild, files, fileCheckList);
 
                     loadedFiles++;
                     FileLoadEvent?.Invoke(loadedFiles, totalFiles);
@@ -702,6 +711,11 @@ namespace BetterTriggers.Containers
             {
                 parent = pasteTarget.GetParent();
                 insertIndex = parent.GetExplorerElements().IndexOf(pasteTarget);
+            }
+
+            if(CopiedElements.CopiedExplorerElement == null)
+            {
+                return null;
             }
 
             var pasted = CopiedElements.CopiedExplorerElement.Clone();

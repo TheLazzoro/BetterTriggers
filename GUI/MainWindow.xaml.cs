@@ -796,7 +796,7 @@ namespace GUI
             if (Project.CurrentProject == null)
                 return true;
 
-            if (Project.CurrentProject.GetUnsavedFileCount() == 0)
+            if (Project.CurrentProject.CommandManager.HasUnsavedChanges == false)
                 return true;
 
             OnCloseWindow onCloseWindow = new OnCloseWindow();

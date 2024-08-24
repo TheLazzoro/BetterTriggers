@@ -247,6 +247,12 @@ namespace BetterTriggers.Models.EditorData
                     return variable.Id;
                 case ExplorerElementEnum.Trigger:
                     return trigger.Id;
+                case ExplorerElementEnum.ActionDefinition:
+                    return actionDefinition.Id;
+                case ExplorerElementEnum.ConditionDefinition:
+                    return conditionDefinition.Id;
+                case ExplorerElementEnum.FunctionDefinition:
+                    return functionDefinition.Id;
                 default:
                     throw new Exception($"Element type '{ElementType}' cannot return an ID.");
             }
