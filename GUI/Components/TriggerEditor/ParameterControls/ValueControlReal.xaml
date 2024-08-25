@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Label Content="Value:" Foreground="{DynamicResource TextBrush2}"/>
-        <TextBox x:Name="textBox" Height="22" Margin="50,0,0,0" Width="100" HorizontalAlignment="Left" PreviewTextInput="textBox_PreviewTextInput" TextChanged="textBox_TextChanged" />
+        <TextBox x:Name="textBox" Height="22" Margin="50,0,0,0" Width="100" HorizontalAlignment="Left" PreviewTextInput="textBox_PreviewTextInput" TextChanged="textBox_TextChanged" DataObject.Pasting="textBox_Pasting" />
 
     </Grid>
 </UserControl>

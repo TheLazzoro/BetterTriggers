@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Models.EditorData;
 using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,7 +17,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public ValueControlReal()
         {
             InitializeComponent();
-            
+
             textBox.Text = "0.00";
 
             this.Loaded += ValueControlReal_Loaded;
@@ -53,6 +54,15 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelected()
         {
+            if(string.IsNullOrEmpty(textBox.Text))
+            {
+                textBox.Text = "0.00";
+            }
+            if (textBox.Text.StartsWith('.'))
+            {
+                textBox.Text = textBox.Text.Insert(0, "0");
+            }
+
             Value value = new Value()
             {
                 value = textBox.Text,
@@ -61,27 +71,69 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return value;
         }
 
+        private static readonly Regex _regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+
         private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
+            if(!IsTextAllowed(e.Text))
+            {
+                e.Handled = true;
+            }
+
             previousValue = textBox.Text;
-            if (e.Text == "," || (e.Text == "." && textBox.Text.Contains(".")))
+            if (e.Text == ","
+                || (e.Text == "." && textBox.Text.Contains("."))
+                ||
+                (e.Text != "." && e.Text != "," && !int.TryParse(e.Text, out int temp))
+                )
             {
                 e.Handled = true;
             }
         }
 
+        private void textBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string text = (string)e.DataObject.GetData(typeof(string));
+                if (!IsTextAllowed(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
+        }
+
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
+            var textTemp = textBox.Text;
+            if (textTemp.StartsWith('.'))
             {
-                float value = float.Parse(textBox.Text);
+                textTemp = textTemp.Insert(0, "0");
             }
-            catch (Exception ex)
+
+            bool validNumber = float.TryParse(textTemp, out float temp);
+            if (!validNumber)
             {
-                textBox.Text = previousValue;
+                if (string.IsNullOrEmpty(textTemp))
+                {
+                    return;
+                }
+                else
+                {
+                    textBox.Text = previousValue;
+                }
             }
 
             previousValue = textBox.Text;
         }
+
     }
 }
