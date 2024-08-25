@@ -88,18 +88,23 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             }
 
             defaultSelected = unitData[i];
+            int categoryIndex = 0;
             if (defaultSelected.Race == "human")
-                comboboxRace.SelectedIndex = 0;
+                categoryIndex = 0;
             else if (defaultSelected.Race == "orc")
-                comboboxRace.SelectedIndex = 1;
+                categoryIndex = 1;
             else if (defaultSelected.Race == "undead")
-                comboboxRace.SelectedIndex = 2;
+                categoryIndex = 2;
             else if (defaultSelected.Race == "nightelf")
-                comboboxRace.SelectedIndex = 3;
+                categoryIndex = 3;
             else if (defaultSelected.Race == "naga")
-                comboboxRace.SelectedIndex = 5;
+                categoryIndex = 5;
             else
-                comboboxRace.SelectedIndex = 4;
+                categoryIndex = 4;
+
+            comboboxRace.SelectedIndex = categoryIndex;
+            SetSelectedRace(categoryIndex);
+            RePopulate();
         }
 
         public Parameter GetSelected()
@@ -112,22 +117,31 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             return elementCount;
         }
 
-        private void comboboxRace_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SetSelectedRace(int index)
         {
             // This is clean af kapp
-            if (comboboxRace.SelectedIndex == 0)
+            if (index == 0)
                 selectedRace = CategoryRace.Human;
-            else if (comboboxRace.SelectedIndex == 1)
+            else if (index == 1)
                 selectedRace = CategoryRace.Orc;
-            else if (comboboxRace.SelectedIndex == 2)
+            else if (index == 2)
                 selectedRace = CategoryRace.Undead;
-            else if (comboboxRace.SelectedIndex == 3)
+            else if (index == 3)
                 selectedRace = CategoryRace.NightElf;
-            else if (comboboxRace.SelectedIndex == 4)
+            else if (index == 4)
                 selectedRace = CategoryRace.Neutral;
-            else if (comboboxRace.SelectedIndex == 5)
+            else if (index == 5)
                 selectedRace = CategoryRace.Naga;
+        }
 
+        private void comboboxRace_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(!this.IsLoaded)
+            {
+                return;
+            }
+
+            SetSelectedRace(comboboxRace.SelectedIndex);
             RePopulate();
         }
 
