@@ -550,7 +550,7 @@ namespace BetterTriggers.Models.EditorData
                         fileContent = TriggerSerializer.SerializeFunctionDefinition(functionDefinition);
                         break;
                     default:
-                        break;
+                        return;
                 }
 
                 File.WriteAllText(path, fileContent);
