@@ -1,4 +1,5 @@
 ﻿using BetterTriggers.Commands;
+using BetterTriggers.Logging;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using War3Net.Build.Info;
 
@@ -446,8 +448,11 @@ namespace BetterTriggers.Containers
             var rootNode = projectFiles[0];
             ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
 
-            CommandExplorerElementMove command = new CommandExplorerElementMove(elementToRename, newFullPath, insertIndex);
-            command.Execute();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CommandExplorerElementMove command = new CommandExplorerElementMove(elementToRename, newFullPath, insertIndex);
+                command.Execute();
+            });
         }
 
         /// <summary>
@@ -1207,6 +1212,9 @@ namespace BetterTriggers.Containers
 
         private void FileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
+            LoggingService service = new LoggingService();
+            Task.Factory.StartNew(() => service.SubmitError_Async(e.GetException(), "-- LOGGED BY SYSTEM --"));
+
             throw new Exception(e.GetException().Message);
         }
     }
