@@ -2064,7 +2064,7 @@ end
             {
                 ForLoopVarMultiple loopVar = (ForLoopVarMultiple)t;
                 VariableRef varRef = (VariableRef)loopVar.function.parameters[0];
-                var variable = Project.CurrentProject.Variables.GetById(varRef.VariableId);
+                var variable = Project.CurrentProject.Variables.GetVariableById_AllLocals(varRef.VariableId);
                 string varName = variable.GetIdentifierName();
 
                 string array0 = string.Empty;
@@ -2528,7 +2528,7 @@ end
             else if (f.value == "ForLoopVar")
             {
                 VariableRef varRef = (VariableRef)f.parameters[0];
-                var variable = Project.CurrentProject.Variables.GetById(varRef.VariableId);
+                var variable = Project.CurrentProject.Variables.GetVariableById_AllLocals(varRef.VariableId);
                 string varName = variable.GetIdentifierName();
 
                 string array0 = string.Empty;
