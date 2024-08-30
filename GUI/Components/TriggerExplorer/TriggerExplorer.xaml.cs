@@ -28,7 +28,6 @@ namespace GUI.Components
     {
         internal static TriggerExplorer Current;
 
-        private TreeViewItem currentElement;
         public event Action<ExplorerElement> OnOpenExplorerElement;
 
         // Drag and drop fields
@@ -458,9 +457,7 @@ namespace GUI.Components
             if (rightClickedElement == null)
                 return;
 
-            currentElement = rightClickedElement;
             rightClickedElement.IsSelected = true;
-
             OpenContextMenu(e);
         }
 
@@ -482,33 +479,33 @@ namespace GUI.Components
         private void menuCut_Click(object sender, RoutedEventArgs e)
         {
             Project project = Project.CurrentProject;
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             project.CopyExplorerElement(explorerElement, true);
         }
 
         private void menuCopy_Click(object sender, RoutedEventArgs e)
         {
             Project project = Project.CurrentProject;
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             project.CopyExplorerElement(explorerElement);
         }
 
         private void menuPaste_Click(object sender, RoutedEventArgs e)
         {
             Project project = Project.CurrentProject;
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             project.PasteExplorerElement(explorerElement);
         }
 
         private void menuRename_Click(object sender, RoutedEventArgs e)
         {
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             explorerElement.RenameBoxVisibility = Visibility.Visible;
         }
 
         private void menuDelete_Click(object sender, RoutedEventArgs e)
         {
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             DeleteElement(explorerElement);
         }
 
@@ -534,19 +531,19 @@ namespace GUI.Components
 
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
         {
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             explorerElement.IsEnabled = !explorerElement.IsEnabled;
         }
 
         private void menuElementInitiallyOn_Click(object sender, RoutedEventArgs e)
         {
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             explorerElement.IsInitiallyOn = !explorerElement.IsInitiallyOn;
         }
 
         private void menuOpenInExplorer_Click(object sender, RoutedEventArgs e)
         {
-            var explorerElement = GetExplorerElementFromItem(currentElement);
+            var explorerElement = GetSelectedExplorerElement();
             FileSystemUtil.OpenInExplorer(explorerElement.GetPath());
         }
 
