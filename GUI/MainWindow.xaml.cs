@@ -20,6 +20,7 @@ using GUI.Components.Settings;
 using GUI.Components.Setup;
 using GUI.Components.Shared;
 using GUI.Components.Tabs;
+using GUI.Components.UnknownFile;
 using GUI.Components.UserReports;
 using GUI.Components.VariableList;
 using GUI.Components.VerifyTriggers;
@@ -380,6 +381,8 @@ namespace GUI
                         editor = triggerControl;
                         break;
                     default:
+                        var unknownFileControl = new UnknownFileControl();
+                        editor = unknownFileControl;
                         break;
                 }
 

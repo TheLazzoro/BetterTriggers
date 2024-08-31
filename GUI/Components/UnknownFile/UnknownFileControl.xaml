@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="GUI.Components.UnknownFile.UnknownFileControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GUI.Components.UnknownFile"
+             mc:Ignorable="d"
+             Background="{DynamicResource BackgroundPanel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+
+        <TextBlock Foreground="{DynamicResource TextBrush}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   >
+            This file extension is unknown.
+            <LineBreak/>
+            <LineBreak/>
+            The only supported extensions for script files are .j and .lua
+            
+        </TextBlock>
+        
+    </Grid>
+</UserControl>
