@@ -6,7 +6,15 @@
         UseLayoutRounding="True"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Better Triggers" Height="686" Width="994" MinWidth="750" Background="{DynamicResource BackgroundDarkest}" Closing="Window_Closing" SizeChanged="Window_SizeChanged" LocationChanged="Window_LocationChanged" StateChanged="Window_StateChanged" >
+        Title="Better Triggers"
+        Height="686"
+        Width="994"
+        MinWidth="750"
+        Background="{DynamicResource BackgroundDarkest}"
+        Closing="Window_Closing"
+        SizeChanged="Window_SizeChanged"
+        LocationChanged="Window_LocationChanged"
+        StateChanged="Window_StateChanged" >
         
 
     <Window.Resources>
@@ -79,105 +87,6 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-
-
-        <!-- I don't know much about styling, but this is what is happening:
-        The below menu style is needed for the top menu strip, but it overrides
-        styles for the entire project.
-        However, we still need a style for ContextMenu in TriggerControl
-        and TriggerExplorer because it doesn't override all of it...
-        
-        -->
-
-        <!-- SubmenuItem -->
-        <!--
-
-        <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}"
-                     TargetType="{x:Type MenuItem}">
-            <Border Name="Border">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"
-                                      SharedSizeGroup="Icon" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto"
-                                      SharedSizeGroup="Shortcut" />
-                        <ColumnDefinition Width="13" />
-                    </Grid.ColumnDefinitions>
-                    <ContentPresenter Name="Icon"
-                                  Margin="6,0,6,0"
-                                  VerticalAlignment="Center"
-                                  ContentSource="Icon" />
-                    <Border Name="Check"
-                        Width="13"
-                        Height="13"
-                        Visibility="Collapsed"
-                        Margin="6,0,6,0"
-                        Background="#0000"
-                        BorderThickness="0"
-                        BorderBrush="#5082a4">
-                        <Path Name="CheckMark"
-                          Width="10"
-                          Height="10"
-                          Visibility="Hidden"
-                          SnapsToDevicePixels="False"
-                          Stroke="#0a0"
-                          StrokeThickness="2"
-                          Data="F1 M 0.468732,4.66838L 3.03345,7.95443L 7.28127,0.420569" />
-                    </Border>
-                    <ContentPresenter Name="HeaderHost"
-                                  Grid.Column="1"
-                                  ContentSource="Header"
-                                  RecognizesAccessKey="True" />
-                    <TextBlock x:Name="InputGestureText"
-                           Grid.Column="2"
-                           Text="{TemplateBinding InputGestureText}"
-                           Margin="5,2,0,2"
-                           DockPanel.Dock="Right" />
-                </Grid>
-            </Border>
-            <ControlTemplate.Triggers>
-                <Trigger Property="Icon"
-                     Value="{x:Null}">
-                    <Setter TargetName="Icon"
-                        Property="Visibility"
-                        Value="Hidden" />
-                </Trigger>
-                <Trigger Property="IsChecked"
-                     Value="true">
-                    <Setter TargetName="CheckMark"
-                        Property="Visibility"
-                        Value="Visible" />
-                </Trigger>
-                <Trigger Property="IsChecked"
-                     Value="false">
-                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="CheckMark" Property="Stroke" Value="#f44" />
-                    <Setter TargetName="CheckMark" Property="Data" Value="M 0 0 L 7 7 M 0 7 L 7 0" />
-                </Trigger>
-                <Trigger Property="IsCheckable"
-                     Value="true">
-                    <Setter TargetName="Check"
-                        Property="Visibility"
-                        Value="Visible" />
-                    <Setter TargetName="Icon"
-                        Property="Visibility"
-                        Value="Hidden" />
-                </Trigger>
-                <Trigger Property="IsHighlighted"
-                     Value="true">
-                    <Setter TargetName="Border"
-                        Property="Background"
-                        Value="#5082a4" />
-                </Trigger>
-                <Trigger Property="IsEnabled"
-                     Value="false">
-                    <Setter Property="Foreground"
-                        Value="#555" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-        -->
 
 
         <!-- SubmenuHeader -->
@@ -598,6 +507,14 @@
             </TabControl.ContentTemplate>
 
         </TabControl>
+
+        <StackPanel x:Name="popupOverlay"
+                    Orientation="Vertical"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    Panel.ZIndex="100"
+                    Grid.RowSpan="10"
+                    Grid.ColumnSpan="10" />
 
     </Grid>
 

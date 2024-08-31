@@ -33,6 +33,7 @@ namespace BetterTriggers.Containers
         public string currentSelectedElement;
         public BufferingFileSystemWatcher fileSystemWatcher;
         public ExplorerElement lastCreated;
+        public event Action<string, string> OnFileExtensionChanged;
 
         public Folders Folders { get; private set; }
         public Variables Variables { get; private set; }
@@ -343,7 +344,7 @@ namespace BetterTriggers.Containers
                 if (File.Exists(path) || Directory.Exists(path))
                 {
                     int indexOfTruePathName = files.IndexOf(n => n.Equals(path, StringComparison.OrdinalIgnoreCase));
-                    if(indexOfTruePathName < 0)
+                    if (indexOfTruePathName < 0)
                     {
                         continue;
                     }
@@ -431,6 +432,13 @@ namespace BetterTriggers.Containers
                 ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
                 if (elementToRename == null)
                     return;
+
+                var oldExtension = Path.GetExtension(oldFullPath);
+                var newExtension = Path.GetExtension(newFullPath);
+                if (oldExtension != newExtension)
+                {
+                    OnFileExtensionChanged?.Invoke(oldExtension, newExtension);
+                }
 
                 CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
                 command.Execute();
@@ -719,7 +727,7 @@ namespace BetterTriggers.Containers
                 insertIndex = parent.GetExplorerElements().IndexOf(pasteTarget);
             }
 
-            if(CopiedElements.CopiedExplorerElement == null)
+            if (CopiedElements.CopiedExplorerElement == null)
             {
                 return null;
             }

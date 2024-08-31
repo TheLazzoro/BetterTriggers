@@ -18,13 +18,13 @@ using GUI.Components.SaveMap;
 using GUI.Components.SelectMap;
 using GUI.Components.Settings;
 using GUI.Components.Setup;
+using GUI.Components.Shared;
 using GUI.Components.Tabs;
 using GUI.Components.UserReports;
 using GUI.Components.VariableList;
 using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
 using Microsoft.Win32;
-using NuGet.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Forms.Design;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -651,16 +650,34 @@ namespace GUI
             triggerExplorer.BorderBrush = new SolidColorBrush(Color.FromArgb(255, 32, 32, 32));
             mainGrid.Children.Add(triggerExplorer);
             Grid.SetRow(triggerExplorer, 3);
-            Grid.SetRowSpan(triggerExplorer, 4);
+            Grid.SetRowSpan(triggerExplorer, 3);
             Grid.SetColumn(triggerExplorer, 0);
 
             triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged += TreeViewTriggerExplorer_SelectedItemChanged;
             triggerExplorer.OnOpenExplorerElement += TriggerExplorer_OnOpenExplorerElement;
 
+            Project.CurrentProject.OnFileExtensionChanged += CurrentProject_OnFileExtensionChanged; ;
+
             EnableToolbar(true);
 
             VerifyTriggerData();
             OpenLastOpenedTabs();
+        }
+
+        private void CurrentProject_OnFileExtensionChanged(string oldExt, string newExt)
+        {
+            var popup = new PopupMessage(PopupMessage.PopupType.Warning, 10, $"A file extension was changed from {oldExt} to {newExt}." +
+                $"{Environment.NewLine}{Environment.NewLine}If this was not a script file the editor may become unstable.");
+            popup.Margin = new Thickness(5);
+            popupOverlay.Children.Add(popup);
+
+            popup.OnFaded += Popup_OnFaded;
+        }
+
+        private void Popup_OnFaded(PopupMessage popup)
+        {
+            popup.OnFaded -= Popup_OnFaded;
+            mainGrid.Children.Remove(popup);
         }
 
         private void OpenLastOpenedTabs()
@@ -866,6 +883,7 @@ namespace GUI
             EnableECAButtons(false);
             EnableParameterButton(false);
 
+            Project.CurrentProject.OnFileExtensionChanged -= CurrentProject_OnFileExtensionChanged;
             Project.Close();
         }
 

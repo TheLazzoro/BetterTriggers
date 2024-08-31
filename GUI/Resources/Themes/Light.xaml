@@ -195,5 +195,12 @@
     <BitmapImage x:Key="ImgArrowUp" UriSource="../Icons/arrow-up-light.png"/>
     <BitmapImage x:Key="ImgArrowLeft" UriSource="../Icons/arrow-left-light.png"/>
     <BitmapImage x:Key="ImgArrowRight" UriSource="../Icons/arrow-right-light.png"/>
-    
+
+    <SolidColorBrush x:Key="Popup.Background" Color="#ccc" />
+    <SolidColorBrush x:Key="Popup.Border" Color="#888" />
+    <SolidColorBrush x:Key="Popup.Foreground" Color="Black" />
+    <SolidColorBrush x:Key="Popup.Background.Warning" Color="#fd6" />
+    <SolidColorBrush x:Key="Popup.Border.Warning" Color="#fa0" />
+    <SolidColorBrush x:Key="Popup.Foreground.Warning" Color="#320" />
+
 </ResourceDictionary>
