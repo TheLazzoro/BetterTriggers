@@ -317,7 +317,7 @@ namespace BetterTriggers.WorldEdit
             // remove dummy elements
             dummyElements.ForEach(el =>
             {
-                project.RemoveElementFromContainer(el);
+                project.RemoveElementFromContainer_WhenDeleting(el);
             });
         }
 

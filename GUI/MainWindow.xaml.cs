@@ -126,6 +126,7 @@ namespace GUI
             RecentFiles.isTest = false; // hack
 
             Loaded += MainWindow_Loaded;
+            Activated += MainWindow_Activated;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -163,6 +164,12 @@ namespace GUI
                 });
             }
         }
+
+        private void MainWindow_Activated(object? sender, EventArgs e)
+        {
+            TaskbarFlash.StopFlashingWindow(this);
+        }
+
 
         /// <summary>
         /// This function only exists because of WPF wizardry.
@@ -332,7 +339,7 @@ namespace GUI
                 EnableECAButtons(true);
                 EnableParameterButton(false);
             }
-            else if(selectedItem.ElementType == ExplorerElementEnum.ActionDefinition
+            else if (selectedItem.ElementType == ExplorerElementEnum.ActionDefinition
                     || selectedItem.ElementType == ExplorerElementEnum.ConditionDefinition
                     || selectedItem.ElementType == ExplorerElementEnum.FunctionDefinition)
             {
@@ -440,7 +447,7 @@ namespace GUI
         private void btnSaveAll_Click(object sender, RoutedEventArgs e)
         {
             var project = Project.CurrentProject;
-            if(project == null) return;
+            if (project == null) return;
 
             project.Save();
         }
@@ -666,10 +673,15 @@ namespace GUI
 
         private void CurrentProject_OnFileExtensionChanged(string oldExt, string newExt)
         {
-            var popup = new PopupMessage(PopupMessage.PopupType.Warning, 10, $"A file extension was changed from {oldExt} to {newExt}." +
+            var popup = new PopupMessage(PopupMessage.PopupType.Warning, 10, $"A file extension was changed from {oldExt} to {newExt}" +
                 $"{Environment.NewLine}{Environment.NewLine}If this was not a script file the editor may become unstable.");
             popup.Margin = new Thickness(5);
             popupOverlay.Children.Add(popup);
+
+            if (!IsActive)
+            {
+                TaskbarFlash.FlashWindow(this);
+            }
 
             popup.OnFaded += Popup_OnFaded;
         }
@@ -683,7 +695,7 @@ namespace GUI
         private void OpenLastOpenedTabs()
         {
             Project project = Project.CurrentProject;
-            if(project == null)
+            if (project == null)
             {
                 return;
             }
@@ -696,7 +708,7 @@ namespace GUI
                     for (int i = 0; i < explorerElements.Count; i++)
                     {
                         var element = explorerElements[i];
-                        if(element.path == lastOpenedPath)
+                        if (element.path == lastOpenedPath)
                         {
                             OnSelectTab(element, tabViewModel, tabControl);
                             break;
@@ -965,7 +977,7 @@ namespace GUI
 
         private void CommandBinding_CanExecute_IsControlTrigger(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(triggerExplorer == null)
+            if (triggerExplorer == null)
             {
                 e.CanExecute = false;
                 return;

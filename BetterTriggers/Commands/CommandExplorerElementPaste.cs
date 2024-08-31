@@ -136,7 +136,7 @@ namespace BetterTriggers.Commands
         /// </summary>
         private void RemovePastedElements(ExplorerElement toRemove)
         {
-            project.RemoveElementFromContainer(toRemove);
+            project.RemoveElementFromContainer_WhenDeleting(toRemove);
 
             if(toRemove.ElementType == ExplorerElementEnum.Folder)
             {

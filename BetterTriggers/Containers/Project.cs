@@ -512,7 +512,7 @@ namespace BetterTriggers.Containers
                 if (elementToDelete == null)
                     return;
 
-                RemoveElementFromContainer(elementToDelete);
+                RemoveElementFromContainer_WhenDeleting(elementToDelete);
 
                 CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
                 command.Execute();
@@ -639,7 +639,7 @@ namespace BetterTriggers.Containers
         /// Removes deleted ExplorerElements from their appropriate container.
         /// </summary>
         /// <param name="element"></param>
-        public void RemoveElementFromContainer(ExplorerElement element)
+        public void RemoveElementFromContainer_WhenDeleting(ExplorerElement element)
         {
             switch (element.ElementType)
             {
@@ -647,10 +647,37 @@ namespace BetterTriggers.Containers
                     for (int i = 0; i < element.GetExplorerElements().Count; i++)
                     {
                         var subElement = element.GetExplorerElements()[i];
-                        RemoveElementFromContainer(subElement);
+                        RemoveElementFromContainer_WhenDeleting(subElement);
                     }
                     Folders.Remove(element);
                     break;
+                case ExplorerElementEnum.GlobalVariable:
+                    Variables.Remove(element);
+                    break;
+                case ExplorerElementEnum.Script:
+                    Scripts.Remove(element);
+                    break;
+                case ExplorerElementEnum.Trigger:
+                    Triggers.Remove(element);
+                    break;
+                case ExplorerElementEnum.ActionDefinition:
+                    ActionDefinitions.Remove(element);
+                    break;
+                case ExplorerElementEnum.ConditionDefinition:
+                    ConditionDefinitions.Remove(element);
+                    break;
+                case ExplorerElementEnum.FunctionDefinition:
+                    FunctionDefinitions.Remove(element);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void RemoveElementFromContainer_WhenRenaming(ExplorerElement element)
+        {
+            switch (element.ElementType)
+            {
                 case ExplorerElementEnum.GlobalVariable:
                     Variables.Remove(element);
                     break;

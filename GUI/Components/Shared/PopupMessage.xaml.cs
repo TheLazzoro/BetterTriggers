@@ -60,7 +60,10 @@ namespace GUI.Components.Shared
             Loaded += PopupMessage_Loaded;
             MouseEnter += PopupMessage_MouseEnter;
             MouseLeave += PopupMessage_MouseLeave;
-            MainWindow.GetMainWindow().Activated += MainWindow_Activated;
+            if (_startTimerImmediately == false)
+            {
+                MainWindow.GetMainWindow().Activated += MainWindow_Activated;
+            }
         }
 
         private void MainWindow_Activated(object? sender, EventArgs e)
@@ -117,19 +120,22 @@ namespace GUI.Components.Shared
                 Storyboard.SetTarget(_sb, this);
                 Storyboard.SetTargetProperty(_sb, new PropertyPath(Control.OpacityProperty));
 
-                _sb.Begin();
-
                 _sb.Completed += delegate
                 {
                     ClosePopup();
                 };
+
+                _sb.Begin();
             });
         }
 
         private void PopupMessage_MouseEnter(object sender, MouseEventArgs e)
         {
-            _sb.Stop();
-            _sb.Children.Remove(_animation);
+            if (MainWindow.GetMainWindow().IsActive)
+            {
+                _sb.Stop();
+                _sb.Children.Remove(_animation);
+            }
         }
 
         private void PopupMessage_MouseLeave(object sender, MouseEventArgs e)

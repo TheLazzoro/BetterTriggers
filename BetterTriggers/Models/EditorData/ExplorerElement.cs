@@ -22,7 +22,7 @@ namespace BetterTriggers.Models.EditorData
     public class ExplorerElement : TreeNodeBase
     {
         public static ExplorerElement CurrentToRender { get; set; } // hack
-        public ExplorerElementEnum ElementType { get; private set; }
+        public ExplorerElementEnum ElementType { get; internal set; }
         public string path
         {
             get => _path;
