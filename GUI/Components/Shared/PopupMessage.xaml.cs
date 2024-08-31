@@ -24,6 +24,7 @@ namespace GUI.Components.Shared
         private Storyboard _sb;
         private DoubleAnimation _animation;
         private bool _startTimerImmediately;
+        private bool isClosed;
 
         public PopupMessage(PopupType type, int displayTimeSeconds, string message)
         {
@@ -82,6 +83,11 @@ namespace GUI.Components.Shared
 
         private void PrepareFade()
         {
+            if(isClosed)
+            {
+                return;
+            }
+
             if (_timer != null)
             {
                 _timer.Dispose();
@@ -96,6 +102,7 @@ namespace GUI.Components.Shared
 
         private void ClosePopup()
         {
+            isClosed = true;
             OnFaded?.Invoke(this);
             Visibility = Visibility.Collapsed;
             _timer.Elapsed -= StartFade;
