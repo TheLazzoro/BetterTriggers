@@ -737,7 +737,17 @@ namespace GUI
                 }
             }
 
-            builder.TestMap();
+            var status = builder.TestMap();
+            if (status.Status == BuildMapStatusCode.CouldNotWriteToFile)
+            {
+                Components.Dialogs.MessageBox dialog = new Components.Dialogs.MessageBox("Error", status.Message);
+                dialog.ShowDialog();
+            }
+            else if(status.Status == BuildMapStatusCode.ScriptError && Info.GetLanguage() == ScriptLanguage.Lua)
+            {
+                Components.Dialogs.MessageBox dialog = new Components.Dialogs.MessageBox("Error", status.Message);
+                dialog.ShowDialog();
+            }
         }
 
         private void BuildMap()
@@ -1035,12 +1045,11 @@ namespace GUI
         {
             Builder builder = new Builder();
             (bool isOk, string msg) = builder.GenerateScript();
-                    }
+        }
 
         private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
         {
-            Builder builder = new Builder();
-            bool isScriptOk = builder.TestMap();
+            TestMap();
         }
 
         private void CommandBinding_Executed_BuildMap(object sender, ExecutedRoutedEventArgs e)

@@ -17,6 +17,26 @@ using BetterTriggers.WorldEdit.GameDataReader;
 
 namespace BetterTriggers.TestMap
 {
+    public enum BuildMapStatusCode
+    {
+        Ok,
+        Exception,
+        CouldNotWriteToFile,
+        ScriptError,
+    }
+
+    public class BuildMapStatus
+    {
+        public BuildMapStatusCode Status;
+        public string Message;
+
+        public BuildMapStatus(BuildMapStatusCode status, string message)
+        {
+            this.Status = status;
+            this.Message = message;
+        }
+    }
+
     public class Builder
     {
         private ScriptLanguage _language;
@@ -44,12 +64,14 @@ namespace BetterTriggers.TestMap
         /// Builds an MPQ archive.
         /// Throws <see cref="Exception"/> and <see cref="ContainsBTDataException"/> on errors.
         /// </summary>
-        public bool BuildMap(string destinationDir = null, bool includeMPQSettings = false, bool isTest = false)
+        public BuildMapStatus BuildMap(string destinationDir = null, bool includeMPQSettings = false, bool isTest = false)
         {
             EditorSettings settings = EditorSettings.Load();
             (bool wasVerified, string script) = GenerateScript();
             if (!wasVerified)
-                return false;
+            {
+                return new BuildMapStatus(BuildMapStatusCode.ScriptError, "Could not compile script.");
+            }
 
             if (includeMPQSettings)
             {
@@ -134,7 +156,9 @@ namespace BetterTriggers.TestMap
                 }
             }
             if (!didWrite)
-                throw err;
+            {
+                return new BuildMapStatus(BuildMapStatusCode.CouldNotWriteToFile, err.Message);
+            }
 
             if (includeMPQSettings && isTest == false)
             {
@@ -162,16 +186,16 @@ namespace BetterTriggers.TestMap
                 }
             }
 
-            return true;
+            return new BuildMapStatus(BuildMapStatusCode.Ok, string.Empty);
         }
 
-        public bool TestMap()
+        public BuildMapStatus TestMap()
         {
             string destinationDir = Path.GetTempPath();
-            bool scriptIsOk = BuildMap(destinationDir, isTest: true);
-            if(!scriptIsOk)
+            var status = BuildMap(destinationDir, isTest: true);
+            if (status.Status != BuildMapStatusCode.Ok)
             {
-                return false;
+                return status;
             }
 
             EditorSettings settings = EditorSettings.Load();
@@ -217,7 +241,7 @@ namespace BetterTriggers.TestMap
                 launchArgs += $"-testmapprofile {playerProfile} ";
                 launchArgs += $"-fixedseed {fixedseed} ";
             }
-            else if(WarcraftStorageReader.GameVersion >= new Version(1, 31))
+            else if (WarcraftStorageReader.GameVersion >= new Version(1, 31))
             {
                 launchArgs += $"-windowmode {windowMode} ";
                 launchArgs += nowfpause;
@@ -241,7 +265,7 @@ namespace BetterTriggers.TestMap
             }
 
             Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{archivePath}\"");
-            return true;
+            return status;
         }
 
 
