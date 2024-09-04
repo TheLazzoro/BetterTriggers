@@ -5,6 +5,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components;
 using GUI.Components.About;
@@ -35,6 +36,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using War3Net.Build.Info;
 
 namespace GUI
 {
@@ -734,15 +736,8 @@ namespace GUI
                     return;
                 }
             }
-            try
-            {
-                builder.TestMap();
-            }
-            catch (Exception ex)
-            {
-                Components.Dialogs.MessageBox dialogBox = new Components.Dialogs.MessageBox("Error", ex.Message);
-                dialogBox.ShowDialog();
-            }
+
+            builder.TestMap();
         }
 
         private void BuildMap()
@@ -1039,21 +1034,13 @@ namespace GUI
         private void CommandBinding_Executed_ValidateTriggers(object sender, ExecutedRoutedEventArgs e)
         {
             Builder builder = new Builder();
-            builder.GenerateScript();
-        }
+            (bool isOk, string msg) = builder.GenerateScript();
+                    }
 
         private void CommandBinding_Executed_TestMap(object sender, ExecutedRoutedEventArgs e)
         {
             Builder builder = new Builder();
-            try
-            {
-                builder.TestMap();
-            }
-            catch (Exception ex)
-            {
-                Components.Dialogs.MessageBox dialogBox = new Components.Dialogs.MessageBox("Error", ex.Message);
-                dialogBox.ShowDialog();
-            }
+            bool isScriptOk = builder.TestMap();
         }
 
         private void CommandBinding_Executed_BuildMap(object sender, ExecutedRoutedEventArgs e)

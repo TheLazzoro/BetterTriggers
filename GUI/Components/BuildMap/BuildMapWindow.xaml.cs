@@ -106,7 +106,11 @@ namespace GUI.Components.BuildMap
             try
             {
                 Builder builder = new Builder();
-                builder.BuildMap(includeMPQSettings: true);
+                bool scriptIsOk = builder.BuildMap(includeMPQSettings: true);
+                if(!scriptIsOk)
+                {
+                    throw new Exception("Script contained errors.");
+                }
             }
             catch (Exception ex)
             {

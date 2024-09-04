@@ -44,12 +44,12 @@ namespace BetterTriggers.TestMap
         /// Builds an MPQ archive.
         /// Throws <see cref="Exception"/> and <see cref="ContainsBTDataException"/> on errors.
         /// </summary>
-        public void BuildMap(string destinationDir = null, bool includeMPQSettings = false, bool isTest = false)
+        public bool BuildMap(string destinationDir = null, bool includeMPQSettings = false, bool isTest = false)
         {
             EditorSettings settings = EditorSettings.Load();
             (bool wasVerified, string script) = GenerateScript();
             if (!wasVerified)
-                throw new Exception("Script contained errors.");
+                return false;
 
             if (includeMPQSettings)
             {
@@ -90,7 +90,6 @@ namespace BetterTriggers.TestMap
                 {
                     map.Triggers = null;
                 }
-
             }
 
             ushort blockSize = 3;
@@ -162,12 +161,18 @@ namespace BetterTriggers.TestMap
                     }
                 }
             }
+
+            return true;
         }
 
-        public void TestMap()
+        public bool TestMap()
         {
             string destinationDir = Path.GetTempPath();
-            BuildMap(destinationDir, isTest: true);
+            bool scriptIsOk = BuildMap(destinationDir, isTest: true);
+            if(!scriptIsOk)
+            {
+                return false;
+            }
 
             EditorSettings settings = EditorSettings.Load();
             string war3Exe = Path.Combine(settings.war3root, "_retail_/x86_64/Warcraft III.exe");
@@ -236,6 +241,7 @@ namespace BetterTriggers.TestMap
             }
 
             Process.Start($"\"{war3Exe}\" {launchArgs} -loadfile \"{archivePath}\"");
+            return true;
         }
 
 
