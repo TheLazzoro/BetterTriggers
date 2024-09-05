@@ -1,4 +1,5 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit.GameDataReader;
 using System.Windows;
@@ -27,6 +28,7 @@ namespace GUI.Components.Settings
             textBoxCopiedMapFile.Text = settings.CopyLocation;
             comboboxTriggerStyle.SelectedIndex = (int)settings.triggerEditorMode;
             comboboxEditorAppearance.SelectedIndex = (int)settings.editorAppearance;
+            checkBoxShowGlobalDetail.IsChecked = settings.globalSuffixVisibility;
             checkBoxQuickStart.IsChecked = settings.useQuickStart;
 
             foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
@@ -65,6 +67,7 @@ namespace GUI.Components.Settings
             settings.CopyLocation = textBoxCopiedMapFile.Text;
             settings.triggerEditorMode = (TriggerEditorMode)comboboxTriggerStyle.SelectedIndex;
             settings.textEditorFontStyle = comboboxScriptFont.Text;
+            settings.globalSuffixVisibility = (bool)checkBoxShowGlobalDetail.IsChecked;
             settings.useQuickStart = (bool)checkBoxQuickStart.IsChecked;
 
             EditorSettings.Save(settings);
@@ -102,6 +105,19 @@ namespace GUI.Components.Settings
                     var element = tabs.Tabs[i].explorerElement;
                     if (element.editor is ScriptControl scriptControl)
                         scriptControl.ReloadTextEditorTheme();
+                }
+            }
+        }
+
+        private void checkBoxShowGlobalDetail_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.IsLoaded)
+            {
+                var project = Project.CurrentProject;
+                foreach (var element in project.Variables.variableContainer)
+                {
+                    bool isVisible = checkBoxShowGlobalDetail.IsChecked == true;
+                    element.SuffixVisibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
                 }
             }
         }

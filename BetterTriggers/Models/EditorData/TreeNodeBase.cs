@@ -28,6 +28,7 @@ namespace BetterTriggers.Models.EditorData
         private Visibility _iconVisibility = Visibility.Visible;
         private Visibility _renameBoxVisibility = Visibility.Hidden;
         private Visibility _checkBoxVisibility = Visibility.Hidden;
+        private Visibility _suffixVisibility = Visibility.Visible;
 
         public string DisplayText
         {
@@ -45,6 +46,15 @@ namespace BetterTriggers.Models.EditorData
             set
             {
                 _suffixText = value;
+                OnPropertyChanged();
+            }
+        }
+        public Visibility SuffixVisibility
+        {
+            get => _suffixVisibility;
+            set
+            {
+                _suffixVisibility = value;
                 OnPropertyChanged();
             }
         }

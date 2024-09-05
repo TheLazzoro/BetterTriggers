@@ -58,6 +58,28 @@ namespace BetterTriggers.Models.EditorData
                 OnPropertyChanged();
             }
         }
+        public string SuffixText
+        {
+            get
+            {
+                string initialValue = string.Empty;
+                string arrayTxt = string.Empty;
+                if (!string.IsNullOrEmpty(InitialValue.value))
+                {
+                    initialValue = $"= {InitialValue.value} ";
+                }
+                if (IsArray)
+                {
+                    arrayTxt = $"[{ArraySize[0]}]";
+                }
+                if (IsArray && IsTwoDimensions)
+                {
+                    arrayTxt += $"[{ArraySize[1]}]";
+                }
+
+                return $"{initialValue}<{War3Type.DisplayName}{arrayTxt}>";
+            }
+        }
 
         public bool SuppressChangedEvent = false;
         private string _name;

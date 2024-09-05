@@ -42,7 +42,7 @@ namespace GUI.Components.VariableList
             var variables = Project.CurrentProject.Variables.GetGlobals();
             variables.ForEach(v =>
             {
-                var item = new ListViewItem { Content = v.variable.Name, Tag = v };
+                var item = new ListViewItem { Content = v.variable.Name + v.variable.SuffixText, Tag = v };
                 objects.Add(new Searchable()
                 {
                     Object = item,

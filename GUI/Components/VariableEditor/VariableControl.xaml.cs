@@ -253,7 +253,7 @@ namespace GUI.Components
                 variable.ArraySize[1] = size1;
 
                 OnStateChange();
-                explorerElement.AddToUnsaved();
+                explorerElement.InvokeChange();
             }
             catch (Exception ex)
             {

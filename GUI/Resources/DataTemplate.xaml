@@ -17,6 +17,7 @@
                 <ColumnDefinition Width="{Binding CheckBoxWidth}" />
                 <ColumnDefinition Width="16" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <CheckBox Focusable="False"
@@ -92,10 +93,23 @@
                 </TextBlock.Style>
             </TextBlock>
 
+            <TextBlock x:Name="suffixText"
+                       Text="{Binding SuffixText}"
+                       Visibility="{Binding SuffixVisibility}"
+                       Grid.Column="3"
+                       Margin="5,0,0,0" >
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
             <TextBox x:Name="renameBox"
                      Text="{Binding RenameText, UpdateSourceTrigger=PropertyChanged}"
                      Visibility="{Binding RenameBoxVisibility}"
-                     Grid.Column="2"
+                     Grid.Column="1"
+                     Grid.ColumnSpan="3"
                      FontFamily="Segoe UI">
             </TextBox>
 

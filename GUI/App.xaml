@@ -512,6 +512,13 @@
                                     <Setter TargetName="Border" Property="Background" Value="{DynamicResource BackgroundDark}" />
                                     <Setter Property="Foreground" Value="{DynamicResource TextBrushDim}"/>
                                 </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True"/>
+                                        <Condition Property="IsSelected" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource BackgroundMenu}" />
+                                </MultiTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>

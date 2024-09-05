@@ -30,6 +30,7 @@ namespace BetterTriggers.Models.EditorData
             {
                 _path = value;
                 DisplayText = Path.GetFileNameWithoutExtension(value);
+                UpdateVariableDisplayName();
             }
         }
         public ExplorerElement Parent { get; set; }
@@ -116,6 +117,7 @@ namespace BetterTriggers.Models.EditorData
                         break;
 
                     case ".var":
+                        EditorSettings editorSettings = EditorSettings.Load();
                         ElementType = ExplorerElementEnum.GlobalVariable;
                         CategoryStr = TriggerCategory.TC_SETVARIABLE;
                         fileContent = ReadFile(path);
@@ -124,6 +126,8 @@ namespace BetterTriggers.Models.EditorData
                         variable.PropertyChanged += Variable_PropertyChanged; ;
                         Project.CurrentProject.Variables.AddVariable(this);
                         variable.Name = Path.GetFileNameWithoutExtension(GetPath());
+                        SuffixVisibility = editorSettings.globalSuffixVisibility ? Visibility.Visible : Visibility.Collapsed;
+                        UpdateVariableDisplayName();
                         break;
 
                     case ".act":
@@ -178,6 +182,7 @@ namespace BetterTriggers.Models.EditorData
         private void Variable_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             AddToUnsaved();
+            UpdateVariableDisplayName();
         }
 
         private string ReadFile(string path)
@@ -642,6 +647,7 @@ namespace BetterTriggers.Models.EditorData
         {
             VerifyAndRemoveTriggerErrors();
             UpdateVariableIdentifier();
+            UpdateVariableDisplayName();
             OnChanged?.Invoke();
             AddToUnsaved();
         }
@@ -675,6 +681,14 @@ namespace BetterTriggers.Models.EditorData
             if (ElementType == ExplorerElementEnum.GlobalVariable)
             {
                 variable.Name = this.GetName();
+            }
+        }
+
+        private void UpdateVariableDisplayName()
+        {
+            if (ElementType == ExplorerElementEnum.GlobalVariable)
+            {
+                SuffixText = variable.SuffixText;
             }
         }
 
