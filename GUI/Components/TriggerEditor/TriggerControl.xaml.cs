@@ -1025,6 +1025,11 @@ namespace GUI.Components
 
         private void PasteTriggerElement()
         {
+            if(CopiedElements.CopiedTriggerElements == null)
+            {
+                return;
+            }
+
             var selected = (TriggerElement)treeViewTriggers.SelectedItem;
             if (selected == null)
                 return;

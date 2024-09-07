@@ -1892,9 +1892,9 @@ end
             }
         }
 
-        StringBuilder localVariableDecl;
-        List<Variable> localVariables;
-        List<Variable> globalLocalCarries;
+        StringBuilder localVariableDecl = new();
+        List<Variable> localVariables = new();
+        List<Variable> globalLocalCarries = new();
 
         private string SetLocals()
         {

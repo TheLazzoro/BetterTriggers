@@ -943,12 +943,12 @@ namespace BetterTriggers.Containers
                 }
             }
 
-            if (CopiedElements.CutTriggerElements == null)
+            if (CopiedElements.CutTriggerElements == null && pasted.Elements != null && pasted.Elements.Count > 0)
             {
                 CommandTriggerElementPaste command = new CommandTriggerElementPaste(destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
             }
-            else
+            else if(CopiedElements.CutTriggerElements != null && CopiedElements.CutTriggerElements.Elements.Count > 0)
             {
                 CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
