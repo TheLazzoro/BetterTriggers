@@ -6,6 +6,7 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
+using NuGet.Configuration;
 using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
@@ -170,28 +171,49 @@ namespace GUI.Components
                 else
                     change = -1;
 
-                if ((settings.textEditorFontSize + change) != 0)
-                {
-                    settings.textEditorFontSize += change;
-                    EditorSettings.Save(settings);
-
-                    var mainWindow = MainWindow.GetMainWindow();
-                    var tabs = mainWindow.tabViewModel.Tabs.GetEnumerator();
-                    while (tabs.MoveNext())
-                    {
-                        var tab = tabs.Current;
-                        if (tab.Content is ScriptControl scriptControl)
-                        {
-                            scriptControl.RefreshFontSize();
-                        }
-                        else if (tab.Content is RootControl rootControl)
-                        {
-                            rootControl.RefreshFontSize();
-                        }
-                    }
-                }
-
+                ChangeFontSize(change, isDeltaChange: true);
                 e.Handled = true;
+            }
+        }
+
+        public static void ChangeFontSize(double change, bool isDeltaChange)
+        {
+            EditorSettings settings = EditorSettings.Load();
+            bool doChange = false;
+            if (isDeltaChange && (settings.textEditorFontSize + change) > 0)
+            {
+                doChange = true;
+            }
+            else if (!isDeltaChange && change > 0)
+            {
+                doChange = true;
+            }
+
+            if (!doChange)
+            {
+                return;
+            }
+
+            if(isDeltaChange)
+                settings.textEditorFontSize += change;
+            else
+                settings.textEditorFontSize = change;
+
+            EditorSettings.Save(settings);
+
+            var mainWindow = MainWindow.GetMainWindow();
+            var tabs = mainWindow.tabViewModel.Tabs.GetEnumerator();
+            while (tabs.MoveNext())
+            {
+                var tab = tabs.Current;
+                if (tab.Content is ScriptControl scriptControl)
+                {
+                    scriptControl.RefreshFontSize();
+                }
+                else if (tab.Content is RootControl rootControl)
+                {
+                    rootControl.RefreshFontSize();
+                }
             }
         }
 

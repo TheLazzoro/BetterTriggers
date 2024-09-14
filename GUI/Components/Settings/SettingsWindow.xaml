@@ -36,7 +36,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="140"/>
                         <ColumnDefinition Width="110"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
@@ -44,6 +44,7 @@
                     <Label Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource TextBrush2}">Editor Appearance</Label>
                     <Label Grid.Row="2" Grid.Column="1" Foreground="{DynamicResource TextBrush2}">Trigger Editor Style</Label>
                     <Label Grid.Row="3" Grid.Column="1" Foreground="{DynamicResource TextBrush2}">Script Editor Font</Label>
+                    <Label Grid.Row="4" Grid.Column="1" Foreground="{DynamicResource TextBrush2}">Script Editor Font Size</Label>
 
                     <ComboBox x:Name="comboboxEditorAppearance" Grid.Row="1" Grid.Column="2" Margin="0,2,0,2" SelectionChanged="comboboxEditorAppearance_SelectionChanged">
                         <ComboBoxItem>Dark</ComboBoxItem>
@@ -56,12 +57,17 @@
                         <ComboBoxItem>CliCli</ComboBoxItem>
                     </ComboBox>
 
+                    <TextBox x:Name="textboxFontSize"
+                             Margin="0,2,0,2"
+                             Grid.Row="4"
+                             Grid.Column="2" TextChanged="textboxFontSize_TextChanged" PreviewTextInput="textboxFontSize_PreviewTextInput"/>
+
                     <ComboBox x:Name="comboboxScriptFont" Grid.Row="3" Grid.Column="2" Margin="0,2,0,2" />
 
-                    <CheckBox x:Name="checkBoxShowGlobalDetail" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}" Click="checkBoxShowGlobalDetail_Click">Detailed Global Variable Info</CheckBox>
+                    <CheckBox x:Name="checkBoxShowGlobalDetail" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}" Click="checkBoxShowGlobalDetail_Click">Detailed Global Variable Info</CheckBox>
 
 
-                    <CheckBox x:Name="checkBoxQuickStart" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}">Use Quick Start (Open Most Recent Project On Start)</CheckBox>
+                    <CheckBox x:Name="checkBoxQuickStart" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}">Use Quick Start (Open Most Recent Project On Start)</CheckBox>
 
                 </Grid>
             </TabItem>

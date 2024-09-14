@@ -2,6 +2,7 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit.GameDataReader;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,7 +11,8 @@ namespace GUI.Components.Settings
 {
     public partial class SettingsWindow : Window
     {
-        EditorSettings settings;
+        private EditorSettings settings;
+        private string _fontSizePreviousValue;
 
         public SettingsWindow()
         {
@@ -27,6 +29,7 @@ namespace GUI.Components.Settings
             checkBoxNoWFPause.IsChecked = settings.NoWindowsFocusPause;
             textBoxCopiedMapFile.Text = settings.CopyLocation;
             comboboxTriggerStyle.SelectedIndex = (int)settings.triggerEditorMode;
+            textboxFontSize.Text = settings.textEditorFontSize.ToString();
             comboboxEditorAppearance.SelectedIndex = (int)settings.editorAppearance;
             checkBoxShowGlobalDetail.IsChecked = settings.globalSuffixVisibility;
             checkBoxQuickStart.IsChecked = settings.useQuickStart;
@@ -67,6 +70,7 @@ namespace GUI.Components.Settings
             settings.CopyLocation = textBoxCopiedMapFile.Text;
             settings.triggerEditorMode = (TriggerEditorMode)comboboxTriggerStyle.SelectedIndex;
             settings.textEditorFontStyle = comboboxScriptFont.Text;
+            settings.textEditorFontSize = double.Parse(textboxFontSize.Text);
             settings.globalSuffixVisibility = (bool)checkBoxShowGlobalDetail.IsChecked;
             settings.useQuickStart = (bool)checkBoxQuickStart.IsChecked;
 
@@ -120,6 +124,25 @@ namespace GUI.Components.Settings
                     element.SuffixVisibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
                 }
             }
+        }
+
+        private void textboxFontSize_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            bool valid = int.TryParse(textboxFontSize.Text, out int size);
+            if(!valid)
+            {
+                textboxFontSize.Text = _fontSizePreviousValue;
+            }
+            else
+            {
+                _fontSizePreviousValue = textboxFontSize.Text;
+                TextEditor.ChangeFontSize(size, isDeltaChange: false);
+            }
+        }
+
+        private void textboxFontSize_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            _fontSizePreviousValue = textboxFontSize.Text;
         }
     }
 }
