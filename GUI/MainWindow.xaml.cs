@@ -459,11 +459,15 @@ namespace GUI
 
         private void btnUndo_Click(object sender, RoutedEventArgs e)
         {
+            var project = Project.CurrentProject;
+            if (project == null) return;
             Project.CurrentProject.CommandManager.Undo();
         }
 
         private void btnRedo_Click(object sender, RoutedEventArgs e)
         {
+            var project = Project.CurrentProject;
+            if (project == null) return;
             Project.CurrentProject.CommandManager.Redo();
         }
 
