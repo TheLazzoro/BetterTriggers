@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
-using BetterTriggers.Models.SaveableData;
 using War3Net.IO.Mpq;
 using War3Net.Build;
 using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.WorldEdit
 {
     public class Imports
     {
-        public static List<Value_Saveable> GetImportsByReturnType(string returnType)
+        public static List<Value> GetImportsByReturnType(string returnType)
         {
             var project = Project.CurrentProject;
             string fullMapPath = project.GetFullMapPath();
             bool isMapMPQ = File.Exists(fullMapPath);
-            List<Value_Saveable> imports = new List<Value_Saveable>();
+            List<Value> imports = new List<Value>();
             List<string> files = new List<string>();
             string mapDir = fullMapPath + "/";
 
@@ -53,7 +53,7 @@ namespace BetterTriggers.WorldEdit
                     if (!isMapMPQ)
                         fileName = file.Substring(mapDir.Length, file.Length - mapDir.Length);
 
-                    imports.Add(new Value_Saveable()
+                    imports.Add(new Value()
                     {
                         value = fileName
                     });
