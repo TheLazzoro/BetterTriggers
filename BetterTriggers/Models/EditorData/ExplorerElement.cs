@@ -282,7 +282,7 @@ namespace BetterTriggers.Models.EditorData
         public ExplorerElement GetParent()
         {
             if (ElementType == ExplorerElementEnum.Root)
-                throw new Exception("Root is the super parent");
+                throw new Exception("Cannot get the parent-node of 'root'.");
 
             return Parent;
         }
