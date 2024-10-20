@@ -636,8 +636,11 @@ namespace BetterTriggers.Models.EditorData
                 this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
             }
 
-            OnReload?.Invoke();
-            VerifyAndRemoveTriggerErrors();
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                OnReload?.Invoke();
+                VerifyAndRemoveTriggerErrors();
+            }));
         }
 
         /// <summary>
