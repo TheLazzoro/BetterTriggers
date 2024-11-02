@@ -500,7 +500,7 @@ namespace GUI.Components
         private void menuRename_Click(object sender, RoutedEventArgs e)
         {
             var explorerElement = GetSelectedExplorerElement();
-            explorerElement.RenameBoxVisibility = Visibility.Visible;
+            SetSelectedRenameBoxVisible(true);
         }
 
         private void menuDelete_Click(object sender, RoutedEventArgs e)
