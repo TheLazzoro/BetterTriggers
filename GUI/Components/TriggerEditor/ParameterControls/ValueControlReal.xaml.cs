@@ -87,8 +87,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             previousValue = textBox.Text;
             if (e.Text == ","
                 || (e.Text == "." && textBox.Text.Contains("."))
-                ||
-                (e.Text != "." && e.Text != "," && !int.TryParse(e.Text, out int temp))
+                || (e.Text != "." && e.Text != "," && e.Text != "-" && !int.TryParse(e.Text, out int temp))
                 )
             {
                 e.Handled = true;
