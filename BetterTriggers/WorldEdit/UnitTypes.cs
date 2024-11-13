@@ -111,7 +111,7 @@ namespace BetterTriggers.WorldEdit
 
             IsTest = isTest;
 
-            if(!isTest && WarcraftStorageReader.GameVersion < new Version(1, 32))
+            if (!isTest && WarcraftStorageReader.GameVersion < new Version(1, 32))
             {
                 LoadFromMpq();
                 return;
@@ -171,6 +171,10 @@ namespace BetterTriggers.WorldEdit
                 var section = data[unitType.Id];
 
                 var icon = section["Art"];
+                if (icon == null)
+                {
+                    icon = section["Art:sd"];
+                }
                 var sort = section["sortUI"];
                 var isSpecial = section["special"];
                 var isCampaign = section["campaign"];
@@ -186,7 +190,16 @@ namespace BetterTriggers.WorldEdit
                 new Icon(icon, UnitTypes.GetName(unitType.Id), "Unit");
 
                 if (!isTest)
-                    unitType.Image = Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(icon, WarcraftStorageReader.ImageExt)));
+                {
+                    try
+                    {
+                        unitType.Image = Images.ReadImage(WarcraftStorageReader.OpenFile(Path.ChangeExtension(icon, WarcraftStorageReader.ImageExt)));
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
             }
 
             var campaignSections = campaignFunc.Sections;
@@ -379,7 +392,7 @@ namespace BetterTriggers.WorldEdit
                 else if (Int32Extensions.ToRawcode(modification.Id) == "uico")
                 {
                     string iconPath = modification.Value as string;
-                    if(string.IsNullOrEmpty(iconPath))
+                    if (string.IsNullOrEmpty(iconPath))
                     {
                         continue;
                     }

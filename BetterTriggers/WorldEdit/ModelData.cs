@@ -155,12 +155,16 @@ namespace BetterTriggers.WorldEdit
             // TODO: wtf
             for (int i = 0; i < unitData.Count; i++)
             {
+                try
+                {
+
                 hashset.Add(new AssetModel()
                 {
                     DisplayName = unitData[i].Name == null ? "" : UnitTypes.GetName(unitData[i].Id),
                     Path = unitData[i].Model,
                     Category = "Unit"
                 });
+                } catch(Exception) { }
             }
             for (int i = 0; i < destData.Count; i++)
             {
