@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using ICSharpCode.Decompiler.TypeSystem;
 using Newtonsoft.Json.Linq;
+using BetterTriggers.WorldEdit.GameDataReader;
 
 namespace BetterTriggers
 {
@@ -680,7 +681,14 @@ end
                 if (!generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
                     varName = "u";
 
-                script.Append($"\t{set} {varName} = BlzCreateUnitWithSkin(Player({owner}), {fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+                {
+                    script.Append($"\t{set} {varName} = BlzCreateUnitWithSkin(Player({owner}), {fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
+                }
+                else
+                {
+                    script.Append($"\t{set} {varName} = CreateUnit(Player({owner}), {fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}){newline}");
+                }
 
                 if (u.IsGoldMine())
                     script.Append($"\t{call} SetResourceAmount({varName}, {u.GoldAmount}){newline}");
@@ -793,7 +801,14 @@ end
                 Tuple<Parameter, string> value;
                 if (generatedVarNames.TryGetValue(varName, out value)) // dest with generated variable
                 {
-                    script.Append($"{set} {varName} = BlzCreateDestructableWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}, {fourCCStart}'{skin}'{fourCCEnd}){newline}");
+                    if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+                    {
+                        script.Append($"{set} {varName} = BlzCreateDestructableWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}, {fourCCStart}'{skin}'{fourCCEnd}){newline}");
+                    }
+                    else
+                    {
+                        script.Append($"{set} {varName} = CreateDestructable({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}){newline}");
+                    }
                     if (d.Life < 100)
                     {
                         script.Append($"{set} life = GetDestructableLife({varName}){newline}");
@@ -836,7 +851,14 @@ end
                 if (!generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
                     varName = "i";
 
-                script.Append($"\t{set} {varName} = BlzCreateItemWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+                {
+                    script.Append($"\t{set} {varName} = BlzCreateItemWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
+                }
+                else
+                {
+                    script.Append($"\t{set} {varName} = CreateItem({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}){newline}");
+                }
             }
 
             script.Append($"{endfunction}{newline}{newline}");
@@ -907,9 +929,12 @@ end
                 script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FIELD_OF_VIEW, {c.FieldOfView.ToString("0.000", enUS)}, 0.0){newline}");
                 script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FARZ, {c.FarClippingPlane.ToString("0.000", enUS)}, 0.0){newline}");
                 script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_NEARZ, {c.NearClippingPlane.ToString("0.000", enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_PITCH, {c.LocalPitch.ToString("0.000", enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_YAW, {c.LocalYaw.ToString("0.000", enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_ROLL, {c.LocalRoll.ToString("0.000", enUS)}, 0.0){newline}");
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+                {
+                    script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_PITCH, {c.LocalPitch.ToString("0.000", enUS)}, 0.0){newline}");
+                    script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_YAW, {c.LocalYaw.ToString("0.000", enUS)}, 0.0){newline}");
+                    script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_ROLL, {c.LocalRoll.ToString("0.000", enUS)}, 0.0){newline}");
+                }
                 script.Append($"{call} CameraSetupSetDestPosition({id}, {c.TargetPosition.X.ToString("0.000", enUS)}, {c.TargetPosition.Y.ToString("0.000", enUS)}, 0.0){newline}");
                 script.Append($"{newline}");
             }
