@@ -681,7 +681,7 @@ end
                 if (!generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
                     varName = "u";
 
-                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_32)
                 {
                     script.Append($"\t{set} {varName} = BlzCreateUnitWithSkin(Player({owner}), {fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
                 }
@@ -801,7 +801,7 @@ end
                 Tuple<Parameter, string> value;
                 if (generatedVarNames.TryGetValue(varName, out value)) // dest with generated variable
                 {
-                    if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+                    if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_32)
                     {
                         script.Append($"{set} {varName} = BlzCreateDestructableWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}, {fourCCStart}'{skin}'{fourCCEnd}){newline}");
                     }
@@ -851,7 +851,7 @@ end
                 if (!generatedVarNames.TryGetValue(varName, out value)) // unit with generated variable
                     varName = "i";
 
-                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_32)
                 {
                     script.Append($"\t{set} {varName} = BlzCreateItemWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {fourCCStart}'{skinId}'{fourCCEnd}){newline}");
                 }
