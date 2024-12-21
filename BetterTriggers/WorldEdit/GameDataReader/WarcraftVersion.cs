@@ -8,6 +8,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 {
     public class WarcraftVersion
     {
+        public static readonly Version _1_33 = new Version(1, 33);
         public static readonly Version _1_32 = new Version(1, 32);
         public static readonly Version _1_31 = new Version(1, 31);
         public static readonly Version _1_30 = new Version(1, 30);

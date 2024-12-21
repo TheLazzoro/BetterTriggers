@@ -206,7 +206,7 @@ namespace BetterTriggers.WorldEdit
 
             // --- Loads depending on version --- //
 
-            if (WarcraftStorageReader.GameVersion.Minor >= 31)
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
@@ -219,13 +219,13 @@ namespace BetterTriggers.WorldEdit
                 customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt"));
                 customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt"));
             }
-            if (WarcraftStorageReader.GameVersion.Minor >= 32)
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_32)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_32.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadTriggerDataFromIni(dataCustom, isTest);
             }
-            if (WarcraftStorageReader.GameVersion.Minor >= 33)
+            if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_33)
             {
                 textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_33.txt"));
                 dataCustom = IniFileConverter.GetIniData(textCustom);
