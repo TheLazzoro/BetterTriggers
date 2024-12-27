@@ -2220,7 +2220,14 @@ end
 
                 // Remove 'multiple'
                 script.Append(CarryLocals());
-                script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
+                if (t is ForGroupMultiple) // BJ function :)))
+                {
+                    script.Append($"{call} {f.value.Substring(0, 8)}BJ({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
+                }
+                else
+                {
+                    script.Append($"{call} {f.value.Substring(0, 8)}({ConvertParametersToJass(f.parameters[0], returnTypes[0], pre_actions)}, {function} {function_name}){newline}");
+                }
 
                 string pre = string.Empty;
                 string pre_content = string.Empty;
