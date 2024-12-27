@@ -347,7 +347,7 @@
     <PackageReference Include="CascLib" Version="1.0.23" />
     <PackageReference Include="DotNetProjects.WpfToolkit.Input" Version="6.1.94" />
     <PackageReference Include="ini-parser" Version="2.5.2" />
-    <PackageReference Include="JASS-Obfuscator" Version="1.0.3" />
+    <PackageReference Include="JASS-Obfuscator" Version="1.0.4" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />

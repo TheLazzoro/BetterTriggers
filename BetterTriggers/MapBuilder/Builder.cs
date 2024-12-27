@@ -73,7 +73,7 @@ namespace BetterTriggers.TestMap
                 return new BuildMapStatus(BuildMapStatusCode.ScriptError, "Could not compile script.");
             }
 
-            if (includeMPQSettings)
+            if (includeMPQSettings && isTest == false)
             {
                 if (settings.Export_Obfuscate && _language == ScriptLanguage.Jass)
                 {
