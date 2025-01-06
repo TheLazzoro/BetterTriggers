@@ -8,9 +8,9 @@ namespace GUI.Components.VersionCheck
 {
     public partial class NewVersionWindow_OnStart : Window
     {
-        public NewVersionWindow_OnStart(VersionCheckCollection versionCheck)
+        public NewVersionWindow_OnStart(VersionCheckCollection versionCheck, Window owner)
         {
-            this.Owner = MainWindow.GetMainWindow();
+            this.Owner = owner;
 
             InitializeComponent();
 

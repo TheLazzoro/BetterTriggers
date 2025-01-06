@@ -147,26 +147,13 @@ namespace GUI
             ProgramSettings programSettings = ProgramSettings.Load();
             if (programSettings.IgnoreNewVersion == false)
             {
-                Task.Run(CheckVersionOnStart);
+                Task.Run(() => VersionCheck.CheckVersion_PopupWindow(this));
             }
 
             LoggingService service = new LoggingService();
             service.SubmitSession();
         }
 
-        private async Task CheckVersionOnStart()
-        {
-            var versionCheck = new VersionCheck();
-            var version = await versionCheck.GetNewestVersionAsync();
-            if (version.VersionCheckEnum == VersionCheckEnum.NewerExists)
-            {
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    var window = new NewVersionWindow_OnStart(version);
-                    window.ShowDialog();
-                });
-            }
-        }
 
         private void MainWindow_Activated(object? sender, EventArgs e)
         {

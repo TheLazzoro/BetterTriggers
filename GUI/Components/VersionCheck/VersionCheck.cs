@@ -61,5 +61,18 @@ namespace GUI.Components.VersionCheck
             }
         }
 
+        public static async Task CheckVersion_PopupWindow(Window owner)
+        {
+            var versionCheck = new VersionCheck();
+            var version = await versionCheck.GetNewestVersionAsync();
+            if (version.VersionCheckEnum == VersionCheckEnum.NewerExists)
+            {
+                Application.Current.Dispatcher.Invoke(delegate
+                {
+                    var window = new NewVersionWindow_OnStart(version, owner);
+                    window.ShowDialog();
+                });
+            }
+        }
     }
 }

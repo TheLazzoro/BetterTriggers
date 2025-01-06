@@ -3,13 +3,11 @@ using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components.Dialogs;
 using GUI.Components.Loading;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace GUI.Components.Setup
 {
-    /// <summary>
-    /// Interaction logic for SetupWindow.xaml
-    /// </summary>
     public partial class SetupWindow : Window
     {
         public SetupWindow()
@@ -19,6 +17,7 @@ namespace GUI.Components.Setup
             EditorSettings settings = EditorSettings.Load();
             textBoxRoot.Text = settings.war3root;
             Init.HasLoaded = false;
+            Task.Run(() => VersionCheck.VersionCheck.CheckVersion_PopupWindow(this));
         }
 
         private void btnSelectWar3Dir_Click(object sender, RoutedEventArgs e)
