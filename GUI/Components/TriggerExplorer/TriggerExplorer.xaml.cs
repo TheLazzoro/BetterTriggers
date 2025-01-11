@@ -21,6 +21,8 @@ using BetterTriggers.Utility;
 using GUI.Components.Dialogs;
 using GUI.Components.Tabs;
 using System.Windows.Media.Animation;
+using BetterTriggers;
+using NuGet.Configuration;
 
 namespace GUI.Components
 {
@@ -87,7 +89,7 @@ namespace GUI.Components
             // walks up the element hierarchy until a parent attached to the TreeView is found.
             while (treeViewItem == null)
             {
-                if(explorerElement == null)
+                if (explorerElement == null)
                 {
                     return null;
                 }
@@ -224,7 +226,7 @@ namespace GUI.Components
 
             var currentParent = TreeViewItemHelper.GetTreeItemParent(dragItem);
             TreeViewItem dropTarget = TreeViewItemHelper.GetTraversedTargetDropItem(e.Source as DependencyObject);
-            int currentIndex = currentParent.Items.IndexOf(dragItem);
+            int currentIndex = currentParent.Items.IndexOf(dragItemExplorerElement);
             if (dropTarget == null)
                 return;
 
@@ -361,7 +363,7 @@ namespace GUI.Components
                 return;
             }
 
-            if(e.Key == Key.Enter && selected.IsRenaming)
+            if (e.Key == Key.Enter && selected.IsRenaming)
             {
                 return;
             }
@@ -577,7 +579,16 @@ namespace GUI.Components
 
             TreeViewItem item = e.OriginalSource as TreeViewItem;
             if (item != null)
+            {
                 item.BringIntoView();
+                var selected = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
+                var settings = EditorSettings.Load();
+                if (selected != null && settings.singleClickExplorerElement == true)
+                {
+                    OnOpenExplorerElement?.Invoke(selected);
+                    e.Handled = true; // prevents event from firing up the parent items
+                }
+            }
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
@@ -654,7 +665,7 @@ namespace GUI.Components
             searchWorker.ReportProgress(100);
         }
 
-        
+
 
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -662,8 +673,8 @@ namespace GUI.Components
             if (selected != null)
             {
                 OnOpenExplorerElement?.Invoke(selected);
-                e.Handled = true; // prevents event from firing up the parent items
             }
+            e.Handled = true; // prevents event from firing up the parent items
         }
 
         private void listViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -672,8 +683,8 @@ namespace GUI.Components
             if (selected != null)
             {
                 OnOpenExplorerElement?.Invoke(selected);
-                e.Handled = true; // prevents event from firing up the parent items
             }
+            e.Handled = true; // prevents event from firing up the parent items
         }
 
 

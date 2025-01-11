@@ -33,6 +33,7 @@
                         <RowDefinition Height="26" />
                         <RowDefinition Height="26" />
                         <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20"/>
@@ -64,10 +65,11 @@
 
                     <ComboBox x:Name="comboboxScriptFont" Grid.Row="3" Grid.Column="2" Margin="0,2,0,2" />
 
-                    <CheckBox x:Name="checkBoxShowGlobalDetail" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}" Click="checkBoxShowGlobalDetail_Click">Detailed Global Variable Info</CheckBox>
+                    <CheckBox x:Name="checkBoxSingleClickExplorerElements" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}" Click="checkBoxShowGlobalDetail_Click">Single-Click To Open Explorer Elements</CheckBox>
+                    
+                    <CheckBox x:Name="checkBoxShowGlobalDetail" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}" Click="checkBoxShowGlobalDetail_Click">Detailed Global Variable Info</CheckBox>
 
-
-                    <CheckBox x:Name="checkBoxQuickStart" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}">Use Quick Start (Open Most Recent Project On Start)</CheckBox>
+                    <CheckBox x:Name="checkBoxQuickStart" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}">Use Quick Start (Open Most Recent Project On Start)</CheckBox>
 
                 </Grid>
             </TabItem>

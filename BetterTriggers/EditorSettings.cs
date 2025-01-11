@@ -49,6 +49,7 @@ namespace BetterTriggers
         public EditorAppearance editorAppearance = 0;
         public TriggerEditorMode triggerEditorMode = 0;
         public bool globalSuffixVisibility = true;
+        public bool singleClickExplorerElement = false;
         public double textEditorFontSize   = 12;
         public string textEditorFontStyle  = "Consolas";
 

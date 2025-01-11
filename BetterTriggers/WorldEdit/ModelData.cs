@@ -157,13 +157,17 @@ namespace BetterTriggers.WorldEdit
             {
                 try
                 {
+                    if (unitData[i].Model == null)
+                    {
+                        continue;
+                    }
 
-                hashset.Add(new AssetModel()
-                {
-                    DisplayName = unitData[i].Name == null ? "" : UnitTypes.GetName(unitData[i].Id),
-                    Path = unitData[i].Model,
-                    Category = "Unit"
-                });
+                    hashset.Add(new AssetModel()
+                    {
+                        DisplayName = unitData[i].Name == null ? "" : UnitTypes.GetName(unitData[i].Id),
+                        Path = unitData[i].Model,
+                        Category = "Unit"
+                    });
                 } catch(Exception) { }
             }
             for (int i = 0; i < destData.Count; i++)
