@@ -26,6 +26,7 @@ using BetterTriggers.Models.EditorData.TriggerEditor;
 using ICSharpCode.Decompiler.TypeSystem;
 using Newtonsoft.Json.Linq;
 using BetterTriggers.WorldEdit.GameDataReader;
+using System.Windows.Automation;
 
 namespace BetterTriggers
 {
@@ -1632,6 +1633,11 @@ end
                     break;
             }
 
+            byte waterRed = Info.MapInfo.WaterTintingColor.R;
+            byte waterGreen = Info.MapInfo.WaterTintingColor.G;
+            byte waterBlue = Info.MapInfo.WaterTintingColor.B;
+            byte waterAlpha = Info.MapInfo.WaterTintingColor.A;
+            script.Append($"\t{call} SetWaterBaseColor({waterRed}, {waterGreen}, {waterBlue}, {waterAlpha}){newline}");
             script.Append($"\t{call} SetAmbientDaySound(\"" + ambient_day + $"\"){newline}");
             script.Append($"\t{call} SetAmbientNightSound(\"" + ambient_night + $"\"){newline}");
 
