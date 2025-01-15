@@ -283,6 +283,7 @@
                 <MenuItem Name="menuEnableOptimizer" Header="WESTRING_MENU_JASSHELPER_TOGGLE_OPTIMIZER" />
             </MenuItem>-->
             <MenuItem x:Name="menuTools" Header="WESTRING_MENU_TOOLS" Template="{DynamicResource MenuItemControlTemplate1}" Height="25">
+                <MenuItem  Name="menuItemSwitchWar3Version" Header="Switch Warcraft III Version" Click="btnGameVersion_Click" />
                 <MenuItem  Name="menuItemKeybindings" Header="Keybindings" Click="menuItemKeybindings_Click"  />
                 <MenuItem  Name="menuItemOptions" Header="Options" Click="menuItemOptions_Click" />
             </MenuItem>
