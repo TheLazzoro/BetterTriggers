@@ -20,13 +20,15 @@ namespace GUI.Components.VersionCheck
             Grid.SetColumn(control, 0);
         }
 
-        private void btnOK_Click(object sender, RoutedEventArgs e)
+        private void btnDownload_Click(object sender, RoutedEventArgs e)
         {
             ProgramSettings programSettings = ProgramSettings.Load();
             programSettings.IgnoreNewVersion = (bool)checkboxIgnore.IsChecked;
             ProgramSettings.Save(programSettings);
 
             this.Close();
+            var mainWindow = MainWindow.GetMainWindow();
+            mainWindow.DownloadUpdate();
         }
     }
 }

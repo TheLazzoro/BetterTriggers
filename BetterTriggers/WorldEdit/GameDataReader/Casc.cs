@@ -28,6 +28,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
         /// <returns>Returns true if the CASC location is valid.</returns>
         public static (bool, string) Load()
         {
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
             war3_w3mod = null;
             war3_locale_1_30 = null;
             string errorMsg = string.Empty;

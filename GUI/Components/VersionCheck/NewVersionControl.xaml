@@ -54,7 +54,7 @@
 >
     <TextBlock
     >
-        Get it on
+        Details can be found on
         <Hyperlink
                 Foreground="{DynamicResource HyperlinkDefaultBrush}"
                 NavigateUri="https://www.hiveworkshop.com/threads/better-triggers-custom-trigger-editor.341002/" RequestNavigate="Hyperlink_RequestNavigate"
