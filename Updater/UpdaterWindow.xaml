@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Updater"
         mc:Ignorable="d"
-        Title="Updating" Height="250" Width="600">
+        Background="#333"
+        Title="Updating" Height="200" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
@@ -15,7 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="15"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -28,6 +29,8 @@
         <ProgressBar x:Name="progressBar"
                      Grid.Row="2"
                      Grid.Column="1"
+                     Background="#222"
+                     BorderBrush="#222"
                      />
 
 
