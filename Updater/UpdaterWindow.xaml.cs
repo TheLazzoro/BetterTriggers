@@ -58,6 +58,11 @@ namespace Updater
             _downloadedFile = new MemoryStream();
             using (var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
             {
+                if(!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Could not download update from {url}");
+                }
+
                 _contentLength = (long)response.Content.Headers.ContentLength;
 
                 using (var download = await response.Content.ReadAsStreamAsync(cancellationToken))
@@ -113,6 +118,7 @@ namespace Updater
                         Directory.Delete(entry, true);
                 }
 
+                // write zip to disk
                 var filename = Guid.NewGuid().ToString() + ".zip";
                 var fullPath = Path.Combine(tempDir, filename);
                 using (var fs = new FileStream(fullPath, FileMode.OpenOrCreate))
@@ -120,10 +126,10 @@ namespace Updater
                     _downloadedFile.Position = 0;
                     _downloadedFile.CopyTo(fs);
                 }
+                ZipFile.ExtractToDirectory(fullPath, tempDir);
 
+                // remove files from the BT installation dir
                 var btDir = Directory.GetCurrentDirectory();
-
-
                 filesystemEntries = Directory.GetFileSystemEntries(btDir, "*", SearchOption.AllDirectories);
 #if !DEBUG
             foreach (var filesystemEntry in filesystemEntries)
@@ -141,7 +147,7 @@ namespace Updater
             }
 #endif
 
-                ZipFile.ExtractToDirectory(fullPath, tempDir);
+                // copy extracted files to the BT installation dir
                 var pathToExtracted = Path.Combine(tempDir, "BetterTriggers");
                 filesystemEntries = Directory.GetFileSystemEntries(pathToExtracted, "*", SearchOption.AllDirectories);
                 foreach (var entry in filesystemEntries)
