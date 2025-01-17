@@ -47,6 +47,7 @@ namespace GUI.Components.VersionCheck
                         Grid.SetRow(control, 0);
                         Grid.SetColumn(control, 0);
                         Grid.SetColumnSpan(control, 2);
+                        btnDownload.Visibility = Visibility.Visible;
                         break;
                     case VersionCheckEnum.CouldNotConnect:
                         progressCircle.Visibility = Visibility.Hidden;
@@ -79,6 +80,8 @@ namespace GUI.Components.VersionCheck
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            var mainWindow = MainWindow.GetMainWindow();
+            mainWindow.DownloadUpdate();
         }
     }
 }

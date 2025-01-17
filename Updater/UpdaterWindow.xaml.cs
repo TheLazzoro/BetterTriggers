@@ -66,7 +66,7 @@ namespace Updater
                 }
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(100);
         }
 
         private static async Task CopyToAndReportProgressAsync(Stream source, Stream destination, int bufferSize, IProgress<long> progress = null, CancellationToken cancellationToken = default)
@@ -97,8 +97,11 @@ namespace Updater
         {
             try
             {
-
                 var tempDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Better Triggers\\temp");
+                if (!Directory.Exists(tempDir))
+                {
+                    Directory.CreateDirectory(tempDir);
+                }
 
                 // delete any temporary leftover files
                 string[] filesystemEntries = Directory.GetFileSystemEntries(tempDir, "*", SearchOption.AllDirectories);
@@ -110,10 +113,6 @@ namespace Updater
                         Directory.Delete(entry, true);
                 }
 
-                if (!Directory.Exists(tempDir))
-                {
-                    Directory.CreateDirectory(tempDir);
-                }
                 var filename = Guid.NewGuid().ToString() + ".zip";
                 var fullPath = Path.Combine(tempDir, filename);
                 using (var fs = new FileStream(fullPath, FileMode.OpenOrCreate))
@@ -163,8 +162,20 @@ namespace Updater
                 // cleanup
                 Directory.Delete(pathToExtracted, true);
                 File.Delete(fullPath);
+
+                // launch BT
+                var pathToBT = Path.Combine(btDir, "Better Triggers.exe");
+                if(!File.Exists(pathToBT))
+                {
+                    pathToBT = Path.Combine(btDir, "BetterTriggers.exe");
+                }
+
+                if (File.Exists(pathToBT))
+                {
+                    Process.Start(pathToBT);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 installError = ex;
             }
