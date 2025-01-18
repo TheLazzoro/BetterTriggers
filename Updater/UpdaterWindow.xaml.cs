@@ -27,7 +27,7 @@ namespace Updater
             _progress.ProgressChanged += _progress_ProgressChanged;
             await DownloadUpdate();
 
-            txtDownloadInfo.Text = "Installing...";
+            txtDownloadInfo.Text = "Updating files...";
             progressBar.IsIndeterminate = true;
 
             _installThread = new BackgroundWorker();
@@ -147,8 +147,8 @@ namespace Updater
             }
 #endif
 
-                // copy extracted files to the BT installation dir
-                var pathToExtracted = Path.Combine(tempDir, "BetterTriggers");
+               // copy extracted files to the BT installation dir
+               var pathToExtracted = Path.Combine(tempDir, "BetterTriggers");
                 filesystemEntries = Directory.GetFileSystemEntries(pathToExtracted, "*", SearchOption.AllDirectories);
                 foreach (var entry in filesystemEntries)
                 {
@@ -192,6 +192,8 @@ namespace Updater
         {
             if(installError != null)
             {
+                var service = new LoggingService();
+                service.SubmitUpdateError_Async(installError);
                 throw installError;
             }
             Application.Current.Shutdown();
