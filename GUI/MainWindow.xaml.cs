@@ -29,6 +29,8 @@ using GUI.Components.VersionCheck;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,9 +44,11 @@ namespace GUI
 {
     public partial class MainWindow : Window
     {
-        static MainWindow instance;
-        TriggerExplorer triggerExplorer;
         public TabViewModel tabViewModel;
+
+        private static MainWindow instance;
+        private TriggerExplorer triggerExplorer;
+        private bool _downloadUpdateOnClose;
 
         public MainWindow()
         {
@@ -168,6 +172,12 @@ namespace GUI
         public static MainWindow GetMainWindow()
         {
             return instance;
+        }
+
+        public void DownloadUpdate()
+        {
+            _downloadUpdateOnClose = true;
+            this.Close();
         }
 
         public void SetKeybindings(Keybindings keybindings)
@@ -817,6 +827,19 @@ namespace GUI
                 globalValidateTriggers.Dispose();
 
             e.Cancel = !doClose;
+
+            if(doClose && _downloadUpdateOnClose)
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = Path.Combine(Directory.GetCurrentDirectory(), "Updater.exe"),
+                    CreateNoWindow = true,
+                    ErrorDialog = true,
+                };
+                var process = new Process();
+                process.StartInfo = startInfo;
+                process.Start();
+            }
         }
 
         private bool DoCloseProject()
