@@ -1,32 +1,23 @@
-﻿using System.Net;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using BetterTriggers.WorldEdit;
+using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Models.Templates;
-using Newtonsoft.Json;
+using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using War3Net.Build.Audio;
+using War3Net.Build.Extensions;
 using War3Net.Build.Info;
 using War3Net.Build.Providers;
 using War3Net.Common.Extensions;
-using War3Net.Build.Extensions;
-using System.Linq;
-using War3Net.Build.Environment;
-using System.Text.RegularExpressions;
-using BetterTriggers.Utility;
-using System.Transactions;
-using System.Collections.ObjectModel;
-using BetterTriggers.Models.EditorData.TriggerEditor;
-using ICSharpCode.Decompiler.TypeSystem;
-using Newtonsoft.Json.Linq;
-using BetterTriggers.WorldEdit.GameDataReader;
-using System.Windows.Automation;
 
 namespace BetterTriggers
 {
@@ -2903,7 +2894,12 @@ end
                 else if (returnType == "camerasetup")
                     output += Ascii.ReplaceNonASCII($"gg_cam_{v.value.Replace(" ", "_")}", true);
                 else if (returnType == "sound")
-                    output += Ascii.ReplaceNonASCII($"gg_snd_{v.value.Replace(" ", "_")}", true);
+                {
+                    if (v.value.Contains("gg_snd_"))
+                        output += Ascii.ReplaceNonASCII($"{v.value.Replace(" ", "_")}", true);
+                    else
+                        output += Ascii.ReplaceNonASCII($"gg_snd_{v.value.Replace(" ", "_")}", true);
+                }
                 else
                     output += v.value;
 
