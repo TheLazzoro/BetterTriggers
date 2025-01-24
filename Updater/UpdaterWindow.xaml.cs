@@ -58,7 +58,7 @@ namespace Updater
             _downloadedFile = new MemoryStream();
             using (var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
             {
-                if(!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception($"Could not download update from {url}");
                 }
@@ -147,8 +147,8 @@ namespace Updater
             }
 #endif
 
-               // copy extracted files to the BT installation dir
-               var pathToExtracted = Path.Combine(tempDir, "BetterTriggers");
+                // copy extracted files to the BT installation dir
+                var pathToExtracted = Path.Combine(tempDir, "BetterTriggers");
                 filesystemEntries = Directory.GetFileSystemEntries(pathToExtracted, "*", SearchOption.AllDirectories);
                 foreach (var entry in filesystemEntries)
                 {
@@ -161,7 +161,15 @@ namespace Updater
                         {
                             Directory.CreateDirectory(parentFolder);
                         }
-                        File.Move(entry, destinationPath);
+
+                        try
+                        {
+                            File.Move(entry, destinationPath);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
                     }
                 }
 
@@ -171,7 +179,7 @@ namespace Updater
 
                 // launch BT
                 var pathToBT = Path.Combine(btDir, "Better Triggers.exe");
-                if(!File.Exists(pathToBT))
+                if (!File.Exists(pathToBT))
                 {
                     pathToBT = Path.Combine(btDir, "BetterTriggers.exe");
                 }
@@ -190,7 +198,7 @@ namespace Updater
         private Exception installError;
         private void _installThread_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
-            if(installError != null)
+            if (installError != null)
             {
                 var service = new LoggingService();
                 service.SubmitUpdateError_Async(installError);
