@@ -9,6 +9,7 @@ using BetterTriggers.WorldEdit;
 using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components;
 using GUI.Components.About;
+using GUI.Components.BlizzardScripts;
 using GUI.Components.BuildMap;
 using GUI.Components.CloseMap;
 using GUI.Components.Dialogs;
@@ -1212,6 +1213,12 @@ namespace GUI
         {
             var window = new ReportIssueWindow();
             window.ShowDialog();
+        }
+
+        private void menuItemBlizzardJ_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new BlizzardJWindow();
+            window.Show();
         }
     }
 }

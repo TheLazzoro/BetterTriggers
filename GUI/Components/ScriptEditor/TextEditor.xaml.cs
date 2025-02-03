@@ -6,7 +6,6 @@ using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
-using NuGet.Configuration;
 using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
@@ -28,8 +27,9 @@ namespace GUI.Components
         CompletionWindow completionWindow;
         static CompletionDataCollection completionCollection;
         ToolTip tooltip;
+        private bool isReadonly;
 
-        public TextEditor(string content, ScriptLanguage language)
+        public TextEditor(string content, ScriptLanguage language, bool isReadonly = false)
         {
             InitializeComponent();
 
@@ -46,27 +46,38 @@ namespace GUI.Components
             this.tooltip.FontFamily = new FontFamily(settings.textEditorFontStyle);
 
             ReloadTextEditorTheme();
+
             InitializeCompletionData();
 
             var searchPanel = SearchPanel.Install(avalonEditor);
             searchPanel.MarkerBrush = new SolidColorBrush(Color.FromArgb(150, 200, 100, 0));
             avalonEditor.Text = content;
 
-            // Autocomplete
-            avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
-            avalonEditor.TextArea.TextEntering += TextArea_TextEntering;
-            avalonEditor.TextArea.SelectionChanged += TextArea_SelectionChanged;
+            this.isReadonly = isReadonly;
+            this.avalonEditor.IsReadOnly = isReadonly;
+            if (!isReadonly)
+            {
+                // Autocomplete
+                avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
+                avalonEditor.TextArea.TextEntering += TextArea_TextEntering;
+                avalonEditor.TextArea.SelectionChanged += TextArea_SelectionChanged;
 
-            // Hover over text
-            this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
-            this.avalonEditor.MouseHoverStopped += AvalonEditor_MouseHoverStopped;
+                // Hover over text
+                this.avalonEditor.MouseHover += AvalonEditor_MouseHover;
+                this.avalonEditor.MouseHoverStopped += AvalonEditor_MouseHoverStopped;
 
-            // change font size
-            this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
+                // change font size
+                this.avalonEditor.TextArea.MouseWheel += TextArea_MouseWheel;
+            }
         }
 
         public void Dispose()
         {
+            if (isReadonly)
+            {
+                return;
+            }
+
             // Autocomplete
             avalonEditor.TextArea.KeyDown -= TextArea_KeyDown;
             avalonEditor.TextArea.TextEntering -= TextArea_TextEntering;
@@ -194,7 +205,7 @@ namespace GUI.Components
                 return;
             }
 
-            if(isDeltaChange)
+            if (isDeltaChange)
                 settings.textEditorFontSize += change;
             else
                 settings.textEditorFontSize = change;

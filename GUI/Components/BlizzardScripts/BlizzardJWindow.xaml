@@ -1,0 +1,25 @@
+﻿<Window x:Class="GUI.Components.BlizzardScripts.BlizzardJWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI.Components.BlizzardScripts"
+        xmlns:textEditor="clr-namespace:GUI.Components"
+        mc:Ignorable="d"
+        Background="{DynamicResource BackgroundDark}"
+        Title="CommonJ &amp; BlizzardJ"
+        Height="450"
+        Width="800">
+    <Grid >
+        <TabControl x:Name="tabcontrol"
+                    BorderBrush="Transparent"
+                    Background="Transparent">
+            <TabItem Header="CommonJ">
+                <Grid x:Name="gridCommonJ" />
+            </TabItem>
+            <TabItem Header="BlizzardJ">
+                <Grid x:Name="gridBlizzardJ" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
