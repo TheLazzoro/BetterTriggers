@@ -71,8 +71,10 @@
             <Word>true</Word>
             <Word>false</Word>
             <Word>and</Word>
-			<Word>or</Word>
-			<Word>not</Word>
+			      <Word>or</Word>
+			      <Word>not</Word>
+            <Word>type</Word>
+            <Word>extends</Word>
             <Word>local</Word>
             <Word>array</Word>
             <Word>takes</Word>
@@ -102,6 +104,7 @@
 
         <!-- TYPES -->
         <Keywords foreground="#126c87">
+            <Word>handle</Word>
             <Word>nothing</Word>
             <Word>boolean</Word>
             <Word>integer</Word>
@@ -245,13 +248,13 @@
 
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
         <Rule foreground="#a14106">
-            (?&lt;=\bfunction\s)(\w+)
+            (?&lt;=\bfunction\s*)(\w+)
         </Rule>
         <Rule foreground="#a14106">
-            (?&lt;=\binitializer\s)(\w+)
+            (?&lt;=\binitializer\s*)(\w+)
         </Rule>
         <Rule foreground="#a14106">
-          (?&lt;=\bnative\s)(\w+)
+          (?&lt;=\bnative\s*)(\w+)
         </Rule>
 
         <!-- FUNCTION NAMES (uses regex lookahead) -->
@@ -261,12 +264,14 @@
 
         <!-- Digits -->
         <Rule foreground="#3400FF">
-            \b0[xX][0-9a-fA-F]+  # hex number
-        |    \b
-            (    \d+(\.[0-9]+)?   #number with optional floating point
-            |    \.[0-9]+         #or just starting with floating point
-            )
-            ([eE][+-]?[0-9]+)? # optional exponent
+          \b0[xX][0-9a-fA-F]+  # hex number
+          |
+          [$][0-9a-fA-F]+  # hex number with $ instead of 0x
+          |    \b
+          (    \d+(\.[0-9]+)?   #number with optional floating point
+          |    \.[0-9]+         #or just starting with floating point
+          )
+          ([eE][+-]?[0-9]+)? # optional exponent
         </Rule>
     </RuleSet>
 </SyntaxDefinition>

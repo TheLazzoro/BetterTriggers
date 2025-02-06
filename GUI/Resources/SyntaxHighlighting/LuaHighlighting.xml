@@ -88,7 +88,7 @@
 
         <!-- FUNCTION NAMES (uses regex lookbehind) -->
         <Rule foreground="#DCDCAA">
-            (?&lt;=\bfunction\s)(\w+)
+            (?&lt;=\bfunction\s*)(\w+)
         </Rule>
 
         <!-- FUNCTION NAMES (uses regex lookahead) -->
