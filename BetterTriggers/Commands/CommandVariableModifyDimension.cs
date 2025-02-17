@@ -11,15 +11,17 @@ namespace BetterTriggers.Commands
     public class CommandVariableModifyDimension : ICommand
     {
         string commandName = "Modify Variable Dimension";
+        ExplorerElement explorerElement;
         Variable variable;
         bool isTwoDimensions;
         RefCollection refCollection;
 
-        public CommandVariableModifyDimension(Variable variable, bool isTwoDimensions)
+        public CommandVariableModifyDimension(ExplorerElement explorerElement, Variable variable, bool isTwoDimensions)
         {
+            this.explorerElement = explorerElement;
             this.variable = variable;
             this.isTwoDimensions = isTwoDimensions;
-            this.refCollection = new RefCollection(variable);
+            this.refCollection = new RefCollection(explorerElement, variable);
         }
 
         public void Execute()

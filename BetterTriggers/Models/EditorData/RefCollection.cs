@@ -19,36 +19,36 @@ namespace BetterTriggers.Models.EditorData
         public List<ExplorerElement> TriggersToUpdate { get; private set; } = new();
         List<RefParent> refParents = new List<RefParent>();
 
-        internal RefCollection(Variable variable)
+        internal RefCollection(ExplorerElement explorerElement, Variable variable)
         {
-            CreateVarRefs(variable);
+            CreateVarRefs(variable, explorerElement);
         }
 
-        internal RefCollection(Variable variable, War3Type newType)
+        internal RefCollection(Variable variable, War3Type newType, ExplorerElement explorerElement)
         {
-            CreateVarRefs(variable, newType);
+            CreateVarRefs(variable, explorerElement, newType);
         }
 
-        internal RefCollection(ParameterDefinition parameterDefinition)
+        internal RefCollection(ExplorerElement explorerElement, ParameterDefinition parameterDefinition)
         {
-            CreateParameterDefRefs(parameterDefinition);
+            CreateParameterDefRefs(explorerElement, parameterDefinition);
         }
 
         internal RefCollection(ExplorerElement explorerElement)
         {
             if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
-                CreateVarRefs(explorerElement.variable);
+                CreateVarRefs(explorerElement.variable, explorerElement);
             else if (explorerElement.ElementType == ExplorerElementEnum.Trigger)
-                CreateTrigRefs(explorerElement.trigger);
+                CreateTrigRefs(explorerElement, explorerElement.trigger);
             else if (explorerElement.ElementType == ExplorerElementEnum.FunctionDefinition)
-                CreateFunctionDefRefs(explorerElement.functionDefinition);
+                CreateFunctionDefRefs(explorerElement, explorerElement.functionDefinition);
             else if (explorerElement.ElementType == ExplorerElementEnum.ActionDefinition)
                 CreateActionDefRefs(explorerElement.actionDefinition);
             else if (explorerElement.ElementType == ExplorerElementEnum.ConditionDefinition)
                 CreateConditionDefRefs(explorerElement.conditionDefinition);
         }
 
-        private void CreateVarRefs(Variable variable, War3Type newType = null)
+        private void CreateVarRefs(Variable variable, ExplorerElement explorerElement, War3Type newType = null)
         {
             this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(variable);
             var functions = Project.CurrentProject.GetFunctionsAll();
@@ -60,7 +60,7 @@ namespace BetterTriggers.Models.EditorData
                     {
                         if (varRef.VariableId == variable.Id)
                         {
-                            var refParent = new RefParent(varRef, f, newType);
+                            var refParent = new RefParent(varRef, f, explorerElement, newType);
                             refParents.Add(refParent);
                         }
                     }
@@ -68,7 +68,7 @@ namespace BetterTriggers.Models.EditorData
             });
         }
 
-        private void CreateTrigRefs(Trigger trigger)
+        private void CreateTrigRefs(ExplorerElement explorerElement, Trigger trigger)
         {
             this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(trigger);
             var functions = Project.CurrentProject.GetFunctionsAll();
@@ -80,7 +80,7 @@ namespace BetterTriggers.Models.EditorData
                     {
                         if (trigRef.TriggerId == trigger.Id)
                         {
-                            var refParent = new RefParent(trigRef, f);
+                            var refParent = new RefParent(trigRef, f, explorerElement);
                             refParents.Add(refParent);
                         }
                     }
@@ -88,7 +88,7 @@ namespace BetterTriggers.Models.EditorData
             });
         }
 
-        private void CreateFunctionDefRefs(FunctionDefinition functionDef)
+        private void CreateFunctionDefRefs(ExplorerElement explorerElement, FunctionDefinition functionDef)
         {
             this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(functionDef);
             var functions = Project.CurrentProject.GetFunctionsAll();
@@ -100,7 +100,7 @@ namespace BetterTriggers.Models.EditorData
                     {
                         if (funcDefRef.FunctionDefinitionId == functionDef.Id)
                         {
-                            var refParent = new RefParent(funcDefRef, f);
+                            var refParent = new RefParent(funcDefRef, f, explorerElement);
                             refParents.Add(refParent);
                         }
                     }
@@ -120,7 +120,7 @@ namespace BetterTriggers.Models.EditorData
                 {
                     if (actionDefRef.ActionDefinitionId == actionDef.Id)
                     {
-                        var refParent = new RefParent(actionDefRef);
+                        var refParent = new RefParent(actionDef.explorerElement, actionDefRef);
                         refParents.Add(refParent);
                     }
                 }
@@ -139,14 +139,14 @@ namespace BetterTriggers.Models.EditorData
                 {
                     if (condDefRef.ConditionDefinitionId == conditionDef.Id)
                     {
-                        var refParent = new RefParent(condDefRef);
+                        var refParent = new RefParent(conditionDef.explorerElement, condDefRef);
                         refParents.Add(refParent);
                     }
                 }
             });
         }
 
-        private void CreateParameterDefRefs(ParameterDefinition parameterDef)
+        private void CreateParameterDefRefs(ExplorerElement explorerElement, ParameterDefinition parameterDef)
         {
             this.TriggersToUpdate = Project.CurrentProject.References.GetReferrers(parameterDef);
             var functions = Project.CurrentProject.GetFunctionsAll();
@@ -159,7 +159,7 @@ namespace BetterTriggers.Models.EditorData
                     {
                         if (condDefRef.ParameterDefinitionId == parameterDef.Id)
                         {
-                            var refParent = new RefParent(condDefRef, f);
+                            var refParent = new RefParent(condDefRef, f, explorerElement);
                             refParents.Add(refParent);
                         }
                     }
@@ -208,19 +208,21 @@ namespace BetterTriggers.Models.EditorData
 
     internal class RefParent
     {
+        ExplorerElement explorerElement;
         Parameter parameter;
         Parameter setvarOldValue; // hack for 'SetVariable' value undo/redo
         Function parent;
         int index;
-        internal RefParent(Parameter parameter, Function parent, War3Type newType = null)
+        internal RefParent(Parameter parameter, Function parent, ExplorerElement explorerElement, War3Type newType = null)
         {
+            this.explorerElement = explorerElement;
             this.parameter = parameter;
             this.parent = parent;
             this.index = parent.parameters.IndexOf(parameter);
             if (newType != null && parent.value == "SetVariable" && parameter == parent.parameters[0])
             {
                 var varRef = (VariableRef)parameter;
-                var variable = Project.CurrentProject.Variables.GetByReference(varRef);
+                var variable = Project.CurrentProject.Variables.GetByReference(varRef, explorerElement);
                 if (variable.War3Type.Type != newType.Type)
                     setvarOldValue = parent.parameters[1];
             }
@@ -228,8 +230,9 @@ namespace BetterTriggers.Models.EditorData
 
         TriggerElement triggerElement;
         TriggerElement parentTrigElement;
-        internal RefParent(TriggerElement triggerElement)
+        internal RefParent(ExplorerElement explorerElement, TriggerElement triggerElement)
         {
+            this.explorerElement = explorerElement;
             this.triggerElement = triggerElement;
             parentTrigElement = triggerElement.GetParent();
             index = parentTrigElement.Elements.IndexOf(triggerElement);

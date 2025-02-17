@@ -155,7 +155,7 @@ namespace GUI.Components
         {
             if (ResetVarRefs())
             {
-                CommandVariableModifyArray command = new CommandVariableModifyArray(variable, (bool)checkBoxIsArray.IsChecked);
+                CommandVariableModifyArray command = new CommandVariableModifyArray(explorerElement, variable, (bool)checkBoxIsArray.IsChecked);
                 command.Execute();
                 OnStateChange();
 
@@ -182,7 +182,7 @@ namespace GUI.Components
             bool isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             if (ResetVarRefs())
             {
-                CommandVariableModifyDimension command = new CommandVariableModifyDimension(variable, isTwoDimensions);
+                CommandVariableModifyDimension command = new CommandVariableModifyDimension(explorerElement, variable, isTwoDimensions);
                 command.Execute();
                 OnStateChange();
             }

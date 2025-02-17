@@ -21,7 +21,7 @@ namespace BetterTriggers.Commands
             this.previousType = parameterDef.ReturnType;
 
             refCollection1 = new RefCollection(explorerElement);
-            refCollection2 = new RefCollection(parameterDef);
+            refCollection2 = new RefCollection(explorerElement, parameterDef);
         }
 
         public void Execute()

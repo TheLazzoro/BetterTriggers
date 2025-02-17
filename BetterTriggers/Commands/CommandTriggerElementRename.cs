@@ -21,7 +21,7 @@ namespace BetterTriggers.Commands
             this.localVariable = localVariable;
             this.oldName = localVariable.variable.Name;
             this.newName = newName;
-            this.refCollection = new RefCollection(localVariable.variable);
+            this.refCollection = new RefCollection(explorerElement, localVariable.variable);
         }
 
         public CommandTriggerElementRename(ExplorerElement explorerElement, ParameterDefinition parameterDefinition, string newName)
@@ -30,7 +30,7 @@ namespace BetterTriggers.Commands
             this.parameterDefinition = parameterDefinition;
             this.oldName = parameterDefinition.Name;
             this.newName = newName;
-            this.refCollection = new RefCollection(parameterDefinition);
+            this.refCollection = new RefCollection(explorerElement, parameterDefinition);
         }
 
         public void Execute()

@@ -11,15 +11,17 @@ namespace BetterTriggers.Commands
     public class CommandVariableModifyArray : ICommand
     {
         string commandName = "Modify Variable Array";
+        ExplorerElement explorerElement;
         Variable variable;
         bool isArray;
         RefCollection refCollection;
 
-        public CommandVariableModifyArray(Variable variable, bool isArray)
+        public CommandVariableModifyArray(ExplorerElement explorerElement, Variable variable, bool isArray)
         {
+            this.explorerElement = explorerElement;
             this.variable = variable;
             this.isArray = isArray;
-            this.refCollection = new RefCollection(variable);
+            this.refCollection = new RefCollection(explorerElement, variable);
         }
 
         public void Execute()

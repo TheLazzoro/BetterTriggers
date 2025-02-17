@@ -29,7 +29,7 @@ namespace BetterTriggers.Commands
             {
                 if (el is LocalVariable localVar)
                 {
-                    var refCollection = new RefCollection(localVar.variable);
+                    var refCollection = new RefCollection(element, localVar.variable);
                     this.refCollections.Add(refCollection);
                 }
             });
