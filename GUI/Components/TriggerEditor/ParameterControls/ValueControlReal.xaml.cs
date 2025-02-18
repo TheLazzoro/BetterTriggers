@@ -54,13 +54,25 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelected()
         {
-            if(string.IsNullOrEmpty(textBox.Text))
+            if (string.IsNullOrEmpty(textBox.Text))
             {
                 textBox.Text = "0.00";
             }
-            if (textBox.Text.StartsWith('.'))
+            else if (textBox.Text == ".")
+            {
+                textBox.Text = textBox.Text = "0.0";
+            }
+            else if (textBox.Text.StartsWith('.'))
             {
                 textBox.Text = textBox.Text.Insert(0, "0");
+            }
+            else if (textBox.Text.EndsWith('.'))
+            {
+                textBox.Text = textBox.Text.Insert(textBox.Text.Length, "0");
+            }
+            else if (!textBox.Text.Contains('.'))
+            {
+                textBox.Text = textBox.Text.Insert(textBox.Text.Length, ".0");
             }
 
             Value value = new Value()
@@ -79,14 +91,18 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         private void textBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if(!IsTextAllowed(e.Text))
+            if (!IsTextAllowed(e.Text))
             {
                 e.Handled = true;
             }
 
+            bool inputIsDot = e.Text == ".";
+            bool containsDot = textBox.Text.Contains(".");
+            bool allTextSelected = textBox.SelectedText == textBox.Text;
+
             previousValue = textBox.Text;
             if (e.Text == ","
-                || (e.Text == "." && textBox.Text.Contains("."))
+                || (inputIsDot && containsDot && !allTextSelected)
                 || (e.Text != "." && e.Text != "," && e.Text != "-" && !int.TryParse(e.Text, out int temp))
                 )
             {
