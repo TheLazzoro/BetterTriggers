@@ -195,6 +195,7 @@ namespace BetterTriggers.Containers
                     text = DestructibleTypes.GetName(key);
                     break;
                 case "abilcode":
+                case "heroskillcode":
                     text = AbilityTypes.GetName(key);
                     break;
                 case "buffcode":
@@ -230,19 +231,15 @@ namespace BetterTriggers.Containers
         public static string GetFourCCDisplay(string key, string returnType)
         {
             string text = string.Empty;
-            if (returnType == "unitcode")
-                text = $"[{key}] ";
-            else if (returnType == "destructablecode")
-                text = $"[{key}] ";
-            else if (returnType == "abilcode")
-                text = $"[{key}] ";
-            else if (returnType == "buffcode")
-                text = $"[{key}] ";
-            else if (returnType == "techcode")
-                text = $"[{key}] ";
-            else if (returnType == "itemcode")
-                text = $"[{key}] ";
-            else if (returnType == "doodadcode")
+            if (   returnType == "unitcode"
+                || returnType == "destructablecode"
+                || returnType == "abilcode"
+                || returnType == "heroskillcode"
+                || returnType == "buffcode"
+                || returnType == "techcode"
+                || returnType == "itemcode"
+                || returnType == "doodadcode"
+                )
                 text = $"[{key}] ";
 
             return text;

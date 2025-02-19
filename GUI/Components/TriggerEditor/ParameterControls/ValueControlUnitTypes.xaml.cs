@@ -43,6 +43,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private int elementCount;
         private ButtonUnitType selectedButton;
         private UnitType defaultSelected;
+        private bool hasPopulatedOnce = false;
 
         private Searchables searchables;
 
@@ -109,6 +110,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public Parameter GetSelected()
         {
+            if(!hasPopulatedOnce) // hackfix that populates when no unit type has been selected prior.
+            {
+                RePopulate();
+            }
+
             return selectedType;
         }
 
@@ -202,6 +208,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             searchables.AttachList(this);
 
             searchables.Search("");
+            hasPopulatedOnce = true;
         }
 
 

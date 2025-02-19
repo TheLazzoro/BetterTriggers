@@ -554,10 +554,11 @@ namespace GUI.Components
             List<ExplorerElement> itemsToExpand = new();
             while (true)
             {
-                itemsToExpand.Add(explorerElement);
-                explorerElement = explorerElement.GetParent();
                 if (explorerElement.ElementType == ExplorerElementEnum.Root)
                     break;
+
+                itemsToExpand.Add(explorerElement);
+                explorerElement = explorerElement.GetParent();
             }
 
             for (int i = itemsToExpand.Count - 1; i >= 0; i--)
