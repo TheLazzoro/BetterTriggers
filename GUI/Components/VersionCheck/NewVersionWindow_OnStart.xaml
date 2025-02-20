@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.Components.VersionCheck"
         mc:Ignorable="d"
-        Title="New Version" Height="220" Width="400" Background="{DynamicResource BackgroundDark}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="New Version" Height="500" Width="600" Background="{DynamicResource BackgroundDark}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

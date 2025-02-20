@@ -5,51 +5,87 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GUI.Components.VersionCheck"
              mc:Ignorable="d" 
-             Width="auto" Height="200" >
+             Width="auto" Height="auto" >
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="90" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="25"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="22"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Image 
             x:Name="imgError"
             Source="/Resources/Icons/information.png"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
             Grid.Row="1"
+            Grid.Column="1"
+            Width="64"
         />
         
         <TextBlock
     Foreground="{DynamicResource TextBrush2}"
+    Margin="0,20,0,0"
     Text="A new version is available!"
     FontSize="18"
-    Grid.Column="1"
+    Grid.Column="2"
     Grid.Row="1"
 />
+
+        <TextBlock Text="New version:"
+                   Foreground="{DynamicResource TextBrush2}"
+                   Grid.Row="2"
+                   Grid.Column="1"/>
+
+        <TextBlock Text="Current version:"
+                   Foreground="{DynamicResource TextBrush2}"
+                   Grid.Row="3"
+                   Grid.Column="1"/>
+
+        <Grid Grid.ColumnSpan="2"
+              Grid.Column="2"
+              Grid.Row="2"
+              >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+        
+        <TextBlock x:Name="txtNewVersion"
+                   Grid.Column="0"
+                   Foreground="{DynamicResource TextBrush2}"
+                   Text="" />
+
+            <Image Source="/Resources/Icons/icons8-slide-up-24.png"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="5,0,0,0"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   Width="16" />
+        </Grid>
+
+
+        <TextBlock x:Name="txtOldVersion"
+                   Foreground="{DynamicResource TextBrush2}"
+                   Grid.Column="2"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="3" />
         <TextBlock
-    x:Name="txtNewVersion"
-    Foreground="{DynamicResource TextBrush2}"
-    Text="New version:"
-    Grid.Column="1"
-    Grid.Row="2"
-/>
-        <TextBlock
-    x:Name="txtOldVersion"
-    Foreground="{DynamicResource TextBrush2}"
-    Text="Current version:"
-    Grid.Column="1"
-    Grid.Row="3"
-/>
-        <TextBlock
     Foreground="{DynamicResource TextBrush2}"
     Grid.Column="1"
+    Grid.ColumnSpan="2"
     Grid.Row="4"
 >
     <TextBlock
@@ -75,5 +111,22 @@
     </TextBlock>
     
 </TextBlock>
+
+        <TextBlock Text="Patch notes:" 
+                   Foreground="{DynamicResource TextBrush2}"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="5"
+                   />
+
+        <TextBox x:Name="txtVersionNotes"
+                   Foreground="{DynamicResource TextBrush}"
+                   Background="{DynamicResource TextBox.Border}"
+                   TextWrapping="Wrap"
+                   IsReadOnly="True"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="6"/>
+
     </Grid>
 </UserControl>

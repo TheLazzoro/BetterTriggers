@@ -39,7 +39,7 @@ namespace GUI.Components.VersionCheck
                 message.Headers.Add("accept", accept);
                 message.Headers.Add("User-Agent", userAgent);
                 HttpClient client = new HttpClient();
-                client.Timeout = TimeSpan.FromSeconds(20);
+                client.Timeout = TimeSpan.FromSeconds(30);
                 var response = await client.SendAsync(message);
                 string content = await response.Content.ReadAsStringAsync();
                 VersionDTO versionDTO = JsonConvert.DeserializeObject<VersionDTO>(content);

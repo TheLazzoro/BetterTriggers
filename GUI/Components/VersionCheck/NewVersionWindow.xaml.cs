@@ -15,10 +15,18 @@ namespace GUI.Components.VersionCheck
 {
     public partial class NewVersionWindow : Window
     {
+        private double _initWidth;
+        private double _initHeight;
+
         public NewVersionWindow()
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+
+            _initWidth = this.Width;
+            _initHeight = this.Height;
+            this.Width = 400;
+            this.Height = 200;
 
             Task.Run(GetVersion);
 
@@ -40,6 +48,8 @@ namespace GUI.Components.VersionCheck
                         textLoading.Text = "Up to date.";
                         break;
                     case VersionCheckEnum.NewerExists:
+                        this.Width = _initWidth;
+                        this.Height = _initHeight;
                         progressCircle.Visibility = Visibility.Hidden;
                         textLoading.Visibility = Visibility.Hidden;
                         var control = new NewVersionControl(version);

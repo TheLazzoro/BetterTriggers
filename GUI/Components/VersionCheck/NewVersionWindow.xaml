@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI.Components.VersionCheck"
         xmlns:progressBar="clr-namespace:GUI.Components"
         mc:Ignorable="d"
-        Title="Loading..." Height="220" Width="400" Background="{DynamicResource BackgroundDark}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Loading..." Height="500" Width="600" Background="{DynamicResource BackgroundDark}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\Icons\code_blue.ico</ApplicationIcon>
     <AssemblyName>Better Triggers</AssemblyName>
-    <Version>1.6.0.0</Version>
+    <Version>1.6.1.0</Version>
     <Nullable>enable</Nullable>
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
@@ -72,6 +72,7 @@
     <None Remove="Resources\Icons\icons8-arrow-up-24.png" />
     <None Remove="Resources\Icons\icons8-check-48.png" />
     <None Remove="Resources\Icons\icons8-cross-48.png" />
+    <None Remove="Resources\Icons\icons8-slide-up-24.png" />
     <None Remove="Resources\Icons\icons8-warning-48.png" />
     <None Remove="Resources\Icons\information.png" />
     <None Remove="Resources\Icons\Keyword_16x.png" />
@@ -281,6 +282,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\icons8-cross-48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icons\icons8-slide-up-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icons\icons8-warning-48.png">

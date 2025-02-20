@@ -28,8 +28,9 @@ namespace GUI.Components.VersionCheck
             textGithub.NavigateUri = new Uri(versionCheck.VersionDTO.html_url);
             textGithub.ToolTip = versionCheck.VersionDTO.html_url;
 
-            txtNewVersion.Text = $"New version: {versionCheck.VersionDTO.name.Replace("Version ", "")}";
-            txtOldVersion.Text = $"Current version: {versionCheck.CurrentVersion}";
+            txtNewVersion.Text = $"{versionCheck.VersionDTO.name.Replace("Version ", "")}";
+            txtOldVersion.Text = $"{versionCheck.CurrentVersion}";
+            txtVersionNotes.Text = versionCheck.VersionDTO.body;
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
