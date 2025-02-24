@@ -309,8 +309,26 @@ namespace GUI.Components
                 completionWindow.FontFamily = new FontFamily(settings.textEditorFontStyle);
                 completionWindow.UseLayoutRounding = true;
                 completionWindow.CompletionList.InsertionRequested += CompletionList_InsertionRequested;
-                completionWindow.Show();
                 completionWindow.KeyDown += CompletionWindow_KeyDown;
+
+                // makes sure to replace the whole word for autocompletion, when it's only a partial word.
+                int offset = completionWindow.StartOffset - 1;
+                while(offset > 0)
+                {
+                    char c = avalonEditor.Document.GetCharAt(offset);
+                    if (c == ' ')
+                    {
+                        offset++;
+                        break;
+                    }
+
+                    offset--;
+                }
+
+                if (offset < 0) offset = 0;
+                completionWindow.StartOffset = offset;
+
+                completionWindow.Show();
             }
 
 
