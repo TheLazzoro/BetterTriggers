@@ -60,6 +60,7 @@ namespace GUI.Components
                 // Autocomplete
                 avalonEditor.TextArea.KeyDown += TextArea_KeyDown;
                 avalonEditor.TextArea.TextEntering += TextArea_TextEntering;
+                avalonEditor.TextChanged += AvalonEditor_TextChanged;
                 avalonEditor.TextArea.SelectionChanged += TextArea_SelectionChanged;
 
                 // Hover over text
@@ -233,6 +234,12 @@ namespace GUI.Components
             HandleKeyPress(e.Text);
         }
 
+        private void AvalonEditor_TextChanged(object? sender, EventArgs e)
+        {
+            if (completionWindow != null)
+                HandleKeyPress();
+        }
+
         private void TextArea_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -311,7 +318,7 @@ namespace GUI.Components
                 completionWindow.CompletionList.InsertionRequested += CompletionList_InsertionRequested;
                 completionWindow.KeyDown += CompletionWindow_KeyDown;
 
-                // makes sure to replace the whole word for autocompletion, when it's only a partial word.
+                // makes sure to replace the whole word for autocompletion, when it's only a partial word
                 int offset = completionWindow.StartOffset - 1;
                 while(offset > 0)
                 {
