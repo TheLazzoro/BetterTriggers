@@ -290,10 +290,20 @@ namespace Tests
 
             Assert.IsTrue(success, failedMsg);
         }
+
         [TestMethod]
         public void ConvertMap_GenerateScript_Risk_Forever()
         {
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/Risk Forever (2.5.7).w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
+        public void ConvertMap_GenerateScript_ItemTablesMap()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/ItemTablesMap.w3x");
             ConvertMap_GenerateScript(mapDir);
 
             Assert.IsTrue(success, failedMsg);

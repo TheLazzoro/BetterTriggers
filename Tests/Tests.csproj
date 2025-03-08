@@ -255,6 +255,7 @@
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapPreview.tga" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\ItemTablesMap.w3x" />
     <None Remove="TestResources\Maps\KingsAndCursesTD-V1.198.w3x" />
     <None Remove="TestResources\Maps\Map with lots of object data.w3x" />
     <None Remove="TestResources\Maps\MechaDefenders 1.1.0.w3x" />
@@ -1815,6 +1816,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\ItemTablesMap.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\KingsAndCursesTD-V1.198.w3x">

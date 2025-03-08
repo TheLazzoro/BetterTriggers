@@ -759,6 +759,15 @@ end
                     script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_CHANGE_OWNER){newline}");
                     script.Append($"\t{call} TriggerAddAction(t, {function} UnitItemDrops_{u.CreationNumber.ToString("D4")}){newline}");
                 }
+
+                if (u.MapItemTableId != -1 && Info.MapInfo.RandomItemTables != null)
+                {
+                    var mapItemTable = Info.MapInfo.RandomItemTables[u.MapItemTableId];
+                    script.Append($"\t{set} t = CreateTrigger(){newline}");
+                    script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_DEATH){newline}");
+                    script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_CHANGE_OWNER){newline}");
+                    script.Append($"\t{call} TriggerAddAction(t, {function} ItemTable_{u.MapItemTableId}){newline}");
+                }
             }
 
             script.Append($"{endfunction}{newline}{newline}");
@@ -767,6 +776,8 @@ end
         private void CreateDestructibles(StringBuilder script)
         {
             string real = language == ScriptLanguage.Jass ? "real" : "";
+            string destructible = language == ScriptLanguage.Jass ? "destructable" : "";
+            string trigger = language == ScriptLanguage.Jass ? "trigger" : "";
 
             script.Append(separator);
             script.Append($"{comment}{newline}");
@@ -775,7 +786,9 @@ end
             script.Append(separator);
 
             script.Append($"function CreateAllDestructables {functionReturnsNothing}{newline}");
+            script.Append($"\tlocal {trigger} t{newline}");
             script.Append($"local {real} life{newline}");
+            script.Append($"local {destructible} d{newline}");
 
             var dests = Destructibles.GetAll();
             foreach (var d in dests)
@@ -789,23 +802,39 @@ end
                 var skin = Int32Extensions.ToRawcode(d.SkinId);
 
                 var varName = $"gg_dest_{d.ToString()}_{d.CreationNumber.ToString("D4")}";
-
                 Tuple<Parameter, string> value;
-                if (generatedVarNames.TryGetValue(varName, out value)) // dest with generated variable
+                if (!generatedVarNames.ContainsKey(varName)) // dest with generated variable
+                    varName = "d";
+
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_32)
                 {
-                    if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_32)
-                    {
-                        script.Append($"{set} {varName} = BlzCreateDestructableWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}, {fourCCStart}'{skin}'{fourCCEnd}){newline}");
-                    }
-                    else
-                    {
-                        script.Append($"{set} {varName} = CreateDestructable({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}){newline}");
-                    }
-                    if (d.Life < 100)
-                    {
-                        script.Append($"{set} life = GetDestructableLife({varName}){newline}");
-                        script.Append($"{call} SetDestructableLife({varName}, {(d.Life * 0.01).ToString(enUS)} * life){newline}");
-                    }
+                    script.Append($"{set} {varName} = BlzCreateDestructableWithSkin({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}, {fourCCStart}'{skin}'{fourCCEnd}){newline}");
+                }
+                else
+                {
+                    script.Append($"{set} {varName} = CreateDestructable({fourCCStart}'{id}'{fourCCEnd}, {x}, {y}, {angle}, {scale}, {variation}){newline}");
+                }
+                if (d.Life < 100)
+                {
+                    script.Append($"{set} life = GetDestructableLife({varName}){newline}");
+                    script.Append($"{call} SetDestructableLife({varName}, {(d.Life * 0.01).ToString(enUS)} * life){newline}");
+                }
+
+                if (d.HasItemTableSets())
+                {
+                    script.Append($"\t{set} t = CreateTrigger(){newline}");
+                    script.Append($"\t{call} TriggerRegisterDeathEvent(t, {varName}){newline}");
+                    script.Append($"\t{call} TriggerAddAction(t, {function} SaveDyingWidget){newline}");
+                    script.Append($"\t{call} TriggerAddAction(t, {function} DestructableItemDrops_{d.CreationNumber.ToString("D4")}){newline}");
+                }
+
+                if (d.MapItemTableId != -1 && Info.MapInfo.RandomItemTables != null)
+                {
+                    var mapItemTable = Info.MapInfo.RandomItemTables[d.MapItemTableId];
+                    script.Append($"\t{set} t = CreateTrigger(){newline}");
+                    script.Append($"\t{call} TriggerRegisterDeathEvent(t, {varName}){newline}");
+                    script.Append($"\t{call} TriggerAddAction(t, {function} SaveDyingWidget){newline}");
+                    script.Append($"\t{call} TriggerAddAction(t, {function} ItemTable_{d.MapItemTableId}){newline}");
                 }
             }
 
@@ -1206,7 +1235,7 @@ end
                 if (d.ItemTableSets.Count == 0)
                     continue;
 
-                script.Append($"function UnitItemDrops_{d.CreationNumber.ToString("D4")} {functionReturnsNothing}{newline}");
+                script.Append($"function DestructableItemDrops_{d.CreationNumber.ToString("D4")} {functionReturnsNothing}{newline}");
 
                 if (language == ScriptLanguage.Jass)
                     script.Append(@"
