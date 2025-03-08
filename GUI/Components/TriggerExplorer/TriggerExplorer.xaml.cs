@@ -1,28 +1,19 @@
-﻿using System;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
+using GUI.Components.Dialogs;
+using GUI.Components.Shared;
+using GUI.Utility;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using BetterTriggers.Containers;
-using GUI.Components.Shared;
-using GUI.Utility;
-using BetterTriggers.Models.EditorData;
-using System.ComponentModel;
-using System.Threading;
-using BetterTriggers.Utility;
-using GUI.Components.Dialogs;
-using GUI.Components.Tabs;
-using System.Windows.Media.Animation;
-using BetterTriggers;
-using NuGet.Configuration;
 
 namespace GUI.Components
 {
@@ -671,9 +662,17 @@ namespace GUI.Components
         private void treeViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selected = treeViewTriggerExplorer.SelectedItem as ExplorerElement;
-            if (selected != null)
+            var treeViewItem = sender as TreeViewItem;
+            if (treeViewItem == null)
+                return;
+
+            if (selected != null && treeViewItem.DataContext == selected)
             {
                 OnOpenExplorerElement?.Invoke(selected);
+                if (selected.ElementType == ExplorerElementEnum.Folder)
+                {
+                    selected.IsExpandedTreeItem = !selected.IsExpandedTreeItem;
+                }
             }
             e.Handled = true; // prevents event from firing up the parent items
         }
