@@ -327,6 +327,7 @@ namespace GUI.Components
             if (dragItemParent == parentDropTarget)
             {
                 Project.CurrentProject.RearrangeElement(explorerElementDragItem, insertIndex);
+                parentDropTarget = null;
                 return;
             }
 
@@ -344,6 +345,8 @@ namespace GUI.Components
 
             // focus select item again
             dragItem.IsSelected = true;
+            parentDropTarget = null;
+
         }
 
         private void treeViewTriggerExplorer_KeyDown(object sender, KeyEventArgs e)
