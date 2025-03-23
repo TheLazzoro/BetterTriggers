@@ -4,6 +4,7 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using GUI.Components;
+using GUI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +36,7 @@ namespace GUI.Components.VariableList
             this.Top = settings.variableListWindowY;
             this.Width = settings.variableListWindowWidth;
             this.Height = settings.variableListWindowHeight;
+            this.ResetPositionWhenOutOfScreenBounds();
 
             List<ListViewItem> list = new List<ListViewItem>();
             List<Searchable> objects = new List<Searchable>();

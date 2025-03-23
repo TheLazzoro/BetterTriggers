@@ -5,6 +5,7 @@ using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
+using GUI.Extensions;
 using GUI.Utility;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,7 @@ namespace GUI.Components.TriggerEditor
             this.Height = settings.triggerWindowHeight;
             this.Left = settings.triggerWindowX;
             this.Top = settings.triggerWindowY;
+            this.ResetPositionWhenOutOfScreenBounds();
 
             Closing += TriggerElementMenuWindow_Closing;
 

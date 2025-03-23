@@ -5,6 +5,7 @@ using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
 using GUI.Components;
 using GUI.Components.TriggerEditor.ParameterControls;
+using GUI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -47,6 +48,7 @@ namespace GUI
             this.Height = settings.parameterWindowHeight;
             this.Left = settings.parameterWindowX;
             this.Top = settings.parameterWindowY;
+            this.ResetPositionWhenOutOfScreenBounds();
 
             this.Title = returnType;
 

@@ -40,6 +40,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using War3Net.Build.Info;
+using GUI.Extensions;
 
 namespace GUI
 {
@@ -63,6 +64,8 @@ namespace GUI
             this.Top = settings.mainWindowY;
             this.WindowState = settings.mainWindowFullscreen ? WindowState.Maximized : WindowState.Normal;
             rowTriggerExplorer.Width = new GridLength(settings.triggerExplorerWidth);
+
+            this.ResetPositionWhenOutOfScreenBounds();
 
             tabViewModel = new TabViewModel();
             tabControl.ItemsSource = tabViewModel.Tabs;

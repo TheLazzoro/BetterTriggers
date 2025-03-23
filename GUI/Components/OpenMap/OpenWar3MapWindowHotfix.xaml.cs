@@ -12,6 +12,7 @@ using GUI.Utility;
 using BetterTriggers.Utility;
 using System.Windows.Media;
 using BetterTriggers.Containers;
+using GUI.Extensions;
 
 namespace GUI.Components.OpenMap
 {
@@ -35,6 +36,7 @@ namespace GUI.Components.OpenMap
             this.Height = settings.selectMapWindowHeight;
             this.Left = settings.selectMapWindowX;
             this.Top = settings.selectMapWindowY;
+            this.ResetPositionWhenOutOfScreenBounds();
 
             string path = settings.lastOpenedFileLocation;
             if (!Directory.Exists(path))

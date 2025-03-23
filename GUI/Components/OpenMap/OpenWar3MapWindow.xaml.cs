@@ -2,6 +2,7 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using GUI.Components.Shared;
+using GUI.Extensions;
 using System;
 using System.IO;
 using System.Windows;
@@ -31,6 +32,7 @@ namespace GUI.Components.OpenMap
             this.Height = settings.selectMapWindowHeight;
             this.Left = settings.selectMapWindowX;
             this.Top = settings.selectMapWindowY;
+            this.ResetPositionWhenOutOfScreenBounds();
 
             string path;
             var project = Project.CurrentProject.war3project;
