@@ -1,0 +1,34 @@
+﻿STRING 1
+{
+Player 1
+}
+
+STRING 2
+{
+Force 1
+}
+
+STRING 3
+// Abilities: AAAA (Unit Event Ability), Name (Name)
+{
+Unit Event Ability
+}
+
+STRING 4
+// Abilities: AAAA (Unit Event Ability), EditorSuffix (Editor Suffix)
+{
+(Remove Detect)
+}
+
+STRING 5
+// Abilities: AAAB (Unit Event Ability), Name (Name)
+{
+Unit Event Ability
+}
+
+STRING 6
+// Abilities: AAAB (Unit Event Ability), EditorSuffix (Editor Suffix)
+{
+(Transform Detect)
+}
+

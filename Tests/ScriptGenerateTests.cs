@@ -310,6 +310,15 @@ namespace Tests
         }
 
         [TestMethod]
+        public void ConvertMap_GenerateScript_STAY_ALIVE()
+        {
+            mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Maps/STAY ALIVE 6.w3x");
+            ConvertMap_GenerateScript(mapDir);
+
+            Assert.IsTrue(success, failedMsg);
+        }
+
+        [TestMethod]
         public void GenerateScript_CustomProject_LocalVarMap()
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");

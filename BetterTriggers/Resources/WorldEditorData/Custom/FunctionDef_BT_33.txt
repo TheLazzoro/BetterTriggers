@@ -1,13 +1,13 @@
-﻿function BlzQueueImmediateOrderByIdBT takes unit whichUnit, string order returns nothing
-    call BlzQueueImmediateOrderById(whichUnit, OrderId(order))
+﻿function BlzQueueImmediateOrderByIdBT takes unit whichUnit, string order_id returns nothing
+    call BlzQueueImmediateOrderById(whichUnit, OrderId(order_id))
 endfunction
 
 
-function BlzQueuePointOrderByIdBT takes unit whichUnit, string order, location loc returns nothing
-    call BlzQueuePointOrderById(whichUnit, OrderId(order), GetLocationX(loc), GetLocationY(loc))
+function BlzQueuePointOrderByIdBT takes unit whichUnit, string order_id, location loc returns nothing
+    call BlzQueuePointOrderById(whichUnit, OrderId(order_id), GetLocationX(loc), GetLocationY(loc))
 endfunction
 
 
-function BlzQueueTargetOrderByIdBT takes unit whichUnit, string order, widget targetWidget returns nothing
-    call BlzQueueTargetOrderById(whichUnit, OrderId(order), targetWidget)
+function BlzQueueTargetOrderByIdBT takes unit whichUnit, string order_id, widget targetWidget returns nothing
+    call BlzQueueTargetOrderById(whichUnit, OrderId(order_id), targetWidget)
 endfunction
