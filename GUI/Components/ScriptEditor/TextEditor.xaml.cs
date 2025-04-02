@@ -324,6 +324,7 @@ namespace GUI.Components
                 {
                     char c = avalonEditor.Document.GetCharAt(offset);
                     if (c == ' ' ||
+                        c == '\n' ||
                         c == '(' ||
                         c == ')' ||
                         c == ',' ||
