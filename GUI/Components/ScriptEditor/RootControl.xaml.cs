@@ -30,16 +30,6 @@ namespace GUI.Components
             };
         }
 
-        public void SetElementEnabled(bool isEnabled)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetElementInitiallyOn(bool isInitiallyOn)
-        {
-            throw new NotImplementedException();
-        }
-
         public void OnStateChange()
         {
             

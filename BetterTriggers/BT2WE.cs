@@ -65,6 +65,10 @@ namespace BetterTriggers
             for (int i = 0; i < allExplorerElements.Count; i++)
             {
                 var explorerElement = allExplorerElements[i];
+                if(explorerElement.ElementType == ExplorerElementEnum.Trigger && explorerElement.trigger.IsScript)
+                {
+                    continue;
+                }
                 var functions = Function.GetFunctionsFromTrigger(explorerElement);
                 for (int j = 0; j < functions.Count; j++)
                 {
@@ -215,7 +219,7 @@ namespace BetterTriggers
                     string customTriggerTextCode = string.Empty;
                     if (triggerDefinition.IsCustomTextTrigger)
                     {
-                        customTriggerTextCode = explorerElement.script;
+                        customTriggerTextCode = explorerElement.trigger.Script;
                     }
                     else
                     {
@@ -409,7 +413,7 @@ namespace BetterTriggers
                             prefix = "gg_snd_";
                             isVariable = true;
                         }
-                        else if (returnType == "string" || returnType == "StringExt")
+                        else if (returnType == "StringExt")
                         {
                             paramValue = AddTriggerString(paramValue);
                         }

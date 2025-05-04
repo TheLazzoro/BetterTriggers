@@ -42,10 +42,6 @@ namespace GUI.Components.Tabs
             {
                 Tabs[0].Close();
             }
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
     }
 }

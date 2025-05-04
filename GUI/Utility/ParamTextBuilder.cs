@@ -69,7 +69,7 @@ namespace GUI.Utility
                 paramText = TriggerData.GetParamText(eca.function);
                 generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
             }
-            
+
             GenerateTreeItemText(sb, eca.function.parameters, returnTypes, paramText);
 
             return sb.ToString();
@@ -179,6 +179,11 @@ namespace GUI.Utility
                 else if (parameters[paramIndex] is Value value)
                 {
                     var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
+                    if (returnTypes[paramIndex] == "string" || returnTypes[paramIndex] == "StringExt")
+                    {
+                        if (name.Length > 32) name = name.Substring(0, 32) + "...";
+                        if (name.Contains("\n")) name = name.Split("\n")[0] + "...";
+                    }
                     sb.Append(name);
                 }
                 else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.
@@ -402,6 +407,11 @@ namespace GUI.Utility
                 else if (parameters[paramIndex] is Value value)
                 {
                     var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
+                    if (returnTypes[paramIndex] == "string" || returnTypes[paramIndex] == "StringExt")
+                    {
+                        if (name.Length > 32) name = name.Substring(0, 32) + "...";
+                        if (name.Contains("\n")) name = name.Split("\n")[0] + "...";
+                    }
                     inlines.Add(AddHyperlink(name, parameters, paramIndex, returnTypes[paramIndex]));
                 }
                 else if (parameters[paramIndex] is Parameter) // In other words, parameter has not yet been set.

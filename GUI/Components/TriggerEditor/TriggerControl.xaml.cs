@@ -127,10 +127,6 @@ namespace GUI.Components
             explorerElement.OnCloseEditor -= Dispose;
             KeyDown -= TriggerControl_KeyDown;
             ViewModel.Dispose();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
 
         public TriggerElement? GetTriggerElementFromItem(TreeViewItem? item)

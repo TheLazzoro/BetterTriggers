@@ -1,8 +1,8 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.Utility.IniParser;
 using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
-using IniParser.Model;
 using IniParser.Parser;
 using System;
 using System.Collections.Generic;
@@ -147,14 +147,20 @@ namespace BetterTriggers.WorldEdit
 
             // Add 'model' from 'destructableskin.txt'
 
-            var data = IniFileConverter.GetIniData(text);
+            var data = new IniData(text);
             var destTypesList = GetBase();
             for (int i = 0; i < destTypesList.Count; i++)
             {
                 var destType = destTypesList[i];
-                var section = data[destType.DestCode];
-                string model = section["file"];
-                destType.Model = model;
+                data.Sections.TryGetValue(destType.DestCode, out var section);
+                if (section == null)
+                    continue;
+
+                var model = section.Keys.FirstOrDefault(k => k.Key == "file");
+                if (model != null)
+                {
+                    destType.Model = model.Value;
+                }
             }
         }
 

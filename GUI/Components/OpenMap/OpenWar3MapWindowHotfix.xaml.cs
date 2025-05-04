@@ -80,8 +80,6 @@ namespace GUI.Components.OpenMap
                 for (int i = 0; i < entries.Length; i++)
                 {
                     var entry = entries[i];
-                    string name = Path.GetFileName(entry);
-                    string category = TriggerCategory.TC_MAP;
                     string ext = Path.GetExtension(entry);
                     bool isMap = ext == ".w3x" || ext == ".w3m";
                     if (!isMap)
