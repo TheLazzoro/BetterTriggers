@@ -69,6 +69,8 @@ namespace Tests
         [DynamicData(nameof(GetMapsFromTestFolder), typeof(BT2WETests), DynamicDataSourceType.Property)]
         public void ConvertBT2WE_Test(string mapPath)
         {
+            var editorSettings = EditorSettings.Load();
+            editorSettings.Export_IncludeTriggerData = true;
             TriggerConverter triggerConverter = new TriggerConverter(mapPath);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapPath));
             projectFile = triggerConverter.Convert(destination);
