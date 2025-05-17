@@ -27,8 +27,7 @@ namespace GUI.Components.VersionCheck
             ProgramSettings.Save(programSettings);
 
             this.Close();
-            var mainWindow = MainWindow.GetMainWindow();
-            mainWindow.DownloadUpdate();
+            VersionCheck.DownloadUpdate();
         }
     }
 }

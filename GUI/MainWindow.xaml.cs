@@ -834,15 +834,7 @@ namespace GUI
 
             if(doClose && _downloadUpdateOnClose)
             {
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = Path.Combine(Directory.GetCurrentDirectory(), "Updater.exe"),
-                    CreateNoWindow = true,
-                    ErrorDialog = true,
-                };
-                var process = new Process();
-                process.StartInfo = startInfo;
-                process.Start();
+                VersionCheck.DownloadUpdate();
             }
         }
 

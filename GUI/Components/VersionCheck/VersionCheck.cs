@@ -1,6 +1,8 @@
 ﻿using BetterTriggers;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
@@ -73,6 +75,19 @@ namespace GUI.Components.VersionCheck
                     window.ShowDialog();
                 });
             }
+        }
+
+        public static void DownloadUpdate()
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = Path.Combine(Directory.GetCurrentDirectory(), "Updater.exe"),
+                CreateNoWindow = true,
+                ErrorDialog = true,
+            };
+            var process = new Process();
+            process.StartInfo = startInfo;
+            process.Start();
         }
     }
 }
