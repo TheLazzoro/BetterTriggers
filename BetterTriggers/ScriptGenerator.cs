@@ -2002,6 +2002,8 @@ end
             StringBuilder conditions = new StringBuilder();
             PreActions pre_actions = new PreActions();
             StringBuilder actions = new StringBuilder();
+            localVariableDecl = new StringBuilder();
+            localVariables = new List<Variable>();
 
             events.Append($"function InitTrig_{triggerName} {functionReturnsNothing}{newline}");
             events.Append($"\t{set} {triggerVarName} = CreateTrigger(){newline}");
