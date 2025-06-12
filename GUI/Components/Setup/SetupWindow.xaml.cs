@@ -18,6 +18,18 @@ namespace GUI.Components.Setup
             textBoxRoot.Text = settings.war3root;
             Init.HasLoaded = false;
             Task.Run(() => VersionCheck.VersionCheck.CheckVersion_PopupWindow(this));
+            VersionCheck.VersionCheck.OnDownloadUpdate += VersionCheck_OnDownloadUpdate;
+            Closing += SetupWindow_Closing;
+        }
+
+        private void VersionCheck_OnDownloadUpdate()
+        {
+            this.Close(); // shuts down the application when it begins to download
+        }
+
+        private void SetupWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            VersionCheck.VersionCheck.OnDownloadUpdate -= VersionCheck_OnDownloadUpdate;
         }
 
         private void btnSelectWar3Dir_Click(object sender, RoutedEventArgs e)
