@@ -15,10 +15,16 @@ namespace BetterTriggers.WorldEdit
     public class Destructibles
     {
         private static List<DoodadData> destructibles = new List<DoodadData>();
+        private static List<DoodadData> allDoodads = new List<DoodadData>();
 
         public static List<DoodadData> GetAll()
         {
             return destructibles;
+        }
+
+        public static List<DoodadData> GetAllDoodads()
+        {
+            return allDoodads;
         }
 
         /// <summary>
@@ -28,6 +34,7 @@ namespace BetterTriggers.WorldEdit
         internal static void Load()
         {
             destructibles.Clear();
+            allDoodads.Clear();
             var destructibleData = DestructibleTypes.GetAll();
 
             MapDoodads doodads;
@@ -39,6 +46,7 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < doodads.Doodads.Count; i++)
             {
                 var doodad = doodads.Doodads[i];
+                allDoodads.Add(doodad);
 
                 for (int j = 0; j < destructibleData.Count; j++)
                 {

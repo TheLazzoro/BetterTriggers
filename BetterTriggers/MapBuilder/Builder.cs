@@ -14,6 +14,7 @@ using War3Net.IO.Mpq;
 using JassObfuscator;
 using War3Net.IO.Compression;
 using BetterTriggers.WorldEdit.GameDataReader;
+using BetterTriggers.WorldEdit;
 
 namespace BetterTriggers.TestMap
 {
@@ -85,6 +86,22 @@ namespace BetterTriggers.TestMap
 
             string mapDir = Project.CurrentProject.GetFullMapPath();
             var map = Map.Open(mapDir);
+
+            /// We overwrite the loaded doodads with those modified by BT.
+            /// The reason being the <see cref="ScriptGenerator"/> will modify the loaded destructibles' state flag,
+            /// when a reference to the destructible has been made in GUI.
+            /// This is important for the creation of destructibles.
+            if (map.Doodads != null)
+            {
+                int count = map.Doodads.Doodads.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    map.Doodads.Doodads.RemoveAt(0);
+                }
+                map.Doodads.Doodads.AddRange(Destructibles.GetAllDoodads());
+            }
+
+
             map.Info.ScriptLanguage = _language;
             map.Script = script;
 
