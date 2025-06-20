@@ -138,6 +138,7 @@ namespace GUI
 
             Loaded += MainWindow_Loaded;
             Activated += MainWindow_Activated;
+            VersionCheck.WantToDownload += DownloadUpdate;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

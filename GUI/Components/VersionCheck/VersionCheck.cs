@@ -11,7 +11,7 @@ namespace GUI.Components.VersionCheck
 {
     internal class VersionCheck
     {
-        public static event Action OnDownloadUpdate;
+        public static event Action WantToDownload;
         public const string url = "https://api.github.com/repos/thelazzoro/BetterTriggers/releases/latest";
         private const string accept = "application/vnd.github+json";
         private string userAgent;
@@ -74,14 +74,14 @@ namespace GUI.Components.VersionCheck
                 {
                     var window = new NewVersionWindow_OnStart(version, owner);
                     window.ShowDialog();
+                    if(window.Ok)
+                        WantToDownload?.Invoke();
                 });
             }
         }
 
         public static void DownloadUpdate()
         {
-            OnDownloadUpdate?.Invoke();
-
             var startInfo = new ProcessStartInfo
             {
                 FileName = Path.Combine(Directory.GetCurrentDirectory(), "Updater.exe"),

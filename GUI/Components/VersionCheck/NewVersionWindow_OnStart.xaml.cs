@@ -8,6 +8,8 @@ namespace GUI.Components.VersionCheck
 {
     public partial class NewVersionWindow_OnStart : Window
     {
+        public bool Ok;
+
         public NewVersionWindow_OnStart(VersionCheckCollection versionCheck, Window owner)
         {
             this.Owner = owner;
@@ -17,17 +19,17 @@ namespace GUI.Components.VersionCheck
             var control = new NewVersionControl(versionCheck);
             grid.Children.Add(control);
             Grid.SetRow(control, 0);
-            Grid.SetColumn(control, 0);
+            Grid.SetColumn(control, 0); 
         }
 
         private void btnDownload_Click(object sender, RoutedEventArgs e)
         {
+            Ok = true;
             ProgramSettings programSettings = ProgramSettings.Load();
             programSettings.IgnoreNewVersion = (bool)checkboxIgnore.IsChecked;
             ProgramSettings.Save(programSettings);
 
             this.Close();
-            VersionCheck.DownloadUpdate();
         }
     }
 }
