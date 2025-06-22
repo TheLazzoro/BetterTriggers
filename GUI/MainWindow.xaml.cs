@@ -837,6 +837,11 @@ namespace GUI
             {
                 VersionCheck.DownloadUpdate();
             }
+
+            if(doClose)
+            {
+                VersionCheck.WantToDownload -= DownloadUpdate;
+            }
         }
 
         private bool DoCloseProject()
