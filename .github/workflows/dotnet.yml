@@ -19,10 +19,10 @@ jobs:
         dotnet-version: 6.x
 
     - name: Install BetterTriggers submodules
-      -run: git submodule update
+      run: git submodule update
 
     - name: Install War3Net submodules
-      -run: |
+      run: |
         cd War3Net
         git submodule update
         cd ..
