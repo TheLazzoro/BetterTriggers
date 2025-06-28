@@ -3,8 +3,6 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
-using Cake.Incubator.AssertExtensions;
-using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
