@@ -22,12 +22,18 @@ Install [.NET 6.0 SDK x64](https://dotnet.microsoft.com/en-us/download/dotnet/th
 BetterTriggers uses git submodules. To initialize these open a console from the root directory and type the following:
 
 ```
+git submodule init
 git submodule update
 ```
 
-Now an additional repository named 'War3Net' has been downloaded. This C# solution also uses submodules. From the console, switch to that directory and enter the same command:
+Now an additional repository named 'War3Net' has been downloaded. This C# solution also uses submodules. From the console, switch to that directory and enter the same commands:
 ```
+git submodule init
 git submodule update
 ```
+
+In Visual Studio, select all submodules, right-click and select 'Reload Project'. 
+
+![alt text](image-1.png)
 
 You should now be set.
