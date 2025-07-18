@@ -228,6 +228,7 @@
     <None Remove="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\ExampleMap203.w3x" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\conversation.json" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\HolyWarAnniversary1_32a.w3x\war3map.imp" />
@@ -1752,6 +1753,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Enfo FFB - v2.42d.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\ExampleMap203.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\HolyWarAnniversary1_32a.w3x\conversation.json">
