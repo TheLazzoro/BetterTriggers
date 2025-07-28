@@ -60,7 +60,7 @@ namespace BetterTriggers.TestMap
             return (success, scriptGenerator.GeneratedScript);
         }
 
-        string archivePath;
+        public string archivePath;
         /// <summary>
         /// Builds an MPQ archive.
         /// Throws <see cref="Exception"/> and <see cref="ContainsBTDataException"/> on errors.
