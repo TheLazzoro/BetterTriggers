@@ -65,7 +65,7 @@ namespace BetterTriggers.TestMap
         /// Builds an MPQ archive.
         /// Throws <see cref="Exception"/> and <see cref="ContainsBTDataException"/> on errors.
         /// </summary>
-        public BuildMapStatus BuildMap(string destinationDir = null, bool includeMPQSettings = false, bool isTest = false)
+        public BuildMapStatus BuildMap(string destinationDir = null, bool includeMPQSettings = false, bool isMapLaunchTest = false)
         {
             EditorSettings settings = EditorSettings.Load();
             (bool wasVerified, string script) = GenerateScript();
@@ -74,7 +74,7 @@ namespace BetterTriggers.TestMap
                 return new BuildMapStatus(BuildMapStatusCode.ScriptError, "Could not compile script.");
             }
 
-            if (includeMPQSettings && isTest == false)
+            if (includeMPQSettings && isMapLaunchTest == false)
             {
                 if (settings.Export_Obfuscate && _language == ScriptLanguage.Jass)
                 {
@@ -105,7 +105,7 @@ namespace BetterTriggers.TestMap
             map.Info.ScriptLanguage = _language;
             map.Script = script;
 
-            if (settings.Export_IncludeTriggerData && isTest == false)
+            if (settings.Export_IncludeTriggerData && isMapLaunchTest == false)
             {
                 var bt2we = new BT2WE(map);
                 bt2we.Convert();
@@ -123,7 +123,7 @@ namespace BetterTriggers.TestMap
             }
 
             // MPQ protection
-            if (includeMPQSettings && isTest == false)
+            if (includeMPQSettings && isMapLaunchTest == false)
             {
                 if (settings.Export_RemoveTriggerData)
                 {
@@ -132,9 +132,9 @@ namespace BetterTriggers.TestMap
             }
 
             ushort blockSize = 3;
-            if (settings.Export_Compress && isTest == false)
+            if (settings.Export_Compress && isMapLaunchTest == false)
                 blockSize = 8;
-            if (settings.Export_Compress && settings.Export_Compress_Advanced && isTest == false)
+            if (settings.Export_Compress && settings.Export_Compress_Advanced && isMapLaunchTest == false)
                 blockSize = settings.Export_Compress_BlockSize;
 
             var archiveCreateOptions = new MpqArchiveCreateOptions
@@ -177,7 +177,7 @@ namespace BetterTriggers.TestMap
                 return new BuildMapStatus(BuildMapStatusCode.CouldNotWriteToFile, err.Message);
             }
 
-            if (includeMPQSettings && isTest == false)
+            if (includeMPQSettings && isMapLaunchTest == false)
             {
                 if (settings.Export_RemoveListfile)
                 {
@@ -209,7 +209,7 @@ namespace BetterTriggers.TestMap
         public BuildMapStatus TestMap()
         {
             string destinationDir = Path.GetTempPath();
-            var status = BuildMap(destinationDir, isTest: true);
+            var status = BuildMap(destinationDir, isMapLaunchTest: true);
             if (status.Status != BuildMapStatusCode.Ok)
             {
                 return status;

@@ -29,6 +29,7 @@ namespace BetterTriggers.WorldEdit
         internal static Dictionary<string, FunctionTemplate> ActionTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> CallTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> FunctionsAll = new Dictionary<string, FunctionTemplate>();
+        internal static HashSet<string> BoolExprTempaltes = new HashSet<string>(); 
 
         internal static Dictionary<string, string> ParamDisplayNames = new Dictionary<string, string>();
         internal static Dictionary<string, string> ParamCodeText = new Dictionary<string, string>();
@@ -54,6 +55,7 @@ namespace BetterTriggers.WorldEdit
             PresetTemplates.Clear();
             EventTemplates.Clear();
             ConditionTemplates.Clear();
+            BoolExprTempaltes.Clear();
             ActionTemplates.Clear();
             CallTemplates.Clear();
             FunctionsAll.Clear();
@@ -507,6 +509,7 @@ namespace BetterTriggers.WorldEdit
                     else if (sectionName == "TriggerConditions")
                     {
                         returnType = "boolean";
+                        BoolExprTempaltes.Add(key);
 
                         for (int i = 1; i < _params.Length; i++)
                         {

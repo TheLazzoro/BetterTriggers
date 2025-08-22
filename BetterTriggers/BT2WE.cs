@@ -1,10 +1,9 @@
-﻿using BetterTriggers.Containers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using War3Net.Build;
 using War3Net.Build.Script;
@@ -15,6 +14,7 @@ namespace BetterTriggers
     {
         private Project _project;
         private Map _map;
+        private HashSet<int> _newIds = new();
 
         public BT2WE(Map map)
         {
@@ -63,7 +63,7 @@ namespace BetterTriggers
             for (int i = 0; i < allExplorerElements.Count; i++)
             {
                 var explorerElement = allExplorerElements[i];
-                if(explorerElement.ElementType == ExplorerElementEnum.Trigger && explorerElement.trigger.IsScript)
+                if (explorerElement.ElementType == ExplorerElementEnum.Trigger && explorerElement.trigger.IsScript)
                 {
                     continue;
                 }
@@ -107,8 +107,9 @@ namespace BetterTriggers
                 _map.CustomTextTriggers = new MapCustomTextTriggers(MapCustomTextTriggersFormatVersion.v1, MapCustomTextTriggersSubVersion.v4);
             }
             _map.CustomTextTriggers.CustomTextTriggers.Clear();
-            RecurseThroughTriggers(_project.GetRoot(), -1);
+
             var mapTriggers = new MapTriggers(MapTriggersFormatVersion.v7, MapTriggersSubVersion.v4);
+            RecurseThroughTriggers(_project.GetRoot(), -1);
             mapTriggers.GameVersion = 2;
             mapTriggers.TriggerItemCounts.Add(TriggerItemType.RootCategory, countRoot);
             mapTriggers.TriggerItemCounts.Add(TriggerItemType.UNK1, 0);
@@ -137,8 +138,8 @@ namespace BetterTriggers
             {
                 case ExplorerElementEnum.Folder:
                     countCategory++;
-                    id = _project.GenerateId();
                     var triggerCategory = new TriggerCategoryDefinition();
+                    id = GetConvertedId(triggerCategory);
                     triggerCategory.Id = id;
                     triggerCategory.ParentId = parentId;
                     triggerCategory.Name = explorerElement.GetName();
@@ -146,27 +147,30 @@ namespace BetterTriggers
                     break;
                 case ExplorerElementEnum.GlobalVariable:
                     countVariable++;
-                    id = explorerElement.GetId();
                     var variable = explorerElement.variable;
                     var variableDefiniton = new TriggerVariableDefinition(TriggerItemType.Variable);
+                    id = GetConvertedId(variableDefiniton);
                     variableDefiniton.ParentId = parentId;
                     variableDefiniton.Id = id;
                     variableDefiniton.Name = explorerElement.GetName();
                     triggerItems.Add(variableDefiniton);
 
                     string initialValue = string.Empty;
+                    bool initialized = false;
                     if (!string.IsNullOrEmpty(variable.InitialValue.value))
                     {
                         initialValue = variable.InitialValue.value;
+                        initialized = true;
                     }
                     var variableDefinition2 = new VariableDefinition();
                     variableDefinition2.Id = id;
                     variableDefinition2.ParentId = parentId;
                     variableDefinition2.Name = explorerElement.GetName();
                     variableDefinition2.InitialValue = initialValue;
+                    variableDefinition2.IsInitialized = initialized;
                     variableDefinition2.Type = variable.War3Type.Type;
                     variableDefinition2.IsArray = variable.IsArray;
-                    variableDefinition2.ArraySize = variable.ArraySize[0];
+                    variableDefinition2.ArraySize = variable.IsArray ? variable.ArraySize[0] : 0;
                     variableDefinition2.Unk = 1;
                     variableDefinitions.Add(variableDefinition2);
 
@@ -183,13 +187,17 @@ namespace BetterTriggers
                         _map.CustomTextTriggers.GlobalCustomScriptCode = new CustomTextTrigger();
                     }
                     _map.CustomTextTriggers.GlobalCustomScriptComment = _project.war3project.Comment;
-                    _map.CustomTextTriggers.GlobalCustomScriptCode.Code = _project.war3project.Header + "\0"; // Add NUL char
+                    _map.CustomTextTriggers.GlobalCustomScriptCode.Code = _project.war3project.Header;
+                    if (!string.IsNullOrEmpty(_project.war3project.Header))
+                    {
+                        _map.CustomTextTriggers.GlobalCustomScriptCode.Code += "\0"; // Add NUL char
+                    }
                     triggerItems.Add(root);
                     break;
                 case ExplorerElementEnum.Script:
                     countScript++;
-                    id = _project.GenerateId();
                     var script = new TriggerDefinition(TriggerItemType.Script);
+                    id = GetConvertedId(script);
                     script.Id = id;
                     script.ParentId = parentId;
                     script.Name = explorerElement.GetName();
@@ -197,15 +205,19 @@ namespace BetterTriggers
                     script.IsInitiallyOn = true;
                     script.IsCustomTextTrigger = true;
                     var customTextTrigger = new CustomTextTrigger();
-                    customTextTrigger.Code = explorerElement.script + "\0"; // Add NUL char
+                    customTextTrigger.Code = explorerElement.script;
+                    if (!string.IsNullOrEmpty(customTextTrigger.Code))
+                    {
+                        customTextTrigger.Code += "\0"; // Add NUL char
+                    }
                     _map.CustomTextTriggers.CustomTextTriggers.Add(customTextTrigger);
                     triggerItems.Add(script);
                     break;
                 case ExplorerElementEnum.Trigger:
                     countGui++;
-                    id = explorerElement.GetId();
                     var trigger = explorerElement.trigger;
                     var triggerDefinition = new TriggerDefinition(TriggerItemType.Gui);
+                    id = GetConvertedId(triggerDefinition);
                     triggerDefinition.Id = id;
                     triggerDefinition.Name = explorerElement.GetName();
                     triggerDefinition.Description = explorerElement.trigger.Comment;
@@ -218,16 +230,20 @@ namespace BetterTriggers
                     if (triggerDefinition.IsCustomTextTrigger)
                     {
                         customTriggerTextCode = explorerElement.trigger.Script;
+                        if (!string.IsNullOrEmpty(customTriggerTextCode))
+                        {
+                            customTriggerTextCode += "\0"; // Add NUL char
+                        }
                     }
                     else
                     {
-                        triggerDefinition.Functions.AddRange(ConvertTriggerElements(trigger.Events));
                         triggerDefinition.Functions.AddRange(ConvertTriggerElements(trigger.Conditions));
                         triggerDefinition.Functions.AddRange(ConvertTriggerElements(trigger.Actions));
+                        triggerDefinition.Functions.AddRange(ConvertTriggerElements(trigger.Events));
                     }
 
                     var customTextTrigger2 = new CustomTextTrigger();
-                    customTextTrigger2.Code = customTriggerTextCode + "\0"; // Add NUL char
+                    customTextTrigger2.Code = customTriggerTextCode;
                     _map.CustomTextTriggers.CustomTextTriggers.Add(customTextTrigger2);
                     triggerItems.Add(triggerDefinition);
                     break;
@@ -253,43 +269,52 @@ namespace BetterTriggers
 
             for (int i = 0; i < triggerElementCollection.Count(); i++)
             {
-                var eca = triggerElementCollection.Elements[i] as ECA;
-                List<string> returnTypes = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(eca.function, null);
-                TriggerFunction triggerFunction = new TriggerFunction();
-                triggerFunction.Name = eca.function.value;
-                triggerFunction.IsEnabled = eca.IsEnabled;
-                triggerFunction.Branch = branch;
-                switch (eca.ElementType)
+                try
                 {
-                    case TriggerElementType.Event:
-                        triggerFunction.Type = TriggerFunctionType.Event;
-                        break;
-                    case TriggerElementType.Condition:
-                        triggerFunction.Type = TriggerFunctionType.Condition;
-                        break;
-                    case TriggerElementType.Action:
-                        triggerFunction.Type = TriggerFunctionType.Action;
-                        break;
-                    default:
-                        break;
-                }
-                triggerFunction.Parameters.AddRange(ConvertTriggerFunctionParameters(eca.function.parameters, returnTypes));
-                triggerFunctions.Add(triggerFunction);
-
-                if (eca.Elements != null && eca.Elements.Count > 0)
-                {
-                    for (int c = 0; c < eca.Elements.Count; c++)
+                    var eca = triggerElementCollection.Elements[i] as ECA;
+                    List<string> returnTypes = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(eca.function, null);
+                    TriggerFunction triggerFunction = new TriggerFunction();
+                    triggerFunction.Name = eca.function.value;
+                    triggerFunction.IsEnabled = eca.IsEnabled;
+                    triggerFunction.Branch = branch;
+                    switch (eca.ElementType)
                     {
-                        var collection = eca.Elements[c];
-                        var childElements = ConvertTriggerElements(collection as TriggerElementCollection, c);
-                        triggerFunction.ChildFunctions.AddRange(childElements);
+                        case TriggerElementType.Event:
+                            triggerFunction.Type = TriggerFunctionType.Event;
+                            break;
+                        case TriggerElementType.Condition:
+                            triggerFunction.Type = TriggerFunctionType.Condition;
+                            break;
+                        case TriggerElementType.Action:
+                            triggerFunction.Type = TriggerFunctionType.Action;
+                            break;
+                        default:
+                            break;
                     }
+                    triggerFunction.Parameters.AddRange(ConvertTriggerFunctionParameters(eca.function.parameters, returnTypes));
+                    triggerFunctions.Add(triggerFunction);
+
+                    if (eca.Elements != null && eca.Elements.Count > 0)
+                    {
+                        for (int c = 0; c < eca.Elements.Count; c++)
+                        {
+                            var collection = eca.Elements[c];
+                            var childElements = ConvertTriggerElements(collection as TriggerElementCollection, c);
+                            triggerFunction.ChildFunctions.AddRange(childElements);
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("");
                 }
             }
 
             return triggerFunctions;
         }
 
+        /// <exception cref="Exception">Throws if parameter is undefined/missing</exception>
         private List<TriggerFunctionParameter> ConvertTriggerFunctionParameters(List<Parameter> parameters, List<string> returnTypes)
         {
             var functionParameters = new List<TriggerFunctionParameter>();
@@ -299,6 +324,13 @@ namespace BetterTriggers
                 var parameter = parameters[i];
                 var returnType = returnTypes[i];
                 string paramValue = parameter.value;
+                var type = parameter.GetType();
+
+                //if this is the base class, then:
+                if (type.IsSubclassOf(typeof(Parameter)) == false && paramValue == null)
+                {
+                    throw new Exception("Invalid parameter");
+                }
                 if (paramValue == "boolexpr" && parameter is Function)
                 {
                     paramValue = string.Empty;
@@ -425,13 +457,58 @@ namespace BetterTriggers
 
                         break;
                     default:
+                        paramValue = string.Empty;
+                        converted.Type = TriggerFunctionParameterType.Undefined;
                         break;
                 }
 
                 converted.Value = paramValue;
+
+                /// Convert boolexpr case. See reference <see cref="TriggerConverter"/>
+                if (WorldEdit.TriggerData.BoolExprTempaltes.Contains(paramValue))
+                {
+                    converted.Value = string.Empty;
+                }
+
             }
 
             return functionParameters;
+        }
+
+        /// <summary>
+        /// Apparently, Blizzard uses an int range for gui triggers, variables, scripts etc.
+        /// Categories = 3355xxxx
+        /// GUI = 5033xxxx
+        /// Scripts = 8388xxxx
+        /// Variables = 10066xxxx
+        /// 
+        /// Whether this makes a difference is unknown.
+        /// </summary>
+        private int GetConvertedId(TriggerItem item)
+        {
+            int prefix = (item.Type) switch
+            {
+                TriggerItemType.Category => 33550000,
+                TriggerItemType.Gui => 50330000,
+                TriggerItemType.Script => 83880000,
+                TriggerItemType.Variable => 100660000,
+                _ => throw new InvalidOperationException($"Cannot generate id for type '{item.Type.ToString()}'"),
+            };
+
+            int runaway_guard = 0;
+            int newId = prefix;
+            while (_newIds.Contains(newId) && runaway_guard < 9999)
+            {
+                newId++;
+                runaway_guard++;
+            }
+            if (runaway_guard == int.MaxValue)
+            {
+                throw new Exception($"All possible id's have been tried. Reduce the number of triggers of type '{item.Type}' or try again.");
+            }
+
+            _newIds.Add(newId);
+            return newId;
         }
 
         /// <summary>
