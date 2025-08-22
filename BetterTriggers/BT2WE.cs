@@ -1,10 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
-using Cake.Incubator.AssertExtensions;
-using NuGet.Packaging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -112,32 +108,7 @@ namespace BetterTriggers
             }
             _map.CustomTextTriggers.CustomTextTriggers.Clear();
 
-
             var mapTriggers = new MapTriggers(MapTriggersFormatVersion.v7, MapTriggersSubVersion.v4);
-
-            //#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            //var metaCategory = (DeletedTriggerItem)Activator.CreateInstance(typeof(DeletedTriggerItem), BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { TriggerItemType.Category }, null, null);
-            //var metaGui = (DeletedTriggerItem)Activator.CreateInstance(typeof(DeletedTriggerItem), BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { TriggerItemType.Gui }, null, null);
-            //var metaScript = (DeletedTriggerItem)Activator.CreateInstance(typeof(DeletedTriggerItem), BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { TriggerItemType.Script }, null, null);
-
-            //metaCategory.ParentId = -1;
-            //metaGui.ParentId = -1;
-            //metaScript.ParentId = -1;
-            //metaCategory.Name = "<DELETED>";
-            //metaGui.Name = "<DELETED>";
-            //metaScript.Name = "<DELETED>";
-            //countCategory++;
-            //countGui++;
-            //countScript++;
-
-            //var metadataHeader = new List<DeletedTriggerItem>()
-            //{
-            //    metaCategory,
-            //    metaGui,
-            //    metaScript,
-            //};
-            //mapTriggers.TriggerItems.AddRange(metadataHeader);
-
             RecurseThroughTriggers(_project.GetRoot(), -1);
             mapTriggers.GameVersion = 2;
             mapTriggers.TriggerItemCounts.Add(TriggerItemType.RootCategory, countRoot);
@@ -150,11 +121,6 @@ namespace BetterTriggers
             mapTriggers.TriggerItemCounts.Add(TriggerItemType.UNK7, 0);
             mapTriggers.TriggerItems.AddRange(triggerItems);
             mapTriggers.Variables.AddRange(variableDefinitions);
-
-            //metaCategory.Id = countCategory;
-            //metaGui.Id = countGui;
-            //metaScript.Id = countScript;
-
             _map.Triggers = mapTriggers;
         }
 
@@ -510,7 +476,7 @@ namespace BetterTriggers
         }
 
         /// <summary>
-        /// Apparently, Blizzard reserves an int range for gui triggers, variables, scripts etc.
+        /// Apparently, Blizzard uses an int range for gui triggers, variables, scripts etc.
         /// Categories = 3355xxxx
         /// GUI = 5033xxxx
         /// Scripts = 8388xxxx
