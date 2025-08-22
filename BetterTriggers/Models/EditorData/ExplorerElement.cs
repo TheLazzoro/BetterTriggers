@@ -6,16 +6,12 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection.Metadata;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Xml.Linq;
+using War3Net.Build.Info;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -590,7 +586,9 @@ namespace BetterTriggers.Models.EditorData
                     formattedName = RenameText + ".var";
                     break;
                 case ExplorerElementEnum.Script:
-                    formattedName = RenameText + ".j";
+                    var lang = Info.GetLanguage();
+                    var extension = lang == ScriptLanguage.Jass ? ".j" : ".lua";
+                    formattedName = RenameText + extension;
                     break;
                 case ExplorerElementEnum.Trigger:
                     if (project.Triggers.Contains(RenameText))

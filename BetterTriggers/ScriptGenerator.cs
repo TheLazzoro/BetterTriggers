@@ -327,6 +327,7 @@ end
             {
 
                 var functions = project.GetFunctionsAll();
+                var destructibles = Destructibles.GetAll();
                 for (int i = 0; i < functions.Count; i++)
                 {
                     var function = functions[i];
@@ -349,7 +350,21 @@ end
                             if (returnTypes[j] == "unit")
                                 generatedVarNames.TryAdd("gg_unit_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
                             else if (returnTypes[j] == "destructable")
-                                generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
+                            {
+                                int creationNumber = 0;
+                                int length = 1;
+                                while (int.TryParse(value.value.Substring(value.value.Length - length, length), out var temp))
+                                {
+                                    creationNumber = int.Parse(value.value.Substring(value.value.Length - length, length));
+                                    length++;
+                                }
+                                var dest = destructibles.FirstOrDefault(x => x.CreationNumber == creationNumber);
+                                if (dest != null)
+                                {
+                                    dest.State &= ~War3Net.Build.Widget.DoodadState.Normal;
+                                    generatedVarNames.TryAdd("gg_dest_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
+                                }
+                            }
                             else if (returnTypes[j] == "item")
                                 generatedVarNames.TryAdd("gg_item_" + value.value, new Tuple<Parameter, string>(value, returnTypes[j]));
                         }
@@ -793,6 +808,10 @@ end
             var dests = Destructibles.GetAll();
             foreach (var d in dests)
             {
+                // This flag tells the map to create the destructible regardless of the script.
+                if (d.State.HasFlag(War3Net.Build.Widget.DoodadState.Normal))
+                    continue;
+
                 var id = d.ToString();
                 var x = d.Position.X.ToString("0.000", enUS);
                 var y = d.Position.Y.ToString("0.000", enUS);
@@ -2002,6 +2021,8 @@ end
             StringBuilder conditions = new StringBuilder();
             PreActions pre_actions = new PreActions();
             StringBuilder actions = new StringBuilder();
+            localVariableDecl = new StringBuilder();
+            localVariables = new List<Variable>();
 
             events.Append($"function InitTrig_{triggerName} {functionReturnsNothing}{newline}");
             events.Append($"\t{set} {triggerVarName} = CreateTrigger(){newline}");
