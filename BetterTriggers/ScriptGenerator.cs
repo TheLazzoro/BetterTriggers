@@ -931,7 +931,7 @@ end
                 string varName = Ascii.ReplaceNonASCII($"gg_rct_{id}", true);
 
                 script.Append($"{set} {varName} = Rect({left}, {bottom}, {right}, {top}){newline}");
-                if (r.WeatherType == War3Net.Build.WeatherType.None)
+                if (r.WeatherType == War3Net.Build.Common.WeatherType.None)
                     continue;
 
                 script.Append($"{set} we = AddWeatherEffect({varName}, {fourCCStart}'{Int32Extensions.ToRawcode((int)r.WeatherType)}'{fourCCEnd}){newline}");
