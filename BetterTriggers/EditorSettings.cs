@@ -13,36 +13,36 @@ namespace BetterTriggers
         private static EditorSettings instance;
         private static string filePath;
 
-        public string war3root             = "C:/Program Files (x86)/Warcraft III";
-        public string CopyLocation         = "BetterTriggersTestMap";
-        public int Difficulty              = 0;
-        public bool FixedRandomSeed        = false;
-        public int HD                      = 0;
-        public bool NoWindowsFocusPause    = false;
-        public string PlayerProfile        = "WorldEdit";
-        public int WindowMode              = 0;
-        public int Teen                    = 0;
+        public string war3root = "C:/Program Files (x86)/Warcraft III";
+        public string CopyLocation = "BetterTriggersTestMap";
+        public int Difficulty = 0;
+        public bool FixedRandomSeed = false;
+        public int HD = 0;
+        public bool NoWindowsFocusPause = false;
+        public string PlayerProfile = "WorldEdit";
+        public int WindowMode = 0;
+        public int Teen = 0;
 
-        public bool mainWindowFullscreen   = false;
-        public int mainWindowX             = 100;
-        public int mainWindowY             = 100;
-        public int mainWindowWidth         = 900;
-        public int mainWindowHeight        = 600;
+        public bool mainWindowFullscreen = false;
+        public int mainWindowX = 100;
+        public int mainWindowY = 100;
+        public int mainWindowWidth = 900;
+        public int mainWindowHeight = 600;
 
-        public int triggerExplorerWidth    = 250;
+        public int triggerExplorerWidth = 250;
 
-        public int triggerWindowX          = 100;
-        public int triggerWindowY          = 100;
-        public int triggerWindowWidth      = 800;
-        public int triggerWindowHeight     = 450;
+        public int triggerWindowX = 100;
+        public int triggerWindowY = 100;
+        public int triggerWindowWidth = 800;
+        public int triggerWindowHeight = 450;
 
-        public int parameterWindowX        = 100;
-        public int parameterWindowY        = 100;
-        public int parameterWindowWidth    = 800;
-        public int parameterWindowHeight   = 450;
+        public int parameterWindowX = 100;
+        public int parameterWindowY = 100;
+        public int parameterWindowWidth = 800;
+        public int parameterWindowHeight = 450;
 
-        public int variableListWindowX     = 100;
-        public int variableListWindowY     = 100;
+        public int variableListWindowX = 100;
+        public int variableListWindowY = 100;
         public int variableListWindowWidth = 1000;
         public int variableListWindowHeight = 450;
 
@@ -50,24 +50,24 @@ namespace BetterTriggers
         public TriggerEditorMode triggerEditorMode = 0;
         public bool globalSuffixVisibility = true;
         public bool singleClickExplorerElement = false;
-        public double textEditorFontSize   = 12;
-        public string textEditorFontStyle  = "Consolas";
+        public double textEditorFontSize = 12;
+        public string textEditorFontStyle = "Consolas";
 
-        public bool useQuickStart          = false;
+        public bool useQuickStart = false;
 
         public string lastOpenedFileLocation = string.Empty;
-        public int selectMapWindowX        = 100;
-        public int selectMapWindowY        = 100;
-        public int selectMapWindowWidth    = 800;
-        public int selectMapWindowHeight   = 450;
+        public int selectMapWindowX = 100;
+        public int selectMapWindowY = 100;
+        public int selectMapWindowWidth = 800;
+        public int selectMapWindowHeight = 450;
 
-        public bool GUINewElementIcon      = false;
+        public bool GUINewElementIcon = false;
 
-        public bool Export_RemoveListfile  = false;
+        public bool Export_RemoveListfile = false;
         public bool Export_RemoveTriggerData = false;
-        public bool Export_Obfuscate       = false;
+        public bool Export_Obfuscate = false;
         public bool Export_IncludeTriggerData = false;
-        public bool Export_Compress        = false;
+        public bool Export_Compress = false;
         public bool Export_Compress_Advanced = false;
         public ushort Export_Compress_BlockSize = 3;
 
@@ -80,16 +80,24 @@ namespace BetterTriggers
 
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             filePath = Path.Combine(appData, "Better Triggers/settings.json");
-            EditorSettings settings;
+            EditorSettings? settings = null;
             if (File.Exists(filePath))
             {
-                var file = File.ReadAllText(filePath);
-                settings = JsonConvert.DeserializeObject<EditorSettings>(file);
+                try
+                {
+                    var file = File.ReadAllText(filePath);
+                    settings = JsonConvert.DeserializeObject<EditorSettings>(file);
+                }
+                catch
+                {
+                }
             }
-            else
+
+            if (settings == null)
             {
                 settings = new EditorSettings();
             }
+
             instance = settings;
 
             return settings;
