@@ -440,7 +440,10 @@ namespace BetterTriggers
                         }
                         else if (returnType == "sound")
                         {
-                            prefix = "gg_snd_";
+                            if (!paramValue.Contains("gg_snd_"))
+                            {
+                                prefix = "gg_snd_";
+                            }
                             isVariable = true;
                         }
                         else if (returnType == "StringExt")
