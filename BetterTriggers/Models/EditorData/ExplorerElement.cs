@@ -42,6 +42,8 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
+        public bool HasUnsavedChanges => Project.CurrentProject.UnsavedFiles.Contains(this);
+
         public bool ShouldRefreshUIElements { get; set; } // hack. I should structure my code better, but I'm tired of this project now.
         public event Action OnReload;
         public event Action OnChanged;
@@ -632,6 +634,8 @@ namespace BetterTriggers.Models.EditorData
             if (ElementType == ExplorerElementEnum.Script)
             {
                 this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
+                RemoveFromUnsaved();
+                OnSaved?.Invoke();
             }
 
             Application.Current.Dispatcher.Invoke(new Action(() =>

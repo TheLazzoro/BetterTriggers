@@ -8,6 +8,7 @@ using GUI.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -329,6 +330,18 @@ namespace GUI.Components
                 Project.CurrentProject.RearrangeElement(explorerElementDragItem, insertIndex);
                 parentDropTarget = null;
                 return;
+            }
+
+            if (explorerElementDragItem.ElementType == ExplorerElementEnum.Script && explorerElementDragItem.HasUnsavedChanges)
+            {
+                var contentOnDisk = File.ReadAllText(explorerElementDragItem.GetPath());
+                if (contentOnDisk != explorerElementDragItem.script)
+                {
+                    // We save before moving the file, so we don't lose any unsaved content.
+                    Project.CurrentProject.fileSystemWatcher.EnableRaisingEvents = false;
+                    explorerElementDragItem.Save();
+                    Project.CurrentProject.fileSystemWatcher.EnableRaisingEvents = true;
+                }
             }
 
             var dropTarget = parentDropTarget;
