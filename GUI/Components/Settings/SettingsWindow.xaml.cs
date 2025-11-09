@@ -43,7 +43,7 @@ namespace GUI.Components.Settings
                     comboboxScriptFont.SelectedIndex = itemIndex;
             }
 
-            if(WarcraftStorageReader.GameVersion < WarcraftVersion._1_32)
+            if (WarcraftStorageReader.GameVersion < WarcraftVersion._1_32)
             {
                 lblError.Visibility = Visibility.Visible;
                 comboboxDiff.IsEnabled = false;
@@ -120,10 +120,13 @@ namespace GUI.Components.Settings
             if (this.IsLoaded)
             {
                 var project = Project.CurrentProject;
-                foreach (var element in project.Variables.variableContainer)
+                if (project != null)
                 {
-                    bool isVisible = checkBoxShowGlobalDetail.IsChecked == true;
-                    element.SuffixVisibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+                    foreach (var element in project.Variables.variableContainer)
+                    {
+                        bool isVisible = checkBoxShowGlobalDetail.IsChecked == true;
+                        element.SuffixVisibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+                    }
                 }
             }
         }
@@ -131,7 +134,7 @@ namespace GUI.Components.Settings
         private void textboxFontSize_TextChanged(object sender, TextChangedEventArgs e)
         {
             bool valid = int.TryParse(textboxFontSize.Text, out int size);
-            if(!valid)
+            if (!valid)
             {
                 textboxFontSize.Text = _fontSizePreviousValue;
             }
