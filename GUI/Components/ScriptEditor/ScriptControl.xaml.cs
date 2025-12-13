@@ -1,6 +1,5 @@
 ﻿using BetterTriggers.Models.EditorData;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using War3Net.Build.Info;
@@ -22,8 +21,8 @@ namespace GUI.Components
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
 
-            checkBoxIsEnabled.IsChecked = explorerElementScript.IsEnabled;
             this.explorerElementScript = explorerElementScript;
+            DataContext = explorerElementScript;
 
             textEditor.avalonEditor.TextChanged += delegate
             {

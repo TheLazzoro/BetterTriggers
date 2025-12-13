@@ -14,7 +14,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <CheckBox x:Name="checkBoxIsEnabled" Content="Enabled" IsChecked="True" Margin="10,5,0,0" Width="80" HorizontalAlignment="Left" Click="checkBoxIsEnabled_Click" />
+        <CheckBox x:Name="checkBoxIsEnabled"
+                  Content="Enabled"
+                  IsChecked="{Binding IsEnabled}"
+                  Margin="10,5,0,0"
+                  Width="80"
+                  HorizontalAlignment="Left"
+                  Click="checkBoxIsEnabled_Click" />
 
     </Grid>
 </UserControl>

@@ -4,25 +4,20 @@ using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
-using Cake.Core.Scripting;
+using GUI.Components.Dialogs;
+using GUI.Components.ParameterEditor;
+using GUI.Components.Return;
 using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
-using GUI.Components.Return;
 using GUI.Utility;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using GUI.Components.ParameterEditor;
-using BetterTriggers.Models.EditorData.TriggerEditor;
-using GUI.Components.Dialogs;
-using System.Xml.Linq;
 
 namespace GUI.Components
 {
@@ -74,8 +69,6 @@ namespace GUI.Components
 
             if (explorerElementType == ExplorerElementEnum.Trigger)
             {
-                checkBoxIsEnabled.IsChecked = explorerElement.IsEnabled;
-                checkBoxIsInitiallyOn.IsChecked = explorerElement.IsInitiallyOn;
                 checkBoxIsCustomScript.IsChecked = explorerElement.trigger.IsScript;
                 checkBoxRunOnMapInit.IsChecked = explorerElement.trigger.RunOnMapInit;
                 ShowTextEditor(explorerElement.trigger.IsScript, false);

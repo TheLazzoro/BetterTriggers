@@ -1,20 +1,14 @@
-﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
+using GUI.Components.Shared;
 using GUI.Utility;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GUI.Components.TriggerEditor
 {
-    public class TriggerControlViewModel : IDisposable
+    public class TriggerControlViewModel : ViewModelBase, IDisposable
     {
         private ExplorerElement _explorerElement;
         private ObservableCollection<TriggerElement> _triggers;
@@ -25,6 +19,9 @@ namespace GUI.Components.TriggerEditor
                 return _triggers;
             }
         }
+
+        public bool IsEnabled => _explorerElement.IsEnabled;
+        public bool InitiallyOn => _explorerElement.IsInitiallyOn;
 
         public TriggerControlViewModel(ExplorerElement explorerElement)
         {
