@@ -397,6 +397,12 @@ namespace GUI
             }
 
             tabControl.SelectedIndex = tabViewModel.IndexOf(selectedItem);
+
+            var settings = EditorSettings.Load();
+            if(settings.navigateActiveExplorerElement && triggerExplorer != null)
+            {
+                triggerExplorer.NavigateToExplorerElement(selectedItem);
+            }
         }
 
         private void TreeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

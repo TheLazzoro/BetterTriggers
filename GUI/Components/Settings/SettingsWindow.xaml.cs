@@ -33,6 +33,7 @@ namespace GUI.Components.Settings
             comboboxEditorAppearance.SelectedIndex = (int)settings.editorAppearance;
             checkBoxShowGlobalDetail.IsChecked = settings.globalSuffixVisibility;
             checkBoxSingleClickExplorerElements.IsChecked = settings.singleClickExplorerElement;
+            checkBoxNavigateActiveExplorerElement.IsChecked = settings.navigateActiveExplorerElement;
             checkBoxQuickStart.IsChecked = settings.useQuickStart;
 
             foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
@@ -74,6 +75,7 @@ namespace GUI.Components.Settings
             settings.textEditorFontSize = double.Parse(textboxFontSize.Text);
             settings.globalSuffixVisibility = (bool)checkBoxShowGlobalDetail.IsChecked;
             settings.singleClickExplorerElement = (bool)checkBoxSingleClickExplorerElements.IsChecked;
+            settings.navigateActiveExplorerElement = (bool)checkBoxNavigateActiveExplorerElement.IsChecked;
             settings.useQuickStart = (bool)checkBoxQuickStart.IsChecked;
 
             EditorSettings.Save(settings);
