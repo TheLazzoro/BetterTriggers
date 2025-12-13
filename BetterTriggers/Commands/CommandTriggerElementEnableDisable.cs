@@ -11,33 +11,42 @@ namespace BetterTriggers.Commands
     {
         string commandName = "Change Enable Trigger Element";
         ExplorerElement _explorerElement;
-        ECA _eca;
+        List<ECA> _ecas;
 
-        public CommandTriggerElementEnableDisable(ExplorerElement explorerElement, ECA eca)
+        public CommandTriggerElementEnableDisable(ExplorerElement explorerElement, List<ECA> ecas)
         {
             _explorerElement = explorerElement;
-            _eca = eca;
+            _ecas = ecas;
         }
 
         public void Execute()
         {
-            _eca.IsEnabled = !_eca.IsEnabled;
+            foreach (var eca in _ecas)
+            {
+                eca.IsEnabled = !eca.IsEnabled;
+            }
             Project.CurrentProject.CommandManager.AddCommand(this);
             _explorerElement.InvokeChange();
         }
 
         public void Redo()
         {
-            _eca.IsEnabled = !_eca.IsEnabled;
+            foreach (var eca in _ecas)
+            {
+                eca.IsEnabled = !eca.IsEnabled;
+                eca.IsSelected = true;
+            }
             _explorerElement.InvokeChange();
-            _eca.IsSelected = true;
         }
 
         public void Undo()
         {
-            _eca.IsEnabled = !_eca.IsEnabled;
+            foreach (var eca in _ecas)
+            {
+                eca.IsEnabled = !eca.IsEnabled;
+                eca.IsSelected = true;
+            }
             _explorerElement.InvokeChange();
-            _eca.IsSelected = true;
         }
 
         public string GetCommandName()

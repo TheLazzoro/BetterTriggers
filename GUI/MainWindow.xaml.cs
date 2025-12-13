@@ -216,6 +216,8 @@ namespace GUI
             keybindingNewAction.Modifiers = keybindings.NewAction.modifier;
             keybindingNewLocalVariable.Key = keybindings.NewLocalVariable.key;
             keybindingNewLocalVariable.Modifiers = keybindings.NewLocalVariable.modifier;
+            keybindingEnableDisableFunction.Key = keybindings.EnableDisableFunctions.key;
+            keybindingEnableDisableFunction.Modifiers = keybindings.EnableDisableFunctions.modifier;
             keybindingValidateTriggers.Key = keybindings.ValidateTriggers.key;
             keybindingValidateTriggers.Modifiers = keybindings.ValidateTriggers.modifier;
             keybindingTestMap.Key = keybindings.TestMap.key;
@@ -302,6 +304,7 @@ namespace GUI
             keybindings.NewCondition = new Keybinding() { key = keybindingNewCondition.Key, modifier = keybindingNewCondition.Modifiers };
             keybindings.NewAction = new Keybinding() { key = keybindingNewAction.Key, modifier = keybindingNewAction.Modifiers };
             keybindings.NewLocalVariable = new Keybinding() { key = keybindingNewLocalVariable.Key, modifier = keybindingNewLocalVariable.Modifiers };
+            keybindings.EnableDisableFunctions = new Keybinding() { key = keybindingEnableDisableFunction.Key, modifier = keybindingEnableDisableFunction.Modifiers };
             keybindings.ValidateTriggers = new Keybinding() { key = keybindingValidateTriggers.Key, modifier = keybindingValidateTriggers.Modifiers, global = globalValidateTriggers != null };
             keybindings.TestMap = new Keybinding() { key = keybindingTestMap.Key, modifier = keybindingTestMap.Modifiers, global = globalTestMap != null };
             keybindings.BuildMap = new Keybinding() { key = keybindingBuildMap.Key, modifier = keybindingBuildMap.Modifiers, global = globalBuildMap != null };
@@ -1047,6 +1050,15 @@ namespace GUI
             var selected = tabControl.SelectedItem as TabItemBT;
             var triggerControl = selected.explorerElement.editor as TriggerControl;
             triggerControl.CreateAction();
+        }
+
+        private void CommandBinding_Executed_EnableDisableFunction(object sender, ExecutedRoutedEventArgs e)
+        {
+            var selected = tabControl.SelectedItem as TabItemBT;
+            var triggerControl = selected.explorerElement.editor as TriggerControl;
+
+            if(triggerControl.IsKeyboardFocusWithin)
+                triggerControl.EnableDisableECAS();
         }
 
         private void btnCreateLocalVariable_Click(object sender, RoutedEventArgs e)

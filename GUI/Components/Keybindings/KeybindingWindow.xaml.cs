@@ -207,6 +207,9 @@ namespace GUI.Components.Keybindings
                 case "NewAction":
                     memberName = "New Action";
                     break;
+                case "EnableDisableFunctions":
+                    memberName = "Enable/Disable Functions";
+                    break;
                 case "ValidateTriggers":
                     memberName = "Validate Map Triggers";
                     break;

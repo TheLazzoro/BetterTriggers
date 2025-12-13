@@ -265,6 +265,20 @@ namespace GUI.Components
             CreateTriggerElement(TriggerElementType.ParameterDef);
         }
 
+        public void EnableDisableECAS()
+        {
+            if (selectedElementEnd == null || selectedElements.Count == 0)
+                return;
+
+            var ecas = selectedElements
+                .Select(x => x as ECA)
+                .Where(x => x != null)
+                .ToList();
+
+            var command = new CommandTriggerElementEnableDisable(explorerElement, ecas);
+            command.Execute();
+        }
+
         private void CreateTriggerElement(TriggerElementType type)
         {
             if (type == TriggerElementType.Event && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
@@ -1339,12 +1353,7 @@ namespace GUI.Components
 
         private void menuFunctionEnabled_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedElementEnd == null)
-                return;
-
-            var eca = selectedElementEnd as ECA;
-            CommandTriggerElementEnableDisable command = new CommandTriggerElementEnableDisable(explorerElement, eca);
-            command.Execute();
+            EnableDisableECAS();
         }
 
         private void textBoxComment_TextChanged(object sender, TextChangedEventArgs e)
