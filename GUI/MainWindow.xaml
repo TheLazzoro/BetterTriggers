@@ -178,6 +178,8 @@
         <RoutedUICommand x:Key="NewLocalVariable"></RoutedUICommand>
         <RoutedUICommand x:Key="NewAction"></RoutedUICommand>
         <RoutedUICommand x:Key="EnableDisableFunction"></RoutedUICommand>
+        <RoutedUICommand x:Key="ShiftTriggerElementUp"></RoutedUICommand>
+        <RoutedUICommand x:Key="ShiftTriggerElementDown"></RoutedUICommand>
 
         <RoutedUICommand x:Key="ValidateTriggers"></RoutedUICommand>
         <RoutedUICommand x:Key="TestMap"></RoutedUICommand>
@@ -207,6 +209,8 @@
         <CommandBinding Command="{StaticResource NewLocalVariable}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewLocalVariable"/>
         <CommandBinding Command="{StaticResource NewAction}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_NewAction"/>
         <CommandBinding Command="{StaticResource EnableDisableFunction}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_EnableDisableFunction"/>
+        <CommandBinding Command="{StaticResource ShiftTriggerElementUp}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_ShiftTriggerElementUp"/>
+        <CommandBinding Command="{StaticResource ShiftTriggerElementDown}" CanExecute="CommandBinding_CanExecute_IsControlTrigger" Executed="CommandBinding_Executed_ShiftTriggerElementDown"/>
 
         <CommandBinding Command="{StaticResource ValidateTriggers}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_ValidateTriggers" />
         <CommandBinding Command="{StaticResource TestMap}" CanExecute="CommandBinding_CanExecute_IsProjectActive" Executed="CommandBinding_Executed_TestMap"/>
@@ -231,6 +235,8 @@
         <KeyBinding x:Name="keybindingNewLocalVariable" Command="{StaticResource NewLocalVariable}" Key="K" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingNewAction" Command="{StaticResource NewAction}" Key="W" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingEnableDisableFunction" Command="{StaticResource EnableDisableFunction}" Key="F" Modifiers="Ctrl"/>
+        <KeyBinding x:Name="keybindingShiftTriggerElementUp" Command="{StaticResource ShiftTriggerElementUp}" Key="Up" Modifiers="Alt"/>
+        <KeyBinding x:Name="keybindingShiftTriggerElementDown" Command="{StaticResource ShiftTriggerElementDown}" Key="Down" Modifiers="Alt"/>
 
         <KeyBinding x:Name="keybindingValidateTriggers" Command="{StaticResource ValidateTriggers}" Key="F10" Modifiers="Ctrl"/>
         <KeyBinding x:Name="keybindingTestMap" Command="{StaticResource TestMap}" Key="F9" Modifiers="Ctrl"/>

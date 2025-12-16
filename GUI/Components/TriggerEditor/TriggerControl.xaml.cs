@@ -272,6 +272,109 @@ namespace GUI.Components
             command.Execute();
         }
 
+        public void ShiftTriggerElementsUp()
+        {
+            ShiftTriggerElements(true);
+        }
+
+        public void ShiftTriggerElementsDown()
+        {
+            ShiftTriggerElements(false);
+        }
+
+        private void ShiftTriggerElements(bool up)
+        {
+            if (selectedElementEnd == null || selectedElements.Count == 0)
+                return;
+
+            var ecas = selectedElements
+                .Select(x => x as ECA)
+                .Where(x => x != null)
+                .Cast<ECA>()
+                .OrderBy(x => x.IndexInParent())
+                .ToList();
+
+            if (ecas.Count == 0)
+                return;
+
+
+            var hasDifferentParent = ecas
+                .Where(element => ecas
+                    .Where(x => x.GetParent() != element.GetParent())
+                    .Any()
+                ).Any();
+
+            if (hasDifferentParent)
+                return;
+
+            TriggerElement? newParent = null;
+            int insertIndex = 0;
+            if (up)
+            {
+                var eca = ecas.First();
+                var node = eca as TriggerElement;
+                while (newParent == null)
+                {
+                    var parent = node.GetParent();
+                    if (parent == null)
+                    {
+                        return;
+                    }
+
+                    if (node.IndexInParent() == 0)
+                    {
+                        node = node.GetParent();
+                        continue;
+                    }
+                    else
+                    {
+                        node = parent.Elements[node.IndexInParent() - 1];
+                        while (node.Elements != null && node.Elements.Count > 0)
+                        {
+                            node = node.Elements.Last();
+                        }
+
+                        if(node is not TriggerElementCollection)
+                        {
+                            insertIndex = node.IndexInParent();
+                            node = node.GetParent();
+                            if(!node.Elements.Contains(eca))
+                            {
+                                insertIndex++;
+                            }
+                        }
+                        else
+                        {
+                            insertIndex = node.Count();
+                        }
+                    }
+
+                    if (node.ElementType == eca.ElementType && node is TriggerElementCollection)
+                    {
+                        newParent = node;
+                    }
+                }
+
+                if (newParent != null)
+                {
+                    eca.RemoveFromParent();
+                    eca.SetParent(newParent, insertIndex);
+                }
+            }
+            else // down
+            {
+                //var eca = ecas.Last();
+                //if (eca.IndexInParent() == node.Count() - 1)
+                //{
+                //    newParent = node.GetParent();
+                //}
+            }
+
+
+            //var command = new CommandTriggerElementMove(explorerElement, ecas);
+            //command.Execute();
+        }
+
         private void CreateTriggerElement(TriggerElementType type)
         {
             if (type == TriggerElementType.Event && explorerElement.ElementType is not ExplorerElementEnum.Trigger)
@@ -1028,7 +1131,7 @@ namespace GUI.Components
 
         private void PasteTriggerElement()
         {
-            if(CopiedElements.CopiedTriggerElements == null)
+            if (CopiedElements.CopiedTriggerElements == null)
             {
                 return;
             }

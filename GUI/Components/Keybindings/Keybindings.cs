@@ -37,6 +37,8 @@ namespace GUI.Components.Keybindings
         public Keybinding NewAction { get; set; } = new Keybinding() { key = Key.W, modifier = ModifierKeys.Control };
         public Keybinding NewLocalVariable { get; set; } = new Keybinding() { key = Key.K, modifier = ModifierKeys.Control };
         public Keybinding EnableDisableFunctions { get; set; } = new Keybinding() { key = Key.F, modifier = ModifierKeys.Control };
+        public Keybinding ShiftTriggerElementUp { get; set; } = new Keybinding() { key = Key.Up, modifier = ModifierKeys.Alt };
+        public Keybinding ShiftTriggerElementDown { get; set; } = new Keybinding() { key = Key.Down, modifier = ModifierKeys.Alt };
         public Keybinding ValidateTriggers { get; set; } = new Keybinding() { key = Key.F10, modifier = ModifierKeys.Control };
         public Keybinding TestMap { get; set; } = new Keybinding() { key = Key.F9, modifier = ModifierKeys.Control };
         public Keybinding BuildMap { get; set; } = new Keybinding() { key = Key.B, modifier = ModifierKeys.Control };

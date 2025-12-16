@@ -73,5 +73,14 @@ namespace BetterTriggers.Models.EditorData
             return Elements.IndexOf(element);
         }
 
+        public int IndexInParent()
+        {
+            var parent = GetParent();
+            if (parent == null)
+                return -1;
+
+            var index = parent.IndexOf(this);
+            return index;
+        }
     }
 }
