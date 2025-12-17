@@ -321,7 +321,13 @@ namespace GUI.Components
                         return;
                     }
 
-                    if (node.IndexInParent() == 0)
+
+                    if(node != eca && eca.ElementType == parent.ElementType && parent is TriggerElementCollection)
+                    {
+                        newParent = parent;
+                        insertIndex = node.IndexInParent();
+                    }
+                    else if (node.IndexInParent() == 0)
                     {
                         node = node.GetParent();
                         continue;
@@ -334,16 +340,16 @@ namespace GUI.Components
                             node = node.Elements.Last();
                         }
 
-                        if(node is not TriggerElementCollection)
+                        if (node is not TriggerElementCollection && node.ElementType == eca.ElementType)
                         {
                             insertIndex = node.IndexInParent();
                             node = node.GetParent();
-                            if(!node.Elements.Contains(eca))
+                            if (!node.Elements.Contains(eca))
                             {
                                 insertIndex++;
                             }
                         }
-                        else
+                        else if (node is TriggerElementCollection)
                         {
                             insertIndex = node.Count();
                         }
