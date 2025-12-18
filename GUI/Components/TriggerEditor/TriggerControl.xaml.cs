@@ -308,11 +308,12 @@ namespace GUI.Components
                 return;
 
             TriggerElement? newParent = null;
+            TriggerElement? eca = null;
             int insertIndex = 0;
             if (up)
             {
-                var eca = ecas.First();
-                var node = eca as TriggerElement;
+                eca = ecas.First();
+                var node = eca;
                 while (newParent == null)
                 {
                     var parent = node.GetParent();
@@ -322,7 +323,7 @@ namespace GUI.Components
                     }
 
 
-                    if(node != eca && eca.ElementType == parent.ElementType && parent is TriggerElementCollection)
+                    if (node != eca && eca.ElementType == parent.ElementType && parent is TriggerElementCollection)
                     {
                         newParent = parent;
                         insertIndex = node.IndexInParent();
@@ -361,19 +362,64 @@ namespace GUI.Components
                     }
                 }
 
-                if (newParent != null)
-                {
-                    eca.RemoveFromParent();
-                    eca.SetParent(newParent, insertIndex);
-                }
+
             }
             else // down
             {
-                //var eca = ecas.Last();
-                //if (eca.IndexInParent() == node.Count() - 1)
-                //{
-                //    newParent = node.GetParent();
-                //}
+                eca = ecas.Last();
+                var node = eca;
+                while (newParent == null)
+                {
+                    var parent = node.GetParent();
+                    if (parent == null)
+                    {
+                        return;
+                    }
+
+                    if (node.IndexInParent() == parent.Elements.Count - 1)
+                    {
+                        node = node.GetParent();
+                        continue;
+                    }
+                    else
+                    {
+                        node = parent.Elements[node.IndexInParent() + 1];
+                        while (node.Elements != null && node.Elements.Count > 0)
+                        {
+                            if(node.ElementType == eca.ElementType && node is TriggerElementCollection)
+                            {
+                                newParent = node;
+                                insertIndex = 0;
+                                break;
+                            }
+                            else
+                            {
+                                node = node.Elements.First();
+                            }
+                        }
+
+                        if (node is not TriggerElementCollection && node.ElementType == eca.ElementType)
+                        {
+                            insertIndex = node.IndexInParent();
+                            node = node.GetParent();
+                        }
+                        else if (node is TriggerElementCollection)
+                        {
+                            insertIndex = 0;
+                        }
+                    }
+
+                    if (node.ElementType == eca.ElementType && node is TriggerElementCollection)
+                    {
+                        newParent = node;
+                    }
+                }
+            }
+
+            if (newParent != null)
+            {
+                eca.RemoveFromParent();
+                eca.SetParent(newParent, insertIndex);
             }
 
 
