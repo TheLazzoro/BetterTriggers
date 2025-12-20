@@ -59,7 +59,6 @@
                   Grid.Row="2"
                   Margin="0,35,0,0"
                   AllowDrop="True"
-                  SelectedItemChanged="treeViewTriggers_SelectedItemChanged"
                   Drop="treeViewTriggers_Drop"
                   MouseRightButtonUp="treeViewTriggers_MouseRightButtonUp"
                   ContextMenuOpening="treeViewTriggers_ContextMenuOpening"

@@ -37,8 +37,26 @@ namespace GUI.Components
 
         private TriggerElement selectedElement;
         private TriggerElement selectedElementEnd;
-        private List<TriggerElement> selectedElements = new();
-        private List<TriggerElement> selectedItems = new();
+        private List<TriggerElement> selectedElements
+        {
+            get
+            {
+                if (selectedElementEnd == null || selectedElement == null)
+                    return new List<TriggerElement>();
+
+                if (selectedElementEnd.GetParent() != selectedElement.GetParent())
+                    return new List<TriggerElement>()
+                    {
+                        selectedElementEnd
+                    };
+
+                var items = Project.CurrentProject
+                    .GetTriggerElementsFromExplorerElement(explorerElement)
+                    .Where(x => x.IsSelected_Multi);
+
+                return items.OrderBy(x => x.IndexInParent()).ToList();
+            }
+        }
 
         // attaches to a treeviewitem
         private AdornerLayer adorner;
@@ -160,7 +178,7 @@ namespace GUI.Components
             var triggerElement = treeViewTriggers.SelectedItem as TriggerElement;
             if (triggerElement == null)
             {
-                this.selectedItems = SelectItemsMultiple(null, null);
+                SelectItemsMultiple(null, null);
                 return;
             }
 
@@ -172,7 +190,7 @@ namespace GUI.Components
                 selectedElementEnd = triggerElement;
             }
 
-            this.selectedItems = SelectItemsMultiple(selectedElement, selectedElementEnd);
+            SelectItemsMultiple(selectedElement, selectedElementEnd);
         }
 
         /// <summary>
@@ -288,10 +306,9 @@ namespace GUI.Components
                 return;
 
             var ecas = selectedElements
-                .Select(x => x as ECA)
+                .Select(x => x as TriggerElement)
                 .Where(x => x != null)
-                .Cast<ECA>()
-                .OrderBy(x => x.IndexInParent())
+                .Cast<TriggerElement>()
                 .ToList();
 
             if (ecas.Count == 0)
@@ -307,7 +324,7 @@ namespace GUI.Components
             if (hasDifferentParent)
                 return;
 
-            TriggerElement? newParent = null;
+            TriggerElementCollection? newParent = null;
             TriggerElement? eca = null;
             int insertIndex = 0;
             if (up)
@@ -323,9 +340,9 @@ namespace GUI.Components
                     }
 
 
-                    if (node != eca && eca.ElementType == parent.ElementType && parent is TriggerElementCollection)
+                    if (node != eca && eca.ElementType == parent.ElementType && parent is TriggerElementCollection collection)
                     {
-                        newParent = parent;
+                        newParent = collection;
                         insertIndex = node.IndexInParent();
                     }
                     else if (node.IndexInParent() == 0)
@@ -356,13 +373,14 @@ namespace GUI.Components
                         }
                     }
 
-                    if (node.ElementType == eca.ElementType && node is TriggerElementCollection)
+                    if (node.ElementType == eca.ElementType && node is TriggerElementCollection collection1)
                     {
-                        newParent = node;
+                        newParent = collection1;
                     }
                 }
 
-
+                // insertion must happen in reverse order
+                ecas = ecas.OrderByDescending(x => x.IndexInParent()).ToList();
             }
             else // down
             {
@@ -386,9 +404,9 @@ namespace GUI.Components
                         node = parent.Elements[node.IndexInParent() + 1];
                         while (node.Elements != null && node.Elements.Count > 0)
                         {
-                            if(node.ElementType == eca.ElementType && node is TriggerElementCollection)
+                            if (node.ElementType == eca.ElementType && node is TriggerElementCollection collection)
                             {
-                                newParent = node;
+                                newParent = collection;
                                 insertIndex = 0;
                                 break;
                             }
@@ -409,22 +427,20 @@ namespace GUI.Components
                         }
                     }
 
-                    if (node.ElementType == eca.ElementType && node is TriggerElementCollection)
+                    if (node.ElementType == eca.ElementType && node is TriggerElementCollection collection1)
                     {
-                        newParent = node;
+                        newParent = collection1;
                     }
                 }
-            }
 
-            if (newParent != null)
-            {
-                eca.RemoveFromParent();
-                eca.SetParent(newParent, insertIndex);
+                ecas = ecas.OrderBy(x => x.IndexInParent()).ToList();
             }
 
 
-            //var command = new CommandTriggerElementMove(explorerElement, ecas);
-            //command.Execute();
+            treeViewTriggers.SelectedItemChanged -= TreeViewTriggers_SelectedItemChanged;
+            var command = new CommandTriggerElementMove(explorerElement, ecas, newParent, insertIndex);
+            command.Execute();
+            treeViewTriggers.SelectedItemChanged += TreeViewTriggers_SelectedItemChanged;
         }
 
         private void CreateTriggerElement(TriggerElementType type)
@@ -871,7 +887,7 @@ namespace GUI.Components
                 }
             }
 
-            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElement, triggerElement, parent, insertIndex);
+            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElement, new List<TriggerElement> { triggerElement }, parent, insertIndex);
             command.Execute();
         }
 
@@ -885,6 +901,7 @@ namespace GUI.Components
         public List<TriggerElement> SelectItemsMultiple(TriggerElement startElement, TriggerElement endElement)
         {
             // deselect old items
+            var selectedElements = this.selectedElements;
             for (int i = 0; i < selectedElements.Count; i++)
             {
                 selectedElements[i].IsSelected_Multi = false;
@@ -893,7 +910,6 @@ namespace GUI.Components
                 return null;
 
             // Prepare selection
-            selectedElements = new List<TriggerElement>();
             var startTreeItem = GetTreeViewItemFromTriggerElement(startElement);
             var endTreeItem = GetTreeViewItemFromTriggerElement(endElement);
             var startParent = TreeViewItemHelper.GetTreeItemParent(startTreeItem);
@@ -918,18 +934,11 @@ namespace GUI.Components
 
                 int startIndex = parent.Items.IndexOf(correctedStartElement);
                 int size = parent.Items.IndexOf(correctedEndElement) - parent.Items.IndexOf(correctedStartElement);
+                // select elements
                 for (int i = 0; i <= size; i++)
                 {
-                    selectedElements.Add((TriggerElement)parent.Items[startIndex + i]);
+                    ((TriggerElement)parent.Items[startIndex + i]).IsSelected_Multi = true;
                 }
-            }
-            else
-                selectedElements.Add(endElement);
-
-            // select elements
-            for (int i = 0; i < selectedElements.Count; i++)
-            {
-                selectedElements[i].IsSelected_Multi = true;
             }
 
             return selectedElements;
@@ -1052,9 +1061,9 @@ namespace GUI.Components
                 return;
 
             TriggerElementCollection elementsToDelete = new(selectedElement.ElementType);
-            for (int i = 0; i < selectedItems.Count; i++)
+            for (int i = 0; i < selectedElements.Count; i++)
             {
-                var triggerElement = selectedItems[i];
+                var triggerElement = selectedElements[i];
                 if (triggerElement != null)
                     elementsToDelete.Elements.Add(triggerElement);
             }
@@ -1172,9 +1181,9 @@ namespace GUI.Components
                 return;
 
             TriggerElementCollection triggerElements = new(selected.ElementType);
-            for (int i = 0; i < selectedItems.Count; i++)
+            for (int i = 0; i < selectedElements.Count; i++)
             {
-                var triggerElement = selectedItems[i];
+                var triggerElement = selectedElements[i];
                 if (triggerElement != null)
                     triggerElements.Elements.Add(triggerElement);
             }
