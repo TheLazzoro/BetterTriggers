@@ -252,12 +252,14 @@ namespace BetterTriggers
             var explorerElements = Project.CurrentProject.GetAllExplorerElements();
             for (int i = 0; i < explorerElements.Count; i++)
             {
-                TriggerValidator validator = new TriggerValidator(explorerElements[i]);
+                var explorerElement = explorerElements[i];
+                TriggerValidator validator = new TriggerValidator(explorerElement);
                 int invalidCount = validator.RemoveInvalidReferences();
                 if (invalidCount > 0)
-                    modified.Add(explorerElements[i]);
+                    modified.Add(explorerElement);
 
-                explorerElements[i].Notify();
+                if (explorerElement.ElementType != ExplorerElementEnum.Script)
+                    explorerElement.Notify();
             }
             var variables = Project.CurrentProject.Variables.GetGlobals();
             for (int i = 0; i < variables.Count; i++)
