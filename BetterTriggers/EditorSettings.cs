@@ -55,6 +55,8 @@ namespace BetterTriggers
         public string textEditorFontStyle = "Consolas";
 
         public bool useQuickStart = false;
+        public bool autosave = false;
+        public int autosaveIntervalSec = 60;
 
         public string lastOpenedFileLocation = string.Empty;
         public int selectMapWindowX = 100;

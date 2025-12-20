@@ -35,6 +35,7 @@
                         <RowDefinition Height="26" />
                         <RowDefinition Height="26" />
                         <RowDefinition Height="26" />
+                        <RowDefinition Height="26" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20"/>
@@ -73,6 +74,15 @@
                     <CheckBox x:Name="checkBoxShowGlobalDetail" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}" Click="checkBoxShowGlobalDetail_Click">Detailed Global Variable Info</CheckBox>
 
                     <CheckBox x:Name="checkBoxQuickStart" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}">Use Quick Start (Open Most Recent Project On Start)</CheckBox>
+                    
+                    <CheckBox x:Name="checkBoxAutoSave" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Foreground="{DynamicResource TextBrush2}" Click="checkBoxAutoSave_Click">Autosave</CheckBox>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="2" Grid.ColumnSpan="2" >
+                        <TextBlock x:Name="lblAutosave1" VerticalAlignment="Center">every</TextBlock>
+                        <TextBox x:Name="txtBoxAutoSave" VerticalContentAlignment="Center" Width="50" Margin="10, 2, 10, 2" TextChanged="txtBoxAutoSave_TextChanged" PreviewTextInput="txtBoxAutoSave_PreviewTextInput" />
+                        <TextBlock x:Name="lblAutosave2" VerticalAlignment="Center">seconds</TextBlock>
+                    </StackPanel>
+                        
 
                 </Grid>
             </TabItem>

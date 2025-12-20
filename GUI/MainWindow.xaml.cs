@@ -27,6 +27,7 @@ using GUI.Components.UserReports;
 using GUI.Components.VariableList;
 using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
+using GUI.Extensions;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -34,13 +35,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using War3Net.Build.Info;
-using GUI.Extensions;
 
 namespace GUI
 {
@@ -51,6 +52,7 @@ namespace GUI
         private static MainWindow instance;
         private TriggerExplorer triggerExplorer;
         private bool _downloadUpdateOnClose;
+        private Timer _autosaveTimer = new();
 
         public MainWindow()
         {
@@ -66,6 +68,8 @@ namespace GUI
             rowTriggerExplorer.Width = new GridLength(settings.triggerExplorerWidth);
 
             this.ResetPositionWhenOutOfScreenBounds();
+            UpdateAutosaveSettings();
+
 
             tabViewModel = new TabViewModel();
             tabControl.ItemsSource = tabViewModel.Tabs;
@@ -183,6 +187,29 @@ namespace GUI
         {
             _downloadUpdateOnClose = true;
             this.Close();
+        }
+
+        public void UpdateAutosaveSettings()
+        {
+            EditorSettings settings = EditorSettings.Load();
+            _autosaveTimer.Enabled = settings.autosave;
+            _autosaveTimer.Interval = settings.autosaveIntervalSec * 1000;
+            _autosaveTimer.Elapsed -= autosaveTimer_Elapsed;
+            _autosaveTimer.Elapsed += autosaveTimer_Elapsed;
+        }
+
+        private void autosaveTimer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            var project = Project.CurrentProject;
+            if (project == null) return;
+
+            var settings = EditorSettings.Load();
+            if (!settings.autosave) return;
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                project.Save();
+            });
         }
 
         public void SetKeybindings(Keybindings keybindings)
@@ -402,7 +429,7 @@ namespace GUI
             tabControl.SelectedIndex = tabViewModel.IndexOf(selectedItem);
 
             var settings = EditorSettings.Load();
-            if(settings.navigateActiveExplorerElement && triggerExplorer != null)
+            if (settings.navigateActiveExplorerElement && triggerExplorer != null)
             {
                 triggerExplorer.NavigateToExplorerElement(selectedItem);
             }
@@ -593,6 +620,8 @@ namespace GUI
             settings.Top = this.Top + this.Height / 2 - settings.Height / 2;
             settings.Left = this.Left + this.Width / 2 - settings.Width / 2;
             settings.ShowDialog();
+
+            UpdateAutosaveSettings();
         }
 
         private void NewProject()
@@ -758,7 +787,7 @@ namespace GUI
                 Components.Dialogs.MessageBox dialog = new Components.Dialogs.MessageBox("Error", status.Message);
                 dialog.ShowDialog();
             }
-            else if(status.Status == BuildMapStatusCode.ScriptError && Info.GetLanguage() == ScriptLanguage.Lua)
+            else if (status.Status == BuildMapStatusCode.ScriptError && Info.GetLanguage() == ScriptLanguage.Lua)
             {
                 Components.Dialogs.MessageBox dialog = new Components.Dialogs.MessageBox("Error", status.Message);
                 dialog.ShowDialog();
@@ -842,12 +871,12 @@ namespace GUI
 
             e.Cancel = !doClose;
 
-            if(doClose && _downloadUpdateOnClose)
+            if (doClose && _downloadUpdateOnClose)
             {
                 VersionCheck.DownloadUpdate();
             }
 
-            if(doClose)
+            if (doClose)
             {
                 VersionCheck.WantToDownload -= DownloadUpdate;
             }
@@ -1057,7 +1086,7 @@ namespace GUI
             var selected = tabControl.SelectedItem as TabItemBT;
             var triggerControl = selected.explorerElement.editor as TriggerControl;
 
-            if(triggerControl.IsKeyboardFocusWithin)
+            if (triggerControl.IsKeyboardFocusWithin)
                 triggerControl.EnableDisableECAS();
         }
 

@@ -13,6 +13,7 @@ namespace GUI.Components.Settings
     {
         private EditorSettings settings;
         private string _fontSizePreviousValue;
+        private string _autoSavePreviousValue;
 
         public SettingsWindow()
         {
@@ -35,6 +36,10 @@ namespace GUI.Components.Settings
             checkBoxSingleClickExplorerElements.IsChecked = settings.singleClickExplorerElement;
             checkBoxNavigateActiveExplorerElement.IsChecked = settings.navigateActiveExplorerElement;
             checkBoxQuickStart.IsChecked = settings.useQuickStart;
+            checkBoxAutoSave.IsChecked = settings.autosave;
+            txtBoxAutoSave.Text = settings.autosaveIntervalSec.ToString();
+            UpdateAutoSaveOption();
+
 
             foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
             {
@@ -77,6 +82,8 @@ namespace GUI.Components.Settings
             settings.singleClickExplorerElement = (bool)checkBoxSingleClickExplorerElements.IsChecked;
             settings.navigateActiveExplorerElement = (bool)checkBoxNavigateActiveExplorerElement.IsChecked;
             settings.useQuickStart = (bool)checkBoxQuickStart.IsChecked;
+            settings.autosave = (bool)checkBoxAutoSave.IsChecked;
+            settings.autosaveIntervalSec = int.Parse(txtBoxAutoSave.Text);
 
             EditorSettings.Save(settings);
             this.Close();
@@ -147,9 +154,45 @@ namespace GUI.Components.Settings
             }
         }
 
+
+        private void txtBoxAutoSave_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            bool valid = int.TryParse(txtBoxAutoSave.Text, out int size) && size > 0;
+            if (!valid)
+            {
+                txtBoxAutoSave.Text = _autoSavePreviousValue;
+            }
+            else
+            {
+                _autoSavePreviousValue = txtBoxAutoSave.Text;
+            }
+        }
+
         private void textboxFontSize_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             _fontSizePreviousValue = textboxFontSize.Text;
+        }
+
+        private void txtBoxAutoSave_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            _autoSavePreviousValue = txtBoxAutoSave.Text;
+        }
+
+        private void checkBoxAutoSave_Checked(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void checkBoxAutoSave_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateAutoSaveOption();
+        }
+
+        private void UpdateAutoSaveOption()
+        {
+            txtBoxAutoSave.IsEnabled = (bool)checkBoxAutoSave.IsChecked;
+            lblAutosave1.IsEnabled = (bool)checkBoxAutoSave.IsChecked;
+            lblAutosave2.IsEnabled = (bool)checkBoxAutoSave.IsChecked;
         }
     }
 }
