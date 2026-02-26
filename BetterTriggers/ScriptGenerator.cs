@@ -968,7 +968,10 @@ end
                 script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_ROLL, {c.Roll.ToString("0.000", enUS)}, 0.0){newline}");
                 script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FIELD_OF_VIEW, {c.FieldOfView.ToString("0.000", enUS)}, 0.0){newline}");
                 script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_FARZ, {c.FarClippingPlane.ToString("0.000", enUS)}, 0.0){newline}");
-                script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_NEARZ, {c.NearClippingPlane.ToString("0.000", enUS)}, 0.0){newline}");
+                if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_30)
+                {
+                    script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_NEARZ, {c.NearClippingPlane.ToString("0.000", enUS)}, 0.0){newline}");
+                }
                 if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
                 {
                     script.Append($"{call} CameraSetupSetField({id}, CAMERA_FIELD_LOCAL_PITCH, {c.LocalPitch.ToString("0.000", enUS)}, 0.0){newline}");
