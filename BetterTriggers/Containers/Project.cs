@@ -1173,7 +1173,7 @@ namespace BetterTriggers.Containers
                     if (File.Exists(files[i]))
                     {
                         size = new FileInfo(files[i]).Length;
-                        lastWrite = new FileInfo(files[i]).LastWriteTime;
+                        lastWrite = explorerElement.LastWrite;
                     }
                     else if (Directory.Exists(files[i]))
                     {
