@@ -1,4 +1,5 @@
-﻿using NuGet.Configuration;
+﻿using BetterTriggers.Extensions;
+using NuGet.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,17 +43,9 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public static bool FileExists(string path)
         {
-            if (GameVersion >= WarcraftVersion._1_31)
+            if (GameVersion >= WarcraftVersion._1_30)
             {
-                var file = Casc.GetWar3ModFolder();
-                path = Path.Combine(file.Name, path);
-                return Casc.GetCasc().FileExists(path);
-            }
-            else if( GameVersion >= WarcraftVersion._1_30)
-            {
-                var file = Casc.GetWar3MpqFolder_1_30();
-                path = Path.Combine(file.Name, path);
-                return Casc.GetCasc().FileExists(path);
+                return Casc.GetCasc().FileExistsExt(path);
             }
 
             return mpq.FileExists(path);

@@ -365,6 +365,20 @@ namespace BetterTriggers.WorldEdit
                 unitTypesCustom.TryAdd(unitType.Id, unitType);
                 SetCustomFields(customUnit, unitType.Id, fullMapPath);
             }
+
+            // --- UNIT SKIN DATA --- //
+
+            var skinObjectData = CustomMapData.MPQMap.UnitSkinObjectData;
+            if (skinObjectData == null) return;
+
+            foreach (var baseUnit in skinObjectData.BaseUnits)
+            {
+                SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId), fullMapPath);
+            }
+            foreach (var newUnit in skinObjectData.NewUnits)
+            {
+                SetCustomFields(newUnit, Int32Extensions.ToRawcode(newUnit.NewId), fullMapPath);
+            }
         }
 
         private static void SetCustomFields(SimpleObjectModification modified, string unitId, string fullMapPath)
