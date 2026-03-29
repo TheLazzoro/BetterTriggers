@@ -75,7 +75,7 @@ namespace GUI
                 _viewModel.ExplorerElements.Clear();
                 var map = Map.Open(mapPath);
                 var triggerItems = map.Triggers.TriggerItems;
-                var triggerConverter = new TriggerConverter(mapPath);
+                var triggerConverter = new TriggerConverter(_project, mapPath);
                 var explorerElements = triggerConverter.ConvertAll_NoWrite();
                 txtTotalTriggerItems.Text = "Total items: " + triggerItems.Count;
 

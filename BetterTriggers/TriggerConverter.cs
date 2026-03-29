@@ -43,8 +43,9 @@ namespace BetterTriggers.WorldEdit
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
 
-        public TriggerConverter(string mapPath)
+        public TriggerConverter(Project? project, string mapPath)
         {
+            _project = project;
             this.mapPath = mapPath;
             Load(mapPath);
         }

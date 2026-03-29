@@ -71,7 +71,7 @@ namespace Tests
         {
             var editorSettings = EditorSettings.Load();
             editorSettings.Export_IncludeTriggerData = true;
-            TriggerConverter triggerConverter = new TriggerConverter(mapPath);
+            TriggerConverter triggerConverter = new TriggerConverter(null, mapPath);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapPath));
             projectFile = triggerConverter.Convert(destination);
 

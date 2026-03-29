@@ -124,7 +124,7 @@ namespace GUI.Components.NewProject
         {
             try
             {
-                TriggerConverter converter = new TriggerConverter(mapPath);
+                TriggerConverter converter = new TriggerConverter(null, mapPath);
                 ProjectLocation = converter.Convert(FinalPath);
                 (sender as BackgroundWorker).ReportProgress(100);
             }

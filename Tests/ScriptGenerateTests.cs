@@ -353,7 +353,7 @@ namespace Tests
 
         bool ConvertMap_GenerateScript(string mapDir, bool GenerateAllMapObjectVariables = false)
         {
-            TriggerConverter triggerConverter = new TriggerConverter(mapDir);
+            TriggerConverter triggerConverter = new TriggerConverter(null, mapDir);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
             projectFile = triggerConverter.Convert(destination);
 
