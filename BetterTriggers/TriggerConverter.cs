@@ -558,7 +558,7 @@ namespace BetterTriggers.WorldEdit
             if (triggerCategory == null)
                 return null;
 
-            ExplorerElement folder = new ExplorerElement(ExplorerElementEnum.Folder);
+            ExplorerElement folder = new ExplorerElement(_project, ExplorerElementEnum.Folder);
             return folder;
         }
 
@@ -571,7 +571,7 @@ namespace BetterTriggers.WorldEdit
             else if (variableDefinition.InitialValue != "")
                 initialValue = new Value { value = variableDefinition.InitialValue };
 
-            ExplorerElement variable = new ExplorerElement(ExplorerElementEnum.GlobalVariable)
+            ExplorerElement variable = new ExplorerElement(_project, ExplorerElementEnum.GlobalVariable)
             {
                 variable = new Variable()
                 {
@@ -589,7 +589,7 @@ namespace BetterTriggers.WorldEdit
 
         private ExplorerElement CreateScript(TriggerDefinition triggerDefinition, string script)
         {
-            ExplorerElement element = new ExplorerElement(ExplorerElementEnum.Script);
+            ExplorerElement element = new ExplorerElement(_project, ExplorerElementEnum.Script);
             element.IsEnabled = triggerDefinition.IsEnabled;
             element.script = script;
 
@@ -601,7 +601,7 @@ namespace BetterTriggers.WorldEdit
             if (triggerDefinition == null)
                 return null;
 
-            ExplorerElement explorerElementTrigger = new ExplorerElement(ExplorerElementEnum.Trigger);
+            ExplorerElement explorerElementTrigger = new ExplorerElement(_project, ExplorerElementEnum.Trigger);
             Trigger trigger = new Trigger(_project);
             explorerElementTrigger.trigger = trigger;
             explorerElementTrigger.IsEnabled = triggerDefinition.IsEnabled;

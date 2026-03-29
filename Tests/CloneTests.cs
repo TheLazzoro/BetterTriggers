@@ -14,7 +14,7 @@ namespace Tests
     {
         private ScriptLanguage language = ScriptLanguage.Jass;
         private string name = "TestProject";
-        private string directory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Temp");
+        private string directory = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
         Project project;
 
         [TestInitialize]
@@ -72,7 +72,7 @@ namespace Tests
             // Arrange
             var projectPath = Project.Create(language, name, directory);
             project = Project.Load(projectPath);
-            var explorerElement = new ExplorerElement(ExplorerElementEnum.ActionDefinition);
+            var explorerElement = new ExplorerElement(project, ExplorerElementEnum.ActionDefinition);
             var actionDefinition = new ActionDefinition(project, explorerElement);
             explorerElement.actionDefinition = actionDefinition;
             var parameterDef = new ParameterDefinition(project);

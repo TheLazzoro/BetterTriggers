@@ -1,18 +1,10 @@
-﻿using BetterTriggers;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NuGet.Packaging;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using War3Net.Build;
-using War3Net.Build.Script;
 
 namespace Tests
 {
@@ -44,7 +36,7 @@ namespace Tests
             project = Project.Load(projectFilePath);
             var map = Map.Open(mapPath);
 
-            TriggerConverter converter = new TriggerConverter(mapPath);
+            TriggerConverter converter = new TriggerConverter(project, mapPath, null);
             converter.ImportIntoCurrentProject(map.Triggers.TriggerItems);
 
             Builder mapBuilder = new Builder(project);

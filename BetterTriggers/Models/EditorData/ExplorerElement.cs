@@ -69,11 +69,15 @@ namespace BetterTriggers.Models.EditorData
 
 
         /// <summary>Reserved for copy-pasting purposes.</summary>
-        public ExplorerElement() { }
+        public ExplorerElement(Project project)
+        {
+            Project = project;
+        }
 
         /// <summary>Reserved for TriggerConverter and tests.</summary>
-        public ExplorerElement(ExplorerElementEnum type)
+        public ExplorerElement(Project project, ExplorerElementEnum type)
         {
+            Project = project;
             ElementType = type;
         }
 
@@ -465,7 +469,7 @@ namespace BetterTriggers.Models.EditorData
 
         public ExplorerElement Clone()
         {
-            ExplorerElement newElement = new ExplorerElement();
+            ExplorerElement newElement = new ExplorerElement(Project);
             newElement.path = new string(this.path); // we need this path in paste command.
             newElement.Parent = this.Parent;
             newElement.IsInitiallyOn = this.IsInitiallyOn;

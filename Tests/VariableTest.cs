@@ -1,10 +1,8 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Threading;
 using War3Net.Build.Info;
 
 namespace Tests
@@ -104,7 +102,7 @@ namespace Tests
         [TestMethod]
         public void CloneLocalVariable()
         {
-            var explorerElement = new ExplorerElement(ExplorerElementEnum.Trigger);
+            var explorerElement = new ExplorerElement(project, ExplorerElementEnum.Trigger);
             explorerElement.trigger = new Trigger(project);
             var variable = project.Variables.CreateLocalVariable(explorerElement, 0);
 

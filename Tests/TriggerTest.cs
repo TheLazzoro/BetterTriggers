@@ -1,12 +1,8 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Threading;
-using System.Windows;
 using War3Net.Build.Info;
 
 namespace Tests

@@ -82,7 +82,7 @@ namespace GUI
                 this.treeItemExplorerElements = new Dictionary<string, ImportTriggerItem>();
 
                 // First create UI items and filter those we don't need.
-                var explorerRoot = new ExplorerElement
+                var explorerRoot = new ExplorerElement(_project)
                 {
                     path = mapPath
                 };
