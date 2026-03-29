@@ -1,12 +1,12 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.EditorData.TriggerEditor;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandFunctionDefinitionModifyType : ICommand
     {
+        Project _project;
         string commandName = "Modify Function Definition Type";
         ExplorerElement explorerElement;
         FunctionDefinition functionDef;
@@ -18,16 +18,17 @@ namespace BetterTriggers.Commands
         List<Parameter> oldParameters = new List<Parameter>();
         List<Parameter> newParameters = new List<Parameter>();
 
-        public CommandFunctionDefinitionModifyType(ExplorerElement explorerElement, FunctionDefinition functionDef, War3Type selectedType)
+        public CommandFunctionDefinitionModifyType(Project project, ExplorerElement explorerElement, FunctionDefinition functionDef, War3Type selectedType)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.functionDef = functionDef;
             this.selectedType = selectedType;
             this.previousType = functionDef.ReturnType.War3Type;
-            this.refCollection = new RefCollection(explorerElement);
+            this.refCollection = new RefCollection(project, explorerElement);
 
             // A way to reset all return statements
-            var ecas = Project.CurrentProject.GetTriggerElementsFromFunctionDefinition(functionDef);
+            var ecas = _project.GetTriggerElementsFromFunctionDefinition(functionDef);
             for (int i = 0; i < ecas.Count; i++)
             {
                 var eca = ecas[i];
@@ -50,8 +51,8 @@ namespace BetterTriggers.Commands
                 var returnStatement = returnStatements[i];
                 returnStatement.function.parameters[0] = newParameters[i];
             }
-            Project.CurrentProject.References.UpdateReferences(functionDef);
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.References.UpdateReferences(functionDef);
+            _project.CommandManager.AddCommand(this);
             explorerElement.InvokeChange();
         }
 
@@ -65,7 +66,7 @@ namespace BetterTriggers.Commands
                 var returnStatement = returnStatements[i];
                 returnStatement.function.parameters[0] = newParameters[i];
             }
-            Project.CurrentProject.References.UpdateReferences(functionDef);
+            _project.References.UpdateReferences(functionDef);
             explorerElement.InvokeChange();
         }
 
@@ -79,7 +80,7 @@ namespace BetterTriggers.Commands
                 var returnStatement = returnStatements[i];
                 returnStatement.function.parameters[0] = oldParameters[i];
             }
-            Project.CurrentProject.References.UpdateReferences(functionDef);
+            _project.References.UpdateReferences(functionDef);
             explorerElement.InvokeChange();
         }
 

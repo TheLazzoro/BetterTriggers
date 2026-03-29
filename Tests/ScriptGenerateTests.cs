@@ -18,6 +18,7 @@ namespace Tests
         static string projectFile;
         static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
         static string failedMsg = "Script generate failed. Project folder kept for inspection.";
+        Project _project;
         bool success;
 
         [ClassInitialize]
@@ -41,7 +42,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            _project.Close();
             string projectDir = Path.GetDirectoryName(projectFile);
             if (success && Directory.Exists(projectDir))
                 Directory.Delete(projectDir, true);
@@ -323,9 +324,9 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
-            CustomMapData.Load(mapDir);
-            Project.Load(projectDir);
-            Builder builder = new();
+            CustomMapData.Load(null, mapDir);
+            _project = Project.Load(projectDir);
+            Builder builder = new(_project);
             bool success;
             string script;
             (success, script) = builder.GenerateScript();
@@ -338,9 +339,9 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/Frames_Map.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/map/Map.w3x");
-            CustomMapData.Load(mapDir);
-            Project.Load(projectDir);
-            Builder builder = new();
+            CustomMapData.Load(null, mapDir);
+            _project = Project.Load(projectDir);
+            Builder builder = new(_project);
             bool success;
             string script;
             (success, script) = builder.GenerateScript();
@@ -362,15 +363,15 @@ namespace Tests
             war3project.GenerateAllObjectVariables = GenerateAllMapObjectVariables;
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
-            Project.Load(projectFile);
-            CustomMapData.Load(mapDir);
+            _project = Project.Load(projectFile);
+            CustomMapData.Load(_project, mapDir);
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
             string script;
-            Builder builder = new();
+            Builder builder = new(_project);
             (success, script) = builder.GenerateScript();
 
             // Just for the sake of it
-            CustomMapData.ReloadMapData();
+            CustomMapData.ReloadMapData(_project);
 
             return success;
         }

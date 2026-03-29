@@ -1,16 +1,10 @@
 ﻿using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using BetterTriggers.Utility;
-using Newtonsoft.Json;
-using System.IO;
-using BetterTriggers.Commands;
 using BetterTriggers.WorldEdit;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BetterTriggers.Containers
 {
@@ -18,6 +12,12 @@ namespace BetterTriggers.Containers
     {
         private HashSet<ExplorerElement> triggerElementContainer = new HashSet<ExplorerElement>();
         private ExplorerElement lastCreated;
+        private Project _project;
+
+        public Triggers(Project project)
+        {
+            _project = project;
+        }
 
         public void AddTrigger(ExplorerElement trigger)
         {
@@ -108,8 +108,7 @@ namespace BetterTriggers.Containers
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            var project = Project.CurrentProject;
-            string directory = project.currentSelectedElement;
+            string directory = _project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -117,7 +116,7 @@ namespace BetterTriggers.Containers
 
             Trigger_Saveable trigger = new Trigger_Saveable()
             {
-                Id = project.GenerateId(),
+                Id = _project.GenerateId(),
             };
             string json = JsonConvert.SerializeObject(trigger);
 

@@ -40,17 +40,18 @@ namespace BetterTriggers.TestMap
 
     public class Builder
     {
+        private Project _project;
         private ScriptLanguage _language;
 
-        public Builder()
+        public Builder(Project project)
         {
-            War3Project project = Project.CurrentProject.war3project;
-            _language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
+            _project = project;
+            _language = project.war3project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
         }
 
         public (bool, string) GenerateScript()
         {
-            War3Project project = Project.CurrentProject.war3project;
+            War3Project project = _project.war3project;
             if (project == null)
                 return (false, null);
 
@@ -84,7 +85,7 @@ namespace BetterTriggers.TestMap
                 }
             }
 
-            string mapDir = Project.CurrentProject.GetFullMapPath();
+            string mapDir = _project.GetFullMapPath();
             var map = Map.Open(mapDir);
 
             /// We overwrite the loaded doodads with those modified by BT.
@@ -107,7 +108,7 @@ namespace BetterTriggers.TestMap
 
             if (settings.Export_IncludeTriggerData && isMapLaunchTest == false)
             {
-                var bt2we = new BT2WE(map);
+                var bt2we = new BT2WE(_project, map);
                 bt2we.Convert();
             }
 
@@ -144,7 +145,7 @@ namespace BetterTriggers.TestMap
                 BlockSize = blockSize,
             };
 
-            string src = Path.GetDirectoryName(Project.CurrentProject.src);
+            string src = Path.GetDirectoryName(_project.src);
             if (destinationDir == null)
                 archivePath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
             else

@@ -1,23 +1,15 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using War3Net.Build;
-using War3Net.Build.Environment;
-using War3Net.Build.Extensions;
-using War3Net.Build.Object;
 using War3Net.Build.Widget;
-using War3Net.IO.Mpq;
 
 namespace BetterTriggers
 {
@@ -31,6 +23,8 @@ namespace BetterTriggers
         private const int THRESHOLD_BEFORE_SAVING_MS = 50;
         private static bool isVanillaWESaving;
 
+        private static Project? _project;
+
         /// <summary>
         /// Method used for detecting the vanilla WE saving the map.
         /// </summary>
@@ -39,7 +33,7 @@ namespace BetterTriggers
             // this try-block is only here because of the TriggerConverter.
             try
             {
-                var mapPath = Project.CurrentProject.GetFullMapPath();
+                var mapPath = _project.GetFullMapPath();
                 if (e.Name == Path.GetFileName(mapPath) + "Temp")
                 {
                     isVanillaWESaving = true;
@@ -62,7 +56,7 @@ namespace BetterTriggers
             {
                 if (!isVanillaWESaving)
                 {
-                    string mapPath = Project.CurrentProject.GetFullMapPath();
+                    string mapPath = _project.GetFullMapPath();
                     bool fileIsInMap = e.FullPath.StartsWith(mapPath);
                     if (fileIsInMap)
                     {
@@ -94,11 +88,11 @@ namespace BetterTriggers
             ThresholdBeforeReloadingTimer.Stop();
         }
 
-        public static bool IsMapSaving(string fullMapPath = null)
+        public static bool IsMapSaving(Project project, string fullMapPath = null)
         {
             if (string.IsNullOrEmpty(fullMapPath))
             {
-                fullMapPath = Project.CurrentProject.GetFullMapPath();
+                fullMapPath = project.GetFullMapPath();
             }
 
             if (Directory.Exists(fullMapPath + "Temp"))
@@ -112,14 +106,15 @@ namespace BetterTriggers
         }
 
 
-        public static void Load(string fullMapPath = null, bool isFilesystemWatcherEnabled = true)
+        public static void Load(Project? project, string fullMapPath = null, bool isFilesystemWatcherEnabled = true)
         {
+            _project = project;
             if (string.IsNullOrEmpty(fullMapPath))
             {
-                fullMapPath = Project.CurrentProject.GetFullMapPath();
+                fullMapPath = project.GetFullMapPath();
             }
 
-            while (IsMapSaving(fullMapPath))
+            while (IsMapSaving(project, fullMapPath))
             {
                 Thread.Sleep(1000);
             }
@@ -167,7 +162,7 @@ namespace BetterTriggers
         /// Also checks for ID collisions.
         /// </summary>
         /// <returns>A list of modified triggers.</returns>
-        public static List<ExplorerElement> ReloadMapData()
+        public static List<ExplorerElement> ReloadMapData(Project project)
         {
             // Check for ID collisions
             List<Tuple<ExplorerElement, ExplorerElement>> idCollision = new();
@@ -177,11 +172,11 @@ namespace BetterTriggers
             List<ExplorerElement> checkedConditionDefs = new List<ExplorerElement>();
             List<ExplorerElement> checkedFunctionDefs = new List<ExplorerElement>();
 
-            var triggers = Project.CurrentProject.Triggers.GetAll();
-            var variables = Project.CurrentProject.Variables.GetGlobals();
-            var actionsDefs = Project.CurrentProject.ActionDefinitions.GetAll();
-            var conditionDefs = Project.CurrentProject.ConditionDefinitions.GetAll();
-            var functionDefs = Project.CurrentProject.FunctionDefinitions.GetAll();
+            var triggers = project.Triggers.GetAll();
+            var variables = project.Variables.GetGlobals();
+            var actionsDefs = project.ActionDefinitions.GetAll();
+            var conditionDefs = project.ConditionDefinitions.GetAll();
+            var functionDefs = project.FunctionDefinitions.GetAll();
             triggers.ForEach(t =>
             {
                 checkedTriggers.ForEach(check =>
@@ -238,18 +233,18 @@ namespace BetterTriggers
                 throw new IdCollisionException(idCollision);
             }
 
-            Project.CurrentProject.CommandManager.Reset();
-            CustomMapData.Load();
-            var changed = CustomMapData.RemoveInvalidReferences();
+            project.CommandManager.Reset();
+            CustomMapData.Load(project);
+            var changed = CustomMapData.RemoveInvalidReferences(project);
             changed.ForEach(trig => trig.AddToUnsaved());
 
             return changed;
         }
 
-        private static List<ExplorerElement> RemoveInvalidReferences()
+        private static List<ExplorerElement> RemoveInvalidReferences(Project project)
         {
             List<ExplorerElement> modified = new List<ExplorerElement>();
-            var explorerElements = Project.CurrentProject.GetAllExplorerElements();
+            var explorerElements = project.GetAllExplorerElements();
             for (int i = 0; i < explorerElements.Count; i++)
             {
                 var explorerElement = explorerElements[i];
@@ -261,10 +256,10 @@ namespace BetterTriggers
                 if (explorerElement.ElementType != ExplorerElementEnum.Script)
                     explorerElement.Notify();
             }
-            var variables = Project.CurrentProject.Variables.GetGlobals();
+            var variables = project.Variables.GetGlobals();
             for (int i = 0; i < variables.Count; i++)
             {
-                bool wasRemoved = Project.CurrentProject.Variables.RemoveInvalidReference(variables[i]);
+                bool wasRemoved = project.Variables.RemoveInvalidReference(variables[i]);
                 if (wasRemoved)
                     modified.Add(variables[i]);
             }

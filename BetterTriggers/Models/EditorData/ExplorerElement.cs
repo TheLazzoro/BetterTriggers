@@ -42,7 +42,7 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public bool HasUnsavedChanges => Project.CurrentProject.UnsavedFiles.Contains(this);
+        public bool HasUnsavedChanges => _project.UnsavedFiles.Contains(this);
 
         public bool ShouldRefreshUIElements { get; set; } // hack. I should structure my code better, but I'm tired of this project now.
         public event Action OnReload;
@@ -65,6 +65,8 @@ namespace BetterTriggers.Models.EditorData
 
         public UserControl editor;
 
+        private Project _project { get; }
+
 
         /// <summary>Reserved for copy-pasting purposes.</summary>
         public ExplorerElement() { }
@@ -81,8 +83,9 @@ namespace BetterTriggers.Models.EditorData
         /// <param name="path"></param>
         /// <param name="explicitType">Only used when creating root on init. hack...</param>
         /// <exception cref="Exception"></exception>
-        public ExplorerElement(string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
+        public ExplorerElement(Project project, string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
         {
+            _project = project;
             this.path = path;
             string fileContent;
 
@@ -103,15 +106,15 @@ namespace BetterTriggers.Models.EditorData
                         var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(fileContent);
                         trigger = TriggerSerializer.Deserialize(savedTrigger);
                         StoreLocalVariables();
-                        Project.CurrentProject.Triggers.AddTrigger(this);
+                        _project.Triggers.AddTrigger(this);
                         break;
 
                     case ".j":
                     case ".lua":
                         ElementType = ExplorerElementEnum.Script;
                         CategoryStr = TriggerCategory.TC_SCRIPT;
-                        this.script = Project.CurrentProject.Scripts.LoadFromFile(path);
-                        Project.CurrentProject.Scripts.AddScript(this);
+                        this.script = _project.Scripts.LoadFromFile(path);
+                        _project.Scripts.AddScript(this);
                         break;
 
                     case ".var":
@@ -122,7 +125,7 @@ namespace BetterTriggers.Models.EditorData
                         var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(fileContent);
                         variable = TriggerSerializer.DeserializeVariable(savedVariable);
                         variable.PropertyChanged += Variable_PropertyChanged; ;
-                        Project.CurrentProject.Variables.AddVariable(this);
+                        _project.Variables.AddVariable(this);
                         variable.Name = Path.GetFileNameWithoutExtension(GetPath());
                         SuffixVisibility = editorSettings.globalSuffixVisibility ? Visibility.Visible : Visibility.Collapsed;
                         UpdateVariableDisplayName();
@@ -135,7 +138,7 @@ namespace BetterTriggers.Models.EditorData
                         var savedActionDef = JsonConvert.DeserializeObject<ActionDefinition_Saveable>(fileContent);
                         actionDefinition = TriggerSerializer.DeserializeActionDefinition(this, savedActionDef);
                         StoreLocalVariables();
-                        Project.CurrentProject.ActionDefinitions.Add(this);
+                        _project.ActionDefinitions.Add(this);
                         break;
 
                     case ".cond":
@@ -145,7 +148,7 @@ namespace BetterTriggers.Models.EditorData
                         var savedConditionDef = JsonConvert.DeserializeObject<ConditionDefinition_Saveable>(fileContent);
                         conditionDefinition = TriggerSerializer.DeserializeConditionDefinition(this, savedConditionDef);
                         StoreLocalVariables();
-                        Project.CurrentProject.ConditionDefinitions.Add(this);
+                        _project.ConditionDefinitions.Add(this);
                         break;
 
                     case ".func":
@@ -155,7 +158,7 @@ namespace BetterTriggers.Models.EditorData
                         var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
                         functionDefinition = TriggerSerializer.DeserializeFunctionDefinition(this, savedFunctionDef);
                         StoreLocalVariables();
-                        Project.CurrentProject.FunctionDefinitions.Add(this);
+                        _project.FunctionDefinitions.Add(this);
                         break;
 
                     default:
@@ -167,7 +170,6 @@ namespace BetterTriggers.Models.EditorData
 
             if (explicitType == ExplorerElementEnum.Root)
             {
-                var project = Project.CurrentProject;
                 DisplayText = Path.GetFileNameWithoutExtension(project.war3project.Name);
                 ElementType = ExplorerElementEnum.Root;
                 CategoryStr = TriggerCategory.TC_MAP;
@@ -310,7 +312,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void AddToUnsaved()
         {
-            var project = Project.CurrentProject;
+            var project = _project;
             if (project.IsLoading)
                 return;
 
@@ -320,10 +322,10 @@ namespace BetterTriggers.Models.EditorData
 
         public void RemoveFromUnsaved(bool recursive = false)
         {
-            if (Project.CurrentProject == null)
+            if (_project == null)
                 return;
 
-            Project.CurrentProject.UnsavedFiles.RemoveFromUnsaved(this);
+            _project.UnsavedFiles.RemoveFromUnsaved(this);
             if (recursive && ExplorerElements.Count > 0)
             {
                 for (int i = 0; i < ExplorerElements.Count; i++)
@@ -572,7 +574,7 @@ namespace BetterTriggers.Models.EditorData
                 return;
             }
 
-            var project = Project.CurrentProject;
+            var project = _project;
             string oldPath = GetPath();
             string formattedName = string.Empty;
 
@@ -633,7 +635,7 @@ namespace BetterTriggers.Models.EditorData
         {
             if (ElementType == ExplorerElementEnum.Script)
             {
-                this.script = Project.CurrentProject.Scripts.LoadFromFile(GetPath());
+                this.script = _project.Scripts.LoadFromFile(GetPath());
                 RemoveFromUnsaved();
                 OnSaved?.Invoke();
             }
@@ -702,15 +704,15 @@ namespace BetterTriggers.Models.EditorData
             switch (ElementType)
             {
                 case ExplorerElementEnum.GlobalVariable:
-                    return Project.CurrentProject.References.GetReferrers(variable);
+                    return _project.References.GetReferrers(variable);
                 case ExplorerElementEnum.Trigger:
-                    return Project.CurrentProject.References.GetReferrers(trigger);
+                    return _project.References.GetReferrers(trigger);
                 case ExplorerElementEnum.ActionDefinition:
-                    return Project.CurrentProject.References.GetReferrers(actionDefinition);
+                    return _project.References.GetReferrers(actionDefinition);
                 case ExplorerElementEnum.ConditionDefinition:
-                    return Project.CurrentProject.References.GetReferrers(conditionDefinition);
+                    return _project.References.GetReferrers(conditionDefinition);
                 case ExplorerElementEnum.FunctionDefinition:
-                    return Project.CurrentProject.References.GetReferrers(functionDefinition);
+                    return _project.References.GetReferrers(functionDefinition);
                 case ExplorerElementEnum.Folder:
                     return ExplorerElements.SelectMany(el => el.GetReferrers()).ToList();
                 default:
@@ -720,7 +722,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void StoreLocalVariables()
         {
-            var variables = Project.CurrentProject.Variables;
+            var variables = _project.Variables;
             var localVariables = GetLocalVariables();
             if (localVariables != null)
             {
@@ -734,7 +736,7 @@ namespace BetterTriggers.Models.EditorData
 
         private void RemoveLocalVariables()
         {
-            var variables = Project.CurrentProject.Variables;
+            var variables = _project.Variables;
             var localVariables = GetLocalVariables();
             if (localVariables != null)
             {

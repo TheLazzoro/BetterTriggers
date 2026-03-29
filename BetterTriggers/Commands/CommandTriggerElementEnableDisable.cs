@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementEnableDisable : ICommand
     {
+        Project _project;
         string commandName = "Change Enable Trigger Element";
         ExplorerElement _explorerElement;
         List<ECA> _ecas;
 
-        public CommandTriggerElementEnableDisable(ExplorerElement explorerElement, List<ECA> ecas)
+        public CommandTriggerElementEnableDisable(Project project, ExplorerElement explorerElement, List<ECA> ecas)
         {
+            _project = project;
             _explorerElement = explorerElement;
             _ecas = ecas;
         }
@@ -25,7 +24,7 @@ namespace BetterTriggers.Commands
             {
                 eca.IsEnabled = !eca.IsEnabled;
             }
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
             _explorerElement.InvokeChange();
         }
 

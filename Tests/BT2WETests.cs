@@ -81,11 +81,11 @@ namespace Tests
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
             var project = Project.Load(projectFile);
-            CustomMapData.Load(mapPath);
-            CustomMapData.ReloadMapData();
+            CustomMapData.Load(project, mapPath);
+            CustomMapData.ReloadMapData(project);
 
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
-            Builder builder = new();
+            Builder builder = new(project);
             builder.BuildMap();
 
             // yes, we loop. There's one file, but I'm lazy and don't want to think about the file name right now.
@@ -104,7 +104,7 @@ namespace Tests
             GC.WaitForPendingFinalizers();
             GC.Collect();
 
-            Project.Close();
+            project.Close();
         }
     }
 }

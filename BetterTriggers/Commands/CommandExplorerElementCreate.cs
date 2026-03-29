@@ -1,19 +1,20 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
-using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandExplorerElementCreate : ICommand
     {
+        Project _project;
         string commandName = "Create Explorer Element";
         ExplorerElement parent;
         ExplorerElement createdElement;
         int insertIndex;
 
-        public CommandExplorerElementCreate(ExplorerElement createdElement, ExplorerElement parent, int insertIndex)
+        public CommandExplorerElementCreate(Project project, ExplorerElement createdElement, ExplorerElement parent, int insertIndex)
         {
+            _project = project;
             this.createdElement = createdElement;
             this.parent = parent;
             this.insertIndex = insertIndex;
@@ -24,17 +25,16 @@ namespace BetterTriggers.Commands
             createdElement.SetParent(parent, insertIndex);
             createdElement.IsSelected = true;
 
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
         }
 
         public void Redo()
         {
             createdElement.SetParent(parent, insertIndex);
 
-            var project = Project.CurrentProject;
-            project.EnableFileEvents(false);
-            project.RecurseCreateElementsWithContent(createdElement);
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(false);
+            _project.RecurseCreateElementsWithContent(createdElement);
+            _project.EnableFileEvents(true);
             createdElement.IsSelected = true;
         }
 
@@ -42,9 +42,9 @@ namespace BetterTriggers.Commands
         {
             createdElement.RemoveFromParent();
 
-            Project.CurrentProject.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
             FileSystemUtil.Delete(createdElement.GetPath());
-            Project.CurrentProject.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
             createdElement.InvokeDelete();
         }
 

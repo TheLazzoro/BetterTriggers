@@ -32,11 +32,13 @@ namespace GUI
 
         private UserControl control;
         private ImportTriggersViewModel _viewModel;
+        private Project _project;
 
-        public ImportTriggersWindow()
+        public ImportTriggersWindow(Project project)
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+            _project = project;
             _viewModel = new();
             DataContext = _viewModel;
             EditorSettings settings = EditorSettings.Load();
@@ -206,7 +208,7 @@ namespace GUI
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            TriggerConverter triggerConverter = new TriggerConverter(mapPath, Project.CurrentProject.GetFullMapPath());
+            TriggerConverter triggerConverter = new TriggerConverter(_project, mapPath, _project.GetFullMapPath());
             try
             {
                 triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;

@@ -1,8 +1,6 @@
 ﻿using BetterTriggers.Models.EditorData;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using System.IO;
 using System.Threading;
 
@@ -11,6 +9,12 @@ namespace BetterTriggers.Containers
     public class Scripts
     {
         private HashSet<ExplorerElement> scriptContainer = new HashSet<ExplorerElement>();
+        private Project _project;
+
+        public Scripts(Project project)
+        {
+            _project = project;
+        }
 
         public void AddScript(ExplorerElement script)
         {
@@ -52,7 +56,7 @@ namespace BetterTriggers.Containers
             string path = script.GetPath();
             string folder = Path.GetDirectoryName(path);
             string filename = Path.GetFileNameWithoutExtension(path);
-            string extension = Project.CurrentProject.war3project.Language == "lua" ? ".lua" : ".j";
+            string extension = _project.war3project.Language == "lua" ? ".lua" : ".j";
             int i = 0;
             bool exists = true;
             while (exists)
@@ -72,7 +76,7 @@ namespace BetterTriggers.Containers
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            string directory = Project.CurrentProject.currentSelectedElement;
+            string directory = _project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -91,7 +95,7 @@ namespace BetterTriggers.Containers
                 i++;
             }
 
-            string extension = Project.CurrentProject.war3project.Language == "lua" ? ".lua" : ".j";
+            string extension = _project.war3project.Language == "lua" ? ".lua" : ".j";
             string fullPath = Path.Combine(directory, name + extension);
             File.WriteAllText(fullPath, "");
 

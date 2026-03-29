@@ -1,11 +1,11 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementCreate : ICommand
     {
+        Project _project;
         string commandName = "Create Trigger Element";
         ExplorerElement _explorerElement;
         TriggerElement triggerElement;
@@ -13,23 +13,23 @@ namespace BetterTriggers.Commands
         int insertIndex = 0;
         RefCollection? refCollection;
 
-        public CommandTriggerElementCreate(ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElement parent, int insertIndex)
+        public CommandTriggerElementCreate(Project project, ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElement parent, int insertIndex)
         {
+            _project = project;
             _explorerElement = explorerElement;
             this.triggerElement = triggerElement;
             this.parent = parent;
             this.insertIndex = insertIndex;
             if (triggerElement is ParameterDefinition)
             {
-                refCollection = new RefCollection(explorerElement);
+                refCollection = new RefCollection(project, explorerElement);
             }
         }
 
         public void Execute()
         {
-            var project = Project.CurrentProject;
             triggerElement.SetParent(parent, insertIndex);
-            project.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
             if (refCollection != null)
             {
                 refCollection.ResetParameters();

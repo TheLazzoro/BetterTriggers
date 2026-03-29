@@ -25,23 +25,25 @@ namespace GUI.Components.BuildMap
 {
     public partial class BuildMapWindow : Window
     {
+        private Project _project;
         private Thread _thread;
         private Exception _error;
         private event Action _finished;
 
         private BuildMapViewModel _viewModel;
 
-        public BuildMapWindow()
+        public BuildMapWindow(Project project)
         {
             Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+
+            _project = project;
 
             _viewModel = new BuildMapViewModel();
             DataContext = _viewModel;
 
             var settings = EditorSettings.Load();
-            War3Project project = Project.CurrentProject.war3project;
-            var language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
+            var language = project.war3project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
             checkBoxRemoveListfile.IsChecked = settings.Export_RemoveListfile;
             checkBoxTriggerData.IsChecked = settings.Export_RemoveTriggerData;
             checkBoxIncludeTriggerData.IsChecked = settings.Export_IncludeTriggerData;
@@ -105,7 +107,7 @@ namespace GUI.Components.BuildMap
 
             try
             {
-                Builder builder = new Builder();
+                Builder builder = new Builder(_project);
                 var status = builder.BuildMap(includeMPQSettings: true);
                 if(status.Status == BuildMapStatusCode.ScriptError)
                 {

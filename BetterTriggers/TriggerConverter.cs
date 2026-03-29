@@ -21,6 +21,7 @@ namespace BetterTriggers.WorldEdit
     {
         public event Action<string> OnExplorerElementImported;
 
+        private Project? _project;
         private string mapPath;
         private string mapPathProjectToImportInto;
         private MapTriggers triggers;
@@ -48,8 +49,9 @@ namespace BetterTriggers.WorldEdit
             Load(mapPath);
         }
 
-        public TriggerConverter(string mapPath, string mapPathProjectToImportInto)
+        public TriggerConverter(Project project, string mapPath, string mapPathProjectToImportInto)
         {
+            _project = project;
             this.mapPath = mapPath;
             this.mapPathProjectToImportInto = mapPathProjectToImportInto;
             Load(mapPath);
@@ -57,7 +59,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.Load(mapPath, false);
+            CustomMapData.Load(_project, mapPath, false);
 
             var map = CustomMapData.MPQMap;
             //var map = Map.Open(mapPath);
@@ -143,7 +145,7 @@ namespace BetterTriggers.WorldEdit
         /// <exception cref="Exception"></exception>
         public void ImportIntoCurrentProject(List<TriggerItem> itemsToImport)
         {
-            if (Project.CurrentProject == null)
+            if (_project == null)
             {
                 throw new Exception("Cannot import when no project is open.");
             }
@@ -158,8 +160,7 @@ namespace BetterTriggers.WorldEdit
         public void WriteConvertedTriggers(List<ExplorerElement> elements)
         {
             // Write to disk
-            var project = Project.CurrentProject;
-            project.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
             for (int i = 0; i < elements.Count; i++)
             {
                 var element = elements[i];
@@ -171,21 +172,21 @@ namespace BetterTriggers.WorldEdit
                     if (!Directory.Exists(folder))
                     {
                         Directory.CreateDirectory(folder);
-                        project.OnCreateElement(folder, false); // We manually create UI elements
+                        _project.OnCreateElement(folder, false); // We manually create UI elements
                         OnExplorerElementImported?.Invoke(folder);
                     }
                     element.Save();
                 }
                 string path = element.GetPath();
-                project.OnCreateElement(path, false); // We manually create UI elements
+                _project.OnCreateElement(path, false); // We manually create UI elements
                 OnExplorerElementImported?.Invoke(path);
             }
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
 
-            CustomMapData.Load(mapPathProjectToImportInto);
+            CustomMapData.Load(_project, mapPathProjectToImportInto);
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
-                CustomMapData.ReloadMapData();
+                CustomMapData.ReloadMapData(_project);
             });
         }
 
@@ -324,13 +325,12 @@ namespace BetterTriggers.WorldEdit
 
         private List<ExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
         {
-            var project = Project.CurrentProject;
-            if (project == null)
+            if (_project == null)
             {
                 throw new Exception("Cannot import when no project is active.");
             }
 
-            var root = project.GetRoot();
+            var root = _project.GetRoot();
             string targetDir = FileSystemUtil.FormatFileOrDirectoryName(Path.Combine(root.GetPath(), mapInfo.MapName + "_Imported"));
             if (!Directory.Exists(targetDir))
             {
@@ -354,7 +354,7 @@ namespace BetterTriggers.WorldEdit
                 triggerElementsToImport.Add(explorerElement);
             }
 
-            ResolveIdCollisions(project, triggerElementsToImport);
+            ResolveIdCollisions(_project, triggerElementsToImport);
 
             return triggerElementsToImport;
         }

@@ -16,8 +16,9 @@ namespace BetterTriggers
         private Map _map;
         private HashSet<int> _newIds = new();
 
-        public BT2WE(Map map)
+        public BT2WE(Project project, Map map)
         {
+            _project = project;
             _map = map;
         }
 
@@ -26,7 +27,6 @@ namespace BetterTriggers
         /// </summary>
         internal void Convert()
         {
-            _project = Project.CurrentProject;
             var explorerElementsWithBTOnlyFeatures = new List<Tuple<ExplorerElement, string>>(); // [explorer element, error reason]
 
             var triggers = _project.Triggers.GetAll();
@@ -67,7 +67,7 @@ namespace BetterTriggers
                 {
                     continue;
                 }
-                var functions = Function.GetFunctionsFromTrigger(explorerElement);
+                var functions = Function.GetFunctionsFromTrigger(_project, explorerElement);
                 for (int j = 0; j < functions.Count; j++)
                 {
                     var function = functions[j];

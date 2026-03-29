@@ -25,6 +25,12 @@ namespace BetterTriggers.Models.EditorData
         }
         private TriggerElement? Parent;
         private bool _isExpanded = true;
+        protected Project _project;
+
+        protected TriggerElement(Project project)
+        {
+            _project = project;
+        }
 
         public virtual TriggerElement Clone()
         {
@@ -43,7 +49,7 @@ namespace BetterTriggers.Models.EditorData
 
             if(this is LocalVariable localVar)
             {
-                Project.CurrentProject.Variables.AddLocalVariable(localVar);
+                _project.Variables.AddLocalVariable(localVar);
             }
         }
 

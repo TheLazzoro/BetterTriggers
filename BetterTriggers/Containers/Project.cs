@@ -5,10 +5,7 @@ using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit.GameDataReader;
 using CSharpLua;
-using ICSharpCode.Decompiler.Metadata;
 using Newtonsoft.Json;
-using NuGet.Packaging;
-using NuGet.Packaging.Signing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,8 +19,6 @@ namespace BetterTriggers.Containers
 {
     public class Project
     {
-        public static Project CurrentProject { get; private set; }
-
         public string src;
         public string dist;
         public string MapName { get; private set; }
@@ -57,14 +52,14 @@ namespace BetterTriggers.Containers
         private Project()
         {
             IsLoading = true;
-            Folders = new();
-            Variables = new();
-            Triggers = new();
-            Scripts = new();
-            ActionDefinitions = new();
-            ConditionDefinitions = new();
-            FunctionDefinitions = new();
-            References = new();
+            Folders = new(this);
+            Variables = new(this);
+            Triggers = new(this);
+            Scripts = new(this);
+            ActionDefinitions = new(this);
+            ConditionDefinitions = new(this);
+            FunctionDefinitions = new(this);
+            References = new(this);
             UnsavedFiles = new();
             CommandManager = new();
         }
@@ -248,7 +243,6 @@ namespace BetterTriggers.Containers
 
 
             Project project = new Project();
-            CurrentProject = project;
             project.MapName = Path.GetFileNameWithoutExtension(projectPath);
             project.ProjectPath = projectPath;
             project.war3project = war3project;
@@ -259,7 +253,7 @@ namespace BetterTriggers.Containers
             project.dist = Path.Combine(Path.GetDirectoryName(projectPath), "dist");
             project.war3project = war3project;
             project.projectFiles = new();
-            project.projectFiles.Add(new ExplorerElement(project.src, ExplorerElementEnum.Root));
+            project.projectFiles.Add(new ExplorerElement(project, project.src, ExplorerElementEnum.Root));
             project.currentSelectedElement = project.src; // defaults to here when nothing has been selected yet.
 
             if (project.fileSystemWatcher == null)
@@ -350,7 +344,7 @@ namespace BetterTriggers.Containers
                     }
                     path = files[indexOfTruePathName];
                     fileCheckList.Remove(path);
-                    ExplorerElement explorerElementChild = new ExplorerElement(path);
+                    ExplorerElement explorerElementChild = new ExplorerElement(this, path);
                     explorerElementChild.IsEnabled = entryChild.isEnabled;
                     explorerElementChild.IsInitiallyOn = entryChild.isInitiallyOn;
                     explorerElementChild.SetParent(elementParent, insertIndex);
@@ -384,7 +378,7 @@ namespace BetterTriggers.Containers
             ExplorerElement explorerElement = null;
             if (File.Exists(fullPath) || Directory.Exists(fullPath))
             {
-                explorerElement = new ExplorerElement(fullPath);
+                explorerElement = new ExplorerElement(this, fullPath);
             }
             else
             {
@@ -394,7 +388,7 @@ namespace BetterTriggers.Containers
             AddElementToContainer(explorerElement);
             lastCreated = explorerElement;
 
-            CommandExplorerElementCreate command = new CommandExplorerElementCreate(explorerElement, parent, parent.GetExplorerElements().Count);
+            CommandExplorerElementCreate command = new CommandExplorerElementCreate(this, explorerElement, parent, parent.GetExplorerElements().Count);
             command.Execute();
 
             if (!doRecurse)
@@ -415,7 +409,7 @@ namespace BetterTriggers.Containers
         public bool War3MapDirExists()
         {
             bool exists = false;
-            string path = Project.CurrentProject.GetFullMapPath();
+            string path = GetFullMapPath();
             if (path != null && Directory.Exists(path) && File.Exists(Path.Combine(path, "war3map.w3i")))
                 exists = true;
             else if (path != null && File.Exists(path) && (Path.HasExtension(".w3x") || Path.HasExtension(".w3m")))
@@ -440,7 +434,7 @@ namespace BetterTriggers.Containers
                     OnFileExtensionChanged?.Invoke(oldExtension, newExtension);
                 }
 
-                CommandExplorerElementRename command = new CommandExplorerElementRename(elementToRename, newFullPath);
+                CommandExplorerElementRename command = new CommandExplorerElementRename(this, elementToRename, newFullPath);
                 command.Execute();
             });
         }
@@ -458,7 +452,7 @@ namespace BetterTriggers.Containers
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                CommandExplorerElementMove command = new CommandExplorerElementMove(elementToRename, newFullPath, insertIndex);
+                CommandExplorerElementMove command = new CommandExplorerElementMove(this, elementToRename, newFullPath, insertIndex);
                 command.Execute();
             });
         }
@@ -514,7 +508,7 @@ namespace BetterTriggers.Containers
 
                 RemoveElementFromContainer_WhenDeleting(elementToDelete);
 
-                CommandExplorerElementDelete command = new CommandExplorerElementDelete(elementToDelete);
+                CommandExplorerElementDelete command = new CommandExplorerElementDelete(this, elementToDelete);
                 command.Execute();
             });
         }
@@ -527,7 +521,7 @@ namespace BetterTriggers.Containers
         /// <param name="index"></param>
         public void RearrangeElement(ExplorerElement element, int insertIndex)
         {
-            CommandExplorerElementMoveEx commandEx = new CommandExplorerElementMoveEx(element, insertIndex);
+            CommandExplorerElementMoveEx commandEx = new CommandExplorerElementMoveEx(this, element, insertIndex);
             commandEx.Execute();
         }
 
@@ -763,7 +757,7 @@ namespace BetterTriggers.Containers
             if (CopiedElements.CutExplorerElement == null)
                 PrepareExplorerElement(pasted);
 
-            CommandExplorerElementPaste command = new CommandExplorerElementPaste(pasted, parent, insertIndex);
+            CommandExplorerElementPaste command = new CommandExplorerElementPaste(this, pasted, parent, insertIndex);
             command.Execute();
             lastCreated = pasted;
 
@@ -945,12 +939,12 @@ namespace BetterTriggers.Containers
 
             if (CopiedElements.CutTriggerElements == null && pasted.Elements != null && pasted.Elements.Count > 0)
             {
-                CommandTriggerElementPaste command = new CommandTriggerElementPaste(destinationTrigger, pasted, parentList, insertIndex);
+                CommandTriggerElementPaste command = new CommandTriggerElementPaste(this, destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
             }
             else if(CopiedElements.CutTriggerElements != null && CopiedElements.CutTriggerElements.Elements.Count > 0)
             {
-                CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
+                CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(this, CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
             }
 
@@ -991,10 +985,10 @@ namespace BetterTriggers.Containers
             var functionDefinitions = FunctionDefinitions.GetAll();
 
             List<Function> functions = new List<Function>();
-            triggers.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
-            actionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
-            conditionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
-            functionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(element)));
+            triggers.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(this, element)));
+            actionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(this, element)));
+            conditionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(this, element)));
+            functionDefinitions.ForEach(element => functions.AddRange(Function.GetFunctionsFromTrigger(this, element)));
 
             return functions;
         }
@@ -1002,16 +996,14 @@ namespace BetterTriggers.Containers
         /// <summary>
         /// Closes the currently opened project.
         /// </summary>
-        public static void Close()
+        public void Close()
         {
-            var project = CurrentProject;
-            project.fileSystemWatcher.EnableRaisingEvents = false;
-            project.fileSystemWatcher.Created -= project.FileSystemWatcher_Created;
-            project.fileSystemWatcher.Deleted -= project.FileSystemWatcher_Deleted;
-            project.fileSystemWatcher.Changed -= project.FileSystemWatcher_Changed;
-            project.fileSystemWatcher.Renamed -= project.FileSystemWatcher_Renamed;
-            project.fileSystemWatcher.Error -= project.FileSystemWatcher_Error;
-            CurrentProject = null;
+            fileSystemWatcher.EnableRaisingEvents = false;
+            fileSystemWatcher.Created -= FileSystemWatcher_Created;
+            fileSystemWatcher.Deleted -= FileSystemWatcher_Deleted;
+            fileSystemWatcher.Changed -= FileSystemWatcher_Changed;
+            fileSystemWatcher.Renamed -= FileSystemWatcher_Renamed;
+            fileSystemWatcher.Error -= FileSystemWatcher_Error;
         }
 
         /// <returns>The top level explorer element in the project.</returns>
@@ -1144,7 +1136,7 @@ namespace BetterTriggers.Containers
 
         public void SetWar3MapPath(string path)
         {
-            CurrentProject.war3project.War3MapDirectory = path;
+            war3project.War3MapDirectory = path;
         }
 
         public int GetUnsavedFileCount()
@@ -1155,14 +1147,14 @@ namespace BetterTriggers.Containers
 
         private bool WasFileMoved(string oldFullPath)
         {
-            var explorerElement = FindExplorerElement(CurrentProject.projectFiles[0], oldFullPath);
+            var explorerElement = FindExplorerElement(projectFiles[0], oldFullPath);
             if (explorerElement == null)
                 return false;
 
             var exPath = explorerElement.GetPath();
 
             bool wasMoved = false;
-            var files = Directory.GetFileSystemEntries(Path.GetDirectoryName(CurrentProject.projectFiles[0].GetPath()), "*", SearchOption.AllDirectories);
+            var files = Directory.GetFileSystemEntries(Path.GetDirectoryName(projectFiles[0].GetPath()), "*", SearchOption.AllDirectories);
             int i = 0;
             while (i < files.Length && !wasMoved)
             {

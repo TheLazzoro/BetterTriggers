@@ -46,7 +46,7 @@ namespace Tests
             TriggerConverter converter = new TriggerConverter(mapPath);
             converter.ImportIntoCurrentProject(map.Triggers.TriggerItems);
 
-            Builder mapBuilder = new Builder();
+            Builder mapBuilder = new Builder(project);
             mapBuilder.GenerateScript();
 
             List<int> triggerIds = new List<int>();

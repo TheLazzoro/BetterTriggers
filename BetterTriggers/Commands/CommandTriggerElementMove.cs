@@ -1,14 +1,12 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementMove : ICommand
     {
+        Project _project;
         string commandName = "Move Trigger Element";
         ExplorerElement explorerElement;
         TriggerElement triggerElement;
@@ -18,8 +16,9 @@ namespace BetterTriggers.Commands
         int NewInsertIndex = 0;
         RefCollection refCollection;
 
-        public CommandTriggerElementMove(ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElementCollection NewParent, int NewInsertIndex)
+        public CommandTriggerElementMove(Project project, ExplorerElement explorerElement, TriggerElement triggerElement, TriggerElementCollection NewParent, int NewInsertIndex)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.triggerElement = triggerElement;
             this.OldParent = triggerElement.GetParent();
@@ -28,7 +27,7 @@ namespace BetterTriggers.Commands
             this.NewInsertIndex = NewInsertIndex;
             if (triggerElement is ParameterDefinition)
             {
-                refCollection = new RefCollection(explorerElement);
+                refCollection = new RefCollection(project, explorerElement);
             }
         }
 
@@ -38,7 +37,7 @@ namespace BetterTriggers.Commands
             triggerElement.SetParent(NewParent, NewInsertIndex);
             TriggerValidator validator = new TriggerValidator(explorerElement);
             validator.RemoveInvalidReferences(NewParent);
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
             if (refCollection != null)
             {
                 refCollection.ResetParameters();

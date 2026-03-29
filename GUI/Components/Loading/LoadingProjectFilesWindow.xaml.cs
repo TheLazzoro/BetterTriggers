@@ -9,7 +9,7 @@ namespace GUI.Components.Loading
 {
     public partial class LoadingProjectFilesWindow : Window
     {
-        public War3Project project;
+        public Project project;
         private string projectPath;
         private BackgroundWorker worker;
         private string label = "Loading Project Files";
@@ -53,7 +53,7 @@ namespace GUI.Components.Loading
             Project.LoadingUnknownFilesEvent += Project_LoadingUnknownFilesEvent;
             try
             {
-                project = Project.Load(projectPath).war3project;
+                project = Project.Load(projectPath);
             }
             catch (Exception ex)
             {
