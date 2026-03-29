@@ -1,11 +1,8 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Threading;
-using System.Windows;
 using War3Net.Build.Info;
 
 namespace Tests
@@ -16,10 +13,11 @@ namespace Tests
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
         static string projectPath;
-        static War3Project project;
-        static string directory = System.IO.Directory.GetCurrentDirectory();
+        static string directory = Directory.GetCurrentDirectory();
 
         static ExplorerElement element1;
+
+        private Project _project;
 
 
         [ClassInitialize]
@@ -39,36 +37,35 @@ namespace Tests
             if (File.Exists(Path.Combine(directory, name + ".json")))
                 File.Delete(Path.Combine(directory, name + ".json"));
 
-            Project project = Project.CurrentProject;
             projectPath = Project.Create(language, name, directory);
-            project = Project.Load(projectPath);
-            project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
+            _project = Project.Load(projectPath);
+            _project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
-            string fullPath = project.Folders.Create();
-            project.OnCreateElement(fullPath);
-            element1 = project.lastCreated;
-            project.currentSelectedElement = element1.GetPath();
+            string fullPath = _project.Folders.Create();
+            _project.OnCreateElement(fullPath);
+            element1 = _project.lastCreated;
+            _project.currentSelectedElement = element1.GetPath();
 
-            fullPath = project.Variables.Create();
-            project.OnCreateElement(fullPath);
+            fullPath = _project.Variables.Create();
+            _project.OnCreateElement(fullPath);
 
-            fullPath = project.Triggers.Create();
-            project.OnCreateElement(fullPath);
+            fullPath = _project.Triggers.Create();
+            _project.OnCreateElement(fullPath);
         }
 
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            _project.Close();
         }
 
 
         [TestMethod]
         public void OnCreateFolder()
         {
-            string fullPath = Project.CurrentProject.Folders.Create();
-            Project.CurrentProject.OnCreateElement(fullPath);
-            var element = Project.CurrentProject.lastCreated;
+            string fullPath = _project.Folders.Create();
+            _project.OnCreateElement(fullPath);
+            var element = _project.lastCreated;
 
             string expectedName = Path.GetFileNameWithoutExtension(fullPath);
             string actualName = element.GetName();
@@ -79,14 +76,14 @@ namespace Tests
         [TestMethod]
         public void OnPasteFolder()
         {
-            var root = Project.CurrentProject.projectFiles[0];
-            Project.CurrentProject.CopyExplorerElement(element1);
-            var pastedElement = Project.CurrentProject.PasteExplorerElement(root);
+            var root = _project.projectFiles[0];
+            _project.CopyExplorerElement(element1);
+            var pastedElement = _project.PasteExplorerElement(root);
 
             int expectedElements = element1.ExplorerElements.Count;
             int actualElements = pastedElement.ExplorerElements.Count;
 
-            Assert.AreEqual(pastedElement, Project.CurrentProject.lastCreated);
+            Assert.AreEqual(pastedElement, _project.lastCreated);
             Assert.AreEqual(expectedElements, actualElements);
             Assert.AreNotEqual(pastedElement.GetName(), element1.GetName());
 

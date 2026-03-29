@@ -15,10 +15,10 @@ namespace Tests
         static ScriptLanguage language = ScriptLanguage.Jass;
         static string name = "TestProject";
         static string projectPath;
-        static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
-
         static ExplorerElement element1, element2, element3;
+
+        Project project;
 
 
         [ClassInitialize]
@@ -58,7 +58,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            project.Close();
         }
 
 
@@ -105,7 +105,7 @@ namespace Tests
         public void CloneLocalVariable()
         {
             var explorerElement = new ExplorerElement(ExplorerElementEnum.Trigger);
-            explorerElement.trigger = new Trigger();
+            explorerElement.trigger = new Trigger(project);
             var variable = project.Variables.CreateLocalVariable(explorerElement, 0);
 
             Assert.AreEqual("UntitledVariable", variable.variable.Name);

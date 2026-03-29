@@ -22,6 +22,7 @@ namespace Tests
         string projectDir;
         string projectFilePath;
         string mapPath;
+        Project project;
 
         public ImportTest()
         {
@@ -33,14 +34,14 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            project.Close();
             Directory.Delete(projectDir, true);
         }
 
         [TestMethod]
         public void ImportTriggersTest()
         {
-            var project = Project.Load(projectFilePath);
+            project = Project.Load(projectFilePath);
             var map = Map.Open(mapPath);
 
             TriggerConverter converter = new TriggerConverter(mapPath);

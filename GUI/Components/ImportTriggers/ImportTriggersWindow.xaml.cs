@@ -161,7 +161,7 @@ namespace GUI
                 }
                 else if (explorerElement.ElementType == ExplorerElementEnum.Script)
                 {
-                    control = new ScriptControl(explorerElement);
+                    control = new ScriptControl(_project, explorerElement);
                     var scriptControl = (ScriptControl)control;
                     scriptControl.textEditor.avalonEditor.IsReadOnly = true;
                     scriptControl.checkBoxIsEnabled.IsEnabled = false;

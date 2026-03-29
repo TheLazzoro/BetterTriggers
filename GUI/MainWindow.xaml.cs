@@ -402,7 +402,7 @@ namespace GUI
                         editor = rootControl;
                         break;
                     case ExplorerElementEnum.Script:
-                        var scriptControl = new ScriptControl(selectedItem);
+                        var scriptControl = new ScriptControl(_currentProject, selectedItem);
                         editor = scriptControl;
                         break;
                     case ExplorerElementEnum.Trigger:
@@ -1257,7 +1257,7 @@ namespace GUI
 
         private void menuItemBlizzardJ_Click(object sender, RoutedEventArgs e)
         {
-            var window = new BlizzardJWindow();
+            var window = new BlizzardJWindow(_currentProject);
             window.Show();
         }
     }

@@ -1,13 +1,9 @@
-﻿using BetterTriggers;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using War3Net.Build.Info;
 
 namespace Tests
@@ -35,7 +31,7 @@ namespace Tests
         {
             if (project != null)
             {
-                Project.Close();
+                project.Close();
             }
             if (Directory.Exists(directory))
             {
@@ -49,8 +45,8 @@ namespace Tests
             // Arrange
             string TriggerSleepAction = "TriggerSleepAction";
 
-            var ifThenElse = new IfThenElse();
-            var eca1 = new ECA(TriggerSleepAction);
+            var ifThenElse = new IfThenElse(project);
+            var eca1 = new ECA(project, TriggerSleepAction);
             var params1 = new List<Parameter>()
             {
                 new Value()
@@ -77,14 +73,14 @@ namespace Tests
             var projectPath = Project.Create(language, name, directory);
             project = Project.Load(projectPath);
             var explorerElement = new ExplorerElement(ExplorerElementEnum.ActionDefinition);
-            var actionDefinition = new ActionDefinition(explorerElement);
+            var actionDefinition = new ActionDefinition(project, explorerElement);
             explorerElement.actionDefinition = actionDefinition;
-            var parameterDef = new ParameterDefinition();
+            var parameterDef = new ParameterDefinition(project);
             var variable = new Variable();
             variable.War3Type = War3Type.Get("integer");
             variable.InitialValue = new Parameter();
-            var localVar = new LocalVariable(variable);
-            var eca = new ECA();
+            var localVar = new LocalVariable(project, variable);
+            var eca = new ECA(project);
 
             parameterDef.SetParent(actionDefinition.Parameters, 0);
             localVar.SetParent(actionDefinition.LocalVariables, 0);

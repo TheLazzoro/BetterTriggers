@@ -46,7 +46,7 @@ namespace GUI.Components.TriggerEditor.WPF_BindingInlinesInTextBlock
             EditorSettings editorSettings = EditorSettings.Load();
             if(editorSettings.triggerEditorMode == TriggerEditorMode.CliCli)
             {
-                ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+                ParamTextBuilder paramTextBuilder = new ParamTextBuilder(null); // TODO:!!!!
                 var inlines = paramTextBuilder.GenerateParamText(ExplorerElement.CurrentToRender, eca);
                 inlinesCollection.AddRange(inlines);
             }
