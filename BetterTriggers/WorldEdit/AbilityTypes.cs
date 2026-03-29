@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.WorldEdit.GameDataReader;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +13,10 @@ namespace BetterTriggers.WorldEdit
     public class AbilityTypes
     {
         private static Dictionary<string, AbilityType> abilities;
-        private static Dictionary<string, AbilityType> abilitiesBaseEdited = new();
-        private static Dictionary<string, AbilityType> abilitiesCustom = new();
+        private Dictionary<string, AbilityType> abilitiesBaseEdited = new();
+        private Dictionary<string, AbilityType> abilitiesCustom = new();
 
-        public static List<AbilityType> GetAll()
+        public List<AbilityType> GetAll()
         {
             List<AbilityType> list = new List<AbilityType>();
             var enumerator = abilities.GetEnumerator();
@@ -40,16 +41,20 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static AbilityType GetAbilityType(string abilcode)
+        public static AbilityType GetAbilityType(AbilityTypes? abilityTypes, string abilcode)
         {
-            AbilityType abilType;
-            abilitiesCustom.TryGetValue(abilcode, out abilType);
+            AbilityType? abilType = null;
 
-            if (abilType == null)
-                abilitiesBaseEdited.TryGetValue(abilcode, out abilType);
+            if (abilityTypes != null)
+            {
+                abilityTypes.abilitiesCustom.TryGetValue(abilcode, out abilType);
 
-            if (abilType == null)
-                abilities.TryGetValue(abilcode, out abilType);
+                if (abilType == null)
+                    abilityTypes.abilitiesBaseEdited.TryGetValue(abilcode, out abilType);
+
+                if (abilType == null)
+                    abilities.TryGetValue(abilcode, out abilType);
+            }
 
             if (abilType == null)
                 abilType = new AbilityType()
@@ -61,9 +66,9 @@ namespace BetterTriggers.WorldEdit
             return abilType;
         }
 
-        internal static string GetName(string abilcode)
+        internal static string GetName(AbilityTypes? abilityTypes, string abilcode)
         {
-            AbilityType abilityType = GetAbilityType(abilcode);
+            AbilityType abilityType = GetAbilityType(abilityTypes, abilcode);
             if (abilityType == null)
                 return "<Empty Name>";
             else if (abilityType.DisplayName == null)
@@ -111,19 +116,19 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
             abilitiesCustom = new Dictionary<string, AbilityType>();
             abilitiesBaseEdited = new Dictionary<string, AbilityType>();
 
-            var customAbilities = CustomMapData.MPQMap.AbilityObjectData;
+            var customAbilities = project.MPQMap.AbilityObjectData;
             if (customAbilities == null)
                 return;
 
             for (int i = 0; i < customAbilities.BaseAbilities.Count; i++)
             {
                 var baseAbility = customAbilities.BaseAbilities[i];
-                AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(baseAbility.OldId));
+                AbilityType baseAbil = GetAbilityType(this, Int32Extensions.ToRawcode(baseAbility.OldId));
                 var ability = new AbilityType()
                 {
                     AbilCode = baseAbility.ToString().Substring(0, 4),
@@ -131,13 +136,13 @@ namespace BetterTriggers.WorldEdit
                     EditorSuffix = baseAbil.EditorSuffix,
                 };
                 abilitiesBaseEdited.TryAdd(ability.AbilCode, ability);
-                SetCustomFields(baseAbility, Int32Extensions.ToRawcode(baseAbility.OldId));
+                SetCustomFields(project, baseAbility, Int32Extensions.ToRawcode(baseAbility.OldId));
             }
 
             for (int i = 0; i < customAbilities.NewAbilities.Count; i++)
             {
                 var customAbility = customAbilities.NewAbilities[i];
-                AbilityType baseAbil = GetAbilityType(Int32Extensions.ToRawcode(customAbility.OldId));
+                AbilityType baseAbil = GetAbilityType(this, Int32Extensions.ToRawcode(customAbility.OldId));
                 string name = baseAbil.DisplayName;
                 string editorSuffix = baseAbil.EditorSuffix;
                 var ability = new AbilityType()
@@ -147,22 +152,22 @@ namespace BetterTriggers.WorldEdit
                     EditorSuffix = editorSuffix,
                 };
                 abilitiesCustom.TryAdd(ability.AbilCode, ability);
-                SetCustomFields(customAbility, ability.AbilCode);
+                SetCustomFields(project, customAbility, ability.AbilCode);
             }
         }
 
-        private static void SetCustomFields(LevelObjectModification modified, string abilcode)
+        private void SetCustomFields(Project project, LevelObjectModification modified, string abilcode)
         {
-            AbilityType abilityType = GetAbilityType(abilcode);
+            AbilityType abilityType = GetAbilityType(this, abilcode);
             string displayName = abilityType.DisplayName;
             string editorSuffix = abilityType.EditorSuffix;
 
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "anam")
-                    displayName = MapStrings.GetString(modification.ValueAsString);
+                    displayName = project.MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "ansf")
-                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+                    editorSuffix = project.MapStrings.GetString(modification.ValueAsString);
             }
 
             abilityType.DisplayName = displayName;

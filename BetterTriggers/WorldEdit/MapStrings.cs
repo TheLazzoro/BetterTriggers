@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
 using War3Net.Build.Extensions;
 using War3Net.Build.Script;
 
 namespace BetterTriggers.WorldEdit
 {
-    internal class MapStrings
+    public class MapStrings
     {
-        private static TriggerStrings triggerStrings;
+        private TriggerStrings triggerStrings;
 
-        internal static string GetString(string trigStr)
+        internal string GetString(string trigStr)
         {
             string str;
             triggerStrings.TryGetValue(trigStr, out str);
@@ -24,9 +18,9 @@ namespace BetterTriggers.WorldEdit
             return str;
         }
         
-        internal static void Load()
+        internal void Load(Project project)
         {
-            triggerStrings = CustomMapData.MPQMap.TriggerStrings;
+            triggerStrings = project.MPQMap.TriggerStrings;
         }
     }
 }

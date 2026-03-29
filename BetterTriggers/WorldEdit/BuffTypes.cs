@@ -1,14 +1,9 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.WorldEdit.GameDataReader;
-using CASCLib;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
@@ -18,10 +13,10 @@ namespace BetterTriggers.WorldEdit
     public class BuffTypes
     {
         private static Dictionary<string, BuffType> buffs;
-        private static Dictionary<string, BuffType> buffsBaseEdited = new();
-        private static Dictionary<string, BuffType> buffsCustom = new();
+        private Dictionary<string, BuffType> buffsBaseEdited = new();
+        private Dictionary<string, BuffType> buffsCustom = new();
 
-        public static List<BuffType> GetAll()
+        public List<BuffType> GetAll()
         {
             List<BuffType> list = new List<BuffType>();
             var enumerator = buffs.GetEnumerator();
@@ -46,18 +41,20 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static BuffType GetBuffType(string buffcode)
+        public static BuffType GetBuffType(BuffTypes? buffTypes, string buffcode)
         {
-            BuffType buffType;
-            buffsCustom.TryGetValue(buffcode, out buffType);
-
-            if (buffType == null)
-                buffsBaseEdited.TryGetValue(buffcode, out buffType);
+            BuffType? buffType = null;
+            if (buffTypes != null)
+            {
+                buffTypes.buffsCustom.TryGetValue(buffcode, out buffType);
+                if (buffType == null)
+                    buffTypes.buffsBaseEdited.TryGetValue(buffcode, out buffType);
+            }
 
             if (buffType == null)
                 buffs.TryGetValue(buffcode, out buffType);
 
-            if(buffType == null)
+            if (buffType == null)
                 buffType = new BuffType()
                 {
                     BuffCode = buffcode,
@@ -67,9 +64,9 @@ namespace BetterTriggers.WorldEdit
             return buffType;
         }
 
-        internal static string GetName(string buffcode)
+        internal static string GetName(BuffTypes? buffTypes, string buffcode)
         {
-            BuffType buffType = GetBuffType(buffcode);
+            BuffType buffType = GetBuffType(buffTypes, buffcode);
             if (buffType == null)
                 return "<Empty Name>";
             else if (buffType.DisplayName == null)
@@ -120,33 +117,33 @@ namespace BetterTriggers.WorldEdit
             buffdata.Close();
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
             buffsBaseEdited = new Dictionary<string, BuffType>();
             buffsCustom = new Dictionary<string, BuffType>();
 
             BuffObjectData customBuffs;
-            customBuffs = CustomMapData.MPQMap.BuffObjectData;
+            customBuffs = project.MPQMap.BuffObjectData;
             if (customBuffs == null)
                 return;
 
             for (int i = 0; i < customBuffs.BaseBuffs.Count; i++)
             {
                 var buff = customBuffs.BaseBuffs[i];
-                BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(buff.OldId));
+                BuffType baseBuff = GetBuffType(project.BuffTypes, Int32Extensions.ToRawcode(buff.OldId));
                 var b = new BuffType()
                 {
                     BuffCode = baseBuff.ToString().Substring(0, 4),
                     DisplayName = baseBuff.DisplayName,
                 };
                 buffsBaseEdited.TryAdd(b.BuffCode, b);
-                SetCustomFields(buff, b.BuffCode);
+                SetCustomFields(project, buff, b.BuffCode);
             }
 
             for (int i = 0; i < customBuffs.NewBuffs.Count; i++)
             {
                 var customBuff = customBuffs.NewBuffs[i];
-                BuffType baseBuff = GetBuffType(Int32Extensions.ToRawcode(customBuff.OldId));
+                BuffType baseBuff = GetBuffType(project.BuffTypes, Int32Extensions.ToRawcode(customBuff.OldId));
                 string name = baseBuff.DisplayName;
                 var buff = new BuffType()
                 {
@@ -154,24 +151,24 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = name,
                 };
                 buffsCustom.TryAdd(buff.BuffCode, buff);
-                SetCustomFields(customBuff, buff.BuffCode);
+                SetCustomFields(project, customBuff, buff.BuffCode);
             }
         }
 
-        private static void SetCustomFields(SimpleObjectModification modified, string buffcode)
+        private void SetCustomFields(Project project, SimpleObjectModification modified, string buffcode)
         {
-            BuffType buffType = GetBuffType(buffcode);
+            BuffType buffType = GetBuffType(project.BuffTypes, buffcode);
             string displayName = buffType.DisplayName;
             string editorSuffix = buffType.EditorSuffix;
 
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "ftip")
-                    displayName = MapStrings.GetString(modification.ValueAsString);
+                    displayName = project.MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "fnam")
-                    displayName = MapStrings.GetString(modification.ValueAsString);
+                    displayName = project.MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "fnsf")
-                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+                    editorSuffix = project.MapStrings.GetString(modification.ValueAsString);
             }
 
             buffType.DisplayName = displayName;

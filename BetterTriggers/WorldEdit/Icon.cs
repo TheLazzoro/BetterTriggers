@@ -37,9 +37,9 @@ namespace BetterTriggers.WorldEdit
             }
             if (File.Exists(fullMapPath))
             {
-                if (CustomMapData.MPQMap.ImportedFiles != null)
+                if (project.MPQMap.ImportedFiles != null)
                 {
-                    var imports = CustomMapData.MPQMap.ImportedFiles.Files;
+                    var imports = project.MPQMap.ImportedFiles.Files;
                     var pathFormatted = path.Replace('/', '\\');
                     for (int i = 0; i < imports.Count; i++)
                     {

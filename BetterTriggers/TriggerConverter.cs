@@ -62,7 +62,7 @@ namespace BetterTriggers.WorldEdit
         {
             CustomMapData.Load(_project, mapPath, false);
 
-            var map = CustomMapData.MPQMap;
+            var map = _project.MPQMap;
             //var map = Map.Open(mapPath);
             if (map.Triggers == null)
                 return;
@@ -802,7 +802,7 @@ namespace BetterTriggers.WorldEdit
 
 
                             var val = foreignParam.Value.Replace("gg_rct_", "");
-                            var regions = Regions.GetAll();
+                            var regions = _project.Regions.GetAll();
                             for (int r = 0; r < regions.Count; r++)
                             {
                                 var region = regions[r];
@@ -817,7 +817,7 @@ namespace BetterTriggers.WorldEdit
                         else if (foreignParam.Value.StartsWith("gg_cam_"))
                         {
                             var val = foreignParam.Value.Replace("gg_cam_", "");
-                            var cameras = Cameras.GetAll();
+                            var cameras = _project.Cameras.GetAll();
                             for (int c = 0; c < cameras.Count; c++)
                             {
                                 var camera = cameras[c];
@@ -832,7 +832,7 @@ namespace BetterTriggers.WorldEdit
                         else if (foreignParam.Value.StartsWith("gg_snd_"))
                         {
                             var val = foreignParam.Value.Replace("gg_snd_", "");
-                            var sounds = Sounds.GetAll();
+                            var sounds = _project.Sounds.GetAll();
                             for (int c = 0; c < sounds.Count; c++)
                             {
                                 var sound = sounds[c];

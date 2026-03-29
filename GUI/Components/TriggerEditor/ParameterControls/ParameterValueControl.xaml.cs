@@ -44,71 +44,71 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                     this.valueControl = new ValueControlString(returnType);
                     break;
                 case "unitcode":
-                    this.valueControl = new ValueControlUnitTypes();
+                    this.valueControl = new ValueControlUnitTypes(project);
                     break;
                 case "abilcode":
                 case "heroskillcode":
-                    var abilities = AbilityTypes.GetAll();
+                    var abilities = project.AbilityTypes.GetAll();
                     values = abilities.Select(a => new Value() { value = a.AbilCode }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, returnType);
                     break;
                 case "buffcode":
-                    var buffs = BuffTypes.GetAll();
+                    var buffs = project.BuffTypes.GetAll();
                     values = buffs.Select(b => new Value() { value = b.BuffCode }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "buffcode");
                     break;
                 case "destructablecode":
-                    var destructibles = DestructibleTypes.GetAll();
+                    var destructibles = project.DestructibleTypes.GetAll();
                     values = destructibles.Select(d => new Value() { value = d.DestCode }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "destructablecode");
                     break;
                 case "doodadcode":
-                    var doodads = DoodadTypes.GetAll();
+                    var doodads = project.DoodadTypes.GetAll();
                     values = doodads.Select(d => new Value() { value = d.DoodCode }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "doodadcode");
                     break;
                 case "techcode":
-                    var upgrades = UpgradeTypes.GetAll();
+                    var upgrades = project.UpgradeTypes.GetAll();
                     values = upgrades.Select(up => new Value() { value = up.UpgradeCode }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "techcode");
                     break;
                 case "itemcode":
-                    var itemTypes = ItemTypes.GetAll();
+                    var itemTypes = project.ItemTypes.GetAll();
                     values = itemTypes.Select(i => new Value() { value = i.ItemCode }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "itemcode");
                     break;
                 case "item":
-                    var items = Units.GetMapItemsAll();
+                    var items = project.Units.GetMapItemsAll();
                     values = items.Select(i => new Value() { value = $"{i.ToString()}_{i.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "item");
                     break;
                 case "unit":
-                    var units = Units.GetAll();
+                    var units = project.Units.GetAll();
                     values = units.Select(u => new Value() { value = $"{u.ToString()}_{u.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "unit");
                     break;
                 case "destructable":
-                    var mapDestructibles = Destructibles.GetAll();
+                    var mapDestructibles = project.Destructibles.GetAll();
                     values = mapDestructibles.Select(dest => new Value() { value = $"{dest.ToString()}_{dest.CreationNumber.ToString("D4")}" }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "destructable");
                     break;
                 case "rect":
-                    var rects = Regions.GetAll();
+                    var rects = project.Regions.GetAll();
                     values = rects.Select(rect => new Value() { value = rect.ToString() }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "rect");
                     break;
                 case "camerasetup":
-                    var cameras = Cameras.GetAll();
+                    var cameras = project.Cameras.GetAll();
                     values = cameras.Select(c => new Value() { value = c.ToString() }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "camerasetup");
                     break;
                 case "sound":
-                    var sound = Sounds.GetSoundsAll();
+                    var sound = project.Sounds.GetSoundsAll();
                     values = sound.Select(s => new Value() { value = s.Name }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "sound");
                     break;
                 case "musicfile":
-                    var music = Sounds.GetMusicAll();
+                    var music = project.Sounds.GetMusicAll();
                     values = music.Select(m => new Value() { value = m.Name }).ToList();
                     this.valueControl = new ValueControlGeneric(project, values, "musicfile");
                     break;

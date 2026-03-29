@@ -1,13 +1,9 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.WorldEdit;
 using GUI.Utility;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -20,7 +16,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private int Height = 32;
         private Brush defaultBorderBrush;
 
-        public ButtonUnitType(UnitType unit)
+        public ButtonUnitType(Project project, UnitType unit)
         {
             this.UnitType = unit.Id;
             this.isSpecial = unit.isSpecial;
@@ -39,7 +35,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
             this.ToolTip = new ToolTip()
             {
-                Content = $"[{unit.Id}] {UnitTypes.GetName(unit.Id)}",
+                Content = $"[{unit.Id}] {UnitTypes.GetName(project.UnitTypes, unit.Id)}",
             };
 
             this.Click += delegate

@@ -1,32 +1,24 @@
-﻿using BetterTriggers.Models.War3Data;
-using BetterTriggers.Utility;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility.IniParser;
 using BetterTriggers.WorldEdit.GameDataReader;
-using CASCLib;
-using IniParser.Parser;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BetterTriggers.WorldEdit
 {
     public class DestructibleTypes
     {
         private static Dictionary<string, DestructibleType> destructibles;
-        private static Dictionary<string, DestructibleType> destructiblesBaseEdited;
-        private static Dictionary<string, DestructibleType> destructiblesCustom;
+        private Dictionary<string, DestructibleType> destructiblesBaseEdited;
+        private Dictionary<string, DestructibleType> destructiblesCustom;
 
-        public static List<DestructibleType> GetAll()
+        public List<DestructibleType> GetAll()
         {
             List<DestructibleType> list = new List<DestructibleType>();
             if (destructibles == null)
@@ -59,13 +51,15 @@ namespace BetterTriggers.WorldEdit
             return destructibles.Select(kvp => kvp.Value).ToList();
         }
 
-        public static DestructibleType GetDestType(string destcode)
+        public static DestructibleType GetDestType(DestructibleTypes? destructibleTypes, string destcode)
         {
-            DestructibleType destType;
-            destructiblesCustom.TryGetValue(destcode, out destType);
-
-            if (destType == null)
-                destructiblesBaseEdited.TryGetValue(destcode, out destType);
+            DestructibleType? destType = null;
+            if (destructibleTypes != null)
+            {
+                destructibleTypes.destructiblesCustom.TryGetValue(destcode, out destType);
+                if (destType == null)
+                    destructibleTypes.destructiblesBaseEdited.TryGetValue(destcode, out destType);
+            }
 
             if (destType == null)
                 destructibles.TryGetValue(destcode, out destType);
@@ -81,9 +75,9 @@ namespace BetterTriggers.WorldEdit
         }
 
         // TODO: Doesn't return comments with the name (e.g. 'Diagonal 1' or 'Vertical')
-        internal static string GetName(string destcode)
+        internal static string GetName(DestructibleTypes? destructibleTypes, string destcode)
         {
-            DestructibleType destType = GetDestType(destcode);
+            DestructibleType destType = GetDestType(destructibleTypes, destcode);
             if (destType == null)
                 return null;
 
@@ -191,20 +185,20 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
             destructiblesBaseEdited = new Dictionary<string, DestructibleType>();
             destructiblesCustom = new Dictionary<string, DestructibleType>();
 
             DestructableObjectData customDestructibles;
-            customDestructibles = CustomMapData.MPQMap.DestructableObjectData;
+            customDestructibles = project.MPQMap.DestructableObjectData;
             if (customDestructibles == null)
                 return;
 
             for (int i = 0; i < customDestructibles.BaseDestructables.Count; i++)
             {
                 var dest = customDestructibles.BaseDestructables[i];
-                DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
+                DestructibleType baseDest = GetDestType(this, Int32Extensions.ToRawcode(dest.OldId));
                 string name = baseDest.DisplayName;
                 DestructibleType destructible = new DestructibleType()
                 {
@@ -212,13 +206,13 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = name,
                 };
                 destructiblesBaseEdited.TryAdd(destructible.DestCode, destructible);
-                SetCustomFields(dest, Int32Extensions.ToRawcode(dest.OldId));
+                SetCustomFields(project, dest, Int32Extensions.ToRawcode(dest.OldId));
             }
 
             for (int i = 0; i < customDestructibles.NewDestructables.Count; i++)
             {
                 var dest = customDestructibles.NewDestructables[i];
-                DestructibleType baseDest = GetDestType(Int32Extensions.ToRawcode(dest.OldId));
+                DestructibleType baseDest = GetDestType(this, Int32Extensions.ToRawcode(dest.OldId));
                 string name = baseDest.DisplayName;
                 DestructibleType destructible = new DestructibleType()
                 {
@@ -226,21 +220,21 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = name,
                 };
                 destructiblesCustom.TryAdd(destructible.DestCode, destructible);
-                SetCustomFields(dest, destructible.DestCode);
+                SetCustomFields(project, dest, destructible.DestCode);
             }
         }
 
-        private static void SetCustomFields(SimpleObjectModification modified, string buffcode)
+        private void SetCustomFields(Project project, SimpleObjectModification modified, string buffcode)
         {
-            DestructibleType buffType = GetDestType(buffcode);
+            DestructibleType buffType = GetDestType(this, buffcode);
             string displayName = buffType.DisplayName;
             string editorSuffix = buffType.EditorSuffix;
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "bnam")
-                    displayName = MapStrings.GetString(modification.ValueAsString);
+                    displayName = project.MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "bsuf")
-                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+                    editorSuffix = project.MapStrings.GetString(modification.ValueAsString);
             }
             buffType.DisplayName = displayName;
             buffType.EditorSuffix = editorSuffix;

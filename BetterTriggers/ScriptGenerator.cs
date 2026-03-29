@@ -293,7 +293,7 @@ end
 
             if (_project.war3project.GenerateAllObjectVariables)
             {
-                var units = Units.GetAll();
+                var units = _project.Units.GetAll();
                 units.ForEach(u =>
                 {
                     var value = new Value
@@ -303,7 +303,7 @@ end
                     generatedVarNames.TryAdd($"gg_unit_" + value.value, new Tuple<Parameter, string>(value, "unit"));
                 });
 
-                var dests = Destructibles.GetAll();
+                var dests = _project.Destructibles.GetAll();
                 dests.ForEach(d =>
                 {
                     var value = new Value
@@ -313,7 +313,7 @@ end
                     generatedVarNames.TryAdd($"gg_dest_" + value.value, new Tuple<Parameter, string>(value, "destructable"));
                 });
 
-                var items = Units.GetMapItemsAll();
+                var items = _project.Units.GetMapItemsAll();
                 items.ForEach(i =>
                 {
                     var value = new Value
@@ -327,7 +327,7 @@ end
             {
 
                 var functions = _project.GetFunctionsAll();
-                var destructibles = Destructibles.GetAll();
+                var destructibles = _project.Destructibles.GetAll();
                 for (int i = 0; i < functions.Count; i++)
                 {
                     var function = functions[i];
@@ -398,7 +398,7 @@ end
                 script.Append($"{type} {varName} = {_null} {newline}");
             }
 
-            var regions = Regions.GetAll();
+            var regions = _project.Regions.GetAll();
             foreach (var r in regions)
             {
                 if (globalVarNames.Contains(r.GetVariableName()))
@@ -408,7 +408,7 @@ end
                 script.Append($"{rect} {Ascii.ReplaceNonASCII($"gg_rct_{r.Name.Replace(" ", "_")}", true)} = {_null} {newline}");
                 globalVarNames.Add(r.GetVariableName());
             }
-            var sounds = Sounds.GetSoundsAll();
+            var sounds = _project.Sounds.GetSoundsAll();
             foreach (var s in sounds)
             {
                 if (globalVarNames.Contains("gg_snd_" + s.Name))
@@ -418,7 +418,7 @@ end
                 script.Append($"{sound} {Ascii.ReplaceNonASCII(s.Name.Replace(" ", "_"), true)} = {_null} {newline}");
                 globalVarNames.Add(s.Name);
             }
-            var music = Sounds.GetMusicAll();
+            var music = _project.Sounds.GetMusicAll();
             foreach (var s in music)
             {
                 if (globalVarNames.Contains("gg_snd_" + s.Name))
@@ -428,7 +428,7 @@ end
                 script.Append($"{_music} {Ascii.ReplaceNonASCII(s.Name.Replace(" ", "_"), true)} = {_null} {newline}");
                 globalVarNames.Add(s.Name);
             }
-            var cameras = Cameras.GetAll();
+            var cameras = _project.Cameras.GetAll();
             foreach (var c in cameras)
             {
                 if (globalVarNames.Contains(c.GetVariableName()))
@@ -664,7 +664,7 @@ end
             script.Append($"\tlocal {trigger} t{newline}");
             script.Append($"\tlocal {real} life{newline}");
 
-            var units = Units.GetAll();
+            var units = _project.Units.GetAll();
             foreach (var u in units)
             {
                 if (u.ToString() == "sloc")
@@ -702,7 +702,7 @@ end
 
                 if (u.WaygateDestinationRegionId != -1)
                 {
-                    var destinationRect = Regions.GetAll().Where(region => region.CreationNumber == u.WaygateDestinationRegionId).SingleOrDefault();
+                    var destinationRect = _project.Regions.GetAll().Where(region => region.CreationNumber == u.WaygateDestinationRegionId).SingleOrDefault();
                     if (destinationRect is not null)
                     {
                         string regionVar = Ascii.ReplaceNonASCII($"gg_rct_{destinationRect.ToString().Replace(" ", "_")}", true);
@@ -775,9 +775,9 @@ end
                     script.Append($"\t{call} TriggerAddAction(t, {function} UnitItemDrops_{u.CreationNumber.ToString("D4")}){newline}");
                 }
 
-                if (u.MapItemTableId != -1 && Info.MapInfo.RandomItemTables != null)
+                if (u.MapItemTableId != -1 && _project.Info.MapInfo.RandomItemTables != null)
                 {
-                    var mapItemTable = Info.MapInfo.RandomItemTables[u.MapItemTableId];
+                    var mapItemTable = _project.Info.MapInfo.RandomItemTables[u.MapItemTableId];
                     script.Append($"\t{set} t = CreateTrigger(){newline}");
                     script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_DEATH){newline}");
                     script.Append($"\t{call} TriggerRegisterUnitEvent(t, {varName}, EVENT_UNIT_CHANGE_OWNER){newline}");
@@ -805,7 +805,7 @@ end
             script.Append($"local {real} life{newline}");
             script.Append($"local {destructible} d{newline}");
 
-            var dests = Destructibles.GetAll();
+            var dests = _project.Destructibles.GetAll();
             foreach (var d in dests)
             {
                 // This flag tells the map to create the destructible regardless of the script.
@@ -847,9 +847,9 @@ end
                     script.Append($"\t{call} TriggerAddAction(t, {function} DestructableItemDrops_{d.CreationNumber.ToString("D4")}){newline}");
                 }
 
-                if (d.MapItemTableId != -1 && Info.MapInfo.RandomItemTables != null)
+                if (d.MapItemTableId != -1 && _project.Info.MapInfo.RandomItemTables != null)
                 {
-                    var mapItemTable = Info.MapInfo.RandomItemTables[d.MapItemTableId];
+                    var mapItemTable = _project.Info.MapInfo.RandomItemTables[d.MapItemTableId];
                     script.Append($"\t{set} t = CreateTrigger(){newline}");
                     script.Append($"\t{call} TriggerRegisterDeathEvent(t, {varName}){newline}");
                     script.Append($"\t{call} TriggerAddAction(t, {function} SaveDyingWidget){newline}");
@@ -874,7 +874,7 @@ end
             else
                 script.Append($"\tlocal i = {_null}{newline}");
 
-            var items = Units.GetMapItemsAll();
+            var items = _project.Units.GetMapItemsAll();
             foreach (var i in items)
             {
                 if (i.ToString() == "sloc")
@@ -919,7 +919,7 @@ end
             script.Append($"local {weathereffect} we{newline}");
             script.Append($"{newline}");
 
-            var regions = Regions.GetAll();
+            var regions = _project.Regions.GetAll();
             foreach (var r in regions)
             {
                 var id = r.Name.Replace(" ", "_");
@@ -954,7 +954,7 @@ end
             script.Append($"function CreateCameras {functionReturnsNothing}{newline}");
             script.Append($"{newline}");
 
-            var cameras = Cameras.GetAll();
+            var cameras = _project.Cameras.GetAll();
             foreach (var c in cameras)
             {
                 var id = Ascii.ReplaceNonASCII($"gg_cam_{c.Name.Replace(" ", "_")}", true);
@@ -997,8 +997,8 @@ end
             script.Append($"function InitSounds {functionReturnsNothing}{newline}");
             script.Append($"{newline}");
 
-            var sounds = Sounds.GetSoundsAll();
-            var music = Sounds.GetMusicAll();
+            var sounds = _project.Sounds.GetSoundsAll();
+            var music = _project.Sounds.GetMusicAll();
             foreach (var s in sounds)
             {
                 var id = s.Name;
@@ -1053,7 +1053,7 @@ end
 
             script.Append(newline);
 
-            var itemTables = Info.MapInfo.RandomItemTables;
+            var itemTables = _project.Info.MapInfo.RandomItemTables;
             foreach (var table in itemTables)
             {
                 script.Append($"function ItemTable_{table.Index} {functionReturnsNothing}{newline}");
@@ -1155,7 +1155,7 @@ end
             script.Append(separator);
 
 
-            var units = Units.GetAll();
+            var units = _project.Units.GetAll();
             foreach (var u in units)
             {
                 if (u.ItemTableSets.Count == 0)
@@ -1251,7 +1251,7 @@ end
                 script.Append($"{newline}");
             }
 
-            var destructibles = Destructibles.GetAll();
+            var destructibles = _project.Destructibles.GetAll();
             foreach (var d in destructibles)
             {
                 if (d.ItemTableSets.Count == 0)
@@ -1401,7 +1401,7 @@ end
             string[] races = new string[] { "RACE_PREF_RANDOM", "RACE_PREF_HUMAN", "RACE_PREF_ORC", "RACE_PREF_UNDEAD", "RACE_PREF_NIGHTELF" };
 
             int index = 0;
-            var players = Info.MapInfo.Players;
+            var players = _project.Info.MapInfo.Players;
             foreach (var p in players)
             {
                 string player = $"Player({p.Id}), ";
@@ -1444,7 +1444,7 @@ end
             script.Append($"function InitCustomTeams {functionReturnsNothing}{newline}");
 
             int current_force = 0;
-            var forces = Info.MapInfo.Forces;
+            var forces = _project.Info.MapInfo.Forces;
             foreach (var f in forces)
             {
                 List<PlayerData> forcePlayers = new List<PlayerData>();
@@ -1453,11 +1453,11 @@ end
                     if (f.Players[p] == true)
                     {
                         int i = 0;
-                        while (Info.MapInfo.Players.Count > i)
+                        while (_project.Info.MapInfo.Players.Count > i)
                         {
-                            if (Info.MapInfo.Players[i].Id == p)
+                            if (_project.Info.MapInfo.Players[i].Id == p)
                             {
-                                forcePlayers.Add(Info.MapInfo.Players[i]);
+                                forcePlayers.Add(_project.Info.MapInfo.Players[i]);
                                 break;
                             }
 
@@ -1516,19 +1516,19 @@ end
             Dictionary<int, int> player_to_startloc = new Dictionary<int, int>();
 
             int current_player = 0;
-            foreach (var p in Info.MapInfo.Players)
+            foreach (var p in _project.Info.MapInfo.Players)
             {
                 player_to_startloc[p.Id] = current_player;
                 current_player++;
             }
 
             current_player = 0;
-            foreach (var p in Info.MapInfo.Players)
+            foreach (var p in _project.Info.MapInfo.Players)
             {
                 string player_text = string.Empty;
 
                 int current_index = 0;
-                foreach (var j in Info.MapInfo.Players)
+                foreach (var j in _project.Info.MapInfo.Players)
                 {
                     if (p.EnemyLowPriorityFlags == 1 && p.Id != j.Id)
                     {
@@ -1562,23 +1562,25 @@ end
 
             script.Append($"function main {functionReturnsNothing}{newline}");
 
+            var mapInfo = _project.Info.MapInfo;
+
             string camera_bounds = $"\t{call} SetCameraBounds(" +
-                (Info.MapInfo.CameraBounds.BottomLeft.X - 512f) + " + GetCameraMargin(CAMERA_MARGIN_LEFT), " +
-                (Info.MapInfo.CameraBounds.BottomLeft.Y - 256f) + " + GetCameraMargin(CAMERA_MARGIN_BOTTOM), " +
+                (mapInfo.CameraBounds.BottomLeft.X - 512f) + " + GetCameraMargin(CAMERA_MARGIN_LEFT), " +
+                (mapInfo.CameraBounds.BottomLeft.Y - 256f) + " + GetCameraMargin(CAMERA_MARGIN_BOTTOM), " +
 
-                (Info.MapInfo.CameraBounds.TopRight.X + 512f) + " - GetCameraMargin(CAMERA_MARGIN_RIGHT), " +
-                (Info.MapInfo.CameraBounds.TopRight.Y + 256f) + " - GetCameraMargin(CAMERA_MARGIN_TOP), " +
+                (mapInfo.CameraBounds.TopRight.X + 512f) + " - GetCameraMargin(CAMERA_MARGIN_RIGHT), " +
+                (mapInfo.CameraBounds.TopRight.Y + 256f) + " - GetCameraMargin(CAMERA_MARGIN_TOP), " +
 
-                (Info.MapInfo.CameraBounds.TopLeft.X - 512f) + " + GetCameraMargin(CAMERA_MARGIN_LEFT), " +
-                (Info.MapInfo.CameraBounds.TopLeft.Y + 256f) + " - GetCameraMargin(CAMERA_MARGIN_TOP), " +
+                (mapInfo.CameraBounds.TopLeft.X - 512f) + " + GetCameraMargin(CAMERA_MARGIN_LEFT), " +
+                (mapInfo.CameraBounds.TopLeft.Y + 256f) + " - GetCameraMargin(CAMERA_MARGIN_TOP), " +
 
-                (Info.MapInfo.CameraBounds.BottomRight.X + 512f) + " - GetCameraMargin(CAMERA_MARGIN_RIGHT), " +
-                (Info.MapInfo.CameraBounds.BottomRight.Y - 256f) + $" + GetCameraMargin(CAMERA_MARGIN_BOTTOM)){newline}";
+                (mapInfo.CameraBounds.BottomRight.X + 512f) + " - GetCameraMargin(CAMERA_MARGIN_RIGHT), " +
+                (mapInfo.CameraBounds.BottomRight.Y - 256f) + $" + GetCameraMargin(CAMERA_MARGIN_BOTTOM)){newline}";
 
             script.Append(camera_bounds);
 
-            string terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(Info.MapInfo.LightEnvironment);
-            string unit_lights = LightEnvironmentProvider.GetUnitLightEnvironmentModel(Info.MapInfo.LightEnvironment);
+            string terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(mapInfo.LightEnvironment);
+            string unit_lights = LightEnvironmentProvider.GetUnitLightEnvironmentModel(mapInfo.LightEnvironment);
             if (terrain_lights == "")
                 terrain_lights = LightEnvironmentProvider.GetTerrainLightEnvironmentModel(War3Net.Build.Common.Tileset.LordaeronSummer);
             if (unit_lights == "")
@@ -1587,14 +1589,14 @@ end
 
             script.Append($"\t{call} SetDayNightModels(\"" + terrain_lights.Replace(@"\", @"\\") + "\", \"" + unit_lights.Replace(@"\", @"\\") + $"\"){newline}");
 
-            if (Info.MapInfo.MapFlags.HasFlag(MapFlags.HasTerrainFog))
-                script.Append($"\t{call} SetTerrainFogEx({(int)Info.MapInfo.FogStyle}, {Info.MapInfo.FogStartZ.ToString(enUS)}, {Info.MapInfo.FogEndZ.ToString(enUS)}, {Info.MapInfo.FogDensity.ToString(enUS)}, {((float)Info.MapInfo.FogColor.R / 256).ToString(enUS)}, {((float)Info.MapInfo.FogColor.G / 256).ToString(enUS)}, {((float)Info.MapInfo.FogColor.B / 256).ToString(enUS)}){newline}");
+            if (mapInfo.MapFlags.HasFlag(MapFlags.HasTerrainFog))
+                script.Append($"\t{call} SetTerrainFogEx({(int)mapInfo.FogStyle}, {mapInfo.FogStartZ.ToString(enUS)}, {mapInfo.FogEndZ.ToString(enUS)}, {mapInfo.FogDensity.ToString(enUS)}, {((float)mapInfo.FogColor.R / 256).ToString(enUS)}, {((float)mapInfo.FogColor.G / 256).ToString(enUS)}, {((float)mapInfo.FogColor.B / 256).ToString(enUS)}){newline}");
 
-            string sound_environment = Info.MapInfo.SoundEnvironment; // TODO: Not working
+            string sound_environment = mapInfo.SoundEnvironment; // TODO: Not working
             script.Append($"\t{call} NewSoundEnvironment(\"" + sound_environment + $"\"){newline}");
 
 
-            War3Net.Build.Common.Tileset tileset = Info.MapInfo.Tileset;
+            War3Net.Build.Common.Tileset tileset = mapInfo.Tileset;
             string ambient_day = "LordaeronSummerDay";
             string ambient_night = "LordaeronSummerNight";
             switch (tileset)
@@ -1675,10 +1677,10 @@ end
                     break;
             }
 
-            byte waterRed = Info.MapInfo.WaterTintingColor.R;
-            byte waterGreen = Info.MapInfo.WaterTintingColor.G;
-            byte waterBlue = Info.MapInfo.WaterTintingColor.B;
-            byte waterAlpha = Info.MapInfo.WaterTintingColor.A;
+            byte waterRed = mapInfo.WaterTintingColor.R;
+            byte waterGreen = mapInfo.WaterTintingColor.G;
+            byte waterBlue = mapInfo.WaterTintingColor.B;
+            byte waterAlpha = mapInfo.WaterTintingColor.A;
             script.Append($"\t{call} SetWaterBaseColor({waterRed}, {waterGreen}, {waterBlue}, {waterAlpha}){newline}");
             script.Append($"\t{call} SetAmbientDaySound(\"" + ambient_day + $"\"){newline}");
             script.Append($"\t{call} SetAmbientNightSound(\"" + ambient_night + $"\"){newline}");
@@ -1703,6 +1705,8 @@ end
 
         private void GenerateMapConfiguration(StringBuilder script)
         {
+            var mapInfo = _project.Info.MapInfo;
+
             script.Append(separator);
             script.Append($"{comment}{newline}");
             script.Append($"{comment}  Map Configuration{newline}");
@@ -1711,15 +1715,15 @@ end
 
             script.Append($"function config {functionReturnsNothing}{newline}");
 
-            script.Append($"\t{call} SetMapName(\"{Info.MapInfo.MapName}\"){newline}");
-            script.Append($"\t{call} SetMapDescription(\"{Info.MapInfo.MapDescription}\"){newline}");
-            script.Append($"\t{call} SetPlayers({Info.MapInfo.Players.Count}){newline}");
-            script.Append($"\t{call} SetTeams({Info.MapInfo.Forces.Count}){newline}");
+            script.Append($"\t{call} SetMapName(\"{mapInfo.MapName}\"){newline}");
+            script.Append($"\t{call} SetMapDescription(\"{mapInfo.MapDescription}\"){newline}");
+            script.Append($"\t{call} SetPlayers({mapInfo.Players.Count}){newline}");
+            script.Append($"\t{call} SetTeams({mapInfo.Forces.Count}){newline}");
             script.Append($"\t{call} SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER){newline}");
 
             script.Append($"{newline}");
 
-            var units = Units.GetMapStartLocations();
+            var units = _project.Units.GetMapStartLocations();
             foreach (var u in units)
             {
                 //script.Append($"\t{call} DefineStartLocation({u.OwnerId}, {u.Position.X * 128f + Info.MapInfo.PlayableMapAreaWidth}, {u.Position.Y * 128f + Info.MapInfo.PlayableMapAreaHeight}){newline}");
@@ -1729,11 +1733,11 @@ end
             script.Append($"{newline}");
 
             script.Append($"\t{call} InitCustomPlayerSlots(){newline}");
-            if (Info.MapInfo.MapFlags.HasFlag(MapFlags.UseCustomForces))
+            if (mapInfo.MapFlags.HasFlag(MapFlags.UseCustomForces))
                 script.Append($"\t{call} InitCustomTeams(){newline}");
             else
             {
-                foreach (var p in Info.MapInfo.Players)
+                foreach (var p in mapInfo.Players)
                 {
                     script.Append($"\t{call} SetPlayerSlotAvailable(Player({p.Id}), MAP_CONTROL_USER){newline}");
                 }

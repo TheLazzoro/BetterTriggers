@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using War3Net.Build.Object;
-using War3Net.Build.Extensions;
-using War3Net.Common.Extensions;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.War3Data;
-using System.Threading;
+using System.Collections.Generic;
+using War3Net.Build.Object;
+using War3Net.Common.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -17,11 +11,11 @@ namespace BetterTriggers.WorldEdit
     /// </summary>
     public static class SkinFiles
     {
-        public static void Load()
+        public static void Load(Project project)
         {
-            if (CustomMapData.MPQMap.AbilitySkinObjectData != null)
+            if (project.MPQMap.AbilitySkinObjectData != null)
             {
-                var abilitySkinObjectData = CustomMapData.MPQMap.AbilitySkinObjectData;
+                var abilitySkinObjectData = project.MPQMap.AbilitySkinObjectData;
 
                 List<LevelObjectModification> abilities = new();
                 abilities.AddRange(abilitySkinObjectData.BaseAbilities);
@@ -34,28 +28,28 @@ namespace BetterTriggers.WorldEdit
                     else
                         abilcode = Int32Extensions.ToRawcode(a.OldId);
 
-                    var abilityType = AbilityTypes.GetAbilityType(abilcode);
+                    var abilityType = AbilityTypes.GetAbilityType(project.AbilityTypes, abilcode);
                     foreach (var modification in a.Modifications)
                     {
                         string rawcode = Int32Extensions.ToRawcode(modification.Id);
                         if (rawcode == "anam")
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             abilityType.DisplayName = newName;
                         }
 
                         else if (rawcode == "ansf")
                         {
-                            string newSuffix = MapStrings.GetString(modification.ValueAsString);
+                            string newSuffix = project.MapStrings.GetString(modification.ValueAsString);
                             abilityType.EditorSuffix = newSuffix;
                         }
                     }
                 });
             }
 
-            if (CustomMapData.MPQMap.BuffSkinObjectData != null)
+            if (project.MPQMap.BuffSkinObjectData != null)
             {
-                var buffSkinObjectData = CustomMapData.MPQMap.BuffSkinObjectData;
+                var buffSkinObjectData = project.MPQMap.BuffSkinObjectData;
 
                 List<SimpleObjectModification> buffs = new();
                 buffs.AddRange(buffSkinObjectData.BaseBuffs);
@@ -68,7 +62,7 @@ namespace BetterTriggers.WorldEdit
                     else
                         buffcode = Int32Extensions.ToRawcode(b.OldId);
 
-                    var buffType = BuffTypes.GetBuffType(buffcode);
+                    var buffType = BuffTypes.GetBuffType(project.BuffTypes, buffcode);
                     bool hasTip = false;
                     for (int i = 0; i < b.Modifications.Count; i++)
                     {
@@ -83,26 +77,26 @@ namespace BetterTriggers.WorldEdit
                         string rawcode = Int32Extensions.ToRawcode(modification.Id);
                         if (rawcode == "fnam" && !hasTip)
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             buffType.DisplayName = newName;
                         }
                         else if (rawcode == "ftip")
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             buffType.DisplayName = newName;
                         }
                         else if (rawcode == "fnsf")
                         {
-                            string newSuffix = MapStrings.GetString(modification.ValueAsString);
+                            string newSuffix = project.MapStrings.GetString(modification.ValueAsString);
                             buffType.EditorSuffix = newSuffix;
                         }
                     }
                 });
             }
 
-            if (CustomMapData.MPQMap.DestructableSkinObjectData != null)
+            if (project.MPQMap.DestructableSkinObjectData != null)
             {
-                var destSkinObjectData = CustomMapData.MPQMap.DestructableSkinObjectData;
+                var destSkinObjectData = project.MPQMap.DestructableSkinObjectData;
 
                 List<SimpleObjectModification> dests = new();
                 dests.AddRange(destSkinObjectData.BaseDestructables);
@@ -115,28 +109,28 @@ namespace BetterTriggers.WorldEdit
                     else
                         destcode = Int32Extensions.ToRawcode(d.OldId);
 
-                    var destType = DestructibleTypes.GetDestType(destcode);
+                    var destType = DestructibleTypes.GetDestType(project.DestructibleTypes, destcode);
                     foreach (var modification in d.Modifications)
                     {
                         string rawcode = Int32Extensions.ToRawcode(modification.Id);
                         if (rawcode == "bnam")
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             destType.DisplayName = newName;
                         }
 
                         else if (rawcode == "bsuf")
                         {
-                            string newSuffix = MapStrings.GetString(modification.ValueAsString);
+                            string newSuffix = project.MapStrings.GetString(modification.ValueAsString);
                             destType.EditorSuffix = newSuffix;
                         }
                     }
                 });
             }
 
-            if (CustomMapData.MPQMap.DoodadSkinObjectData != null)
+            if (project.MPQMap.DoodadSkinObjectData != null)
             {
-                var doodSkinObjectData = CustomMapData.MPQMap.DoodadSkinObjectData;
+                var doodSkinObjectData = project.MPQMap.DoodadSkinObjectData;
 
                 List<VariationObjectModification> doods = new();
                 doods.AddRange(doodSkinObjectData.BaseDoodads);
@@ -149,22 +143,22 @@ namespace BetterTriggers.WorldEdit
                     else
                         doodcode = Int32Extensions.ToRawcode(d.OldId);
 
-                    var doodType = DoodadTypes.GetDoodadType(doodcode);
+                    var doodType = DoodadTypes.GetDoodadType(project.DoodadTypes, doodcode);
                     foreach (var modification in d.Modifications)
                     {
                         string rawcode = Int32Extensions.ToRawcode(modification.Id);
                         if (rawcode == "dnam")
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             doodType.DisplayName = newName;
                         }
                     }
                 });
             }
 
-            if (CustomMapData.MPQMap.ItemSkinObjectData != null)
+            if (project.MPQMap.ItemSkinObjectData != null)
             {
-                var itemSkinObjectData = CustomMapData.MPQMap.ItemSkinObjectData;
+                var itemSkinObjectData = project.MPQMap.ItemSkinObjectData;
 
                 List<SimpleObjectModification> items = new();
                 items.AddRange(itemSkinObjectData.BaseItems);
@@ -177,22 +171,22 @@ namespace BetterTriggers.WorldEdit
                     else
                         itemcode = Int32Extensions.ToRawcode(i.OldId);
 
-                    var itemType = ItemTypes.GetItemType(itemcode);
+                    var itemType = ItemTypes.GetItemType(project.ItemTypes, itemcode);
                     foreach (var modification in i.Modifications)
                     {
                         string rawcode = Int32Extensions.ToRawcode(modification.Id);
                         if (rawcode == "unam")
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             itemType.DisplayName = newName;
                         }
                     }
                 });
             }
 
-            if (CustomMapData.MPQMap.UnitSkinObjectData != null)
+            if (project.MPQMap.UnitSkinObjectData != null)
             {
-                var unitSkinObjectData = CustomMapData.MPQMap.UnitSkinObjectData;
+                var unitSkinObjectData = project.MPQMap.UnitSkinObjectData;
 
                 List<SimpleObjectModification> unitTypes = new();
                 unitTypes.AddRange(unitSkinObjectData.BaseUnits);
@@ -205,32 +199,32 @@ namespace BetterTriggers.WorldEdit
                     else
                         unitcode = Int32Extensions.ToRawcode(u.OldId);
 
-                    UnitType unitType = UnitTypes.GetUnitType(unitcode);
+                    UnitType unitType = UnitTypes.GetUnitType(project.UnitTypes, unitcode);
                     foreach (var modification in u.Modifications)
                     {
                         string rawcode = Int32Extensions.ToRawcode(modification.Id);
                         if (rawcode == "unam")
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             unitType.Name.Name = newName;
                         }
                         else if (rawcode == "upro")
                         {
-                            string newProperName = MapStrings.GetString(modification.ValueAsString);
+                            string newProperName = project.MapStrings.GetString(modification.ValueAsString);
                             unitType.Name.Propernames = newProperName;
                         }
                         else if (rawcode == "unsf")
                         {
-                            string newSuffix = MapStrings.GetString(modification.ValueAsString);
+                            string newSuffix = project.MapStrings.GetString(modification.ValueAsString);
                             unitType.Name.EditorSuffix = newSuffix;
                         }
                     }
                 });
             }
 
-            if (CustomMapData.MPQMap.UpgradeSkinObjectData != null)
+            if (project.MPQMap.UpgradeSkinObjectData != null)
             {
-                var upgradeSkinObjectData = CustomMapData.MPQMap.UpgradeSkinObjectData;
+                var upgradeSkinObjectData = project.MPQMap.UpgradeSkinObjectData;
 
                 List<LevelObjectModification> upgrades = new();
                 upgrades.AddRange(upgradeSkinObjectData.BaseUpgrades);
@@ -243,18 +237,18 @@ namespace BetterTriggers.WorldEdit
                     else
                         upgradeCode = Int32Extensions.ToRawcode(up.OldId);
 
-                    var upgradeType = UpgradeTypes.GetUpgradeType(upgradeCode);
+                    var upgradeType = UpgradeTypes.GetUpgradeType(project.UpgradeTypes, upgradeCode);
                     foreach (var modification in up.Modifications)
                     {
                         string rawcode = Int32Extensions.ToRawcode(modification.Id);
                         if (rawcode == "gnam")
                         {
-                            string newName = MapStrings.GetString(modification.ValueAsString);
+                            string newName = project.MapStrings.GetString(modification.ValueAsString);
                             upgradeType.DisplayName = newName;
                         }
                         else if (rawcode == "gnsf")
                         {
-                            string newSuffix = MapStrings.GetString(modification.ValueAsString);
+                            string newSuffix = project.MapStrings.GetString(modification.ValueAsString);
                             upgradeType.EditorSuffix = newSuffix;
                         }
                     }

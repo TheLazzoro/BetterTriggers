@@ -15,7 +15,6 @@ namespace BetterTriggers
 {
     public class CustomMapData
     {
-        internal static Map MPQMap;
         private static FileSystemWatcher watcher;
         public static event Action OnSaving;
 
@@ -118,24 +117,24 @@ namespace BetterTriggers
             {
                 Thread.Sleep(1000);
             }
-            MPQMap = Map.Open(fullMapPath);
+            project.MPQMap = Map.Open(fullMapPath);
 
-            Info.Load();
-            MapStrings.Load();
-            UnitTypes.Load(fullMapPath);
-            ItemTypes.Load();
-            DestructibleTypes.Load();
-            DoodadTypes.Load(fullMapPath);
-            AbilityTypes.Load();
-            BuffTypes.Load();
-            UpgradeTypes.Load();
-            SkinFiles.Load();
+            project.Info.Load(project);
+            project.MapStrings.Load(project);
+            project.UnitTypes.Load(project, fullMapPath);
+            project.ItemTypes.Load(project);
+            project.DestructibleTypes.Load(project);
+            project.DoodadTypes.Load(project, fullMapPath);
+            project.AbilityTypes.Load(project);
+            project.BuffTypes.Load(project);
+            project.UpgradeTypes.Load(project);
+            SkinFiles.Load(project);
 
-            Cameras.Load();
-            Destructibles.Load();
-            Regions.Load();
-            Sounds.Load();
-            Units.Load();
+            project.Cameras.Load(project);
+            project.Destructibles.Load(project);
+            project.Regions.Load(project);
+            project.Sounds.Load(project);
+            project.Units.Load(project);
 
             isVanillaWESaving = false;
 
@@ -272,11 +271,11 @@ namespace BetterTriggers
         /// </summary>
         /// <param name="value">Reference to map data.</param>
         /// <returns></returns>
-        internal static bool ReferencedDataExists(Value value, string returnType)
+        internal static bool ReferencedDataExists(Project project, Value value, string returnType)
         {
             if (returnType == "unitcode")
             {
-                List<UnitType> unitTypes = UnitTypes.GetAll();
+                List<UnitType> unitTypes = project.UnitTypes.GetAll();
                 for (int i = 0; i < unitTypes.Count; i++)
                 {
                     if (value.value == unitTypes[i].Id)
@@ -287,7 +286,7 @@ namespace BetterTriggers
             }
             else if (returnType == "unit")
             {
-                var units = Units.GetAll();
+                var units = project.Units.GetAll();
                 for (int i = 0; i < units.Count; i++)
                 {
                     if (value.value == $"{units[i].ToString()}_{units[i].CreationNumber.ToString("D4")}")
@@ -298,7 +297,7 @@ namespace BetterTriggers
             }
             else if (returnType == "destructablecode")
             {
-                List<DestructibleType> destTypes = DestructibleTypes.GetAll();
+                List<DestructibleType> destTypes = project.DestructibleTypes.GetAll();
                 for (int i = 0; i < destTypes.Count; i++)
                 {
                     if (value.value == destTypes[i].DestCode)
@@ -309,7 +308,7 @@ namespace BetterTriggers
             }
             else if (returnType == "destructable")
             {
-                var dests = Destructibles.GetAll();
+                var dests = project.Destructibles.GetAll();
                 for (int i = 0; i < dests.Count; i++)
                 {
                     if (value.value == $"{dests[i].ToString()}_{dests[i].CreationNumber.ToString("D4")}")
@@ -320,7 +319,7 @@ namespace BetterTriggers
             }
             else if (returnType == "itemcode")
             {
-                List<ItemType> itemTypes = ItemTypes.GetAll();
+                List<ItemType> itemTypes = project.ItemTypes.GetAll();
                 for (int i = 0; i < itemTypes.Count; i++)
                 {
                     if (value.value == itemTypes[i].ItemCode)
@@ -331,7 +330,7 @@ namespace BetterTriggers
             }
             else if (returnType == "item")
             {
-                List<UnitData> itemTypes = Units.GetMapItemsAll();
+                List<UnitData> itemTypes = project.Units.GetMapItemsAll();
                 for (int i = 0; i < itemTypes.Count; i++)
                 {
                     if (value.value == $"{itemTypes[i].ToString()}_{itemTypes[i].CreationNumber.ToString("D4")}")
@@ -342,7 +341,7 @@ namespace BetterTriggers
             }
             else if (returnType == "doodadcode")
             {
-                List<DoodadType> doodadTypes = DoodadTypes.GetAll();
+                List<DoodadType> doodadTypes = project.DoodadTypes.GetAll();
                 for (int i = 0; i < doodadTypes.Count; i++)
                 {
                     if (value.value == doodadTypes[i].DoodCode)
@@ -353,7 +352,7 @@ namespace BetterTriggers
             }
             else if (returnType == "abilcode")
             {
-                var abilities = AbilityTypes.GetAll();
+                var abilities = project.AbilityTypes.GetAll();
                 for (int i = 0; i < abilities.Count; i++)
                 {
                     if (value.value == abilities[i].AbilCode)
@@ -364,7 +363,7 @@ namespace BetterTriggers
             }
             else if (returnType == "buffcode")
             {
-                var buffs = BuffTypes.GetAll();
+                var buffs = project.BuffTypes.GetAll();
                 for (int i = 0; i < buffs.Count; i++)
                 {
                     if (value.value == buffs[i].BuffCode)
@@ -375,7 +374,7 @@ namespace BetterTriggers
             }
             else if (returnType == "techcode")
             {
-                var tech = UpgradeTypes.GetAll();
+                var tech = project.UpgradeTypes.GetAll();
                 for (int i = 0; i < tech.Count; i++)
                 {
                     if (value.value == tech[i].UpgradeCode)
@@ -386,7 +385,7 @@ namespace BetterTriggers
             }
             else if (returnType == "rect")
             {
-                var regions = Regions.GetAll();
+                var regions = project.Regions.GetAll();
                 for (int i = 0; i < regions.Count; i++)
                 {
                     /* The string Replace exists because values converted with 'TriggerConverter' from a map
@@ -401,7 +400,7 @@ namespace BetterTriggers
             }
             else if (returnType == "camerasetup")
             {
-                var cameras = Cameras.GetAll();
+                var cameras = project.Cameras.GetAll();
                 for (int i = 0; i < cameras.Count; i++)
                 {
                     if (value.value.Replace(" ", "_") == cameras[i].ToString().Replace(" ", "_"))

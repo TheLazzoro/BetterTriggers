@@ -173,13 +173,13 @@ namespace BetterTriggers.Containers
             switch (returnType)
             {
                 case "unit":
-                    text = $"{UnitTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    text = $"{UnitTypes.GetName(_project.UnitTypes, key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
                     break;
                 case "item":
-                    text = $"{ItemTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    text = $"{ItemTypes.GetName(_project.ItemTypes, key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
                     break;
                 case "destructable":
-                    text = $"{DestructibleTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    text = $"{DestructibleTypes.GetName(_project.DestructibleTypes, key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
                     break;
                 case "camerasetup":
                     text = $"{key} <gen>";
@@ -188,26 +188,26 @@ namespace BetterTriggers.Containers
                     text = $"{key} <gen>";
                     break;
                 case "unitcode":
-                    text = UnitTypes.GetName(key);
+                    text = UnitTypes.GetName(_project.UnitTypes, key);
                     break;
                 case "destructablecode":
-                    text = DestructibleTypes.GetName(key);
+                    text = DestructibleTypes.GetName(_project.DestructibleTypes, key);
                     break;
                 case "abilcode":
                 case "heroskillcode":
-                    text = AbilityTypes.GetName(key);
+                    text = AbilityTypes.GetName(_project.AbilityTypes, key);
                     break;
                 case "buffcode":
-                    text = BuffTypes.GetName(key);
+                    text = BuffTypes.GetName(_project.BuffTypes, key);
                     break;
                 case "techcode":
-                    text = UpgradeTypes.GetName(key);
+                    text = UpgradeTypes.GetName(_project.UpgradeTypes, key);
                     break;
                 case "itemcode":
-                    text = ItemTypes.GetName(key);
+                    text = ItemTypes.GetName(_project.ItemTypes, key);
                     break;
                 case "doodadcode":
-                    text = DoodadTypes.GetName(key);
+                    text = DoodadTypes.GetName(_project.DoodadTypes, key);
                     break;
                 case "string":
                 case "StringExt":

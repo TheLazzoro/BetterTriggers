@@ -3,6 +3,7 @@ using BetterTriggers.Logging;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using BetterTriggers.WorldEdit.GameDataReader;
 using CSharpLua;
 using Newtonsoft.Json;
@@ -13,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using War3Net.Build;
 using War3Net.Build.Info;
 
 namespace BetterTriggers.Containers
@@ -41,6 +43,22 @@ namespace BetterTriggers.Containers
         public UnsavedFiles UnsavedFiles { get; private set; }
         public CommandManager CommandManager { get; private set; }
 
+        public Map MPQMap { get; set; }
+        public AbilityTypes AbilityTypes { get; private set; }
+        public BuffTypes BuffTypes { get; private set; }
+        public Cameras Cameras { get; private set; }
+        public Destructibles Destructibles { get; private set; }
+        public DestructibleTypes DestructibleTypes { get; private set; }
+        public DoodadTypes DoodadTypes { get; private set; }
+        public Info Info { get; private set; }
+        public ItemTypes ItemTypes { get; private set; }
+        public MapStrings MapStrings { get; private set; }
+        public Regions Regions { get; private set; }
+        public Sounds Sounds { get; private set; }
+        public Units Units { get; private set; }
+        public UnitTypes UnitTypes { get; private set; }
+        public UpgradeTypes UpgradeTypes { get; private set; }
+
         public bool IsLoading;
         public string createdPath = string.Empty;
         public string deletedPath = string.Empty;
@@ -62,6 +80,21 @@ namespace BetterTriggers.Containers
             References = new(this);
             UnsavedFiles = new();
             CommandManager = new();
+
+            AbilityTypes = new();
+            BuffTypes = new();
+            Cameras = new();
+            Destructibles = new();
+            DestructibleTypes = new();
+            DoodadTypes = new();
+            Info = new();
+            ItemTypes = new();
+            MapStrings = new();
+            Regions = new();
+            Sounds = new();
+            Units = new();
+            UnitTypes = new();
+            UpgradeTypes = new();
         }
 
         /// <summary>
@@ -942,7 +975,7 @@ namespace BetterTriggers.Containers
                 CommandTriggerElementPaste command = new CommandTriggerElementPaste(this, destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();
             }
-            else if(CopiedElements.CutTriggerElements != null && CopiedElements.CutTriggerElements.Elements.Count > 0)
+            else if (CopiedElements.CutTriggerElements != null && CopiedElements.CutTriggerElements.Elements.Count > 0)
             {
                 CommandTriggerElementCutPaste command = new CommandTriggerElementCutPaste(this, CopiedElements.CopiedFromTrigger, destinationTrigger, pasted, parentList, insertIndex);
                 command.Execute();

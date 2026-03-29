@@ -74,7 +74,7 @@ namespace BetterTriggers.Utility
                 {
                     if (localVar.variable.InitialValue is Value value)
                     {
-                        bool dataExists = CustomMapData.ReferencedDataExists(value, localVar.variable.War3Type.Type);
+                        bool dataExists = CustomMapData.ReferencedDataExists(_project, value, localVar.variable.War3Type.Type);
                         if (!dataExists)
                         {
                             localVar.variable.InitialValue = new Parameter();
@@ -261,7 +261,7 @@ namespace BetterTriggers.Utility
                 }
                 else if (parameter is Value value)
                 {
-                    bool refExists = CustomMapData.ReferencedDataExists(value, returnTypes[i]);
+                    bool refExists = CustomMapData.ReferencedDataExists(_project, value, returnTypes[i]);
                     if (!refExists)
                     {
                         removeCount++;

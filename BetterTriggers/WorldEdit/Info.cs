@@ -5,7 +5,7 @@ namespace BetterTriggers.WorldEdit
 {
     public class Info
     {
-        internal static MapInfo MapInfo;
+        internal MapInfo MapInfo;
 
         public static ScriptLanguage GetLanguage(Project project)
         {
@@ -15,9 +15,9 @@ namespace BetterTriggers.WorldEdit
                 return ScriptLanguage.Lua;
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
-            MapInfo = CustomMapData.MPQMap.Info;
+            MapInfo = project.MPQMap.Info;
         }
     }
 }

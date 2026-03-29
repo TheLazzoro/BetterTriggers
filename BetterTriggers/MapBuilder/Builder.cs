@@ -95,7 +95,7 @@ namespace BetterTriggers.TestMap
                 {
                     map.Doodads.Doodads.RemoveAt(0);
                 }
-                map.Doodads.Doodads.AddRange(Destructibles.GetAllDoodads());
+                map.Doodads.Doodads.AddRange(_project.Destructibles.GetAllDoodads());
             }
 
 

@@ -97,7 +97,7 @@ namespace BetterTriggers.Containers
             Variable variable = ExplorerElement.variable;
             if (variable.InitialValue is Value value)
             {
-                bool dataExists = CustomMapData.ReferencedDataExists(value, variable.War3Type.Type);
+                bool dataExists = CustomMapData.ReferencedDataExists(_project, value, variable.War3Type.Type);
                 if (!dataExists)
                 {
                     variable.InitialValue = new Parameter();
