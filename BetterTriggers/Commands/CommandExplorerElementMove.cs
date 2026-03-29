@@ -51,7 +51,7 @@ namespace BetterTriggers.Commands
             explorerElement.SetParent(newParent, NewInsertIndex);
 
             _project.EnableFileEvents(false);
-            FileSystemUtil.Move(explorerElement.GetPath(), newParent.GetPath(), NewInsertIndex);
+            FileSystemUtil.Move(_project, explorerElement.GetPath(), newParent.GetPath(), NewInsertIndex);
             _project.EnableFileEvents(true);
 
 
@@ -65,7 +65,7 @@ namespace BetterTriggers.Commands
             explorerElement.SetParent(oldParent, OldInsertIndex);
 
             _project.EnableFileEvents(false);
-            FileSystemUtil.Move(explorerElement.GetPath(), oldParent.GetPath(), OldInsertIndex);
+            FileSystemUtil.Move(_project, explorerElement.GetPath(), oldParent.GetPath(), OldInsertIndex);
             _project.EnableFileEvents(true);
 
             _project.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);

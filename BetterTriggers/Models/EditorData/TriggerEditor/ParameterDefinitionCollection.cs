@@ -8,11 +8,11 @@ namespace BetterTriggers.Models.EditorData
 {
     public class ParameterDefinitionCollection : TriggerElementCollection
     {
-        public ParameterDefinitionCollection(TriggerElementType Type) : base(Type) { }
+        public ParameterDefinitionCollection(Project project, TriggerElementType Type) : base(project, Type) { }
 
         public void CreateParameterDefinition(Project project, ExplorerElement explorerElement)
         {
-            var definition = new ParameterDefinition();
+            var definition = new ParameterDefinition(project);
             definition.Name = GenerateParameterDefName();
             definition.Id = GenerateId();
 
@@ -43,7 +43,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ParameterDefinitionCollection Clone()
         {
-            var clone = new ParameterDefinitionCollection(ElementType);
+            var clone = new ParameterDefinitionCollection(_project, ElementType);
             this.Elements.ForEach(element =>
             {
                 var clonedChild = element.Clone();

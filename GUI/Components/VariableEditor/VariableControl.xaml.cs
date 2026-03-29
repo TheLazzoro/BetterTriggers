@@ -1,29 +1,15 @@
-﻿using BetterTriggers;
-using BetterTriggers.Commands;
+﻿using BetterTriggers.Commands;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using BetterTriggers.WorldEdit;
-using GUI.Components;
 using GUI.Components.Dialogs;
-using GUI.Components.Shared;
 using GUI.Components.VariableEditor;
 using GUI.Utility;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GUI.Components
 {
@@ -33,6 +19,7 @@ namespace GUI.Components
 
         private Variable variable;
         private ExplorerElement explorerElement;
+        private Project _project;
 
         private string previousText0 = "1";
         private string previousText1 = "1";
@@ -42,7 +29,7 @@ namespace GUI.Components
 
         private VariableControlViewModel _viewModel;
 
-        public VariableControl(ExplorerElement explorerElement, Variable variable)
+        public VariableControl(Project project, ExplorerElement explorerElement, Variable variable)
         {
             this.explorerElement = explorerElement;
             this.variable = variable;
@@ -50,10 +37,11 @@ namespace GUI.Components
             previousText1 = variable.ArraySize[1].ToString();
             InitializeComponent();
 
+            _project = project;
             _viewModel = new VariableControlViewModel(variable);
             DataContext = _viewModel;
 
-            var usedByList = Project.CurrentProject.References.GetReferrers(variable);
+            var usedByList = project.References.GetReferrers(variable);
             usedByList.ForEach(r => _viewModel.ReferenceTriggers.Add(r));
             if (usedByList.Count == 0)
             {
@@ -65,7 +53,7 @@ namespace GUI.Components
             variable.PropertyChanged += Variable_ValuesChanged;
             
             textblockInitialValue.Inlines.Clear();
-            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+            ParamTextBuilder paramTextBuilder = new ParamTextBuilder(_project);
             var inlines = paramTextBuilder.GenerateParamText(variable);
             textblockInitialValue.Inlines.AddRange(inlines);
 
@@ -99,7 +87,7 @@ namespace GUI.Components
         private void Variable_ValuesChanged(object? sender, PropertyChangedEventArgs e)
         {
             textblockInitialValue.Inlines.Clear();
-            ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+            ParamTextBuilder paramTextBuilder = new ParamTextBuilder(_project);
             var inlines = paramTextBuilder.GenerateParamText(variable);
             textblockInitialValue.Inlines.AddRange(inlines);
             UpdateIdentifierText();
@@ -130,13 +118,13 @@ namespace GUI.Components
                 this.comboBoxVariableType.SelectionChanged -= comboBoxVariableType_SelectionChanged;
                 var selected = (War3Type)comboBoxVariableType.SelectedItem;
 
-                CommandVariableModifyType command = new CommandVariableModifyType(explorerElement, variable, selected);
+                CommandVariableModifyType command = new CommandVariableModifyType(_project, explorerElement, variable, selected);
                 command.Execute();
                 OnStateChange();
 
                 _viewModel.SelectedItemPrevious = (War3Type)comboBoxVariableType.SelectedItem;
 
-                ParamTextBuilder controllerParamText = new ParamTextBuilder();
+                ParamTextBuilder controllerParamText = new ParamTextBuilder(_project);
                 this.textblockInitialValue.Inlines.Clear();
                 var inlines = controllerParamText.GenerateParamText(variable);
                 this.textblockInitialValue.Inlines.AddRange(inlines);
@@ -155,7 +143,7 @@ namespace GUI.Components
         {
             if (ResetVarRefs())
             {
-                CommandVariableModifyArray command = new CommandVariableModifyArray(explorerElement, variable, (bool)checkBoxIsArray.IsChecked);
+                CommandVariableModifyArray command = new CommandVariableModifyArray(_project, explorerElement, variable, (bool)checkBoxIsArray.IsChecked);
                 command.Execute();
                 OnStateChange();
 
@@ -182,7 +170,7 @@ namespace GUI.Components
             bool isTwoDimensions = comboBoxArrayDimensions.SelectedIndex == 1;
             if (ResetVarRefs())
             {
-                CommandVariableModifyDimension command = new CommandVariableModifyDimension(explorerElement, variable, isTwoDimensions);
+                CommandVariableModifyDimension command = new CommandVariableModifyDimension(_project, explorerElement, variable, isTwoDimensions);
                 command.Execute();
                 OnStateChange();
             }
@@ -205,7 +193,7 @@ namespace GUI.Components
         private bool ResetVarRefs()
         {
             bool ok = true;
-            List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(this.variable);
+            List<ExplorerElement> refs = _project.References.GetReferrers(this.variable);
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);

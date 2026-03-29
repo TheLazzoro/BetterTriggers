@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BetterTriggers.Containers;
+using System.Collections.Generic;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -20,17 +21,17 @@ namespace BetterTriggers.Models.EditorData
 
         private TriggerElementCollection _actions;
 
-        public ForLoopVarMultiple()
+        public ForLoopVarMultiple(Project project) : base(project)
         {
             function.value = "ForLoopVarMultiple";
             Elements = new();
-            Actions = new(TriggerElementType.Action);
+            Actions = new(project, TriggerElementType.Action);
             IsExpandedTreeItem = true;
         }
 
         public override ForLoopVarMultiple Clone()
         {
-            ForLoopVarMultiple clone = new ForLoopVarMultiple();
+            ForLoopVarMultiple clone = new ForLoopVarMultiple(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();

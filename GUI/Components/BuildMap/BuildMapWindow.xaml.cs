@@ -1,24 +1,13 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.Utility;
 using GUI.Components.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using War3Net.Build.Info;
 
 namespace GUI.Components.BuildMap
@@ -163,7 +152,7 @@ namespace GUI.Components.BuildMap
 
         private void btnShowFolder_Click(object sender, RoutedEventArgs e)
         {
-            FileSystemUtil.OpenInExplorer(Project.CurrentProject.dist, false);
+            FileSystemUtil.OpenInExplorer(_project.dist, false);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

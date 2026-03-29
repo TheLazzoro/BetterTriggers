@@ -16,7 +16,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public EventHandler OK;
         private IValueControl valueControl;
 
-        public ParameterValueControl(string returnType)
+        public ParameterValueControl(Project project, string returnType)
         {
             InitializeComponent();
 
@@ -50,78 +50,78 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 case "heroskillcode":
                     var abilities = AbilityTypes.GetAll();
                     values = abilities.Select(a => new Value() { value = a.AbilCode }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, returnType);
+                    this.valueControl = new ValueControlGeneric(project, values, returnType);
                     break;
                 case "buffcode":
                     var buffs = BuffTypes.GetAll();
                     values = buffs.Select(b => new Value() { value = b.BuffCode }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "buffcode");
+                    this.valueControl = new ValueControlGeneric(project, values, "buffcode");
                     break;
                 case "destructablecode":
                     var destructibles = DestructibleTypes.GetAll();
                     values = destructibles.Select(d => new Value() { value = d.DestCode }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "destructablecode");
+                    this.valueControl = new ValueControlGeneric(project, values, "destructablecode");
                     break;
                 case "doodadcode":
                     var doodads = DoodadTypes.GetAll();
                     values = doodads.Select(d => new Value() { value = d.DoodCode }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "doodadcode");
+                    this.valueControl = new ValueControlGeneric(project, values, "doodadcode");
                     break;
                 case "techcode":
                     var upgrades = UpgradeTypes.GetAll();
                     values = upgrades.Select(up => new Value() { value = up.UpgradeCode }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "techcode");
+                    this.valueControl = new ValueControlGeneric(project, values, "techcode");
                     break;
                 case "itemcode":
                     var itemTypes = ItemTypes.GetAll();
                     values = itemTypes.Select(i => new Value() { value = i.ItemCode }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "itemcode");
+                    this.valueControl = new ValueControlGeneric(project, values, "itemcode");
                     break;
                 case "item":
                     var items = Units.GetMapItemsAll();
                     values = items.Select(i => new Value() { value = $"{i.ToString()}_{i.CreationNumber.ToString("D4")}" }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "item");
+                    this.valueControl = new ValueControlGeneric(project, values, "item");
                     break;
                 case "unit":
                     var units = Units.GetAll();
                     values = units.Select(u => new Value() { value = $"{u.ToString()}_{u.CreationNumber.ToString("D4")}" }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "unit");
+                    this.valueControl = new ValueControlGeneric(project, values, "unit");
                     break;
                 case "destructable":
                     var mapDestructibles = Destructibles.GetAll();
                     values = mapDestructibles.Select(dest => new Value() { value = $"{dest.ToString()}_{dest.CreationNumber.ToString("D4")}" }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "destructable");
+                    this.valueControl = new ValueControlGeneric(project, values, "destructable");
                     break;
                 case "rect":
                     var rects = Regions.GetAll();
                     values = rects.Select(rect => new Value() { value = rect.ToString() }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "rect");
+                    this.valueControl = new ValueControlGeneric(project, values, "rect");
                     break;
                 case "camerasetup":
                     var cameras = Cameras.GetAll();
                     values = cameras.Select(c => new Value() { value = c.ToString() }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "camerasetup");
+                    this.valueControl = new ValueControlGeneric(project, values, "camerasetup");
                     break;
                 case "sound":
                     var sound = Sounds.GetSoundsAll();
                     values = sound.Select(s => new Value() { value = s.Name }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "sound");
+                    this.valueControl = new ValueControlGeneric(project, values, "sound");
                     break;
                 case "musicfile":
                     var music = Sounds.GetMusicAll();
                     values = music.Select(m => new Value() { value = m.Name }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "musicfile");
+                    this.valueControl = new ValueControlGeneric(project, values, "musicfile");
                     break;
                 case "modelfile": // TODO:
                     this.valueControl = new ValueControlModels();
                     break;
                 case "imagefile": // TODO:
-                    this.valueControl = new ValueControlIcons();
+                    this.valueControl = new ValueControlIcons(project);
                     break;
                 case "trigger":
-                    var triggers = Project.CurrentProject.Triggers.GetAll();
+                    var triggers = project.Triggers.GetAll();
                     values = triggers.Select(trig => new Value() { value = trig.GetId().ToString() }).ToList();
-                    this.valueControl = new ValueControlGeneric(values, "trigger");
+                    this.valueControl = new ValueControlGeneric(project, values, "trigger");
                     break;
                 case "scriptcode":
                     this.valueControl = new ValueControlScript();

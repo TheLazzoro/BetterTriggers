@@ -1,25 +1,19 @@
 ﻿using BetterTriggers.Commands;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace GUI.Components.TriggerEditor
 {
     public class HyperlinkParameterVariable : HyperlinkBT
     {
         private Variable variable;
+        private Project _project;
 
-        public HyperlinkParameterVariable(Variable variable, Parameter parameter, string text)
+        public HyperlinkParameterVariable(Project project, Variable variable, Parameter parameter, string text)
             : base(parameter, text)
         {
+            _project = project;
             this.variable = variable;
 
             this.Click += HyperlinkParameter_Click;
@@ -27,12 +21,12 @@ namespace GUI.Components.TriggerEditor
 
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
-            var window = new ParameterWindow(parameter, variable.War3Type.Type);
+            var window = new ParameterWindow(_project, parameter, variable.War3Type.Type);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandVariableModifyInitialValue command = new CommandVariableModifyInitialValue(variable, window.selectedParameter);
+                CommandVariableModifyInitialValue command = new CommandVariableModifyInitialValue(_project, variable, window.selectedParameter);
                 command.Execute();
             }
         }

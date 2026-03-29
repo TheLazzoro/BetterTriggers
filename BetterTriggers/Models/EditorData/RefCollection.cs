@@ -257,7 +257,7 @@ namespace BetterTriggers.Models.EditorData
             else if (triggerElement != null)
             {
                 triggerElement.RemoveFromParent();
-                var invalid = new InvalidECA();
+                var invalid = new InvalidECA(_project);
                 invalid.SetParent(parentTrigElement, index);
             }
         }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -7,7 +7,7 @@ namespace BetterTriggers.Models.EditorData
     /// </summary>
     public class TriggerElementCollection : TriggerElement
     {
-        public TriggerElementCollection(TriggerElementType Type)
+        public TriggerElementCollection(Project project, TriggerElementType Type) : base(project)
         {
             IsExpandedTreeItem = true;
             ElementType = Type;
@@ -45,7 +45,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override TriggerElementCollection Clone()
         {
-            var clone = new TriggerElementCollection(ElementType);
+            var clone = new TriggerElementCollection(_project, ElementType);
             this.Elements.ForEach(element =>
             {
                 var clonedChild = element.Clone();

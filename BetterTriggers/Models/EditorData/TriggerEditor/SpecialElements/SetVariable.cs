@@ -1,15 +1,17 @@
-﻿namespace BetterTriggers.Models.EditorData
+﻿using BetterTriggers.Containers;
+
+namespace BetterTriggers.Models.EditorData
 {
     public class SetVariable : ECA
     {
-        public SetVariable()
+        public SetVariable(Project project) : base(project)
         {
             function.value = "SetVariable";
         }
 
         public override SetVariable Clone()
         {
-            SetVariable clone = new SetVariable();
+            SetVariable clone = new SetVariable(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.ElementType = ElementType;

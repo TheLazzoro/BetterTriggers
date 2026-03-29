@@ -1,20 +1,16 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
+using JassObfuscator;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using War3Net.Build.Info;
 using War3Net.Build;
+using War3Net.Build.Info;
 using War3Net.IO.Mpq;
-using JassObfuscator;
-using War3Net.IO.Compression;
-using BetterTriggers.WorldEdit.GameDataReader;
-using BetterTriggers.WorldEdit;
 
 namespace BetterTriggers.TestMap
 {
@@ -55,7 +51,7 @@ namespace BetterTriggers.TestMap
             if (project == null)
                 return (false, null);
 
-            ScriptGenerator scriptGenerator = new ScriptGenerator(_language);
+            ScriptGenerator scriptGenerator = new ScriptGenerator(_project, _language);
             bool success = scriptGenerator.GenerateScript();
 
             return (success, scriptGenerator.GeneratedScript);

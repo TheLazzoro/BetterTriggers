@@ -1,6 +1,6 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
@@ -15,15 +15,17 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     public partial class ParameterFunctionControl : UserControl, IParameterControl
     {
         private ListViewItem selectedItem;
+        private Project _project;
 
-        public ParameterFunctionControl(string returnType)
+        public ParameterFunctionControl(Project project, string returnType)
         {
             InitializeComponent();
 
+            _project = project;
             if (returnType == "StringExt")
                 returnType = "string";
 
-            List<FunctionTemplate> functions = TriggerData.LoadAllCalls(returnType);
+            List<FunctionTemplate> functions = TriggerData.LoadAllCalls(project, returnType);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < functions.Count; i++)
@@ -93,7 +95,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 return null;
 
             var template = (FunctionTemplate)selectedItem.Tag;
-            var parameter = template.ToParameter();
+            var parameter = template.ToParameter(_project);
             return parameter;
         }
 

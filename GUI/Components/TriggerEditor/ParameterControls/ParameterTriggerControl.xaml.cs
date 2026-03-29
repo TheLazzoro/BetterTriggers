@@ -11,11 +11,10 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private ListViewItem selectedItem;
 
-        public ParameterTriggerControl()
+        public ParameterTriggerControl(Project project)
         {
             InitializeComponent();
 
-            var project = Project.CurrentProject;
             List<TriggerRef> triggers = project.Triggers.GetTriggerRefs();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < triggers.Count; i++)

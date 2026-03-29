@@ -2,7 +2,6 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit.GameDataReader;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,11 +13,13 @@ namespace GUI.Components.Settings
         private EditorSettings settings;
         private string _fontSizePreviousValue;
         private string _autoSavePreviousValue;
+        private Project _project;
 
-        public SettingsWindow()
+        public SettingsWindow(Project project)
         {
             InitializeComponent();
 
+            _project = project;
             settings = EditorSettings.Load();
 
             comboboxDiff.SelectedIndex = settings.Difficulty;
@@ -128,10 +129,9 @@ namespace GUI.Components.Settings
         {
             if (this.IsLoaded)
             {
-                var project = Project.CurrentProject;
-                if (project != null)
+                if (_project != null)
                 {
-                    foreach (var element in project.Variables.variableContainer)
+                    foreach (var element in _project.Variables.variableContainer)
                     {
                         bool isVisible = checkBoxShowGlobalDetail.IsChecked == true;
                         element.SuffixVisibility = isVisible ? Visibility.Visible : Visibility.Collapsed;

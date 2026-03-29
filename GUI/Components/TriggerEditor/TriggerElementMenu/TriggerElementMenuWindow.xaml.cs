@@ -1,18 +1,15 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
 using GUI.Extensions;
 using GUI.Utility;
-using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -24,16 +21,17 @@ namespace GUI.Components.TriggerEditor
         public ECA previous { get; private set; }
         private ECA selected;
 
-        private TriggerElementType triggerElementType;
         private ExplorerElement explorerElement;
         private ListItemFunctionTemplate defaultSelected;
 
-        public TriggerElementMenuWindow(ExplorerElement explorerElement, TriggerElementType triggerElementType, ECA previous = null)
+        private Project _project;
+
+        public TriggerElementMenuWindow(Project project, ExplorerElement explorerElement, TriggerElementType triggerElementType, ECA previous = null)
         {
             InitializeComponent();
 
+            _project = project;
             this.explorerElement = explorerElement;
-            this.triggerElementType = triggerElementType;
             this.previous = previous;
 
             this.Owner = MainWindow.GetMainWindow();
@@ -73,11 +71,11 @@ namespace GUI.Components.TriggerEditor
             }
             else if (triggerElementType == TriggerElementType.Condition)
             {
-                templates = TriggerData.LoadAllConditions();
+                templates = TriggerData.LoadAllConditions(_project);
             }
             else if (triggerElementType == TriggerElementType.Action)
             {
-                templates = TriggerData.LoadAllActions(explorerElement.ElementType);
+                templates = TriggerData.LoadAllActions(_project, explorerElement.ElementType);
             }
 
             List<Searchable> objects = new List<Searchable>();
@@ -85,7 +83,7 @@ namespace GUI.Components.TriggerEditor
             {
                 var template = templates[i];
                 Category category = Category.Get(template.category);
-                ListItemFunctionTemplate listItem = new(template, category);
+                ListItemFunctionTemplate listItem = new(_project, template, category);
 
                 objects.Add(new Searchable()
                 {
@@ -126,7 +124,7 @@ namespace GUI.Components.TriggerEditor
         {
             if (createdTriggerElement != null)
             {
-                ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+                ParamTextBuilder paramTextBuilder = new ParamTextBuilder(_project);
                 ExplorerElement.CurrentToRender = explorerElement;
                 createdTriggerElement.DisplayText = paramTextBuilder.GenerateTreeItemText(explorerElement, createdTriggerElement);
             }

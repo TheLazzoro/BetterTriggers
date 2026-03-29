@@ -2,11 +2,7 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterTriggers.Utility
 {
@@ -15,6 +11,7 @@ namespace BetterTriggers.Utility
     /// </summary>
     public class TriggerValidator
     {
+        private Project _project;
         private bool _includeUnsetParameters;
         private ExplorerElement _explorerElement;
         private Trigger _trigger;
@@ -22,8 +19,9 @@ namespace BetterTriggers.Utility
         private ConditionDefinition _conditionDefinition;
         private FunctionDefinition _functionDefinition;
 
-        public TriggerValidator(ExplorerElement explorerElement, bool validateUnsetParameters = false)
+        public TriggerValidator(Project project, ExplorerElement explorerElement, bool validateUnsetParameters = false)
         {
+            _project = project;
             _includeUnsetParameters = validateUnsetParameters;
             _explorerElement = explorerElement;
             _trigger = explorerElement.trigger;
@@ -91,12 +89,12 @@ namespace BetterTriggers.Utility
                 }
                 else if (triggerElement.Elements[i] is ActionDefinitionRef actionDefRef)
                 {
-                    var found = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId);
+                    var found = _project.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId);
                     ecaExists = found != null;
                     if (found == null)
                     {
                         actionDefRef.RemoveFromParent();
-                        var invalid = new InvalidECA();
+                        var invalid = new InvalidECA(_project);
                         invalid.SetParent(triggerElement, i);
                         removeCount += 1;
                         continue;
@@ -104,12 +102,12 @@ namespace BetterTriggers.Utility
                 }
                 else if (triggerElement.Elements[i] is ConditionDefinitionRef conditionDefRef)
                 {
-                    var found = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
+                    var found = _project.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId);
                     ecaExists = found != null;
                     if (found == null)
                     {
                         conditionDefRef.RemoveFromParent();
-                        var invalid = new InvalidECA();
+                        var invalid = new InvalidECA(_project);
                         invalid.SetParent(triggerElement, i);
                         removeCount += 1;
                         continue;
@@ -117,17 +115,17 @@ namespace BetterTriggers.Utility
                 }
                 else
                 {
-                    ecaExists = TriggerData.FunctionExists(eca.function);
+                    ecaExists = TriggerData.FunctionExists(_project, eca.function);
                 }
 
                 if (!ecaExists)
                 {
                     eca.RemoveFromParent();
-                    var invalid = new InvalidECA();
+                    var invalid = new InvalidECA(_project);
                     invalid.SetParent(triggerElement, i);
                     removeCount += 1;
                 }
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(eca.function, _explorerElement);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(_project, eca.function, _explorerElement);
                 int invalidCount = VerifyParametersAndRemove(eca.function.parameters, returnTypes);
                 eca.HasErrors = invalidCount > 0;
                 removeCount += invalidCount;
@@ -210,7 +208,7 @@ namespace BetterTriggers.Utility
 
                 if (parameter is VariableRef varRef)
                 {
-                    Variable variable = Project.CurrentProject.Variables.GetById(varRef.VariableId, _explorerElement);
+                    Variable variable = _project.Variables.GetById(varRef.VariableId, _explorerElement);
                     if (variable == null)
                     {
                         removeCount++;
@@ -236,7 +234,7 @@ namespace BetterTriggers.Utility
                 }
                 else if (parameter is TriggerRef)
                 {
-                    var trigger = Project.CurrentProject.Triggers.GetByReference(parameter as TriggerRef);
+                    var trigger = _project.Triggers.GetByReference(parameter as TriggerRef);
                     if (trigger == null || trigger.trigger == null)
                     {
                         removeCount++;
@@ -273,7 +271,7 @@ namespace BetterTriggers.Utility
                 }
                 else if (parameter is Function function)
                 {
-                    bool functionExists = TriggerData.FunctionExists(function);
+                    bool functionExists = TriggerData.FunctionExists(_project, function);
                     if (!functionExists)
                     {
                         parameters[i] = new Parameter();
@@ -281,7 +279,7 @@ namespace BetterTriggers.Utility
                     }
                     else
                     {
-                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(_project, function, _explorerElement);
                         removeCount += VerifyParametersAndRemove(function.parameters, _returnTypes);
                     }
                 }

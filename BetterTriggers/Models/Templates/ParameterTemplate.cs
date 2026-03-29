@@ -1,6 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
-using Newtonsoft.Json;
-using System;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Models.Templates
 {
@@ -15,7 +14,7 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public virtual Parameter ToParameter()
+        public virtual Parameter ToParameter(Project project)
         {
             return new Parameter();
         }

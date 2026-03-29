@@ -58,7 +58,7 @@ namespace BetterTriggers.Containers
             variable.Id = _project.GenerateId();
             variable.ArraySize = new int[] { 1, 1 };
             variable.InitialValue = new Value() { value = "0" };
-            LocalVariable localVariable = new LocalVariable(variable);
+            LocalVariable localVariable = new LocalVariable(_project, variable);
             localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
             localVariableContainer.Add(localVariable.variable);
 

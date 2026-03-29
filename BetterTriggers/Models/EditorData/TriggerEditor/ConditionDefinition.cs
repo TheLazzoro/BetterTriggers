@@ -1,9 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BetterTriggers.Containers;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -33,18 +29,24 @@ namespace BetterTriggers.Models.EditorData
                 return sb.ToString();
             }
         }
-        public ParameterDefinitionCollection Parameters = new(TriggerElementType.ParameterDef);
-        public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
-        public TriggerElementCollection Actions = new(TriggerElementType.Action);
+        public ParameterDefinitionCollection Parameters;
+        public TriggerElementCollection LocalVariables;
+        public TriggerElementCollection Actions;
 
-        public ConditionDefinition(ExplorerElement explorerElement)
+        private Project _project;
+
+        public ConditionDefinition(Project project, ExplorerElement explorerElement)
         {
+            _project = project;
             this.explorerElement = explorerElement;
+            Parameters = new(project, TriggerElementType.ParameterDef);
+            LocalVariables = new(project, TriggerElementType.LocalVariable);
+            Actions = new(project, TriggerElementType.Action);
         }
 
         public ConditionDefinition Clone()
         {
-            ConditionDefinition cloned = new ConditionDefinition(explorerElement);
+            ConditionDefinition cloned = new ConditionDefinition(_project, explorerElement);
             cloned.Comment = new string(Comment);
             cloned.Parameters = Parameters.Clone();
             cloned.LocalVariables = LocalVariables.Clone();

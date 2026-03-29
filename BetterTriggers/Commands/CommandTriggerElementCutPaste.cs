@@ -40,7 +40,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            TriggerValidator validator = new TriggerValidator(to);
+            TriggerValidator validator = new TriggerValidator(_project, to);
             validator.RemoveInvalidReferences(listToPaste);
             for (int i = 0; i < listToCut.Count(); i++)
             {

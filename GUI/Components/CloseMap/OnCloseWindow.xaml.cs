@@ -1,17 +1,5 @@
 ﻿using BetterTriggers.Containers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GUI.Components.CloseMap
 {
@@ -20,12 +8,12 @@ namespace GUI.Components.CloseMap
         public bool Yes = false;
         public bool No = false;
 
-        public OnCloseWindow()
+        public OnCloseWindow(Project project)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
 
-            lblMessage.Text = $"Save changes to '{Project.CurrentProject.MapName}'?";
+            lblMessage.Text = $"Save changes to '{project.MapName}'?";
         }
 
         private void btnYes_Click(object sender, RoutedEventArgs e)

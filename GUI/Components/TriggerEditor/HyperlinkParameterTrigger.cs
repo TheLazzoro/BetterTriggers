@@ -1,14 +1,7 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Models.EditorData;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -50,12 +43,12 @@ namespace GUI.Components.TriggerEditor
         private void HyperlinkParameter_Click(object sender, RoutedEventArgs e)
         {
             var parameter = parameters[index];
-            var window = new ParameterWindow(parameter, returnType, eca.function, explorerElement);
+            var window = new ParameterWindow(explorerElement.Project, parameter, returnType, eca.function, explorerElement);
             window.ShowDialog();
 
             if (window.isOK) // set parameter on window close.
             {
-                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(explorerElement, eca, parameters, index, window.selectedParameter);
+                CommandTriggerElementParamModify command = new CommandTriggerElementParamModify(explorerElement.Project, explorerElement, eca, parameters, index, window.selectedParameter);
                 command.Execute();
             }
         }

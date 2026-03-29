@@ -272,7 +272,7 @@ namespace BetterTriggers
                 try
                 {
                     var eca = triggerElementCollection.Elements[i] as ECA;
-                    List<string> returnTypes = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(eca.function, null);
+                    List<string> returnTypes = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(_project, eca.function, null);
                     TriggerFunction triggerFunction = new TriggerFunction();
                     triggerFunction.Name = eca.function.value;
                     triggerFunction.IsEnabled = eca.IsEnabled;
@@ -377,7 +377,7 @@ namespace BetterTriggers
                             converted.Function.Name = paramValue;
                         }
 
-                        var returnTypes1 = BetterTriggers.WorldEdit.TriggerData.GetParameterReturnTypes(function, null);
+                        var returnTypes1 = WorldEdit.TriggerData.GetParameterReturnTypes(_project, function, null);
                         if (function.parameters.Count > 0)
                         {
                             converted.Function.Parameters.AddRange(ConvertTriggerFunctionParameters(function.parameters, returnTypes1));

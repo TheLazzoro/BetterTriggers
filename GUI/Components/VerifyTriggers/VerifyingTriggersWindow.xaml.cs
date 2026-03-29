@@ -1,4 +1,5 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.WorldEdit;
@@ -18,10 +19,12 @@ namespace GUI.Components.VerifyTriggers
         List<ExplorerElement> modifiedElements = new List<ExplorerElement>();
         IdCollisionException collisionError;
         Exception defaultError;
+        Project _project;
 
-        public VerifyingTriggersWindow()
+        public VerifyingTriggersWindow(Project project)
         {
             InitializeComponent();
+            _project = project;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -80,7 +83,7 @@ namespace GUI.Components.VerifyTriggers
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    modifiedElements = CustomMapData.ReloadMapData();
+                    modifiedElements = CustomMapData.ReloadMapData(_project);
                 });
             }
             catch (IdCollisionException ex)

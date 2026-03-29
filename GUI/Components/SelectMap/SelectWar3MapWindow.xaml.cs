@@ -8,23 +8,25 @@ namespace GUI.Components.SelectMap
     {
         public bool OK = false;
         public string mapDir;
+        private Project _project;
 
-        public SelectWar3MapWindow()
+        public SelectWar3MapWindow(Project project)
         {
             InitializeComponent();
+
+            _project = project;
             Owner = MainWindow.GetMainWindow();
         }
 
         private void btnSelect_Click(object sender, RoutedEventArgs e)
         {
-            OpenWar3MapWindow window = new OpenWar3MapWindow();
+            OpenWar3MapWindow window = new OpenWar3MapWindow(_project);
             window.ShowDialog();
             if (!window.OK)
                 return;
 
-            var project = Project.CurrentProject;
-            project.SetWar3MapPath(window.SelectedPath);
-            if (project.War3MapDirExists())
+            _project.SetWar3MapPath(window.SelectedPath);
+            if (_project.War3MapDirExists())
             {
                 mapDir = window.SelectedPath;
                 lblPath.Content = mapDir;
@@ -41,7 +43,7 @@ namespace GUI.Components.SelectMap
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            Project.CurrentProject.SetWar3MapPath(mapDir);
+            _project.SetWar3MapPath(mapDir);
             OK = true;
             this.Close();
         }

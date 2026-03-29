@@ -262,7 +262,7 @@ namespace BetterTriggers.WorldEdit
                     {
                         if (trigger.ElementType == ExplorerElementEnum.Trigger)
                         {
-                            var functions = Function.GetFunctionsFromTrigger(trigger);
+                            var functions = Function.GetFunctionsFromTrigger(_project, trigger);
                             foreach (var function in functions)
                             {
                                 foreach (var parameter in function.parameters)
@@ -602,7 +602,7 @@ namespace BetterTriggers.WorldEdit
                 return null;
 
             ExplorerElement explorerElementTrigger = new ExplorerElement(ExplorerElementEnum.Trigger);
-            Trigger trigger = new Trigger();
+            Trigger trigger = new Trigger(_project);
             explorerElementTrigger.trigger = trigger;
             explorerElementTrigger.IsEnabled = triggerDefinition.IsEnabled;
             explorerElementTrigger.IsInitiallyOn = triggerDefinition.IsInitiallyOn;
@@ -663,7 +663,7 @@ namespace BetterTriggers.WorldEdit
         {
             triggerFunctions.ForEach(function =>
             {
-                ECA te = TriggerElementFactory.Create(function.Name);
+                ECA te = TriggerElementFactory.Create(_project, function.Name);
                 te.IsEnabled = function.IsEnabled;
                 te.function.parameters = CreateParameters(function.Parameters);
 

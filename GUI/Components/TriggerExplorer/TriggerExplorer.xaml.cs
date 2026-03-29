@@ -40,11 +40,13 @@ namespace GUI.Components
         BackgroundWorker searchWorker;
 
         private TriggerExplorerViewModel viewModel;
+        private Project _project;
 
-        public TriggerExplorer()
+        public TriggerExplorer(Project project)
         {
             InitializeComponent();
 
+            _project = project;
             searchWorker = new BackgroundWorker();
             searchWorker.WorkerReportsProgress = true;
             searchWorker.WorkerSupportsCancellation = true;
@@ -52,7 +54,7 @@ namespace GUI.Components
             searchWorker.ProgressChanged += SearchWorker_ProgressChanged;
             searchWorker.RunWorkerCompleted += SearchWorker_RunWorkerCompleted;
 
-            viewModel = new TriggerExplorerViewModel();
+            viewModel = new TriggerExplorerViewModel(project);
             DataContext = viewModel;
 
             KeyDown += TriggerExplorer_KeyDown;
@@ -126,7 +128,7 @@ namespace GUI.Components
         {
             var selected = GetSelectedExplorerElement();
             if (selected == null) return;
-            if (selected == Project.CurrentProject.GetRoot()) return;
+            if (selected == _project.GetRoot()) return;
 
             if (isVisible)
             {
@@ -327,7 +329,7 @@ namespace GUI.Components
             var explorerElementDragItem = GetExplorerElementFromItem(dragItem);
             if (dragItemParent == parentDropTarget)
             {
-                Project.CurrentProject.RearrangeElement(explorerElementDragItem, insertIndex);
+                _project.RearrangeElement(explorerElementDragItem, insertIndex);
                 parentDropTarget = null;
                 return;
             }
@@ -338,9 +340,9 @@ namespace GUI.Components
                 if (contentOnDisk != explorerElementDragItem.script)
                 {
                     // We save before moving the file, so we don't lose any unsaved content.
-                    Project.CurrentProject.fileSystemWatcher.EnableRaisingEvents = false;
+                    _project.fileSystemWatcher.EnableRaisingEvents = false;
                     explorerElementDragItem.Save();
-                    Project.CurrentProject.fileSystemWatcher.EnableRaisingEvents = true;
+                    _project.fileSystemWatcher.EnableRaisingEvents = true;
                 }
             }
 
@@ -348,7 +350,7 @@ namespace GUI.Components
             var explorerElementDropTarget = GetExplorerElementFromItem(dropTarget);
             try
             {
-                FileSystemUtil.Move(explorerElementDragItem.GetPath(), explorerElementDropTarget.GetPath(), this.insertIndex);
+                FileSystemUtil.Move(_project, explorerElementDragItem.GetPath(), explorerElementDropTarget.GetPath(), this.insertIndex);
             }
             catch (Exception ex)
             {
@@ -386,15 +388,15 @@ namespace GUI.Components
             }
             else if (e.Key == Key.C && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                Project.CurrentProject.CopyExplorerElement(selected);
+                _project.CopyExplorerElement(selected);
             }
             else if (e.Key == Key.X && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                Project.CurrentProject.CopyExplorerElement(selected, true);
+                _project.CopyExplorerElement(selected, true);
             }
             else if (e.Key == Key.V && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                Project.CurrentProject.PasteExplorerElement(selected);
+                _project.PasteExplorerElement(selected);
             }
             else if (e.Key == Key.F && Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
@@ -487,23 +489,20 @@ namespace GUI.Components
 
         private void menuCut_Click(object sender, RoutedEventArgs e)
         {
-            Project project = Project.CurrentProject;
             var explorerElement = GetSelectedExplorerElement();
-            project.CopyExplorerElement(explorerElement, true);
+            _project.CopyExplorerElement(explorerElement, true);
         }
 
         private void menuCopy_Click(object sender, RoutedEventArgs e)
         {
-            Project project = Project.CurrentProject;
             var explorerElement = GetSelectedExplorerElement();
-            project.CopyExplorerElement(explorerElement);
+            _project.CopyExplorerElement(explorerElement);
         }
 
         private void menuPaste_Click(object sender, RoutedEventArgs e)
         {
-            Project project = Project.CurrentProject;
             var explorerElement = GetSelectedExplorerElement();
-            project.PasteExplorerElement(explorerElement);
+            _project.PasteExplorerElement(explorerElement);
         }
 
         private void menuRename_Click(object sender, RoutedEventArgs e)
@@ -520,22 +519,22 @@ namespace GUI.Components
 
         private void menuNewCategory_Click(object sender, RoutedEventArgs e)
         {
-            Project.CurrentProject.Folders.Create();
+            _project.Folders.Create();
         }
 
         private void menuNewTrigger_Click(object sender, RoutedEventArgs e)
         {
-            Project.CurrentProject.Triggers.Create();
+            _project.Triggers.Create();
         }
 
         private void menuNewScript_Click(object sender, RoutedEventArgs e)
         {
-            Project.CurrentProject.Scripts.Create();
+            _project.Scripts.Create();
         }
 
         private void menuNewVariable_Click(object sender, RoutedEventArgs e)
         {
-            Project.CurrentProject.Variables.Create();
+            _project.Variables.Create();
         }
 
         private void menuElementEnabled_Click(object sender, RoutedEventArgs e)
@@ -636,8 +635,7 @@ namespace GUI.Components
             if (string.IsNullOrEmpty(searchBox.Text))
                 return;
 
-            Project project = Project.CurrentProject;
-            searchItems = project.GetAllExplorerElements();
+            searchItems = _project.GetAllExplorerElements();
             searchWord = searchBox.Text.ToLower();
             searchWorker.RunWorkerAsync();
         }

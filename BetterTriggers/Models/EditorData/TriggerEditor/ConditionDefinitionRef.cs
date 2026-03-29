@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Automation;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData.TriggerEditor
 {
@@ -11,9 +6,11 @@ namespace BetterTriggers.Models.EditorData.TriggerEditor
     {
         public int ConditionDefinitionId;
 
+        public ConditionDefinitionRef(Project project) : base(project) { }
+
         public override ConditionDefinitionRef Clone()
         {
-            var cloned = new ConditionDefinitionRef();
+            var cloned = new ConditionDefinitionRef(_project);
             cloned.function = this.function.Clone();
             cloned.ConditionDefinitionId = ConditionDefinitionId;
             cloned.ElementType = ElementType;

@@ -1,13 +1,9 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Models.EditorData;
-using GUI.Components.Shared;
 using GUI.Extensions;
 using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace GUI.Components.OpenMap
 {
@@ -20,7 +16,7 @@ namespace GUI.Components.OpenMap
 
         private OpenWar3MapViewModel _viewModel;
 
-        public OpenWar3MapWindow()
+        public OpenWar3MapWindow(Project project)
         {
             InitializeComponent();
 
@@ -35,11 +31,10 @@ namespace GUI.Components.OpenMap
             this.ResetPositionWhenOutOfScreenBounds();
 
             string path;
-            var project = Project.CurrentProject.war3project;
-            useRelativeMapDirectory = project.UseRelativeMapDirectory;
+            useRelativeMapDirectory = project.war3project.UseRelativeMapDirectory;
             if (useRelativeMapDirectory)
             {
-                var root = Project.CurrentProject.projectFiles[0];
+                var root = project.projectFiles[0];
                 string rootDir = Path.GetDirectoryName(root.GetPath());
                 path = Path.Combine(rootDir, "map");
                 btnBrowseFiles.Visibility = Visibility.Hidden;

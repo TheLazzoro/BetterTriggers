@@ -1,13 +1,8 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit.GameDataReader;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using War3Net.IO.Mpq;
 
 namespace BetterTriggers.WorldEdit
@@ -29,9 +24,9 @@ namespace BetterTriggers.WorldEdit
         }
 
         /// <exception cref="IOException">When MPQ archive is in use by another process.</exception>
-        public static byte[] Get(string path)
+        public static byte[] Get(Project project, string path)
         {
-            string fullMapPath = Project.CurrentProject.GetFullMapPath();
+            string fullMapPath = project.GetFullMapPath();
             string filePath = Path.Combine(fullMapPath, path);
             if (File.Exists(filePath))
             {

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using System;
 
 namespace BetterTriggers.Models.Templates
@@ -16,7 +17,7 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public override Value ToParameter()
+        public override Value ToParameter(Project project)
         {
             Value value = new Value();
             value.value = new string(this.value);

@@ -137,7 +137,7 @@ namespace GUI
                 }
                 if (explorerElement.ElementType == ExplorerElementEnum.Trigger)
                 {
-                    control = new TriggerControl(explorerElement);
+                    control = new TriggerControl(_project, explorerElement);
                     var triggerControl = (TriggerControl)control;
                     triggerControl.checkBoxIsCustomScript.IsEnabled = false;
                     triggerControl.checkBoxIsEnabled.IsEnabled = false;
@@ -174,7 +174,7 @@ namespace GUI
                 }
                 else if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
                 {
-                    control = new VariableControl(explorerElement, explorerElement.variable);
+                    control = new VariableControl(_project, explorerElement, explorerElement.variable);
                     control.IsEnabled = false;
 
                     grid.Children.Add(control);

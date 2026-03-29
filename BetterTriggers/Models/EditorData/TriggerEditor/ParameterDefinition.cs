@@ -1,11 +1,4 @@
-﻿using BetterTriggers.Models.EditorData;
-using BetterTriggers.WorldEdit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -37,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
         private string _name;
         private War3Type _returnType;
 
-        public ParameterDefinition()
+        public ParameterDefinition(Project project) : base(project)
         {
             ReturnType = War3Type.Get("integer");
             ElementType = TriggerElementType.ParameterDef;
@@ -46,7 +39,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ParameterDefinition Clone()
         {
-            var clone = new ParameterDefinition();
+            var clone = new ParameterDefinition(_project);
             clone.Name = new string(Name);
             clone.ReturnType = ReturnType;
             clone.DisplayText = new string(DisplayText);

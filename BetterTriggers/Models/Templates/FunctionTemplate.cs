@@ -2,8 +2,6 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Utility;
-using Cake.Incubator.EnumerableExtensions;
-using System;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.Templates
@@ -41,13 +39,13 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public override Function ToParameter()
+        public override Function ToParameter(Project project)
         {
             Function function = new Function();
 
-            if (Project.CurrentProject.FunctionDefinitions.Contains(name))
+            if (project.FunctionDefinitions.Contains(name))
             {
-                var definition = Project.CurrentProject.FunctionDefinitions.FindByName(name);
+                var definition = project.FunctionDefinitions.FindByName(name);
                 var reference = new FunctionDefinitionRef();
                 reference.FunctionDefinitionId = definition.Id;
                 definition.Parameters.Elements.ForEach(el =>
@@ -63,21 +61,19 @@ namespace BetterTriggers.Models.Templates
             }
 
             List<Parameter> parameters = new List<Parameter>();
-            this.parameters.ForEach(p => parameters.Add(p.ToParameter()));
+            this.parameters.ForEach(p => parameters.Add(p.ToParameter(project)));
             function.value = new string(this.value);
             function.parameters = parameters;
             return function;
         }
 
-        public ECA ToECA()
+        public ECA ToECA(Project project)
         {
-            var project = Project.CurrentProject;
-
             ECA eca;
             if (project.ActionDefinitions.Contains(name))
             {
                 var definition = project.ActionDefinitions.GetByKey(name);
-                ActionDefinitionRef reference = new();
+                ActionDefinitionRef reference = new(project);
                 reference.ActionDefinitionId = definition.Id;
                 definition.Parameters.Elements.ForEach(el =>
                 {
@@ -93,7 +89,7 @@ namespace BetterTriggers.Models.Templates
             else if (project.ConditionDefinitions.Contains(name))
             {
                 var definition = project.ConditionDefinitions.GetByKey(name);
-                ConditionDefinitionRef reference = new();
+                ConditionDefinitionRef reference = new(project);
                 reference.ConditionDefinitionId = definition.Id;
                 definition.Parameters.Elements.ForEach(el =>
                 {
@@ -108,10 +104,10 @@ namespace BetterTriggers.Models.Templates
             }
             else
             {
-                eca = TriggerElementFactory.Create(value);
+                eca = TriggerElementFactory.Create(project, value);
             }
 
-            eca.function = ToParameter();
+            eca.function = ToParameter(project);
             eca.ElementType = ElementType;
             return eca;
         }

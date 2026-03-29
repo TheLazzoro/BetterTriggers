@@ -12,9 +12,8 @@ namespace BetterTriggers.WorldEdit
 {
     public class Imports
     {
-        public static List<Value> GetImportsByReturnType(string returnType)
+        public static List<Value> GetImportsByReturnType(Project project, string returnType)
         {
-            var project = Project.CurrentProject;
             string fullMapPath = project.GetFullMapPath();
             bool isMapMPQ = File.Exists(fullMapPath);
             List<Value> imports = new List<Value>();

@@ -1,24 +1,13 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
-using GUI.Components;
 using GUI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GUI.Components.VariableList
 {
@@ -26,11 +15,13 @@ namespace GUI.Components.VariableList
     {
         private VariableControl control;
         private List<VariableControl> controls = new List<VariableControl>(); // for GC
+        private Project _project;
 
-        public VariableListWindow()
+        public VariableListWindow(Project project)
         {
             InitializeComponent();
 
+            _project = project;
             EditorSettings settings = EditorSettings.Load();
             this.Left = settings.variableListWindowX;
             this.Top = settings.variableListWindowY;
@@ -41,7 +32,7 @@ namespace GUI.Components.VariableList
             List<ListViewItem> list = new List<ListViewItem>();
             List<Searchable> objects = new List<Searchable>();
             
-            var variables = Project.CurrentProject.Variables.GetGlobals();
+            var variables = project.Variables.GetGlobals();
             variables.ForEach(v =>
             {
                 var item = new ListViewItem { Content = v.variable.Name + v.variable.SuffixText, Tag = v };
@@ -66,7 +57,7 @@ namespace GUI.Components.VariableList
                 return;
 
             ExplorerElement ex = (ExplorerElement)selected.Tag;
-            VariableControl control = new VariableControl(ex, ex.variable);
+            VariableControl control = new VariableControl(_project, ex, ex.variable);
             if(this.control != null)
                 grid.Children.Remove(this.control);
             this.control = control;

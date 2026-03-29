@@ -2,7 +2,6 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Logging;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
@@ -31,8 +30,6 @@ using GUI.Extensions;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -344,7 +341,7 @@ namespace GUI
         {
             Application.Current.Dispatcher.Invoke(delegate
             {
-                var window = new SavingMapWindow();
+                var window = new SavingMapWindow(_currentProject);
                 window.WindowStartupLocation = WindowStartupLocation.Manual;
                 window.Top = this.Top + this.Height / 2 - window.Height / 2;
                 window.Left = this.Left + this.Width / 2 - window.Width / 2;
@@ -356,7 +353,7 @@ namespace GUI
 
         private void VerifyTriggerData()
         {
-            VerifyingTriggersWindow window = new VerifyingTriggersWindow();
+            VerifyingTriggersWindow window = new VerifyingTriggersWindow(_currentProject);
             window.OnCloseProject += Window_OnCloseProject;
             window.ShowDialog();
             window.OnCloseProject -= Window_OnCloseProject;
@@ -397,11 +394,11 @@ namespace GUI
                     case ExplorerElementEnum.Folder:
                         return;
                     case ExplorerElementEnum.GlobalVariable:
-                        var variableControl = new VariableControl(selectedItem, selectedItem.variable);
+                        var variableControl = new VariableControl(_currentProject, selectedItem, selectedItem.variable);
                         editor = variableControl;
                         break;
                     case ExplorerElementEnum.Root:
-                        var rootControl = new RootControl();
+                        var rootControl = new RootControl(_currentProject);
                         editor = rootControl;
                         break;
                     case ExplorerElementEnum.Script:
@@ -412,7 +409,7 @@ namespace GUI
                     case ExplorerElementEnum.ActionDefinition:
                     case ExplorerElementEnum.ConditionDefinition:
                     case ExplorerElementEnum.FunctionDefinition:
-                        var triggerControl = new TriggerControl(selectedItem);
+                        var triggerControl = new TriggerControl(_currentProject, selectedItem);
                         editor = triggerControl;
                         break;
                     default:
@@ -612,7 +609,7 @@ namespace GUI
 
         private void menuItemOptions_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settings = new SettingsWindow();
+            SettingsWindow settings = new SettingsWindow(_currentProject);
             settings.WindowStartupLocation = WindowStartupLocation.Manual;
             settings.Top = this.Top + this.Height / 2 - settings.Height / 2;
             settings.Left = this.Left + this.Width / 2 - settings.Width / 2;
@@ -678,7 +675,7 @@ namespace GUI
 
             if (!_currentProject.War3MapDirExists())
             {
-                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                SelectWar3MapWindow window = new SelectWar3MapWindow(_currentProject);
                 window.ShowDialog();
                 if (!window.OK)
                 {
@@ -694,7 +691,7 @@ namespace GUI
                 triggerExplorer.treeViewTriggerExplorer.SelectedItemChanged -= TreeViewTriggerExplorer_SelectedItemChanged;
                 triggerExplorer.OnOpenExplorerElement -= TriggerExplorer_OnOpenExplorerElement;
             }
-            triggerExplorer = new TriggerExplorer();
+            triggerExplorer = new TriggerExplorer(_currentProject);
             TriggerExplorer.Current = triggerExplorer;
             triggerExplorer.Margin = new Thickness(-1, 1, 4, -1);
             triggerExplorer.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -767,7 +764,7 @@ namespace GUI
         {
             if (!_currentProject.War3MapDirExists())
             {
-                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                SelectWar3MapWindow window = new SelectWar3MapWindow(_currentProject);
                 window.ShowDialog();
                 if (!window.OK)
                 {
@@ -782,7 +779,7 @@ namespace GUI
                 Components.Dialogs.MessageBox dialog = new Components.Dialogs.MessageBox("Error", status.Message);
                 dialog.ShowDialog();
             }
-            else if (status.Status == BuildMapStatusCode.ScriptError && Info.GetLanguage() == ScriptLanguage.Lua)
+            else if (status.Status == BuildMapStatusCode.ScriptError && Info.GetLanguage(_currentProject) == ScriptLanguage.Lua)
             {
                 Components.Dialogs.MessageBox dialog = new Components.Dialogs.MessageBox("Error", status.Message);
                 dialog.ShowDialog();
@@ -793,7 +790,7 @@ namespace GUI
         {
             if (!_currentProject.War3MapDirExists())
             {
-                SelectWar3MapWindow window = new SelectWar3MapWindow();
+                SelectWar3MapWindow window = new SelectWar3MapWindow(_currentProject);
                 window.ShowDialog();
                 if (!window.OK)
                 {
@@ -885,7 +882,7 @@ namespace GUI
             if (_currentProject.CommandManager.HasUnsavedChanges == false)
                 return true;
 
-            OnCloseWindow onCloseWindow = new OnCloseWindow();
+            var onCloseWindow = new OnCloseWindow(_currentProject);
             onCloseWindow.ShowDialog();
             if (onCloseWindow.Yes)
             {
@@ -953,7 +950,7 @@ namespace GUI
             EnableParameterButton(false);
 
             _currentProject.OnFileExtensionChanged -= CurrentProject_OnFileExtensionChanged;
-            Project.Close();
+            _currentProject.Close();
         }
 
         private void SaveLastOpenedTabs()
@@ -974,13 +971,13 @@ namespace GUI
 
         private void CommandBinding_Executed_ImportTriggers(object sender, ExecutedRoutedEventArgs e)
         {
-            ImportTriggersWindow window = new ImportTriggersWindow();
+            ImportTriggersWindow window = new ImportTriggersWindow(_currentProject);
             window.ShowDialog();
         }
 
         private void CommandBinding_Executed_OpenProjectSettings(object sender, ExecutedRoutedEventArgs e)
         {
-            ProjectSettingsWindow projectSettings = new ProjectSettingsWindow();
+            ProjectSettingsWindow projectSettings = new ProjectSettingsWindow(_currentProject);
             projectSettings.ShowDialog();
         }
 
@@ -1008,7 +1005,7 @@ namespace GUI
 
         private void btnVariableMenu_Click(object sender, RoutedEventArgs e)
         {
-            VariableListWindow window = new VariableListWindow();
+            VariableListWindow window = new VariableListWindow(_currentProject);
             window.ShowDialog();
         }
 

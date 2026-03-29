@@ -712,7 +712,7 @@ namespace BetterTriggers.Containers
         public void CopyTriggerElements(ExplorerElement copiedFrom, TriggerElementCollection copiedCollection, bool isCut = false)
         {
             var type = copiedCollection.Elements[0].ElementType;
-            TriggerElementCollection copiedItems = new TriggerElementCollection(type);
+            TriggerElementCollection copiedItems = new TriggerElementCollection(this, type);
             for (int i = 0; i < copiedCollection.Count(); i++)
             {
                 var element = copiedCollection.Elements[i];
@@ -898,7 +898,7 @@ namespace BetterTriggers.Containers
         public TriggerElementCollection PasteTriggerElements(ExplorerElement destinationTrigger, TriggerElement parentList, int insertIndex)
         {
             var copied = CopiedElements.CopiedTriggerElements;
-            var pasted = new TriggerElementCollection(copied.ElementType);
+            var pasted = new TriggerElementCollection(this, copied.ElementType);
             for (int i = 0; i < copied.Count(); i++)
             {
                 if (copied.Elements[i] is ECA eca)

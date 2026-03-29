@@ -4,18 +4,7 @@ using BetterTriggers.Models.EditorData;
 using GUI.Components.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GUI.Components.ParameterEditor
 {
@@ -53,7 +42,7 @@ namespace GUI.Components.ParameterEditor
             }
 
             // Gets a list of its own uses
-            List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(_definition);
+            List<ExplorerElement> refs = _explorerElement.Project.References.GetReferrers(_definition);
 
             // Gets a list of all other explorer elements with a reference to this explorer element.
             IReferable referable = null;
@@ -72,7 +61,7 @@ namespace GUI.Components.ParameterEditor
                     break;
             }
 
-            refs.AddRange(Project.CurrentProject.References.GetReferrers(referable));
+            refs.AddRange(_explorerElement.Project.References.GetReferrers(referable));
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
@@ -88,7 +77,7 @@ namespace GUI.Components.ParameterEditor
 
             var selected = comboBox.SelectedItem as War3Type;
             previousSelected = selected;
-            CommandParameterDefinitionModifyType command = new(_explorerElement, _definition, selected);
+            CommandParameterDefinitionModifyType command = new(_explorerElement.Project, _explorerElement, _definition, selected);
             command.Execute();
         }
     }

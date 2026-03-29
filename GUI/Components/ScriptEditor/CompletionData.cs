@@ -1,14 +1,12 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.WorldEdit;
 using GUI.Utility;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using War3Net.Build.Info;
@@ -17,7 +15,7 @@ namespace GUI.Components.ScriptEditor
 {
     public class CompletionData : ICompletionData
     {
-        public CompletionData(string text, string description)
+        public CompletionData(Project project, string text, string description)
         {
             EditorSettings settings = EditorSettings.Load();
             Text = text;
@@ -29,7 +27,7 @@ namespace GUI.Components.ScriptEditor
             }
             else
             {
-                header.Inlines.AddRange(TextFormatter.CodeColor(text, Info.GetLanguage()));
+                header.Inlines.AddRange(TextFormatter.CodeColor(text, Info.GetLanguage(project)));
             }
             this.description.Inlines.AddRange(TextFormatter.CodeColor(description, ScriptLanguage.Jass));
 

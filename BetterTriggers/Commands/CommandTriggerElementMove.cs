@@ -35,7 +35,7 @@ namespace BetterTriggers.Commands
         {
             triggerElement.RemoveFromParent();
             triggerElement.SetParent(NewParent, NewInsertIndex);
-            TriggerValidator validator = new TriggerValidator(explorerElement);
+            TriggerValidator validator = new TriggerValidator(_project, explorerElement);
             validator.RemoveInvalidReferences(NewParent);
             _project.CommandManager.AddCommand(this);
             if (refCollection != null)

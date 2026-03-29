@@ -1,12 +1,8 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.Templates;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace GUI.Components.TriggerEditor
 {
@@ -26,7 +22,7 @@ namespace GUI.Components.TriggerEditor
         
         private double _iconWidth = Double.NaN; // "auto" property in WPF
 
-        public ListItemFunctionTemplate(FunctionTemplate template, Category category)
+        public ListItemFunctionTemplate(Project project, FunctionTemplate template, Category category)
         {
             EditorSettings settings = EditorSettings.Load();
             string categoryStr = Locale.Translate(category.Name);
@@ -36,7 +32,7 @@ namespace GUI.Components.TriggerEditor
             string name = template.name != "" ? template.name : template.value;
             DisplayText = categoryStr + name;
             IconImage = category.Icon;
-            eca = template.ToECA();
+            eca = template.ToECA(project);
             eca.IconImage = category.Icon;
 
             PropertyChanged += (s, e) =>

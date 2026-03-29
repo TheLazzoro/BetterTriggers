@@ -1,5 +1,5 @@
 ﻿using BetterTriggers;
-using BetterTriggers.WorldEdit;
+using BetterTriggers.Containers;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -11,6 +11,7 @@ namespace GUI.Components.SaveMap
 {
     public partial class SavingMapWindow : Window
     {
+        private Project _project;
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
         [DllImport("user32.dll", SetLastError = true)]
@@ -18,10 +19,11 @@ namespace GUI.Components.SaveMap
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        public SavingMapWindow()
+        public SavingMapWindow(Project project)
         {
             InitializeComponent();
 
+            _project = project;
             this.Loaded += delegate
             {
                 var hwnd = new WindowInteropHelper(this).Handle;
@@ -45,7 +47,7 @@ namespace GUI.Components.SaveMap
 
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (CustomMapData.IsMapSaving())
+            while (CustomMapData.IsMapSaving(_project))
             {
                 Thread.Sleep(1000);
             }
