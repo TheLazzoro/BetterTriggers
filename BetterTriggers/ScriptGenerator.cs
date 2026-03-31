@@ -128,7 +128,7 @@ end
             ";
         }
 
-
+        private static object _scriptGenerateLock = new object();
         internal bool GenerateScript()
         {
             bool success = true;
@@ -145,35 +145,38 @@ end
 
             SortTriggerElements(inMemoryFiles[0]); // root node.
             StringBuilder script = Generate();
-
-            string tempPath = language == ScriptLanguage.Jass ? "Resources\\vJass.j" : "Resources\\Lua.lua";
-            var scriptFileToInput = Path.Combine(Directory.GetCurrentDirectory(), tempPath);
-            File.WriteAllText(scriptFileToInput, script.ToString());
-
-            if (language == ScriptLanguage.Jass)
+            lock (_scriptGenerateLock)
             {
-                Process p = new();
-                ProcessStartInfo startInfo = new();
-                startInfo.CreateNoWindow = true;
-                startInfo.FileName = JassHelper;
-                startInfo.ArgumentList.Add("--scriptonly");
-                startInfo.ArgumentList.Add($"{PathCommonJ}");
-                startInfo.ArgumentList.Add($"{PathBlizzardJ}");
-                startInfo.ArgumentList.Add($"{scriptFileToInput}");
-                startInfo.ArgumentList.Add($"{outputPath}");
-                p.StartInfo = startInfo;
-                p.Start();
-                p.WaitForExit();
-                success = p.ExitCode == 0;
-                p.Kill();
+                string tempPath = language == ScriptLanguage.Jass ? "Resources\\vJass.j" : "Resources\\Lua.lua";
+                var scriptFileToInput = Path.Combine(Directory.GetCurrentDirectory(), tempPath);
+                File.WriteAllText(scriptFileToInput, script.ToString());
+
+                if (language == ScriptLanguage.Jass)
+                {
+                    Process p = new();
+                    ProcessStartInfo startInfo = new();
+                    startInfo.CreateNoWindow = true;
+                    startInfo.FileName = JassHelper;
+                    startInfo.ArgumentList.Add("--scriptonly");
+                    startInfo.ArgumentList.Add($"{PathCommonJ}");
+                    startInfo.ArgumentList.Add($"{PathBlizzardJ}");
+                    startInfo.ArgumentList.Add($"{scriptFileToInput}");
+                    startInfo.ArgumentList.Add($"{outputPath}");
+                    p.StartInfo = startInfo;
+
+                    p.Start();
+                    p.WaitForExit();
+                    success = p.ExitCode == 0;
+                    p.Kill();
+                }
                 if (File.Exists(outputPath))
                     GeneratedScript = File.ReadAllText(outputPath);
-            }
-            else
-            {
-                File.WriteAllText(outputPath, script.ToString());
-                if (File.Exists(outputPath))
-                    GeneratedScript = File.ReadAllText(outputPath);
+                else
+                {
+                    File.WriteAllText(outputPath, script.ToString());
+                    if (File.Exists(outputPath))
+                        GeneratedScript = File.ReadAllText(outputPath);
+                }
             }
 
             return success;

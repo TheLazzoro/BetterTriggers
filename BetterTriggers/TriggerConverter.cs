@@ -1,19 +1,14 @@
+using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Utility;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.IO;
-using War3Net.Build.Extensions;
-using War3Net.Build.Script;
-using System.Threading;
+using System.Linq;
 using War3Net.Build.Info;
-using BetterTriggers.Models.SaveableData;
-using Newtonsoft.Json;
-using BetterTriggers.Models.EditorData;
-using BetterTriggers.Utility;
-using BetterTriggers.Containers;
-using War3Net.Build;
-using BetterTriggers.Commands;
+using War3Net.Build.Script;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -43,7 +38,7 @@ namespace BetterTriggers.WorldEdit
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
 
-        public TriggerConverter(Project? project, string mapPath)
+        public TriggerConverter(Project project, string mapPath)
         {
             _project = project;
             this.mapPath = mapPath;
@@ -60,10 +55,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.Load(_project, mapPath, false);
-
-            var map = _project.MPQMap;
-            //var map = Map.Open(mapPath);
+            var map = CustomMapData.Load(_project, mapPath, false);
             if (map.Triggers == null)
                 return;
 
@@ -185,7 +177,7 @@ namespace BetterTriggers.WorldEdit
             _project.EnableFileEvents(true);
 
             CustomMapData.Load(_project, mapPathProjectToImportInto);
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 CustomMapData.ReloadMapData(_project);
             });

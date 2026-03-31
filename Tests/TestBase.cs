@@ -11,17 +11,29 @@ namespace Tests
     /// </summary>
     public abstract class TestBase
     {
+        private static object _lock = new object();
+        private static Application _app;
+
         public TestBase()
         {
-            if(Application.Current == null)
+            lock (_lock)
             {
-                new Application(); // Hack. Instantiates a new WPF application.
+                if (Application.Current == null)
+                {
+                    _app = new Application(); // Hack. Instantiates a new WPF application.
+                    _app.DispatcherUnhandledException += app_DispatcherUnhandledException;
+                }
+                if (!Init.HasLoaded)
+                {
+                    WarcraftStorageReader.GameVersion = new Version(1, 36, 1);
+                    Init.Initialize(true);
+                }
             }
-            if(!Init.HasLoaded)
-            {
-                WarcraftStorageReader.GameVersion = new Version(1, 36, 1);
-                Init.Initialize(true);
-            }
+        }
+
+        private void app_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            
         }
     }
 }

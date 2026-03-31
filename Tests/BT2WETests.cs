@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using War3Net.Build;
-using War3Net.IO.Mpq;
 
 namespace Tests
 {
@@ -71,7 +70,11 @@ namespace Tests
         {
             var editorSettings = EditorSettings.Load();
             editorSettings.Export_IncludeTriggerData = true;
-            TriggerConverter triggerConverter = new TriggerConverter(null, mapPath);
+            var project = new Project()
+            {
+                war3project = new War3Project()
+            };
+            TriggerConverter triggerConverter = new TriggerConverter(project, mapPath);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapPath));
             projectFile = triggerConverter.Convert(destination);
 
@@ -80,7 +83,7 @@ namespace Tests
             war3project.War3MapDirectory = mapPath;
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
-            var project = Project.Load(projectFile);
+            project = Project.Load(projectFile);
             CustomMapData.Load(project, mapPath);
             CustomMapData.ReloadMapData(project);
 

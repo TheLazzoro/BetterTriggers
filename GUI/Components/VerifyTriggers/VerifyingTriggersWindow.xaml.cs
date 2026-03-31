@@ -81,7 +81,7 @@ namespace GUI.Components.VerifyTriggers
         {
             try
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current.Dispatcher.BeginInvoke(() =>
                 {
                     modifiedElements = CustomMapData.ReloadMapData(_project);
                 });

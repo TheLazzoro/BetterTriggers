@@ -8,15 +8,16 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 
+[assembly: Parallelize(Workers = 0, Scope = ExecutionScope.MethodLevel)]
 namespace Tests
 {
     [TestClass]
     public class ScriptGenerateTests : TestBase
     {
-        static War3Project war3project;
-        static string mapDir;
-        static string projectFile;
-        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+        War3Project war3project;
+        string mapDir;
+        string projectFile;
+        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp2");
         static string failedMsg = "Script generate failed. Project folder kept for inspection.";
         Project _project;
         bool success;
@@ -324,8 +325,12 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/LocalVarMap.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/LocalVarMap/map/Map.w3x");
-            CustomMapData.Load(null, mapDir);
+            _project = new Project
+            {
+                war3project = new War3Project()
+            };
             _project = Project.Load(projectDir);
+            CustomMapData.Load(_project, mapDir);
             Builder builder = new(_project);
             bool success;
             string script;
@@ -339,8 +344,12 @@ namespace Tests
         {
             string projectDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/Frames_Map.json");
             mapDir = Path.Combine(Directory.GetCurrentDirectory(), "TestResources/Projects/Frames_Map/map/Map.w3x");
-            CustomMapData.Load(null, mapDir);
+            _project = new Project
+            {
+                war3project = new War3Project()
+            };
             _project = Project.Load(projectDir);
+            CustomMapData.Load(_project, mapDir);
             Builder builder = new(_project);
             bool success;
             string script;
@@ -353,7 +362,11 @@ namespace Tests
 
         bool ConvertMap_GenerateScript(string mapDir, bool GenerateAllMapObjectVariables = false)
         {
-            TriggerConverter triggerConverter = new TriggerConverter(null, mapDir);
+            _project = new Project
+            {
+                war3project = new War3Project()
+            };
+            TriggerConverter triggerConverter = new TriggerConverter(_project, mapDir);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapDir));
             projectFile = triggerConverter.Convert(destination);
 

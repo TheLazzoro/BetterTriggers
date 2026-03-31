@@ -43,7 +43,7 @@ namespace GUI.Components
 
         private void ExplorerElementScript_OnReload()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 this.suppressStateChange = true;
                 textEditor.avalonEditor.Document.Text = explorerElementScript.script;

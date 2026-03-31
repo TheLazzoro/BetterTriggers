@@ -67,7 +67,7 @@ namespace BetterTriggers.Containers
         bool wasMoved;
 
 
-        private Project()
+        public Project()
         {
             IsLoading = true;
             Folders = new(this);
@@ -453,7 +453,7 @@ namespace BetterTriggers.Containers
 
         public void OnRenameElement(string oldFullPath, string newFullPath)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 var rootNode = projectFiles[0];
                 ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
@@ -1223,7 +1223,7 @@ namespace BetterTriggers.Containers
         /// <param name="doEnable"></param>
         public void EnableFileEvents(bool doEnable)
         {
-            fileSystemWatcher.EnableRaisingEvents = doEnable;
+            //fileSystemWatcher.EnableRaisingEvents = doEnable;
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
@@ -1275,7 +1275,10 @@ namespace BetterTriggers.Containers
             LoggingService service = new LoggingService();
             Task.Factory.StartNew(() => service.SubmitError_Async(e.GetException(), "-- LOGGED BY SYSTEM --"));
 
-            throw new Exception(e.GetException().Message);
+            Application.Current.Dispatcher.BeginInvoke(() =>
+            {
+                throw new Exception(e.GetException().Message);
+            });
         }
     }
 }

@@ -37,7 +37,7 @@ namespace GUI.Components.VersionCheck
             var versionCheck = new VersionCheck();
             var version = await versionCheck.GetNewestVersionAsync();
 
-            Application.Current.Dispatcher.Invoke(delegate
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 Title = "Version";
                 switch (version.VersionCheckEnum)

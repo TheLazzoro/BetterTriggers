@@ -105,7 +105,7 @@ namespace BetterTriggers
         }
 
 
-        public static void Load(Project? project, string fullMapPath = null, bool isFilesystemWatcherEnabled = true)
+        public static Map Load(Project? project, string fullMapPath = null, bool isFilesystemWatcherEnabled = true)
         {
             _project = project;
             if (string.IsNullOrEmpty(fullMapPath))
@@ -117,24 +117,27 @@ namespace BetterTriggers
             {
                 Thread.Sleep(1000);
             }
-            project.MPQMap = Map.Open(fullMapPath);
+            var mpqMap = Map.Open(fullMapPath);
+            if (_project != null)
+            {
+                project.MPQMap = mpqMap;
+                project.Info.Load(project);
+                project.MapStrings.Load(project);
+                project.UnitTypes.Load(project, fullMapPath);
+                project.ItemTypes.Load(project);
+                project.DestructibleTypes.Load(project);
+                project.DoodadTypes.Load(project, fullMapPath);
+                project.AbilityTypes.Load(project);
+                project.BuffTypes.Load(project);
+                project.UpgradeTypes.Load(project);
+                SkinFiles.Load(project);
 
-            project.Info.Load(project);
-            project.MapStrings.Load(project);
-            project.UnitTypes.Load(project, fullMapPath);
-            project.ItemTypes.Load(project);
-            project.DestructibleTypes.Load(project);
-            project.DoodadTypes.Load(project, fullMapPath);
-            project.AbilityTypes.Load(project);
-            project.BuffTypes.Load(project);
-            project.UpgradeTypes.Load(project);
-            SkinFiles.Load(project);
-
-            project.Cameras.Load(project);
-            project.Destructibles.Load(project);
-            project.Regions.Load(project);
-            project.Sounds.Load(project);
-            project.Units.Load(project);
+                project.Cameras.Load(project);
+                project.Destructibles.Load(project);
+                project.Regions.Load(project);
+                project.Sounds.Load(project);
+                project.Units.Load(project);
+            }
 
             isVanillaWESaving = false;
 
@@ -153,6 +156,8 @@ namespace BetterTriggers
                 watcher.Created += Watcher_Created;
                 watcher.Changed += Watcher_Changed;
             }
+
+            return mpqMap;
         }
 
 

@@ -204,7 +204,7 @@ namespace GUI
             var settings = EditorSettings.Load();
             if (!settings.autosave) return;
 
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 _currentProject.Save();
             });
@@ -339,7 +339,7 @@ namespace GUI
 
         private void CustomMapData_OnSaving()
         {
-            Application.Current.Dispatcher.Invoke(delegate
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 var window = new SavingMapWindow(_currentProject);
                 window.WindowStartupLocation = WindowStartupLocation.Manual;

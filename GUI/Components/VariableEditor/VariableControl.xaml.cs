@@ -97,7 +97,7 @@ namespace GUI.Components
 
         private void UpdateIdentifierText()
         {
-            Application.Current.Dispatcher.Invoke(delegate
+            Application.Current.Dispatcher.BeginInvoke(() => 
             {
                 this.textBlockVariableNameUDG.Text = variable.GetIdentifierName();
             });

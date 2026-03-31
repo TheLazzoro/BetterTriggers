@@ -70,7 +70,7 @@ namespace GUI.Components.VersionCheck
             var version = await versionCheck.GetNewestVersionAsync();
             if (version.VersionCheckEnum == VersionCheckEnum.NewerExists)
             {
-                Application.Current.Dispatcher.Invoke(delegate
+                Application.Current.Dispatcher.Invoke(() => 
                 {
                     var window = new NewVersionWindow_OnStart(version, owner);
                     window.ShowDialog();

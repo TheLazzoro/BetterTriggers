@@ -111,7 +111,7 @@ namespace GUI.Components.Shared
 
         private void StartFade(object? sender, ElapsedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 _animation = new DoubleAnimation();
                 _animation.To = 0;
