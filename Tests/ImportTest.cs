@@ -51,14 +51,16 @@ namespace Tests
             for (int i = 0; i < triggers.Count; i++)
             {
                 var t = triggers[i];
-                Assert.IsFalse(triggerIds.Contains(t.GetId()));
-                triggerIds.Add(t.GetId());
+                int id = t.GetId();
+                Assert.IsFalse(triggerIds.Contains(id));
+                triggerIds.Add(id);
             }
             for (int i = 0; i < variables.Count; i++)
             {
                 var v = variables[i];
-                Assert.IsFalse(variableIds.Contains(v.GetId()));
-                variableIds.Add(v.GetId());
+                int id = v.GetId();
+                Assert.IsFalse(variableIds.Contains(id));
+                variableIds.Add(id);
             }
         }
     }

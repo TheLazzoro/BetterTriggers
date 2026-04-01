@@ -453,7 +453,7 @@ namespace BetterTriggers.Containers
 
         public void OnRenameElement(string oldFullPath, string newFullPath)
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 var rootNode = projectFiles[0];
                 ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);

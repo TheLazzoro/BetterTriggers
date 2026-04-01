@@ -16,7 +16,7 @@ namespace Tests
     [TestClass]
     public class BT2WETests : TestBase
     {
-        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "TempBT2WE");
         private string projectFile;
 
         [ClassInitialize]
@@ -84,7 +84,7 @@ namespace Tests
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
             project = Project.Load(projectFile);
-            CustomMapData.Load(project, mapPath);
+            CustomMapData.Load(project, mapPath, isFilesystemWatcherEnabled: false);
             CustomMapData.ReloadMapData(project);
 
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?

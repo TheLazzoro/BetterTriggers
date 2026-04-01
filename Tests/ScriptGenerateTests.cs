@@ -330,7 +330,7 @@ namespace Tests
                 war3project = new War3Project()
             };
             _project = Project.Load(projectDir);
-            CustomMapData.Load(_project, mapDir);
+            CustomMapData.Load(_project, mapDir, isFilesystemWatcherEnabled: false);
             Builder builder = new(_project);
             bool success;
             string script;
@@ -349,7 +349,7 @@ namespace Tests
                 war3project = new War3Project()
             };
             _project = Project.Load(projectDir);
-            CustomMapData.Load(_project, mapDir);
+            CustomMapData.Load(_project, mapDir, isFilesystemWatcherEnabled: false);
             Builder builder = new(_project);
             bool success;
             string script;
@@ -377,7 +377,7 @@ namespace Tests
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
             _project = Project.Load(projectFile);
-            CustomMapData.Load(_project, mapDir);
+            CustomMapData.Load(_project, mapDir, isFilesystemWatcherEnabled: false);
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
             string script;
             Builder builder = new(_project);

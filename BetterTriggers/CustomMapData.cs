@@ -118,26 +118,23 @@ namespace BetterTriggers
                 Thread.Sleep(1000);
             }
             var mpqMap = Map.Open(fullMapPath);
-            if (_project != null)
-            {
-                project.MPQMap = mpqMap;
-                project.Info.Load(project);
-                project.MapStrings.Load(project);
-                project.UnitTypes.Load(project, fullMapPath);
-                project.ItemTypes.Load(project);
-                project.DestructibleTypes.Load(project);
-                project.DoodadTypes.Load(project, fullMapPath);
-                project.AbilityTypes.Load(project);
-                project.BuffTypes.Load(project);
-                project.UpgradeTypes.Load(project);
-                SkinFiles.Load(project);
+            project.MPQMap = mpqMap;
+            project.Info.Load(project);
+            project.MapStrings.Load(project);
+            project.UnitTypes.Load(project, fullMapPath);
+            project.ItemTypes.Load(project);
+            project.DestructibleTypes.Load(project);
+            project.DoodadTypes.Load(project, fullMapPath);
+            project.AbilityTypes.Load(project);
+            project.BuffTypes.Load(project);
+            project.UpgradeTypes.Load(project);
+            SkinFiles.Load(project);
 
-                project.Cameras.Load(project);
-                project.Destructibles.Load(project);
-                project.Regions.Load(project);
-                project.Sounds.Load(project);
-                project.Units.Load(project);
-            }
+            project.Cameras.Load(project);
+            project.Destructibles.Load(project);
+            project.Regions.Load(project);
+            project.Sounds.Load(project);
+            project.Units.Load(project);
 
             isVanillaWESaving = false;
 

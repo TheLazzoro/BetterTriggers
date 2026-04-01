@@ -11,11 +11,12 @@ namespace Tests
     public class ScriptTests : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
-        static string name = "TestProject";
-        static string projectPath;
+        static string parentFolder = "TestProjectScripts";
         static string directory = System.IO.Directory.GetCurrentDirectory();
-        static ExplorerElement element1, element2, element3;
-
+        
+        string name;
+        string projectPath;
+        ExplorerElement element1, element2, element3;
         Project project;
 
 
@@ -31,12 +32,14 @@ namespace Tests
         [TestInitialize]
         public void BeforeEach()
         {
-            if (Directory.Exists(Path.Combine(directory, name)))
-                Directory.Delete(Path.Combine(directory, name), true);
-            if (File.Exists(Path.Combine(directory, name + ".json")))
-                File.Delete(Path.Combine(directory, name + ".json"));
+            name = "Project-" + Guid.NewGuid().ToString();
+            var projectFolder = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(Path.Combine(parentFolder, name)))
+                Directory.Delete(Path.Combine(parentFolder, name), true);
+            if (File.Exists(Path.Combine(parentFolder, name + ".json")))
+                File.Delete(Path.Combine(parentFolder, name + ".json"));
 
-            projectPath = Project.Create(language, name, directory);
+            projectPath = Project.Create(language, name, parentFolder);
             project = Project.Load(projectPath);
             project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 

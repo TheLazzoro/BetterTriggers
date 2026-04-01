@@ -11,11 +11,12 @@ namespace Tests
     public class TriggerTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
-        static string name = "TestProject";
-        static string projectPath;
+        static string parentFolder = "TriggerTestProjects";
         static string directory = System.IO.Directory.GetCurrentDirectory();
-        static ExplorerElement element1, element2, element3;
 
+        string name;
+        string projectPath;
+        ExplorerElement element1, element2, element3;
         Project project;
 
         [ClassInitialize]
@@ -35,12 +36,14 @@ namespace Tests
         [TestInitialize]
         public void BeforeEach()
         {
-            if (Directory.Exists(directory + @"/" + name))
-                Directory.Delete(directory + @"/" + name, true);
-            if(File.Exists(directory + @"/" + name + ".json"))
-                File.Delete(directory + @"/" + name + ".json");
+            name = "Project-" + Guid.NewGuid().ToString();
+            var projectFolder = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(projectFolder + @"/" + name))
+                Directory.Delete(projectFolder + @"/" + name, true);
+            if(File.Exists(projectFolder + @"/" + name + ".json"))
+                File.Delete(projectFolder + @"/" + name + ".json");
 
-            projectPath = Project.Create(language, name, directory);
+            projectPath = Project.Create(language, name, projectFolder);
             project = Project.Load(projectPath);
             project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 

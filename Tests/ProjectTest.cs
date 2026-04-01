@@ -11,11 +11,10 @@ namespace Tests
     public class ProjectTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
-        static string name = "TestProject";
-        static string projectPath;
-        static string directory = System.IO.Directory.GetCurrentDirectory();
-
-        static ExplorerElement element1, element2, element3;
+        static string parentFolder = "TestProjects";
+        string name;
+        string projectPath;
+        static string directory = Directory.GetCurrentDirectory();
 
         private Project _project;
 
@@ -27,17 +26,22 @@ namespace Tests
             Console.WriteLine("RUNNING PROJECT TESTS");
             Console.WriteLine("-----------");
             Console.WriteLine("");
+
+            if (Directory.Exists(directory + @"/" + parentFolder))
+                Directory.Delete(directory + @"/" + parentFolder, true);
         }
 
         [TestInitialize]
         public void BeforeEach()
         {
-            if (Directory.Exists(directory + @"/" + name))
-                Directory.Delete(directory + @"/" + name, true);
-            if (File.Exists(directory + @"/" + name + ".json"))
-                File.Delete(directory + @"/" + name + ".json");
+            name = "Project-" + Guid.NewGuid().ToString();
+            var projectFolder = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(projectFolder + @"/" + name))
+                Directory.Delete(projectFolder + @"/" + name, true);
+            if (File.Exists(projectFolder + @"/" + name + ".json"))
+                File.Delete(projectFolder + @"/" + name + ".json");
 
-            projectPath = Project.Create(language, name, directory);
+            projectPath = Project.Create(language, name, projectFolder);
             _project = Project.Load(projectPath);
             _project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 

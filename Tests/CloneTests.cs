@@ -1,6 +1,7 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,16 +14,35 @@ namespace Tests
     public class CloneTests : TestBase
     {
         private ScriptLanguage language = ScriptLanguage.Jass;
-        private string name = "TestProject";
-        private string directory = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+        private static string parentFolder = "TestProjectsClone";
+        private static string directory = Path.Combine(Directory.GetCurrentDirectory(), "TempClone");
+        private string projectFolder;
+        private string name;
         Project project;
+
+
+        [ClassInitialize]
+        public static void BeforeAll(TestContext context)
+        {
+            Console.WriteLine("-----------");
+            Console.WriteLine("RUNNING PROJECT TESTS");
+            Console.WriteLine("-----------");
+            Console.WriteLine("");
+
+            var parentDir = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(parentDir))
+                Directory.Delete(parentDir, true);
+        }
 
         [TestInitialize]
         public void BeforeEach()
         {
-            if (!Directory.Exists(directory))
+            name = "Project-" + Guid.NewGuid().ToString();
+            var parentDir = Path.Combine(directory, parentFolder);
+            projectFolder = Path.Combine(parentDir, name);
+            if (!Directory.Exists(projectFolder))
             {
-                Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(projectFolder);
             }
         }
 
@@ -32,10 +52,6 @@ namespace Tests
             if (project != null)
             {
                 project.Close();
-            }
-            if (Directory.Exists(directory))
-            {
-                Directory.Delete(directory, true);
             }
         }
 
@@ -70,7 +86,7 @@ namespace Tests
         public void Clone_ActionDefinition_Test()
         {
             // Arrange
-            var projectPath = Project.Create(language, name, directory);
+            var projectPath = Project.Create(language, name, projectFolder);
             project = Project.Load(projectPath);
             var explorerElement = new ExplorerElement(project, ExplorerElementEnum.ActionDefinition);
             var actionDefinition = new ActionDefinition(project, explorerElement);

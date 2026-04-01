@@ -12,7 +12,7 @@ namespace Tests
     {
         static string sourceFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "source";
         static string targetFolder = System.IO.Directory.GetCurrentDirectory() + @"\" + "target";
-        static string projectFolder = Path.Combine(Directory.GetCurrentDirectory(), "testProject");
+        static string projectFolder = Path.Combine(Directory.GetCurrentDirectory(), "TestProjectFileSystem");
 
         private Project _project;
 
