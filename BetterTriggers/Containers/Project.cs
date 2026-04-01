@@ -1223,7 +1223,7 @@ namespace BetterTriggers.Containers
         /// <param name="doEnable"></param>
         public void EnableFileEvents(bool doEnable)
         {
-            //fileSystemWatcher.EnableRaisingEvents = doEnable;
+            fileSystemWatcher.EnableRaisingEvents = doEnable;
         }
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
