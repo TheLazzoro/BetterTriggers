@@ -19,10 +19,14 @@ namespace BetterTriggers.Containers
             _project = project;
         }
 
+        private static object _lock = new object();
         public void AddTrigger(ExplorerElement trigger)
         {
-            triggerElementContainer.Add(trigger);
-            lastCreated = trigger;
+            lock (_lock)
+            {
+                triggerElementContainer.Add(trigger);
+                lastCreated = trigger;
+            }
         }
 
         public int Count()
@@ -97,7 +101,10 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            triggerElementContainer.Remove(explorerElement);
+            lock (_lock)
+            {
+                triggerElementContainer.Remove(explorerElement);
+            }
         }
 
         public ExplorerElement GetByReference(TriggerRef triggerRef)
@@ -230,7 +237,7 @@ namespace BetterTriggers.Containers
         public static string GetFourCCDisplay(string key, string returnType)
         {
             string text = string.Empty;
-            if (   returnType == "unitcode"
+            if (returnType == "unitcode"
                 || returnType == "destructablecode"
                 || returnType == "abilcode"
                 || returnType == "heroskillcode"

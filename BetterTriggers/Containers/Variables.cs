@@ -177,10 +177,13 @@ namespace BetterTriggers.Containers
             return generatedName;
         }
 
-
+        private static object _lock = new object();
         internal void AddVariable(ExplorerElement variable)
         {
-            variableContainer.Add(variable);
+            lock (_lock)
+            {
+                variableContainer.Add(variable);
+            }
         }
 
         /// <summary>
@@ -361,17 +364,26 @@ namespace BetterTriggers.Containers
 
         internal void Remove(ExplorerElement variable)
         {
-            variableContainer.Remove(variable);
+            lock (_lock)
+            {
+                variableContainer.Remove(variable);
+            }
         }
 
         internal void AddLocalVariable(LocalVariable localVariable)
         {
-            localVariableContainer.Add(localVariable.variable);
+            lock (_lock)
+            {
+                localVariableContainer.Add(localVariable.variable);
+            }
         }
 
         public void RemoveLocalVariable(LocalVariable localVariable)
         {
-            localVariableContainer.Remove(localVariable.variable);
+            lock (_lock)
+            {
+                localVariableContainer.Remove(localVariable.variable);
+            }
         }
 
         public Variable GetByReference(VariableRef variableRef, ExplorerElement explorerElement = null)

@@ -16,9 +16,13 @@ namespace BetterTriggers.Containers
             _project = project;
         }
 
+        private static object _lock = new object();
         public void AddScript(ExplorerElement script)
         {
-            scriptContainer.Add(script);
+            lock (_lock)
+            {
+                scriptContainer.Add(script);
+            }
         }
 
         /// <summary>
@@ -43,12 +47,18 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            scriptContainer.Remove(explorerElement);
+            lock (_lock)
+            {
+                scriptContainer.Remove(explorerElement);
+            }
         }
 
         internal void Clear()
         {
-            scriptContainer.Clear();
+            lock (_lock)
+            {
+                scriptContainer.Clear();
+            }
         }
 
         internal string GenerateName(ExplorerElement script)

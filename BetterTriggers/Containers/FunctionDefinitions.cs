@@ -19,10 +19,14 @@ namespace BetterTriggers.Containers
             _project = project;
         }
 
+        private static object _lock = new object();
         public void Add(ExplorerElement functionDefinition)
         {
-            container.Add(functionDefinition);
-            lastCreated = functionDefinition;
+            lock (_lock)
+            {
+                container.Add(functionDefinition);
+                lastCreated = functionDefinition;
+            }
         }
 
         /// <returns>Full file path.</returns>
@@ -137,17 +141,15 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            container.Remove(explorerElement);
+            lock (_lock)
+            {
+                container.Remove(explorerElement);
+            }
         }
 
         internal ExplorerElement GetByReference(FunctionDefinitionRef functionDefinitionRef)
         {
             return FindById(functionDefinitionRef.FunctionDefinitionId);
-        }
-
-        internal void Clear()
-        {
-            container.Clear();
         }
 
         internal FunctionDefinition FindByName(string name)

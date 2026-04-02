@@ -449,9 +449,6 @@
     <Compile Update="Components\TriggerEditor\ParameterControls\ParameterVariableControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\VerifyTriggers\VerifyingTriggersWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Components\About\AboutBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -542,10 +539,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Themes\Light.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Components\VerifyTriggers\VerifyingTriggersWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

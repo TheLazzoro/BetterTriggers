@@ -82,16 +82,14 @@ namespace BetterTriggers.Models.EditorData
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="path"></param>
         /// <param name="explicitType">Only used when creating root on init. hack...</param>
         /// <exception cref="Exception"></exception>
-        public ExplorerElement(Project project, string path, ExplorerElementEnum explicitType = ExplorerElementEnum.None)
+        public ExplorerElement(Project project, string path)
         {
             Project = project;
             this.path = path;
-            string fileContent;
 
             if (Directory.Exists(path))
             {
@@ -106,80 +104,119 @@ namespace BetterTriggers.Models.EditorData
                 {
                     case ".trg":
                         ElementType = ExplorerElementEnum.Trigger;
-                        CategoryStr = TriggerCategory.TC_TRIGGER_NEW;
-                        fileContent = ReadFile(path);
-                        var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(fileContent);
-                        trigger = triggerSerializer.Deserialize(savedTrigger);
-                        StoreLocalVariables();
-                        Project.Triggers.AddTrigger(this);
                         break;
 
                     case ".j":
                     case ".lua":
                         ElementType = ExplorerElementEnum.Script;
-                        CategoryStr = TriggerCategory.TC_SCRIPT;
-                        this.script = Project.Scripts.LoadFromFile(path);
-                        Project.Scripts.AddScript(this);
                         break;
 
                     case ".var":
-                        EditorSettings editorSettings = EditorSettings.Load();
                         ElementType = ExplorerElementEnum.GlobalVariable;
-                        CategoryStr = TriggerCategory.TC_SETVARIABLE;
-                        fileContent = ReadFile(path);
-                        var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(fileContent);
-                        variable = triggerSerializer.DeserializeVariable(savedVariable);
-                        variable.PropertyChanged += Variable_PropertyChanged; ;
-                        Project.Variables.AddVariable(this);
-                        variable.Name = Path.GetFileNameWithoutExtension(GetPath());
-                        SuffixVisibility = editorSettings.globalSuffixVisibility ? Visibility.Visible : Visibility.Collapsed;
-                        UpdateVariableDisplayName();
                         break;
 
                     case ".act":
                         ElementType = ExplorerElementEnum.ActionDefinition;
-                        CategoryStr = TriggerCategory.TC_ACTION_DEF;
-                        fileContent = ReadFile(path);
-                        var savedActionDef = JsonConvert.DeserializeObject<ActionDefinition_Saveable>(fileContent);
-                        actionDefinition = triggerSerializer.DeserializeActionDefinition(this, savedActionDef);
-                        StoreLocalVariables();
-                        Project.ActionDefinitions.Add(this);
                         break;
 
                     case ".cond":
                         ElementType = ExplorerElementEnum.ConditionDefinition;
-                        CategoryStr = TriggerCategory.TC_CONDITION_DEF;
-                        fileContent = ReadFile(path);
-                        var savedConditionDef = JsonConvert.DeserializeObject<ConditionDefinition_Saveable>(fileContent);
-                        conditionDefinition = triggerSerializer.DeserializeConditionDefinition(this, savedConditionDef);
-                        StoreLocalVariables();
-                        Project.ConditionDefinitions.Add(this);
                         break;
 
                     case ".func":
                         ElementType = ExplorerElementEnum.FunctionDefinition;
-                        CategoryStr = TriggerCategory.TC_FUNCTION_DEF;
-                        fileContent = ReadFile(path);
-                        var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
-                        functionDefinition = triggerSerializer.DeserializeFunctionDefinition(this, savedFunctionDef);
-                        StoreLocalVariables();
-                        Project.FunctionDefinitions.Add(this);
                         break;
 
                     default:
                         ElementType = ExplorerElementEnum.None;
-                        CategoryStr = TriggerCategory.TC_UNKNOWN;
                         break;
                 }
+            }
+        }
+
+        internal void Initialize(ExplorerElementEnum explicitType = ExplorerElementEnum.None)
+        {
+            string fileContent;
+            var triggerSerializer = new TriggerSerializer(Project);
+            switch (ElementType)
+            {
+                case ExplorerElementEnum.None:
+                    break;
+
+                case ExplorerElementEnum.Folder:
+                CategoryStr = TriggerCategory.TC_DIRECTORY;
+                    break;
+
+                case ExplorerElementEnum.GlobalVariable:
+                    EditorSettings editorSettings = EditorSettings.Load();
+                    ElementType = ExplorerElementEnum.GlobalVariable;
+                    CategoryStr = TriggerCategory.TC_SETVARIABLE;
+                    fileContent = ReadFile(path);
+                    var savedVariable = JsonConvert.DeserializeObject<Variable_Saveable>(fileContent);
+                    variable = triggerSerializer.DeserializeVariable(savedVariable);
+                    variable.PropertyChanged += Variable_PropertyChanged; ;
+                    Project.Variables.AddVariable(this);
+                    variable.Name = Path.GetFileNameWithoutExtension(GetPath());
+                    SuffixVisibility = editorSettings.globalSuffixVisibility ? Visibility.Visible : Visibility.Collapsed;
+                    UpdateVariableDisplayName();
+                    break;
+
+                case ExplorerElementEnum.Script:
+                    CategoryStr = TriggerCategory.TC_SCRIPT;
+                    this.script = Project.Scripts.LoadFromFile(path);
+                    Project.Scripts.AddScript(this);
+                    break;
+
+                case ExplorerElementEnum.Trigger:
+                    CategoryStr = TriggerCategory.TC_TRIGGER_NEW;
+                    fileContent = ReadFile(path);
+                    var savedTrigger = JsonConvert.DeserializeObject<Trigger_Saveable>(fileContent);
+                    trigger = triggerSerializer.Deserialize(savedTrigger);
+                    StoreLocalVariables();
+                    Project.Triggers.AddTrigger(this);
+                    break;
+
+                case ExplorerElementEnum.ActionDefinition:
+                    ElementType = ExplorerElementEnum.ActionDefinition;
+                    CategoryStr = TriggerCategory.TC_ACTION_DEF;
+                    fileContent = ReadFile(path);
+                    var savedActionDef = JsonConvert.DeserializeObject<ActionDefinition_Saveable>(fileContent);
+                    actionDefinition = triggerSerializer.DeserializeActionDefinition(this, savedActionDef);
+                    StoreLocalVariables();
+                    Project.ActionDefinitions.Add(this);
+                    break;
+
+                case ExplorerElementEnum.ConditionDefinition:
+                    ElementType = ExplorerElementEnum.ConditionDefinition;
+                    CategoryStr = TriggerCategory.TC_CONDITION_DEF;
+                    fileContent = ReadFile(path);
+                    var savedConditionDef = JsonConvert.DeserializeObject<ConditionDefinition_Saveable>(fileContent);
+                    conditionDefinition = triggerSerializer.DeserializeConditionDefinition(this, savedConditionDef);
+                    StoreLocalVariables();
+                    Project.ConditionDefinitions.Add(this);
+                    break;
+
+                case ExplorerElementEnum.FunctionDefinition:
+                    ElementType = ExplorerElementEnum.FunctionDefinition;
+                    CategoryStr = TriggerCategory.TC_FUNCTION_DEF;
+                    fileContent = ReadFile(path);
+                    var savedFunctionDef = JsonConvert.DeserializeObject<FunctionDefinition_Saveable>(fileContent);
+                    functionDefinition = triggerSerializer.DeserializeFunctionDefinition(this, savedFunctionDef);
+                    StoreLocalVariables();
+                    Project.FunctionDefinitions.Add(this);
+                    break;
+
+                default:
+                    CategoryStr = TriggerCategory.TC_UNKNOWN;
+                    break;
             }
 
             if (explicitType == ExplorerElementEnum.Root)
             {
-                DisplayText = Path.GetFileNameWithoutExtension(project.war3project.Name);
+                DisplayText = Path.GetFileNameWithoutExtension(Project.war3project.Name);
                 ElementType = ExplorerElementEnum.Root;
                 CategoryStr = TriggerCategory.TC_MAP;
             }
-
 
             UpdateMetadata();
         }
@@ -383,6 +420,9 @@ namespace BetterTriggers.Models.EditorData
         public TriggerElementCollection GetLocalVariables()
         {
             TriggerElementCollection localVariables = null;
+
+            if (trigger == null && actionDefinition == null && conditionDefinition == null && functionDefinition == null)
+                return localVariables;
 
             switch (ElementType)
             {
@@ -741,5 +781,6 @@ namespace BetterTriggers.Models.EditorData
                 });
             }
         }
+
     }
 }

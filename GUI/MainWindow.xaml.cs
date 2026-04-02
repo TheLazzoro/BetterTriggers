@@ -1,6 +1,7 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Logging;
+using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.TestMap;
 using BetterTriggers.Utility;
@@ -10,6 +11,7 @@ using GUI.Components;
 using GUI.Components.About;
 using GUI.Components.BlizzardScripts;
 using GUI.Components.BuildMap;
+using GUI.Components.ChangedTriggers;
 using GUI.Components.CloseMap;
 using GUI.Components.Dialogs;
 using GUI.Components.Keybindings;
@@ -24,7 +26,6 @@ using GUI.Components.Tabs;
 using GUI.Components.UnknownFile;
 using GUI.Components.UserReports;
 using GUI.Components.VariableList;
-using GUI.Components.VerifyTriggers;
 using GUI.Components.VersionCheck;
 using GUI.Extensions;
 using Microsoft.Win32;
@@ -353,15 +354,55 @@ namespace GUI
 
         private void VerifyTriggerData()
         {
-            VerifyingTriggersWindow window = new VerifyingTriggersWindow(_currentProject);
-            window.OnCloseProject += Window_OnCloseProject;
-            window.ShowDialog();
-            window.OnCloseProject -= Window_OnCloseProject;
-        }
+            List<ExplorerElement> modifiedElements = new List<ExplorerElement>();
+            IdCollisionException? collisionError = null;
+            Exception? defaultError = null;
+            try
+            {
+                modifiedElements = CustomMapData.ReloadMapData(_currentProject);
+            }
+            catch (IdCollisionException ex)
+            {
+                collisionError = ex;
+            }
+            catch (Exception ex)
+            {
+                defaultError = ex;
+            }
 
-        private void Window_OnCloseProject()
-        {
-            CloseProject(true);
+            if (defaultError != null)
+            {
+                throw defaultError;
+            }
+            if (collisionError != null)
+            {
+                int index = 0;
+                string[] items = new string[collisionError.IdCollisions.Count + collisionError.IdCollisions.Count];
+                if (collisionError.IdCollisions.Count > 0)
+                {
+                    collisionError.IdCollisions.ForEach(t =>
+                    {
+                        items[index] = $"{t.Item1.GetName()} <-> {t.Item2.GetName()}";
+                        index++;
+                    });
+                }
+
+                string message = $"{collisionError.Message}{Environment.NewLine}{Environment.NewLine}Triggers or variables with the same ID are not allowed.{Environment.NewLine}You need to resolve these manually in a text editor.{Environment.NewLine}";
+                MessageBoxWithList messageBox = new MessageBoxWithList("ID Collisions", message, items);
+                messageBox.ShowDialog();
+                CloseProject(true);
+            }
+
+            if (modifiedElements.Count == 0)
+            {
+                return;
+            }
+
+            ChangedTriggersWindow changedTriggersWindow = new ChangedTriggersWindow(modifiedElements);
+            changedTriggersWindow.WindowStartupLocation = WindowStartupLocation.Manual;
+            changedTriggersWindow.Top = this.Top + this.Height / 2 - changedTriggersWindow.Height / 2;
+            changedTriggersWindow.Left = this.Left + this.Width / 2 - changedTriggersWindow.Width / 2;
+            changedTriggersWindow.Show();
         }
 
         private void OnSelectTab(ExplorerElement selectedItem, TabViewModel tabViewModel, TabControl tabControl)

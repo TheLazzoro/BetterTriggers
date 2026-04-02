@@ -44,14 +44,13 @@ namespace BetterTriggers.Containers
             return path;
         }
 
-        public void Clear()
-        {
-            folderContainer.Clear();
-        }
-        
+        private static object _lock = new object();
         public void AddFolder(ExplorerElement folder)
         {
-            folderContainer.Add(folder);
+            lock (_lock)
+            {
+                folderContainer.Add(folder);
+            }
         }
 
         /// <summary>
@@ -76,7 +75,10 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            folderContainer.Remove(explorerElement);
+            lock (_lock)
+            {
+                folderContainer.Remove(explorerElement);
+            }
         }
 
         internal string GenerateName(string folder)

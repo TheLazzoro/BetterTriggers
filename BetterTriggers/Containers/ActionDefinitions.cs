@@ -19,10 +19,14 @@ namespace BetterTriggers.Containers
             _project = project;
         }
 
+        private static object _lock = new object();
         public void Add(ExplorerElement actionDefinition)
         {
-            container.Add(actionDefinition);
-            lastCreated = actionDefinition;
+            lock (_lock)
+            {
+                container.Add(actionDefinition);
+                lastCreated = actionDefinition;
+            }
         }
 
         /// <returns>Full file path.</returns>
@@ -152,7 +156,10 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            container.Remove(explorerElement);
+            lock (_lock)
+            {
+                container.Remove(explorerElement);
+            }
         }
 
         internal ExplorerElement GetByReference(ActionDefinitionRef actionDefinitionRef)

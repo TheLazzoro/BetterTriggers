@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
         TextOptions.TextFormattingMode="Display"
-        Title="Loading" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Height="150" Width="350" Background="{DynamicResource BackgroundDarker}" Loaded="Window_Loaded">
+        Title="Loading" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Height="150" Width="350" Background="{DynamicResource BackgroundDarker}" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>

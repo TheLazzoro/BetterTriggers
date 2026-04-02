@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Controls;
+using System.Collections.Concurrent;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -38,24 +39,28 @@ namespace BetterTriggers.Models.EditorData
             War3TypesDictionary.TryGetValue(type, out War3Type result);
             if (result == null)
             {
-                result  = new War3Type(type, type); // Blizzard bug. some previously selected variables are no longer selectable.
+                result = new War3Type(type, type); // Blizzard bug. some previously selected variables are no longer selectable.
             }
 
             return result;
         }
 
+        private static object _lock = new object();
         private static void Init()
         {
-            if (_war3Types == null)
+            lock (_lock)
             {
-                _war3Types = new();
-                var types = Types.GetGlobalTypes();
-                for (int i = 0; i < types.Count; i++)
+                if (_war3Types == null)
                 {
-                    var type = types[i];
-                    string displayName = Locale.Translate(types[i].DisplayName);
-                    var war3Type = new War3Type(type.Key, displayName);
-                    _war3Types.Add(war3Type);
+                    _war3Types = new();
+                    var types = Types.GetGlobalTypes();
+                    for (int i = 0; i < types.Count; i++)
+                    {
+                        var type = types[i];
+                        string displayName = Locale.Translate(types[i].DisplayName);
+                        var war3Type = new War3Type(type.Key, displayName);
+                        _war3Types.Add(war3Type);
+                    }
                 }
             }
         }

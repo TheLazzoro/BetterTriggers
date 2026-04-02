@@ -1,6 +1,4 @@
 ﻿using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
-using BetterTriggers.WorldEdit;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -16,6 +14,7 @@ namespace GUI.Components.Loading
 
         public LoadingProjectFilesWindow(string projectPath)
         {
+            Owner = MainWindow.GetMainWindow();
             InitializeComponent();
             this.projectPath = projectPath;
         }

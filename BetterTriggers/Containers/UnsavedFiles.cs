@@ -7,14 +7,21 @@ namespace BetterTriggers.Containers
     {
         private HashSet<ExplorerElement> unsavedFiles = new();
 
+        private static object _lock = new object();
         public void AddToUnsaved(ExplorerElement element)
         {
-            unsavedFiles.Add(element);
+            lock (_lock)
+            {
+                unsavedFiles.Add(element);
+            }
         }
 
         public void RemoveFromUnsaved(ExplorerElement element)
         {
-            unsavedFiles.Remove(element);
+            lock (_lock)
+            {
+                unsavedFiles.Remove(element);
+            }
         }
 
         public void SaveAll()

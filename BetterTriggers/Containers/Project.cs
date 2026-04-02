@@ -286,7 +286,9 @@ namespace BetterTriggers.Containers
             project.dist = Path.Combine(Path.GetDirectoryName(projectPath), "dist");
             project.war3project = war3project;
             project.projectFiles = new();
-            project.projectFiles.Add(new ExplorerElement(project, project.src, ExplorerElementEnum.Root));
+            var root = new ExplorerElement(project, project.src);
+            root.Initialize(ExplorerElementEnum.Root);
+            project.projectFiles.Add(root);
             project.currentSelectedElement = project.src; // defaults to here when nothing has been selected yet.
 
             if (project.fileSystemWatcher == null)
@@ -335,6 +337,12 @@ namespace BetterTriggers.Containers
                 project.loadedFiles++;
                 FileLoadEvent?.Invoke(project.loadedFiles, project.totalFiles);
             }
+
+            var all = project.GetAllExplorerElements();
+            Parallel.ForEach(all, (e, cancellationToken) =>
+            {
+                e.Initialize();
+            });
 
             project.CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
 
@@ -412,6 +420,7 @@ namespace BetterTriggers.Containers
             if (File.Exists(fullPath) || Directory.Exists(fullPath))
             {
                 explorerElement = new ExplorerElement(this, fullPath);
+                explorerElement.Initialize();
             }
             else
             {
