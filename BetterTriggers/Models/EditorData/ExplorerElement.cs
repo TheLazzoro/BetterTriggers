@@ -294,25 +294,19 @@ namespace BetterTriggers.Models.EditorData
 
         public void SetParent(ExplorerElement parent, int insertIndex)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                if (ElementType == ExplorerElementEnum.Root)
-                    throw new Exception("Root is the super parent");
+            if (ElementType == ExplorerElementEnum.Root)
+                throw new Exception("Root is the super parent");
 
-                Parent = parent;
-                parent.GetExplorerElements().Insert(insertIndex, this);
-                StoreLocalVariables();
-            });
+            Parent = parent;
+            parent.GetExplorerElements().Insert(insertIndex, this);
+            StoreLocalVariables();
         }
 
         public void RemoveFromParent()
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                Parent.GetExplorerElements().Remove(this);
-                Parent = null;
-                RemoveLocalVariables();
-            });
+            Parent.GetExplorerElements().Remove(this);
+            Parent = null;
+            RemoveLocalVariables();
         }
 
         public void AddToUnsaved()
@@ -646,11 +640,8 @@ namespace BetterTriggers.Models.EditorData
                 OnSaved?.Invoke();
             }
 
-            Application.Current.Dispatcher.Invoke(new Action(() =>
-            {
-                OnReload?.Invoke();
-                VerifyAndRemoveTriggerErrors();
-            }));
+            OnReload?.Invoke();
+            VerifyAndRemoveTriggerErrors();
         }
 
         /// <summary>
@@ -672,14 +663,11 @@ namespace BetterTriggers.Models.EditorData
 
         public void InvokeDelete()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            OnDeleted?.Invoke();
+            foreach (var element in ExplorerElements)
             {
-                OnDeleted?.Invoke();
-                foreach (var element in ExplorerElements)
-                {
-                    element.InvokeDelete();
-                }
-            });
+                element.InvokeDelete();
+            }
         }
 
         private void VerifyAndRemoveTriggerErrors()

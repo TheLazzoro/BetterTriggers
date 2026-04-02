@@ -453,23 +453,20 @@ namespace BetterTriggers.Containers
 
         public void OnRenameElement(string oldFullPath, string newFullPath)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            var rootNode = projectFiles[0];
+            ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
+            if (elementToRename == null)
+                return;
+
+            var oldExtension = Path.GetExtension(oldFullPath);
+            var newExtension = Path.GetExtension(newFullPath);
+            if (oldExtension != newExtension)
             {
-                var rootNode = projectFiles[0];
-                ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
-                if (elementToRename == null)
-                    return;
+                OnFileExtensionChanged?.Invoke(oldExtension, newExtension);
+            }
 
-                var oldExtension = Path.GetExtension(oldFullPath);
-                var newExtension = Path.GetExtension(newFullPath);
-                if (oldExtension != newExtension)
-                {
-                    OnFileExtensionChanged?.Invoke(oldExtension, newExtension);
-                }
-
-                CommandExplorerElementRename command = new CommandExplorerElementRename(this, elementToRename, newFullPath);
-                command.Execute();
-            });
+            CommandExplorerElementRename command = new CommandExplorerElementRename(this, elementToRename, newFullPath);
+            command.Execute();
         }
 
         /// <summary>
@@ -482,12 +479,8 @@ namespace BetterTriggers.Containers
         {
             var rootNode = projectFiles[0];
             ExplorerElement elementToRename = FindExplorerElement(rootNode, oldFullPath);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                CommandExplorerElementMove command = new CommandExplorerElementMove(this, elementToRename, newFullPath, insertIndex);
-                command.Execute();
-            });
+            CommandExplorerElementMove command = new CommandExplorerElementMove(this, elementToRename, newFullPath, insertIndex);
+            command.Execute();
         }
 
         /// <summary>
@@ -532,18 +525,15 @@ namespace BetterTriggers.Containers
 
         public void OnDeleteElement(string fullPath)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                var rootNode = projectFiles[0];
-                ExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
-                if (elementToDelete == null)
-                    return;
+            var rootNode = projectFiles[0];
+            ExplorerElement elementToDelete = FindExplorerElement(rootNode, fullPath);
+            if (elementToDelete == null)
+                return;
 
-                RemoveElementFromContainer_WhenDeleting(elementToDelete);
+            RemoveElementFromContainer_WhenDeleting(elementToDelete);
 
-                CommandExplorerElementDelete command = new CommandExplorerElementDelete(this, elementToDelete);
-                command.Execute();
-            });
+            CommandExplorerElementDelete command = new CommandExplorerElementDelete(this, elementToDelete);
+            command.Execute();
         }
 
 
@@ -1228,46 +1218,58 @@ namespace BetterTriggers.Containers
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
-            createdPath = e.FullPath;
-            if (wasMoved)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                OnMoveElement(deletedPath, createdPath, insertIndex);
-                insertIndex = 0; // reset
-                wasMoved = false;
-            }
-            else
-            {
-                OnCreateElement(createdPath, false);
-            }
+                createdPath = e.FullPath;
+                if (wasMoved)
+                {
+                    OnMoveElement(deletedPath, createdPath, insertIndex);
+                    insertIndex = 0; // reset
+                    wasMoved = false;
+                }
+                else
+                {
+                    OnCreateElement(createdPath, false);
+                }
+            });
         }
 
         [STAThread]
         private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
-            if (!WasFileMoved(e.FullPath))
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                deletedPath = e.FullPath;
-                OnDeleteElement(deletedPath);
-                wasMoved = false;
-            }
-            else
-            {
-                deletedPath = e.FullPath;
-                wasMoved = true;
-            }
+                if (!WasFileMoved(e.FullPath))
+                {
+                    deletedPath = e.FullPath;
+                    OnDeleteElement(deletedPath);
+                    wasMoved = false;
+                }
+                else
+                {
+                    deletedPath = e.FullPath;
+                    wasMoved = true;
+                }
+            });
         }
 
         private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
         {
-            OnRenameElement(e.OldFullPath, e.FullPath);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                OnRenameElement(e.OldFullPath, e.FullPath);
+            });
         }
 
         private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (e.ChangeType == WatcherChangeTypes.Changed)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                OnElementChanged(e.FullPath);
-            }
+                if (e.ChangeType == WatcherChangeTypes.Changed)
+                {
+                    OnElementChanged(e.FullPath);
+                }
+            });
         }
 
         private void FileSystemWatcher_Error(object sender, ErrorEventArgs e)

@@ -257,6 +257,7 @@ namespace GUI
                 messageBox.ShowDialog();
             }
 
+            CustomMapData.ReloadMapData(_project);
             this.Close();
         }
 

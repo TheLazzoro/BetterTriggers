@@ -249,7 +249,7 @@ namespace BetterTriggers
             for (int i = 0; i < explorerElements.Count; i++)
             {
                 var explorerElement = explorerElements[i];
-                TriggerValidator validator = new TriggerValidator(_project, explorerElement);
+                TriggerValidator validator = new TriggerValidator(project, explorerElement);
                 int invalidCount = validator.RemoveInvalidReferences();
                 if (invalidCount > 0)
                     modified.Add(explorerElement);

@@ -16,7 +16,7 @@ namespace BetterTriggers.WorldEdit
     {
         public event Action<string> OnExplorerElementImported;
 
-        private Project? _project;
+        private Project _project;
         private string mapPath;
         private string mapPathProjectToImportInto;
         private MapTriggers triggers;
@@ -177,10 +177,6 @@ namespace BetterTriggers.WorldEdit
             _project.EnableFileEvents(true);
 
             CustomMapData.Load(_project, mapPathProjectToImportInto);
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                CustomMapData.ReloadMapData(_project);
-            });
         }
 
 

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Containers;
+﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,6 +39,7 @@ namespace Tests
 
             TriggerConverter converter = new TriggerConverter(project, mapPath, null);
             converter.ImportIntoCurrentProject(map.Triggers.TriggerItems);
+            CustomMapData.ReloadMapData(project);
 
             Builder mapBuilder = new Builder(project);
             mapBuilder.GenerateScript();
