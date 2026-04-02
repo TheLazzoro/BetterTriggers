@@ -114,7 +114,7 @@ namespace GUI.Components.TriggerEditor
             Grid.SetRowSpan(categoryControl, 3);
 
             // default selection
-            listControl.listView.Loaded += (s, e) => Dispatcher.InvokeAsync(() =>
+            listControl.listView.Loaded += (s, e) => Dispatcher.Invoke(() =>
             {
                 listControl.listView.ScrollIntoView(defaultSelected);
             });

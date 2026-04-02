@@ -89,7 +89,7 @@ namespace GUI.Components.BuildMap
 
         private void ExportMapAsync()
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 _error = null;
             });
@@ -105,13 +105,13 @@ namespace GUI.Components.BuildMap
             }
             catch (Exception ex)
             {
-                Application.Current.Dispatcher.BeginInvoke(() =>
+                Application.Current.Dispatcher.Invoke(() =>
                 {
                     _error = ex;
                 });
             }
 
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 _finished?.Invoke();
             });

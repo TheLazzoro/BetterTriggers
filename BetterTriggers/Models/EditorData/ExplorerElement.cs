@@ -294,7 +294,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void SetParent(ExplorerElement parent, int insertIndex)
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 if (ElementType == ExplorerElementEnum.Root)
                     throw new Exception("Root is the super parent");
@@ -307,7 +307,7 @@ namespace BetterTriggers.Models.EditorData
 
         public void RemoveFromParent()
         {
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 Parent.GetExplorerElements().Remove(this);
                 Parent = null;
@@ -646,7 +646,7 @@ namespace BetterTriggers.Models.EditorData
                 OnSaved?.Invoke();
             }
 
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            Application.Current.Dispatcher.Invoke(new Action(() =>
             {
                 OnReload?.Invoke();
                 VerifyAndRemoveTriggerErrors();

@@ -1275,7 +1275,7 @@ namespace BetterTriggers.Containers
             LoggingService service = new LoggingService();
             Task.Factory.StartNew(() => service.SubmitError_Async(e.GetException(), "-- LOGGED BY SYSTEM --"));
 
-            Application.Current.Dispatcher.BeginInvoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 throw new Exception(e.GetException().Message);
             });
