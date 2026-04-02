@@ -248,7 +248,6 @@ namespace BetterTriggers.Containers
 
 
         public static event Action<int, int> FileLoadEvent;
-        public static event Action LoadingUnknownFilesEvent;
         private int totalFiles;
         private int loadedFiles;
         /// <summary>
@@ -330,18 +329,21 @@ namespace BetterTriggers.Containers
             project.RecurseLoad(projectRootEntry, project.GetRoot(), files, fileCheckList);
 
             // Loop through elements not found
-            LoadingUnknownFilesEvent?.Invoke();
             for (int i = 0; i < fileCheckList.Count; i++)
             {
                 project.OnCreateElement(fileCheckList[i], false);
-                project.loadedFiles++;
-                FileLoadEvent?.Invoke(project.loadedFiles, project.totalFiles);
             }
 
+            object lockObj = new object();
             var all = project.GetAllExplorerElements();
             Parallel.ForEach(all, (e, cancellationToken) =>
             {
                 e.Initialize();
+                lock (lockObj)
+                {
+                    project.loadedFiles++;
+                    FileLoadEvent?.Invoke(project.loadedFiles, project.totalFiles);
+                }
             });
 
             project.CommandManager.Reset(); // hack, but works. Above OnCreate loop adds commands.
@@ -393,8 +395,6 @@ namespace BetterTriggers.Containers
                     if (Directory.Exists(explorerElementChild.GetPath()))
                         RecurseLoad(entryChild, explorerElementChild, files, fileCheckList);
 
-                    loadedFiles++;
-                    FileLoadEvent?.Invoke(loadedFiles, totalFiles);
                 }
             }
         }

@@ -25,7 +25,6 @@ namespace GUI
         private string mapPath;
         private bool hasError;
         private string errorMsg;
-        private BackgroundWorker worker;
         private List<string> itemsImported;
         Dictionary<string, ImportTriggerItem> treeItemExplorerElements;
         private List<ExplorerElement> elementsToImport;
@@ -198,62 +197,27 @@ namespace GUI
                 .Select(item => item.Value.explorerElement)
                 .ToList();
 
-            worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.ProgressChanged += Worker_ProgressChanged;
-            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerAsync();
-        }
-
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
+            bool success = false;
             TriggerConverter triggerConverter = new TriggerConverter(_project, mapPath, _project.GetFullMapPath());
             try
             {
                 triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
                 triggerConverter.WriteConvertedTriggers(elementsToImport);
-                worker.ReportProgress(100);
                 triggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
+                success = true;
             }
             catch (Exception ex)
             {
                 errorMsg = ex.Message;
-                worker.ReportProgress(-1);
                 triggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
 
                 LoggingService service = new LoggingService();
                 Task.Factory.StartNew(() => service.SubmitError_Async(ex, "-- LOGGED BY SYSTEM --"));
             }
-        }
 
-        private void TriggerConverter_OnExplorerElementImported(string fullPath)
-        {
-            itemsImported.Add(fullPath);
-            float percent = (float)itemsImported.Count / elementsToImport.Count * 100;
-            worker.ReportProgress((int)percent);
-        }
-
-        bool didComplete = false;
-        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.ProgressPercentage == -1)
+            if (!success)
             {
                 Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", errorMsg);
-                messageBox.ShowDialog();
-            }
-            else
-            {
-                txtProgressPercent.Text = $"{e.ProgressPercentage}%";
-                progressBar.Value = e.ProgressPercentage;
-            }
-        }
-
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", e.Error.Message);
                 messageBox.ShowDialog();
             }
 
@@ -261,5 +225,9 @@ namespace GUI
             this.Close();
         }
 
+        private void TriggerConverter_OnExplorerElementImported(string fullPath)
+        {
+            itemsImported.Add(fullPath);
+        }
     }
 }

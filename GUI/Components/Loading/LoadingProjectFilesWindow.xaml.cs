@@ -49,7 +49,6 @@ namespace GUI.Components.Loading
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
             Project.FileLoadEvent += FileLoadEvent;
-            Project.LoadingUnknownFilesEvent += Project_LoadingUnknownFilesEvent;
             try
             {
                 project = Project.Load(projectPath);
@@ -57,21 +56,12 @@ namespace GUI.Components.Loading
             catch (Exception ex)
             {
                 Project.FileLoadEvent -= FileLoadEvent;
-                Project.LoadingUnknownFilesEvent -= Project_LoadingUnknownFilesEvent;
                 errorMsg = ex.Message;
                 worker.ReportProgress(-1);
                 return;
             }
             Project.FileLoadEvent -= FileLoadEvent;
-            Project.LoadingUnknownFilesEvent -= Project_LoadingUnknownFilesEvent;
             worker.ReportProgress(100);
-        }
-
-        private void Project_LoadingUnknownFilesEvent()
-        {
-            label = "Loading unknown project files";
-            float percent = (float)filesLoaded / (float)totalFiles * 100f;
-            worker.ReportProgress((int)percent);
         }
 
         private void FileLoadEvent(int arg1, int arg2)
