@@ -6,12 +6,20 @@ using System.Windows;
 namespace BetterTriggers;
 internal static class ResourceReader
 {
+    private static object _resourceStreamLock = new object();
     public static Stream ReadAsStream(string path)
     {
         path = "/BetterTriggers;component/" + path;
         var uri = new Uri(path, UriKind.RelativeOrAbsolute);
-        var info = Application.GetResourceStream(uri);
-        return info.Stream;
+        lock (_resourceStreamLock)
+        {
+            var info = Application.GetResourceStream(uri);
+            var ms = new MemoryStream();
+            info.Stream.CopyTo(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            info.Stream.Close();
+            return ms;
+        }
     }
 
     public static byte[] ReadAllBytes(string path)
