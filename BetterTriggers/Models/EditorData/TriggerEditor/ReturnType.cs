@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -21,7 +17,7 @@ namespace BetterTriggers.Models.EditorData
             }
         }
 
-        public ReturnType(string type = null)
+        public ReturnType(Project project, string type = null) : base(project)
         {
             if(type == null)
                 War3Type = War3Type.Get("integer");
@@ -34,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ReturnType Clone()
         {
-            var cloned = new ReturnType();
+            var cloned = new ReturnType(_project);
             cloned.War3Type = War3Type;
             return cloned;
         }

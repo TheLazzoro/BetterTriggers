@@ -2,11 +2,9 @@
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit.GameDataReader;
-using CASCLib;
 using IniParser.Model;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using War3Net.Build.Object;
@@ -17,15 +15,15 @@ namespace BetterTriggers.WorldEdit
 {
     public class UnitTypes
     {
-        private static Dictionary<string, UnitType> unitTypes;
-        private static Dictionary<string, UnitType> unitTypesBaseEdited;
-        private static Dictionary<string, UnitType> unitTypesCustom;
+        private static Dictionary<string, UnitType> unitTypesBase;
+        private Dictionary<string, UnitType> unitTypesBaseEdited;
+        private Dictionary<string, UnitType> unitTypesCustom;
         private static bool IsTest = false;
 
-        public static List<UnitType> GetAll()
+        public List<UnitType> GetAll()
         {
             List<UnitType> list = new List<UnitType>();
-            var enumerator = unitTypes.GetEnumerator();
+            var enumerator = unitTypesBase.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 UnitType unitType;
@@ -37,7 +35,7 @@ namespace BetterTriggers.WorldEdit
                 }
                 else
                 {
-                    unitTypes.TryGetValue(key, out unitType);
+                    unitTypesBase.TryGetValue(key, out unitType);
                     list.Add(unitType);
                 }
             }
@@ -49,19 +47,22 @@ namespace BetterTriggers.WorldEdit
 
         internal static List<UnitType> GetBase()
         {
-            return unitTypes.Select(kvp => kvp.Value).ToList();
+            return unitTypesBase.Select(kvp => kvp.Value).ToList();
         }
 
-        public static UnitType GetUnitType(string unitcode)
+        public static UnitType GetUnitType(UnitTypes? unitTypes, string unitcode)
         {
-            UnitType unitType;
-            unitTypes.TryGetValue(unitcode, out unitType);
+            UnitType? unitType = null;
+            unitTypesBase.TryGetValue(unitcode, out unitType);
 
-            if (unitType == null)
-                unitTypesBaseEdited.TryGetValue(unitcode, out unitType);
+            if (unitTypes != null)
+            {
+                if (unitType == null)
+                    unitTypes.unitTypesBaseEdited.TryGetValue(unitcode, out unitType);
 
-            if (unitType == null)
-                unitTypesCustom.TryGetValue(unitcode, out unitType);
+                if (unitType == null)
+                    unitTypes.unitTypesCustom.TryGetValue(unitcode, out unitType);
+            }
 
             if (unitType == null)
                 unitType = new UnitType()
@@ -76,9 +77,9 @@ namespace BetterTriggers.WorldEdit
             return unitType;
         }
 
-        public static string GetName(string unitcode)
+        public static string GetName(UnitTypes? unitTypes, string unitcode)
         {
-            return GetName(GetUnitType(unitcode));
+            return GetName(GetUnitType(unitTypes, unitcode));
         }
 
         public static string GetName(UnitType unitType)
@@ -101,7 +102,7 @@ namespace BetterTriggers.WorldEdit
 
         internal static void LoadFromGameStorage(bool isTest)
         {
-            unitTypes = new Dictionary<string, UnitType>();
+            unitTypesBase = new Dictionary<string, UnitType>();
 
             SylkParser sylkParser = new SylkParser();
             StreamReader reader;
@@ -159,7 +160,7 @@ namespace BetterTriggers.WorldEdit
                     Race = (string)row.GetValue(3),
                 };
 
-                unitTypes.TryAdd(unitType.Id, unitType);
+                unitTypesBase.TryAdd(unitType.Id, unitType);
             }
 
 
@@ -187,7 +188,7 @@ namespace BetterTriggers.WorldEdit
                 unitType.Model = model;
                 unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
 
-                new Icon(icon, UnitTypes.GetName(unitType.Id), "Unit");
+                new Icon(icon, UnitTypes.GetName(null, unitType.Id), "Unit");
 
                 if (!isTest)
                 {
@@ -213,7 +214,7 @@ namespace BetterTriggers.WorldEdit
                 {
                     var key = keys.Current;
                     if (key.KeyName == "ScoreScreenIcon")
-                        new Icon(key.Value, UnitTypes.GetName(sectionName), "Unit - Special");
+                        new Icon(key.Value, GetName(null, sectionName), "Unit - Special");
                 }
             }
         }
@@ -257,14 +258,14 @@ namespace BetterTriggers.WorldEdit
                     continue;
                 }
 
-                unitTypes.TryAdd(unitType.Id, unitType);
+                unitTypesBase.TryAdd(unitType.Id, unitType);
             }
 
             for (int i = 0; i < uiTable.Count(); i++)
             {
                 var row = uiTable.ElementAt(i);
                 var id = (string)row.GetValue(0);
-                if (id != null && unitTypes.TryGetValue(id, out var u))
+                if (id != null && unitTypesBase.TryGetValue(id, out var u))
                 {
                     u.Model = (string)row.GetValue(1);
                     u.isSpecial = row.GetValue(7) is 1;
@@ -289,7 +290,7 @@ namespace BetterTriggers.WorldEdit
 
                 unitType.Icon = section["Art"];
 
-                new Icon(unitType.Icon, UnitTypes.GetName(unitType.Id), "Unit");
+                new Icon(unitType.Icon, GetName(null, unitType.Id), "Unit");
 
                 unitType.Image = Images.ReadImage(WarcraftStorageReader.OpenFile(unitType.Icon));
             }
@@ -304,24 +305,24 @@ namespace BetterTriggers.WorldEdit
                 {
                     var key = keys.Current;
                     if (key.KeyName == "ScoreScreenIcon")
-                        new Icon(key.Value, UnitTypes.GetName(sectionName), "Unit - Special");
+                        new Icon(key.Value, GetName(null, sectionName), "Unit - Special");
                 }
             }
         }
 
-        internal static void Load(string fullMapPath)
+        internal void Load(Project project, string fullMapPath)
         {
             unitTypesBaseEdited = new Dictionary<string, UnitType>();
             unitTypesCustom = new Dictionary<string, UnitType>();
 
-            UnitObjectData customUnits = CustomMapData.MPQMap.UnitObjectData;
+            UnitObjectData customUnits = project.MPQMap.UnitObjectData;
             if (customUnits == null)
                 return;
 
             // Base units
             foreach (var baseUnit in customUnits.BaseUnits)
             {
-                UnitType unit = GetUnitType(Int32Extensions.ToRawcode(baseUnit.OldId));
+                UnitType unit = GetUnitType(project.UnitTypes, Int32Extensions.ToRawcode(baseUnit.OldId));
                 UnitName name = unit.Name.Clone();
                 string sort = unit.Sort;
                 string race = unit.Race;
@@ -337,7 +338,7 @@ namespace BetterTriggers.WorldEdit
                     Image = image
                 };
                 unitTypesBaseEdited.Add(unitType.Id, unitType);
-                SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId), fullMapPath);
+                SetCustomFields(project, baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId), fullMapPath);
             }
 
             // custom units
@@ -345,7 +346,7 @@ namespace BetterTriggers.WorldEdit
             {
                 var customUnit = customUnits.NewUnits[i];
 
-                UnitType baseUnit = GetUnitType(Int32Extensions.ToRawcode(customUnit.OldId));
+                UnitType baseUnit = GetUnitType(project.UnitTypes, Int32Extensions.ToRawcode(customUnit.OldId));
                 UnitName name = baseUnit.Name.Clone();
                 string sort = baseUnit.Sort;
                 string race = baseUnit.Race;
@@ -363,27 +364,27 @@ namespace BetterTriggers.WorldEdit
                 };
 
                 unitTypesCustom.TryAdd(unitType.Id, unitType);
-                SetCustomFields(customUnit, unitType.Id, fullMapPath);
+                SetCustomFields(project, customUnit, unitType.Id, fullMapPath);
             }
 
             // --- UNIT SKIN DATA --- //
 
-            var skinObjectData = CustomMapData.MPQMap.UnitSkinObjectData;
+            var skinObjectData = project.MPQMap.UnitSkinObjectData;
             if (skinObjectData == null) return;
 
             foreach (var baseUnit in skinObjectData.BaseUnits)
             {
-                SetCustomFields(baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId), fullMapPath);
+                SetCustomFields(project, baseUnit, Int32Extensions.ToRawcode(baseUnit.OldId), fullMapPath);
             }
             foreach (var newUnit in skinObjectData.NewUnits)
             {
-                SetCustomFields(newUnit, Int32Extensions.ToRawcode(newUnit.NewId), fullMapPath);
+                SetCustomFields(project, newUnit, Int32Extensions.ToRawcode(newUnit.NewId), fullMapPath);
             }
         }
 
-        private static void SetCustomFields(SimpleObjectModification modified, string unitId, string fullMapPath)
+        private static void SetCustomFields(Project project, SimpleObjectModification modified, string unitId, string fullMapPath)
         {
-            UnitType unitType = GetUnitType(unitId);
+            UnitType unitType = GetUnitType(project.UnitTypes, unitId);
             UnitName unitName = unitType.Name;
             string race = unitType.Race;
             string icon = unitType.Icon;
@@ -394,9 +395,9 @@ namespace BetterTriggers.WorldEdit
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "unam")
-                    unitName.Name = MapStrings.GetString(modification.ValueAsString);
+                    unitName.Name = project.MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "unsf")
-                    unitName.EditorSuffix = MapStrings.GetString(modification.ValueAsString);
+                    unitName.EditorSuffix = project.MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "urac")
                     race = modification.Value as string;
                 else if (Int32Extensions.ToRawcode(modification.Id) == "uspe")

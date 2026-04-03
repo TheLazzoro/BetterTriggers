@@ -1,28 +1,25 @@
-﻿using System;
+﻿using BetterTriggers.Containers;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using War3Net.Build.Audio;
-using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
     public class Sounds
     {
-        internal static List<Sound> sounds = new List<Sound>();
-        internal static List<Sound> music = new List<Sound>();
+        internal List<Sound> sounds = new List<Sound>();
+        internal List<Sound> music = new List<Sound>();
 
-        public static List<Sound> GetSoundsAll()
+        public List<Sound> GetSoundsAll()
         {
             return sounds;
         }
 
-        public static List<Sound> GetMusicAll()
+        public List<Sound> GetMusicAll()
         {
             return music;
         }
 
-        internal static List<Sound> GetAll()
+        internal List<Sound> GetAll()
         {
             List<Sound> list = new List<Sound>();
             list.AddRange(sounds);
@@ -30,12 +27,11 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
             sounds.Clear();
             music.Clear();
-
-            MapSounds mapSounds = CustomMapData.MPQMap.Sounds;
+            MapSounds mapSounds = project.MPQMap.Sounds;
             if (mapSounds == null)
                 return;
 

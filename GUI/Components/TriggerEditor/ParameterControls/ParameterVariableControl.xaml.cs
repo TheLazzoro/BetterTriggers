@@ -1,8 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
-using GUI.Components.VariableEditor;
-using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,12 +29,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private Searchables searchables;
         private ParameterVariableControlViewModel viewModel;
         private ExplorerElement? explorerElement;
+        private Project _project;
 
         /// <summary>
         /// </summary>
         /// <param name="returnType"></param>
         /// <param name="localVariables"></param>
-        public ParameterVariableControl(string returnType, ExplorerElement? explorerElement = null)
+        public ParameterVariableControl(Project project, string returnType, ExplorerElement? explorerElement = null)
         {
             InitializeComponent();
 
@@ -48,14 +47,13 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             else if (returnType == "StringExt")
                 returnType = "string";
 
-
+            _project = project;
             this.explorerElement = explorerElement;
             TriggerElementCollection? localVariables = null;
             if(explorerElement != null)
             {
                 localVariables = explorerElement.GetLocalVariables();
             }
-            var project = Project.CurrentProject;
             List<Variable> variables = project.Variables.GetVariables(returnType, Variables.includeLocals, localVariables);
             List<Searchable> objects = new List<Searchable>();
 
@@ -83,12 +81,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
 
         public void SetDefaultSelection(Parameter parameter)
         {
-            var project = Project.CurrentProject;
             int i = 0;
             bool found = false;
             Variable selected = null;
             if (parameter is VariableRef)
-                selected = project.Variables.GetByReference(parameter as VariableRef, explorerElement);
+                selected = _project.Variables.GetByReference(parameter as VariableRef, explorerElement);
 
             if (selected == null)
                 return;
@@ -98,7 +95,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             while (!found && i < items.Count)
             {
                 var variableItem = (VariableItem)items[i].Object;
-                var variable = project.Variables.GetByReference(variableItem.VariableRef, explorerElement);
+                var variable = _project.Variables.GetByReference(variableItem.VariableRef, explorerElement);
                 if (variable == selected)
                 {
                     variableItem.IsSelected = true;

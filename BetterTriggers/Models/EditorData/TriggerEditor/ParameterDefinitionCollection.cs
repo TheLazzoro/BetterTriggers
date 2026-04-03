@@ -1,30 +1,26 @@
 ﻿using BetterTriggers.Commands;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.Utility;
-using ICSharpCode.Decompiler.DebugInfo;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterTriggers.Models.EditorData
 {
     public class ParameterDefinitionCollection : TriggerElementCollection
     {
-        public ParameterDefinitionCollection(TriggerElementType Type) : base(Type) { }
+        public ParameterDefinitionCollection(Project project, TriggerElementType Type) : base(project, Type) { }
 
-        public void CreateParameterDefinition(ExplorerElement explorerElement)
+        public void CreateParameterDefinition(Project project, ExplorerElement explorerElement)
         {
-            var definition = new ParameterDefinition();
+            var definition = new ParameterDefinition(project);
             definition.Name = GenerateParameterDefName();
             definition.Id = GenerateId();
 
-            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, definition, this, Elements.Count);
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(project, explorerElement, definition, this, Elements.Count);
             command.Execute();
         }
 
-        public void RenameParameterDefinition(ExplorerElement explorerElement, ParameterDefinition parameterDefinition)
+        public void RenameParameterDefinition(Project project, ExplorerElement explorerElement, ParameterDefinition parameterDefinition)
         {
             string newName = parameterDefinition.RenameText;
             if (newName == parameterDefinition.Name)
@@ -41,13 +37,13 @@ namespace BetterTriggers.Models.EditorData
                     throw new Exception($"Parameter with name '{newName}' already exists.");
             }
 
-            CommandTriggerElementRename command = new CommandTriggerElementRename(explorerElement, parameterDefinition, newName);
+            CommandTriggerElementRename command = new CommandTriggerElementRename(project, explorerElement, parameterDefinition, newName);
             command.Execute();
         }
 
         public override ParameterDefinitionCollection Clone()
         {
-            var clone = new ParameterDefinitionCollection(ElementType);
+            var clone = new ParameterDefinitionCollection(_project, ElementType);
             this.Elements.ForEach(element =>
             {
                 var clonedChild = element.Clone();

@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Logging;
+using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using GUI.Components.OpenMap;
 using System;
@@ -124,7 +125,11 @@ namespace GUI.Components.NewProject
         {
             try
             {
-                TriggerConverter converter = new TriggerConverter(mapPath);
+                var project = new Project
+                {
+                    war3project = new War3Project(),
+                };
+                TriggerConverter converter = new TriggerConverter(project, mapPath);
                 ProjectLocation = converter.Convert(FinalPath);
                 (sender as BackgroundWorker).ReportProgress(100);
             }

@@ -1,20 +1,10 @@
-﻿using CASCLib;
+﻿using BetterTriggers.Models.War3Data;
+using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IniParser;
-using IniParser.Model;
 using System.IO;
-using IniParser.Parser;
-using BetterTriggers.Utility;
-using BetterTriggers.Models.War3Data;
-using BetterTriggers.WorldEdit.GameDataReader;
-using Newtonsoft.Json.Bson;
-using War3Net.IO.Slk;
-using NuGet.ContentModel;
-using War3Net.Build.Widget;
+using System.Linq;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -86,9 +76,9 @@ namespace BetterTriggers.WorldEdit
                     {
                         var key = enumKeys.Current;
                         if (key.KeyName == "Art" || key.KeyName == "Researchart")
-                            new Icon(key.Value, AbilityTypes.GetName(section.SectionName), "Ability");
+                            new Icon(key.Value, AbilityTypes.GetName(null, section.SectionName), "Ability");
                         else if (key.KeyName == "Buffart")
-                            new Icon(key.Value, BuffTypes.GetName(section.SectionName), "Buff");
+                            new Icon(key.Value, BuffTypes.GetName(null, section.SectionName), "Buff");
 
                         if (key.KeyName == "skinType")
                             category = key.Value;
@@ -164,7 +154,7 @@ namespace BetterTriggers.WorldEdit
 
                     hashset.Add(new AssetModel()
                     {
-                        DisplayName = unitData[i].Name == null ? "" : UnitTypes.GetName(unitData[i].Id),
+                        DisplayName = unitData[i].Name == null ? "" : UnitTypes.GetName(null, unitData[i].Id),
                         Path = unitData[i].Model,
                         Category = "Unit"
                     });

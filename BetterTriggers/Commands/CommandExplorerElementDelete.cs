@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 
 namespace BetterTriggers.Commands
 {
     public class CommandExplorerElementDelete : ICommand
     {
+        Project _project;
         string commandName = "Delete Explorer Element";
         ExplorerElement deletedElement;
         ExplorerElement parent;
         int index;
         RefCollection refCollection;
 
-        public CommandExplorerElementDelete(ExplorerElement deletedElement)
+        public CommandExplorerElementDelete(Project project, ExplorerElement deletedElement)
         {
+            _project = project;
             this.deletedElement = deletedElement;
             this.parent = deletedElement.GetParent();
             this.index = parent.GetExplorerElements().IndexOf(deletedElement);
-            this.refCollection = new RefCollection(deletedElement);
+            this.refCollection = new RefCollection(project, deletedElement);
         }
 
         public void Execute()
@@ -31,12 +29,12 @@ namespace BetterTriggers.Commands
             deletedElement.RemoveFromUnsaved(true);
 
             if (deletedElement is ExplorerElement)
-                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
+                _project.References.RemoveReferrer(deletedElement as ExplorerElement);
 
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(t => t.InvokeChange());
             deletedElement.InvokeDelete();
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -45,12 +43,12 @@ namespace BetterTriggers.Commands
             deletedElement.RemoveFromParent();
             deletedElement.RemoveFromUnsaved(true);
 
-            Project.CurrentProject.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
             FileSystemUtil.Delete(deletedElement.GetPath());
-            Project.CurrentProject.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
 
             if (deletedElement is ExplorerElement)
-                Project.CurrentProject.References.RemoveReferrer(deletedElement as ExplorerElement);
+                _project.References.RemoveReferrer(deletedElement as ExplorerElement);
 
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(t => t.InvokeChange());
@@ -60,17 +58,16 @@ namespace BetterTriggers.Commands
         public void Undo()
         {
             deletedElement.SetParent(parent, index);
-            var project = Project.CurrentProject;
-            project.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
 
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(t => t.InvokeChange());
-            project.RecurseCreateElementsWithContent(deletedElement);
-            project.AddElementToContainer(deletedElement);
+            _project.RecurseCreateElementsWithContent(deletedElement);
+            _project.AddElementToContainer(deletedElement);
             deletedElement.UpdateMetadata(); // this is important because we do a pseudo-undo (create the file from scratch)
             // We may want to do the same 
 
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
             refCollection.AddRefsToParent();
             deletedElement.IsSelected = true;
         }

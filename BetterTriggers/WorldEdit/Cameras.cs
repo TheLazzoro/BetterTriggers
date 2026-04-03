@@ -1,31 +1,24 @@
-﻿using BetterTriggers.Models.War3Data;
-using System;
+﻿using BetterTriggers.Containers;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using War3Net.Build.Environment;
-using War3Net.Build.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
     public class Cameras
     {
-        private static List<Camera> cameras = new List<Camera>();
+        private List<Camera> cameras = new List<Camera>();
 
-        public static List<Camera> GetAll()
+        public List<Camera> GetAll()
         {
             return cameras;
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
             cameras.Clear();
 
             MapCameras mapCameras;
-            mapCameras = CustomMapData.MPQMap.Cameras;
+            mapCameras = project.MPQMap.Cameras;
             if (mapCameras == null)
                 return;
 

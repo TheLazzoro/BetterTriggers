@@ -1,14 +1,10 @@
 ﻿using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using BetterTriggers.Utility;
-using Newtonsoft.Json;
-using System.IO;
 using BetterTriggers.Models.EditorData.TriggerEditor;
-using System.Xml.Linq;
+using BetterTriggers.Models.SaveableData;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BetterTriggers.Containers
 {
@@ -16,18 +12,27 @@ namespace BetterTriggers.Containers
     {
         internal HashSet<ExplorerElement> container = new();
         private ExplorerElement lastCreated;
+        private Project _project;
 
+        public ActionDefinitions(Project project)
+        {
+            _project = project;
+        }
+
+        private static object _lock = new object();
         public void Add(ExplorerElement actionDefinition)
         {
-            container.Add(actionDefinition);
-            lastCreated = actionDefinition;
+            lock (_lock)
+            {
+                container.Add(actionDefinition);
+                lastCreated = actionDefinition;
+            }
         }
 
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            var project = Project.CurrentProject;
-            string directory = project.currentSelectedElement;
+            string directory = _project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -35,7 +40,7 @@ namespace BetterTriggers.Containers
 
             var actionDef = new ActionDefinition_Saveable()
             {
-                Id = project.GenerateId(),
+                Id = _project.GenerateId(),
             };
             string json = JsonConvert.SerializeObject(actionDef);
 
@@ -151,7 +156,10 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            container.Remove(explorerElement);
+            lock (_lock)
+            {
+                container.Remove(explorerElement);
+            }
         }
 
         internal ExplorerElement GetByReference(ActionDefinitionRef actionDefinitionRef)

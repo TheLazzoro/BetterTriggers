@@ -1,14 +1,10 @@
-using BetterTriggers;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Windows;
 using War3Net.Build.Info;
 
 namespace Tests
@@ -17,13 +13,15 @@ namespace Tests
     public class TriggerDataTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
-        static string name = "TestProject";
-        static string projectPath;
-        static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElement variable;
-        static string variablePath;
+        static string parentFolder = "TestProjectsTriggerData";
+        string name;
+        string projectPath;
+        ExplorerElement variable;
+        string variablePath;
+
+        Project project;
 
 
         [ClassInitialize]
@@ -43,10 +41,12 @@ namespace Tests
         [TestInitialize]
         public void BeforeEach()
         {
-            if (Directory.Exists(directory + @"/" + name))
-                Directory.Delete(directory + @"/" + name, true);
-            if (File.Exists(directory + @"/" + name + ".json"))
-                File.Delete(directory + @"/" + name + ".json");
+            name = "Project-" + Guid.NewGuid().ToString();
+            var projectFolder = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(projectFolder + @"/" + name))
+                Directory.Delete(projectFolder + @"/" + name, true);
+            if (File.Exists(projectFolder + @"/" + name + ".json"))
+                File.Delete(projectFolder + @"/" + name + ".json");
 
             projectPath = Project.Create(language, name, directory);
             project = Project.Load(projectPath);
@@ -61,7 +61,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            project.Close();
         }
 
 
@@ -100,7 +100,7 @@ namespace Tests
             expected.Add("location");
             expected.Add("real");
 
-            List<string> actual = TriggerData.GetParameterReturnTypes(function, null);
+            List<string> actual = TriggerData.GetParameterReturnTypes(project, function, null);
 
             for (int i = 0; i < expected.Count; i++)
             {
@@ -128,7 +128,7 @@ namespace Tests
             expected.Clear();
             expected.Add("integer");
             expected.Add("integer");
-            actual = TriggerData.GetParameterReturnTypes(function, null);
+            actual = TriggerData.GetParameterReturnTypes(project, function, null);
 
             for (int i = 0; i < expected.Count; i++)
             {
@@ -145,7 +145,7 @@ namespace Tests
             expected.Clear();
             expected.Add("null");
             expected.Add("null");
-            actual = TriggerData.GetParameterReturnTypes(function, null);
+            actual = TriggerData.GetParameterReturnTypes(project, function, null);
 
             for (int i = 0; i < expected.Count; i++)
             {

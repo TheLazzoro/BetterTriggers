@@ -10,14 +10,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using War3Net.Build;
-using War3Net.IO.Mpq;
 
 namespace Tests
 {
     [TestClass]
     public class BT2WETests : TestBase
     {
-        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "Temp");
+        static string tempFolder = Path.Combine(Directory.GetCurrentDirectory(), "TempBT2WE");
         private string projectFile;
 
         [ClassInitialize]
@@ -71,7 +70,11 @@ namespace Tests
         {
             var editorSettings = EditorSettings.Load();
             editorSettings.Export_IncludeTriggerData = true;
-            TriggerConverter triggerConverter = new TriggerConverter(mapPath);
+            var project = new Project()
+            {
+                war3project = new War3Project()
+            };
+            TriggerConverter triggerConverter = new TriggerConverter(project, mapPath);
             string destination = Path.Combine(tempFolder, Path.GetFileNameWithoutExtension(mapPath));
             projectFile = triggerConverter.Convert(destination);
 
@@ -80,12 +83,12 @@ namespace Tests
             war3project.War3MapDirectory = mapPath;
             File.WriteAllText(projectFile, JsonConvert.SerializeObject(war3project));
 
-            var project = Project.Load(projectFile);
-            CustomMapData.Load(mapPath);
-            CustomMapData.ReloadMapData();
+            project = Project.Load(projectFile);
+            CustomMapData.Load(project, mapPath, isFilesystemWatcherEnabled: false);
+            CustomMapData.ReloadMapData(project);
 
             //ControllerMapData.ReloadMapData(); // Crashes on GitHub Actions?
-            Builder builder = new();
+            Builder builder = new(project);
             builder.BuildMap();
 
             // yes, we loop. There's one file, but I'm lazy and don't want to think about the file name right now.
@@ -104,7 +107,7 @@ namespace Tests
             GC.WaitForPendingFinalizers();
             GC.Collect();
 
-            Project.Close();
+            project.Close();
         }
     }
 }

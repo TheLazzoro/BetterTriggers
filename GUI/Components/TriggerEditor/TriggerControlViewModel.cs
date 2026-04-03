@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
 using BetterTriggers.WorldEdit;
 using GUI.Components.Shared;
@@ -10,6 +11,7 @@ namespace GUI.Components.TriggerEditor
 {
     public class TriggerControlViewModel : ViewModelBase, IDisposable
     {
+        private Project _project;
         private ExplorerElement _explorerElement;
         private ObservableCollection<TriggerElement> _triggers;
         public ObservableCollection<TriggerElement> Elements
@@ -23,8 +25,9 @@ namespace GUI.Components.TriggerEditor
         public bool IsEnabled => _explorerElement.IsEnabled;
         public bool InitiallyOn => _explorerElement.IsInitiallyOn;
 
-        public TriggerControlViewModel(ExplorerElement explorerElement)
+        public TriggerControlViewModel(Project project, ExplorerElement explorerElement)
         {
+            _project = project;
             _explorerElement = explorerElement;
             ExplorerElement.CurrentToRender = explorerElement;
             var trigger = explorerElement.trigger;
@@ -108,7 +111,7 @@ namespace GUI.Components.TriggerEditor
                 {
                     category = TriggerCategory.TC_PARAMETER;
                 }
-                var paramBuilder = new ParamTextBuilder();
+                var paramBuilder = new ParamTextBuilder(_project);
                 triggerElement.IconImage = Category.Get(category).Icon;
                 if (triggerElement is ECA eca)
                 {

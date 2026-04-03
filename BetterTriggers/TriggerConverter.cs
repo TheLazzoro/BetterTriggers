@@ -1,19 +1,14 @@
+using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.SaveableData;
+using BetterTriggers.Utility;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.IO;
-using War3Net.Build.Extensions;
-using War3Net.Build.Script;
-using System.Threading;
+using System.Linq;
 using War3Net.Build.Info;
-using BetterTriggers.Models.SaveableData;
-using Newtonsoft.Json;
-using BetterTriggers.Models.EditorData;
-using BetterTriggers.Utility;
-using BetterTriggers.Containers;
-using War3Net.Build;
-using BetterTriggers.Commands;
+using War3Net.Build.Script;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -21,6 +16,7 @@ namespace BetterTriggers.WorldEdit
     {
         public event Action<string> OnExplorerElementImported;
 
+        private Project _project;
         private string mapPath;
         private string mapPathProjectToImportInto;
         private MapTriggers triggers;
@@ -42,14 +38,16 @@ namespace BetterTriggers.WorldEdit
 
         Dictionary<int, War3ProjectFileEntry> projectFilesEntries = new Dictionary<int, War3ProjectFileEntry>(); // [id, file entry in the project]
 
-        public TriggerConverter(string mapPath)
+        public TriggerConverter(Project project, string mapPath)
         {
+            _project = project;
             this.mapPath = mapPath;
             Load(mapPath);
         }
 
-        public TriggerConverter(string mapPath, string mapPathProjectToImportInto)
+        public TriggerConverter(Project project, string mapPath, string mapPathProjectToImportInto)
         {
+            _project = project;
             this.mapPath = mapPath;
             this.mapPathProjectToImportInto = mapPathProjectToImportInto;
             Load(mapPath);
@@ -57,10 +55,7 @@ namespace BetterTriggers.WorldEdit
 
         private void Load(string mapPath)
         {
-            CustomMapData.Load(mapPath, false);
-
-            var map = CustomMapData.MPQMap;
-            //var map = Map.Open(mapPath);
+            var map = CustomMapData.Load(_project, mapPath, false);
             if (map.Triggers == null)
                 return;
 
@@ -143,7 +138,7 @@ namespace BetterTriggers.WorldEdit
         /// <exception cref="Exception"></exception>
         public void ImportIntoCurrentProject(List<TriggerItem> itemsToImport)
         {
-            if (Project.CurrentProject == null)
+            if (_project == null)
             {
                 throw new Exception("Cannot import when no project is open.");
             }
@@ -158,8 +153,7 @@ namespace BetterTriggers.WorldEdit
         public void WriteConvertedTriggers(List<ExplorerElement> elements)
         {
             // Write to disk
-            var project = Project.CurrentProject;
-            project.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
             for (int i = 0; i < elements.Count; i++)
             {
                 var element = elements[i];
@@ -171,22 +165,18 @@ namespace BetterTriggers.WorldEdit
                     if (!Directory.Exists(folder))
                     {
                         Directory.CreateDirectory(folder);
-                        project.OnCreateElement(folder, false); // We manually create UI elements
+                        _project.OnCreateElement(folder, false); // We manually create UI elements
                         OnExplorerElementImported?.Invoke(folder);
                     }
                     element.Save();
                 }
                 string path = element.GetPath();
-                project.OnCreateElement(path, false); // We manually create UI elements
+                _project.OnCreateElement(path, false); // We manually create UI elements
                 OnExplorerElementImported?.Invoke(path);
             }
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
 
-            CustomMapData.Load(mapPathProjectToImportInto);
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                CustomMapData.ReloadMapData();
-            });
+            CustomMapData.Load(_project, mapPathProjectToImportInto);
         }
 
 
@@ -261,7 +251,7 @@ namespace BetterTriggers.WorldEdit
                     {
                         if (trigger.ElementType == ExplorerElementEnum.Trigger)
                         {
-                            var functions = Function.GetFunctionsFromTrigger(trigger);
+                            var functions = Function.GetFunctionsFromTrigger(_project, trigger);
                             foreach (var function in functions)
                             {
                                 foreach (var parameter in function.parameters)
@@ -324,13 +314,12 @@ namespace BetterTriggers.WorldEdit
 
         private List<ExplorerElement> ConvertSelectedTriggers(List<TriggerItem> selectedTriggers)
         {
-            var project = Project.CurrentProject;
-            if (project == null)
+            if (_project == null)
             {
                 throw new Exception("Cannot import when no project is active.");
             }
 
-            var root = project.GetRoot();
+            var root = _project.GetRoot();
             string targetDir = FileSystemUtil.FormatFileOrDirectoryName(Path.Combine(root.GetPath(), mapInfo.MapName + "_Imported"));
             if (!Directory.Exists(targetDir))
             {
@@ -354,7 +343,7 @@ namespace BetterTriggers.WorldEdit
                 triggerElementsToImport.Add(explorerElement);
             }
 
-            ResolveIdCollisions(project, triggerElementsToImport);
+            ResolveIdCollisions(_project, triggerElementsToImport);
 
             return triggerElementsToImport;
         }
@@ -558,7 +547,7 @@ namespace BetterTriggers.WorldEdit
             if (triggerCategory == null)
                 return null;
 
-            ExplorerElement folder = new ExplorerElement(ExplorerElementEnum.Folder);
+            ExplorerElement folder = new ExplorerElement(_project, ExplorerElementEnum.Folder);
             return folder;
         }
 
@@ -571,7 +560,7 @@ namespace BetterTriggers.WorldEdit
             else if (variableDefinition.InitialValue != "")
                 initialValue = new Value { value = variableDefinition.InitialValue };
 
-            ExplorerElement variable = new ExplorerElement(ExplorerElementEnum.GlobalVariable)
+            ExplorerElement variable = new ExplorerElement(_project, ExplorerElementEnum.GlobalVariable)
             {
                 variable = new Variable()
                 {
@@ -589,7 +578,7 @@ namespace BetterTriggers.WorldEdit
 
         private ExplorerElement CreateScript(TriggerDefinition triggerDefinition, string script)
         {
-            ExplorerElement element = new ExplorerElement(ExplorerElementEnum.Script);
+            ExplorerElement element = new ExplorerElement(_project, ExplorerElementEnum.Script);
             element.IsEnabled = triggerDefinition.IsEnabled;
             element.script = script;
 
@@ -601,8 +590,8 @@ namespace BetterTriggers.WorldEdit
             if (triggerDefinition == null)
                 return null;
 
-            ExplorerElement explorerElementTrigger = new ExplorerElement(ExplorerElementEnum.Trigger);
-            Trigger trigger = new Trigger();
+            ExplorerElement explorerElementTrigger = new ExplorerElement(_project, ExplorerElementEnum.Trigger);
+            Trigger trigger = new Trigger(_project);
             explorerElementTrigger.trigger = trigger;
             explorerElementTrigger.IsEnabled = triggerDefinition.IsEnabled;
             explorerElementTrigger.IsInitiallyOn = triggerDefinition.IsInitiallyOn;
@@ -663,7 +652,7 @@ namespace BetterTriggers.WorldEdit
         {
             triggerFunctions.ForEach(function =>
             {
-                ECA te = TriggerElementFactory.Create(function.Name);
+                ECA te = TriggerElementFactory.Create(_project, function.Name);
                 te.IsEnabled = function.IsEnabled;
                 te.function.parameters = CreateParameters(function.Parameters);
 
@@ -801,7 +790,7 @@ namespace BetterTriggers.WorldEdit
 
 
                             var val = foreignParam.Value.Replace("gg_rct_", "");
-                            var regions = Regions.GetAll();
+                            var regions = _project.Regions.GetAll();
                             for (int r = 0; r < regions.Count; r++)
                             {
                                 var region = regions[r];
@@ -816,7 +805,7 @@ namespace BetterTriggers.WorldEdit
                         else if (foreignParam.Value.StartsWith("gg_cam_"))
                         {
                             var val = foreignParam.Value.Replace("gg_cam_", "");
-                            var cameras = Cameras.GetAll();
+                            var cameras = _project.Cameras.GetAll();
                             for (int c = 0; c < cameras.Count; c++)
                             {
                                 var camera = cameras[c];
@@ -831,7 +820,7 @@ namespace BetterTriggers.WorldEdit
                         else if (foreignParam.Value.StartsWith("gg_snd_"))
                         {
                             var val = foreignParam.Value.Replace("gg_snd_", "");
-                            var sounds = Sounds.GetAll();
+                            var sounds = _project.Sounds.GetAll();
                             for (int c = 0; c < sounds.Count; c++)
                             {
                                 var sound = sounds[c];

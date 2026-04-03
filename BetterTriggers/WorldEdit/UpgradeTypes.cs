@@ -1,16 +1,12 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit.GameDataReader;
-using CASCLib;
 using IniParser.Model;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
@@ -20,10 +16,10 @@ namespace BetterTriggers.WorldEdit
     public class UpgradeTypes
     {
         private static Dictionary<string, UpgradeType> upgrades;
-        private static Dictionary<string, UpgradeType> upgradesBaseEdited = new();
-        private static Dictionary<string, UpgradeType> upgradesCustom = new();
+        private Dictionary<string, UpgradeType> upgradesBaseEdited = new();
+        private Dictionary<string, UpgradeType> upgradesCustom = new();
 
-        public static List<UpgradeType> GetAll()
+        public List<UpgradeType> GetAll()
         {
             List<UpgradeType> list = new List<UpgradeType>();
             var enumerator = upgrades.GetEnumerator();
@@ -48,13 +44,15 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static UpgradeType GetUpgradeType(string upgradecode)
+        public static UpgradeType GetUpgradeType(UpgradeTypes? upgradeTypes, string upgradecode)
         {
-            UpgradeType upgradeType;
-            upgradesCustom.TryGetValue(upgradecode, out upgradeType);
-
-            if (upgradeType == null)
-                upgradesBaseEdited.TryGetValue(upgradecode, out upgradeType);
+            UpgradeType? upgradeType = null;
+            if (upgradeTypes != null)
+            {
+                upgradeTypes.upgradesCustom.TryGetValue(upgradecode, out upgradeType);
+                if (upgradeType == null)
+                    upgradeTypes.upgradesBaseEdited.TryGetValue(upgradecode, out upgradeType);
+            }
 
             if (upgradeType == null)
                 upgrades.TryGetValue(upgradecode, out upgradeType);
@@ -69,9 +67,9 @@ namespace BetterTriggers.WorldEdit
             return upgradeType;
         }
 
-        internal static string GetName(string upgradecode)
+        internal static string GetName(UpgradeTypes? upgradeTypes, string upgradecode)
         {
-            UpgradeType upgradeType = GetUpgradeType(upgradecode);
+            UpgradeType upgradeType = GetUpgradeType(upgradeTypes, upgradecode);
             if (upgradeType == null)
                 return "<Empty Name>";
             else if (upgradeType.DisplayName == null)
@@ -162,19 +160,19 @@ namespace BetterTriggers.WorldEdit
                         string[] split = key.Value.Split(",");
                         for (int i = 0; i < split.Length; i++)
                         {
-                            new Icon(split[i], UpgradeTypes.GetName(sectionName), "Upgrade");
+                            new Icon(split[i], UpgradeTypes.GetName(null, sectionName), "Upgrade");
                         }
                     }
                 }
             }
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
             upgradesBaseEdited = new Dictionary<string, UpgradeType>();
             upgradesCustom = new Dictionary<string, UpgradeType>();
 
-            UpgradeObjectData customUpgrades = CustomMapData.MPQMap.UpgradeObjectData;
+            UpgradeObjectData customUpgrades = project.MPQMap.UpgradeObjectData;
             if (customUpgrades == null)
                 return;
 
@@ -182,26 +180,26 @@ namespace BetterTriggers.WorldEdit
             for (int i = 0; i < customUpgrades.BaseUpgrades.Count; i++)
             {
                 var upgrade = customUpgrades.BaseUpgrades[i];
-                UpgradeType baseUpgrade = GetUpgradeType(Int32Extensions.ToRawcode(upgrade.OldId));
+                UpgradeType baseUpgrade = GetUpgradeType(project.UpgradeTypes, Int32Extensions.ToRawcode(upgrade.OldId));
                 var u = new UpgradeType()
                 {
                     UpgradeCode = upgrade.ToString().Substring(0, 4),
                     DisplayName = baseUpgrade.DisplayName,
                 };
                 upgradesBaseEdited.TryAdd(baseUpgrade.UpgradeCode, u);
-                SetCustomFields(upgrade, u.UpgradeCode);
+                SetCustomFields(project, upgrade, u.UpgradeCode);
             }
 
             for (int i = 0; i < customUpgrades.NewUpgrades.Count; i++)
             {
                 var customUpgrade = customUpgrades.NewUpgrades[i];
 
-                UpgradeType baseUpgrade = GetUpgradeType(Int32Extensions.ToRawcode(customUpgrade.OldId));
+                UpgradeType baseUpgrade = GetUpgradeType(project.UpgradeTypes, Int32Extensions.ToRawcode(customUpgrade.OldId));
                 string name = baseUpgrade.DisplayName;
                 foreach (var modified in customUpgrade.Modifications)
                 {
                     if (Int32Extensions.ToRawcode(modified.Id) == "gnam")
-                        name = MapStrings.GetString(modified.ValueAsString);
+                        name = project.MapStrings.GetString(modified.ValueAsString);
                 }
 
                 var upgrade = new UpgradeType()
@@ -210,21 +208,21 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = name,
                 };
                 upgradesCustom.TryAdd(upgrade.UpgradeCode, upgrade);
-                SetCustomFields(customUpgrade, upgrade.UpgradeCode);
+                SetCustomFields(project, customUpgrade, upgrade.UpgradeCode);
             }
         }
 
-        private static void SetCustomFields(LevelObjectModification modified, string techcode)
+        private static void SetCustomFields(Project project, LevelObjectModification modified, string techcode)
         {
-            UpgradeType upgradeType = GetUpgradeType(techcode);
+            UpgradeType upgradeType = GetUpgradeType(project.UpgradeTypes, techcode);
             string displayName = upgradeType.DisplayName;
             string editorSuffix = upgradeType.EditorSuffix;
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "gnam")
-                    displayName = MapStrings.GetString(modification.ValueAsString);
+                    displayName = project.MapStrings.GetString(modification.ValueAsString);
                 else if (Int32Extensions.ToRawcode(modification.Id) == "gnsf")
-                    editorSuffix = MapStrings.GetString(modification.ValueAsString);
+                    editorSuffix = project.MapStrings.GetString(modification.ValueAsString);
             }
             upgradeType.DisplayName = displayName;
             upgradeType.EditorSuffix = editorSuffix;

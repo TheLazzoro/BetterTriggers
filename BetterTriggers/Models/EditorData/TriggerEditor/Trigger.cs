@@ -1,11 +1,4 @@
-﻿using BetterTriggers.Models.SaveableData;
-using ICSharpCode.Decompiler.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -16,15 +9,26 @@ namespace BetterTriggers.Models.EditorData
         public string Script;
         public bool RunOnMapInit;
         public bool IsScript;
-        public TriggerElementCollection Events = new(TriggerElementType.Event);
-        public TriggerElementCollection Conditions = new(TriggerElementType.Condition);
-        public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
-        public TriggerElementCollection Actions = new(TriggerElementType.Action);
+        public TriggerElementCollection Events;
+        public TriggerElementCollection Conditions;
+        public TriggerElementCollection LocalVariables;
+        public TriggerElementCollection Actions;
+
+        private Project _project;
+
+        public Trigger(Project project)
+        {
+            _project = project;
+            Events = new(project, TriggerElementType.Event);
+            Conditions = new(project, TriggerElementType.Condition);
+            LocalVariables = new(project, TriggerElementType.LocalVariable);
+            Actions = new(project, TriggerElementType.Action);
+        }
 
         public Trigger Clone()
         {
             // NOTE: we don't clone the script since it would cause script errors. Maybe we should?
-            Trigger cloned = new Trigger();
+            var cloned = new Trigger(_project);
             cloned.Comment = new string(Comment);
             cloned.Events = Events.Clone();
             cloned.Conditions = Conditions.Clone();

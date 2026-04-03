@@ -25,6 +25,8 @@ namespace GUI.Components
     {
         public TriggerControlViewModel ViewModel { get; }
 
+        private Project _project;
+
         private TextEditor TextEditor;
         private ExplorerElement explorerElement; // needed to get file references to variables in TriggerElements
         private ExplorerElementEnum explorerElementType;
@@ -49,11 +51,13 @@ namespace GUI.Components
         private ReturnTypeControl _returnTypeControl;
         private ParameterDefinitionControl _parameterDefinitionControl;
 
-        public TriggerControl(ExplorerElement explorerElement)
+        public TriggerControl(Project project, ExplorerElement explorerElement)
         {
             InitializeComponent();
 
-            ViewModel = new TriggerControlViewModel(explorerElement);
+            _project = project;
+
+            ViewModel = new TriggerControlViewModel(project, explorerElement);
             DataContext = ViewModel;
 
             EditorSettings settings = EditorSettings.Load();
@@ -268,7 +272,7 @@ namespace GUI.Components
                 .Where(x => x != null)
                 .ToList();
 
-            var command = new CommandTriggerElementEnableDisable(explorerElement, ecas);
+            var command = new CommandTriggerElementEnableDisable(_project, explorerElement, ecas);
             command.Execute();
         }
 
@@ -286,7 +290,7 @@ namespace GUI.Components
             if (type == TriggerElementType.LocalVariable)
             {
                 insertIndex = localVariables.Count();
-                Project.CurrentProject.Variables.CreateLocalVariable(explorerElement, insertIndex);
+                _project.Variables.CreateLocalVariable(explorerElement, insertIndex);
                 return;
             }
             else if (type == TriggerElementType.ParameterDef)
@@ -312,8 +316,7 @@ namespace GUI.Components
                         return;
                 }
 
-                var project = Project.CurrentProject;
-                var references = project.References.GetReferrers(referable);
+                var references = _project.References.GetReferrers(referable);
                 if (references.Count > 0)
                 {
                     DialogBoxReferences dialog = new DialogBoxReferences(references, ExplorerAction.Reset);
@@ -325,7 +328,7 @@ namespace GUI.Components
                 }
 
 
-                parameterDefCollection.CreateParameterDefinition(explorerElement);
+                parameterDefCollection.CreateParameterDefinition(_project, explorerElement);
                 return;
             }
 
@@ -388,7 +391,7 @@ namespace GUI.Components
                 insertIndex = parent.Count();
             }
 
-            var menu = new TriggerElementMenuWindow(explorerElement, type);
+            var menu = new TriggerElementMenuWindow(_project, explorerElement, type);
             menu.ShowDialog();
             ECA eca = menu.createdTriggerElement;
 
@@ -400,7 +403,7 @@ namespace GUI.Components
             var parentAsItem = GetTreeViewItemFromTriggerElement(parent);
             parentAsItem.IsExpanded = true;
 
-            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, eca, parent, insertIndex);
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(_project, explorerElement, eca, parent, insertIndex);
             command.Execute();
             eca.IsSelected = true;
         }
@@ -447,7 +450,7 @@ namespace GUI.Components
             ExplorerElement.CurrentToRender = explorerElement;
             if (triggerElement is ECA eca)
             {
-                ParamTextBuilder paramTextBuilder = new ParamTextBuilder();
+                ParamTextBuilder paramTextBuilder = new ParamTextBuilder(_project);
                 var inlines = paramTextBuilder.GenerateParamText(explorerElement, eca);
                 textblockParams.Inlines.AddRange(inlines);
                 textblockDescription.Text = Locale.Translate(eca.function.value);
@@ -455,7 +458,7 @@ namespace GUI.Components
             }
             else if (triggerElement is LocalVariable localVar)
             {
-                _variableControl = new VariableControl(explorerElement, localVar.variable);
+                _variableControl = new VariableControl(_project, explorerElement, localVar.variable);
                 _variableControl.OnChange += OnChange;
                 grid.Children.Add(_variableControl);
                 Grid.SetRow(_variableControl, 3);
@@ -485,7 +488,7 @@ namespace GUI.Components
                 return;
             }
 
-            var elements = Project.CurrentProject.GetTriggerElementsFromExplorerElement(explorerElement);
+            var elements = _project.GetTriggerElementsFromExplorerElement(explorerElement);
             for (int i = 0; i < elements.Count; i++)
             {
                 var eca = elements[i] as ECA;
@@ -493,7 +496,7 @@ namespace GUI.Components
                     continue;
 
                 ExplorerElement.CurrentToRender = explorerElement;
-                var paramTextBuilder = new ParamTextBuilder();
+                var paramTextBuilder = new ParamTextBuilder(_project);
                 eca.DisplayText = paramTextBuilder.GenerateTreeItemText(explorerElement, eca);
             }
 
@@ -702,8 +705,7 @@ namespace GUI.Components
                         break;
                 }
 
-                var project = Project.CurrentProject;
-                var references = project.References.GetReferrers(referable);
+                var references = _project.References.GetReferrers(referable);
                 references = references.Distinct().ToList();
                 if (references.Count > 0)
                 {
@@ -716,7 +718,7 @@ namespace GUI.Components
                 }
             }
 
-            CommandTriggerElementMove command = new CommandTriggerElementMove(explorerElement, triggerElement, parent, insertIndex);
+            CommandTriggerElementMove command = new CommandTriggerElementMove(_project, explorerElement, triggerElement, parent, insertIndex);
             command.Execute();
         }
 
@@ -896,7 +898,7 @@ namespace GUI.Components
             if (selectedElement == null || selectedElement is TriggerElementCollection || selectedElement is ParameterDefinitionCollection)
                 return;
 
-            TriggerElementCollection elementsToDelete = new(selectedElement.ElementType);
+            TriggerElementCollection elementsToDelete = new(_project, selectedElement.ElementType);
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 var triggerElement = selectedItems[i];
@@ -916,13 +918,13 @@ namespace GUI.Components
                 var paramDef = el as ParameterDefinition;
                 if (localVar != null)
                 {
-                    List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(localVar.variable);
+                    List<ExplorerElement> refs = _project.References.GetReferrers(localVar.variable);
                     if (refs.Count > 0)
                         localsInUse.Add(localVar);
                 }
                 else if (paramDef != null)
                 {
-                    List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(paramDef);
+                    List<ExplorerElement> refs = _project.References.GetReferrers(paramDef);
                     if (refs.Count > 0)
                         paramDefsInUse.Add(paramDef);
                 }
@@ -934,8 +936,8 @@ namespace GUI.Components
                 if (!window.OK)
                     return;
 
-                localsInUse.ForEach(v => Project.CurrentProject.Variables.RemoveLocalVariable(v));
-                TriggerValidator validator = new TriggerValidator(explorerElement);
+                localsInUse.ForEach(v => _project.Variables.RemoveLocalVariable(v));
+                TriggerValidator validator = new TriggerValidator(_project, explorerElement);
                 validator.RemoveInvalidReferences();
             }
             else if (paramDefsInUse.Count > 0)
@@ -987,8 +989,7 @@ namespace GUI.Components
                         break;
                 }
 
-                var project = Project.CurrentProject;
-                var references = project.References.GetReferrers(referable);
+                var references = _project.References.GetReferrers(referable);
                 references = references.Distinct().ToList();
                 if (references.Count > 0)
                 {
@@ -1001,7 +1002,7 @@ namespace GUI.Components
                 }
             }
 
-            CommandTriggerElementDelete command = new CommandTriggerElementDelete(explorerElement, elementsToDelete);
+            CommandTriggerElementDelete command = new CommandTriggerElementDelete(_project, explorerElement, elementsToDelete);
             command.Execute();
 
             if (ToSelectAfterDeletion != null)
@@ -1016,14 +1017,14 @@ namespace GUI.Components
             if (selected == null)
                 return;
 
-            TriggerElementCollection triggerElements = new(selected.ElementType);
+            TriggerElementCollection triggerElements = new(_project, selected.ElementType);
             for (int i = 0; i < selectedItems.Count; i++)
             {
                 var triggerElement = selectedItems[i];
                 if (triggerElement != null)
                     triggerElements.Elements.Add(triggerElement);
             }
-            Project.CurrentProject.CopyTriggerElements(explorerElement, triggerElements, isCut);
+            _project.CopyTriggerElements(explorerElement, triggerElements, isCut);
         }
 
         private void PasteTriggerElement()
@@ -1087,9 +1088,8 @@ namespace GUI.Components
                         break;
                 }
 
-                var project = Project.CurrentProject;
-                var references = project.References.GetReferrers(referableFrom);
-                references.AddRange(project.References.GetReferrers(referableTo));
+                var references = _project.References.GetReferrers(referableFrom);
+                references.AddRange(_project.References.GetReferrers(referableTo));
                 references = references.Distinct().ToList();
                 if (references.Count > 0)
                 {
@@ -1102,7 +1102,7 @@ namespace GUI.Components
                 }
             }
 
-            var pasted = Project.CurrentProject.PasteTriggerElements(explorerElement, attachTarget, insertIndex);
+            var pasted = _project.PasteTriggerElements(explorerElement, attachTarget, insertIndex);
         }
 
         private void checkBoxIsEnabled_Click(object sender, RoutedEventArgs e)
@@ -1149,12 +1149,12 @@ namespace GUI.Components
                 if (doGenerate)
                 {
                     // Only generates a new script when the user has clicked the 'Custom Script' checkbox.
-                    ScriptGenerator scriptGenerator = new ScriptGenerator(Info.GetLanguage());
+                    ScriptGenerator scriptGenerator = new ScriptGenerator(_project, Info.GetLanguage(_project));
                     string script = scriptGenerator.ConvertGUIToJass(explorerElement, new List<string>());
                     explorerElement.trigger.Script = script;
                 }
 
-                TextEditor = new TextEditor(explorerElement.trigger.Script, Info.GetLanguage());
+                TextEditor = new TextEditor(_project, explorerElement.trigger.Script, Info.GetLanguage(_project));
                 TextEditor.avalonEditor.Text = explorerElement.trigger.Script;
                 TextEditor.avalonEditor.TextChanged += delegate
                 {
@@ -1392,7 +1392,7 @@ namespace GUI.Components
             {
                 if (selected is LocalVariable localVar)
                 {
-                    var variables = Project.CurrentProject.Variables;
+                    var variables = _project.Variables;
                     try
                     {
                         variables.RenameLocalVariable(explorerElement, localVar, localVar.RenameText);
@@ -1409,7 +1409,7 @@ namespace GUI.Components
                     var parent = parameterDef.GetParent() as ParameterDefinitionCollection;
                     try
                     {
-                        parent.RenameParameterDefinition(explorerElement, parameterDef);
+                        parent.RenameParameterDefinition(_project, explorerElement, parameterDef);
                     }
                     catch (Exception ex)
                     {
@@ -1454,14 +1454,14 @@ namespace GUI.Components
             else
                 return;
 
-            TriggerElementMenuWindow window = new TriggerElementMenuWindow(explorerElement, elementType, eca);
+            TriggerElementMenuWindow window = new TriggerElementMenuWindow(_project, explorerElement, elementType, eca);
             window.ShowDialog();
             ECA selected = window.createdTriggerElement;
 
             if (selected == null || selected.function.value == eca.function.value)
                 return;
 
-            CommandTriggerElementReplace command = new CommandTriggerElementReplace(explorerElement, eca, selected);
+            CommandTriggerElementReplace command = new CommandTriggerElementReplace(_project, explorerElement, eca, selected);
             command.Execute();
         }
 

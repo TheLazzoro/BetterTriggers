@@ -1,10 +1,4 @@
-﻿using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.EditorData.TriggerEditor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -16,18 +10,24 @@ namespace BetterTriggers.Models.EditorData
         public string Category;
         public string ParamText;
         public ReturnType ReturnType;
-        public ParameterDefinitionCollection Parameters = new(TriggerElementType.ParameterDef);
-        public TriggerElementCollection LocalVariables = new(TriggerElementType.LocalVariable);
-        public TriggerElementCollection Actions = new(TriggerElementType.Action);
+        public ParameterDefinitionCollection Parameters;
+        public TriggerElementCollection LocalVariables;
+        public TriggerElementCollection Actions;
 
-        public FunctionDefinition(ExplorerElement explorerElement)
+        private Project _project;
+
+        public FunctionDefinition(Project project, ExplorerElement explorerElement)
         {
+            _project = project;
             this.explorerElement = explorerElement;
+            Parameters = new(project, TriggerElementType.ParameterDef);
+            LocalVariables = new(project, TriggerElementType.LocalVariable);
+            Actions = new(project, TriggerElementType.Action);
         }
 
         public FunctionDefinition Clone()
         {
-            FunctionDefinition cloned = new FunctionDefinition(explorerElement);
+            FunctionDefinition cloned = new FunctionDefinition(_project, explorerElement);
             cloned.Comment = new string(Comment);
             cloned.Category = new string(Category);
             cloned.ParamText = new string(ParamText);

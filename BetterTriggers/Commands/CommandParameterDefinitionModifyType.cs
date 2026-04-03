@@ -5,6 +5,7 @@ namespace BetterTriggers.Commands
 {
     public class CommandParameterDefinitionModifyType : ICommand
     {
+        Project _project;
         string commandName = "Modify Parameter Definition Type";
         ExplorerElement explorerElement;
         ParameterDefinition parameterDef;
@@ -13,15 +14,16 @@ namespace BetterTriggers.Commands
         RefCollection refCollection1;
         RefCollection refCollection2;
 
-        public CommandParameterDefinitionModifyType(ExplorerElement explorerElement, ParameterDefinition parameterDef, War3Type selectedType)
+        public CommandParameterDefinitionModifyType(Project project, ExplorerElement explorerElement, ParameterDefinition parameterDef, War3Type selectedType)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.parameterDef = parameterDef;
             this.selectedType = selectedType;
             this.previousType = parameterDef.ReturnType;
 
-            refCollection1 = new RefCollection(explorerElement);
-            refCollection2 = new RefCollection(explorerElement, parameterDef);
+            refCollection1 = new RefCollection(project, explorerElement);
+            refCollection2 = new RefCollection(project, explorerElement, parameterDef);
         }
 
         public void Execute()
@@ -29,8 +31,8 @@ namespace BetterTriggers.Commands
             parameterDef.ReturnType = selectedType;
             refCollection1.ResetParameters();
             refCollection2.ResetParameters();
-            Project.CurrentProject.References.UpdateReferences(parameterDef);
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.References.UpdateReferences(parameterDef);
+            _project.CommandManager.AddCommand(this);
             refCollection1.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection1.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();
@@ -41,7 +43,7 @@ namespace BetterTriggers.Commands
             parameterDef.ReturnType = selectedType;
             refCollection1.ResetParameters();
             refCollection2.ResetParameters();
-            Project.CurrentProject.References.UpdateReferences(parameterDef);
+            _project.References.UpdateReferences(parameterDef);
             refCollection1.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection1.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();
@@ -52,7 +54,7 @@ namespace BetterTriggers.Commands
             parameterDef.ReturnType = previousType;
             refCollection1.RevertToOldParameters();
             refCollection2.RevertToOldParameters();
-            Project.CurrentProject.References.UpdateReferences(parameterDef);
+            _project.References.UpdateReferences(parameterDef);
             refCollection1.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection1.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();

@@ -2,19 +2,17 @@
 using BetterTriggers.Models.EditorData;
 using Microsoft.VisualBasic.FileIO;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using War3Net.Build.Info;
 
 namespace BetterTriggers.Utility
 {
     public static class FileSystemUtil
     {
-        public static void Move(string elementToMove, string targetDir, int insertIndex)
+        public static void Move(Project project, string elementToMove, string targetDir, int insertIndex)
         {
-            Project.CurrentProject.insertIndex = insertIndex;
+            project.insertIndex = insertIndex;
             string directory = targetDir;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(targetDir);
@@ -41,10 +39,8 @@ namespace BetterTriggers.Utility
         public static void Delete(string path)
         {
             if (File.Exists(path))
-                //File.Delete(path);
                 FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
             else if (Directory.Exists(path))
-                //Directory.Delete(path);
                 FileSystem.DeleteDirectory(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
         }
 

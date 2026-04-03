@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -20,17 +20,17 @@ namespace BetterTriggers.Models.EditorData
 
         private TriggerElementCollection _and;
 
-        public AndMultiple()
+        public AndMultiple(Project project) : base(project)
         {
             function.value = "AndMultiple";
             Elements = new();
-            And = new(TriggerElementType.Condition);
+            And = new(project, TriggerElementType.Condition);
             IsExpandedTreeItem = true;
         }
 
         public override AndMultiple Clone()
         {
-            AndMultiple clone = new AndMultiple();
+            AndMultiple clone = new AndMultiple(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.And = And.Clone();

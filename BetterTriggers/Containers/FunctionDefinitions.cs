@@ -1,13 +1,10 @@
 ﻿using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using BetterTriggers.Utility;
-using Newtonsoft.Json;
-using System.IO;
 using BetterTriggers.Models.EditorData.TriggerEditor;
+using BetterTriggers.Models.SaveableData;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BetterTriggers.Containers
 {
@@ -15,18 +12,27 @@ namespace BetterTriggers.Containers
     {
         internal HashSet<ExplorerElement> container = new();
         private ExplorerElement lastCreated;
+        private Project _project;
 
+        public FunctionDefinitions(Project project)
+        {
+            _project = project;
+        }
+
+        private static object _lock = new object();
         public void Add(ExplorerElement functionDefinition)
         {
-            container.Add(functionDefinition);
-            lastCreated = functionDefinition;
+            lock (_lock)
+            {
+                container.Add(functionDefinition);
+                lastCreated = functionDefinition;
+            }
         }
 
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            var project = Project.CurrentProject;
-            string directory = project.currentSelectedElement;
+            string directory = _project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -38,7 +44,7 @@ namespace BetterTriggers.Containers
             });
             var functionDef = new FunctionDefinition_Saveable()
             {
-                Id = project.GenerateId(),
+                Id = _project.GenerateId(),
                 Actions = new List<TriggerElement_Saveable>()
                 {
                     returnStatement,
@@ -135,17 +141,15 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            container.Remove(explorerElement);
+            lock (_lock)
+            {
+                container.Remove(explorerElement);
+            }
         }
 
         internal ExplorerElement GetByReference(FunctionDefinitionRef functionDefinitionRef)
         {
             return FindById(functionDefinitionRef.FunctionDefinitionId);
-        }
-
-        internal void Clear()
-        {
-            container.Clear();
         }
 
         internal FunctionDefinition FindByName(string name)

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,12 +13,12 @@ namespace GUI.Components
         private ExplorerElement explorerElementScript;
         private bool suppressStateChange = false;
 
-        public ScriptControl(ExplorerElement explorerElementScript)
+        public ScriptControl(Project project, ExplorerElement explorerElementScript)
         {
             InitializeComponent();
 
             string extension = System.IO.Path.GetExtension(explorerElementScript.GetPath());
-            textEditor = new TextEditor(explorerElementScript.script, extension == ".j" ? ScriptLanguage.Jass : ScriptLanguage.Lua);
+            textEditor = new TextEditor(project, explorerElementScript.script, extension == ".j" ? ScriptLanguage.Jass : ScriptLanguage.Lua);
             this.grid.Children.Add(textEditor);
             Grid.SetRow(textEditor, 1);
 

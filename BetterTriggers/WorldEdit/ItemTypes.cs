@@ -1,15 +1,11 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit.GameDataReader;
-using CASCLib;
-using IniParser.Model;
-using IniParser.Parser;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
@@ -19,10 +15,10 @@ namespace BetterTriggers.WorldEdit
     public class ItemTypes
     {
         private static Dictionary<string, ItemType> items;
-        private static Dictionary<string, ItemType> itemsBaseEdited = new();
-        private static Dictionary<string, ItemType> itemsCustom = new();
+        private Dictionary<string, ItemType> itemsBaseEdited = new();
+        private Dictionary<string, ItemType> itemsCustom = new();
 
-        public static List<ItemType> GetAll()
+        public List<ItemType> GetAll()
         {
             List<ItemType> list = new List<ItemType>();
             var enumerator = items.GetEnumerator();
@@ -52,16 +48,20 @@ namespace BetterTriggers.WorldEdit
             return items.Select(kvp => kvp.Value).ToList();
         }
 
-        public static ItemType GetItemType(string itemcode)
+        public static ItemType GetItemType(ItemTypes? itemTypes, string itemcode)
         {
-            ItemType itemType;
-            itemsCustom.TryGetValue(itemcode, out itemType);
+            ItemType? itemType = null;
 
-            if (itemType == null)
-                itemsBaseEdited.TryGetValue(itemcode, out itemType);
+            if (itemTypes != null)
+            {
+                itemTypes.itemsCustom.TryGetValue(itemcode, out itemType);
 
-            if (itemType == null)
-                items.TryGetValue(itemcode, out itemType);
+                if (itemType == null)
+                    itemTypes.itemsBaseEdited.TryGetValue(itemcode, out itemType);
+
+                if (itemType == null)
+                    items.TryGetValue(itemcode, out itemType);
+            }
 
             if (itemType == null)
                 itemType = new ItemType()
@@ -73,9 +73,9 @@ namespace BetterTriggers.WorldEdit
             return itemType;
         }
 
-        internal static string GetName(string itemcode)
+        internal static string GetName(ItemTypes? itemTypes, string itemcode)
         {
-            ItemType itemType = GetItemType(itemcode);
+            ItemType itemType = GetItemType(itemTypes, itemcode);
             if (itemType == null)
                 return "<Empty Name>";
 
@@ -144,7 +144,9 @@ namespace BetterTriggers.WorldEdit
                 var keys = sections.Current.Keys;
                 string path = keys["Art"];
                 if (path != null)
-                    new Icon(path, ItemTypes.GetName(sectionName), "Item");
+                {
+                    new Icon(path, ItemTypes.GetName(null, sectionName), "Item");
+                }
             }
 
             itemfunc.Close();
@@ -189,26 +191,26 @@ namespace BetterTriggers.WorldEdit
                 var keys = sections.Current.Keys;
                 string path = keys["Art"];
                 if (path != null)
-                    new Icon(path, ItemTypes.GetName(sectionName), "Item");
+                    new Icon(path, ItemTypes.GetName(null, sectionName), "Item");
             }
 
             itemfunc.Close();
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
             itemsBaseEdited = new Dictionary<string, ItemType>();
             itemsCustom = new Dictionary<string, ItemType>();
 
             ItemObjectData customItems;
-            customItems = CustomMapData.MPQMap.ItemObjectData;
+            customItems = project.MPQMap.ItemObjectData;
             if (customItems == null)
                 return;
 
             for (int i = 0; i < customItems.BaseItems.Count; i++)
             {
                 var baseItem = customItems.BaseItems[i];
-                ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(baseItem.OldId));
+                ItemType baseAbil = GetItemType(this, Int32Extensions.ToRawcode(baseItem.OldId));
                 string name = baseAbil.DisplayName;
                 var item = new ItemType()
                 {
@@ -216,13 +218,13 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = name,
                 };
                 itemsBaseEdited.TryAdd(item.ItemCode, item);
-                SetCustomFields(baseItem, Int32Extensions.ToRawcode(baseItem.OldId));
+                SetCustomFields(project, baseItem, Int32Extensions.ToRawcode(baseItem.OldId));
             }
 
             for (int i = 0; i < customItems.NewItems.Count; i++)
             {
                 var customItem = customItems.NewItems[i];
-                ItemType baseAbil = GetItemType(Int32Extensions.ToRawcode(customItem.OldId));
+                ItemType baseAbil = GetItemType(this, Int32Extensions.ToRawcode(customItem.OldId));
                 string name = baseAbil.DisplayName;
                 var item = new ItemType()
                 {
@@ -230,19 +232,19 @@ namespace BetterTriggers.WorldEdit
                     DisplayName = name,
                 };
                 itemsCustom.TryAdd(item.ItemCode, item);
-                SetCustomFields(customItem, item.ItemCode);
+                SetCustomFields(project, customItem, item.ItemCode);
             }
         }
 
-        private static void SetCustomFields(SimpleObjectModification modified, string itemcode)
+        private void SetCustomFields(Project project, SimpleObjectModification modified, string itemcode)
         {
-            ItemType itemType = GetItemType(itemcode);
+            ItemType itemType = GetItemType(this, itemcode);
             string displayName = itemType.DisplayName;
 
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "unam")
-                    displayName = MapStrings.GetString(modification.ValueAsString);
+                    displayName = project.MapStrings.GetString(modification.ValueAsString);
             }
 
             itemType.DisplayName = displayName;

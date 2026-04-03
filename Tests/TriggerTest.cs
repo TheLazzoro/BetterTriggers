@@ -1,12 +1,8 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Threading;
-using System.Windows;
 using War3Net.Build.Info;
 
 namespace Tests
@@ -15,13 +11,13 @@ namespace Tests
     public class TriggerTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
-        static string name = "TestProject";
-        static string projectPath;
-        static Project project;
+        static string parentFolder = "TriggerTestProjects";
         static string directory = System.IO.Directory.GetCurrentDirectory();
 
-        static ExplorerElement element1, element2, element3;
-
+        string name;
+        string projectPath;
+        ExplorerElement element1, element2, element3;
+        Project project;
 
         [ClassInitialize]
         public static void Init(TestContext context)
@@ -40,12 +36,14 @@ namespace Tests
         [TestInitialize]
         public void BeforeEach()
         {
-            if (Directory.Exists(directory + @"/" + name))
-                Directory.Delete(directory + @"/" + name, true);
-            if(File.Exists(directory + @"/" + name + ".json"))
-                File.Delete(directory + @"/" + name + ".json");
+            name = "Project-" + Guid.NewGuid().ToString();
+            var projectFolder = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(projectFolder + @"/" + name))
+                Directory.Delete(projectFolder + @"/" + name, true);
+            if(File.Exists(projectFolder + @"/" + name + ".json"))
+                File.Delete(projectFolder + @"/" + name + ".json");
 
-            projectPath = Project.Create(language, name, directory);
+            projectPath = Project.Create(language, name, projectFolder);
             project = Project.Load(projectPath);
             project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
@@ -65,7 +63,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            project.Close();
         }
 
 

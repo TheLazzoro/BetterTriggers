@@ -7,6 +7,7 @@ namespace BetterTriggers.Commands
 {
     public class CommandExplorerElementMove : ICommand
     {
+        Project _project;
         string commandName = "Move Explorer Element";
         ExplorerElement explorerElement;
         ExplorerElement oldParent;
@@ -16,14 +17,14 @@ namespace BetterTriggers.Commands
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandExplorerElementMove(ExplorerElement explorerElement, string newFullPath, int NewInsertIndex)
+        public CommandExplorerElementMove(Project project, ExplorerElement explorerElement, string newFullPath, int NewInsertIndex)
         {
-            var project = Project.CurrentProject;
+            _project = project;
             var rootNode = project.projectFiles[0];
             newParent = project.FindExplorerElementFolder(rootNode, Path.GetDirectoryName(newFullPath));
             if(newParent == null)
             {
-                newParent = Project.CurrentProject.GetRoot();
+                newParent = _project.GetRoot();
             }
             this.oldFullPath = explorerElement.GetPath();
             this.newFullPath = newFullPath;
@@ -36,12 +37,11 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            var project = Project.CurrentProject;
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(newParent, NewInsertIndex);
-            project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
+            _project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
 
-            project.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
             explorerElement.IsSelected = true;
         }
 
@@ -50,13 +50,12 @@ namespace BetterTriggers.Commands
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(newParent, NewInsertIndex);
 
-            var project = Project.CurrentProject;
-            project.EnableFileEvents(false);
-            FileSystemUtil.Move(explorerElement.GetPath(), newParent.GetPath(), NewInsertIndex);
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(false);
+            FileSystemUtil.Move(_project, explorerElement.GetPath(), newParent.GetPath(), NewInsertIndex);
+            _project.EnableFileEvents(true);
 
 
-            project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
+            _project.RecurseMoveElement(explorerElement, oldFullPath, newFullPath);
             explorerElement.IsSelected = true;
         }
 
@@ -65,12 +64,11 @@ namespace BetterTriggers.Commands
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(oldParent, OldInsertIndex);
 
-            var project = Project.CurrentProject;
-            project.EnableFileEvents(false);
-            FileSystemUtil.Move(explorerElement.GetPath(), oldParent.GetPath(), OldInsertIndex);
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(false);
+            FileSystemUtil.Move(_project, explorerElement.GetPath(), oldParent.GetPath(), OldInsertIndex);
+            _project.EnableFileEvents(true);
 
-            project.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
+            _project.RecurseMoveElement(explorerElement, newFullPath, oldFullPath);
             explorerElement.IsSelected = true;
         }
 

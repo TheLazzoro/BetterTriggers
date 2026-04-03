@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -20,17 +20,17 @@ namespace BetterTriggers.Models.EditorData
 
         private TriggerElementCollection _actions;
 
-        public EnumDestructablesInRectAllMultiple()
+        public EnumDestructablesInRectAllMultiple(Project project) : base(project)
         {
             function.value = "EnumDestructablesInRectAllMultiple";
             Elements = new();
-            Actions = new(TriggerElementType.Action);
+            Actions = new(project, TriggerElementType.Action);
             IsExpandedTreeItem = true;
         }
 
         public override EnumDestructablesInRectAllMultiple Clone()
         {
-            EnumDestructablesInRectAllMultiple clone = new EnumDestructablesInRectAllMultiple();
+            EnumDestructablesInRectAllMultiple clone = new EnumDestructablesInRectAllMultiple(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();

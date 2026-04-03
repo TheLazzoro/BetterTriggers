@@ -1,23 +1,17 @@
-﻿using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit.GameDataReader;
 using CASCLib;
 using IniParser.Model;
-using IniParser.Parser;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using War3Net.Build.Info;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BetterTriggers.Containers;
+using War3Net.Build.Info;
 using War3Net.Common.Extensions;
-using System.Windows.Documents;
-using BetterTriggers.WorldEdit.GameDataReader;
-using System.Windows.Input;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -597,12 +591,12 @@ namespace BetterTriggers.WorldEdit
             return "nothing"; // hack?
         }
 
-        public static List<string> GetParameterReturnTypes(Function f, ExplorerElement ex)
+        public static List<string> GetParameterReturnTypes(Project project, Function f, ExplorerElement ex)
         {
             List<string> list = new List<string>();
 
             // TODO: This is slow.
-            var actionDefs = Project.CurrentProject.ActionDefinitions.GetAll();
+            var actionDefs = project.ActionDefinitions.GetAll();
             for (int i = 0; i < actionDefs.Count(); i++)
             {
                 var actionDef = actionDefs[i];
@@ -616,7 +610,7 @@ namespace BetterTriggers.WorldEdit
                     return list;
                 }
             }
-            var conditionDefs = Project.CurrentProject.ConditionDefinitions.GetAll();
+            var conditionDefs = project.ConditionDefinitions.GetAll();
             for (int i = 0; i < conditionDefs.Count(); i++)
             {
                 var conditionDef = conditionDefs[i];
@@ -636,7 +630,7 @@ namespace BetterTriggers.WorldEdit
                 VariableRef varRef = f.parameters[0] as VariableRef;
                 if (varRef != null)
                 {
-                    Variable variable = Project.CurrentProject.Variables.GetByReference(f.parameters[0] as VariableRef, ex);
+                    Variable variable = project.Variables.GetByReference(f.parameters[0] as VariableRef, ex);
                     if (variable != null)
                     {
                         list.Add(variable.War3Type.Type);
@@ -723,7 +717,7 @@ namespace BetterTriggers.WorldEdit
             return exists;
         }
 
-        internal static bool FunctionExists(Function function)
+        internal static bool FunctionExists(Project project, Function function)
         {
             if (function == null)
                 return false;
@@ -734,7 +728,6 @@ namespace BetterTriggers.WorldEdit
                 exists = FunctionsAll.ContainsKey(function.value);
             }
 
-            var project = Project.CurrentProject;
             if (!exists)
                 exists = project.ActionDefinitions.Contains(function.value);
             if (!exists)
@@ -768,7 +761,7 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static List<FunctionTemplate> LoadAllCalls(string returnType)
+        public static List<FunctionTemplate> LoadAllCalls(Project project, string returnType)
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
 
@@ -844,7 +837,7 @@ namespace BetterTriggers.WorldEdit
                 list.ForEach(call => call.returnType = "boolcall");
             }
 
-            var functionDefinitions = Project.CurrentProject.FunctionDefinitions.GetAll();
+            var functionDefinitions = project.FunctionDefinitions.GetAll();
             foreach (var funcDef in functionDefinitions)
             {
                 if (Types.GetBaseType(funcDef.functionDefinition.ReturnType.War3Type.Type) == baseType)
@@ -876,7 +869,7 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static List<FunctionTemplate> LoadAllConditions()
+        public static List<FunctionTemplate> LoadAllConditions(Project project)
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
             var enumerator = TriggerData.ConditionTemplates.GetEnumerator();
@@ -886,7 +879,7 @@ namespace BetterTriggers.WorldEdit
                 if (template.value != "InvalidECA")
                     list.Add(template.Clone());
             }
-            var conditionDefs = Project.CurrentProject.ConditionDefinitions.GetAll();
+            var conditionDefs = project.ConditionDefinitions.GetAll();
             foreach (var conditionDef in conditionDefs)
             {
                 var functionTemplate = new FunctionTemplate(TriggerElementType.Condition)
@@ -904,7 +897,7 @@ namespace BetterTriggers.WorldEdit
             return list;
         }
 
-        public static List<FunctionTemplate> LoadAllActions(ExplorerElementEnum type)
+        public static List<FunctionTemplate> LoadAllActions(Project project, ExplorerElementEnum type)
         {
             List<FunctionTemplate> list = new List<FunctionTemplate>();
             var enumerator = TriggerData.ActionTemplates.GetEnumerator();
@@ -919,7 +912,7 @@ namespace BetterTriggers.WorldEdit
 
                 list.Add(template.Clone());
             }
-            var actionDefs = Project.CurrentProject.ActionDefinitions.GetAll();
+            var actionDefs = project.ActionDefinitions.GetAll();
             foreach (var actionDef in actionDefs)
             {
                 var functionTemplate = new FunctionTemplate(TriggerElementType.Action)
@@ -962,14 +955,14 @@ namespace BetterTriggers.WorldEdit
             return displayName;
         }
 
-        public static string GetParamText(TriggerElement triggerElement)
+        public static string GetParamText(Project project, TriggerElement triggerElement)
         {
             string paramText = string.Empty;
             if (triggerElement is ECA)
             {
                 var element = (ECA)triggerElement;
                 var function = element.function;
-                paramText = GetParamText(function);
+                paramText = GetParamText(project, function);
             }
             else if (triggerElement is LocalVariable)
             {
@@ -980,13 +973,13 @@ namespace BetterTriggers.WorldEdit
             return paramText;
         }
 
-        public static string GetParamText(Function function)
+        public static string GetParamText(Project project, Function function)
         {
             string paramText = string.Empty;
             TriggerData.ParamCodeText.TryGetValue(function.value, out paramText);
             if (paramText == null)
             {
-                List<string> returnTypes = TriggerData.GetParameterReturnTypes(function, null);
+                List<string> returnTypes = TriggerData.GetParameterReturnTypes(project, function, null);
                 paramText = function.value + "(";
                 for (int i = 0; i < function.parameters.Count; i++)
                 {

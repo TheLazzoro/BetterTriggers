@@ -1,21 +1,25 @@
 ﻿using BetterTriggers.Models.EditorData;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace BetterTriggers.Containers
 {
     public class Folders
     {
         private HashSet<ExplorerElement> folderContainer = new HashSet<ExplorerElement>();
+        private Project _project;
+
+        public Folders(Project project)
+        {
+            _project = project;
+        }
 
         /// <summary>
         /// Creates a folder at the current selected 'destination' folder.
         /// </summary>
         public string Create()
         {
-            string directory = Project.CurrentProject.currentSelectedElement;
+            string directory = _project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -40,14 +44,13 @@ namespace BetterTriggers.Containers
             return path;
         }
 
-        public void Clear()
-        {
-            folderContainer.Clear();
-        }
-        
+        private static object _lock = new object();
         public void AddFolder(ExplorerElement folder)
         {
-            folderContainer.Add(folder);
+            lock (_lock)
+            {
+                folderContainer.Add(folder);
+            }
         }
 
         /// <summary>
@@ -72,7 +75,10 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            folderContainer.Remove(explorerElement);
+            lock (_lock)
+            {
+                folderContainer.Remove(explorerElement);
+            }
         }
 
         internal string GenerateName(string folder)

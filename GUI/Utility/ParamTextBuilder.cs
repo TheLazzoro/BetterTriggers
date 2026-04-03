@@ -2,17 +2,11 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.WorldEdit;
-using GUI.Components.Shared;
 using GUI.Components.TriggerEditor;
-using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace GUI.Utility
 {
@@ -21,15 +15,15 @@ namespace GUI.Utility
         private List<HyperlinkBT> hyperlinkParameters = new List<HyperlinkBT>();
         private StringBuilder stringBuilder = new StringBuilder();
         private EditorSettings settings;
-        private Project project;
+        private Project _project;
         private Variable _variable;
         private ECA _eca;
         private ExplorerElement _explorerElement;
 
-        public ParamTextBuilder()
+        public ParamTextBuilder(Project project)
         {
             settings = EditorSettings.Load();
-            project = Project.CurrentProject;
+            _project = project;
         }
 
         public string GenerateTreeItemText(ExplorerElement explorerElement, ECA eca)
@@ -43,7 +37,7 @@ namespace GUI.Utility
             string paramText;
             if (eca is ActionDefinitionRef actionDefRef)
             {
-                var actionDef = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId).actionDefinition;
+                var actionDef = _project.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId).actionDefinition;
                 actionDef.Parameters.Elements.ForEach(el =>
                 {
                     var paramDef = (ParameterDefinition)el;
@@ -54,19 +48,19 @@ namespace GUI.Utility
             }
             else if (eca is ConditionDefinitionRef conditionDefRef)
             {
-                var conditionDef = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId).conditionDefinition;
+                var conditionDef = _project.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId).conditionDefinition;
                 conditionDef.Parameters.Elements.ForEach(el =>
                 {
                     var paramDef = (ParameterDefinition)el;
                     returnTypes.Add(paramDef.ReturnType.Type);
                 });
-                paramText = TriggerData.GetParamText(eca.function);
+                paramText = TriggerData.GetParamText(_project, eca.function);
                 generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
             }
             else
             {
-                returnTypes = TriggerData.GetParameterReturnTypes(eca.function, _explorerElement);
-                paramText = TriggerData.GetParamText(eca.function);
+                returnTypes = TriggerData.GetParameterReturnTypes(_project, eca.function, _explorerElement);
+                paramText = TriggerData.GetParamText(_project, eca.function);
                 generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
             }
 
@@ -103,9 +97,9 @@ namespace GUI.Utility
                 {
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
-                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(_project, function, _explorerElement);
                         sb.Append("(");
-                        GenerateTreeItemText(sb, function.parameters, _returnTypes, TriggerData.GetParamText(function)); // recurse
+                        GenerateTreeItemText(sb, function.parameters, _returnTypes, TriggerData.GetParamText(_project, function)); // recurse
                     }
                     else // whole displayname gets hyperlinked
                         sb.Append($"({TriggerData.GetParamDisplayName(function)}");
@@ -117,7 +111,7 @@ namespace GUI.Utility
 
                 else if (parameters[paramIndex] is VariableRef variableRef)
                 {
-                    var variable = project.Variables.GetByReference(variableRef, _explorerElement);
+                    var variable = _project.Variables.GetByReference(variableRef, _explorerElement);
                     string varName = string.Empty;
 
                     string expectedType = null;
@@ -132,7 +126,7 @@ namespace GUI.Utility
                     if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
                         varName = "null";
                     else
-                        varName = project.Variables.GetVariableNameById(variable.Id);
+                        varName = _project.Variables.GetVariableNameById(variable.Id);
 
                     sb.Append(varName);
 
@@ -152,14 +146,14 @@ namespace GUI.Utility
                 }
                 else if (parameters[paramIndex] is TriggerRef triggerRef)
                 {
-                    var trigger = project.Triggers.GetByReference(triggerRef);
+                    var trigger = _project.Triggers.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
                         triggerName = "null";
                     else
-                        triggerName = project.Triggers.GetName(trigger.trigger.Id);
+                        triggerName = _project.Triggers.GetName(trigger.trigger.Id);
 
                     sb.Append(triggerName);
                 }
@@ -178,7 +172,7 @@ namespace GUI.Utility
                 }
                 else if (parameters[paramIndex] is Value value)
                 {
-                    var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
+                    var name = _project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
                     if (returnTypes[paramIndex] == "string" || returnTypes[paramIndex] == "StringExt")
                     {
                         if (name.Length > 32) name = name.Substring(0, 32) + "...";
@@ -240,7 +234,7 @@ namespace GUI.Utility
             var returnTypes = new List<string>();
             if (eca is ActionDefinitionRef actionDefRef)
             {
-                var actionDef = Project.CurrentProject.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId).actionDefinition;
+                var actionDef = _project.ActionDefinitions.FindById(actionDefRef.ActionDefinitionId).actionDefinition;
                 string paramText = actionDef.ParamText;
                 actionDef.Parameters.Elements.ForEach(el =>
                 {
@@ -253,7 +247,7 @@ namespace GUI.Utility
             }
             else if (eca is ConditionDefinitionRef conditionDefRef)
             {
-                var conditionDef = Project.CurrentProject.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId).conditionDefinition;
+                var conditionDef = _project.ConditionDefinitions.FindById(conditionDefRef.ConditionDefinitionId).conditionDefinition;
                 string paramText = conditionDef.ParamText;
                 conditionDef.Parameters.Elements.ForEach(el =>
                 {
@@ -266,8 +260,8 @@ namespace GUI.Utility
             }
             else
             {
-                returnTypes = TriggerData.GetParameterReturnTypes(eca.function, explorerElement);
-                string paramText = TriggerData.GetParamText(eca.function);
+                returnTypes = TriggerData.GetParameterReturnTypes(_project, eca.function, explorerElement);
+                string paramText = TriggerData.GetParamText(_project, eca.function);
                 generated = RecurseGenerateParamText(paramText, eca.function.parameters, returnTypes);
             }
 
@@ -325,13 +319,13 @@ namespace GUI.Utility
                 {
                     if (function.parameters.Count > 0) // first bracket gets hyperlinked
                     {
-                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(function, _explorerElement);
+                        List<string> _returnTypes = TriggerData.GetParameterReturnTypes(_project, function, _explorerElement);
                         if (settings.triggerEditorMode == 0)
                             inlines.Add(AddHyperlink("(", parameters, paramIndex, returnTypes[paramIndex]));
                         else
                             inlines.Add(AddHyperlink(" ( ", parameters, paramIndex, returnTypes[paramIndex]));
 
-                        inlines.AddRange(RecurseGenerateParamText(TriggerData.GetParamText(function), function.parameters, _returnTypes)); // recurse
+                        inlines.AddRange(RecurseGenerateParamText(TriggerData.GetParamText(_project, function), function.parameters, _returnTypes)); // recurse
                     }
                     else // whole displayname gets hyperlinked
                     {
@@ -352,7 +346,7 @@ namespace GUI.Utility
                 }
                 else if (parameters[paramIndex] is VariableRef variableRef)
                 {
-                    var variable = project.Variables.GetByReference(variableRef, _explorerElement);
+                    var variable = _project.Variables.GetByReference(variableRef, _explorerElement);
                     string varName = string.Empty;
 
                     string expectedType = null;
@@ -367,7 +361,7 @@ namespace GUI.Utility
                     if (variable == null || !Types.AreTypesEqual(expectedType, actualType))
                         varName = "null";
                     else
-                        varName = project.Variables.GetVariableNameById(variable.Id);
+                        varName = _project.Variables.GetVariableNameById(variable.Id);
 
                     inlines.Add(AddHyperlink(varName, parameters, paramIndex, returnTypes[paramIndex]));
                     List<string> _returnTypes = new List<string>();
@@ -380,14 +374,14 @@ namespace GUI.Utility
                 }
                 else if (parameters[paramIndex] is TriggerRef triggerRef)
                 {
-                    var trigger = project.Triggers.GetByReference(triggerRef);
+                    var trigger = _project.Triggers.GetByReference(triggerRef);
                     string triggerName = string.Empty;
 
                     // This exists in case a trigger name has been changed
                     if (trigger == null)
                         triggerName = "null";
                     else
-                        triggerName = project.Triggers.GetName(trigger.trigger.Id);
+                        triggerName = _project.Triggers.GetName(trigger.trigger.Id);
 
                     inlines.Add(AddHyperlink(triggerName, parameters, paramIndex, returnTypes[paramIndex]));
                 }
@@ -406,7 +400,7 @@ namespace GUI.Utility
                 }
                 else if (parameters[paramIndex] is Value value)
                 {
-                    var name = project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
+                    var name = _project.Triggers.GetValueName(value.value, returnTypes[paramIndex]);
                     if (returnTypes[paramIndex] == "string" || returnTypes[paramIndex] == "StringExt")
                     {
                         if (name.Length > 32) name = name.Substring(0, 32) + "...";
@@ -460,7 +454,7 @@ namespace GUI.Utility
             }
             else
             {
-                hyperlinkBT = new HyperlinkParameterVariable(_variable, parameters[0], text);
+                hyperlinkBT = new HyperlinkParameterVariable(_project, _variable, parameters[0], text);
             }
 
             hyperlinkParameters.Add(hyperlinkBT);

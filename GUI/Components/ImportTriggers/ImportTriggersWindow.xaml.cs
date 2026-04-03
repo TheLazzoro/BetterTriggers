@@ -25,18 +25,19 @@ namespace GUI
         private string mapPath;
         private bool hasError;
         private string errorMsg;
-        private BackgroundWorker worker;
         private List<string> itemsImported;
         Dictionary<string, ImportTriggerItem> treeItemExplorerElements;
         private List<ExplorerElement> elementsToImport;
 
         private UserControl control;
         private ImportTriggersViewModel _viewModel;
+        private Project _project;
 
-        public ImportTriggersWindow()
+        public ImportTriggersWindow(Project project)
         {
             this.Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+            _project = project;
             _viewModel = new();
             DataContext = _viewModel;
             EditorSettings settings = EditorSettings.Load();
@@ -73,14 +74,14 @@ namespace GUI
                 _viewModel.ExplorerElements.Clear();
                 var map = Map.Open(mapPath);
                 var triggerItems = map.Triggers.TriggerItems;
-                var triggerConverter = new TriggerConverter(mapPath);
+                var triggerConverter = new TriggerConverter(_project, mapPath);
                 var explorerElements = triggerConverter.ConvertAll_NoWrite();
                 txtTotalTriggerItems.Text = "Total items: " + triggerItems.Count;
 
                 this.treeItemExplorerElements = new Dictionary<string, ImportTriggerItem>();
 
                 // First create UI items and filter those we don't need.
-                var explorerRoot = new ExplorerElement
+                var explorerRoot = new ExplorerElement(_project)
                 {
                     path = mapPath
                 };
@@ -135,7 +136,7 @@ namespace GUI
                 }
                 if (explorerElement.ElementType == ExplorerElementEnum.Trigger)
                 {
-                    control = new TriggerControl(explorerElement);
+                    control = new TriggerControl(_project, explorerElement);
                     var triggerControl = (TriggerControl)control;
                     triggerControl.checkBoxIsCustomScript.IsEnabled = false;
                     triggerControl.checkBoxIsEnabled.IsEnabled = false;
@@ -159,7 +160,7 @@ namespace GUI
                 }
                 else if (explorerElement.ElementType == ExplorerElementEnum.Script)
                 {
-                    control = new ScriptControl(explorerElement);
+                    control = new ScriptControl(_project, explorerElement);
                     var scriptControl = (ScriptControl)control;
                     scriptControl.textEditor.avalonEditor.IsReadOnly = true;
                     scriptControl.checkBoxIsEnabled.IsEnabled = false;
@@ -172,7 +173,7 @@ namespace GUI
                 }
                 else if (explorerElement.ElementType == ExplorerElementEnum.GlobalVariable)
                 {
-                    control = new VariableControl(explorerElement, explorerElement.variable);
+                    control = new VariableControl(_project, explorerElement, explorerElement.variable);
                     control.IsEnabled = false;
 
                     grid.Children.Add(control);
@@ -196,67 +197,37 @@ namespace GUI
                 .Select(item => item.Value.explorerElement)
                 .ToList();
 
-            worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.ProgressChanged += Worker_ProgressChanged;
-            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerAsync();
-        }
-
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            TriggerConverter triggerConverter = new TriggerConverter(mapPath, Project.CurrentProject.GetFullMapPath());
+            bool success = false;
+            TriggerConverter triggerConverter = new TriggerConverter(_project, mapPath, _project.GetFullMapPath());
             try
             {
                 triggerConverter.OnExplorerElementImported += TriggerConverter_OnExplorerElementImported;
                 triggerConverter.WriteConvertedTriggers(elementsToImport);
-                worker.ReportProgress(100);
                 triggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
+                success = true;
             }
             catch (Exception ex)
             {
                 errorMsg = ex.Message;
-                worker.ReportProgress(-1);
                 triggerConverter.OnExplorerElementImported -= TriggerConverter_OnExplorerElementImported;
 
                 LoggingService service = new LoggingService();
                 Task.Factory.StartNew(() => service.SubmitError_Async(ex, "-- LOGGED BY SYSTEM --"));
             }
+
+            if (!success)
+            {
+                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", errorMsg);
+                messageBox.ShowDialog();
+            }
+
+            CustomMapData.ReloadMapData(_project);
+            this.Close();
         }
 
         private void TriggerConverter_OnExplorerElementImported(string fullPath)
         {
             itemsImported.Add(fullPath);
-            float percent = (float)itemsImported.Count / elementsToImport.Count * 100;
-            worker.ReportProgress((int)percent);
         }
-
-        bool didComplete = false;
-        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.ProgressPercentage == -1)
-            {
-                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", errorMsg);
-                messageBox.ShowDialog();
-            }
-            else
-            {
-                txtProgressPercent.Text = $"{e.ProgressPercentage}%";
-                progressBar.Value = e.ProgressPercentage;
-            }
-        }
-
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                Components.Dialogs.MessageBox messageBox = new Components.Dialogs.MessageBox("Error", e.Error.Message);
-                messageBox.ShowDialog();
-            }
-
-            this.Close();
-        }
-
     }
 }

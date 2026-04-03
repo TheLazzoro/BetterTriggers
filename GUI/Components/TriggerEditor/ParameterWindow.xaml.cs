@@ -2,21 +2,12 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.EditorData.TriggerEditor;
-using BetterTriggers.WorldEdit;
-using GUI.Components;
 using GUI.Components.TriggerEditor.ParameterControls;
 using GUI.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GUI
 {
@@ -25,6 +16,7 @@ namespace GUI
         public bool isOK = false;
         public Parameter selectedParameter;
 
+        Project _project;
         ParameterFunctionControl functionControl;
         ParameterPresetControl presetControl;
         ParameterVariableControl variableControl;
@@ -38,11 +30,12 @@ namespace GUI
         /// <summary>
         /// </summary>
         /// <param name="function">null indicates we're editing a variable initial value. Yes, very hacky.</param>
-        public ParameterWindow(Parameter parameter, string returnType, Function function = null, ExplorerElement explorerElement = null)
+        public ParameterWindow(Project project, Parameter parameter, string returnType, Function function = null, ExplorerElement explorerElement = null)
         {
             InitializeComponent();
             this.Owner = MainWindow.GetMainWindow();
 
+            _project = project;
             EditorSettings settings = EditorSettings.Load();
             this.Width = settings.parameterWindowWidth;
             this.Height = settings.parameterWindowHeight;
@@ -58,10 +51,10 @@ namespace GUI
                 if (parameter == function.parameters[0])
                     returnType = "AnyGlobal";
                 else if (parameter == function.parameters[1])
-                    returnType = Project.CurrentProject.Variables.GetById(variableRef.VariableId, explorerElement).War3Type.Type;
+                    returnType = project.Variables.GetById(variableRef.VariableId, explorerElement).War3Type.Type;
             }
 
-            this.functionControl = new ParameterFunctionControl(returnType);
+            this.functionControl = new ParameterFunctionControl(project, returnType);
             grid.Children.Add(functionControl);
             Grid.SetRow(functionControl, 1);
             Grid.SetColumnSpan(functionControl, 2);
@@ -72,9 +65,9 @@ namespace GUI
             Grid.SetColumnSpan(presetControl, 2);
 
             if (explorerElement == null)
-                this.variableControl = new ParameterVariableControl(returnType);
+                this.variableControl = new ParameterVariableControl(_project, returnType);
             else
-                this.variableControl = new ParameterVariableControl(returnType, explorerElement);
+                this.variableControl = new ParameterVariableControl(_project, returnType, explorerElement);
             grid.Children.Add(variableControl);
             Grid.SetRow(variableControl, 1);
             Grid.SetColumnSpan(variableControl, 2);
@@ -87,17 +80,17 @@ namespace GUI
             Grid.SetRow(parameterDefinitionControl, 1);
             Grid.SetColumnSpan(parameterDefinitionControl, 2);
 
-            this.valueControl = new ParameterValueControl(returnType);
+            this.valueControl = new ParameterValueControl(project, returnType);
             grid.Children.Add(valueControl);
             Grid.SetRow(valueControl, 1);
             Grid.SetColumnSpan(valueControl, 2);
 
-            this.triggerRefControl = new ParameterTriggerControl();
+            this.triggerRefControl = new ParameterTriggerControl(_project);
             grid.Children.Add(triggerRefControl);
             Grid.SetRow(triggerRefControl, 1);
             Grid.SetColumnSpan(triggerRefControl, 2);
 
-            this.importControl = new ParameterImportedControl(returnType);
+            this.importControl = new ParameterImportedControl(project, returnType);
             grid.Children.Add(importControl);
             Grid.SetRow(importControl, 1);
             Grid.SetColumnSpan(importControl, 2);

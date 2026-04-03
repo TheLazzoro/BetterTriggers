@@ -1,12 +1,12 @@
-﻿using BetterTriggers.Utility;
-using BetterTriggers.WorldEdit;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Models.War3Data;
+using BetterTriggers.Utility;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System;
-using BetterTriggers.Models.War3Data;
 using System.Windows.Input;
-using BetterTriggers.Models.EditorData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -44,17 +44,19 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         private ButtonUnitType selectedButton;
         private UnitType defaultSelected;
         private bool hasPopulatedOnce = false;
+        private Project _project;
 
         private Searchables searchables;
 
         public event EventHandler SelectionChanged;
         public event EventHandler OK;
 
-        public ValueControlUnitTypes()
+        public ValueControlUnitTypes(Project project)
         {
             InitializeComponent();
 
-            unitData = UnitTypes.GetAll();
+            _project = project;
+            unitData = project.UnitTypes.GetAll();
             comboboxRace.SelectedIndex = 0;
 
             this.KeyDown += ValueControlUnitTypes_KeyDown;
@@ -184,7 +186,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
                 if (unitRace == selectedRace)
                 {
                     string unitCategory = unit.Sort.Substring(1, 1);
-                    var btn = new ButtonUnitType(unit);
+                    var btn = new ButtonUnitType(_project, unit);
                     btn.Category = unitCategory;
                     btn.Click += Btn_Click;
 

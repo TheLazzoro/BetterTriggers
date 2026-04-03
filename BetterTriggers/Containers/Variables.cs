@@ -1,7 +1,6 @@
 ﻿using BetterTriggers.Commands;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
-using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
@@ -9,9 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows.Media.Animation;
-using War3Net.Build.Script;
 
 namespace BetterTriggers.Containers
 {
@@ -20,12 +16,17 @@ namespace BetterTriggers.Containers
         public static bool includeLocals { get; set; } = true; // hack
         public HashSet<ExplorerElement> variableContainer = new HashSet<ExplorerElement>();
         public HashSet<Variable> localVariableContainer = new HashSet<Variable>();
+        private Project _project;
+
+        public Variables(Project project)
+        {
+            _project = project;
+        }
 
         /// <returns>Full path.</returns>
         public string Create()
         {
-            var project = Project.CurrentProject;
-            string directory = project.currentSelectedElement;
+            string directory = _project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -34,7 +35,7 @@ namespace BetterTriggers.Containers
             // Default variable is always an integer on creation.
             Variable_Saveable variable = new Variable_Saveable()
             {
-                Id = project.GenerateId(),
+                Id = _project.GenerateId(),
                 Name = name,
                 Type = "integer",
                 InitialValue = new Value_Saveable() { value = "0" },
@@ -50,19 +51,18 @@ namespace BetterTriggers.Containers
         public LocalVariable CreateLocalVariable(ExplorerElement explorerElement, int insertIndex)
         {
             TriggerElementCollection localVariables = explorerElement.GetLocalVariables();
-            var project = Project.CurrentProject;
 
             Variable variable = new Variable();
             variable.War3Type = War3Type.Get("integer");
             variable.Name = GenerateLocalName(localVariables);
-            variable.Id = project.GenerateId();
+            variable.Id = _project.GenerateId();
             variable.ArraySize = new int[] { 1, 1 };
             variable.InitialValue = new Value() { value = "0" };
-            LocalVariable localVariable = new LocalVariable(variable);
+            LocalVariable localVariable = new LocalVariable(_project, variable);
             localVariable.IconImage = Category.Get(TriggerCategory.TC_LOCAL_VARIABLE).Icon;
             localVariableContainer.Add(localVariable.variable);
 
-            CommandTriggerElementCreate command = new CommandTriggerElementCreate(explorerElement, localVariable, localVariables, insertIndex);
+            CommandTriggerElementCreate command = new CommandTriggerElementCreate(_project, explorerElement, localVariable, localVariables, insertIndex);
             command.Execute();
 
             return localVariable;
@@ -85,7 +85,7 @@ namespace BetterTriggers.Containers
                     throw new Exception($"Local variable with name '{newName}' already exists.");
             }
 
-            CommandTriggerElementRename command = new CommandTriggerElementRename(explorerElement, variable, newName);
+            CommandTriggerElementRename command = new CommandTriggerElementRename(_project, explorerElement, variable, newName);
             command.Execute();
         }
 
@@ -97,7 +97,7 @@ namespace BetterTriggers.Containers
             Variable variable = ExplorerElement.variable;
             if (variable.InitialValue is Value value)
             {
-                bool dataExists = CustomMapData.ReferencedDataExists(value, variable.War3Type.Type);
+                bool dataExists = CustomMapData.ReferencedDataExists(_project, value, variable.War3Type.Type);
                 if (!dataExists)
                 {
                     variable.InitialValue = new Parameter();
@@ -177,10 +177,13 @@ namespace BetterTriggers.Containers
             return generatedName;
         }
 
-
+        private static object _lock = new object();
         internal void AddVariable(ExplorerElement variable)
         {
-            variableContainer.Add(variable);
+            lock (_lock)
+            {
+                variableContainer.Add(variable);
+            }
         }
 
         /// <summary>
@@ -361,17 +364,26 @@ namespace BetterTriggers.Containers
 
         internal void Remove(ExplorerElement variable)
         {
-            variableContainer.Remove(variable);
+            lock (_lock)
+            {
+                variableContainer.Remove(variable);
+            }
         }
 
         internal void AddLocalVariable(LocalVariable localVariable)
         {
-            localVariableContainer.Add(localVariable.variable);
+            lock (_lock)
+            {
+                localVariableContainer.Add(localVariable.variable);
+            }
         }
 
         public void RemoveLocalVariable(LocalVariable localVariable)
         {
-            localVariableContainer.Remove(localVariable.variable);
+            lock (_lock)
+            {
+                localVariableContainer.Remove(localVariable.variable);
+            }
         }
 
         public Variable GetByReference(VariableRef variableRef, ExplorerElement explorerElement = null)

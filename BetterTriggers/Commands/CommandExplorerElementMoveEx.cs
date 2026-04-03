@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Commands
 {
     public class CommandExplorerElementMoveEx : ICommand
     {
+        Project _project;
         string commandName = "Move Trigger Element";
         ExplorerElement explorerElement;
         ExplorerElement Parent;
         int OldInsertIndex = 0;
         int NewInsertIndex = 0;
 
-        public CommandExplorerElementMoveEx(ExplorerElement explorerElement, int NewInsertIndex)
+        public CommandExplorerElementMoveEx(Project project, ExplorerElement explorerElement, int NewInsertIndex)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.Parent = explorerElement.GetParent();
             this.OldInsertIndex = this.Parent.GetExplorerElements().IndexOf(explorerElement);
@@ -27,7 +25,7 @@ namespace BetterTriggers.Commands
         {
             explorerElement.RemoveFromParent();
             explorerElement.SetParent(Parent, NewInsertIndex);
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
         }
 
         public void Redo()

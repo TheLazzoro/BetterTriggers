@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Controls;
+﻿using BetterTriggers.Models.EditorData;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using BetterTriggers.Models.EditorData;
-using BetterTriggers.Containers;
+using System.Windows.Controls;
 
 namespace GUI.Components.Tabs
 {
@@ -52,7 +44,7 @@ namespace GUI.Components.Tabs
             Content = editor;
             Parent = parent;
 
-            bool isUnsaved = Project.CurrentProject.UnsavedFiles.Contains(explorerElement);
+            bool isUnsaved = explorerElement.Project.UnsavedFiles.Contains(explorerElement);
             if (isUnsaved)
                 ExplorerElement_OnChanged();
             else
@@ -62,7 +54,7 @@ namespace GUI.Components.Tabs
         private void ExplorerElement_OnChanged()
         {
             if (explorerElement.ElementType == ExplorerElementEnum.Root)
-                Header = Project.CurrentProject.MapName + " *";
+                Header = explorerElement.Project.MapName + " *";
             else
                 Header = explorerElement.GetName() + " *";
         }
@@ -70,7 +62,7 @@ namespace GUI.Components.Tabs
         private void ExplorerElement_OnSaved()
         {
             if (explorerElement.ElementType == ExplorerElementEnum.Root)
-                Header = Project.CurrentProject.MapName;
+                Header = explorerElement.Project.MapName;
             else
                 Header = explorerElement.GetName();
         }

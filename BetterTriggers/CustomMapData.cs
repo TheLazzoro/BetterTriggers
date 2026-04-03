@@ -1,35 +1,28 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using War3Net.Build;
-using War3Net.Build.Environment;
-using War3Net.Build.Extensions;
-using War3Net.Build.Object;
 using War3Net.Build.Widget;
-using War3Net.IO.Mpq;
 
 namespace BetterTriggers
 {
     public class CustomMapData
     {
-        internal static Map MPQMap;
         private static FileSystemWatcher watcher;
         public static event Action OnSaving;
 
         private static System.Timers.Timer ThresholdBeforeReloadingTimer;
         private const int THRESHOLD_BEFORE_SAVING_MS = 50;
         private static bool isVanillaWESaving;
+
+        private static Project? _project;
 
         /// <summary>
         /// Method used for detecting the vanilla WE saving the map.
@@ -39,7 +32,7 @@ namespace BetterTriggers
             // this try-block is only here because of the TriggerConverter.
             try
             {
-                var mapPath = Project.CurrentProject.GetFullMapPath();
+                var mapPath = _project.GetFullMapPath();
                 if (e.Name == Path.GetFileName(mapPath) + "Temp")
                 {
                     isVanillaWESaving = true;
@@ -62,7 +55,7 @@ namespace BetterTriggers
             {
                 if (!isVanillaWESaving)
                 {
-                    string mapPath = Project.CurrentProject.GetFullMapPath();
+                    string mapPath = _project.GetFullMapPath();
                     bool fileIsInMap = e.FullPath.StartsWith(mapPath);
                     if (fileIsInMap)
                     {
@@ -94,11 +87,11 @@ namespace BetterTriggers
             ThresholdBeforeReloadingTimer.Stop();
         }
 
-        public static bool IsMapSaving(string fullMapPath = null)
+        public static bool IsMapSaving(Project project, string fullMapPath = null)
         {
             if (string.IsNullOrEmpty(fullMapPath))
             {
-                fullMapPath = Project.CurrentProject.GetFullMapPath();
+                fullMapPath = project.GetFullMapPath();
             }
 
             if (Directory.Exists(fullMapPath + "Temp"))
@@ -112,35 +105,36 @@ namespace BetterTriggers
         }
 
 
-        public static void Load(string fullMapPath = null, bool isFilesystemWatcherEnabled = true)
+        public static Map Load(Project? project, string fullMapPath = null, bool isFilesystemWatcherEnabled = true)
         {
+            _project = project;
             if (string.IsNullOrEmpty(fullMapPath))
             {
-                fullMapPath = Project.CurrentProject.GetFullMapPath();
+                fullMapPath = project.GetFullMapPath();
             }
 
-            while (IsMapSaving(fullMapPath))
+            while (IsMapSaving(project, fullMapPath))
             {
                 Thread.Sleep(1000);
             }
-            MPQMap = Map.Open(fullMapPath);
+            var mpqMap = Map.Open(fullMapPath);
+            project.MPQMap = mpqMap;
+            project.Info.Load(project);
+            project.MapStrings.Load(project);
+            project.UnitTypes.Load(project, fullMapPath);
+            project.ItemTypes.Load(project);
+            project.DestructibleTypes.Load(project);
+            project.DoodadTypes.Load(project, fullMapPath);
+            project.AbilityTypes.Load(project);
+            project.BuffTypes.Load(project);
+            project.UpgradeTypes.Load(project);
+            SkinFiles.Load(project);
 
-            Info.Load();
-            MapStrings.Load();
-            UnitTypes.Load(fullMapPath);
-            ItemTypes.Load();
-            DestructibleTypes.Load();
-            DoodadTypes.Load(fullMapPath);
-            AbilityTypes.Load();
-            BuffTypes.Load();
-            UpgradeTypes.Load();
-            SkinFiles.Load();
-
-            Cameras.Load();
-            Destructibles.Load();
-            Regions.Load();
-            Sounds.Load();
-            Units.Load();
+            project.Cameras.Load(project);
+            project.Destructibles.Load(project);
+            project.Regions.Load(project);
+            project.Sounds.Load(project);
+            project.Units.Load(project);
 
             isVanillaWESaving = false;
 
@@ -159,6 +153,8 @@ namespace BetterTriggers
                 watcher.Created += Watcher_Created;
                 watcher.Changed += Watcher_Changed;
             }
+
+            return mpqMap;
         }
 
 
@@ -167,7 +163,7 @@ namespace BetterTriggers
         /// Also checks for ID collisions.
         /// </summary>
         /// <returns>A list of modified triggers.</returns>
-        public static List<ExplorerElement> ReloadMapData()
+        public static List<ExplorerElement> ReloadMapData(Project project)
         {
             // Check for ID collisions
             List<Tuple<ExplorerElement, ExplorerElement>> idCollision = new();
@@ -177,11 +173,11 @@ namespace BetterTriggers
             List<ExplorerElement> checkedConditionDefs = new List<ExplorerElement>();
             List<ExplorerElement> checkedFunctionDefs = new List<ExplorerElement>();
 
-            var triggers = Project.CurrentProject.Triggers.GetAll();
-            var variables = Project.CurrentProject.Variables.GetGlobals();
-            var actionsDefs = Project.CurrentProject.ActionDefinitions.GetAll();
-            var conditionDefs = Project.CurrentProject.ConditionDefinitions.GetAll();
-            var functionDefs = Project.CurrentProject.FunctionDefinitions.GetAll();
+            var triggers = project.Triggers.GetAll();
+            var variables = project.Variables.GetGlobals();
+            var actionsDefs = project.ActionDefinitions.GetAll();
+            var conditionDefs = project.ConditionDefinitions.GetAll();
+            var functionDefs = project.FunctionDefinitions.GetAll();
             triggers.ForEach(t =>
             {
                 checkedTriggers.ForEach(check =>
@@ -238,22 +234,22 @@ namespace BetterTriggers
                 throw new IdCollisionException(idCollision);
             }
 
-            Project.CurrentProject.CommandManager.Reset();
-            CustomMapData.Load();
-            var changed = CustomMapData.RemoveInvalidReferences();
+            project.CommandManager.Reset();
+            CustomMapData.Load(project);
+            var changed = CustomMapData.RemoveInvalidReferences(project);
             changed.ForEach(trig => trig.AddToUnsaved());
 
             return changed;
         }
 
-        private static List<ExplorerElement> RemoveInvalidReferences()
+        private static List<ExplorerElement> RemoveInvalidReferences(Project project)
         {
             List<ExplorerElement> modified = new List<ExplorerElement>();
-            var explorerElements = Project.CurrentProject.GetAllExplorerElements();
+            var explorerElements = project.GetAllExplorerElements();
             for (int i = 0; i < explorerElements.Count; i++)
             {
                 var explorerElement = explorerElements[i];
-                TriggerValidator validator = new TriggerValidator(explorerElement);
+                TriggerValidator validator = new TriggerValidator(project, explorerElement);
                 int invalidCount = validator.RemoveInvalidReferences();
                 if (invalidCount > 0)
                     modified.Add(explorerElement);
@@ -261,10 +257,10 @@ namespace BetterTriggers
                 if (explorerElement.ElementType != ExplorerElementEnum.Script)
                     explorerElement.Notify();
             }
-            var variables = Project.CurrentProject.Variables.GetGlobals();
+            var variables = project.Variables.GetGlobals();
             for (int i = 0; i < variables.Count; i++)
             {
-                bool wasRemoved = Project.CurrentProject.Variables.RemoveInvalidReference(variables[i]);
+                bool wasRemoved = project.Variables.RemoveInvalidReference(variables[i]);
                 if (wasRemoved)
                     modified.Add(variables[i]);
             }
@@ -277,11 +273,11 @@ namespace BetterTriggers
         /// </summary>
         /// <param name="value">Reference to map data.</param>
         /// <returns></returns>
-        internal static bool ReferencedDataExists(Value value, string returnType)
+        internal static bool ReferencedDataExists(Project project, Value value, string returnType)
         {
             if (returnType == "unitcode")
             {
-                List<UnitType> unitTypes = UnitTypes.GetAll();
+                List<UnitType> unitTypes = project.UnitTypes.GetAll();
                 for (int i = 0; i < unitTypes.Count; i++)
                 {
                     if (value.value == unitTypes[i].Id)
@@ -292,7 +288,7 @@ namespace BetterTriggers
             }
             else if (returnType == "unit")
             {
-                var units = Units.GetAll();
+                var units = project.Units.GetAll();
                 for (int i = 0; i < units.Count; i++)
                 {
                     if (value.value == $"{units[i].ToString()}_{units[i].CreationNumber.ToString("D4")}")
@@ -303,7 +299,7 @@ namespace BetterTriggers
             }
             else if (returnType == "destructablecode")
             {
-                List<DestructibleType> destTypes = DestructibleTypes.GetAll();
+                List<DestructibleType> destTypes = project.DestructibleTypes.GetAll();
                 for (int i = 0; i < destTypes.Count; i++)
                 {
                     if (value.value == destTypes[i].DestCode)
@@ -314,7 +310,7 @@ namespace BetterTriggers
             }
             else if (returnType == "destructable")
             {
-                var dests = Destructibles.GetAll();
+                var dests = project.Destructibles.GetAll();
                 for (int i = 0; i < dests.Count; i++)
                 {
                     if (value.value == $"{dests[i].ToString()}_{dests[i].CreationNumber.ToString("D4")}")
@@ -325,7 +321,7 @@ namespace BetterTriggers
             }
             else if (returnType == "itemcode")
             {
-                List<ItemType> itemTypes = ItemTypes.GetAll();
+                List<ItemType> itemTypes = project.ItemTypes.GetAll();
                 for (int i = 0; i < itemTypes.Count; i++)
                 {
                     if (value.value == itemTypes[i].ItemCode)
@@ -336,7 +332,7 @@ namespace BetterTriggers
             }
             else if (returnType == "item")
             {
-                List<UnitData> itemTypes = Units.GetMapItemsAll();
+                List<UnitData> itemTypes = project.Units.GetMapItemsAll();
                 for (int i = 0; i < itemTypes.Count; i++)
                 {
                     if (value.value == $"{itemTypes[i].ToString()}_{itemTypes[i].CreationNumber.ToString("D4")}")
@@ -347,7 +343,7 @@ namespace BetterTriggers
             }
             else if (returnType == "doodadcode")
             {
-                List<DoodadType> doodadTypes = DoodadTypes.GetAll();
+                List<DoodadType> doodadTypes = project.DoodadTypes.GetAll();
                 for (int i = 0; i < doodadTypes.Count; i++)
                 {
                     if (value.value == doodadTypes[i].DoodCode)
@@ -358,7 +354,7 @@ namespace BetterTriggers
             }
             else if (returnType == "abilcode")
             {
-                var abilities = AbilityTypes.GetAll();
+                var abilities = project.AbilityTypes.GetAll();
                 for (int i = 0; i < abilities.Count; i++)
                 {
                     if (value.value == abilities[i].AbilCode)
@@ -369,7 +365,7 @@ namespace BetterTriggers
             }
             else if (returnType == "buffcode")
             {
-                var buffs = BuffTypes.GetAll();
+                var buffs = project.BuffTypes.GetAll();
                 for (int i = 0; i < buffs.Count; i++)
                 {
                     if (value.value == buffs[i].BuffCode)
@@ -380,7 +376,7 @@ namespace BetterTriggers
             }
             else if (returnType == "techcode")
             {
-                var tech = UpgradeTypes.GetAll();
+                var tech = project.UpgradeTypes.GetAll();
                 for (int i = 0; i < tech.Count; i++)
                 {
                     if (value.value == tech[i].UpgradeCode)
@@ -391,7 +387,7 @@ namespace BetterTriggers
             }
             else if (returnType == "rect")
             {
-                var regions = Regions.GetAll();
+                var regions = project.Regions.GetAll();
                 for (int i = 0; i < regions.Count; i++)
                 {
                     /* The string Replace exists because values converted with 'TriggerConverter' from a map
@@ -406,7 +402,7 @@ namespace BetterTriggers
             }
             else if (returnType == "camerasetup")
             {
-                var cameras = Cameras.GetAll();
+                var cameras = project.Cameras.GetAll();
                 for (int i = 0; i < cameras.Count; i++)
                 {
                     if (value.value.Replace(" ", "_") == cameras[i].ToString().Replace(" ", "_"))

@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
 {
     public class CommandVariableModifyInitialValue : ICommand
     {
+        Project _project;
         string commandName = "Modify Initial Value";
         Variable variable;
         Parameter newParameter;
         Parameter oldParameter;
 
-        public CommandVariableModifyInitialValue(Variable variable, Parameter parameter)
+        public CommandVariableModifyInitialValue(Project project, Variable variable, Parameter parameter)
         {
+            _project = project;
             this.variable = variable;
             this.newParameter = parameter;
             this.oldParameter = variable.InitialValue;
@@ -25,7 +22,7 @@ namespace BetterTriggers.Commands
         public void Execute()
         {
             variable.InitialValue = newParameter;
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
         }
 
         public void Redo()

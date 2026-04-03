@@ -1,10 +1,8 @@
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Threading;
 using War3Net.Build.Info;
 
 namespace Tests
@@ -13,12 +11,13 @@ namespace Tests
     public class VariableTest : TestBase
     {
         static ScriptLanguage language = ScriptLanguage.Jass;
-        static string name = "TestProject";
-        static string projectPath;
-        static Project project;
         static string directory = System.IO.Directory.GetCurrentDirectory();
+        static string parentFolder = "TestProjectsVariables";
 
-        static ExplorerElement element1, element2, element3;
+        string name;
+        string projectPath;
+        ExplorerElement element1, element2, element3;
+        Project project;
 
 
         [ClassInitialize]
@@ -33,12 +32,14 @@ namespace Tests
         [TestInitialize]
         public void BeforeEach()
         {
-            if (Directory.Exists(Path.Combine(directory, name)))
-                Directory.Delete(Path.Combine(directory, name), true);
-            if (File.Exists(Path.Combine(directory, name + ".json")))
-                File.Delete(Path.Combine(directory, name + ".json"));
+            name = "Project-" + Guid.NewGuid().ToString();
+            var projectFolder = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(Path.Combine(projectFolder, name)))
+                Directory.Delete(Path.Combine(projectFolder, name), true);
+            if (File.Exists(Path.Combine(projectFolder, name + ".json")))
+                File.Delete(Path.Combine(projectFolder, name + ".json"));
 
-            projectPath = Project.Create(language, name, directory);
+            projectPath = Project.Create(language, name, projectFolder);
             project = Project.Load(projectPath);
             project.EnableFileEvents(false); // TODO: Not ideal for testing, but necessary with current architecture.
 
@@ -58,7 +59,7 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            project.Close();
         }
 
 
@@ -104,8 +105,8 @@ namespace Tests
         [TestMethod]
         public void CloneLocalVariable()
         {
-            var explorerElement = new ExplorerElement(ExplorerElementEnum.Trigger);
-            explorerElement.trigger = new Trigger();
+            var explorerElement = new ExplorerElement(project, ExplorerElementEnum.Trigger);
+            explorerElement.trigger = new Trigger(project);
             var variable = project.Variables.CreateLocalVariable(explorerElement, 0);
 
             Assert.AreEqual("UntitledVariable", variable.variable.Name);

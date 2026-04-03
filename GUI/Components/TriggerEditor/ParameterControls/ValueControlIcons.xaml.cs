@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
@@ -16,12 +17,14 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         public event EventHandler SelectionChanged;
         public event EventHandler OK;
+        private Project _project;
 
 
-        public ValueControlIcons()
+        public ValueControlIcons(Project project)
         {
             InitializeComponent();
 
+            _project = project;
             var icons = Icon.GetAll();
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < icons.Count; i++)
@@ -98,7 +101,7 @@ namespace GUI.Components.TriggerEditor.ParameterControls
             textblockError.Text = string.Empty;
             try
             {
-                var bitmap = Icon.Get(textBoxAsset.Text);
+                var bitmap = Icon.Get(_project, textBoxAsset.Text);
                 imgPreview.Source = BitmapConverter.ByteToImage(bitmap);
                 EventHandler handler = SelectionChanged;
                 handler?.Invoke(this, e);

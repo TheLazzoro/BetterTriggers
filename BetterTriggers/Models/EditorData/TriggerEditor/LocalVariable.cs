@@ -1,9 +1,5 @@
-﻿using BetterTriggers.WorldEdit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.WorldEdit;
 using System.ComponentModel;
 
 namespace BetterTriggers.Models.EditorData
@@ -12,7 +8,7 @@ namespace BetterTriggers.Models.EditorData
     {
         public Variable variable { get; }
 
-        public LocalVariable(Variable variable)
+        public LocalVariable(Project project, Variable variable) : base(project)
         {
             ElementType = TriggerElementType.LocalVariable;
             this.variable = variable;
@@ -32,7 +28,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override LocalVariable Clone()
         {
-            LocalVariable clone = new LocalVariable(variable.Clone());
+            LocalVariable clone = new LocalVariable(_project, variable.Clone());
             clone.DisplayText = new string(DisplayText);
             clone.variable._isLocal = true;
             clone.ElementType = ElementType;

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 
 namespace BetterTriggers.Commands
 {
     public class CommandVariableModifyType : ICommand
     {
+        Project _project;
         string commandName = "Modify Variable Type";
         ExplorerElement explorerElement;
         Variable variable;
@@ -19,15 +15,16 @@ namespace BetterTriggers.Commands
         Parameter previousInitialValue;
         RefCollection refCollection;
 
-        public CommandVariableModifyType(ExplorerElement explorerElement, Variable variable, War3Type selectedType)
+        public CommandVariableModifyType(Project project, ExplorerElement explorerElement, Variable variable, War3Type selectedType)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.variable = variable;
             this.selectedType = selectedType;
             this.previousType = variable.War3Type;
             this.previousInitialValue = variable.InitialValue;
             this.newInitialValue = new Parameter();
-            this.refCollection = new RefCollection(variable, selectedType, explorerElement);
+            this.refCollection = new RefCollection(project, variable, selectedType, explorerElement);
         }
 
         public void Execute()
@@ -37,12 +34,12 @@ namespace BetterTriggers.Commands
             variable.SuppressChangedEvent = false;
             variable.War3Type = selectedType;
             refCollection.RemoveRefsFromParent();
-            Project.CurrentProject.References.UpdateReferences(variable);
+            _project.References.UpdateReferences(variable);
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();
 
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
         }
 
         public void Redo()
@@ -52,7 +49,7 @@ namespace BetterTriggers.Commands
             variable.SuppressChangedEvent = false;
             variable.War3Type = selectedType;
             refCollection.RemoveRefsFromParent();
-            Project.CurrentProject.References.UpdateReferences(variable);
+            _project.References.UpdateReferences(variable);
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();
@@ -65,7 +62,7 @@ namespace BetterTriggers.Commands
             variable.SuppressChangedEvent = false;
             variable.War3Type = previousType;
             refCollection.AddRefsToParent();
-            Project.CurrentProject.References.UpdateReferences(variable);
+            _project.References.UpdateReferences(variable);
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             refCollection.TriggersToUpdate.ForEach(el => el.InvokeChange());
             explorerElement.InvokeChange();

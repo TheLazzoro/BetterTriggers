@@ -1,13 +1,10 @@
-﻿using BetterTriggers;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using War3Net.Build.Info;
 
 namespace Tests
@@ -17,16 +14,35 @@ namespace Tests
     public class CloneTests : TestBase
     {
         private ScriptLanguage language = ScriptLanguage.Jass;
-        private string name = "TestProject";
-        private string directory = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Temp");
+        private static string parentFolder = "TestProjectsClone";
+        private static string directory = Path.Combine(Directory.GetCurrentDirectory(), "TempClone");
+        private string projectFolder;
+        private string name;
         Project project;
+
+
+        [ClassInitialize]
+        public static void BeforeAll(TestContext context)
+        {
+            Console.WriteLine("-----------");
+            Console.WriteLine("RUNNING PROJECT TESTS");
+            Console.WriteLine("-----------");
+            Console.WriteLine("");
+
+            var parentDir = Path.Combine(directory, parentFolder);
+            if (Directory.Exists(parentDir))
+                Directory.Delete(parentDir, true);
+        }
 
         [TestInitialize]
         public void BeforeEach()
         {
-            if (!Directory.Exists(directory))
+            name = "Project-" + Guid.NewGuid().ToString();
+            var parentDir = Path.Combine(directory, parentFolder);
+            projectFolder = Path.Combine(parentDir, name);
+            if (!Directory.Exists(projectFolder))
             {
-                Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(projectFolder);
             }
         }
 
@@ -35,11 +51,7 @@ namespace Tests
         {
             if (project != null)
             {
-                Project.Close();
-            }
-            if (Directory.Exists(directory))
-            {
-                Directory.Delete(directory, true);
+                project.Close();
             }
         }
 
@@ -49,8 +61,8 @@ namespace Tests
             // Arrange
             string TriggerSleepAction = "TriggerSleepAction";
 
-            var ifThenElse = new IfThenElse();
-            var eca1 = new ECA(TriggerSleepAction);
+            var ifThenElse = new IfThenElse(project);
+            var eca1 = new ECA(project, TriggerSleepAction);
             var params1 = new List<Parameter>()
             {
                 new Value()
@@ -74,17 +86,17 @@ namespace Tests
         public void Clone_ActionDefinition_Test()
         {
             // Arrange
-            var projectPath = Project.Create(language, name, directory);
+            var projectPath = Project.Create(language, name, projectFolder);
             project = Project.Load(projectPath);
-            var explorerElement = new ExplorerElement(ExplorerElementEnum.ActionDefinition);
-            var actionDefinition = new ActionDefinition(explorerElement);
+            var explorerElement = new ExplorerElement(project, ExplorerElementEnum.ActionDefinition);
+            var actionDefinition = new ActionDefinition(project, explorerElement);
             explorerElement.actionDefinition = actionDefinition;
-            var parameterDef = new ParameterDefinition();
+            var parameterDef = new ParameterDefinition(project);
             var variable = new Variable();
             variable.War3Type = War3Type.Get("integer");
             variable.InitialValue = new Parameter();
-            var localVar = new LocalVariable(variable);
-            var eca = new ECA();
+            var localVar = new LocalVariable(project, variable);
+            var eca = new ECA(project);
 
             parameterDef.SetParent(actionDefinition.Parameters, 0);
             localVar.SetParent(actionDefinition.LocalVariables, 0);

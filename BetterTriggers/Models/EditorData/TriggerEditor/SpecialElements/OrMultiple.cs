@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -21,17 +20,17 @@ namespace BetterTriggers.Models.EditorData
 
         private TriggerElementCollection _or;
 
-        public OrMultiple()
+        public OrMultiple(Project project) : base(project)
         {
             function.value = "OrMultiple";
             Elements = new();
-            Or = new(TriggerElementType.Condition);
+            Or = new(project, TriggerElementType.Condition);
             IsExpandedTreeItem = true;
         }
 
         public override OrMultiple Clone()
         {
-            OrMultiple clone = new OrMultiple();
+            OrMultiple clone = new OrMultiple(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Or = Or.Clone();

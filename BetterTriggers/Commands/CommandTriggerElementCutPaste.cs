@@ -1,17 +1,13 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
+using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementCutPaste : ICommand
     {
+        Project _project;
         string commandName = "Paste Trigger Element";
         int pastedIndex = 0;
         int cutIndex = 0;
@@ -23,8 +19,9 @@ namespace BetterTriggers.Commands
         TriggerElement pasteParent;
         List<RefCollection> refCollections = new List<RefCollection>();
 
-        public CommandTriggerElementCutPaste(ExplorerElement from, ExplorerElement to, TriggerElement listToPaste, TriggerElement pasteParent, int pastedIndex)
+        public CommandTriggerElementCutPaste(Project project, ExplorerElement from, ExplorerElement to, TriggerElement listToPaste, TriggerElement pasteParent, int pastedIndex)
         {
+            _project = project;
             this.from = from;
             this.to = to;
             this.listToCut = CopiedElements.CutTriggerElements;
@@ -36,14 +33,14 @@ namespace BetterTriggers.Commands
 
             if (listToCut.Elements[0] is ParameterDefinition)
             {
-                refCollections.Add(new RefCollection(from));
-                refCollections.Add(new RefCollection(to));
+                refCollections.Add(new RefCollection(project, from));
+                refCollections.Add(new RefCollection(project, to));
             }
         }
 
         public void Execute()
         {
-            TriggerValidator validator = new TriggerValidator(to);
+            TriggerValidator validator = new TriggerValidator(_project, to);
             validator.RemoveInvalidReferences(listToPaste);
             for (int i = 0; i < listToCut.Count(); i++)
             {
@@ -70,10 +67,10 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
 
-            Project.CurrentProject.References.UpdateReferences(from);
-            Project.CurrentProject.References.UpdateReferences(to);
+            _project.References.UpdateReferences(from);
+            _project.References.UpdateReferences(to);
             CopiedElements.CutTriggerElements = null; // Reset
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
 
             from.InvokeChange();
             to.InvokeChange();
@@ -95,8 +92,8 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
 
-            Project.CurrentProject.References.UpdateReferences(from);
-            Project.CurrentProject.References.UpdateReferences(to);
+            _project.References.UpdateReferences(from);
+            _project.References.UpdateReferences(to);
 
             from.InvokeChange();
             to.InvokeChange();
@@ -117,8 +114,8 @@ namespace BetterTriggers.Commands
                 refCollection.RevertToOldParameters();
             }
 
-            Project.CurrentProject.References.UpdateReferences(from);
-            Project.CurrentProject.References.UpdateReferences(to);
+            _project.References.UpdateReferences(from);
+            _project.References.UpdateReferences(to);
 
             from.InvokeChange();
             to.InvokeChange();

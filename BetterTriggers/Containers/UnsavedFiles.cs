@@ -1,10 +1,5 @@
 ﻿using BetterTriggers.Models.EditorData;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BetterTriggers.Containers
 {
@@ -12,14 +7,21 @@ namespace BetterTriggers.Containers
     {
         private HashSet<ExplorerElement> unsavedFiles = new();
 
+        private static object _lock = new object();
         public void AddToUnsaved(ExplorerElement element)
         {
-            unsavedFiles.Add(element);
+            lock (_lock)
+            {
+                unsavedFiles.Add(element);
+            }
         }
 
         public void RemoveFromUnsaved(ExplorerElement element)
         {
-            unsavedFiles.Remove(element);
+            lock (_lock)
+            {
+                unsavedFiles.Remove(element);
+            }
         }
 
         public void SaveAll()

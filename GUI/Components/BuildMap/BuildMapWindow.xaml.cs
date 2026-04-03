@@ -1,47 +1,38 @@
 ﻿using BetterTriggers;
 using BetterTriggers.Containers;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.TestMap;
 using BetterTriggers.Utility;
 using GUI.Components.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using War3Net.Build.Info;
 
 namespace GUI.Components.BuildMap
 {
     public partial class BuildMapWindow : Window
     {
+        private Project _project;
         private Thread _thread;
         private Exception _error;
         private event Action _finished;
 
         private BuildMapViewModel _viewModel;
 
-        public BuildMapWindow()
+        public BuildMapWindow(Project project)
         {
             Owner = MainWindow.GetMainWindow();
             InitializeComponent();
+
+            _project = project;
 
             _viewModel = new BuildMapViewModel();
             DataContext = _viewModel;
 
             var settings = EditorSettings.Load();
-            War3Project project = Project.CurrentProject.war3project;
-            var language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
+            var language = project.war3project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
             checkBoxRemoveListfile.IsChecked = settings.Export_RemoveListfile;
             checkBoxTriggerData.IsChecked = settings.Export_RemoveTriggerData;
             checkBoxIncludeTriggerData.IsChecked = settings.Export_IncludeTriggerData;
@@ -105,7 +96,7 @@ namespace GUI.Components.BuildMap
 
             try
             {
-                Builder builder = new Builder();
+                Builder builder = new Builder(_project);
                 var status = builder.BuildMap(includeMPQSettings: true);
                 if(status.Status == BuildMapStatusCode.ScriptError)
                 {
@@ -161,7 +152,7 @@ namespace GUI.Components.BuildMap
 
         private void btnShowFolder_Click(object sender, RoutedEventArgs e)
         {
-            FileSystemUtil.OpenInExplorer(Project.CurrentProject.dist, false);
+            FileSystemUtil.OpenInExplorer(_project.dist, false);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

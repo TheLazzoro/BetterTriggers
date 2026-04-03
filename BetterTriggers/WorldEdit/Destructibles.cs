@@ -1,28 +1,20 @@
-﻿using BetterTriggers.Models.War3Data;
-using System;
+﻿using BetterTriggers.Containers;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using War3Net.Build.Environment;
-using War3Net.Build.Extensions;
 using War3Net.Build.Widget;
 
 namespace BetterTriggers.WorldEdit
 {
     public class Destructibles
     {
-        private static List<DoodadData> destructibles = new List<DoodadData>();
-        private static List<DoodadData> allDoodads = new List<DoodadData>();
+        private List<DoodadData> destructibles = new List<DoodadData>();
+        private List<DoodadData> allDoodads = new List<DoodadData>();
 
-        public static List<DoodadData> GetAll()
+        public List<DoodadData> GetAll()
         {
             return destructibles;
         }
 
-        public static List<DoodadData> GetAllDoodads()
+        public List<DoodadData> GetAllDoodads()
         {
             return allDoodads;
         }
@@ -31,14 +23,14 @@ namespace BetterTriggers.WorldEdit
         /// Loads all placed destructibles on the map.
         /// </summary>
         /// <returns></returns>
-        internal static void Load()
+        internal void Load(Project project)
         {
             destructibles.Clear();
             allDoodads.Clear();
-            var destructibleData = DestructibleTypes.GetAll();
+            var destructibleData = project.DestructibleTypes.GetAll();
 
             MapDoodads doodads;
-            doodads = CustomMapData.MPQMap.Doodads;
+            doodads = project.MPQMap.Doodads;
             if (doodads == null)
                 return;
 

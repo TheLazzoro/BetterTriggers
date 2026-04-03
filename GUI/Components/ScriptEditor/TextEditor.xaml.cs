@@ -1,4 +1,5 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.WorldEdit;
 using GUI.Components.ScriptEditor;
 using GUI.Utility;
@@ -28,11 +29,13 @@ namespace GUI.Components
         static CompletionDataCollection completionCollection;
         ToolTip tooltip;
         private bool isReadonly;
+        private Project _project;
 
-        public TextEditor(string content, ScriptLanguage language, bool isReadonly = false)
+        public TextEditor(Project project, string content, ScriptLanguage language, bool isReadonly = false)
         {
             InitializeComponent();
 
+            _project = project;
             this.language = language;
 
             EditorSettings settings = EditorSettings.Load();
@@ -165,7 +168,7 @@ namespace GUI.Components
             List<CompletionData> completionData = new List<CompletionData>();
             ScriptData.GetAll(this.language).ForEach(n =>
             {
-                var completionItem = new CompletionData(n.displayText, n.description);
+                var completionItem = new CompletionData(_project, n.displayText, n.description);
                 completionData.Add(completionItem);
             });
             completionCollection = new CompletionDataCollection(completionData);

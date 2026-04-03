@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -13,16 +9,16 @@ namespace BetterTriggers.Models.EditorData
     {
         public Function function = new Function();
 
-        public ECA() { }
+        public ECA(Project project) : base(project) { }
 
-        public ECA(string value)
+        public ECA(Project project, string value) : base(project)
         {
             function.value = value;
         }
 
         public override ECA Clone()
         {
-            ECA clone = new ECA();
+            ECA clone = new ECA(_project);
             clone.DisplayText = new string(DisplayText);
             clone.IsEnabled = IsEnabled;
             clone.function = function.Clone();

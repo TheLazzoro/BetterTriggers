@@ -1,15 +1,17 @@
-﻿namespace BetterTriggers.Models.EditorData
+﻿using BetterTriggers.Containers;
+
+namespace BetterTriggers.Models.EditorData
 {
     public class ReturnStatement : ECA
     {
-        public ReturnStatement()
+        public ReturnStatement(Project project) : base(project)
         {
             function.value = "ReturnStatement";
         }
 
         public override ReturnStatement Clone()
         {
-            var clone = new ReturnStatement();
+            var clone = new ReturnStatement(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.ElementType = ElementType;

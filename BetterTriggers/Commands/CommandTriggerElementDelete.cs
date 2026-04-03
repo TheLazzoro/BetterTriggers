@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
+using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementDelete : ICommand
     {
+        Project _project;
         string commandName = "Delete Trigger Element";
         ExplorerElement explorerElement;
         TriggerElementCollection elementsToDelete;
@@ -18,8 +15,9 @@ namespace BetterTriggers.Commands
 
         List<RefCollection> refCollections = new List<RefCollection>();
 
-        public CommandTriggerElementDelete(ExplorerElement element, TriggerElementCollection elementsToDelete)
+        public CommandTriggerElementDelete(Project project, ExplorerElement element, TriggerElementCollection elementsToDelete)
         {
+            _project = project;
             this.explorerElement = element;
             this.elementsToDelete = elementsToDelete;
             this.Parent = elementsToDelete.Elements[0].GetParent();
@@ -29,14 +27,14 @@ namespace BetterTriggers.Commands
             {
                 if (el is LocalVariable localVar)
                 {
-                    var refCollection = new RefCollection(element, localVar.variable);
+                    var refCollection = new RefCollection(project, element, localVar.variable);
                     this.refCollections.Add(refCollection);
                 }
             });
 
             if (elementsToDelete.Elements[0] is ParameterDefinition)
             {
-                var refCollection = new RefCollection(element);
+                var refCollection = new RefCollection(project, element);
                 refCollections.Add(refCollection);
             }
         }
@@ -54,8 +52,8 @@ namespace BetterTriggers.Commands
 
             refCollections.ForEach(r => r.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true));
             refCollections.ForEach(r => r.RemoveRefsFromParent());
-            Project.CurrentProject.References.UpdateReferences(explorerElement);
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.References.UpdateReferences(explorerElement);
+            _project.CommandManager.AddCommand(this);
 
             explorerElement.InvokeChange();
         }
@@ -73,7 +71,7 @@ namespace BetterTriggers.Commands
 
             refCollections.ForEach(r => r.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true));
             refCollections.ForEach(r => r.RemoveRefsFromParent());
-            Project.CurrentProject.References.UpdateReferences(explorerElement);
+            _project.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
         }
 
@@ -92,7 +90,7 @@ namespace BetterTriggers.Commands
 
             refCollections.ForEach(r => r.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true));
             refCollections.ForEach(r => r.AddRefsToParent());
-            Project.CurrentProject.References.UpdateReferences(explorerElement);
+            _project.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
         }
 

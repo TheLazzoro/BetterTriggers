@@ -42,7 +42,7 @@ namespace GUI.Components.Return
                 return;
             }
 
-            List<ExplorerElement> refs = Project.CurrentProject.References.GetReferrers(functionDefinition);
+            List<ExplorerElement> refs = explorerElement.Project.References.GetReferrers(functionDefinition);
             if (refs.Count > 0)
             {
                 DialogBoxReferences dialog = new DialogBoxReferences(refs, ExplorerAction.Reset);
@@ -58,7 +58,7 @@ namespace GUI.Components.Return
 
             var selected = comboBox.SelectedItem as War3Type;
             previousSelected = selected;
-            CommandFunctionDefinitionModifyType command = new(explorerElement, functionDefinition, selected);
+            CommandFunctionDefinitionModifyType command = new(explorerElement.Project, explorerElement, functionDefinition, selected);
             command.Execute();
         }
     }

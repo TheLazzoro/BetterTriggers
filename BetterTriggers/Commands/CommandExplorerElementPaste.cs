@@ -1,18 +1,13 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Windows;
-using System.Xml.Linq;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Utility;
+using System.IO;
 
 namespace BetterTriggers.Commands
 {
     public class CommandExplorerElementPaste : ICommand
     {
+        Project _project;
         string commandName = "Paste Explorer Element";
         int pastedIndex = 0;
         int cutIndex = 0;
@@ -20,11 +15,10 @@ namespace BetterTriggers.Commands
         ExplorerElement toPaste;
         ExplorerElement cutParent;
         ExplorerElement pasteParent;
-        Project project;
 
-        public CommandExplorerElementPaste(ExplorerElement elementToPaste, ExplorerElement pasteParent, int pastedIndex)
+        public CommandExplorerElementPaste(Project project, ExplorerElement elementToPaste, ExplorerElement pasteParent, int pastedIndex)
         {
-            this.project = Project.CurrentProject;
+            _project = project;
             this.toCut = CopiedElements.CutExplorerElement;
             if (toCut != null)
             {
@@ -40,7 +34,7 @@ namespace BetterTriggers.Commands
 
         public void Execute()
         {
-            project.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
             CreatePastedElements(toPaste, pasteParent);
 
             if (toCut != null)
@@ -51,16 +45,16 @@ namespace BetterTriggers.Commands
             }
             toPaste.SetParent(pasteParent, pastedIndex);
 
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
 
 
-            project.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
             toPaste.IsSelected = true;
         }
 
         public void Redo()
         {
-            project.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
             CreatePastedElements(toPaste, pasteParent);
 
             if (toCut != null)
@@ -70,24 +64,24 @@ namespace BetterTriggers.Commands
             }
             toPaste.SetParent(pasteParent, pastedIndex);
 
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
             toPaste.IsSelected = true;
         }
 
         public void Undo()
         {
-            project.EnableFileEvents(false);
+            _project.EnableFileEvents(false);
             FileSystemUtil.Delete(toPaste.GetPath());
             RemovePastedElements(toPaste);
 
             if (toCut != null)
             {
-                Project.CurrentProject.RecurseCreateElementsWithContent(toCut);
+                _project.RecurseCreateElementsWithContent(toCut);
                 toCut.SetParent(cutParent, cutIndex);
             }
             toPaste.RemoveFromParent();
 
-            project.EnableFileEvents(true);
+            _project.EnableFileEvents(true);
         }
 
         public string GetCommandName()
@@ -106,11 +100,11 @@ namespace BetterTriggers.Commands
             string dir = pasteParent.GetPath();
             string finalPath = Path.Combine(dir, name);
             toPaste.SetPath(finalPath);
-            project.AddElementToContainer(toPaste);
+            _project.AddElementToContainer(toPaste);
             
             if(toPaste.ElementType == ExplorerElementEnum.Script)
             {
-                finalPath = project.Scripts.GenerateName(toPaste);
+                finalPath = _project.Scripts.GenerateName(toPaste);
                 toPaste.SetPath(finalPath);
             }
 
@@ -120,7 +114,7 @@ namespace BetterTriggers.Commands
             }
             else
             {
-                string folder = project.Folders.GenerateName(Path.Combine(dir, name));
+                string folder = _project.Folders.GenerateName(Path.Combine(dir, name));
                 toPaste.SetPath(folder);
                 Directory.CreateDirectory(folder);
                 var children = toPaste.GetExplorerElements();
@@ -136,7 +130,7 @@ namespace BetterTriggers.Commands
         /// </summary>
         private void RemovePastedElements(ExplorerElement toRemove)
         {
-            project.RemoveElementFromContainer_WhenDeleting(toRemove);
+            _project.RemoveElementFromContainer_WhenDeleting(toRemove);
 
             if(toRemove.ElementType == ExplorerElementEnum.Folder)
             {

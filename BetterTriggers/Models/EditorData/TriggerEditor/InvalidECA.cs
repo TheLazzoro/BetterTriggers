@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
     public class InvalidECA : ECA
     {
-        public InvalidECA()
+        public InvalidECA(Project project) : base(project)
         {
             DisplayText = "Invalid trigger element";
             function.value = "InvalidECA";

@@ -1,4 +1,5 @@
-﻿using BetterTriggers.Models.EditorData;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 using System;
 
 namespace BetterTriggers.Models.Templates
@@ -20,7 +21,7 @@ namespace BetterTriggers.Models.Templates
             return clone;
         }
 
-        public override Preset ToParameter()
+        public override Preset ToParameter(Project project)
         {
             Preset constant = new Preset();
             constant.value = new string(this.value);

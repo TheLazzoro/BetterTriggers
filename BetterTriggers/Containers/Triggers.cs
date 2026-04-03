@@ -1,16 +1,10 @@
 ﻿using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.SaveableData;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using BetterTriggers.Utility;
-using Newtonsoft.Json;
-using System.IO;
-using BetterTriggers.Commands;
 using BetterTriggers.WorldEdit;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BetterTriggers.Containers
 {
@@ -18,11 +12,21 @@ namespace BetterTriggers.Containers
     {
         private HashSet<ExplorerElement> triggerElementContainer = new HashSet<ExplorerElement>();
         private ExplorerElement lastCreated;
+        private Project _project;
 
+        public Triggers(Project project)
+        {
+            _project = project;
+        }
+
+        private static object _lock = new object();
         public void AddTrigger(ExplorerElement trigger)
         {
-            triggerElementContainer.Add(trigger);
-            lastCreated = trigger;
+            lock (_lock)
+            {
+                triggerElementContainer.Add(trigger);
+                lastCreated = trigger;
+            }
         }
 
         public int Count()
@@ -97,7 +101,10 @@ namespace BetterTriggers.Containers
 
         public void Remove(ExplorerElement explorerElement)
         {
-            triggerElementContainer.Remove(explorerElement);
+            lock (_lock)
+            {
+                triggerElementContainer.Remove(explorerElement);
+            }
         }
 
         public ExplorerElement GetByReference(TriggerRef triggerRef)
@@ -108,8 +115,7 @@ namespace BetterTriggers.Containers
         /// <returns>Full file path.</returns>
         public string Create()
         {
-            var project = Project.CurrentProject;
-            string directory = project.currentSelectedElement;
+            string directory = _project.currentSelectedElement;
             if (!Directory.Exists(directory))
                 directory = Path.GetDirectoryName(directory);
 
@@ -117,7 +123,7 @@ namespace BetterTriggers.Containers
 
             Trigger_Saveable trigger = new Trigger_Saveable()
             {
-                Id = project.GenerateId(),
+                Id = _project.GenerateId(),
             };
             string json = JsonConvert.SerializeObject(trigger);
 
@@ -174,13 +180,13 @@ namespace BetterTriggers.Containers
             switch (returnType)
             {
                 case "unit":
-                    text = $"{UnitTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    text = $"{UnitTypes.GetName(_project.UnitTypes, key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
                     break;
                 case "item":
-                    text = $"{ItemTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    text = $"{ItemTypes.GetName(_project.ItemTypes, key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
                     break;
                 case "destructable":
-                    text = $"{DestructibleTypes.GetName(key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
+                    text = $"{DestructibleTypes.GetName(_project.DestructibleTypes, key.Substring(0, 4))} {key.Substring(5, key.Length - 5)} <gen>";
                     break;
                 case "camerasetup":
                     text = $"{key} <gen>";
@@ -189,26 +195,26 @@ namespace BetterTriggers.Containers
                     text = $"{key} <gen>";
                     break;
                 case "unitcode":
-                    text = UnitTypes.GetName(key);
+                    text = UnitTypes.GetName(_project.UnitTypes, key);
                     break;
                 case "destructablecode":
-                    text = DestructibleTypes.GetName(key);
+                    text = DestructibleTypes.GetName(_project.DestructibleTypes, key);
                     break;
                 case "abilcode":
                 case "heroskillcode":
-                    text = AbilityTypes.GetName(key);
+                    text = AbilityTypes.GetName(_project.AbilityTypes, key);
                     break;
                 case "buffcode":
-                    text = BuffTypes.GetName(key);
+                    text = BuffTypes.GetName(_project.BuffTypes, key);
                     break;
                 case "techcode":
-                    text = UpgradeTypes.GetName(key);
+                    text = UpgradeTypes.GetName(_project.UpgradeTypes, key);
                     break;
                 case "itemcode":
-                    text = ItemTypes.GetName(key);
+                    text = ItemTypes.GetName(_project.ItemTypes, key);
                     break;
                 case "doodadcode":
-                    text = DoodadTypes.GetName(key);
+                    text = DoodadTypes.GetName(_project.DoodadTypes, key);
                     break;
                 case "string":
                 case "StringExt":
@@ -231,7 +237,7 @@ namespace BetterTriggers.Containers
         public static string GetFourCCDisplay(string key, string returnType)
         {
             string text = string.Empty;
-            if (   returnType == "unitcode"
+            if (returnType == "unitcode"
                 || returnType == "destructablecode"
                 || returnType == "abilcode"
                 || returnType == "heroskillcode"

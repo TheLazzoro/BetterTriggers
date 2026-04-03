@@ -1,9 +1,6 @@
-﻿using BetterTriggers.Models.War3Data;
+﻿using BetterTriggers.Containers;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Numerics;
-using System.Threading;
 using War3Net.Build.Extensions;
 using War3Net.Build.Widget;
 
@@ -11,31 +8,28 @@ namespace BetterTriggers.WorldEdit
 {
     public class Units
     {
-        internal static List<UnitData> units = new List<UnitData>();
-        internal static List<UnitData> items = new List<UnitData>();
-        internal static List<UnitData> startLocations = new List<UnitData>();
+        internal List<UnitData> units = new List<UnitData>();
+        internal List<UnitData> items = new List<UnitData>();
+        internal List<UnitData> startLocations = new List<UnitData>();
 
-        public static List<UnitData> GetAll()
+        public List<UnitData> GetAll()
         {
             return units;
         }
 
-        public static List<UnitData> GetMapItemsAll()
+        public List<UnitData> GetMapItemsAll()
         {
             return items;
         }
 
-        internal static List<UnitData> GetMapStartLocations()
+        internal List<UnitData> GetMapStartLocations()
         {
             return startLocations;
         }
 
-        internal static void Load()
+        internal void Load(Project project)
         {
-            units.Clear();
-            items.Clear();
-
-            MapUnits mapUnits = CustomMapData.MPQMap.Units;
+            MapUnits mapUnits = project.MPQMap.Units;
             if (mapUnits == null)
                 return;
 

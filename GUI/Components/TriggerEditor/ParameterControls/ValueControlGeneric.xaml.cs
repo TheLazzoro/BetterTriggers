@@ -15,11 +15,10 @@ namespace GUI.Components.TriggerEditor.ParameterControls
         public event EventHandler SelectionChanged;
         public event EventHandler OK;
 
-        public ValueControlGeneric(List<Value> values, string returnType)
+        public ValueControlGeneric(Project project, List<Value> values, string returnType)
         {
             InitializeComponent();
 
-            Project project = Project.CurrentProject;
             List<Searchable> objects = new List<Searchable>();
             for (int i = 0; i < values.Count; i++)
             {

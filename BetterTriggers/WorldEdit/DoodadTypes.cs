@@ -2,32 +2,23 @@
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit.GameDataReader;
-using CASCLib;
-using IniParser.Model;
-using IniParser.Parser;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using War3Net.Build.Extensions;
 using War3Net.Build.Object;
 using War3Net.Common.Extensions;
 using War3Net.IO.Slk;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BetterTriggers.WorldEdit
 {
     public class DoodadTypes
     {
         private static Dictionary<string, DoodadType> doodads;
-        private static Dictionary<string, DoodadType> doodadsBaseEdited;
-        private static Dictionary<string, DoodadType> doodadsCustom;
+        private Dictionary<string, DoodadType> doodadsBaseEdited;
+        private Dictionary<string, DoodadType> doodadsCustom;
 
-        public static List<DoodadType> GetAll()
+        public List<DoodadType> GetAll()
         {
             List<DoodadType> list = new List<DoodadType>();
             var enumerator = doodads.GetEnumerator();
@@ -57,13 +48,15 @@ namespace BetterTriggers.WorldEdit
             return doodads.Select(kvp => kvp.Value).ToList();
         }
 
-        internal static DoodadType GetDoodadType(string doodcode)
+        internal static DoodadType GetDoodadType(DoodadTypes? doodadTypes, string doodcode)
         {
-            DoodadType doodad;
-            doodadsCustom.TryGetValue(doodcode, out doodad);
-
-            if (doodad == null)
-                doodadsBaseEdited.TryGetValue(doodcode, out doodad);
+            DoodadType? doodad = null;
+            if (doodadTypes != null)
+            {
+                doodadTypes.doodadsCustom.TryGetValue(doodcode, out doodad);
+                if (doodad == null)
+                    doodadTypes.doodadsBaseEdited.TryGetValue(doodcode, out doodad);
+            }
 
             if (doodad == null)
                 doodads.TryGetValue(doodcode, out doodad);
@@ -78,9 +71,9 @@ namespace BetterTriggers.WorldEdit
             return doodad;
         }
 
-        internal static string GetName(string doodcode)
+        internal static string GetName(DoodadTypes? doodadTypes, string doodcode)
         {
-            DoodadType doodType = GetDoodadType(doodcode);
+            DoodadType doodType = GetDoodadType(doodadTypes, doodcode);
             if (doodType == null)
                 return null;
 
@@ -161,7 +154,7 @@ namespace BetterTriggers.WorldEdit
             }
         }
 
-        internal static void Load(string fullMapPath)
+        internal void Load(Project project, string fullMapPath)
         {
             doodadsBaseEdited = new Dictionary<string, DoodadType>();
             doodadsCustom = new Dictionary<string, DoodadType>();
@@ -173,45 +166,45 @@ namespace BetterTriggers.WorldEdit
                 return;
 
             DoodadObjectData customDoodads;
-            customDoodads = CustomMapData.MPQMap.DoodadObjectData;
+            customDoodads = project.MPQMap.DoodadObjectData;
             if (customDoodads == null)
                 return;
 
             for (int i = 0; i < customDoodads.BaseDoodads.Count; i++)
             {
                 var dood = customDoodads.BaseDoodads[i];
-                DoodadType baseDood = GetDoodadType(Int32Extensions.ToRawcode(dood.OldId));
+                DoodadType baseDood = GetDoodadType(project.DoodadTypes, Int32Extensions.ToRawcode(dood.OldId));
                 DoodadType doodad = new DoodadType()
                 {
                     DoodCode = dood.ToString().Substring(0, 4),
                     DisplayName = baseDood.DisplayName,
                 };
                 doodadsBaseEdited.Add(doodad.DoodCode, doodad);
-                SetCustomFields(dood, Int32Extensions.ToRawcode(dood.OldId));
+                SetCustomFields(project, dood, Int32Extensions.ToRawcode(dood.OldId));
             }
 
             for (int i = 0; i < customDoodads.NewDoodads.Count; i++)
             {
                 var dood = customDoodads.NewDoodads[i];
-                DoodadType baseDood = GetDoodadType(Int32Extensions.ToRawcode(dood.OldId));
+                DoodadType baseDood = GetDoodadType(project.DoodadTypes, Int32Extensions.ToRawcode(dood.OldId));
                 DoodadType doodad = new DoodadType()
                 {
                     DoodCode = dood.ToString().Substring(0, 4),
                     DisplayName = baseDood.DisplayName,
                 };
                 doodadsCustom.Add(doodad.DoodCode, doodad);
-                SetCustomFields(dood, doodad.DoodCode);
+                SetCustomFields(project, dood, doodad.DoodCode);
             }
         }
 
-        private static void SetCustomFields(VariationObjectModification modified, string buffcode)
+        private void SetCustomFields(Project project, VariationObjectModification modified, string buffcode)
         {
-            DoodadType doodType = GetDoodadType(buffcode);
+            DoodadType doodType = GetDoodadType(project.DoodadTypes, buffcode);
             string displayName = doodType.DisplayName;
             foreach (var modification in modified.Modifications)
             {
                 if (Int32Extensions.ToRawcode(modification.Id) == "dnam")
-                    displayName = MapStrings.GetString(modification.ValueAsString);
+                    displayName = project.MapStrings.GetString(modification.ValueAsString);
             }
             doodType.DisplayName = displayName;
         }

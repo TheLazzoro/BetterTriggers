@@ -1,12 +1,11 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
-using System.Collections.Generic;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementRename : ICommand
     {
+        Project _project;
         string commandName = "Rename Local Variable";
         ExplorerElement explorerElement;
         ParameterDefinition parameterDefinition;
@@ -15,22 +14,24 @@ namespace BetterTriggers.Commands
         string newName;
         RefCollection refCollection;
 
-        public CommandTriggerElementRename(ExplorerElement explorerElement, LocalVariable localVariable, string newName)
+        public CommandTriggerElementRename(Project project, ExplorerElement explorerElement, LocalVariable localVariable, string newName)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.localVariable = localVariable;
             this.oldName = localVariable.variable.Name;
             this.newName = newName;
-            this.refCollection = new RefCollection(explorerElement, localVariable.variable);
+            this.refCollection = new RefCollection(project, explorerElement, localVariable.variable);
         }
 
-        public CommandTriggerElementRename(ExplorerElement explorerElement, ParameterDefinition parameterDefinition, string newName)
+        public CommandTriggerElementRename(Project project, ExplorerElement explorerElement, ParameterDefinition parameterDefinition, string newName)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.parameterDefinition = parameterDefinition;
             this.oldName = parameterDefinition.Name;
             this.newName = newName;
-            this.refCollection = new RefCollection(explorerElement, parameterDefinition);
+            this.refCollection = new RefCollection(project, explorerElement, parameterDefinition);
         }
 
         public void Execute()
@@ -47,7 +48,7 @@ namespace BetterTriggers.Commands
             refCollection.TriggersToUpdate.ForEach(t => t.ShouldRefreshUIElements = true);
             explorerElement.InvokeChange();
             refCollection.Notify();
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.CommandManager.AddCommand(this);
         }
 
         public void Redo()

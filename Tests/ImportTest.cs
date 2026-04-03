@@ -3,16 +3,9 @@ using BetterTriggers.Containers;
 using BetterTriggers.TestMap;
 using BetterTriggers.WorldEdit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NuGet.Packaging;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using War3Net.Build;
-using War3Net.Build.Script;
 
 namespace Tests
 {
@@ -22,6 +15,7 @@ namespace Tests
         string projectDir;
         string projectFilePath;
         string mapPath;
+        Project project;
 
         public ImportTest()
         {
@@ -33,20 +27,21 @@ namespace Tests
         [TestCleanup]
         public void AfterEach()
         {
-            Project.Close();
+            project.Close();
             Directory.Delete(projectDir, true);
         }
 
         [TestMethod]
         public void ImportTriggersTest()
         {
-            var project = Project.Load(projectFilePath);
+            project = Project.Load(projectFilePath);
             var map = Map.Open(mapPath);
 
-            TriggerConverter converter = new TriggerConverter(mapPath);
+            TriggerConverter converter = new TriggerConverter(project, mapPath, null);
             converter.ImportIntoCurrentProject(map.Triggers.TriggerItems);
+            CustomMapData.ReloadMapData(project);
 
-            Builder mapBuilder = new Builder();
+            Builder mapBuilder = new Builder(project);
             mapBuilder.GenerateScript();
 
             List<int> triggerIds = new List<int>();
@@ -58,14 +53,16 @@ namespace Tests
             for (int i = 0; i < triggers.Count; i++)
             {
                 var t = triggers[i];
-                Assert.IsFalse(triggerIds.Contains(t.GetId()));
-                triggerIds.Add(t.GetId());
+                int id = t.GetId();
+                Assert.IsFalse(triggerIds.Contains(id));
+                triggerIds.Add(id);
             }
             for (int i = 0; i < variables.Count; i++)
             {
                 var v = variables[i];
-                Assert.IsFalse(variableIds.Contains(v.GetId()));
-                variableIds.Add(v.GetId());
+                int id = v.GetId();
+                Assert.IsFalse(variableIds.Contains(id));
+                variableIds.Add(id);
             }
         }
     }

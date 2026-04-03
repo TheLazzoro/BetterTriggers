@@ -1,46 +1,42 @@
-﻿using BetterTriggers.Models.EditorData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
 
 namespace BetterTriggers.Utility
 {
     public static class TriggerElementFactory
     {
-        public static ECA Create(string name)
+        public static ECA Create(Project project, string name)
         {
             switch (name)
             {
                 case "IfThenElseMultiple":
-                    return new IfThenElse();
+                    return new IfThenElse(project);
                 case "AndMultiple":
-                    return new AndMultiple();
+                    return new AndMultiple(project);
                 case "OrMultiple":
-                    return new OrMultiple();
+                    return new OrMultiple(project);
                 case "ForGroupMultiple":
-                    return new ForGroupMultiple();
+                    return new ForGroupMultiple(project);
                 case "ForForceMultiple":
-                    return new ForForceMultiple();
+                    return new ForForceMultiple(project);
                 case "ForLoopAMultiple":
-                    return new ForLoopAMultiple();
+                    return new ForLoopAMultiple(project);
                 case "ForLoopBMultiple":
-                    return new ForLoopBMultiple();
+                    return new ForLoopBMultiple(project);
                 case "ForLoopVarMultiple":
-                    return new ForLoopVarMultiple();
+                    return new ForLoopVarMultiple(project);
                 case "SetVariable":
-                    return new SetVariable();
+                    return new SetVariable(project);
                 case "EnumDestructablesInRectAllMultiple":
-                    return new EnumDestructablesInRectAllMultiple();
+                    return new EnumDestructablesInRectAllMultiple(project);
                 case "EnumDestructablesInCircleBJMultiple":
-                    return new EnumDestructiblesInCircleBJMultiple();
+                    return new EnumDestructiblesInCircleBJMultiple(project);
                 case "EnumItemsInRectBJMultiple":
-                    return new EnumItemsInRectBJ();
+                    return new EnumItemsInRectBJ(project);
                 case "ReturnStatement":
-                    return new ReturnStatement();
+                    return new ReturnStatement(project);
                 default:
-                    return new ECA(name);
+                    return new ECA(project, name);
             }
         }
     }

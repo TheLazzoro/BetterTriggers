@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -20,17 +20,17 @@ namespace BetterTriggers.Models.EditorData
 
         private TriggerElementCollection _actions;
 
-        public EnumItemsInRectBJ()
+        public EnumItemsInRectBJ(Project project) : base(project)
         {
             function.value = "EnumItemsInRectBJMultiple";
             Elements = new();
-            Actions = new(TriggerElementType.Action);
+            Actions = new(project, TriggerElementType.Action);
             IsExpandedTreeItem = true;
         }
 
         public override EnumItemsInRectBJ Clone()
         {
-            EnumItemsInRectBJ clone = new EnumItemsInRectBJ();
+            EnumItemsInRectBJ clone = new EnumItemsInRectBJ(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();

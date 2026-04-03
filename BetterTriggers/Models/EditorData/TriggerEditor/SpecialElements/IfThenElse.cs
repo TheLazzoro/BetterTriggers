@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BetterTriggers.Containers;
 
 namespace BetterTriggers.Models.EditorData
 {
@@ -52,19 +51,19 @@ namespace BetterTriggers.Models.EditorData
         private TriggerElementCollection _then;
         private TriggerElementCollection _else;
 
-        public IfThenElse()
+        public IfThenElse(Project project) : base(project)
         {
             function.value = "IfThenElseMultiple";
             Elements = new();
-            If = new(TriggerElementType.Condition);
-            Then = new(TriggerElementType.Action);
-            Else = new(TriggerElementType.Action);
+            If = new(project, TriggerElementType.Condition);
+            Then = new(project, TriggerElementType.Action);
+            Else = new(project, TriggerElementType.Action);
             IsExpandedTreeItem = true;
         }
 
         public override IfThenElse Clone()
         {
-            IfThenElse clone = new IfThenElse();
+            IfThenElse clone = new IfThenElse(_project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.If = If.Clone();

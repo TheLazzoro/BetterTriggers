@@ -1,10 +1,10 @@
-﻿using BetterTriggers.Utility;
+﻿using BetterTriggers.Containers;
+using BetterTriggers.Models.EditorData;
+using BetterTriggers.Utility;
+using BetterTriggers.WorldEdit;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System;
-using BetterTriggers.WorldEdit;
-using BetterTriggers.Models.EditorData;
 
 namespace GUI.Components.TriggerEditor.ParameterControls
 {
@@ -12,11 +12,11 @@ namespace GUI.Components.TriggerEditor.ParameterControls
     {
         private ListViewItem selectedItem;
 
-        public ParameterImportedControl(string returnType)
+        public ParameterImportedControl(Project project, string returnType)
         {
             InitializeComponent();
 
-            var imports = Imports.GetImportsByReturnType(returnType);
+            var imports = Imports.GetImportsByReturnType(project, returnType);
             List<Searchable> objects = new List<Searchable>();
 
             for (int i = 0; i < imports.Count; i++)

@@ -1,17 +1,12 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BetterTriggers.Containers;
+﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
-using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 
 namespace BetterTriggers.Commands
 {
     public class CommandTriggerElementPaste : ICommand
     {
+        Project _project;
         string commandName = "Paste Trigger Element";
         int pastedIndex = 0;
         ExplorerElement explorerElement;
@@ -19,8 +14,9 @@ namespace BetterTriggers.Commands
         TriggerElement parent;
         RefCollection refCollection;
 
-        public CommandTriggerElementPaste(ExplorerElement element, TriggerElementCollection listToPaste, TriggerElement parent, int pastedIndex)
+        public CommandTriggerElementPaste(Project project, ExplorerElement element, TriggerElementCollection listToPaste, TriggerElement parent, int pastedIndex)
         {
+            _project = project;
             this.explorerElement = element;
             this.listToPaste = listToPaste;
             this.parent = parent;
@@ -28,13 +24,13 @@ namespace BetterTriggers.Commands
 
             if (listToPaste.Elements[0] is ParameterDefinition)
             {
-                refCollection = new RefCollection(element);
+                refCollection = new RefCollection(project, element);
             }
         }
 
         public void Execute()
         {
-            TriggerValidator validator = new TriggerValidator(explorerElement);
+            TriggerValidator validator = new TriggerValidator(_project, explorerElement);
             validator.RemoveInvalidReferences(listToPaste);
             for (int i = 0; i < listToPaste.Count(); i++)
             {
@@ -51,8 +47,8 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
 
-            Project.CurrentProject.References.UpdateReferences(explorerElement);
-            Project.CurrentProject.CommandManager.AddCommand(this);
+            _project.References.UpdateReferences(explorerElement);
+            _project.CommandManager.AddCommand(this);
             explorerElement.InvokeChange();
         }
 
@@ -69,7 +65,7 @@ namespace BetterTriggers.Commands
                 refCollection.ResetParameters();
             }
 
-            Project.CurrentProject.References.UpdateReferences(explorerElement);
+            _project.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
         }
 
@@ -84,7 +80,7 @@ namespace BetterTriggers.Commands
                 refCollection.RevertToOldParameters();
             }
 
-            Project.CurrentProject.References.UpdateReferences(explorerElement);
+            _project.References.UpdateReferences(explorerElement);
             explorerElement.InvokeChange();
         }
 

@@ -1,20 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using War3Net.IO.Mpq;
-using War3Net.Build;
 using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
+using System.Collections.Generic;
+using System.IO;
 
 namespace BetterTriggers.WorldEdit
 {
     public class Imports
     {
-        public static List<Value> GetImportsByReturnType(string returnType)
+        public static List<Value> GetImportsByReturnType(Project project, string returnType)
         {
-            var project = Project.CurrentProject;
             string fullMapPath = project.GetFullMapPath();
             bool isMapMPQ = File.Exists(fullMapPath);
             List<Value> imports = new List<Value>();
@@ -23,9 +17,9 @@ namespace BetterTriggers.WorldEdit
 
             if (isMapMPQ)
             {
-                if (CustomMapData.MPQMap.ImportedFiles != null)
+                if (project.MPQMap.ImportedFiles != null)
                 {
-                    var mpqFiles = CustomMapData.MPQMap.ImportedFiles.Files;
+                    var mpqFiles = project.MPQMap.ImportedFiles.Files;
                     mpqFiles.ForEach(f =>
                     {
                         files.Add(f.FullPath);

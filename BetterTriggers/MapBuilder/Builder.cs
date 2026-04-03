@@ -1,20 +1,16 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.SaveableData;
+using BetterTriggers.WorldEdit;
+using BetterTriggers.WorldEdit.GameDataReader;
+using JassObfuscator;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using War3Net.Build.Info;
 using War3Net.Build;
+using War3Net.Build.Info;
 using War3Net.IO.Mpq;
-using JassObfuscator;
-using War3Net.IO.Compression;
-using BetterTriggers.WorldEdit.GameDataReader;
-using BetterTriggers.WorldEdit;
 
 namespace BetterTriggers.TestMap
 {
@@ -40,21 +36,22 @@ namespace BetterTriggers.TestMap
 
     public class Builder
     {
+        private Project _project;
         private ScriptLanguage _language;
 
-        public Builder()
+        public Builder(Project project)
         {
-            War3Project project = Project.CurrentProject.war3project;
-            _language = project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
+            _project = project;
+            _language = project.war3project.Language == "lua" ? ScriptLanguage.Lua : ScriptLanguage.Jass;
         }
 
         public (bool, string) GenerateScript()
         {
-            War3Project project = Project.CurrentProject.war3project;
+            War3Project project = _project.war3project;
             if (project == null)
                 return (false, null);
 
-            ScriptGenerator scriptGenerator = new ScriptGenerator(_language);
+            ScriptGenerator scriptGenerator = new ScriptGenerator(_project, _language);
             bool success = scriptGenerator.GenerateScript();
 
             return (success, scriptGenerator.GeneratedScript);
@@ -84,7 +81,7 @@ namespace BetterTriggers.TestMap
                 }
             }
 
-            string mapDir = Project.CurrentProject.GetFullMapPath();
+            string mapDir = _project.GetFullMapPath();
             var map = Map.Open(mapDir);
 
             /// We overwrite the loaded doodads with those modified by BT.
@@ -98,7 +95,7 @@ namespace BetterTriggers.TestMap
                 {
                     map.Doodads.Doodads.RemoveAt(0);
                 }
-                map.Doodads.Doodads.AddRange(Destructibles.GetAllDoodads());
+                map.Doodads.Doodads.AddRange(_project.Destructibles.GetAllDoodads());
             }
 
 
@@ -107,7 +104,7 @@ namespace BetterTriggers.TestMap
 
             if (settings.Export_IncludeTriggerData && isMapLaunchTest == false)
             {
-                var bt2we = new BT2WE(map);
+                var bt2we = new BT2WE(_project, map);
                 bt2we.Convert();
             }
 
@@ -144,7 +141,7 @@ namespace BetterTriggers.TestMap
                 BlockSize = blockSize,
             };
 
-            string src = Path.GetDirectoryName(Project.CurrentProject.src);
+            string src = Path.GetDirectoryName(_project.src);
             if (destinationDir == null)
                 archivePath = Path.Combine(src, Path.Combine("dist", Path.GetFileName(mapDir)));
             else
