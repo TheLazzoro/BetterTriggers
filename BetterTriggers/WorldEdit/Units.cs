@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using War3Net.Build.Extensions;
 using War3Net.Build.Widget;
+using War3Net.Common.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -11,6 +12,7 @@ namespace BetterTriggers.WorldEdit
         internal List<UnitData> units = new List<UnitData>();
         internal List<UnitData> items = new List<UnitData>();
         internal List<UnitData> startLocations = new List<UnitData>();
+        private static readonly int _startLocationId = "sloc".FromRawcode();
 
         public List<UnitData> GetAll()
         {
@@ -35,7 +37,7 @@ namespace BetterTriggers.WorldEdit
 
             for (int i = 0; i < mapUnits.Units.Count; i++)
             {
-                if (mapUnits.Units[i].ToString() == "sloc")
+                if (mapUnits.Units[i].TypeId == _startLocationId)
                 {
                     startLocations.Add(mapUnits.Units[i]);
                     continue;

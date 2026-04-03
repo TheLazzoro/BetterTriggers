@@ -94,45 +94,63 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\Icons\actions-setvariables-alpha.png">
+    <Resource Include="Resources\Icons\actions-parameter-alpha.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\trigger-error.png">
+    </Resource>
+    <Resource Include="Resources\Icons\actions-setvariables-alpha.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\trigger-invalid.png">
+    </Resource>
+    <Resource Include="Resources\Icons\trigger-error.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\ui-editoricon-triggercategories_localvariable.png">
+    </Resource>
+    <Resource Include="Resources\Icons\trigger-invalid.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\War3Green.png">
+    </Resource>
+    <Resource Include="Resources\Icons\ui-editoricon-triggercategories_actiondefinition.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_editor-triggeraction.png">
+    </Resource>
+    <Resource Include="Resources\Icons\ui-editoricon-triggercategories_conditiondefinition.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_editor-triggercondition.png">
+    </Resource>
+    <Resource Include="Resources\Icons\ui-editoricon-triggercategories_dialog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_editor-triggerevent.png">
+    </Resource>
+    <Resource Include="Resources\Icons\ui-editoricon-triggercategories_functiondefinition.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_editor-triggerscript.png">
+    </Resource>
+    <Resource Include="Resources\Icons\ui-editoricon-triggercategories_localvariable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_map.png">
+    </Resource>
+    <Resource Include="Resources\Icons\ui-editoricon-triggercategories_tbd.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_trigger-error.png">
+    </Resource>
+    <Resource Include="Resources\Icons\War3Green.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_ui-editoricon-triggercategories_element.png">
+    </Resource>
+    <Resource Include="Resources\Icons\_editor-triggeraction.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Icons\_ui-editoricon-triggercategories_folder.png">
+    </Resource>
+    <Resource Include="Resources\Icons\_editor-triggercondition.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
+    <Resource Include="Resources\Icons\_editor-triggerevent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\_editor-triggerscript.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\_map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\_trigger-error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\_ui-editoricon-triggercategories_element.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\_ui-editoricon-triggercategories_folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\JassHelper\GOLD Parser-LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -160,15 +178,15 @@
     <Content Include="Resources\MapTemplate\template.w3m">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\PrimitiveTypesJass.txt">
+    <Resource Include="Resources\PrimitiveTypesJass.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\KeywordsJass.txt">
+    </Resource>
+    <Resource Include="Resources\KeywordsJass.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\KeywordsLua.txt">
+    </Resource>
+    <Resource Include="Resources\KeywordsLua.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Resources\MapTemplate\FolderMap\war3map.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -208,138 +226,138 @@
     <Content Include="Resources\MapTemplate\FolderMap\war3mapUnits.doo">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\WorldEditorData\abilityskinstrings.txt">
+    <Resource Include="Resources\WorldEditorData\abilityskinstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\campaignabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\campaignabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\campaignunitstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\campaignunitstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\campaignupgradestrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\campaignupgradestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\commandskinstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\commandskinstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\commandstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\commandstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\commonabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\commonabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_31.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\FunctionDef_BT_31.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_31_Lua.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\FunctionDef_BT_31_Lua.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\Globals_custom_31.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\Globals_custom_31.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\Globals_custom.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\Globals_custom.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33_Lua.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33_Lua.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\FunctionDef_BT_33.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom_32.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\triggerdata_custom_32.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom_33.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\triggerdata_custom_33.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom_31.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\triggerdata_custom_31.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\triggerdata_custom.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\triggerdata_custom.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\worldeditstrings_custom.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\worldeditstrings_custom.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\destructableskinstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\destructableskinstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\humanabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\humanabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\humanunitstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\humanunitstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\humanupgradestrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\humanupgradestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\itemabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\itemabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\itemskinstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\itemskinstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\itemstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\itemstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\neutralabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\neutralabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\neutralunitstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\neutralunitstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\neutralupgradestrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\neutralupgradestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\nightelfabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\nightelfabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\nightelfunitstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\nightelfunitstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\nightelfupgradestrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\nightelfupgradestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\orcabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\orcabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\orcunitstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\orcunitstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\orcupgradestrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\orcupgradestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\Custom\triggerstrings_custom.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\Custom\triggerstrings_custom.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\ui\triggerstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\ui\triggerstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\undeadabilitystrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\undeadabilitystrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\undeadunitstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\undeadunitstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\undeadupgradestrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\undeadupgradestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\unitglobalstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\unitglobalstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\unitskinstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\unitskinstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\upgradeskinstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\upgradeskinstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\worldeditgamestrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\worldeditgamestrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\WorldEditorData\worldeditstrings.txt">
+    </Resource>
+    <Resource Include="Resources\WorldEditorData\worldeditstrings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

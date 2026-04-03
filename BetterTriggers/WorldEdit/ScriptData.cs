@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using War3Net.Build.Info;
 
 namespace BetterTriggers.WorldEdit
@@ -110,9 +107,8 @@ namespace BetterTriggers.WorldEdit
 
         private static void LoadJassPrimitives()
         {
-            string pathPrimitives = Path.Combine(Directory.GetCurrentDirectory(), "Resources/PrimitiveTypesJass.txt");
-            string[] keywordsPrim = File.ReadAllLines(pathPrimitives);
-            for (int i = 0; i < keywordsPrim.Length; i++)
+            List<string> keywordsPrim = ResourceReader.ReadAllLines("Resources/PrimitiveTypesJass.txt");
+            for (int i = 0; i < keywordsPrim.Count; i++)
             {
                 new ScriptItem(keywordsPrim[i], ScriptItemType.Typeword);
             }
@@ -120,15 +116,13 @@ namespace BetterTriggers.WorldEdit
 
         private static void LoadKeywords()
         {
-            string pathJass = Path.Combine(Directory.GetCurrentDirectory(), "Resources/KeywordsJass.txt");
-            string pathLua = Path.Combine(Directory.GetCurrentDirectory(), "Resources/KeywordsLua.txt");
-            string[] keywordsJass = File.ReadAllLines(pathJass);
-            string[] keywordsLua = File.ReadAllLines(pathLua);
-            for (int i = 0; i < keywordsJass.Length; i++)
+            List<string> keywordsJass = ResourceReader.ReadAllLines("Resources/KeywordsJass.txt");
+            List<string> keywordsLua = ResourceReader.ReadAllLines("Resources/KeywordsLua.txt");
+            for (int i = 0; i < keywordsJass.Count; i++)
             {
                 new ScriptItem(keywordsJass[i], ScriptItemType.Jass);
             }
-            for (int i = 0; i < keywordsLua.Length; i++)
+            for (int i = 0; i < keywordsLua.Count; i++)
             {
                 new ScriptItem(keywordsLua[i], ScriptItemType.Lua);
             }
@@ -136,7 +130,7 @@ namespace BetterTriggers.WorldEdit
 
         private static void LoadCommon()
         {
-            string[] commonJ = File.ReadAllLines(TriggerData.pathCommonJ);
+            var commonJ = File.ReadAllLines(TriggerData.pathCommonJ);
             List<string> types = new List<string>();
             List<string> constantNatives = new List<string>();
             List<string> constants = new List<string>();

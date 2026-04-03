@@ -3,15 +3,12 @@ using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit.GameDataReader;
-using CASCLib;
 using IniParser.Model;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using War3Net.Build.Info;
-using War3Net.Common.Extensions;
 
 namespace BetterTriggers.WorldEdit
 {
@@ -114,65 +111,57 @@ namespace BetterTriggers.WorldEdit
 
                     Stream stream = WarcraftStorageReader.OpenFile(Path.Combine(@"replaceabletextures\worldeditui", texturePath));
                     byte[] image;
-                    if (imageExt == ".blp")
-                    {
-                        image = Images.ReadImage(stream);
-                    }
-                    else
-                    {
-                        image = new byte[stream.Length];
-                        stream.CopyTo(image, 0, (int)stream.Length);
-                    }
+                    image = Images.ReadImage(stream);
 
                     Category.Create(category.KeyName, image, WE_STRING, shouldDisplay);
                 }
 
                 byte[] img;
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_map.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/_map.png");
                 Category.Create(TriggerCategory.TC_MAP, img, "???", false);
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggeraction.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/_editor-triggeraction.png");
                 Category.Create(TriggerCategory.TC_ACTION, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggercondition.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/_editor-triggercondition.png");
                 Category.Create(TriggerCategory.TC_CONDITION_NEW, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerevent.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/_editor-triggerevent.png");
                 Category.Create(TriggerCategory.TC_EVENT, img, "Event", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-error.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/trigger-error.png");
                 Category.Create(TriggerCategory.TC_ERROR, img, "Error", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/trigger-invalid.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/trigger-invalid.png");
                 Category.Create(TriggerCategory.TC_INVALID, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_element.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/_ui-editoricon-triggercategories_element.png");
                 Category.Create(TriggerCategory.TC_TRIGGER_NEW, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_ui-editoricon-triggercategories_folder.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/_ui-editoricon-triggercategories_folder.png");
                 Category.Create(TriggerCategory.TC_DIRECTORY, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/_editor-triggerscript.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/_editor-triggerscript.png");
                 Category.Create(TriggerCategory.TC_SCRIPT, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-setvariables-alpha.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/actions-setvariables-alpha.png");
                 Category.Create(TriggerCategory.TC_LOCAL_VARIABLE, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_dialog.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/ui-editoricon-triggercategories_dialog.png");
                 Category.Create(TriggerCategory.TC_FRAMEHANDLE, img, "Frame", true);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_actiondefinition.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/ui-editoricon-triggercategories_actiondefinition.png");
                 Category.Create(TriggerCategory.TC_ACTION_DEF, img, "Custom", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_conditiondefinition.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/ui-editoricon-triggercategories_conditiondefinition.png");
                 Category.Create(TriggerCategory.TC_CONDITION_DEF, img, "Custom", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_functiondefinition.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/ui-editoricon-triggercategories_functiondefinition.png");
                 Category.Create(TriggerCategory.TC_FUNCTION_DEF, img, "Custom", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/ui-editoricon-triggercategories_tbd.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/ui-editoricon-triggercategories_tbd.png");
                 Category.Create(TriggerCategory.TC_UNKNOWN, img, "???", false);
 
-                img = File.ReadAllBytes(System.IO.Directory.GetCurrentDirectory() + "/Resources/Icons/actions-parameter-alpha.png");
+                img = ResourceReader.ReadAllBytes("Resources/Icons/actions-parameter-alpha.png");
                 Category.Create(TriggerCategory.TC_PARAMETER, img, "???", false);
             }
 
@@ -191,11 +180,11 @@ namespace BetterTriggers.WorldEdit
             customBJFunctions_Jass = string.Empty;
             customBJFunctions_Lua = string.Empty;
 
-            var textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom.txt"));
+            var textCustom = ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/triggerdata_custom.txt");
             var dataCustom = IniFileConverter.GetIniData(textCustom);
             LoadTriggerDataFromIni(dataCustom, isTest);
 
-            textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom.txt"));
+            textCustom = ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/Globals_custom.txt");
             dataCustom = IniFileConverter.GetIniData(textCustom);
             LoadCustomBlizzardJ(dataCustom);
 
@@ -204,36 +193,31 @@ namespace BetterTriggers.WorldEdit
 
             if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_31)
             {
-                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_31.txt"));
+                textCustom = ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/triggerdata_custom_31.txt");
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadTriggerDataFromIni(dataCustom, isTest);
 
-                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/Globals_custom_31.txt"));
+                textCustom = ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/Globals_custom_31.txt");
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadCustomBlizzardJ(dataCustom);
 
-                customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt"));
-                customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt"));
+                customBJFunctions_Jass += ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/FunctionDef_BT_31.txt");
+                customBJFunctions_Lua += ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/FunctionDef_BT_31_Lua.txt");
             }
             if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_32)
             {
-                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_32.txt"));
+                textCustom = ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/triggerdata_custom_32.txt");
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadTriggerDataFromIni(dataCustom, isTest);
             }
             if (WarcraftStorageReader.GameVersion >= WarcraftVersion._1_33)
             {
-                textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/triggerdata_custom_33.txt"));
+                textCustom = ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/triggerdata_custom_33.txt");
                 dataCustom = IniFileConverter.GetIniData(textCustom);
                 LoadTriggerDataFromIni(dataCustom, isTest);
 
-                //textCustom = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/BlizzardJ_custom_33.txt"));
-                //dataCustom = IniFileConverter.GetIniData(textCustom);
-                //LoadCustomBlizzardJ(dataCustom);
-
-
-                customBJFunctions_Jass += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33.txt"));
-                customBJFunctions_Lua += File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Resources/WorldEditorData/Custom/FunctionDef_BT_33_Lua.txt"));
+                customBJFunctions_Jass += ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/FunctionDef_BT_33.txt");
+                customBJFunctions_Lua += ResourceReader.ReadAllText("Resources/WorldEditorData/Custom/FunctionDef_BT_33_Lua.txt");
             }
 
 

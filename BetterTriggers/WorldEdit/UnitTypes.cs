@@ -148,16 +148,14 @@ namespace BetterTriggers.WorldEdit
             }
 
 
-
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
-                var row = table.ElementAt(i);
                 UnitType unitType = new UnitType()
                 {
-                    Id = (string)row.GetValue(0),
-                    Sort = (string)row.GetValue(1),
-                    Race = (string)row.GetValue(3),
+                    Id = (string)table[0, i],
+                    Sort = (string)table[1, i],
+                    Race = (string)table[3, i],
                 };
 
                 unitTypesBase.TryAdd(unitType.Id, unitType);
@@ -246,12 +244,11 @@ namespace BetterTriggers.WorldEdit
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
-                var row = table.ElementAt(i);
                 UnitType unitType = new UnitType()
                 {
-                    Id = (string)row.GetValue(0),
-                    Sort = (string)row.GetValue(1),
-                    Race = (string)row.GetValue(3),
+                    Id = (string)table[0, i],
+                    Sort = (string)table[1, i],
+                    Race = (string)table[3, i],
                 };
                 if (unitType.Id == null)
                 {
@@ -441,7 +438,7 @@ namespace BetterTriggers.WorldEdit
                         if (exists)
                             stream = File.OpenRead(finalIconPath);
                         else
-                            stream = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Resources/Icons/War3Green.png"));
+                            stream = ResourceReader.ReadAsStream("Resources/Icons/War3Green.png");
                     }
 
                     icon = iconPath;
