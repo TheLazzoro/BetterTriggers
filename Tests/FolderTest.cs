@@ -16,7 +16,7 @@ namespace Tests
         string projectPath;
         static string directory = Directory.GetCurrentDirectory();
 
-        static ExplorerElement element1;
+        ExplorerElement element1;
 
         private Project _project;
 
