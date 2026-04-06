@@ -1,7 +1,5 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData.TriggerEditor;
-using ICSharpCode.Decompiler.IL;
-using System;
 using System.Collections.Generic;
 
 namespace BetterTriggers.Models.EditorData
@@ -125,7 +123,7 @@ namespace BetterTriggers.Models.EditorData
                 {
                     if (actionDefRef.ActionDefinitionId == actionDef.Id)
                     {
-                        var refParent = new RefParent(actionDef.explorerElement, actionDefRef);
+                        var refParent = new RefParent(_project, actionDef.explorerElement, actionDefRef);
                         refParents.Add(refParent);
                     }
                 }
@@ -144,7 +142,7 @@ namespace BetterTriggers.Models.EditorData
                 {
                     if (condDefRef.ConditionDefinitionId == conditionDef.Id)
                     {
-                        var refParent = new RefParent(conditionDef.explorerElement, condDefRef);
+                        var refParent = new RefParent(_project, conditionDef.explorerElement, condDefRef);
                         refParents.Add(refParent);
                     }
                 }
@@ -237,8 +235,9 @@ namespace BetterTriggers.Models.EditorData
 
         TriggerElement triggerElement;
         TriggerElement parentTrigElement;
-        internal RefParent(ExplorerElement explorerElement, TriggerElement triggerElement)
+        internal RefParent(Project project, ExplorerElement explorerElement, TriggerElement triggerElement)
         {
+            _project = project;
             this.explorerElement = explorerElement;
             this.triggerElement = triggerElement;
             parentTrigElement = triggerElement.GetParent();
@@ -285,7 +284,7 @@ namespace BetterTriggers.Models.EditorData
             Function function = null;
             oldParameters = new List<Parameter>();
             resetParameters = new List<Parameter>();
-            if(parameter is ParameterDefinitionRef paramDefRef || parameter is VariableRef || parameter is TriggerRef)
+            if (parameter is ParameterDefinitionRef paramDefRef || parameter is VariableRef || parameter is TriggerRef)
             {
                 function = parent;
                 for (int i = 0; i < parent.parameters.Count; i++)
