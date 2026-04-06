@@ -528,7 +528,6 @@ namespace BetterTriggers.Containers
                 }
 
                 elementToRename.SetPath(newFullPath);
-                elementToRename.Notify();
             }
         }
 
