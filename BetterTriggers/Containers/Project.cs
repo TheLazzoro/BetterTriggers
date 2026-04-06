@@ -31,6 +31,7 @@ namespace BetterTriggers.Containers
         public BufferingFileSystemWatcher fileSystemWatcher;
         public ExplorerElement lastCreated;
         public event Action<string, string> OnFileExtensionChanged;
+        public ExplorerElement? SelectedElement { get; set; }
 
         public Folders Folders { get; private set; }
         public Variables Variables { get; private set; }
@@ -430,7 +431,16 @@ namespace BetterTriggers.Containers
             AddElementToContainer(explorerElement);
             lastCreated = explorerElement;
 
-            CommandExplorerElementCreate command = new CommandExplorerElementCreate(this, explorerElement, parent, parent.GetExplorerElements().Count);
+            int insertIndex = parent.GetExplorerElements().Count;
+            if (SelectedElement != null)
+            {
+                if (SelectedElement.ElementType == ExplorerElementEnum.Root || SelectedElement.ElementType == ExplorerElementEnum.Folder)
+                    insertIndex = 0;
+                else if (parent == SelectedElement.Parent)
+                    insertIndex = SelectedElement.Parent.ExplorerElements.IndexOf(SelectedElement) + 1;
+            }
+
+            CommandExplorerElementCreate command = new CommandExplorerElementCreate(this, explorerElement, parent, insertIndex);
             command.Execute();
 
             if (!doRecurse)

@@ -730,5 +730,11 @@ namespace GUI.Components
         {
             OpenContextMenu(e);
         }
+
+        private void treeViewTriggerExplorer_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var element = e.NewValue as ExplorerElement;
+            _project.SelectedElement = element;
+        }
     }
 }

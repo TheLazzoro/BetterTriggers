@@ -20,6 +20,7 @@
             Drop="treeViewTriggerExplorer_Drop"
             KeyDown="treeViewTriggerExplorer_KeyDown"
             ContextMenuOpening="contextMenu_ContextMenuOpening"
+            SelectedItemChanged="treeViewTriggerExplorer_SelectedItemChanged"
             >
 
             <TreeView.ItemContainerStyle>
