@@ -31,6 +31,9 @@ namespace BetterTriggers.WorldEdit
 
         internal void Load(Project project)
         {
+            units.Clear();
+            items.Clear();
+            startLocations.Clear();
             MapUnits mapUnits = project.MPQMap.Units;
             if (mapUnits == null)
                 return;
