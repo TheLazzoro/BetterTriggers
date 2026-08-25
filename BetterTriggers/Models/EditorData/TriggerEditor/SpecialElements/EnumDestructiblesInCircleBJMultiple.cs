@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override EnumDestructiblesInCircleBJMultiple Clone()
         {
-            EnumDestructiblesInCircleBJMultiple clone = new EnumDestructiblesInCircleBJMultiple(_project);
+            EnumDestructiblesInCircleBJMultiple clone = new EnumDestructiblesInCircleBJMultiple(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();

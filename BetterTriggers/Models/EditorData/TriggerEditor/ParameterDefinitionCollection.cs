@@ -43,7 +43,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ParameterDefinitionCollection Clone()
         {
-            var clone = new ParameterDefinitionCollection(_project, ElementType);
+            var clone = new ParameterDefinitionCollection(Project, ElementType);
             this.Elements.ForEach(element =>
             {
                 var clonedChild = element.Clone();

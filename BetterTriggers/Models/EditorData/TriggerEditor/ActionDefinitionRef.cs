@@ -10,7 +10,7 @@ namespace BetterTriggers.Models.EditorData.TriggerEditor
 
         public override ActionDefinitionRef Clone()
         {
-            var cloned = new ActionDefinitionRef(_project);
+            var cloned = new ActionDefinitionRef(Project);
             cloned.function = this.function.Clone();
             cloned.ActionDefinitionId = ActionDefinitionId;
             cloned.ElementType = ElementType;

@@ -10,7 +10,7 @@ namespace BetterTriggers.Models.EditorData.TriggerEditor
 
         public override ConditionDefinitionRef Clone()
         {
-            var cloned = new ConditionDefinitionRef(_project);
+            var cloned = new ConditionDefinitionRef(Project);
             cloned.function = this.function.Clone();
             cloned.ConditionDefinitionId = ConditionDefinitionId;
             cloned.ElementType = ElementType;

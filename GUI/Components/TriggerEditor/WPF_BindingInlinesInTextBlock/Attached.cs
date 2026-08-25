@@ -1,4 +1,5 @@
 ﻿using BetterTriggers;
+using BetterTriggers.Containers;
 using BetterTriggers.Models.EditorData;
 using GUI.Utility;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace GUI.Components.TriggerEditor.WPF_BindingInlinesInTextBlock
             EditorSettings editorSettings = EditorSettings.Load();
             if(editorSettings.triggerEditorMode == TriggerEditorMode.CliCli)
             {
-                ParamTextBuilder paramTextBuilder = new ParamTextBuilder(null); // TODO:!!!!
+                ParamTextBuilder paramTextBuilder = new ParamTextBuilder(eca.Project);
                 var inlines = paramTextBuilder.GenerateParamText(ExplorerElement.CurrentToRender, eca);
                 inlinesCollection.AddRange(inlines);
             }

@@ -45,7 +45,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override TriggerElementCollection Clone()
         {
-            var clone = new TriggerElementCollection(_project, ElementType);
+            var clone = new TriggerElementCollection(Project, ElementType);
             this.Elements.ForEach(element =>
             {
                 var clonedChild = element.Clone();

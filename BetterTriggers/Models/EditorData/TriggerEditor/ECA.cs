@@ -18,7 +18,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ECA Clone()
         {
-            ECA clone = new ECA(_project);
+            ECA clone = new ECA(Project);
             clone.DisplayText = new string(DisplayText);
             clone.IsEnabled = IsEnabled;
             clone.function = function.Clone();

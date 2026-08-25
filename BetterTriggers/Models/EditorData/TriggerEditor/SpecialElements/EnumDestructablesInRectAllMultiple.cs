@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override EnumDestructablesInRectAllMultiple Clone()
         {
-            EnumDestructablesInRectAllMultiple clone = new EnumDestructablesInRectAllMultiple(_project);
+            EnumDestructablesInRectAllMultiple clone = new EnumDestructablesInRectAllMultiple(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();
