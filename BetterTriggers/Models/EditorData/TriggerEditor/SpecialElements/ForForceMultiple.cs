@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ForForceMultiple Clone()
         {
-            ForForceMultiple clone = new ForForceMultiple(_project);
+            ForForceMultiple clone = new ForForceMultiple(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();

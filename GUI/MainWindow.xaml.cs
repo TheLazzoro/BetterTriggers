@@ -912,6 +912,7 @@ namespace GUI
             if (doClose)
             {
                 VersionCheck.WantToDownload -= DownloadUpdate;
+                CustomMapData.OnSaving -= CustomMapData_OnSaving;
             }
         }
 

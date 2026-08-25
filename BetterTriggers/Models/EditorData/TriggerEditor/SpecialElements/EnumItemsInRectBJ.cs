@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override EnumItemsInRectBJ Clone()
         {
-            EnumItemsInRectBJ clone = new EnumItemsInRectBJ(_project);
+            EnumItemsInRectBJ clone = new EnumItemsInRectBJ(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();

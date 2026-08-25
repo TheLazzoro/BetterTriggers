@@ -12,6 +12,7 @@ namespace BetterTriggers.Models.EditorData
 {
     public abstract class TriggerElement : TreeNodeBase
     {
+        public Project Project { get; }
         public TriggerElementType ElementType { get; set; }
         public ObservableCollection<TriggerElement>? Elements { get; set; }
         public bool IsExpanded
@@ -25,11 +26,10 @@ namespace BetterTriggers.Models.EditorData
         }
         private TriggerElement? Parent;
         private bool _isExpanded = true;
-        protected Project _project;
 
         protected TriggerElement(Project project)
         {
-            _project = project;
+            Project = project;
         }
 
         public virtual TriggerElement Clone()
@@ -49,7 +49,7 @@ namespace BetterTriggers.Models.EditorData
 
             if(this is LocalVariable localVar)
             {
-                _project.Variables.AddLocalVariable(localVar);
+                Project.Variables.AddLocalVariable(localVar);
             }
         }
 

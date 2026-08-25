@@ -63,7 +63,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override IfThenElse Clone()
         {
-            IfThenElse clone = new IfThenElse(_project);
+            IfThenElse clone = new IfThenElse(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.If = If.Clone();

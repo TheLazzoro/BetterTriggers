@@ -11,7 +11,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override SetVariable Clone()
         {
-            SetVariable clone = new SetVariable(_project);
+            SetVariable clone = new SetVariable(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.ElementType = ElementType;

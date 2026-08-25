@@ -31,7 +31,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ForLoopVarMultiple Clone()
         {
-            ForLoopVarMultiple clone = new ForLoopVarMultiple(_project);
+            ForLoopVarMultiple clone = new ForLoopVarMultiple(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Actions = Actions.Clone();

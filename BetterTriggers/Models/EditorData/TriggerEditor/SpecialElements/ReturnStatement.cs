@@ -11,7 +11,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ReturnStatement Clone()
         {
-            var clone = new ReturnStatement(_project);
+            var clone = new ReturnStatement(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.ElementType = ElementType;

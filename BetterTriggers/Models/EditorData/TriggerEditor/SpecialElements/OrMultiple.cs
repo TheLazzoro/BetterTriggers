@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override OrMultiple Clone()
         {
-            OrMultiple clone = new OrMultiple(_project);
+            OrMultiple clone = new OrMultiple(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.Or = Or.Clone();

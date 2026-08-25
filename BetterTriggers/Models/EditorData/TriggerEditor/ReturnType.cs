@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ReturnType Clone()
         {
-            var cloned = new ReturnType(_project);
+            var cloned = new ReturnType(Project);
             cloned.War3Type = War3Type;
             return cloned;
         }

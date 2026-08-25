@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override AndMultiple Clone()
         {
-            AndMultiple clone = new AndMultiple(_project);
+            AndMultiple clone = new AndMultiple(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.And = And.Clone();

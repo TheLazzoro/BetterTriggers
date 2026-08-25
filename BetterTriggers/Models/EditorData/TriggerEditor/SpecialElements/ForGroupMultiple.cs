@@ -30,7 +30,7 @@ namespace BetterTriggers.Models.EditorData
 
         public override ForGroupMultiple Clone()
         {
-            ForGroupMultiple clone = new ForGroupMultiple(_project);
+            ForGroupMultiple clone = new ForGroupMultiple(Project);
             clone.DisplayText = new string(DisplayText);
             clone.function = this.function.Clone();
             clone.ElementType = ElementType;
