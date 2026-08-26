@@ -42,6 +42,10 @@ namespace BetterTriggers.WorldEdit.GameDataReader
                 CASCConfig config = _onlineMode ? CASCConfig.LoadOnlineStorageConfig(product, "eu") : CASCConfig.LoadLocalStorageConfig(settings.war3root, product);
                 GameVersion = new Version(config.VersionName);
 
+                if (casc != null)
+                {
+                    casc.Clear();
+                }
                 casc = CASCHandler.OpenStorage(config);
                 casc.Root.SetFlags(LocaleFlags.All, false, false);
                 using (var _ = new PerfCounter("LoadListFile()"))
@@ -96,20 +100,5 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
             return war3_locale_1_30;
         }
-
-        public static void SaveFile(CASCFile file, string fullPath)
-        {
-            var stream = GetCasc().OpenFile(file.FullName);
-
-            var dir = Path.GetDirectoryName(fullPath);
-            var name = Path.GetFileName(fullPath);
-
-            FileStream fileStream = File.Create(Path.Combine(dir, name), (int)stream.Length);
-            byte[] bytesInStream = new byte[stream.Length];
-            stream.Read(bytesInStream, 0, bytesInStream.Length);
-            fileStream.Write(bytesInStream, 0, bytesInStream.Length);
-            fileStream.Close();
-        }
-
     }
 }
