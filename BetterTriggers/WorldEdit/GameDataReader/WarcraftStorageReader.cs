@@ -17,6 +17,12 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public static (bool, string) Load()
         {
+            if(mpq != null)
+            {
+                mpq.Dispose();
+                mpq = null;
+            }
+
             ImageExt = ".blp";
             EditorSettings settings = EditorSettings.Load();
             var isCasc = File.Exists(Path.Combine(settings.war3root, @"Data\data\data.000"));
@@ -37,6 +43,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
                 }
                 return (false, errorMsg);
             }
+
             mpq = new GameMpq();
             return mpq.Load(settings.war3root);
         }
