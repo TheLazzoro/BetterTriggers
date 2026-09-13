@@ -2,12 +2,12 @@
 {
     internal class IniKey
     {
-        internal string Key;
+        internal string KeyName;
         internal string Value;
 
         public IniKey(string key, string value)
         {
-            Key = key;
+            KeyName = key;
             Value = value;
         }
     }

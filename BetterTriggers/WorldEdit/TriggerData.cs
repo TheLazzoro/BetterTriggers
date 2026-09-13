@@ -2,8 +2,8 @@
 using BetterTriggers.Models.EditorData;
 using BetterTriggers.Models.Templates;
 using BetterTriggers.Utility;
+using BetterTriggers.Utility.IniParser;
 using BetterTriggers.WorldEdit.GameDataReader;
-using IniParser.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,8 +19,7 @@ namespace BetterTriggers.WorldEdit
         internal static Dictionary<string, FunctionTemplate> ConditionTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> ActionTemplates = new Dictionary<string, FunctionTemplate>();
         internal static Dictionary<string, FunctionTemplate> CallTemplates = new Dictionary<string, FunctionTemplate>();
-        internal static Dictionary<string, FunctionTemplate> FunctionsAll = new Dictionary<string, FunctionTemplate>();
-        internal static HashSet<string> BoolExprTempaltes = new HashSet<string>(); 
+        internal static HashSet<string> BoolExprTempaltes = new HashSet<string>();
 
         internal static Dictionary<string, string> ParamDisplayNames = new Dictionary<string, string>();
         internal static Dictionary<string, string> ParamCodeText = new Dictionary<string, string>();
@@ -40,7 +39,7 @@ namespace BetterTriggers.WorldEdit
 
         public static void Load(bool isTest)
         {
-            IniData data = null;
+            IniData? data = null;
 
             Types.Clear();
             PresetTemplates.Clear();
@@ -49,7 +48,6 @@ namespace BetterTriggers.WorldEdit
             BoolExprTempaltes.Clear();
             ActionTemplates.Clear();
             CallTemplates.Clear();
-            FunctionsAll.Clear();
             ParamDisplayNames.Clear();
             ParamCodeText.Clear();
             FunctionCategories.Clear();
@@ -96,7 +94,7 @@ namespace BetterTriggers.WorldEdit
 
                 var triggerCategories = data.Sections["TriggerCategories"];
                 string imageExt = WarcraftStorageReader.ImageExt;
-                foreach (var category in triggerCategories)
+                foreach (var category in triggerCategories.Keys)
                 {
                     string[] values = category.Value.Split(",");
 
@@ -276,19 +274,19 @@ namespace BetterTriggers.WorldEdit
                 string lastKeyword = string.Empty;
                 foreach (var key in section.Keys)
                 {
-                    FunctionsAll.TryGetValue(key.Key, out var functionTemplate);
+                    var functionTemplate = GetFunctionTemplate(key.KeyName);
                     if (functionTemplate == null)
                     {
                         continue;
                     }
-                    else if (key.Key == lastKeyword)
+                    else if (key.KeyName == lastKeyword)
                     {
                         functionTemplate.paramText = key.Value.Replace("\"", "");
-                        ParamCodeText.TryAdd(key.Key, functionTemplate.paramText);
+                        ParamCodeText.TryAdd(key.KeyName, functionTemplate.paramText);
                         continue;
                     }
 
-                    lastKeyword = key.Key;
+                    lastKeyword = key.KeyName;
                     functionTemplate.name = key.Value.Replace("\"", "");
                 }
             }
@@ -300,7 +298,7 @@ namespace BetterTriggers.WorldEdit
             // --- TRIGGER TYPES (GUI VARIABLE TYPE DEFINITIONS) --- //
 
             var triggerTypes = data.Sections["TriggerTypes"];
-            foreach (var type in triggerTypes)
+            foreach (var type in triggerTypes.Keys)
             {
                 string[] values = type.Value.Split(",");
                 string key = type.KeyName;
@@ -334,7 +332,7 @@ namespace BetterTriggers.WorldEdit
             // --- TRIGGER PARAMS (CONSTANTS OR PRESETS) --- //
 
             var triggerParams = data.Sections["TriggerParams"];
-            foreach (var preset in triggerParams)
+            foreach (var preset in triggerParams.Keys)
             {
                 string[] values = preset.Value.Split(",");
                 string key = preset.KeyName;
@@ -362,9 +360,9 @@ namespace BetterTriggers.WorldEdit
                     name = displayText,
                     codeText = codeText,
                 };
-                PresetTemplates.Add(key, presetTemplate);
-                ParamDisplayNames.Add(key, displayText);
-                ParamCodeText.Add(key, codeText);
+                PresetTemplates.TryAdd(key, presetTemplate);
+                ParamDisplayNames.TryAdd(key, displayText);
+                ParamCodeText.TryAdd(key, codeText);
                 if (isBT)
                 {
                     btOnlyData.Add(key);
@@ -422,13 +420,13 @@ namespace BetterTriggers.WorldEdit
 
         private static void LoadFunctions(IniData data, string sectionName, Dictionary<string, FunctionTemplate> dictionary, TriggerElementType Type)
         {
-            var section = data.Sections[sectionName];
+            var section = data[sectionName];
             if (section == null)
                 return;
 
             string name = string.Empty;
             FunctionTemplate functionTemplate = null;
-            foreach (var _func in section)
+            foreach (var _func in section.Keys)
             {
                 string key = _func.KeyName;
 
@@ -438,17 +436,17 @@ namespace BetterTriggers.WorldEdit
                     if (key.EndsWith("DisplayName"))
                     {
                         functionTemplate.name = _func.Value.Replace("\"", "");
-                        ParamDisplayNames.Add(name, functionTemplate.name);
+                        ParamDisplayNames.TryAdd(name, functionTemplate.name);
                     }
                     else if (key.EndsWith("Parameters"))
                     {
                         functionTemplate.paramText = _func.Value.Replace("\"", "");
-                        ParamCodeText.Add(name, functionTemplate.paramText);
+                        ParamCodeText.TryAdd(name, functionTemplate.paramText);
                     }
                     else if (key.EndsWith("Category"))
                     {
                         functionTemplate.category = _func.Value;
-                        FunctionCategories.Add(name, functionTemplate.category);
+                        FunctionCategories.TryAdd(name, functionTemplate.category);
                     }
                     else if (key.EndsWith("Defaults"))
                     {
@@ -466,7 +464,6 @@ namespace BetterTriggers.WorldEdit
                     if (!dictionary.TryGetValue(name, out controlValue))
                     {
                         dictionary.Add(name, functionTemplate);
-                        FunctionsAll.Add(name, functionTemplate);
                     }
                 }
                 else
@@ -536,7 +533,7 @@ namespace BetterTriggers.WorldEdit
         private static void LoadCustomBlizzardJ(IniData iniData)
         {
             var section = iniData.Sections["Presets"];
-            foreach (var key in section)
+            foreach (var key in section.Keys)
             {
                 string keyName = key.KeyName;
 
@@ -562,8 +559,7 @@ namespace BetterTriggers.WorldEdit
             if (value == null)
                 return null;
 
-            FunctionTemplate function;
-            FunctionsAll.TryGetValue(value, out function);
+            var function = GetFunctionTemplate(value);
             if (function != null)
                 return function.returnType;
 
@@ -649,8 +645,7 @@ namespace BetterTriggers.WorldEdit
                 }
             }
 
-            FunctionTemplate functionTemplate;
-            FunctionsAll.TryGetValue(f.value, out functionTemplate);
+            var functionTemplate = GetFunctionTemplate(f.value);
             if (functionTemplate != null)
                 functionTemplate.parameters.ForEach(p => list.Add(p.returnType));
 
@@ -658,11 +653,22 @@ namespace BetterTriggers.WorldEdit
         }
 
 
-        private static FunctionTemplate GetFunctionTemplate(string key)
+        internal static FunctionTemplate? GetFunctionTemplate(string key)
         {
-            FunctionTemplate functionTemplate;
-            FunctionsAll.TryGetValue(key, out functionTemplate);
-            return functionTemplate;
+            if (EventTemplates.TryGetValue(key, out var _event)) return _event;
+            if (ConditionTemplates.TryGetValue(key, out var condition)) return condition;
+            if (ActionTemplates.TryGetValue(key, out var action)) return action;
+            if (CallTemplates.TryGetValue(key, out var call)) return call;
+
+            return null;
+        }
+
+        private static bool Contains(string key)
+        {
+            return EventTemplates.ContainsKey(key)
+                || ConditionTemplates.ContainsKey(key)
+                || ActionTemplates.ContainsKey(key)
+                || CallTemplates.ContainsKey(key);
         }
 
         private static PresetTemplate GetPresetTemplate(string key)
@@ -670,11 +676,6 @@ namespace BetterTriggers.WorldEdit
             PresetTemplate constantTemplate;
             PresetTemplates.TryGetValue(key, out constantTemplate);
             return constantTemplate;
-        }
-
-        public static List<FunctionTemplate> GetFunctionTemplatesAll()
-        {
-            return FunctionsAll.Select(f => f.Value).ToList();
         }
 
         internal static string GetConstantCodeText(string identifier, ScriptLanguage language)
@@ -709,7 +710,7 @@ namespace BetterTriggers.WorldEdit
             bool exists = false;
             if (function.value != null)
             {
-                exists = FunctionsAll.ContainsKey(function.value);
+                exists = Contains(function.value);
             }
 
             if (!exists)
@@ -725,12 +726,10 @@ namespace BetterTriggers.WorldEdit
 
 
 
-
         public static List<Types> LoadAllVariableTypes()
         {
             return Types.GetGlobalTypes();
         }
-
 
         public static List<FunctionTemplate> LoadAllEvents()
         {
@@ -916,8 +915,7 @@ namespace BetterTriggers.WorldEdit
 
         public static string GetFuntionDisplayName(string key)
         {
-            FunctionTemplate functionTemplate;
-            FunctionsAll.TryGetValue(key, out functionTemplate);
+            var functionTemplate = GetFunctionTemplate(key);
             if (functionTemplate == null)
             {
                 return string.Empty;

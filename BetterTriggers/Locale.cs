@@ -1,7 +1,7 @@
 ﻿using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.Utility.IniParser;
 using BetterTriggers.WorldEdit.GameDataReader;
-using IniParser.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -171,13 +171,14 @@ namespace BetterTriggers
                 var enumerator = iniData.Sections.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
-                    var keyEnumerator = enumerator.Current.Keys.GetEnumerator();
-                    while (keyEnumerator.MoveNext())
+                    var section = enumerator.Current.Value;
+                    foreach (var kvp in section.Keys)
                     {
-                        string key = keyEnumerator.Current.KeyName;
+                        var key = kvp.KeyName;
+                        var value = kvp.Value;
                         if (key.EndsWith("Hint"))
                         {
-                            WE_Strings.TryAdd(key.Substring(0, key.Length - 4), keyEnumerator.Current.Value.Replace("\"", ""));
+                            WE_Strings.TryAdd(key.Substring(0, key.Length - 4), value.Replace("\"", ""));
                         }
                     }
                 }
@@ -192,14 +193,15 @@ namespace BetterTriggers
                 string sectionName = null;
                 while (enumerator.MoveNext())
                 {
-                    sectionName = enumerator.Current.SectionName;
+                    var section = enumerator.Current.Value;
+                    sectionName = section.SectionName;
                     string displayName = null;
-                    if (enumerator.Current.Keys["Name"] != null)
-                        displayName = enumerator.Current.Keys["Name"];
-                    else if (enumerator.Current.Keys["Bufftip"] != null)
-                        displayName = enumerator.Current.Keys["Bufftip"];
-                    else if (enumerator.Current.Keys["EditorName"] != null)
-                        displayName = enumerator.Current.Keys["EditorName"];
+                    if (section["Name"] != null)
+                        displayName = section["Name"];
+                    else if (section["Bufftip"] != null)
+                        displayName = section["Bufftip"];
+                    else if (section["EditorName"] != null)
+                        displayName = section["EditorName"];
 
                     // Trim display name - upgrade name fields can contain multiple names (upgrade level 1, 2, 3 etc.)
                     if (displayName != null)
@@ -209,8 +211,8 @@ namespace BetterTriggers
                         DisplayNames.TryAdd(sectionName, displayName);
                     }
 
-                    if (enumerator.Current.Keys["EditorSuffix"] != null)
-                        EditorSuffixes.TryAdd(sectionName, enumerator.Current.Keys["EditorSuffix"]);
+                    if (section["EditorSuffix"] != null)
+                        EditorSuffixes.TryAdd(sectionName, section["EditorSuffix"]);
                 }
 
                 DisplayNames.TryGetValue(sectionName, out string value);
@@ -229,13 +231,14 @@ namespace BetterTriggers
                 var enumerator = iniData.Sections.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
+                    var section = enumerator.Current.Value;
                     var unitName = new UnitName()
                     {
-                        Name = enumerator.Current.Keys["Name"],
-                        Propernames = enumerator.Current.Keys["Propernames"],
-                        EditorSuffix = enumerator.Current.Keys["EditorSuffix"],
+                        Name = section["Name"],
+                        Propernames = section["Propernames"],
+                        EditorSuffix = section["EditorSuffix"],
                     };
-                    Unit_Names.TryAdd(enumerator.Current.SectionName, unitName);
+                    Unit_Names.TryAdd(section.SectionName, unitName);
                 }
             }
         }

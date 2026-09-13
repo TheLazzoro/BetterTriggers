@@ -107,7 +107,7 @@ Hotkey:melee,V0=T
 [Rolf]
 Name=Liquid Fire
 Tip=Research Liquid Fire
-Ubertip="Gives Batriders the Liquid Fire attack, which deals damage over time to enemy buildings, stops them from being repaired, and reduces the attack rate of enemy buildings."
+Ubertip="Gives Batriders the Liquid Fire attack, which deals damage over time to enemy buildings, reduces the repaired rate and the attack rate of enemy buildings."
 Hotkey=L
 
 [Ropm]

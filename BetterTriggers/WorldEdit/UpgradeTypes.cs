@@ -1,8 +1,8 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.Utility.IniParser;
 using BetterTriggers.WorldEdit.GameDataReader;
-using IniParser.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -149,12 +149,10 @@ namespace BetterTriggers.WorldEdit
             var enumerator = upgradeSections.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                var section = enumerator.Current;
+                var section = enumerator.Current.Value;
                 string sectionName = section.SectionName;
-                var keys = section.Keys.GetEnumerator();
-                while (keys.MoveNext())
+                foreach (var key in section.Keys)
                 {
-                    var key = keys.Current;
                     if (key.KeyName == "Art")
                     {
                         string[] split = key.Value.Split(",");

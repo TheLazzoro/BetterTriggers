@@ -69,12 +69,11 @@ namespace BetterTriggers.WorldEdit
                 var enumSections = data.Sections.GetEnumerator();
                 while (enumSections.MoveNext())
                 {
-                    var section = enumSections.Current;
-                    var enumKeys = section.Keys.GetEnumerator();
+                    var section = enumSections.Current.Value;
                     var category = string.Empty;
-                    while (enumKeys.MoveNext())
+                    foreach (var iniKey in section.Keys)
                     {
-                        var key = enumKeys.Current;
+                        var key = iniKey;
                         if (key.KeyName == "Art" || key.KeyName == "Researchart")
                             new Icon(key.Value, AbilityTypes.GetName(null, section.SectionName), "Ability");
                         else if (key.KeyName == "Buffart")
@@ -158,7 +157,8 @@ namespace BetterTriggers.WorldEdit
                         Path = unitData[i].Model,
                         Category = "Unit"
                     });
-                } catch(Exception) { }
+                }
+                catch (Exception) { }
             }
             for (int i = 0; i < destData.Count; i++)
             {
@@ -172,10 +172,11 @@ namespace BetterTriggers.WorldEdit
             }
             for (int i = 0; i < doodData.Count; i++)
             {
+                var dood = doodData[i];
                 hashset.Add(new AssetModel()
                 {
-                    DisplayName = doodData[i].DisplayName == null ? "" : doodData[i].DisplayName,
-                    Path = doodData[i].Model,
+                    DisplayName = dood.DisplayName == null ? "" : dood.DisplayName,
+                    Path = dood.Model,
                     Category = "Doodad"
                 });
             }

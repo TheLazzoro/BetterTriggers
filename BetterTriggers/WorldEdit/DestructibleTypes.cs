@@ -150,7 +150,7 @@ namespace BetterTriggers.WorldEdit
                 if (section == null)
                     continue;
 
-                var model = section.Keys.FirstOrDefault(k => k.Key == "file");
+                var model = section.Keys.FirstOrDefault(k => k.KeyName == "file");
                 if (model != null)
                 {
                     destType.Model = model.Value;

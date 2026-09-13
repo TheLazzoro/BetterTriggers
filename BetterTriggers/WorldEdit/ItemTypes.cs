@@ -117,9 +117,9 @@ namespace BetterTriggers.WorldEdit
             var sections = data.Sections.GetEnumerator();
             while (sections.MoveNext())
             {
-                var id = sections.Current.SectionName;
-                var keys = sections.Current.Keys;
-                var model = keys["file"];
+                var section = sections.Current.Value;
+                var id = section.SectionName;
+                var model = section["file"];
 
                 var item = new ItemType()
                 {
@@ -140,9 +140,9 @@ namespace BetterTriggers.WorldEdit
             sections = data.Sections.GetEnumerator();
             while (sections.MoveNext())
             {
-                string sectionName = sections.Current.SectionName;
-                var keys = sections.Current.Keys;
-                string path = keys["Art"];
+                var section = sections.Current.Value;
+                string sectionName = section.SectionName;
+                string path = section["Art"];
                 if (path != null)
                 {
                     new Icon(path, ItemTypes.GetName(null, sectionName), "Item");
@@ -187,9 +187,9 @@ namespace BetterTriggers.WorldEdit
             var sections = data.Sections.GetEnumerator();
             while (sections.MoveNext())
             {
-                string sectionName = sections.Current.SectionName;
-                var keys = sections.Current.Keys;
-                string path = keys["Art"];
+                var section = sections.Current.Value;
+                string sectionName = section.SectionName;
+                string path = section["Art"];
                 if (path != null)
                     new Icon(path, ItemTypes.GetName(null, sectionName), "Item");
             }

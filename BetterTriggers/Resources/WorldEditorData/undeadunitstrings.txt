@@ -267,7 +267,7 @@ Ubertip="Fortified statue that can help replenish the life and mana of your army
 Name=Destroyer
 Tip=Morph into Destroyer
 Hotkey=T
-Ubertip="Large flying unit that must consume magic to sustain its mana. Excellent at destroying enemy casters and clusters of ground forces. Initially has Spell Immunity, Devour Magic, Absorb Mana, and Orb of Annihilation. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip="Large flying unit that must consume magic to sustain its mana. Excellent at destroying enemy casters and clusters of ground forces. Destroyers have Magic and Spell Immunity, Devour Magic, Absorb Mana, and Orb of Annihilation. |n|n|cffffcc00Attacks land and air units.|r"
 
 //#RESTNOBETA
 [ubot]

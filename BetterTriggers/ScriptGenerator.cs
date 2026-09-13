@@ -2731,8 +2731,7 @@ end
                 var returnTypes = new List<string>();
                 if (f is not FunctionDefinitionRef)
                 {
-                    FunctionTemplate template;
-                    TriggerData.FunctionsAll.TryGetValue(f.value, out template);
+                    var template = TriggerData.GetFunctionTemplate(f.value);
                     returnTypes = TriggerData.GetParameterReturnTypes(_project, f, currentExplorerElement);
                     if (template != null && template.scriptName != null)
                         f.value = template.scriptName; // This exists because of triggerdata.txt 'ScriptName' key.

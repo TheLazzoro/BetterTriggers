@@ -64,6 +64,40 @@ Revivetip=Revive Paladin
 Awakentip=Revive Paladin
 Ubertip="Warrior Hero, exceptional at defense and augmenting nearby friendly troops. Can learn Holy Light, Divine Shield, Devotion Aura and Resurrection. |n|n|cffffcc00Attacks land units.|r"
 
+[Hctr]
+Name=Guard Lieutenant
+Hotkey=L
+Propernames=Garek
+Revivetip=Revive Guard Lieutenant
+Awakentip=Revive Guard Lieutenant
+Ubertip=
+
+[Hct1]
+Name=Guard Lieutenant
+Hotkey=L
+Propernames=Garek
+Revivetip=Revive Guard Lieutenant
+Awakentip=Revive Guard Lieutenant
+EditorSuffix= (Before Arthas)
+Ubertip=
+
+[Hctl]
+Name=Guard Captain
+Hotkey=G
+Propernames=Landen
+Revivetip=Revive Guard Captain
+Awakentip=Revive Guard Captain
+Ubertip=
+
+[Uctl]
+Name=Fallen Captain
+Hotkey=F
+Propernames=Landen
+Revivetip=Revive Fallen Captain
+Awakentip=Revive Fallen Captain
+Ubertip=
+EditorSuffix= (Evil)
+
 [Hjai]
 Name=Archmage
 Hotkey=A
@@ -103,6 +137,23 @@ Revivetip=Revive Blood Mage
 Awakentip=Revive Blood Mage
 Ubertip="Mystical Hero, adept at controlling magic and ranged assaults. Can learn Flame Strike, Banish, Siphon Mana and Phoenix. |n|n|cffffcc00Attacks land and air units.|r"
 
+[Hjsm]
+Name=Cleric
+Hotkey=C
+Propernames=Ilastar
+Revivetip=Revive Cleric
+Awakentip=Revive Cleric
+Ubertip=
+
+[Ujsm]
+Name=Shadow Priest
+Hotkey=S
+Propernames=Ilastar
+Revivetip=Revive Shadow Priest
+Awakentip=Revive Shadow Priest
+Ubertip=
+EditorSuffix=(Undead)
+
 [Hvsh]
 Name=Sea Witch
 Hotkey=N
@@ -126,6 +177,12 @@ Tip=Build Arcane Observatory
 
 [hcth]
 Name=Captain
+
+[hctg]
+Name=City Guard
+
+[ndum]
+Name=Dummy
 
 [hhdl]
 Name=Riderless Horse
@@ -347,6 +404,28 @@ Tip=Train Orc Juggernaught
 Ubertip="Massive battleship good at destroying enemy ships and bombarding buildings from the sea. |n|n|cffffcc00Attacks land units.|r"
 
 // Undead Units
+
+[ucze]
+Name=Brute
+
+[Ubtr]
+Name=Noble
+EditorSuffix= 
+Hotkey=D
+Propernames=Baron Rivendare
+Revivetip=Revive Noble
+Awakentip=Revive Noble
+Ubertip=
+
+[Ubru]
+Name=Death Knight
+EditorSuffix= 
+Hotkey=D
+Propernames=Baron Rivendare
+Revivetip=Revive Death Knight
+Awakentip=Revive Death Knight
+Ubertip=
+
 [Uear]
 Name=Death Knight
 EditorSuffix= (Evil)
@@ -468,6 +547,9 @@ Name=Undead Shipyard
 Tip=Shipyard
 Ubertip="Boat construction facility. Produces Undead Transport Ships, Undead Frigates, and Undead Battleships."
 Hotkey=H
+
+[uass]
+Name=Assassin
 
 // Night Elf Units
 [Eill]
@@ -1340,3 +1422,348 @@ Tip=Summon Sea Witch
 Hotkey=W
 Ubertip="Mystical Sea Witch, adept at ranged assaults. Can learn Summon Water Elemental, Brilliance Aura, and Earthquake. |n|n||cffffcc00Attacks land and air units.|r"
 Revivetip=Revive Sea Witch
+
+[ublw]
+Name=Blightweaver
+
+[Uany]
+Name=Dark Ranger
+Propernames=Anya
+Hotkey=D
+Tip=Summon Dark Ranger
+Revivetip=Revive Dark Ranger
+Awakentip=Revive Dark Ranger
+Ubertip="Cunning Hero, adept at manipulating opponents. Can learn Silence, Black Arrow, Life Drain, and Charm. |n|n|cffffcc00Attacks land and air units.|r"
+
+[Ugrk]
+Name=Forsaken
+Hotkey=F
+Propernames=Garek
+Revivetip=Revive Garek
+Awakentip=Revive Garek
+Ubertip=
+
+[Uarf]
+Name=Death Knight
+EditorSuffix= (Evil on foot)
+Hotkey=D
+Propernames=Arthas
+Revivetip=Revive Death Knight
+Awakentip=Revive Death Knight
+Ubertip="Warrior Hero, evil counterpart to the Human Paladin. Can learn Death Coil, Death Pact, Unholy Aura, and Animate Dead. |n|n|cffffcc00Attacks land units.|r"
+
+[sfoo]	
+Name=Footman
+Hotkey=F
+Tip=Train Footman
+
+[scru]
+Name=Crusader
+Hotkey=C
+Tip=Train Crusader
+
+[sarc]
+Name=Marksman
+Tip=Train Marksman
+Hotkey=H
+Ubertip="Basic long-ranged attacker. |n|n|cffffcc00Attacks land and air units.|r"
+
+[scle]
+Name=Cleric
+Hotkey=r
+Tip=Train Cleric
+
+[sinq]
+Name=Inquisitor
+Hotkey=q
+Tip=Train Inquisitor
+
+
+[fdkr]
+Name=Forsaken Ranger
+Tip=Train Forsaken Ranger
+Hotkey=R
+Ubertip="Basic long-ranged attacker. |n|n|cffffcc00Attacks land and air units.|r"
+
+[fapo]
+Name=Apothecary
+Tip=Train Apothecary
+Hotkey=A
+Ubertip="Support caster. |n|n|cffffcc00Attacks land units.|r"
+
+[fdtg]
+Name=Deathguard
+Tip=Train Deathguard
+Hotkey=D
+Ubertip="Versatile foot soldier. |n|n|cffffcc00Attacks land units.|r"
+
+[flab]
+Name=Laborer
+Hotkey=b
+Tip=Train Laborer
+Ubertip="Basic worker unit. Can harvest gold and lumber, build structures and Repair. |n|n|cffffcc00Attacks land units and trees.|r"
+
+[Hleo]
+Name=Warrior
+Hotkey=e
+Propernames=Leonid
+Revivetip=Revive Leonid
+Awakentip=Revive Leonid
+Ubertip=
+
+// male villager forsaken
+[fvil]
+Name=Forsaken Villager
+Tip=Hire Villager
+Ubertip="A not-so hearty villager."
+EditorSuffix= (Male)
+
+// female villager forsaken
+[fvlw]
+Name=Forsaken Villager
+Tip=Hire Villager
+Ubertip="This villager has seen better days."
+EditorSuffix= (female)
+
+// bernd
+[fber]
+Name=Bernd
+Tip=
+Ubertip="One of the most accomplished architects in Lordaeron."
+EditorSuffix=
+
+// Infectious Ghoul
+[uigh]
+Name=Infectious Ghoul
+Tip=Train Infectious Ghoul
+Ubertip="Basic attack unit. Has the Infectious Claws ability. |n|n|cffffcc00Attacks land units.|r"
+Hotkey=G
+
+// Dark Ranger Banshee
+[ufrb]
+Name=Banshee
+EditorSuffix= (Banshee's Wail)
+
+// Dark Ranger Banshee
+[ufr2]
+Name=Banshee
+EditorSuffix= (Banshee's Wail Curse)
+
+[Uput]
+Name=Grand Apothecary
+Hotkey=G
+Propernames=Putress
+Ubertip=
+Revivetip=Revive Grand Apothecary
+Awakentip=Revive Grand Apothecary
+
+[iomw]
+Name=Totem of Battle
+Tip=Train Totem of Battle
+Ubertip="A powerful ward that restores health to nearby allies and casts Bloodlust.|r"
+Hotkey=T
+
+[hcta]
+Name=Lordaeron Banner
+
+//sally whitemane
+[Sswm]
+Name=High Inquisitor
+Hotkey=G
+Propernames=Sally Whitemane
+Revivetip=High Inquisitor
+Awakentip=High Inquisitor
+
+//Renault Mograine
+[Srmg]
+Name=Scarlet Commander
+Hotkey=S
+Propernames=Renault Mograine
+Revivetip=Scarlet Commander
+Awakentip=Scarlet Commander
+
+[Ubtr]
+Name=Death Knight
+EditorSuffix= (Death Knight)
+Hotkey=D
+Propernames=Baron Rivendare
+Revivetip=Death Knight
+Awakentip=Death Knight
+Ubertip=
+
+//SC captain
+[Scth]
+Name=Scarlet Captain
+Hotkey=S
+Propernames=Tomas
+Revivetip=Scarlet Captain
+Awakentip=Scarlet Captain
+
+// Item Moonglaive Dummy
+[oimd]
+Name=Item Moonglaive Dummy
+Tip=Train Item Moonglaive Dummy.
+Ubertip="You found me!"
+
+// Gravelight Soul
+[oigs]
+Name=Gravelight Soul
+Tip=Train Gravelight Soul.
+Ubertip="A lost soul seeking vengeance."
+
+// Item Essencium Blizzard
+[oie1]
+Name=Item Essencium Blizzard
+Tip=Train Essencium Blizzard.
+Ubertip="You found me!"
+
+// Item Essencium Rain of Fire
+[oie2]
+Name=Item Essencium Rain of Fire
+Tip=Train Essencium Rain of Fire.
+Ubertip="You found me!"
+
+// Item Essencium Chain Lightning
+[oie3]
+Name=Item Essencium Chain Lightning
+Tip=Train Essencium Chain Lightning.
+Ubertip="You found me!"
+
+// Item Essencium Crushing Wave
+[oie4]
+Name=Item Essencium Crushing Wave
+Tip=Train Essencium Crushing Wave.
+Ubertip="You found me!"
+
+// Roaming Fireball
+[oirf]
+Name=Roaming Fireball
+Tip=Train Roaming Fireball.
+Ubertip="A roaming fireball."
+
+// Forsaken Banshee
+[oidb]
+Name=Forsaken Banshee
+Tip=Train Forsaken Banshee.
+Ubertip="Basic ranged attack unit with an effective magic attack. |n|n|cffffcc00Attacks land and air units.|r"
+
+[Htmx]
+Name=Paladin
+Hotkey=L
+Propernames=Lord Maxwell Tyrosus
+Revivetip=Revive Paladin
+Awakentip=Revive Paladin
+Ubertip=
+
+[Nglx]
+Name=Merchant
+Hotkey=C
+Propernames=Glix Xizzix
+Revivetip=Revive Merchant
+Awakentip=Revive Merchant
+Ubertip=
+
+[Uzkf]
+Name=Death Knight
+Hotkey=D
+EditorSuffix= (On Foot)
+Propernames=Sir Zeliek
+Revivetip=Revive Death Knight
+Awakentip=Revive Death Knight
+Ubertip=
+
+[Uzkm]
+Name=Death Knight
+Hotkey=D
+Propernames=Sir Zeliek
+Revivetip=Revive Death Knight
+Awakentip=Revive Death Knight
+Ubertip=
+
+[Uzrm]
+Name=Deathcharger
+Hotkey=E
+Propernames=Remorse
+Revivetip=Revive Death Knight
+Awakentip=Revive Death Knight
+Ubertip=
+
+[Ugr2]
+Name=Forsaken
+Hotkey=F
+EditorSuffix= (Upgraded)
+Propernames=Garek
+Revivetip=Revive Garek
+Awakentip=Revive Garek
+Ubertip=
+
+[Ugr3]
+Name=Forsaken
+Hotkey=F
+EditorSuffix= (Light Form)
+Propernames=Garek
+Revivetip=Revive Garek
+Awakentip=Revive Garek
+Ubertip=
+
+[ugbo]
+Name=Garithos Abomination
+
+[Urfm]
+Name=Hedge Mage
+Hotkey=A
+Propernames=Ras Frostwhisper
+Revivetip=Revive Hedge Mage
+Awakentip=Revive Hedge Mage
+Ubertip=
+
+[Urff]
+Name=Hedge Mage
+EditorSuffix= (On Foot)
+Hotkey=A
+Propernames=Ras Frostwhisper
+Revivetip=Revive Hedge Mage
+Awakentip=Revive Hedge Mage
+Ubertip=
+
+[Urfu]
+Name=Lich
+Hotkey=C
+Propernames=Ras Frostwhisper
+Revivetip=Revive Lich
+Awakentip=Revive Lich
+Ubertip=
+
+[oisk]
+Name=Skeleton Warrior
+Tip=Summon Skeleton Warrior
+Ubertip="Basic melee unit. |n|n|cffffcc00Attacks land units.|r"
+
+[oisp]
+Name=Spitting Spider
+Tip=Summon Spitting Spider
+Hotkey:melee,V1=P
+Ubertip="Light ranged unit that spits poison at opponents. |n|n|cffffcc00Attacks land and air units.|r"
+
+[oidg]
+Name=Deathguard
+Tip=Train Deathguard
+Hotkey=D
+Ubertip="Versatile foot soldier. |n|n|cffffcc00Attacks land units.|r"
+
+[oifr]
+Name=Forsaken Ranger
+Tip=Train Forsaken Ranger
+Hotkey=R
+Ubertip="Basic long-ranged attacker. |n|n|cffffcc00Attacks land and air units.|r"
+
+[oism]
+Name=Skeletal Marksman
+Hotkey=K
+Tip=Hire Skeletal Marksman
+Ubertip="Light ranged unit. |n|n|cffffcc00Attacks land and air units.|r"
+
+[oisg]
+Name=Giant Skeleton Warrior
+Tip=Hire Giant Skeleton Warrior
+Ubertip="Large melee unit. |n|n|cffffcc00Attacks land units.|r"

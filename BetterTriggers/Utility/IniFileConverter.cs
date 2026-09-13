@@ -1,18 +1,16 @@
-﻿using IniParser.Model;
-using IniParser.Parser;
+﻿using BetterTriggers.Utility.IniParser;
 
 namespace BetterTriggers.Utility
 {
     public static class IniFileConverter
     {
-        private static IniDataParser parser = new IniDataParser();
 
-        public static IniData GetIniData(string fileContent, bool allowDuplicateSections = true, bool allowDuplicateKeys = true)
+        internal static IniData GetIniData(string fileContent, bool allowDuplicateSections = true, bool allowDuplicateKeys = true)
         {
             var iniFile = Convert(fileContent);
-            parser.Configuration.AllowDuplicateSections = allowDuplicateSections;
-            parser.Configuration.AllowDuplicateKeys = allowDuplicateKeys;
-            IniData data = parser.Parse(iniFile);
+            //parser.Configuration.AllowDuplicateSections = allowDuplicateSections;
+            //parser.Configuration.AllowDuplicateKeys = allowDuplicateKeys;
+            var data = new IniData(iniFile);
 
             return data;
         }
@@ -25,7 +23,7 @@ namespace BetterTriggers.Utility
             for (int i = 0; i < textArr.Length; i++)
             {
                 if (textArr[i].Contains("//"))
-                    textArr[i] = textArr[i].Replace("//", ";");
+                    textArr[i] = "";
                 else if (!textArr[i].Contains("=") && !textArr[i].Contains("["))
                     textArr[i] = "";
             }

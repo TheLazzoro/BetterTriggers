@@ -115,10 +115,12 @@ namespace BetterTriggers.WorldEdit
             var sections = data.Sections.GetEnumerator();
             while (sections.MoveNext())
             {
-                var id = sections.Current.SectionName;
-                var keys = sections.Current.Keys;
-                var name = keys["Name"];
-                var model = keys["file"];
+                var section = sections.Current.Value;
+                var id = section.SectionName;
+                var name = section["Name"];
+                var model = section["file"];
+                if(model == null)
+                    model = section["file:de"];
 
                 var doodad = new DoodadType()
                 {

@@ -16,7 +16,7 @@
 
 // Special events not defined in common.j,
 // handled internally by the editor
-MapInitializationEventHint=
+MapInitializationEventHint="Some actions don't work well if executed at map initialization. If issues arise, try to add a very small Wait before executing the action."
 
 
 TriggerRegisterCommandEventHint="Triggers when a specific ability command is issued."
@@ -189,10 +189,6 @@ CommentStringHint=
 
 CustomScriptCodeHint="Enter one line of script code.  Example: 'call my_func(udg_my_var)'"
 
-SetDialogueTextKeyHint=
-
-SetDialogueSpeakerNameKeyHint=
-
 CreateCommandButtonEffectBJHint=
 
 CreateTrainCommandButtonEffectBJHint=
@@ -218,7 +214,7 @@ WaitForSoundBJHint="This action only waits if the sound is currently playing.  I
 
 
 // Specially handled by the editor
-SetVariableHint=
+SetVariableHint="This is an assignment operation."
 
 
 // Specially handled by the editor
@@ -304,6 +300,10 @@ SetDoodadAnimationRectBJHint="Special animation names: 'show', 'hide', 'soundon'
 
 SetDoodadAnimationBJHint="Special animation names: 'show', 'hide', 'soundon', 'soundoff'","."
 
+SetDoodadColorRectBJHint="The doodad model has to support team color."
+
+SetDoodadColorBJHint="The doodad model has to support team color."
+
 
 // Camera actions
 CameraSetupApplyForPlayerHint=
@@ -317,6 +317,8 @@ PanCameraToTimedLocWithZForPlayerHint="The camera will not drop below the terrai
 SmartCameraPanBJHint="If the camera is very far from the destination, it will snap instead of pan.  If the camera is very close to the destination, the pan request will be skipped."
 
 SetCameraFieldForPlayerHint=
+
+SetCameraFieldControlledByInputForPlayer="This will make sure values overridden by scripts are not reset immediately when player input is received."
 
 RotateCameraAroundLocBJHint=
 
@@ -357,9 +359,13 @@ BlzCameraSetupSetLabelHint="Set a camera label to view scene transitions within 
 BlzCameraSetupGetLabelHint="Get the label of a Camera Object"
 
 // Cinematic actions
-PlayDialogueFromSpeakerExHint=""
+SetDialogueTextKeyHint="Use Externalized String to make this string appear in .wts file."
 
-PlayDialogueFromSpeakerTypeExHint=""
+SetDialogueSpeakerNameKeyHint="Use Externalized String to make this string appear in .wts file."
+
+PlayDialogueFromSpeakerExHint="The sound is required and it acts as the wrapper of the dialogue. Make sure to assign to it proper text and speaker name using appropriate actions and to assign facial animation path and labels if required."
+
+PlayDialogueFromSpeakerTypeExHint="The sound is required and it acts as the wrapper of the dialogue. Make sure to assign to it proper text and speaker name using appropriate actions and to assign facial animation path and labels if required."
 
 BlzEnableTargetIndicatorHint="Target Indicator is normally used in cinematic conversation as blinking circles to indicate who's speaking now"
 
@@ -397,7 +403,7 @@ DestroyMinimapIconHint=
 
 SetMinimapIconVisibleHint=
 
-SetMinimapIconOrphanDestroyHint=
+SetMinimapIconOrphanDestroyHint="It only works if the minimap icon is attached to a unit."
 
 UnitAddIndicatorBJHint="The color values are (Red, Green, Blue).  A 100% transparent color is completely invisible."
 
@@ -516,18 +522,65 @@ SetWaterDeformsHint="When this is turned on, terrain deformations will also appl
 SetTerrainTypeBJHint="Use a variation of -1 to generate random variations across the area."
 
 SetTerrainPathableBJHint="Turning pathing on causes the pathing cell to become pathable to the given type.  For example, turning 'Buildability' on makes the pathing cell buildable.  This only affects pathing restrictions caused by terrain (not doodads, units, etc.)."
+SetWaterBaseColorBJHint="The color values are (Red, Green, Blue).  100% transparent water is completely invisible. Use this for SD water, it also works on HD and DE water but the override option is preferrable there."
 
-SetWaterBaseColorBJHint="The color values are (Red, Green, Blue).  100% transparent water is completely invisible."
+SetHDWaterParamsExBJHint="The color values are (Red, Green, Blue). Override set to off will disable the color behavior. This only works on HD and DE water. To further update single parameters use the other actions."
 
-SetSkyModelHint=
+BlzSetHDWaterColorBJHint="The color values are (Red, Green, Blue). It will also automatically enable the color override. This only works on HD and DE water. It will override the tinting color set with Set Water Tinting Color action."
 
-SetTerrainFogExBJHint="The color values are (Red, Green, Blue)."
+BlzSetHDWaterColorOverrideBJHint="It doesn't change the actual color values. This only works on HD and DE water."
+
+BlzClearHDWaterColorOverrideBJHint="It doesn't change the actual color values. This only works on HD and DE water."
+
+BlzSetHDWaterVertexDisplacementBJHint="This only works on HD and DE water."
+
+BlzSetHDWaterMinOpacityBJHint="This only works on HD and DE water."
+
+BlzSetHDWaterMaxOpacityBJHint="This only works on HD and DE water."
+
+BlzSetHDWaterReflectivityBJHint="This only works on HD and DE water."
+
+BlzSetHDWaterEmissivityBJHint="This only works on HD and DE water."
+
+BlzSetHDWaterEdgeSoftnessBJHint="This only works on HD and DE water."
+
+BlzSetHDWaterWaveStrengthBJHint="This only works on HD and DE water."
+
+BlzSetHDWaterEnvMapStrengthBJHint="This only works on HD and DE water."
+
+SetSkyModelHint="Not all custom models are adequate to be used as skyboxes."
+
+SetTerrainFogExBJHint="The color values are (Red, Green, Blue). This version is kept for retrocompatibility, using the single parameters actions is recommended."
+
+BlzSetTerrainFogStyleBJHint="Not all styles are compatible with all parameters, refer to the Map Options menu."
+
+BlzSetTerrainFogZStartBJHint="It applies only to styles Linear, Height and New Exponential."
+
+BlzSetTerrainFogZEndBJHint="It applies only to styles Linear, Height and New Exponential."
+
+BlzSetTerrainFogDensityBJHint="It applies only to styles Exponential and New Explonential."
+
+BlzSetTerrainFogHeightStartBJHint="It applies only to style Height."
+
+BlzSetTerrainFogHeightEndBJHint="It applies only to style Height."
+
+BlzSetTerrainFogLinearStartBJHint="It applies only to style Height."
+
+BlzSetTerrainFogLinearEndBJHint="It applies only to style Height."
+
+BlzSetTerrainFogMaxLinearDensityBJHint="It applies to all styles."
+
+BlzSetTerrainFogDrawOverSkyBJHint="It will cover the skybox with the fog. It applies to all styles. "
+
+BlzSetTerrainFogColorBJHint="The color values are (Red, Green, Blue). It applies to all styles."
 
 ResetTerrainFogBJHint=
 
 SetBlightRectBJHint=
 
 SetBlightRadiusLocBJHint=
+
+SetDayNightModelsHint="Not all models are suited to be DNC. It's possible to use the same DNC file for both units and terrain."
 
 // Text Tag actions
 CreateTextTagLocBJHint="The color values are (Red, Green, Blue).  A 100% transparent color is completely invisible.  Use 'Floating Text - Permanent/Expires' to make this floating text temporary."
@@ -834,6 +887,13 @@ UnitUseItemDestructableHint=
 
 UnitUseItemHint=
 
+AllowHeroGlowOnUnitBJHint="If the hero glow is not present in the unit model, it does nothing."
+
+DisallowHeroGlowOnUnitBJHint="If the hero glow is not present in the unit model, it does nothing."
+
+AllowHeroGlowOnAllUnitsBJHint="If the hero glow is not present in the unit model, it does nothing."
+
+DisallowHeroGlowOnAllUnitsBJHint="If the hero glow is not present in the unit model, it does nothing."
 
 // Item actions
 CreateItemLocHint=
@@ -1071,6 +1131,7 @@ ForceClearHint="This removes all players from a Player Group variable.  This doe
 
 SetForceAllianceStateBJHint="Note that neutral player slots cannot share their vision."
 
+DestroyForceHint="This will destroy the player group variable, after which it has to be reassigned in order to be used. It does nothing if used on the result of a function. Use it to clear leaking player groups."
 
 // Quest actions
 QuestMessageBJHint=
@@ -1203,6 +1264,11 @@ SetSpeechVolumeGroupsBJHint=
 
 VolumeGroupResetBJHint=
 
+SetSoundFacialAnimationLabelActionHint="Label is usually the name of the sound file the animation is built from."
+
+SetSoundFacialAnimationGroupLabelActionHint="Group label is usually BaseSD for animations based on unit quotes or Map for animations based on campaign dialogues."
+
+SetSoundFacialAnimationSetFilepathActionHint="Filepath has extension .animset"
 
 // Special Effect actions
 AddSpecialEffectLocBJHint=
@@ -1211,6 +1277,7 @@ AddSpecialEffectTargetUnitBJHint=
 
 DestroyEffectBJHint=
 
+DestroyEffectAfterTimeBJHint="Effect is removed after time has passed."
 
 // Trigger actions
 DisableTriggerHint="Does not interrupt existing executions of the trigger, but prevents future executions."
@@ -1349,6 +1416,10 @@ BlzUnitHideAbilityHint=
 
 BlzUnitDisableAbilityHint=
 
+BlzUnitEnableAurasHint="If an aura ability was disabled beforehand and this is run to disable it again, two enables are required to restore it back. Very useful to remove aura effects during cinematics."
+
+BlzAllUnitsEnableAurasBJHint="If an aura ability was disabled beforehand and this is run to disable it again, two enables are required to restore it back. Very useful to remove aura effects during cinematics."
+
 BlzUnitCancelTimedLifeHint=
 
 BlzUnitInterruptAttackHint=
@@ -1381,7 +1452,13 @@ BlzSpecialEffectRemoveSubAnimationHint="Remove sub-animation from a special effe
 
 BlzSpecialEffectAddSubAnimationHint="Add sub-animation to a special effect to make a combination with the primary animation when the special effect is played"
 
-BlzPlaySpecialEffectHint="Play Special Effect with Specific Animation (Some animations will only apply to certain special effects)"
+BlzPlaySpecialEffectHint="Play special effect with specific animation (some animations will only apply to certain special effects). This action only supports a certain set of names and it's kept for compatibility purposes."
+
+BlzSetSpecialEffectAnimationHint="Play special effect with specific animation defined through its name (some animations will only apply to certain special effects)".
+
+BlzQueueSpecialEffectAnimationHint="The enqueued animation is played after the previous one is finished."
+
+BlzSetSpecialEffectAnimationBlendTimeHint="A special effect's blend time determines how quickly the special effect animations take to switch one to the other."
  
 // BlzPlaySpecialEffectWithTimeScale="Play Special Effect Animation with Time Scale"
 // BlzPlaySpecialEffectWithTimeScale="Play Special Effect: ",~Effect,", Animation: "~Value,", Time Scale: "~Value
@@ -1571,17 +1648,17 @@ BlzSetUnitWeaponRealFieldBJHint=
 BlzSetUnitWeaponStringFieldBJHint=
 
 // Unit Group actions
-ForGroupMultipleHint="Use 'Picked Unit' to refer each unit as it is picked.  This works for every unit in the group, including dead units.  Wait actions should not be used within this function.  Add actions to this function in the main display."
+ForGroupMultipleHint="Use 'Picked Unit' to refer each unit as it is picked.  This works for every unit in the group, including dead units.  Wait actions should not be used within this function.  Add actions to this function in the main display. Affected by Set Destroy Next."
 
-ForGroupHint="Use 'Picked Unit' to refer each unit as it is picked.  This works for every unit in the group, including dead units.  Wait actions should not be used within this function."
+ForGroupHint="Use 'Picked Unit' to refer each unit as it is picked.  This works for every unit in the group, including dead units.  Wait actions should not be used within this function. Affected by Set Destroy Next."
 
 GroupAddUnitSimpleHint="This adds a unit to a Unit Group variable.  This does not affect the unit itself."
 
-GroupAddGroupHint="This adds all units of a unit group to a Unit Group variable.  This does not affect the units themselves."
+GroupAddGroupHint="This adds all units of a unit group to a Unit Group variable.  This does not affect the units themselves. First group is affected by Set Destroy Next."
 
 GroupRemoveUnitSimpleHint="This removes a unit from a Unit Group variable.  This does not affect the unit itself."
 
-GroupRemoveGroupHint="This removes all units of a unit group from a Unit Group variable.  This does not affect the units themselves."
+GroupRemoveGroupHint="This removes all units of a unit group from a Unit Group variable.  This does not affect the units themselves. First group is affected by Set Destroy Next."
 
 GroupClearHint="This removes all units from a Unit Group variable.  This does not affect the units themselves."
 
@@ -1597,6 +1674,11 @@ GroupImmediateOrderHint="This will issue an order to at most 12 units from the s
 
 GroupTrainOrderByIdBJHint="This action can also be used to order a unit to upgrade itself.  A Town Hall, for example, can be upgraded by ordering it to train a Keep.  This will issue an order to at most 12 units from the specified unit group."
 
+DestroyGroupHint="This will destroy the unit group variable, after which it has to be reassigned in order to be used. It does nothing if used on the result of a function. Use it to clear leaking unit groups."
+ 
+SetWantDestroyGroupBJHint="Check the various actions/functions to see which one is affected. This behavior only applies to the next reference, then it's cleared automatically."
+
+ClearWantDestroyGroupBJHint="Remember that if a group is destroyed using the Set Destroy Next action the state is automatically cleared. Use this after you have used an action affected to make sure Set Destroy Next doesn't affect any unwanted group by mistake."
 
 // Ubersplat actions
 CreateUbersplatBJHint="The color values are (Red, Green, Blue).  A 100% transparent color is completely invisible.  Use 'Ubersplat - Change Render Always State' to toggle display of this ubersplat.  By default, ubersplats are not rendered."
@@ -1652,15 +1734,12 @@ DestroyFogModifierHint=
 ParseTagsHint="Parse String with Tags"
 
 // returns boolean
-SetSoundFacialAnimationLabelHint="Set Facial Animation Label"
+SetSoundFacialAnimationLabelHint="Label is usually the name of the sound file the animation is built from."
 
-// returns boolean
-SetSoundFacialAnimationGroupLabelHint="Set Facial Animation Label"
+SetSoundFacialAnimationGroupLabelHint="Group label is usually BaseSD for animations based on unit quotes or Map for animations based on campaign dialogues."
 
-// returns boolean
-SetSoundFacialAnimationSetFilepathHint="Set Facial Animation Label"
+SetSoundFacialAnimationSetFilepathHint="Filepath has extension .animset"
 
-// returns boolean
 BlzIsTargetIndicatorEnabledHint="Target Indicator is normally used in cinematic conversation as blinking circles to indicate who's speaking now"
 
 SkinManagerGetLocalPathHint=
@@ -1674,6 +1753,8 @@ IsDestructableInvulnerableBJHint=
 IsPointBlightedBJHint=
 
 IsTerrainPathableBJHint="Terrain pathing is off if it is not pathable to the given pathing type.  For example, 'Buildability' is off if the pathing cell is unbuildable.  Use 'Environment - Turn Terrain Pathing On/Off' to change terrain pathing."
+
+BlzIsTerrainPathableExhint="It works exactly like Terrain Pathing is Off action but it takes units and destructibles presence into account."
 
 IsMapFlagSetHint=
 
@@ -1787,11 +1868,11 @@ IsUnitEnemyHint=
 
 UnitHasBuffBJHint=
 
-IsUnitGroupEmptyBJHint="This is true if the unit group contains no units."
+IsUnitGroupEmptyBJHint="This is true if the unit group contains no units. Affected by Set Destroy Next."
 
 IsUnitGroupInRectBJHint="This is true if every unit in the unit group is in the given region."
 
-IsUnitGroupDeadBJHint="This is true if every unit in the unit group is dead."
+IsUnitGroupDeadBJHint="This is true if every unit in the unit group is dead. Affected by Set Destroy Next."
 
 IsFogEnabledHint=
 
@@ -2000,7 +2081,7 @@ CountPlayersInForceBJHint=
 
 BlzGetTriggerPlayerMouseButtonHint=""
 
-CountUnitsInGroupHint=
+CountUnitsInGroupHint="Affected by Set Destroy Next."
 
 CountLivingPlayerUnitsOfTypeIdHint=
 
@@ -2529,7 +2610,7 @@ GetEnumUnitHint="When using the 'Pick Every Unit...' action, this refers to each
 
 GetFilterUnitHint="Use this to refer to the unit being considered for 'Units Matching Condition' functions."
 
-GroupPickRandomUnitHint=
+GroupPickRandomUnitHint="Affected by Set Destroy Next."
 
 GetAttackedUnitBJHint="When responding to an 'Is Attacked' unit event, this refers to the unit that is being attacked."
 
@@ -2648,6 +2729,10 @@ GetDestructableTypeIdHint=
 GetLastCreatedItemHint="This is the last item created via an 'Item - Create' or 'Hero - Create Item For Hero' trigger action."
 
 GetLastRemovedItemHint="This is the last item dropped via a 'Hero - Drop Item' trigger action."
+
+GetLastEquippedItemHint="This is the last item equipped via a 'Hero - Equip Item To Hero' or 'Hero - Create Equipment For Hero' trigger action."
+
+GetLastUnequippedItemHint="This is the last item unequipped via a 'Hero - Unequip Item From Hero' or 'Hero - Unequip Item From Hero Loadout Slot' trigger action."
 
 RandomItemInRectSimpleBJHint=
 

@@ -1,5 +1,17 @@
 // Item abilities are generally activated via the inventory UI and not through their own hotkeys
 
+//Hardened Skin (item)
+[AIhs]
+Name=Item Hardened Skin
+
+//Purifier Blade Holy Light
+[AEhl]
+Name=Purifier Blade Holy Light
+
+//Purifier Blade Proc Chance
+[AEpb]
+Name=Purifier Blade Orb
+
 // Rune of the Watcher
 [APwt]
 Name=Rune of the Watcher
@@ -336,6 +348,10 @@ EditorSuffix=(lesser)
 [AIva]
 Name=Item Life Steal
 
+// vampiric life steal ability stacking
+[AIvx]
+Name=Item Life Steal Stacking
+
 // cloak of flames immolation
 [AIcf]
 Name=Item Immolation
@@ -390,7 +406,7 @@ Name=Item Attack Speed Bonus
 Name=Item Attack Speed Bonus
 EditorSuffix= (Gloves of Haste)
 
-[AIs2]
+[AIsy]
 Name=Item Attack Speed Bonus
 EditorSuffix= (Greater)
 
@@ -799,6 +815,10 @@ Buffubertip="This Hero used a Vampiric Potion; the Hero has increased damage and
 [AIsr]
 Name=Spell Damage Reduction
 
+// Spell Damage Reduction Stacking
+[AIss]
+Name=Spell Damage Reduction Stacking
+
 // Build Tiny Castle
 [AIbl]
 Name=Build Tiny Castle
@@ -942,6 +962,11 @@ EditorSuffix= (2)
 [AIps]
 Name=Item Purge
 EditorSuffix= (3)
+
+// item purge
+[AIpw]
+Name=Item Purge
+EditorSuffix= (Wand of Negation)
 
 //#RESTNOBETA
 [AItg]
@@ -1111,6 +1136,1617 @@ Name=Item Attack Heal Reduction Bonus
 [BIhm]
 Bufftip=Heal Reduction
 Buffubertip="This unit restores health at a reduced rate."
+
+[AIno]
+Name=Slow (Orb of Slow New)
+
+[Bson]
+Bufftip=Orb of Slow
+Buffubertip="This unit is slowed; its movement speed and attack rate are reduced."
+
+[AIme]
+Name=Item Mana Efficiency
+
+[AIcr]
+Name=Item Cooldown Reduction
+
+[AIap]
+Name=Item Spell Amp
+
+[AIsv]
+Name=Item Spell Vamp
+
+[AIlv]
+Name=Item Resolve 30
+
+// Item Ability Lifesteal 1
+[ALs1]
+Name=Item Life Steal 1
+
+[AIl3]
+Name=Item Life Bonus 25
+
+[AIsq]
+Name=Item Attack Speed Bonus 5
+
+[AImq]
+Name=Item Mana Efficiency 2
+
+[AImw]
+Name=Item Mana Efficiency 5
+
+[AIlq]
+Name=Item Life Bonus 100
+
+[AASq]
+Name=Item Attack Speed Bonus 15
+
+[ACDq]
+Name=Item Ability Speed 12
+
+[AAPq]
+Name=Item Spell Amp 12
+
+[ASVq]
+Name=Item Spell Vamp 5
+
+[AIRq]
+Name=Item Resolve 10
+
+[ACSq]
+Name=Item Critical Chance 10
+
+[AMSq]
+Name=Item Move Speed Bonus 10
+
+// Item Max Mana Bonus 25
+[AMMq]
+Name=Item Mana Bonus 25
+
+[ACDw]
+Name=Item Ability Speed 3
+
+[AHSq]
+Name=Item Hardened Skin 100 2 MT RT
+
+[AAPw]
+Name=Item Spell Amp 5
+
+[ACDt]
+Name=Item Ability Speed 5
+
+[AASw]
+Name=Item Attack Speed Bonus 9
+
+[AAPe]
+Name=Item Spell Amp 3
+
+[AIRw]
+Name=Item Resolve 8
+
+[ASRq]
+Name=Item Spell Resistance 7
+
+[ASRw]
+Name=Item Spell Resistance 3
+
+[ACSe]
+Name=Item Critical Chance 3
+
+[ACDy]
+Name=Item Ability Speed 4
+
+[AMSw]
+Name=Item Movement Speed -15
+
+[AILw]
+Name=Item Life Bonus 50
+
+[ACSr]
+Name=Item Critical Chance 2
+
+[ACSy]
+Name=Item Critical Chance 5
+
+[Asmo]
+Name=Item Band of the Skeletal Mage Orb
+
+[Asmn]
+Name=Item Band of the Skeletal Mage Frost Nova
+
+[AASe]
+Name=Item Attack Speed Bonus 8
+
+[AHRq]
+Name=Item Health Regeneration -3
+
+[AAPr]
+Name=Item Spell Amp 8
+
+[ASVw]
+Name=Item Spell Vamp 2
+
+[AIsd]
+Name=Item Signet of Decay
+
+[Apbs]
+Name=Item Plaguebearer Shortsword
+
+[AASr]
+Name=Item Attack Speed Bonus 10
+
+[AADq]
+Name=Item Spell Damage 3
+
+[Alhp]
+Name=Item Lionskin Helmet of Precision
+
+[ACDu]
+Name=Item Ability Speed 6
+
+[ASRe]
+Name=Item Spell Resistance 5
+
+[AFBq]
+Name=Item Feedback 4
+
+[AIcq]
+Name=Item Aura Command 8
+
+[AADw]
+Name=Item Spell Damage 5
+
+[AHRw]
+Name=Item Health Regeneration 3
+
+[ADCq]
+Name=Item Disease Cloud 1
+
+[AVAq]
+Name=Item Vampiric Aura 4
+
+[AAPt]
+Name=Item Spell Amp 13
+
+[AASy]
+Name=Item Attack Speed 6
+
+[AMSe]
+Name=Item Move Speed 20
+
+[AMEq]
+Name=Item Mana Efficiency 7
+
+[AARq]
+Name=Item Health Regen Aura 1
+
+[ACSu]
+Name=Item Critical Chance 4
+
+[AIAq]
+Name=Item Armor Bonus -1
+
+[AASu]
+Name=Item Attack Speed 16
+
+[AACq]
+Name=Item Armor Corrupt 2
+
+[AAPy]
+Name=Item Spell Amp 7
+
+[ALs4]
+Name=Item Lifesteal 4
+
+[AMEw]
+Name=Item Mana Efficiency 6
+
+[Amso]
+Name=Item Malachite Sword Orb
+
+[Amsc]
+Name=Item Malachite Sword Curse
+
+[ACSo]
+Name=Item Critical Chance 8
+
+[AASi]
+Name=Item Attack Speed 12
+
+[Atno]
+Name=Item Talisman of Nightmares Orb
+
+[Atns]
+Name=Item Talisman of Nightmares Curse
+
+[ASRt]
+Name=Item Spell Resistance 14
+
+[ACSd]
+Name=Item Critical Chance 7
+
+[Ahfo]
+Name=Item Heart of the Firebender Orb
+
+[Ahfb]
+Name=Item Heart of the Firebender BoF
+
+[AASo]
+Name=Item Attack Speed 25
+
+[ALs5]
+Name=Item Lifesteal 5
+
+[AASp]
+Name=Item Attack Speed 20
+
+[AASa]
+Name=Item Attack Speed -10
+
+[Aba1]
+Name=Item Butchers Aura 1
+
+[Aba2]
+Name=Item Butchers Aura 2
+
+[AIlo]
+Name=Item Lich Orb
+
+[AHRt]
+Name=Item Health Regeneration -5
+
+[ACSg]
+Name=Item Critical Chance 30
+
+[Assq]
+Name=Item Spell Shield 15
+
+[AHRy]
+Name=Item Health Regeneration 4
+
+[AMRq]
+Name=Item Mana Regeneration 100
+
+[AARw]
+Name=Item Health Regen Aura 2
+
+[ASRy]
+Name=Item Spell Resistance 8
+
+[Atkt]
+Name=Item Tiara of the Kirin'Tor
+
+[AADe]
+Name=Item Spell Damage 8
+
+[ACDi]
+Name=Item Ability Speed 8
+
+[AAPu]
+Name=Item Spell Amp 18
+
+[AMRw]
+Name=Item Mana Regeneration -50
+
+[Abdf]
+Name=Item Blue Dragon Figurine
+
+[AIee]
+Name=Item Edric's Eye
+
+[Acgr]
+Name=Item Cursed Golden Ring Crit
+
+[AIAw]
+Name=Item Armor Bonus -2
+
+[AIBq]
+Name=Item Bash (15, 25, 1)
+
+[Almf]
+Name=Item Lesser Mark of the Forsaken
+
+[Aesq]
+Name=Item Essence of the Spider Queen
+
+[AIa7]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+7 Agility)
+
+[AMEr]
+Name=Item Mana Efficiency 4
+
+[Apsq]
+Name=Item Phalanx Shield Aura
+
+[Atkj]
+Name=Item Knight's Javelin
+
+[Atff]
+Name=Item Forsaken Fangs
+
+[AIRy]
+Name=Item Resolve 6
+
+[AS20]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+20 Strength)
+
+[AIs8]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+8 Strength)
+
+[Aclq]
+Name=Item Cleave 15
+
+[AILe]
+Name=Item Life Bonus 280
+
+[ACSj]
+Name=Item Critical Chance 6
+
+[AHRu]
+Name=Item Health Regeneration 6
+
+[AHRo]
+Name=Item Health Regeneration 8
+
+[AMRe]
+Name=Item Mana Regeneration 70
+
+[AARe]
+Name=Item Health Regen Aura 3
+
+[Ahhi]
+Name=Item Headpiece of the High Inquisitor
+
+[AILr]
+Name=Item Life Bonus 60
+
+[AASs]
+Name=Item Attack Speed 3
+
+[ACDo]
+Name=Item Ability Speed 10
+
+[AILt]
+Name=Item Life Bonus 200
+
+[ACDp]
+Name=Item Ability Speed 2
+
+[AILy]
+Name=Item Life Bonus 20
+
+[AILi]
+Name=Item Life Bonus 40
+
+[AADr]
+Name=Item Spell Damage 4
+
+[AHRa]
+Name=Item Health Regeneration 5
+
+[AIi8]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+8 Intelligence)
+
+[AAPi]
+Name=Item Spell Amp 4
+
+[AASd]
+Name=Item Attack Speed 4
+
+[ASRu]
+Name=Item Spell Resistance 4
+
+[ACSz]
+Name=Item Critical Chance 25
+
+[AASf]
+Name=Item Attack Speed 24
+
+[AACw]
+Name=Item Armor Corrupt 3
+
+[AAPo]
+Name=Item Spell Amp 6
+
+[ALs3]
+Name=Item Lifesteal 3
+
+[Aohl]
+Name=On Hit Lightning Attack
+
+[Aals]
+Name=On Basic Attack, Cast Spell
+
+[Asas]
+Name=On Magic Attack, Cast Spell
+
+[AIxr]
+Name=Item Critical Strike System
+
+[ACXq]
+Name=Item Critical Damage 5
+
+[ACXw]
+Name=Item Critical Damage 15
+
+[ACXe]
+Name=Item Critical Damage 10
+
+[ACXr]
+Name=Item Critical Damage 13
+
+[Aglx]
+Name=Item Glix's Bomb
+
+[ACSx]
+Name=Item Critical Chance 15
+
+[ACXt]
+Name=Item Critical Damage 30
+
+[AD20]
+Name=Item Damage 20
+
+[AHDq]
+Name=Item Hero Damage x1.25
+
+[AUDq]
+Name=Item Unit Damage x1.25
+
+[ACLw]
+Name=Item Cleave 30
+
+[AIki]
+Name=Item Kris Incinerate
+
+[Apoa]
+Name=Item Drunken Haze (Pint of Ale)
+
+[ASRi]
+Name=Item Spell Resistance 10
+
+[Auic]
+Name=Item Infectious Claws
+
+[Asic]
+Name=Item Summon Infectious Ghoul
+
+[AInp]
+Name=Item Necromancer's Plaguegreaves
+
+[ASVe]
+Name=Item Spell Vamp 7
+
+[ASVr]
+Name=Item Spell Vamp 3
+
+[AIa8]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+8 Agility)
+
+[AIEq]
+Name=Item Evasion 2
+Ubertip="Gives a 2% chance to avoid an attack."
+EditorSuffix=(Item)
+
+[AIEw]
+Name=Item Evasion 4
+Ubertip="Gives a 4% chance to avoid an attack."
+EditorSuffix=(Item)
+
+[AIEr]
+Name=Item Evasion 5
+Ubertip="Gives a 5% chance to avoid an attack."
+EditorSuffix=(Item)
+
+[AIEt]
+Name=Item Evasion 7
+Ubertip="Gives a 7% chance to avoid an attack."
+EditorSuffix=(Item)
+
+[AIEy]
+Name=Item Evasion 8
+Ubertip="Gives a 8% chance to avoid an attack."
+EditorSuffix=(Item)
+
+[AIEu]
+Name=Item Evasion 10
+Ubertip="Gives a 10% chance to avoid an attack."
+EditorSuffix=(Item)
+
+[AIEi]
+Name=Item Evasion 12
+Ubertip="Gives a 12% chance to avoid an attack."
+EditorSuffix=(Item)
+
+[AIRu]
+Name=Item Resolve 16
+
+[AILa]
+Name=Item Life Bonus 250
+
+[AAPp]
+Name=Item Spell Amp 15
+
+[AHSe]
+Name=Item Hardened Skin 100 7 MT RT
+
+[ASVt]
+Name=Item Spell Vamp 4
+
+[AIsc]
+Name=Item Spell Crit
+
+[AHDw]
+Name=Item Hero Damage x1.15
+
+[AA12]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+12 Agility)
+
+[Atrr]
+Name=Item Thornguard Rapier Rejuvenation
+Buttonpos=1,2
+order=rejuvination
+
+[Atra]
+Name=Item Thornguard Rapier Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Apne]
+Name=Item Poison Nettle ER
+Buttonpos=0,2
+Order=entanglingroots
+
+[Apna]
+Name=Item Poison Nettle Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AMMw]
+Name=Item Mana Bonus 150
+
+[ADRq]
+Name=Item Damage Reflect 15%
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+Researchbuttonpos=0,-11
+Order=Thornyshield
+Unorder=Unthornyshield
+
+[AHTi]
+Name=Item High Templar's Visage IF
+Buttonpos=2,2
+Unbuttonpos=2,2
+Order=innerfire
+Orderon=innerfireon
+Orderoff=innerfireoff
+
+[AHTv]
+Name=Item High Templar's Visage Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AIRo]
+Name=Item Resolve 20
+
+[AHTh]
+Name=Item High Templar's Conqueror Heal
+Buttonpos=0,2
+Unbuttonpos=0,2
+Order=heal
+Orderon=healon
+Orderoff=healoff
+
+[AHTq]
+Name=Item High Templar's Conqueror Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AHTf]
+Name=Item High Templar's Flame Incinerate
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Assw]
+Name=Item Spell Shield 12
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AMSr]
+Name=Item Move Speed Bonus 30
+
+[AMSt]
+Name=Item Move Speed Bonus 40
+
+[AHTs]
+Name=Item High Templar's Judgment Shockwave
+Buttonpos=0,2
+Missilespeed=1050
+Order=shockwave
+
+[AHTj]
+Name=Item High Templar's Judgment Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ASVy]
+Name=Item Spell Vamp 10
+
+[ACGa]
+Name=Item Chronomaster's Gloves Ally
+
+[ACGe]
+Name=Item Chronomaster's Gloves Enemy
+
+[AGZf]
+Name=Item Forked Lightning
+EditorSuffix= (Gnomish Zapper)
+Tip=Forked Lightning
+Ubertip="Calls forth a cone of lightning on a target enemy unit, hitting up to <AGZf,DataB1> enemy units for <AGZf,DataA1> damage."
+Hotkey=R
+
+[AGZa]
+Name=Item Gnomish Zapper Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ASVu]
+Name=Item Spell Vamp 6
+
+[AMEt]
+Name=Item Mana Efficiency 8
+
+[AMMe]
+Name=Item Mana Bonus 120
+
+[AASg]
+Name=Item Attack Speed 30
+
+[ASRo]
+Name=Item Spell Resistance 25
+
+[AAPa]
+Name=Item Spell Amp 20
+
+[AI12]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+12 Intelligence)
+
+[AIow]
+Name=Item Ogre Warclub Stats
+
+[ACDa]
+Name=Item Ability Speed 25
+
+[AIx7]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+7 All Stats)
+
+[AX10]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+10 All Stats)
+
+[AD45]
+Name=Item Damage Bonus +45
+
+[AASh]
+Name=Item Attack Speed -20
+
+[ADRw]
+Name=Item Damage Reflect 20%
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+Researchbuttonpos=1,0
+Order=Thornyshield
+Unorder=Unthornyshield
+
+[ASD4]
+Name=Item Splash Damage 4
+
+[ADN5]
+Name=Item Damage Bonus -5
+
+[Aasb]
+Name=Item Arcane Spellblade
+
+[AAPs]
+Name=Item Spell Amp 10
+
+[ASVi]
+Name=Item Spell Vamp 8
+
+[Abfh]
+Name=Item Blade of Frozen Hunger Heal
+Buttonpos=0,2
+Unbuttonpos=0,2
+Order=heal
+Orderon=healon
+Orderoff=healoff
+
+[Abfa]
+Name=Item Blade of Frozen Hunger Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AMEy]
+Name=Item Mana Efficiency 10
+
+[AMEu]
+Name=Item Mana Efficiency 15
+
+[AMFq]
+Name=Item Mana Refund 5
+
+[Arfc]
+Name=Item Ring of the Firelands CR
+
+[Arfa]
+Name=Item Ring of the Firelands Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ALs8]
+Name=Item Lifesteal 8
+
+[ADCa]
+Name=Item Dark Commander's Aura
+
+[ADMa]
+Name=Item Dark Mistress' Aura
+
+[AFRq]
+Name=Item Summon Banshee
+Tip=Item Summon Banshee
+Ubertip="Summons a Forsaken Banshee, a potent ranged magic damage attacker, to fight for you."
+Hotkey=F
+
+[AFRw]
+Name=Summon Banshee
+Tip=Summon Banshee
+Ubertip="Summons 2 Forsaken Banshees to fight for you for 30 seconds. These spirits have a potent ranged magic attack."
+Hotkey=F
+
+[AFRx]
+Name=Item Dark Ranger's Bracers Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aefr]
+Name=Item Endless Flask of Restoration
+
+[Alrc]
+Name=Item Portable Lightning Rod CL
+
+[Alra]
+Name=Item Portable Lightning Rod Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aesw]
+Name=Item Earthen Signet WS
+
+[Aesa]
+Name=Item Earthen Signet Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Asks]
+Name=Item Tome of the Spiderkind Summon
+Tip=Spiderswarm
+Ubertip="Summons 3 Spitting Spiders to fight for you for 12 seconds."
+Hotkey=F
+
+[Aska]
+Name=Item Tome of the Spiderkind Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ASCq]
+Name=Item Spell Crit Chance 15
+
+[ASDq]
+Name=Item Spell Crit Damage 20
+
+[AId6]
+Name=Item Armor Bonus
+EditorSuffix=(+6)
+
+[AADt]
+Name=Item Spell Damage 10
+
+[Acec]
+Name=Item Elixir of Cunnning
+
+[Acem]
+Name=Item Elixir of the Monster Hunter
+
+[ASCw]
+Name=Item Spell Crit Chance 10
+
+[Aomc]
+Name=Item Bracers Ogre Magi CL
+
+[Aomh]
+Name=Item Bracers Ogre Magi HW
+
+[Aomz]
+Name=Item Bracers Ogre Magi Attack 1
+
+[Aomx]
+Name=Item Bracers Ogre Magi Attack 2
+
+[Aomb]
+Name=Item Totem Ogre Magi Bloodlust
+
+[Aoms]
+Name=Item Totem Ogre Magi Summon
+Tip=Summon Totem of Battle
+Ubertip="Summons 1 Totem of Battle that heals nearby allies and casts Bloodlust for 12 seconds."
+Hotkey=F
+
+[Aoma]
+Name=Item Totem Ogre Magi Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AFDq]
+Name=Item Finger of Death 12
+
+[ALDa]
+Name=Item Lance of the Dawn Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ACSc]
+Name=Item Critical Chance 12
+
+[ACSv]
+Name=Item Critical Chance 18
+
+[ASCe]
+Name=Item Spell Crit Chance 12
+
+[ASCr]
+Name=Item Spell Crit Chance 18
+
+[ASCt]
+Name=Item Spell Crit Chance 6
+
+[ADBf]
+Name=Item Daybreaker FS
+Order=flamestrike
+
+[ADBa]
+Name=Item Daybreaker Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AD24]
+Name=Item Damage Bonus +24
+
+[ACXy]
+Name=Item Critical Damage 40
+
+[Agns]
+Name=Item Golden Necklace Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Agnh]
+Name=Item Golden Necklace Heal
+Buttonpos=0,2
+Unbuttonpos=0,2
+Order=heal
+Orderon=healon
+Orderoff=healoff
+
+[Acrx]
+Name=Item Coldbringer's Reach Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Acrz]
+Name=Item Coldbringer's Reach Frost Nova
+
+[Apwp]
+Name=Item Plaguewrought Poison
+
+[Apws]
+Name=Item Plaguewrought CS
+
+[Apwa]
+Name=Item Plaguewrought Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AADy]
+Name=Item Spell Damage 12
+
+[Amfs]
+Name=Item Summon Deathguards
+Tip=Summon Deathguards
+Ubertip="Summons <Amfs,DataA1> Deathguards to fight for you for <Amfs,Dur1> seconds.|n|nCooldown: <Amfs,Cool1> seconds"
+Hotkey=F
+
+[Aadx]
+Name=Item Aura of Darkness
+
+[Asdd]
+Name=Item Scepter of Darkness Summon
+
+[Asdx]
+Name=Item Scepter of Darkness Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ACDd]
+Name=Item Ability Speed 15
+
+[ASDw]
+Name=Item Spell Crit Damage 15
+
+[ACXu]
+Name=Item Critical Damage 25
+
+[Azgw]
+Name=Item Zandalari Giantcrusher WS
+
+[Azgx]
+Name=Item Zandalari Giantcrusher Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Ahrz]
+Name=Item Helm of the Rimelord TC
+
+[Ahrx]
+Name=Item Helm of the Rimelord Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ACSb]
+Name=Item Critical Chance 20
+
+[Akms]
+Name=Item Kaldorei Moonglaive Summon
+
+[Akma]
+Name=Item Kaldorei Moonglaive Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aggp]
+Name=Item Gift of Greed Pillage
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AHRs]
+Name=Item Health Regeneration 7
+
+[Aggs]
+Name=Item Gift of Sloth Slow
+
+[Aggw]
+Name=Item Gift of Wrath Bloodlust
+
+[Agga]
+Name=Item Gift of Wrath Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AIx6]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+6 All Stats)
+
+[Aggx]
+Name=Item Curse of Pride
+
+[Agpd]
+Name=Item Gloves of the Phoenix Damage
+
+[Agpa]
+Name=Item Gloves of the Phoenix Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Asgh]
+Name=Item Sword of the Ghostlands HoT
+
+[Asga]
+Name=Item Sword of the Ghostlands Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Asch]
+Name=Item Shield of the Scarlet Crusade Heal
+
+[Asca]
+Name=Item Shield of the Scarlet Crusade Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Acli]
+Name=Item Elixir of Lesser Intelligence
+
+[Acgi]
+Name=Item Elixir of Greater Intelligence
+
+[Ahsh]
+Name=Item Hammer of the Silver Hand Heal
+Buttonpos=0,2
+Unbuttonpos=0,2
+Order=heal
+Orderon=healon
+Orderoff=healoff
+
+[Ahsa]
+Name=Item Hammer of the Silver Hand Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AIBw]
+Name=Item Bash (10, 25, 2)
+
+[Apsx]
+Name=Item Protector SH Stun
+
+[Apsz]
+Name=Item Protector SH Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Asci]
+Name=Item Sanctified Chestplate Immo
+
+[Asc1]
+Name=Item Sanctified Chestplate Heal
+Buttonpos=0,2
+Unbuttonpos=0,2
+Order=heal
+Orderon=healon
+Orderoff=healoff
+
+[Asc2]
+Name=Item Sanctified Chestplate Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AMEi]
+Name=Item Mana Efficiency 12
+
+[Asg1]
+Name=Item Sanctified Gauntlets Impale
+
+[Asg2]
+Name=Item Sanctified Gauntlets Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Abi1]
+Name=Item Boots of the Icewalker BoF
+
+[Abi2]
+Name=Item Boots of the Icewalker Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AIs7]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+7 Strength)
+
+[AD18]
+Name=Item Damage Bonus +18
+
+[AADu]
+Name=Item Spell Damage 6
+
+[ACDf]
+Name=Item Ability Speed 20
+
+[AS12]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+12 Strength)
+
+[ACSn]
+Name=Item Critical Chance 16
+
+[Ach1]
+Name=Item Staff CH TC
+
+[Ach2]
+Name=Item Staff CH Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Ach3]
+Name=Item Blade CH Damage
+
+[Ach4]
+Name=Item Blade CH Heal
+
+[Ach5]
+Name=Item Blade Attack 1
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Ach6]
+Name=Item Blade Attack 2
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AIh4]
+Name=Item Healing
+EditorSuffix=(Ultimate)
+
+[AIh5]
+Name=Item Healing
+EditorSuffix=(Final)
+
+[AIm4]
+Name=Item Mana Regain
+EditorSuffix=(Ultimate)
+
+[Accm]
+Name=Item Consecrated Mixture
+
+[AHRd]
+Name=Item Health Regeneration 10
+
+[Abh1]
+Name=Item Bindings of Helya CW
+
+[Abh2]
+Name=Item Bindings of Helya Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aic1]
+Name=Item Icecrown Ring Frost Nova
+
+[Aic2]
+Name=Item Icecrown Ring Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AS10]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+10 Strength)
+
+[AACe]
+Name=Item Armor Corrupt 5
+
+[Ask1]
+Name=Item Vestments Storm King MS
+
+[Ask2]
+Name=Item Vestments Storm King Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Adb1]
+Name=Item Deathbringer's Boots Parasite
+
+[Adb2]
+Name=Item Deathbringer's Boots Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Abcs]
+Name=Item Aura of Twisted Bones
+
+[Ass1]
+Name=Item Selene Starfall
+
+[Ass2]
+Name=Item Selene Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AFDw]
+Name=Item Finger of Death 15
+
+[Ari1]
+Name=Item Razorice Attack 1
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Ari2]
+Name=Item Razorice Attack 2
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Ari3]
+Name=Item Razorice BoF
+
+[Ari4]
+Name=Item Razorice Attack 4
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Agr1]
+Name=Item Gravelight DoT
+
+[Agr2]
+Name=Item Gravelight Main Swarm
+
+[Agr3]
+Name=Item Gravelight Side Swarm
+
+[Agr4]
+Name=Item Gravelight Attack Main
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Agr5]
+Name=Item Gravelight Attack Side
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aes1]
+Name=Item Essencium Main Summon
+Tip=Elemental Destruction
+Ubertip="Cast <Aes1,DataB1> to <Aes1,DataC1> copies of Blizzard, Rain of Fire, Chain Lightning or Crushing Wave at random targeting random nearby enemies. These spells do not benefit from the caster's ability or spell modifiers.|n|nCooldown: <Aes1,Cool1> seconds"
+Hotkey=F
+
+[Aes2]
+Name=Item Essencium Blizzard
+
+[Aes3]
+Name=Item Essencium Rain of Fire
+
+[Aes4]
+Name=Item Essencium Chain Lightning
+
+[Aes5]
+Name=Item Essencium Crushing Wave
+
+[Aes6]
+Name=Item Essencium Attack 1
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aes7]
+Name=Item Essencium Attack 2
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aes8]
+Name=Item Essencium Attack 3
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aes9]
+Name=Item Essencium Attack 4
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ASCy]
+Name=Item Spell Crit Chance 30
+
+[Ats1]
+Name=Item The Screecher HoT
+
+[Ats2]
+Name=Item The Screecher Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Asof]
+Name=Item Scythe of Frost Aura
+
+[Aoc3]
+Name=Item Orb Chill 3s
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Alfp]
+Name=Item Lance of the Frozen Phoenix
+
+[ACXi]
+Name=Item Critical Damage 20
+
+[Arf1]
+Name=Item Ring of Holy Fire Immo
+
+[Arf2]
+Name=Item Ring of Holy Fire FL
+
+[Arf3]
+Name=Item Ring of Holy Fire Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AADi]
+Name=Item Spell Damage 7
+
+[Afm1]
+Name=Item Gloves of the Flamewalker Swarm
+
+[Afm2]
+Name=Item Gloves of the Flamewalker Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Arr1]
+Name=Item Robes of Revenge Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AI10]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+10 Intelligence)
+
+[AIRp]
+Name=Item Resolve 12
+
+[Asw1]
+Name=Item Stormwalkers TC
+
+[Asw2]
+Name=Item Stormwalkers Spellcast
+
+[Ain1]
+Name=Item Blade of Inferno Rain of Fire
+
+[Ain2]
+Name=Item Blade of Inferno Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aat1]
+Name=Item Aviana's Talons Mana
+
+[AFDe]
+Name=Item Finger of Death 8
+
+[Aat2]
+Name=Item Aviana's Talons Attack 1
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aat3]
+Name=Item Aviana's Talons Attack 2
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AHRf]
+Name=Item Health Regeneration 15
+
+[Aar1]
+Name=Item Armor of Reanimation Summon
+
+[Aar2]
+Name=Item Armor of Reanimation Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Ardr]
+Name=Item Diamond Ring CDR
+
+[ASRp]
+Name=Item Spell Resistance 33
+
+[ACXo]
+Name=Item Critical Damage 12
+
+[AL10]
+Name=Item Lifesteal 10
+
+[Agn1]
+Name=Item Gloves of Necromancy Summon
+
+[Agn2]
+Name=Item Gloves of Necromancy Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Asx1]
+Name=Item Wildhammer Breastplate CL
+
+[Amm1]
+Name=Item Monastery Mace Heal
+
+[Amm2]
+Name=Item Monastery Mace Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Avm1]
+Name=Item Vestments Wave Heal
+
+[Avm2]
+Name=Item Vestments Wave Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Abx1]
+Name=Item Borelgore Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aac1]
+Name=Item Armor SC Heal
+
+[Aac2]
+Name=Item Armor SC Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AFRy]
+Name=Item Dark Ranger's Hood Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Amcx]
+Name=Item Mordo's Club
+
+[Ace1]
+Name=Item Helm Cenarion Heal
+
+[Ace2]
+Name=Item Helm Cenarion Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Ace3]
+Name=Item Helm Cenarion Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Avs1]
+Name=Item Bloodstone Heal
+
+[Avb1]
+Name=Item Lost Spirits Heal
+
+[Avs2]
+Name=Item Bloodstone Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Avb2]
+Name=Item Lost Spirits Spellcast
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AMRt]
+Name=Item Mana Regeneration 35
+
+[AMRy]
+Name=Item Mana Regeneration 25
+
+[AMRu]
+Name=Item Mana Regeneration 30
+
+[AMRi]
+Name=Item Mana Regeneration 75
+
+[AMRo]
+Name=Item Mana Regeneration 65
+
+[AMRp]
+Name=Item Mana Regeneration 40
+
+[AUDw]
+Name=Item Unit Damage x1.15
+
+[Asr1]
+Name=Item Soulstealer Mana
+
+[Asr2]
+Name=Item Soulstealer Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[AIR5]
+Name=Item Resolve 5
+
+[Aas2]
+Name=Item Armor Corrupt Spell 2
+
+[Aas3]
+Name=Item Armor Corrupt Spell 3
+
+[Aas5]
+Name=Item Armor Corrupt Spell 5
+
+[Aah2]
+Name=Item Armor Corrupt Attack 2
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aah3]
+Name=Item Armor Corrupt Attack 3
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aah5]
+Name=Item Armor Corrupt Attack 5
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Asc3]
+Name=Item Chill Nova 3
+
+[Asc5]
+Name=Item Chill Nova 5
+
+[Aac3]
+Name=Item Chill Attack 3
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Aac5]
+Name=Item Chill Attack 5
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Abr1]
+Name=Item Brimstone Spell 1
+
+[Abz1]
+Name=Item Brimstone Attack 1
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Abr2]
+Name=Item Brimstone Spell 2
+
+[Abz2]
+Name=Item Brimstone Attack 2
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[BIqh]
+Bufftip=Queen's Hunger
+Buffubertip="This Hero used Essence of the Spider Queen; it has increased damage and a life-draining attack."
+
+[AI11]
+Name=Item Hero Stat Bonus
+EditorSuffix=(+11 Intelligence)
+
+[AAPx]
+Name=Item Spell Amp 26
+
+[AADo]
+Name=Item Spell Damage 2
+
+[Ahf1]
+Name=Item Huge Flail WS
+
+[Ahf2]
+Name=Item Huge Flail Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[Apl1]
+Name=Item Plaguegreaves Spell
+
+[Apl2]
+Name=Item Plaguegreaves Attack
+Buttonpos=0,-11
+Unbuttonpos=0,-11
+
+[ASCu]
+Name=Item Spell Crit Chance 4
+
+[ASC8]
+Name=Item Spell Crit Chance 8
+
+[Abs1]
+Name=Item Bottled Storm CL
+
+[Abs2]
+Name=Item Bottled Storm Attack
+
+[ASCs]
+Name=Item Spell Crit Chance 5
 
 //----------------------------------------------------
 // Buffs with no in-game text
