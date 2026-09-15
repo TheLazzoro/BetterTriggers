@@ -48,11 +48,11 @@ Buffubertip="This unit has been controlled; it obeys a new master now."
 Name=Siphon Mana
 Tip=Siphon Mana - [|cffffcc00Level 1|r],Siphon Mana - [|cffffcc00Level 2|r],Siphon Mana - [|cffffcc00Level 3|r]
 Ubertip="Transfers mana between the Blood Mage and a target. Drains <AHdr,DataB1> mana per second from an enemy, or transfers <AHdr,DataE1> mana per second to an ally.|n|nSiphon Mana can push the Blood Mage's mana over its maximum value, though excess mana drains off rapidly if not used.|nLasts <AHdr,Dur1> seconds.","Transfers mana between the Blood Mage and a target. Drains <AHdr,DataB2> mana per second from an enemy, or transfers <AHdr,DataE2> mana per second to an ally.|n|nSiphon Mana can push the Blood Mage's mana over its maximum value, though excess mana drains off rapidly if not used.|nLasts <AHdr,Dur2> seconds.","Transfers mana between the Blood Mage and a target. Drains <AHdr,DataB3> mana per second from an enemy, or transfers <AHdr,DataE3> mana per second to an ally.|n|nSiphon Mana can push the Blood Mage's mana over its maximum value, though excess mana drains off rapidly if not used.|nLasts <AHdr,Dur3> seconds."
-Ubertip,custom,V1="Drains <AHdr,DataB1> mana per second from an enemy to the caster.","Drains <AHdr,DataB2> mana per second from an enemy to the caster.","Drains <AHdr,DataB3> mana per second from an enemy to the caster."
+Ubertip:custom,V1="Drains <AHdr,DataB1> mana per second from an enemy to the caster.","Drains <AHdr,DataB2> mana per second from an enemy to the caster.","Drains <AHdr,DataB3> mana per second from an enemy to the caster."
 Hotkey=N
 Researchtip="Learn Siphon Mana - [|cffffcc00Level %d|r]"
 Researchubertip="Transfers mana between the Blood Mage and a target. Drains mana from an enemy, or transfers mana to an ally.|n|nSiphon Mana can push the Blood Mage's mana over its maximum value, though excess mana drains off rapidly if not used.|nLasts <AHdr,Dur1> seconds.|n|n|cffffcc00Level 1|r - <AHdr,DataB1> mana drained per second. |n|cffffcc00Level 2|r - <AHdr,DataB2> mana drained per second. |n|cffffcc00Level 3|r - <AHdr,DataB3> mana drained per second." 
-Researchubertip,custom,V1="Drains mana from an enemy to the caster.|n|n|cffffcc00Level 1|r - <AHdr,DataB1> mana drained per second. |n|cffffcc00Level 2|r - <AHdr,DataB2> mana drained per second. |n|cffffcc00Level 3|r - <AHdr,DataB3> mana drained per second." 
+Researchubertip:custom,V1="Drains mana from an enemy to the caster.|n|n|cffffcc00Level 1|r - <AHdr,DataB1> mana drained per second. |n|cffffcc00Level 2|r - <AHdr,DataB2> mana drained per second. |n|cffffcc00Level 3|r - <AHdr,DataB3> mana drained per second." 
 Researchhotkey=N
 
 [Bdbb]
@@ -159,10 +159,10 @@ Buffubertip="This unit is Banished; Banished creatures cannot attack, but they c
 [AHpx]
 Name=Phoenix
 Tip=Phoenix
-Ubertip="Summons a powerful Phoenix. The Phoenix burns with such intensity that it damages itself and nearby enemy units. Has Spell Immunity, and Resistant Skin. When a Phoenix dies, it creates an egg that will hatch into a Phoenix. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip="Summons a powerful Phoenix. The Phoenix burns with such intensity that it damages itself and nearby enemy units. Has Magic and Spell Immunity, and Resistant Skin. When a Phoenix dies, it creates an egg that will hatch into a Phoenix. |n|n|cffffcc00Attacks land and air units.|r"
 Hotkey=X
 Researchtip=Learn Phoenix
-Researchubertip="Summons a powerful Phoenix. The Phoenix burns with such intensity that it damages itself and nearby enemy units. Has Spell Immunity, and Resistant Skin. When a Phoenix dies, it creates an egg that will hatch into a Phoenix. |n|n|cffffcc00Attacks land and air units.|r"
+Researchubertip="Summons a powerful Phoenix. The Phoenix burns with such intensity that it damages itself and nearby enemy units. Has Magic and Spell Immunity, and Resistant Skin. When a Phoenix dies, it creates an egg that will hatch into a Phoenix. |n|n|cffffcc00Attacks land and air units.|r"
 Researchhotkey=X
 
 // Phoenix (morph)
@@ -389,12 +389,12 @@ Buffubertip="This unit has been hit by Thunder Clap; its movement speed and atta
 [AHbh]
 Name=Bash
 Tip=Bash - [|cffffcc00Level 1|r],Bash - [|cffffcc00Level 2|r],Bash - [|cffffcc00Level 3|r]
-Ubertip="Gives a <AHbh,DataA1>% chance that an attack will do <AHbh,DataC1> bonus damage and stun the target for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA2>% chance that an attack will do <AHbh,DataC1> bonus damage and stun the target for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA3>% chance that an attack will do <AHbh,DataC1> bonus damage and stun the target for <AHbh,Dur1> seconds."
+Ubertip="Gives a <AHbh,DataA1>% chance that an attack will do <AHbh,DataC1> bonus damage and stun the target for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA2>% chance that an attack will do <AHbh,DataC2> bonus damage and stun the target for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA3>% chance that an attack will do <AHbh,DataC3> bonus damage and stun the target for <AHbh,Dur1> seconds."
 Ubertip:custom,V0="Gives a <AHbh,DataA1>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA2>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA3>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds."
 Ubertip:custom,V1="Gives a <AHbh,DataA1>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA2>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA3>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds."
 Ubertip:melee,V0="Gives a <AHbh,DataA1>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA2>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds.","Gives a <AHbh,DataA3>% chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds."
 Researchtip="Learn Bash - [|cffffcc00Level %d|r]"
-Researchubertip="Gives a chance that an attack will do <AHbh,DataC1> bonus damage and stun the target for <AHbh,Dur1> seconds. |n|n|cffffcc00Level 1|r - <AHbh,DataA1>% chance per attack. |n|cffffcc00Level 2|r - <AHbh,DataA2>% chance per attack. |n|cffffcc00Level 3|r - <AHbh,DataA3>% chance per attack."
+Researchubertip="Gives a chance that an attack will do <AHbh,DataC1> bonus damage and stun the target for <AHbh,Dur1> seconds. |n|n|cffffcc00Level 1|r - <AHbh,DataA1>% chance per attack. <AHbh,DataC1> bonus damage. |n|cffffcc00Level 2|r - <AHbh,DataA2>% chance per attack. <AHbh,DataC2> bonus damage. |n|cffffcc00Level 3|r - <AHbh,DataA3>% chance per attack. <AHbh,DataC3> bonus damage."
 Researchubertip:custom,V0="Gives a chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds. |n|n|cffffcc00Level 1|r - <AHbh,DataA1>% chance per attack. |n|cffffcc00Level 2|r - <AHbh,DataA2>% chance per attack. |n|cffffcc00Level 3|r - <AHbh,DataA3>% chance per attack."
 Researchubertip:custom,V1="Gives a chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds. |n|n|cffffcc00Level 1|r - <AHbh,DataA1>% chance per attack. |n|cffffcc00Level 2|r - <AHbh,DataA2>% chance per attack. |n|cffffcc00Level 3|r - <AHbh,DataA3>% chance per attack."
 Researchubertip:melee,V0="Gives a chance that an attack will do <AHbh,DataC1> bonus damage and stun an opponent for <AHbh,Dur1> seconds. |n|n|cffffcc00Level 1|r - <AHbh,DataA1>% chance per attack. |n|cffffcc00Level 2|r - <AHbh,DataA2>% chance per attack. |n|cffffcc00Level 3|r - <AHbh,DataA3>% chance per attack."
@@ -425,10 +425,10 @@ Buffubertip="This unit is in Avatar form; it has increased hit points, attack da
 [AHhb]
 Name=Holy Light
 Tip=Holy Light - [|cffffcc00Level 1|r],Holy Light - [|cffffcc00Level 2|r],Holy Light - [|cffffcc00Level 3|r]
-UberTip="A holy light that can heal a friendly living unit for <AHhb,DataA1> or deal half damage to an enemy Undead unit.","A holy light that can heal a friendly living unit for <AHhb,DataA2> or deal half damage to an enemy Undead unit.","A holy light that can heal a friendly living unit for <AHhb,DataA3> or deal half damage to an enemy Undead unit."
+UberTip="A holy light that can heal a friendly living unit for <AHhb,DataA1> or deal half damage to an enemy Undead unit. Healing pierces spell immunity.","A holy light that can heal a friendly living unit for <AHhb,DataA2> or deal half damage to an enemy Undead unit. Healing pierces spell immunity.","A holy light that can heal a friendly living unit for <AHhb,DataA3> or deal half damage to an enemy Undead unit. Healing pierces spell immunity."
 Hotkey=T
 Researchtip="Learn Holy Light - [|cffffcc00Level %d|r]"
-Researchubertip="A holy light that can heal a friendly living unit or damage an enemy Undead unit. |n|n|cffffcc00Level 1|r - Heals for <AHhb,DataA1> hit points. |n|cffffcc00Level 2|r - Heals for <AHhb,DataA2> hit points. |n|cffffcc00Level 3|r - Heals for <AHhb,DataA3> hit points. "
+Researchubertip="A holy light that can heal a friendly living unit or damage an enemy Undead unit. Healing pierces spell immunity. |n|n|cffffcc00Level 1|r - Heals for <AHhb,DataA1> hit points. |n|cffffcc00Level 2|r - Heals for <AHhb,DataA2> hit points. |n|cffffcc00Level 3|r - Heals for <AHhb,DataA3> hit points. "
 Researchhotkey=T
 
 // Divine Shield
@@ -581,3 +581,4 @@ EditorName=Building Damage - Human Medium
 
 [Xfhl]
 EditorName=Building Damage - Human Large
+

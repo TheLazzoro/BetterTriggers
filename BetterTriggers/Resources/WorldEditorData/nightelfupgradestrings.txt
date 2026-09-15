@@ -62,7 +62,7 @@ Hotkey=S
 [Remg]
 Name=Upgrade Moon Glaive
 Tip=Upgrade Moon Glaive
-Ubertip="Gives the Huntress the ability to strike additional units with her bouncing glaive attacks."
+Ubertip="Gives the Huntress the ability to strike additional units with her bouncing glaive attacks, and changes their armor type to Heavy."
 Hotkey=G
 
 [Redt]
@@ -99,8 +99,8 @@ Hotkey=B
 [Repb]
 Name=Vorpal Blades
 Tip=Research Vorpal Blades
-Ubertip="Increases the speed of glaives launched by the Glaive Thrower. Also allows them to attack trees."
-Ubertip:custom,V1=Permits the glaives launched by the Glaive Thrower to strike through initial ground targets and damage those behind. Also allows them to attack trees.
+Ubertip="Increases the speed of glaives launched by the Glaive Thrower, and increases damage by <Repb,base1>. Also allows them to attack trees."
+Ubertip:custom,V1=Increases the speed of glaives launched by the Glaive Thrower, and increases damage by <Repb,base1>. Also allows them to attack trees.
 Hotkey=P
 
 [Rers]

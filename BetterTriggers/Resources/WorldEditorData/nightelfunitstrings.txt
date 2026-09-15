@@ -276,7 +276,7 @@ Name=Vorpal Blades
 Name:melee,V0=Vorpal Glaives
 Tip=Vorpal Blades
 Tip:melee,V0=Vorpal Glaives
-Ubertip="Increases the speed of glaives lauched by the Glaive Thrower. Also allows the Glaive Thrower to attack trees."
+Ubertip="Increases the speed of glaives launched by the Glaive Thrower, and increases damage by <Repb,base1>. Also allows the Glaive Thrower to attack trees."
 Ubertip:custom,V1=Permits the glaives launched by the Glaive Thrower to strike through initial ground targets and damage those behind. Also allows the Glaive Thrower to attack trees.
 Ubertip:melee,V0=Permits the bolts launched by the Glaive Thrower to strike through initial ground targets and damage those behind.
 

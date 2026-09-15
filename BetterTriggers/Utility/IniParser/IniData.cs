@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
+﻿using System.Collections.Generic;
 
 namespace BetterTriggers.Utility.IniParser
 {
@@ -46,8 +41,8 @@ namespace BetterTriggers.Utility.IniParser
                         }
                     }
 
-                    section = new IniSection();
-                    section.SectionName = line.Substring(1, nameEndIndex - 1);
+                    var sectionName = line.Substring(1, nameEndIndex - 1);
+                    section = new IniSection(sectionName);
                     Sections.TryAdd(section.SectionName, section);
                 }
 
@@ -67,6 +62,7 @@ namespace BetterTriggers.Utility.IniParser
                 }
 
                 string key = line.Substring(0, keyEndIndex);
+                if (key == string.Empty) continue;
                 string value = line.Substring(valueStartIndex, line.Length - valueStartIndex);
                 var iniKey = new IniKey(key, value);
                 section.Keys.Add(iniKey);
@@ -77,5 +73,35 @@ namespace BetterTriggers.Utility.IniParser
         {
             return Sections.ContainsKey(sectionName);
         }
+
+        public bool AddSection(string keyName)
+        {
+            if (!ContainsSection(keyName))
+            {
+                Sections.Add(keyName, new IniSection(keyName));
+                return true;
+            }
+
+            return false;
+        }
+
+        public IniSection? this[string sectionName]
+        {
+            get
+            {
+                if (!ContainsSection(sectionName))
+                {
+                    //if (!Configuration.AllowCreateSectionsOnFly)
+                    //{
+                    //    return null;
+                    //}
+
+                    AddSection(sectionName);
+                }
+
+                return Sections.GetValueOrDefault(sectionName);
+            }
+        }
+
     }
 }

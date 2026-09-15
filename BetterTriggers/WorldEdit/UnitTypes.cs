@@ -1,8 +1,8 @@
 ﻿using BetterTriggers.Containers;
 using BetterTriggers.Models.War3Data;
 using BetterTriggers.Utility;
+using BetterTriggers.Utility.IniParser;
 using BetterTriggers.WorldEdit.GameDataReader;
-using IniParser.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -205,14 +205,12 @@ namespace BetterTriggers.WorldEdit
             var enumerator = campaignSections.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                var section = enumerator.Current;
+                var section = enumerator.Current.Value;
                 string sectionName = section.SectionName;
-                var keys = section.Keys.GetEnumerator();
-                while (keys.MoveNext())
+                foreach (var iniKey in section.Keys)
                 {
-                    var key = keys.Current;
-                    if (key.KeyName == "ScoreScreenIcon")
-                        new Icon(key.Value, GetName(null, sectionName), "Unit - Special");
+                    if (iniKey.KeyName == "ScoreScreenIcon")
+                        new Icon(iniKey.Value, GetName(null, sectionName), "Unit - Special");
                 }
             }
         }
@@ -277,10 +275,10 @@ namespace BetterTriggers.WorldEdit
             {
                 var unitType = unitTypesList[i];
                 unitType.Name = Locale.GetUnitName(unitType.Id); // Spaghetti
-                unitType.isCampaign = campaignSections.ContainsSection(unitType.Id);
+                unitType.isCampaign = campaignSections.ContainsKey(unitType.Id);
 
                 var section = data[unitType.Id];
-                if (section.Count == 0)
+                if (section.Keys.Count == 0)
                 {
                     continue;
                 }
@@ -295,14 +293,12 @@ namespace BetterTriggers.WorldEdit
             var enumerator = campaignSections.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                var section = enumerator.Current;
+                var section = enumerator.Current.Value;
                 string sectionName = section.SectionName;
-                var keys = section.Keys.GetEnumerator();
-                while (keys.MoveNext())
+                foreach (var iniKey in section.Keys)
                 {
-                    var key = keys.Current;
-                    if (key.KeyName == "ScoreScreenIcon")
-                        new Icon(key.Value, GetName(null, sectionName), "Unit - Special");
+                    if (iniKey.KeyName == "ScoreScreenIcon")
+                        new Icon(iniKey.Value, GetName(null, sectionName), "Unit - Special");
                 }
             }
         }

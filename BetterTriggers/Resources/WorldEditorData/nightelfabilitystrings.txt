@@ -1,3 +1,4 @@
+
 // Vengeance
 [Avng]
 Name=Spirit of Vengeance
@@ -93,26 +94,32 @@ Hotkey=W
 Name=Hardened Skin
 Tip=Hardened Skin
 Ubertip="Reduces all attacks on the Mountain Giant by <Assk,DataC1> damage. Attacks cannot be reduced below <Assk,DataB1> damage."
-Hotkey=K
 
 // Resistant Skin
 [Arsk]
 Name=Resistant Skin
 Tip=Resistant Skin
 Ubertip="Reduces the duration of negative spells and renders the Mountain Giant immune to certain spells."
-Hotkey=E
 
 // Taunt
 [Atau]
 Name=Taunt
 Tip=Taunt
-Ubertip="The closest <Atau,DataA1> enemies are forced to attack this unit."
+Ubertip="The closest <Atau,DataA1> enemies are forced to attack this unit. After <Atau,DataE1> seconds Taunt will activate again."
 Ubertip:custom,V0="The closest <Atau,DataA1> enemies are forced to attack this unit."
 Ubertip:custom,V1="The closest <Atau,DataA1> enemies are forced to attack this unit."
 Ubertip:melee,V0="The closest <Atau,DataA1> enemies are forced to attack this unit."
 Hotkey=T
 
 [Btau]
+Bufftip=Taunt
+Buffubertip="This unit has been taunted and is now immune."
+
+[Btab]
+Bufftip=Taunt
+Buffubertip="This unit has been taunted and is now immune."
+
+[Btad]
 Bufftip=Taunt
 Buffubertip="This unit has been taunted and is now immune."
 
@@ -186,7 +193,7 @@ Hotkey=L
 [Amgl]
 Name=Moon Glaive
 Tip=Moon Glaive
-Ubertip="Gives the Huntress the ability to strike additional units with her bouncing glaive attacks."
+Ubertip="Gives the Huntress the ability to strike additional units with her bouncing glaive attacks, and changes their armor type to Heavy."
 
 [Amgr]
 Name=Moon Glaive
@@ -377,7 +384,7 @@ Unhotkey=B
 [Amim]
 Name=Spell Immunity
 Tip=Spell Immunity
-Ubertip="Renders this unit immune to all spells."
+Ubertip="Renders this unit immune to magic and most spells."
 
 // Ultravision
 [Ault]
@@ -454,13 +461,13 @@ Researchhotkey=B
 [AEim]
 Name=Immolation
 Tip=Activate Immolation - [|cffffcc00Level 1|r],Activate Immolation - [|cffffcc00Level 2|r],Activate Immolation - [|cffffcc00Level 3|r]
-Ubertip="Activate Immolation to engulf this unit in flames, causing <AEim,DataA1> damage per second to nearby enemy land units. |nDrains mana until deactivated.","Activate Immolation to engulf this unit in flames, causing <AEim,DataA2> damage per second to nearby enemy land units. |nDrains mana until deactivated.","Activate Immolation to engulf this unit in flames, causing <AEim,DataA3> damage per second to nearby enemy land units. |nDrains mana until deactivated."
+Ubertip="Activate Immolation to engulf this unit in flames, causing <AEim,DataA1> damage per 0.5 second to nearby enemy land units. |nDrains mana until deactivated.","Activate Immolation to engulf this unit in flames, causing <AEim,DataA2> damage per 0.5 second to nearby enemy land units. |nDrains mana until deactivated.","Activate Immolation to engulf this unit in flames, causing <AEim,DataA3> damage per 0.5 second to nearby enemy land units. |nDrains mana until deactivated."
 Unubertip="Deactivate Immolation to stop draining mana."
 Hotkey=L
 Untip=Deactivate Immolation
 Unhotkey=L
 Researchtip="Learn Immolation - [|cffffcc00Level %d|r]"
-Researchubertip="Engulfs the Demon Hunter in flames, causing damage to nearby enemy land units. |nDrains mana until deactivated. |n|n|cffffcc00Level 1|r - <AEim,DataA1> damage per second. |n|cffffcc00Level 2|r - <AEim,DataA2> damage per second. |n|cffffcc00Level 3|r - <AEim,DataA3> damage per second."
+Researchubertip="Engulfs the Demon Hunter in flames, causing damage to nearby enemy land units. |nDrains mana until deactivated. |n|n|cffffcc00Level 1|r - <AEim,DataA1> damage per 0.5 second. |n|cffffcc00Level 2|r - <AEim,DataA2> damage per 0.5 second. |n|cffffcc00Level 3|r - <AEim,DataA3> damage per 0.5 second."
 Researchhotkey=L
 
 [BEim]
@@ -545,9 +552,9 @@ Buffubertip="Summoned units take damage from dispels."
 [AEah]
 Name=Thorns Aura
 Tip=Thorns Aura - [|cffffcc00Level 1|r],Thorns Aura - [|cffffcc00Level 2|r],Thorns Aura - [|cffffcc00Level 3|r]
-Ubertip="An aura that gives friendly nearby units a damage shield, which deals <AEah,DataA1,%>% of an enemy unit's melee attack damage back to it.","An aura that gives friendly nearby units a damage shield, which deals <AEah,DataA2,%>% of an enemy unit's melee attack damage back to it.","An aura that gives friendly nearby units a damage shield, which deals <AEah,DataA3,%>% of an enemy unit's melee attack damage back to it."
+Ubertip="An aura that gives friendly nearby units a damage reflection, which deals <AEah,DataA1,%>% of an enemy unit's melee attack damage back to it.","An aura that gives friendly nearby units a damage reflection, which deals <AEah,DataA2,%>% of an enemy unit's melee attack damage back to it.","An aura that gives friendly nearby units a damage reflection, which deals <AEah,DataA3,%>% of an enemy unit's melee attack damage back to it."
 Researchtip="Learn Thorns Aura - [|cffffcc00Level %d|r]"
-Researchubertip="An aura that gives friendly nearby units a damage shield, which returns a percentage of a melee attacker's damage back to it. |n|n|cffffcc00Level 1|r - Returns <AEah,DataA1,%>% damage. |n|cffffcc00Level 2|r - Returns <AEah,DataA2,%>% damage. |n|cffffcc00Level 3|r - Returns <AEah,DataA3,%>% damage."
+Researchubertip="An aura that causes enemies to take a percentage of melee damage dealt to nearby friendly units. |n|n|cffffcc00Level 1|r - Returns <AEah,DataA1,%>% damage. |n|cffffcc00Level 2|r - Returns <AEah,DataA2,%>% damage. |n|cffffcc00Level 3|r - Returns <AEah,DataA3,%>% damage."
 Researchhotkey=R
 
 
@@ -569,10 +576,10 @@ Researchhotkey=T
 [AEst]
 Name=Scout
 Tip=Scout - [|cffffcc00Level 1|r],Scout - [|cffffcc00Level 2|r],Scout - [|cffffcc00Level 3|r]
-Ubertip="Summons an Owl Scout, which can be used to scout.|nCan see invisible units. |nLasts <AEst,Dur1> seconds.","Summons a fast Owl Scout, which can be used to scout.|nCan see invisible units. |nLasts <AEst,Dur2> seconds.","Summons a very fast Owl Scout, which can be used to scout.|nCan see invisible units. |nLasts <AEst,Dur3> seconds."
+Ubertip="Summons an invincible Owl Scout, which can be used to scout.|nCan see invisible units. |nLasts <AEst,Dur1> seconds.","Summons a fast Owl Scout, which can be used to scout.|nCan see invisible units. |nLasts <AEst,Dur2> seconds.","Summons a very fast Owl Scout, which can be used to scout.|nCan see invisible units. |nLasts <AEst,Dur3> seconds."
 Hotkey=C
 Researchtip="Learn Scout - [|cffffcc00Level %d|r]"
-Researchubertip="Temporarily summons an Owl Scout, which can be used to scout the map. |nCan see invisible units. |n|n|cffffcc00Level 1|r - Summons an Owl Scout for <AEst,Cost1> mana. |n|cffffcc00Level 2|r - Summons a better Owl Scout for <AEst,Cost2> mana. |n|cffffcc00Level 3|r - Summons the best Owl Scout for <AEst,Cost3> mana."
+Researchubertip="Temporarily summons an invincible Owl Scout, which can be used to scout the map. |nCan see invisible units. |n|n|cffffcc00Level 1|r - Summons an Owl Scout for <AEst,Cost1> mana. |n|cffffcc00Level 2|r - Summons a better Owl Scout for <AEst,Cost2> mana. |n|cffffcc00Level 3|r - Summons the best Owl Scout for <AEst,Cost3> mana."
 Researchhotkey=C
 
 [BEst]
@@ -609,10 +616,10 @@ Buffubertip="This unit is under the effects of Trueshot Aura; its ranged attacks
 [AEsf]
 Name=Starfall
 Tip=Starfall
-Ubertip="Calls down waves of falling stars that damage nearby enemy units. Each wave deals <AEsf,DataA1> damage. |nLasts for <AEsf,Dur1> seconds."
+Ubertip="Calls down waves of falling stars that damage nearby enemy units. Each wave deals <AEsf,DataA1> damage. |nLasts for <AEsf,Dur1> seconds. Pierces spell immunity."
 Hotkey=F
 Researchtip=Learn Starfall
-Researchubertip="Calls down waves of falling stars that damage nearby enemy units. Each wave deals <AEsf,DataA1> damage. |nLasts for <AEsf,Dur1> seconds."
+Researchubertip="Calls down waves of falling stars that damage nearby enemy units. Each wave deals <AEsf,DataA1> damage. |nLasts for <AEsf,Dur1> seconds. Pierces spell immunity."
 Researchhotkey=F
 
 // beefy starfall - campaign spell
@@ -740,6 +747,8 @@ Tip=Well Spring
 Ubertip="Increases the amount of mana that can be stored in Moon Wells by <Rews,base1>, and their rate of mana regeneration by <Rews,base2,%>%."
 EditorSuffix= (Icon)
 
+[Amgi]
+Name=Bouncing Missile Filter
 
 //----------------------------------------------------
 // Buffs with no in-game text
@@ -783,3 +792,5 @@ EditorName=Building Damage - Night Elf Medium
 
 [Xfnl]
 EditorName=Building Damage - Night Elf Large
+
+

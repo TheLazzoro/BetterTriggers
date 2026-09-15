@@ -131,11 +131,11 @@ Buffubertip="Pocket Factory."
 Name=Cluster Rockets
 Tip=Cluster Rockets - [|cffffcc00Level 1|r],Cluster Rockets - [|cffffcc00Level 2|r],Cluster Rockets - [|cffffcc00Level 3|r]
 Researchtip="Learn Cluster Rockets - [|cffffcc00Level %d|r]"
-Ubertip="Bombards an area with rockets, dealing up to 45 damage to nearby enemy units and stunning them for <ANcs,Dur1> second.","Bombards an area with rockets, dealing up to 75 damage to nearby enemy units and stunning them for <ANcs,Dur2> second.","Bombards an area with rockets, dealing up to 110 damage to nearby enemy units and stunning them for <ANcs,Dur3> second."
+Ubertip="Bombards an area with rockets, dealing up to 45 damage to nearby enemy units and stunning them for <ANcs,Dur1> second. Also hits mechanicals and buildings","Bombards an area with rockets, dealing up to 75 damage to nearby enemy units and stunning them for <ANcs,Dur2> second. Also hits mechanicals and buildings","Bombards an area with rockets, dealing up to 110 damage to nearby enemy units and stunning them for <ANcs,Dur3> second. Also hits mechanicals and buildings"
 Ubertip:custom,V0="Bombards an area with rockets, dealing up to 35 damage to nearby enemy land units and stunning them for <ANcs,Dur1> second.","Bombards an area with rockets, dealing up to 65 damage to nearby enemy land units and stunning them for <ANcs,Dur2> second.","Bombards an area with rockets, dealing up to 100 damage to nearby enemy land units and stunning them for <ANcs,Dur3> second."
 Ubertip:custom,V1="Bombards an area with rockets, dealing up to 35 damage to nearby enemy land units and stunning them for <ANcs,Dur1> second.","Bombards an area with rockets, dealing up to 65 damage to nearby enemy land units and stunning them for <ANcs,Dur2> second.","Bombards an area with rockets, dealing up to 100 damage to nearby enemy land units and stunning them for <ANcs,Dur3> second."
 Ubertip:melee,V0="Bombards an area with rockets, dealing up to 35 damage to nearby enemy land units and stunning them for <ANcs,Dur1> second.","Bombards an area with rockets, dealing up to 65 damage to nearby enemy land units and stunning them for <ANcs,Dur2> second.","Bombards an area with rockets, dealing up to 100 damage to nearby enemy land units and stunning them for <ANcs,Dur3> second."
-Researchubertip="Bombards an area with rockets, stunning enemy units for <ANcs,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 45 damage.|n|cffffcc00Level 2|r - 75 damage.|n|cffffcc00Level 3|r - 110 damage."
+Researchubertip="Bombards an area with rockets, damaging and stunning enemy ground and air units for <ANcs,Dur1> second. Also hits mechanicals and buildings.|n|n|cffffcc00Level 1|r - 45 damage.|n|cffffcc00Level 2|r - 75 damage.|n|cffffcc00Level 3|r - 110 damage."
 Researchubertip:custom,V0="Bombards an area with rockets, stunning enemy land units for <ANcs,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 35 damage.|n|cffffcc00Level 2|r - 65 damage.|n|cffffcc00Level 3|r - 100 damage."
 Researchubertip:custom,V1="Bombards an area with rockets, stunning enemy land units for <ANcs,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 35 damage.|n|cffffcc00Level 2|r - 65 damage.|n|cffffcc00Level 3|r - 100 damage."
 Researchubertip:melee,V0="Bombards an area with rockets, stunning enemy land units for <ANcs,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 35 damage.|n|cffffcc00Level 2|r - 65 damage.|n|cffffcc00Level 3|r - 100 damage."
@@ -147,11 +147,11 @@ Researchhotkey=R
 Name=Cluster Rockets
 Tip=Cluster Rockets - [|cffffcc00Level 1|r],Cluster Rockets - [|cffffcc00Level 2|r],Cluster Rockets - [|cffffcc00Level 3|r]
 Researchtip="Learn Cluster Rockets - [|cffffcc00Level %d|r]"
-Ubertip="Bombards an area with rockets, dealing up to 45 damage to nearby enemy units and stunning them for <ANc1,Dur1> second.","Bombards an area with rockets, dealing up to 75 damage to nearby enemy units and stunning them for <ANc1,Dur2> second.","Bombards an area with rockets, dealing up to 110 damage to nearby enemy units and stunning them for <ANc1,Dur3> second."
+Ubertip="Bombards an area with rockets, dealing up to 45 damage to nearby enemy ground and air units and stunning them for <ANc1,Dur1> second. Also hits mechanicals and buildings","Bombards an area with rockets, dealing up to 75 damage to nearby enemy ground and air units and stunning them for <ANc1,Dur2> second.","Bombards an area with rockets, dealing up to 110 damage to nearby enemy units and stunning them for <ANc1,Dur3> second."
 Ubertip:custom,V0="Bombards an area with rockets, dealing up to 35 damage to nearby enemy land units and stunning them for <ANc1,Dur1> second.","Bombards an area with rockets, dealing up to 65 damage to nearby enemy land units and stunning them for <ANc1,Dur2> second.","Bombards an area with rockets, dealing up to 100 damage to nearby enemy land units and stunning them for <ANc1,Dur3> second."
 Ubertip:custom,V1="Bombards an area with rockets, dealing up to 35 damage to nearby enemy land units and stunning them for <ANc1,Dur1> second.","Bombards an area with rockets, dealing up to 65 damage to nearby enemy land units and stunning them for <ANc1,Dur2> second.","Bombards an area with rockets, dealing up to 100 damage to nearby enemy land units and stunning them for <ANc1,Dur3> second."
 Ubertip:melee,V0="Bombards an area with rockets, dealing up to 35 damage to nearby enemy land units and stunning them for <ANc1,Dur1> second.","Bombards an area with rockets, dealing up to 65 damage to nearby enemy land units and stunning them for <ANc1,Dur2> second.","Bombards an area with rockets, dealing up to 100 damage to nearby enemy land units and stunning them for <ANc1,Dur3> second."
-Researchubertip="Bombards an area with rockets, stunning enemy units for <ANc1,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 45 damage.|n|cffffcc00Level 2|r - 75 damage.|n|cffffcc00Level 3|r - 110 damage"
+Researchubertip="Bombards an area with rockets, stunning enemy ground and air units for <ANc1,Dur1> second and damaging nearby enemy units. Also hits mechanicals and buildings. |n|n|cffffcc00Level 1|r - 45 damage.|n|cffffcc00Level 2|r - 75 damage.|n|cffffcc00Level 3|r - 110 damage"
 Researchubertip:custom,V0="Bombards an area with rockets, stunning enemy land units for <ANc1,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 35 damage.|n|cffffcc00Level 2|r - 65 damage.|n|cffffcc00Level 3|r - 100 damage"
 Researchubertip:custom,V1="Bombards an area with rockets, stunning enemy land units for <ANc1,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 35 damage.|n|cffffcc00Level 2|r - 65 damage.|n|cffffcc00Level 3|r - 100 damage"
 Researchubertip:melee,V0="Bombards an area with rockets, stunning enemy land units for <ANc1,Dur1> second and damaging nearby enemy units.|n|n|cffffcc00Level 1|r - 35 damage.|n|cffffcc00Level 2|r - 65 damage.|n|cffffcc00Level 3|r - 100 damage"
@@ -417,8 +417,8 @@ Buffubertip="This unit is benefiting from Chemical Rage.  It is moving and attac
 Name=Transmute
 Tip="Transmute"
 Researchtip="Learn Transmute"
-Ubertip="Kills a target unit instantly, transforming it into gold which is added to your available gold!|nTransmute cannot be used on Heroes, or creeps above level <ANtm,DataC1>."
-Researchubertip="Kills a target unit instantly, transforming it into gold which is added to your available gold!|nTransmute cannot be used on Heroes, or creeps above level <ANtm,DataC1>."
+Ubertip="Kills a target enemy unit instantly, transforming it into gold which is added to your available gold!|nTransmute pierces spell immunity, but cannot be used on Heroes, or creeps above level <ANtm,DataC1>."
+Researchubertip="Kills a target enemy unit instantly, transforming it into gold which is added to your available gold!|nTransmute pierces spell immunity, but cannot be used on Heroes, or creeps above level <ANtm,DataC1>."
 Hotkey=T
 Researchhotkey=T
 
@@ -530,7 +530,7 @@ Hotkey=K
 [ANms]
 Name=Mana Shield
 Tip=Activate Mana Shield - [|cffffcc00Level 1|r],Activate Mana Shield - [|cffffcc00Level 2|r],Activate Mana Shield - [|cffffcc00Level 3|r]
-Ubertip="Activates a shield that absorbs <ANms,DataA1> damage per point of mana.","Activates a shield that absorbs <ANms,DataA2> damage per point of mana.","Activates a shield that absorbs <ANms,DataA3> damage per point of mana."
+Ubertip="Activates a shield that absorbs <ANms,DataA1> damage per point of mana. Blocked damage ignores Armor and Armor Types. ","Activates a shield that absorbs <ANms,DataA2> damage per point of mana.","Activates a shield that absorbs <ANms,DataA3> damage per point of mana."
 Ubertip:custom,V0=Activates a shield that absorbs 1 damage per point of mana.,Activates a shield that absorbs 1.5 damage per point of mana.,Activates a shield that absorbs 2 damage per point of mana.
 Ubertip:custom,V1=Activates a shield that absorbs 1 damage per point of mana.,Activates a shield that absorbs 1.5 damage per point of mana.,Activates a shield that absorbs 2 damage per point of mana.
 Ubertip:melee,V0=Activates a shield that absorbs 1 damage per point of mana.,Activates a shield that absorbs 1.5 damage per point of mana.,Activates a shield that absorbs 2 damage per point of mana.
@@ -538,15 +538,15 @@ Untip=Deactivate Mana Shield
 Hotkey=N
 Unhotkey=N
 Researchtip="Learn Mana Shield - [|cffffcc00Level %d|r]"
-Researchubertip="Creates a shield that absorbs damage by using the Sea Witch's mana. |n|n|cffffcc00Level 1|r - <ANms,DataA1> damage per point of mana. |n|cffffcc00Level 2|r - <ANms,DataA2> damage per point of mana. |n|cffffcc00Level 3|r - <ANms,DataA3> damage per point of mana."
-Researchubertip:custom,V0=Creates a shield that absorbs damage by using the Sea Witch's mana. |n|n|cffffcc00Level 1|r - 1 damage per point of mana. |n|cffffcc00Level 2|r - 1.5 damage per point of mana. |n|cffffcc00Level 3|r - 2 damage per point of mana.
-Researchubertip:custom,V1=Creates a shield that absorbs damage by using the Sea Witch's mana. |n|n|cffffcc00Level 1|r - 1 damage per point of mana. |n|cffffcc00Level 2|r - 1.5 damage per point of mana. |n|cffffcc00Level 3|r - 2 damage per point of mana.
-Researchubertip:melee,V0=Creates a shield that absorbs damage by using the Sea Witch's mana. |n|n|cffffcc00Level 1|r - 1 damage per point of mana. |n|cffffcc00Level 2|r - 1.5 damage per point of mana. |n|cffffcc00Level 3|r - 2 damage per point of mana.
+Researchubertip="Creates a shield that absorbs damage by using the Sea Witch's mana. Blocked damage ignores Armor and Armor Types. |n|n|cffffcc00Level 1|r - <ANms,DataA1> damage per point of mana. |n|cffffcc00Level 2|r - <ANms,DataA2> damage per point of mana. |n|cffffcc00Level 3|r - <ANms,DataA3> damage per point of mana."
+Researchubertip:custom,V0=Creates a shield that absorbs damage by using the Sea Witch's mana. Blocked damage ignores Armor and Armor Types. |n|n|cffffcc00Level 1|r - 1 damage per point of mana. |n|cffffcc00Level 2|r - 1.5 damage per point of mana. |n|cffffcc00Level 3|r - 2 damage per point of mana.
+Researchubertip:custom,V1=Creates a shield that absorbs damage by using the Sea Witch's mana. Blocked damage ignores Armor and Armor Types. |n|n|cffffcc00Level 1|r - 1 damage per point of mana. |n|cffffcc00Level 2|r - 1.5 damage per point of mana. |n|cffffcc00Level 3|r - 2 damage per point of mana.
+Researchubertip:melee,V0=Creates a shield that absorbs damage by using the Sea Witch's mana. Blocked damage ignores Armor and Armor Types. |n|n|cffffcc00Level 1|r - 1 damage per point of mana. |n|cffffcc00Level 2|r - 1.5 damage per point of mana. |n|cffffcc00Level 3|r - 2 damage per point of mana.
 Researchhotkey=N
 
 [BNms]
 Bufftip=Mana Shield
-Buffubertip="This unit has a Mana Shield; it is temporarily protected from physical damage and negative spells."
+Buffubertip="This unit has a Mana Shield; it is temporarily protected from physical damage and negative spells. Blocked damage ignores Armor and Armor Types."
 
 // Rain of Fire
 [ANrf]
@@ -652,12 +652,12 @@ Ubertip="The creature strikes with such force that <ACce,DataA1,%>% of their dam
 [ANdo]
 Name=Doom
 Tip=Doom
-Ubertip="Marks a target unit for the manifestation of a Demon. The afflicted unit cannot cast spells and will take <ANdo,DataA1> damage per second until it dies. Upon its death, a great Demon will spawn from its corpse. Doom cannot be dispelled or cancelled."
+Ubertip="Marks a target unit for the manifestation of a Demon. The afflicted unit cannot cast spells and will take <ANdo,DataA1> damage per second until it dies. Upon its death, a great Demon will spawn from its corpse. Doom cannot be dispelled or cancelled. Pierces spell immunity."
 Ubertip:melee,V1="Marks a target unit for the manifestation of a Demon. The afflicted unit cannot cast spells, has <ANdo,DataE1,%>% reduced movement speed, and will take <ANdo,DataA1> damage per second until it dies. Upon its death, a great Demon will spawn from its corpse. Doom cannot be dispelled or cancelled."
 Hotkey=D
 Researchtip="Learn Doom"
-Researchubertip="Marks a target unit for the manifestation of a Demon. The afflicted unit cannot cast spells and will take <ANdo,DataA1> damage per second until it dies. Upon its death, a great Demon will spawn from its corpse. Doom cannot be dispelled or cancelled."
-Researchubertip:melee,V1="Marks a target unit for the manifestation of a Demon. The afflicted unit cannot cast spells, has <ANdo,DataE1,%>% reduced movement speed, and will take <ANdo,DataA1> damage per second until it dies. Upon its death, a great Demon will spawn from its corpse. Doom cannot be dispelled or cancelled."
+Researchubertip="Marks a target unit for the manifestation of a Demon. The afflicted unit cannot cast spells and will take <ANdo,DataA1> damage per second until it dies. Upon its death, a great Demon will spawn from its corpse. Doom cannot be dispelled or cancelled. Pierces spell immunity."
+Researchubertip:melee,V1="Marks a target unit for the manifestation of a Demon. The afflicted unit cannot cast spells, has <ANdo,DataE1,%>% reduced movement speed, and will take <ANdo,DataA1> damage per second until it dies. Upon its death, a great Demon will spawn from its corpse. Doom cannot be dispelled or cancelled. Pierces spell immunity."
 Researchhotkey=D
 
 [BNdo]
@@ -713,16 +713,16 @@ Hotkey=B
 [ANdr]
 Name=Life Drain
 Tip=Life Drain - [|cffffcc00Level 1|r],Life Drain - [|cffffcc00Level 2|r],Life Drain - [|cffffcc00Level 3|r]
-Ubertip="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger. |n|nAlso applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger. |n|nAlso applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger. |n|nAlso applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur3> seconds."
-Ubertip:custom,V0="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur3> seconds."
-Ubertip:custom,V1="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur3> seconds."
-Ubertip:melee,V0="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger. |nLasts <ANdr,Dur3> seconds."
+Ubertip="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD1> hit points from the Dark Ranger to an ally. |n|nAlso applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD2> hit points from the Dark Ranger to an ally. |n|nAlso applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD3> hit points from the Dark Ranger to an ally. |n|nAlso applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur3> seconds."
+Ubertip:custom,V0="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD1> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD2> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD3> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur3> seconds."
+Ubertip:custom,V1="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD1> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD2> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD3> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur3> seconds."
+Ubertip:melee,V0="Absorbs the life essence of a target enemy unit by taking <ANdr,DataA1> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD1> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur1> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA2> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD2> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur2> seconds.","Absorbs the life essence of a target enemy unit by taking <ANdr,DataA3> hit points per second from it and giving them to the Dark Ranger, or transfers <ANdr,DataD3> hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur3> seconds."
 Hotkey=D
 Researchtip="Learn Life Drain - [|cffffcc00Level %d|r]"
-Researchubertip="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger. |n|nLife Drain also applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second." 
-Researchubertip:custom,V0="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second."
-Researchubertip:custom,V1="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second."
-Researchubertip:melee,V0="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second."
+Researchubertip="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger, or transfers hit points from the Dark Ranger to an ally. |n|nLife Drain also applies the current rank of the Black Arrow debuff to the target. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second, or transfers <ANdr,DataD1> hit points per second to an ally. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second, or transfers <ANdr,DataD2> hit points per second to an ally. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second, or transfers <ANdr,DataD3> hit points per second to an ally." 
+Researchubertip:custom,V0="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger, or transfers hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second, or transfers <ANdr,DataD1> hit points per second to an ally. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second, or transfers <ANdr,DataD2> hit points per second to an ally. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second, or transfers <ANdr,DataD3> hit points per second to an ally."
+Researchubertip:custom,V1="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger, or transfers hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second, or transfers <ANdr,DataD1> hit points per second to an ally. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second, or transfers <ANdr,DataD2> hit points per second to an ally. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second, or transfers <ANdr,DataD3> hit points per second to an ally."
+Researchubertip:melee,V0="Absorbs the life essence of a target enemy unit by taking hit points from it every second and giving them to the Dark Ranger, or transfers hit points from the Dark Ranger to an ally. |nLasts <ANdr,Dur1> seconds. |n|n|cffffcc00Level 1|r - <ANdr,DataA1> hit point drain per second, or transfers <ANdr,DataD1> hit points per second to an ally. |n|cffffcc00Level 2|r - <ANdr,DataA2> hit point drain per second, or transfers <ANdr,DataD2> hit points per second to an ally. |n|cffffcc00Level 3|r - <ANdr,DataA3> hit point drain per second, or transfers <ANdr,DataD3> hit points per second to an ally."
 Researchhotkey=D
 
 // Life Drain (Creep)
@@ -814,10 +814,10 @@ Buffubertip="A proud hawk."
 [ANst]
 Name=Stampede
 Tip=Stampede
-Ubertip="Calls down hordes of rampaging thunder lizards to explode upon the Beastmaster's enemies. Each exploding lizard deals <ANst,DataC1> damage. |nLasts <ANst,Dur1> seconds."
+Ubertip="Calls down hordes of rampaging thunder lizards to explode upon the Beastmaster's enemies. Each exploding lizard deals <ANst,DataC1> damage. Pierces spell immunity. |nLasts <ANst,Dur1> seconds."
 Hotkey=T
 Researchtip=Learn Stampede
-Researchubertip="Calls down hordes of rampaging thunder lizards to explode upon the Beastmaster's enemies. Each exploding lizard deals <ANst,DataC1> damage. |nLasts <ANst,Dur1> seconds."
+Researchubertip="Calls down hordes of rampaging thunder lizards to explode upon the Beastmaster's enemies. Each exploding lizard deals <ANst,DataC1> damage. Pierces spell immunity. |nLasts <ANst,Dur1> seconds."
 Researchhotkey=T
 
 // Hex
@@ -922,6 +922,31 @@ Hotkey=E
 // Inventory
 [AInv]
 Name=Inventory
+EditorSuffix= (Hero)
+
+// Equipment Inventory
+[AInx]
+Name=Equipment Inventory
+EditorSuffix= (Hero)
+
+// Talents
+[ATal]
+Name=Talents
+EditorSuffix= (Hero)
+
+// Hero preview
+[Aequ]
+Name=Equipment Slots
+EditorSuffix= (Hero)
+
+// Grant Talent Point
+[ATap]
+Name=Grant Talent Point
+EditorSuffix= (Hero)
+
+// Stats
+[ASde]
+Name=Stat Details
 EditorSuffix= (Hero)
 
 // Spiked Shell
@@ -1035,17 +1060,17 @@ Hotkey=B
 Name=Charm
 EditorSuffix= (Neutral Hostile)
 Tip=Charm
-Ubertip="Takes control of a target enemy unit. |nCharm cannot be used on Heroes, or creeps above level <ACch,DataA1>."
+Ubertip="Takes permanent control of a target enemy unit. |nCharm cannot be used on Heroes, or creeps above level <ACch,DataA1>."
 Hotkey=R
 
 // Charm
 [ANch]
 Name=Charm
 Tip=Charm
-Ubertip="Takes control of a target enemy unit. |nCharm cannot be used on Heroes, or creeps above level <ANch,DataA1>."
+Ubertip="Takes permanent control of a target enemy unit. |nCharm pierces spell immunity, but cannot be used on Heroes, or creeps above level <ANch,DataA1>."
 Hotkey=C
 Researchtip=Learn Charm
-Researchubertip="Takes control of a target enemy unit. |nCharm cannot be used on Heroes, or creeps above level <ANch,DataA1>."
+Researchubertip="Takes permanent control of a target enemy unit. |nCharm pierces spell immunity, but cannot be used on Heroes, or creeps above level <ANch,DataA1>."
 Researchhotkey=C
 
 // Monsoon
@@ -1094,10 +1119,10 @@ Hotkey=R
 [ANto]
 Name=Tornado
 Tip=Tornado
-Ubertip="Summons a fierce controllable Tornado that slows enemy units' movement speed, randomly tosses enemy ground units into the air and damages enemy buildings. |nLasts <ANto,Dur1> seconds."
+Ubertip="Summons a fierce controllable Tornado that slows enemy units' movement speed, randomly tosses enemy ground units into the air and damages enemy buildings. Pierces spell immunity. |nLasts <ANto,Dur1> seconds."
 Hotkey=T
 Researchtip="Learn Tornado"
-Researchubertip="Summons a fierce controllable Tornado that slows enemy units' movement speed, randomly tosses enemy ground units into the air and damages enemy buildings. |nLasts <ANto,Dur1> seconds."
+Researchubertip="Summons a fierce controllable Tornado that slows enemy units' movement speed, randomly tosses enemy ground units into the air and damages enemy buildings. Pierces spell immunity. |nLasts <ANto,Dur1> seconds."
 Researchhotkey=T
 
 // Tornado - Slow Aura
@@ -1142,7 +1167,7 @@ Ubertip=Renders this unit immune to all spells.,"Renders this unit immune to all
 [ACm3]
 Name=Spell Immunity, Spell Immunity
 Tip=Spell Immunity, Spell Immunity
-Ubertip=Renders this unit immune to all spells.,"Renders this unit immune to all spells."
+Ubertip=Renders this unit immune to all spells.,"Renders this unit immune to magic and most spells."
 
 [Arng]
 Name=Revenge
@@ -1428,16 +1453,16 @@ Name=Life Regeneration
 Name=Select Hero
 Tip=Select Hero
 Untip=Deselect Hero
-Hotkey=H
-Unhotkey=H
+Hotkey=J
+Unhotkey=J
 
 // select any unit, for buildings
 [Ane2]
 Name=Select Unit
 Tip=Select Unit
 Untip=Deselect Unit
-Hotkey=U
-Unhotkey=U
+Hotkey=J
+Unhotkey=J
 
 // Inferno
 [ANin]
@@ -1805,7 +1830,7 @@ EditorSuffix=(Neutral Hostile)
 [ACba]
 Name=Brilliance Aura
 Tip=Brilliance Aura
-Ubertip="Gives additional mana regeneration to nearby friendly units of <ACba,DataA1> mana per second."
+Ubertip="Gives additional mana regeneration to nearby friendly units of <ACba,DataA1,.> mana per second."
 EditorSuffix=(Neutral Hostile)
 
 // bash
@@ -2265,7 +2290,7 @@ EditorSuffix= (Ships)
 [ACmi]
 Name=Spell Immunity
 Tip=Spell Immunity
-Ubertip="Renders this unit immune to all spells."
+Ubertip="Renders this unit immune to magic and most spells."
 EditorSuffix=(Neutral Hostile)
 
 [ACm2]
@@ -2641,3 +2666,78 @@ EditorName=Cluster Rockets (Effect)
 
 [XNhs]
 EditorName=Healing Spray (Effect)
+
+[AIni]
+Name=Expanded Inventory
+Ubertip="Click to open an expanded inventory."
+
+
+// Sacred Aura - forsaken paladin
+[AHpa]
+Name=Sacred Aura
+Tip=Sacred Aura - [|cffffcc00Level 1|r],Sacred Aura - [|cffffcc00Level 2|r],Sacred Aura - [|cffffcc00Level 3|r]
+UberTip="Gives <AHpa,DataA1,%>% Magic Resistance and <AHpa,DataB1>% increased healing received to nearby friendly units.","Gives <AHpa,DataA2,%>% Magic Resistance and <AHpa,DataB2>% increased healing received to nearby friendly units.","Gives <AHpa,DataA3,%>% Magic Resistance and <AHpa,DataB3>% increased healing recieved to nearby friendly units."
+Hotkey=E
+Researchtip="Learn Sacred Aura - [|cffffcc00Level %d|r]"
+Researchubertip="Gives additional Magic Resistance and increased healing received to nearby friendly units. |n|n|cffffcc00Level 1|r - <AHpa,DataA1,%>% Magic Resistance, <AHpa,DataB1>% increased healing received. |n|cffffcc00Level 2|r - <AHpa,DataA2,%>% Magic Resistance, <AHpa,DataB2>% increased healing received. |n|cffffcc00Level 3|r - <AHpa,DataA3,%>% Magic Resistance, <AHpa,DataB3>% increased healing received."
+Researchhotkey=E
+
+// Sacred Aura Buff
+[BHas]
+Bufftip=Sacred Aura
+Buffubertip="This unit has increased Magic Resistance and receives greater healing."
+EditorSuffix= (Friendly)
+
+
+// Consecration
+[AHcr]
+Name=Consecration
+Tip=Consecration - [|cffffcc00Level 1|r],Consecration - [|cffffcc00Level 2|r],Consecration - [|cffffcc00Level 3|r]
+UberTip="Bless the ground, healing nearby friendly living units for <AHcr,DataA1> hit points per second. Enemy Undead units take <AHcr,DataB1> damage per second and have incoming healing reduced by <AHcr,DataC1>%. |nLasts <AHcr,Dur1> seconds.","Bless the ground, healing nearby friendly living units for <AHcr,DataA2> hit points per second. Enemy Undead units take <AHcr,DataB2> damage per second and have incoming healing reduced by <AHcr,DataC2>%. |nLasts <AHcr,Dur2> seconds.","Bless the ground, healing nearby friendly living units for <AHcr,DataA3> hit points per second. Enemy Undead units take <AHcr,DataB3> damage per second and have incoming healing reduced by <AHcr,DataC3>%. |nLasts <AHcr,Dur3> seconds."
+Hotkey=C
+Researchtip="Learn Consecration - [|cffffcc00Level %d|r]"
+Researchubertip="Bless the ground, healing living allies and burning enemy Undead while reducing their healing received. |n|n|cffffcc00Level 1|r - Heals <AHcr,DataA1> hit points per second, deals <AHcr,DataB1> damage per second, reduces healing by <AHcr,DataC1>%. Lasts <AHcr,Dur1> seconds. |n|cffffcc00Level 2|r - Heals <AHcr,DataA2> hit points per second, deals <AHcr,DataB2> damage per second, reduces healing by <AHcr,DataC2>%. Lasts <AHcr,Dur2> seconds. |n|cffffcc00Level 3|r - Heals <AHcr,DataA3> hit points per second, deals <AHcr,DataB3> damage per second, reduces healing by <AHcr,DataC3>%. Lasts <AHcr,Dur3> seconds."
+Researchhotkey=C
+
+// Consecration Ally
+[BHcf]
+Bufftip=Consecration
+Buffubertip="This unit is standing on holy ground; it is healing every second."
+EditorSuffix= (Friendly)
+
+// Consecration Enemy
+[BHce]
+Bufftip=Consecration
+Buffubertip="This unit is standing on holy ground; it is taking damage every second and receives less healing."
+EditorSuffix= (Hostile)
+
+// Righteous Fury
+[ANcp]
+Name=Righteous Fury
+Tip=Righteous Fury - [|cffffcc00Level 1|r],Righteous Fury - [|cffffcc00Level 2|r],Righteous Fury - [|cffffcc00Level 3|r]
+UberTip="Dashes towards a target point up to <ANcp,Rng1> range away, dealing <AHch,DataB1> damage to enemy land units hit along the way, and slowing their movement by <ANcp,DataI1,%>% and attack rate by <ANcp,DataJ1,%>%.","Dashes towards a target point up to <ANcp,Rng2> range away, dealing <ANcp,DataB2> damage to enemy land units hit along the way, and slowing their movement by <ANcp,DataI2,%>% and attack rate by <ANcp,DataJ2,%>%.","Dashes towards a target point up to <ANcp,Rng3> range away, dealing <ANcp,DataB3> damage to enemy land units hit along the way, and slowing their movement by <ANcp,DataI3,%>% and attack rate by <ANcp,DataJ3,%>%."
+Hotkey=F
+Researchtip="Learn Righteous Fury - [|cffffcc00Level %d|r]"
+Researchubertip="Dash towards a target point, dealing damage to and slowing the movement speed and attack rate of enemy land units passed through.|n|n|cffffcc00Level 1|r - <ANcp,Rng1> range, <ANcp,DataB1> damage, <ANcp,DataI1,%>% movement speed, <ANcp,DataJ1,%>% attack rate. |n|cffffcc00Level 2|r - <ANcp,Rng2> range, <ANcp,DataB2> damage, <ANcp,DataI2,%>% movement speed, <ANcp,DataJ2,%>% attack rate. |n|cffffcc00Level 3|r - <ANcp,Rng3> range, <ANcp,DataB3> damage, <ANcp,DataI3,%>% movement speed, <ANcp,DataJ3,%>% attack rate."
+Researchhotkey=F
+
+// Righteous Fury Slow Buff
+[BNrs]
+Bufftip=Righteous Fury
+Buffubertip="This unit has been hit by Righteous Fury; its movement speed and attack rate are reduced."
+
+// Cleansing Fire
+[AHcl]
+Name=Cleansing Fire
+Tip=Cleansing Fire
+UberTip="Call upon the Light, removing all debuffs from nearby friendly units and all buffs from nearby enemy units. Friendly units are healed for <AHcl,DataA1> hit points, and gain <AHcl,DataD1>% bonus to damage for <AHcl,DataC1> seconds. For each debuff removed from a friendly unit, that unit heals an additional <AHcl,DataB1> hitpoints and gains an additional <AHcl,DataE1>% bonus to damage. Enemy units are stunned for <AHcl,DataF1> seconds.|n|cffffcc00Deals <AHcl,DataG1> damage to summoned units.|r"
+Hotkey=R
+Researchtip="Learn Cleansing Fire"
+Researchubertip="Call upon the Light, removing all debuffs from nearby friendly units and all buffs from nearby enemy units. Friendly units are healed for <AHcl,DataA1> hit points, and gain <AHcl,DataD1>% bonus to damage for <AHcl,DataC1> seconds. For each debuff removed from a friendly unit, that unit heals an additional <AHcl,DataB1> hitpoints and gains an additional <AHcl,DataE1>% bonus to damage.Enemy units are stunned for <AHcl,DataF1> seconds.|n|cffffcc00Deals <AHcl,DataG1> damage to summoned units.|r"
+Researchhotkey=R
+
+// Cleansing Fire Buff
+[BHcl]
+Bufftip=Cleansing Fire
+Buffubertip="This unit has been cleansed; it has increased damage."
+

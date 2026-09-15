@@ -92,7 +92,7 @@ Ubertip="Allows this unit to carry items for Heroes. Items cannot be used from t
 [Aliq]
 Name=Liquid Fire
 Tip="Liquid Fire"
-Ubertip="Flings a volatile liquid that causes buildings to take damage over time. Buildings that are currently taking damage from Liquid Fire cannot be repaired, and have their attack rate reduced by <Aliq,DataC1,%>%."
+Ubertip="Flings a volatile liquid that causes buildings to take damage over time. Buildings that are currently taking damage from Liquid Fire have their repair time increased by <Aliq,DataE1,%>%, and have their attack rate reduced by <Aliq,DataC1,%>%."
 
 // Unstable Concoction
 [Auco]
@@ -108,20 +108,20 @@ Unhotkey=C
 [AOhw]
 Name=Healing Wave
 Tip=Healing Wave - [|cffffcc00Level 1|r],Healing Wave - [|cffffcc00Level 2|r],Healing Wave - [|cffffcc00Level 3|r]
-Ubertip="Calls forth a wave of healing energy that bounces up to <AOhw,DataB1> times, healing <AOhw,DataA1> damage on the primary target. Each jump heals less damage.","Calls forth a wave of healing energy that bounces up to <AOhw,DataB2> times, healing <AOhw,DataA2> damage on the primary target. Each jump heals less damage.","Calls forth a wave of healing energy that bounces up to <AOhw,DataB3> times, healing <AOhw,DataA3> damage on the primary target. Each jump heals less damage."
+Ubertip="Calls forth a wave of healing energy that bounces up to <AOhw,DataB1> times, healing <AOhw,DataA1> damage on the primary target. Each bounce restores fewer hit points.","Calls forth a wave of healing energy that bounces up to <AOhw,DataB2> times, healing <AOhw,DataA2> damage on the primary target. Each bounce restores fewer hit points.","Calls forth a wave of healing energy that bounces up to <AOhw,DataB3> times, healing <AOhw,DataA3> damage on the primary target. Each bounce restores fewer hit points."
 Hotkey=E
 Researchtip="Learn Healing Wave - [|cffffcc00Level %d|r]"
-Researchubertip="Calls forth a wave of energy that heals a target and bounces to nearby friendlies. Each bounce heals less damage. |n|n|cffffcc00Level 1|r - Heals <AOhw,DataA1> damage, jumps <AOhw,DataB1> times. |n|cffffcc00Level 2|r - Heals <AOhw,DataA2> damage, jumps <AOhw,DataB2> times. |n|cffffcc00Level 3|r - Heals <AOhw,DataA3> damage, jumps <AOhw,DataB3> times."
+Researchubertip="Calls forth a wave of energy that heals a target and bounces to nearby friendlies. Each bounce restores fewer hit points. |n|n|cffffcc00Level 1|r - Heals <AOhw,DataA1> damage, jumps <AOhw,DataB1> times. |n|cffffcc00Level 2|r - Heals <AOhw,DataA2> damage, jumps <AOhw,DataB2> times. |n|cffffcc00Level 3|r - Heals <AOhw,DataA3> damage, jumps <AOhw,DataB3> times."
 Researchhotkey=E
 
 // Hex
 [AOhx]
 Name=Hex
 Tip=Hex - [|cffffcc00Level 1|r],Hex - [|cffffcc00Level 2|r],Hex - [|cffffcc00Level 3|r]
-Ubertip="Transforms an enemy unit into a random critter for <AOhx,Dur1> seconds.","Transforms an enemy unit into a random critter for <AOhx,Dur2> seconds.","Transforms an enemy unit into a random critter for <AOhx,Dur3> seconds."
+Ubertip="Transforms an enemy unit into a random critter for <AOhx,Dur1> seconds. Hex disables a unit’s abilities, item usage, ability to attack, and slows the unit to minimum movement speed.","Transforms an enemy unit into a random critter for <AOhx,Dur2> seconds. Hex disables a unit’s abilities, item usage, ability to attack, and slows the unit to minimum movement speed.","Transforms an enemy unit into a random critter for <AOhx,Dur3> seconds. Hex disables a unit’s abilities, item usage, ability to attack, and slows the unit to minimum movement speed."
 Hotkey=X
 Researchtip="Learn Hex - [|cffffcc00Level %d|r]"
-Researchubertip="Transforms an enemy unit into a random critter, disabling special abilities. |n|n|cffffcc00Level 1|r - Lasts <AOhx,Dur1> seconds. |n|cffffcc00Level 2|r - Lasts <AOhx,Dur2> seconds. |n|cffffcc00Level 3|r - Lasts <AOhx,Dur3> seconds."
+Researchubertip="Transforms an enemy unit into a random critter, disabling special abilities. Hex disables a unit’s abilities, item usage, ability to attack, and slows the unit to minimum movement speed. |n|n|cffffcc00Level 1|r - Lasts <AOhx,Dur1> seconds. |n|cffffcc00Level 2|r - Lasts <AOhx,Dur2> seconds. |n|cffffcc00Level 3|r - Lasts <AOhx,Dur3> seconds."
 Researchhotkey=X
 
 [BOhx]
@@ -132,10 +132,10 @@ Buffubertip="This unit is Hexed; it has been transformed into a critter."
 [AOsw]
 Name=Serpent Ward
 Tip=Serpent Ward - [|cffffcc00Level 1|r],Serpent Ward - [|cffffcc00Level 2|r],Serpent Ward - [|cffffcc00Level 3|r]
-Ubertip="Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward has <osp1,realHP> hit points, is magic immune, and deals <osp1,mindmg1> - <osp1,maxdmg1> damage. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r","Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward has <osp2,realHP> hit points, is magic immune, and deals <osp2,mindmg1> - <osp2,maxdmg1> damage. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r","Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward has <osp3,realHP> hit points, is magic immune, and deals <osp3,mindmg1> - <osp3,maxdmg1> damage. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r"
+Ubertip="Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward has <osp1,realHP> hit points, is magic and spell immune, and deals <osp1,mindmg1> - <osp1,maxdmg1> damage. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r","Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward has <osp2,realHP> hit points, is magic and spell immune, and deals <osp2,mindmg1> - <osp2,maxdmg1> damage. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r","Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward has <osp3,realHP> hit points, is magic and spell immune, and deals <osp3,mindmg1> - <osp3,maxdmg1> damage. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r"
 Hotkey=W
 Researchtip="Learn Serpent Ward - [|cffffcc00Level %d|r]"
-Researchubertip="Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward is immune to magic. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r |n|n|cffffcc00Level 1|r - <osp1,realHP> hit points, <osp1,mindmg1> - <osp1,maxdmg1> damage. |n|cffffcc00Level 2|r - <osp2,realHP> hit points, <osp2,mindmg1> - <osp2,maxdmg1> damage. |n|cffffcc00Level 3|r - <osp3,realHP> hit points, <osp3,mindmg1> - <osp3,maxdmg1> damage."
+Researchubertip="Summons an immobile serpentine ward to attack the Shadow Hunter's enemies. The ward is immune to magic and spells. |nLasts <AOsw,Dur1> seconds. |n|n|cffffcc00Attacks land and air units.|r |n|n|cffffcc00Level 1|r - <osp1,realHP> hit points, <osp1,mindmg1> - <osp1,maxdmg1> damage. |n|cffffcc00Level 2|r - <osp2,realHP> hit points, <osp2,mindmg1> - <osp2,maxdmg1> damage. |n|cffffcc00Level 3|r - <osp3,realHP> hit points, <osp3,mindmg1> - <osp3,maxdmg1> damage."
 Researchhotkey=W
 
 // Generic ward buff
@@ -288,7 +288,7 @@ Buffubertip="This unit has Bloodlust; its attack rate and movement speed are inc
 [Aeye]
 Name=Sentry Ward
 Tip=Sentry Ward
-Ubertip="Summons an invisible and immovable ward that provides vision in an area. |nCan see invisible units. |nLasts <Aeye,Dur1> seconds."
+Ubertip="Summons an invisible and immovable ward that provides vision in an area. Wards are spell immune. |nCan see invisible units. |nLasts <Aeye,Dur1> seconds."
 Hotkey=W
 
 [Beye]
@@ -299,7 +299,7 @@ Buffubertip="Summoned units take damage from dispels."
 [Asta]
 Name=Stasis Trap
 Tip=Stasis Trap
-Ubertip="Summons an invisible and immovable ward that stuns enemy land units around it. The trap activates when an enemy land unit approaches and destroys all other stasis wards in its area of effect. |nThe trap lasts <Asta,Dur1> seconds. |nThe stun lasts <Asta,DataD1> seconds."
+Ubertip="Summons an invisible and immovable ward that stuns enemy land units around it. The trap activates when an enemy land unit approaches and destroys all other stasis wards in its area of effect. Wards are spell immune. |nThe trap lasts <Asta,Dur1> seconds. |nThe stun lasts <Asta,DataD1> seconds."
 Hotkey=T
 
 // Stasis Trap trigger buff
@@ -316,7 +316,7 @@ Buffubertip="This unit is stunned by Stasis Trap and cannot move, attack or cast
 [Ahwd]
 Name=Healing Ward
 Tip=Healing Ward
-Ubertip="Summons an immovable ward that heals <Aoar,DataA1,%>% of a nearby friendly non-mechanical unit's hit points per second. |nLasts <Ahwd,Dur1> seconds."
+Ubertip="Summons an immovable ward that heals <Aoar,DataA1,%>% of a nearby friendly non-mechanical unit's hit points per second. Wards are spell immune. |nLasts <Ahwd,Dur1> seconds."
 Hotkey=E
 EditorSuffix= (Witch Doctor)
 
@@ -412,15 +412,15 @@ Buffubertip="This unit hears War Drums; it has increased attack damage."
 [AOwk]
 Name=Wind Walk
 Tip=Wind Walk - [|cffffcc00Level 1|r],Wind Walk - [|cffffcc00Level 2|r],Wind Walk - [|cffffcc00Level 3|r]
-Ubertip="Allows the Blademaster to become invisible, and move <AOwk,DataB1,%>% faster for <AOwk,Dur1> seconds. If the Blademaster attacks a unit to break invisibility, the attack will do <AOwk,DataC1> bonus damage.","Allows the Blademaster to become invisible, and move <AOwk,DataB2,%>% faster for <AOwk,Dur2> seconds. If the Blademaster attacks a unit to break invisibility, the attack will do <AOwk,DataC2> bonus damage.","Allows the Blademaster to become invisible, and move <AOwk,DataB3,%>% faster for <AOwk,Dur3> seconds. If the Blademaster attacks a unit to break invisibility, the attack will do <AOwk,DataC3> bonus damage."
+Ubertip="Allows the Blademaster to become invisible, move through units, and move <AOwk,DataB1,%>% faster for <AOwk,Dur1> seconds. If the Blademaster attacks a unit to break invisibility, the attack will do <AOwk,DataC1> bonus damage.","Allows the Blademaster to become invisible, move through units, and move <AOwk,DataB2,%>% faster for <AOwk,Dur2> seconds. If the Blademaster attacks a unit to break invisibility, the attack will do <AOwk,DataC2> bonus damage.","Allows the Blademaster to become invisible, move through units, and move <AOwk,DataB3,%>% faster for <AOwk,Dur3> seconds. If the Blademaster attacks a unit to break invisibility, the attack will do <AOwk,DataC3> bonus damage."
 Hotkey=W
 Researchtip="Learn Wind Walk - [|cffffcc00Level %d|r]"
-Researchubertip="Allows the Blademaster to become invisible, and move faster for a set amount of time. When the Blademaster attacks a unit to break invisibility, he will deal bonus damage. |n|n|cffffcc00Level 1|r - <AOwk,DataB1,%>% move, <AOwk,DataC1> bonus damage, <AOwk,Dur1> seconds. |n|cffffcc00Level 2|r - <AOwk,DataB2,%>% move, <AOwk,DataC2> bonus damage, <AOwk,Dur2> seconds. |n|cffffcc00Level 3|r - <AOwk,DataB3,%>% move, <AOwk,DataC3> bonus damage, <AOwk,Dur3> seconds."
+Researchubertip="Allows the Blademaster to become invisible, move through units, and move faster for a set amount of time. When the Blademaster attacks a unit to break invisibility, he will deal bonus damage. |n|n|cffffcc00Level 1|r - <AOwk,DataB1,%>% move, <AOwk,DataC1> bonus damage, <AOwk,Dur1> seconds. |n|cffffcc00Level 2|r - <AOwk,DataB2,%>% move, <AOwk,DataC2> bonus damage, <AOwk,Dur2> seconds. |n|cffffcc00Level 3|r - <AOwk,DataB3,%>% move, <AOwk,DataC3> bonus damage, <AOwk,Dur3> seconds."
 Researchhotkey=W
 
 [BOwk]
 Bufftip=Wind Walk
-Buffubertip="This unit is Wind Walking; it is invisible, moves faster, and the first attack it makes while invisible will deal bonus damage."
+Buffubertip="This unit is Wind Walking; it is invisible, move through units, moves faster, and the first attack it makes while invisible will deal bonus damage."
 
 // Mirror Image
 [AOmi]
@@ -455,10 +455,10 @@ Researchhotkey=C
 [AOww]
 Name=Bladestorm
 Tip=Bladestorm
-Ubertip="Causes a bladestorm of destructive force around the Blademaster, rendering him immune to magic and dealing <AOww,DataA1> damage per second to nearby enemy land units. |nLasts <AOww,Dur1> seconds."
+Ubertip="Causes a bladestorm of destructive force around the Blademaster, rendering him immune to magic and spells, dealing <AOww,DataA1> damage per second to nearby enemy land units. |nLasts <AOww,Dur1> seconds."
 Hotkey=B
 Researchtip=Learn Bladestorm
-Researchubertip="Causes a bladestorm of destructive force around the Blademaster, rendering him immune to magic and dealing <AOww,DataA1> damage per second to nearby enemy land units."
+Researchubertip="Causes a bladestorm of destructive force around the Blademaster, rendering him immune to magic and spells, dealing <AOww,DataA1> damage per second to nearby enemy land units."
 Researchhotkey=B
 
 // Chain Lightning

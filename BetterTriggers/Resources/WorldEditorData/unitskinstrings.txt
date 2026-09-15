@@ -26,3 +26,186 @@ Propernames=Lady Nightsorrow,Lady Soulrender,Lady Dethstorm,Lady Maldazzar,Lady 
 Name=Demon Huntress
 Propernames=Shadowsong,Shadowfury,Shadowstalker,Flameseeker,Darkweaver,Darkterror,Darksorrow,Sindweller,Painkiller,Hellbourne,Wrathbringer,Ragerunner,Firebrand,Bloodwrath,Terrorblade
 
+//////////////////////////////////////////////////////////
+// 2.0.0
+//////////////////////////////////////////////////////////
+
+[Ewam]
+Name=Warden
+Propernames:hd=Maiev
+
+[Edei]
+Name=Demon Hunter
+Propernames=Evil Illidan
+
+[Emot]
+Name=Priestess of the Moon
+Propernames:hd=Tyrande
+
+[Ekec]
+Name=Keeper of the Grove
+Propernames:hd=Cenarius
+
+[Ekem]
+Name=Keeper of the Grove
+Propernames=Malfurion
+
+[Ulik]
+Name=Lich
+Propernames:hd=Kel'Thuzad
+
+[Udrb]
+Name=Dreadlord
+Propernames=Balnazzar
+
+[Udda]
+Name=Dreadlord
+Propernames:hd=Dalvengyr
+
+[Udde]
+Name=Dreadlord
+Propernames:hd=Detheroc
+
+[Udrm]
+Name=Dreadlord
+Propernames:hd=Mal'Ganis
+
+[Udrt]
+Name=Dreadlord
+Propernames=Tichondrius
+
+[Udrv]
+Name=Dreadlord
+Propernames=Varimathras
+
+[Ucra]
+Name=Crypt Lord
+Propernames=Anub'arak
+
+[Hpap]
+Name=Paladin
+Propernames=Admiral Proudmoore
+
+[Hpaa]
+Name=Paladin
+Propernames=Arthas
+
+[Hpaf]
+Name=Paladin
+Propernames=Arthas Frostmourne
+
+[Hpdo]
+Name=Paladin
+Propernames=Dagren the Orcslayer
+
+[Hphl]
+Name=Paladin
+Propernames=Halahk the Lifebringer
+
+[Hpnb]
+Name=Paladin
+Propernames=Lord Nicholas Buzan
+
+[Hpmd]
+Name=Paladin
+Propernames:hd=Magroth the Defender
+
+[Hpge]
+Name=Paladin
+Propernames=Sir Gregory Edmunson
+
+[Hpau]
+Name=Paladin
+Propernames=Uther
+
+[Haks]
+Name=Archmage
+Propernames=Kelen the Seeker
+
+[Haan]
+Name=Archmage
+Propernames:hd=Antonidus
+
+[Hmmb]
+Name=Mountain King
+Propernames=Muradin Bronzebeard
+
+[Hblk]
+Name=Blood Mage
+Propernames:hd=Kael
+
+[Ofad]
+Name=Farseer
+Propernames:hd=Drek'Thar
+
+[Ofat]
+Name=Farseer
+Propernames=Thrall
+
+[Obbc]
+Name=Blademaster
+Propernames=Blademaster of Blackrock Clan
+
+[Oblh]
+Name=Blademaster
+Propernames=Grommash Hellscream
+
+[Obhp]
+Name=Blademaster
+Propernames=Grommash Hellscream (Fel Orc)
+
+[Obls]
+Name=Blademaster
+Propernames=Samuro
+
+[Otcb]
+Name=Tauren Chieftain
+Propernames=Cairne Bloodhoof
+
+[Oshr]
+Name=Shadow Hunter
+Propernames=Rokhan
+
+[Npcs]
+Name=Panda
+Propernames:hd=Chen Stormstout
+
+[Nbrx]
+Name=Beastmaster
+Propernames=Rexxar
+
+[Nbrs]
+Name=Dark Ranger
+Propernames=Sylvanas Windrunner
+
+[Nbru]
+Name=Dark Ranger
+Propernames=Sylvanas (Undead)
+
+[Nngv]
+Name=Naga Seawitch
+Propernames=Lady Vashj
+
+[Ntig]
+Name=Tinker
+Propernames:hd=Engineer Gazlowe
+
+[Npma]
+Name=Pit Lord
+Propernames:hd=Magtheridon
+
+[Npla]
+Name=Pit Lord
+Propernames=Azgalor
+
+[Ekgh]
+Name=Keeper of the Grove
+Propernames=Ghost Keeper of the Grove
+
+[Haga]
+Name=Archmage
+Propernames=Ghostly Antonidas
+
+[Haja]
+Name=Archmage
+Propernames=Jaina
