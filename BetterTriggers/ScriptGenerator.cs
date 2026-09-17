@@ -1057,11 +1057,13 @@ end
             script.Append(newline);
 
             var itemTables = _project.Info.MapInfo.RandomItemTables;
-            foreach (var table in itemTables)
+            if (itemTables != null)
             {
-                script.Append($"function ItemTable_{table.Index} {functionReturnsNothing}{newline}");
-                if (language == ScriptLanguage.Jass)
-                    script.Append(@"
+                foreach (var table in itemTables)
+                {
+                    script.Append($"function ItemTable_{table.Index} {functionReturnsNothing}{newline}");
+                    if (language == ScriptLanguage.Jass)
+                        script.Append(@"
     local widget trigWidget= null
 	local unit trigUnit= null
 	local integer itemID= 0
@@ -1079,8 +1081,8 @@ end
 
     if ( canDrop ) then
 ");
-                else
-                    script.Append(@"
+                    else
+                        script.Append(@"
     local trigWidget= nil
 	local trigUnit= nil
 	local itemID= 0
@@ -1099,18 +1101,18 @@ end
     if ( canDrop ) then
 ");
 
-                script.Append($"{newline}");
+                    script.Append($"{newline}");
 
-                foreach (var itemSets in table.ItemSets)
-                {
-                    script.Append($"\t\t{call} RandomDistReset(){newline}");
-                    foreach (var item in itemSets.Items)
+                    foreach (var itemSets in table.ItemSets)
                     {
-                        script.Append($"\t\t{call} RandomDistAddItem({fourCCStart}'{Int32Extensions.ToRawcode(item.ItemId)}'{fourCCEnd}, {item.Chance}){newline}");
-                    }
+                        script.Append($"\t\t{call} RandomDistReset(){newline}");
+                        foreach (var item in itemSets.Items)
+                        {
+                            script.Append($"\t\t{call} RandomDistAddItem({fourCCStart}'{Int32Extensions.ToRawcode(item.ItemId)}'{fourCCEnd}, {item.Chance}){newline}");
+                        }
 
-                    if (language == ScriptLanguage.Jass)
-                        script.Append(@"
+                        if (language == ScriptLanguage.Jass)
+                            script.Append(@"
         set itemID=RandomDistChoose()
 		if ( trigUnit != null ) then
 			call UnitDropItem(trigUnit, itemID)
@@ -1118,8 +1120,8 @@ end
 			call WidgetDropItem(trigWidget, itemID)
 		endif
 ");
-                    else
-                        script.Append(@"
+                        else
+                            script.Append(@"
         itemID=RandomDistChoose()
 		if ( trigUnit ~= nil ) then
 			UnitDropItem(trigUnit, itemID)
@@ -1127,24 +1129,25 @@ end
 			WidgetDropItem(trigWidget, itemID)
 		end
 ");
-                }
+                    }
 
-                if (language == ScriptLanguage.Jass)
-                    script.Append(@"
+                    if (language == ScriptLanguage.Jass)
+                        script.Append(@"
     endif
 	set bj_lastDyingWidget=null
 	call DestroyTrigger(GetTriggeringTrigger())
 endfunction
                 ");
-                else
-                    script.Append(@"
+                    else
+                        script.Append(@"
     end
 	bj_lastDyingWidget=nil
 	DestroyTrigger(GetTriggeringTrigger())
 end
                 ");
-            }
+                }
 
+            }
             script.Append($"{newline}");
         }
 

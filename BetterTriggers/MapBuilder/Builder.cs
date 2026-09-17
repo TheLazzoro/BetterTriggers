@@ -247,6 +247,7 @@ namespace BetterTriggers.TestMap
             if (WarcraftStorageReader.GameVersion >= new Version(1, 32))
             {
                 launchArgs += "-launch ";
+                launchArgs += "-editor ";
                 launchArgs += $"-windowmode {windowMode} ";
                 launchArgs += $"-hd {hd} ";
                 launchArgs += $"-teen {teen} ";

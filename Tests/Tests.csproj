@@ -323,6 +323,7 @@
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapMisc.txt" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapSkin.txt" />
     <None Remove="TestResources\Maps\MZA 2.41.w3x\war3mapUnits.doo" />
+    <None Remove="TestResources\Maps\patch_3.0.0.w3x" />
     <None Remove="TestResources\Maps\Risk Forever %282.5.7%29.w3x" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.doo" />
     <None Remove="TestResources\Maps\Sheol_131.w3x\war3map.imp" />
@@ -2038,6 +2039,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\MZA 2.41.w3x\war3mapUnits.doo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestResources\Maps\patch_3.0.0.w3x">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestResources\Maps\Risk Forever (2.5.7).w3x">
