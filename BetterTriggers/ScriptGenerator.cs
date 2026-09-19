@@ -169,14 +169,13 @@ end
                     success = p.ExitCode == 0;
                     p.Kill();
                 }
-                if (File.Exists(outputPath))
-                    GeneratedScript = File.ReadAllText(outputPath);
                 else
                 {
                     File.WriteAllText(outputPath, script.ToString());
-                    if (File.Exists(outputPath))
-                        GeneratedScript = File.ReadAllText(outputPath);
                 }
+
+                if (File.Exists(outputPath))
+                    GeneratedScript = File.ReadAllText(outputPath);
             }
 
             return success;
