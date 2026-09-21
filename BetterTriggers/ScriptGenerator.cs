@@ -719,7 +719,7 @@ end
                 if (u.HP != -1)
                 {
                     script.Append($"\t{set} life = GetUnitState({varName}, UNIT_STATE_LIFE){newline}");
-                    script.Append($"\t{call} SetUnitState({varName}, UNIT_STATE_LIFE, {u.HP}* life){newline}");
+                    script.Append($"\t{call} SetUnitState({varName}, UNIT_STATE_LIFE, {(u.HP / (float) 100).ToString("0.00", enUS)}* life){newline}");
                 }
 
                 if (u.MP != -1)
