@@ -99,8 +99,7 @@ namespace BetterTriggers.WorldEdit
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
-                var row = table.ElementAt(i);
-                string buffcode = (string)row.GetValue(0);
+                string buffcode = (string)table[0, i];
                 BuffType buff = new BuffType()
                 {
                     BuffCode = buffcode,

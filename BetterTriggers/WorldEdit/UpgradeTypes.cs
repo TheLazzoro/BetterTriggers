@@ -129,8 +129,7 @@ namespace BetterTriggers.WorldEdit
             SylkTable table = sylkParser.Parse(upgradedata);
             for (int i = 1; i < table.Count(); i++)
             {
-                var row = table.ElementAt(i);
-                string techcode = (string)row.GetValue(0);
+                string techcode = (string)table[0, i];
                 UpgradeType upgrade = new UpgradeType()
                 {
                     UpgradeCode = techcode,

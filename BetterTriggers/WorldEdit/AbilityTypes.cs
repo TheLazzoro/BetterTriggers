@@ -100,8 +100,7 @@ namespace BetterTriggers.WorldEdit
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
-                var row = table.ElementAt(i);
-                string abilcode = (string)row.GetValue(0);
+                string abilcode = (string)table[0, i];
                 AbilityType ability = new AbilityType()
                 {
                     AbilCode = abilcode,

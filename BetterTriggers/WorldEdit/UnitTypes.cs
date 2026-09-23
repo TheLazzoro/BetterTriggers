@@ -258,12 +258,11 @@ namespace BetterTriggers.WorldEdit
 
             for (int i = 0; i < uiTable.Count(); i++)
             {
-                var row = uiTable.ElementAt(i);
-                var id = (string)row.GetValue(0);
+                var id = (string)table[0, i];
                 if (id != null && unitTypesBase.TryGetValue(id, out var u))
                 {
-                    u.Model = (string)row.GetValue(1);
-                    u.isSpecial = row.GetValue(7) is 1;
+                    u.Model = (string)table[1, i];
+                    u.isSpecial = (string)table[7, i] is "1";
                 }
             }
 
