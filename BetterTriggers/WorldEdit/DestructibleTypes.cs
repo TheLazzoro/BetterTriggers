@@ -171,13 +171,12 @@ namespace BetterTriggers.WorldEdit
             int count = table.Count();
             for (int i = 1; i < count; i++)
             {
-                var row = table.ElementAt(i);
                 DestructibleType destType = new DestructibleType()
                 {
-                    DestCode = (string)row.GetValue(0),
-                    Model = (string)row.GetValue(4),
-                    DisplayName = Locale.Translate((string)row.GetValue(10)),
-                    EditorSuffix = Locale.Translate((string)row.GetValue(11)),
+                    DestCode = (string)table[0, i],
+                    Model = (string)table[4, i],
+                    DisplayName = Locale.Translate((string)table[10, i]),
+                    EditorSuffix = Locale.Translate((string)table[11, i]),
                 };
 
                 destructibles.TryAdd(destType.DestCode, destType);

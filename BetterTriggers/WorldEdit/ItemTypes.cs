@@ -168,13 +168,12 @@ namespace BetterTriggers.WorldEdit
             var count = table.Count();
             for (int i = 1; i < count; i++)
             {
-                var row = table.ElementAt(i);
-                var id = (string)row.GetValue(0);
+                var id = (string)table[0, i];
                 var item = new ItemType()
                 {
                     ItemCode = id,
                     DisplayName = Locale.GetDisplayName(id),
-                    Model = (string)row.GetValue(28),
+                    Model = (string)table[28, i],
                 };
                 items.TryAdd(item.ItemCode, item);
             }

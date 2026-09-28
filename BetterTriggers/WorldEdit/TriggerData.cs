@@ -228,10 +228,9 @@ namespace BetterTriggers.WorldEdit
             List<string> types = new List<string>();
             for (int i = 0; i < commonJfile.Length; i++)
             {
-                commonJfile[i] = Regex.Replace(commonJfile[i], @"\s+", " ");
                 if (commonJfile[i].StartsWith("type"))
                 {
-                    types.Add(commonJfile[i]);
+                    types.Add(Regex.Replace(commonJfile[i], @"\s+", " "));
                 }
             }
 

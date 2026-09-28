@@ -144,12 +144,11 @@ namespace BetterTriggers.WorldEdit
             var count = table.Count();
             for (int i = 1; i < count; i++)
             {
-                var row = table.ElementAt(i);
                 var doodad = new DoodadType()
                 {
-                    DoodCode = (string)row.GetValue(0),
-                    Model = (string)row.GetValue(4),
-                    DisplayName = Locale.Translate((string)row.GetValue(6)),
+                    DoodCode = (string)table[0, i],
+                    Model = (string)table[4, i],
+                    DisplayName = Locale.Translate((string)table[6, i]),
                 };
 
                 doodads.Add(doodad.DoodCode, doodad);
