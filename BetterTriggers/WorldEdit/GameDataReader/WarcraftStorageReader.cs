@@ -17,6 +17,12 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public static (bool, string) Load()
         {
+            if(mpq != null)
+            {
+                mpq.Dispose();
+                mpq = null;
+            }
+
             ImageExt = ".blp";
             EditorSettings settings = EditorSettings.Load();
             var isCasc = File.Exists(Path.Combine(settings.war3root, @"Data\data\data.000"));
@@ -37,6 +43,7 @@ namespace BetterTriggers.WorldEdit.GameDataReader
                 }
                 return (false, errorMsg);
             }
+
             mpq = new GameMpq();
             return mpq.Load(settings.war3root);
         }
@@ -74,7 +81,10 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             var stream = OpenFile(path, archiveName);
             if (stream != null)
             {
-                return new StreamReader(stream).ReadToEnd();
+                using (var sr = new StreamReader(stream))
+                {
+                    return sr.ReadToEnd();
+                }
             }
 
             return string.Empty;
@@ -87,7 +97,10 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             var stream = Casc.GetCasc().OpenFile(path);
             if (stream != null)
             {
-                return new StreamReader(stream).ReadToEnd();
+                using (var sr = new StreamReader(stream))
+                {
+                    return sr.ReadToEnd();
+                }
             }
 
             return string.Empty;
@@ -98,20 +111,22 @@ namespace BetterTriggers.WorldEdit.GameDataReader
             var stream = OpenFile(path, archiveName);
             if (stream != null)
             {
-                var liens = new List<string>();
-                var reader = new StreamReader(stream);
-
-                while (true)
+                using (var reader = new StreamReader(stream))
                 {
-                    var line = reader.ReadLine();
-                    if (line == null)
-                    {
-                        break;
-                    }
-                    liens.Add(line);
-                }
+                    var lines = new List<string>();
 
-                return liens.ToArray();
+                    while (true)
+                    {
+                        var line = reader.ReadLine();
+                        if (line == null)
+                        {
+                            break;
+                        }
+                        lines.Add(line);
+                    }
+
+                    return lines.ToArray();
+                }
             }
 
             return null;
@@ -119,9 +134,11 @@ namespace BetterTriggers.WorldEdit.GameDataReader
 
         public static void Export(string srcPath, string destPath)
         {
-            var stream = OpenFile(srcPath);
-            using var destStream = File.Create(destPath);
-            stream.CopyTo(destStream);
+            using (var stream = OpenFile(srcPath))
+            using (var destStream = File.Create(destPath))
+            {
+                stream.CopyTo(destStream);
+            }
         }
     }
 }
