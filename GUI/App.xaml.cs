@@ -1,8 +1,8 @@
 ﻿using BetterTriggers;
 using GUI.Components.Dialogs;
 using GUI.Components.Settings;
+using GUI.Utility;
 using System;
-using System.IO;
 using System.Windows;
 
 namespace GUI
@@ -14,10 +14,7 @@ namespace GUI
     {
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "errors")))
-                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "errors"));
-
-            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "errors/Error_" + DateTime.Now.ToString("yyyy/MM/dd HH.mm.ss") + ".txt"), e.Exception.StackTrace);
+            ErrorLog.Write(e.Exception, "DispatcherUnhandledException");
 
             CriticalErrorDialog dialog = new CriticalErrorDialog(e.Exception);
             dialog.ShowDialog();
@@ -27,6 +24,12 @@ namespace GUI
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            AppDomain.CurrentDomain.UnhandledException += (s, args) =>
+            {
+                if (args.ExceptionObject is Exception ex)
+                    ErrorLog.Write(ex, "AppDomain.UnhandledException");
+            };
+
             EditorSettings settings = EditorSettings.Load();
             EditorTheme.Change(settings.editorAppearance);
         }

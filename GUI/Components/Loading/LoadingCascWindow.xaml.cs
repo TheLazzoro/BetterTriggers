@@ -1,5 +1,6 @@
 ﻿using BetterTriggers.WorldEdit.GameDataReader;
 using GUI.Components.Setup;
+using GUI.Utility;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -10,6 +11,7 @@ namespace GUI.Components.Loading
     {
         bool isStorageValid = false;
         BackgroundWorker workerVerify;
+        string? loadError;
 
         public LoadingCascWindow()
         {
@@ -29,7 +31,7 @@ namespace GUI.Components.Loading
         {
             if (e.ProgressPercentage == 0)
             {
-                SetupWindow window = new SetupWindow();
+                SetupWindow window = new SetupWindow(loadError);
                 window.Show();
                 this.Close();
             }
@@ -58,8 +60,9 @@ namespace GUI.Components.Loading
             {
                 (isStorageValid, error) = WarcraftStorageReader.Load();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                SetLoadError(ex, "Failed to open Warcraft III game data.");
                 (sender as BackgroundWorker).ReportProgress(0);
                 BetterTriggers.Init.OnNextData -= Init_NextData;
                 return;
@@ -72,8 +75,9 @@ namespace GUI.Components.Loading
                     BetterTriggers.Init.Initialize(false);
                     (sender as BackgroundWorker).ReportProgress(100);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    SetLoadError(ex, $"Failed to load Warcraft III data ({BetterTriggers.Init.NextData}).");
                     (sender as BackgroundWorker).ReportProgress(0);
                 }
             }
@@ -81,6 +85,14 @@ namespace GUI.Components.Loading
                 (sender as BackgroundWorker).ReportProgress(0);
 
             BetterTriggers.Init.OnNextData -= Init_NextData;
+        }
+
+        private void SetLoadError(Exception ex, string context)
+        {
+            string? logPath = ErrorLog.Write(ex, context);
+            loadError = $"{context}{Environment.NewLine}{Environment.NewLine}{ex.GetType().Name}: {ex.Message}";
+            if (logPath != null)
+                loadError += $"{Environment.NewLine}{Environment.NewLine}Details were written to:{Environment.NewLine}{logPath}";
         }
 
         private void Init_NextData()

@@ -10,9 +10,14 @@ namespace GUI.Components.Setup
 {
     public partial class SetupWindow : Window
     {
-        public SetupWindow()
+        public SetupWindow(string? loadError = null)
         {
             InitializeComponent();
+
+            if (!string.IsNullOrEmpty(loadError))
+            {
+                Loaded += (s, e) => new Dialogs.MessageBox("Error", loadError, this).ShowDialog();
+            }
 
             EditorSettings settings = EditorSettings.Load();
             textBoxRoot.Text = settings.war3root;
