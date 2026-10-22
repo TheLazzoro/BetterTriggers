@@ -2,12 +2,16 @@
 using BetterTriggers.Models.SaveableData;
 using BetterTriggers.Utility;
 using BetterTriggers.WorldEdit;
+using Microsoft.Win32.SafeHandles;
+using MimeKit;
 using Newtonsoft.Json;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -144,7 +148,7 @@ namespace BetterTriggers.Models.EditorData
                     break;
 
                 case ExplorerElementEnum.Folder:
-                CategoryStr = TriggerCategory.TC_DIRECTORY;
+                    CategoryStr = TriggerCategory.TC_DIRECTORY;
                     break;
 
                 case ExplorerElementEnum.GlobalVariable:
@@ -236,7 +240,38 @@ namespace BetterTriggers.Models.EditorData
             {
                 try
                 {
-                    content = File.ReadAllText(path);
+                    // FileOptions.Asynchronous separates I/O from processing,
+                    // making file reads extremely fast
+
+                    using SafeFileHandle fileHandle = File.OpenHandle(path, FileMode.Open, FileAccess.Read,
+                        FileShare.Read, FileOptions.Asynchronous | FileOptions.SequentialScan);
+
+                    int len = (int)RandomAccess.GetLength(fileHandle);
+                    byte[] buf = ArrayPool<byte>.Shared.Rent(len);
+                    try
+                    {
+                        int read = 0;
+                        while (read < len)
+                        {
+                            int n = RandomAccess.Read(fileHandle, buf.AsSpan(read, len - read), read);
+                            if (n == 0) break;
+                            read += n;
+                        }
+
+                        try
+                        {
+                            ReadOnlySpan<byte> bytes = buf.AsSpan(0, read);
+                            if (bytes.StartsWith(Encoding.UTF8.Preamble))   // strip a UTF-8 BOM, like File.ReadAllText does
+                                bytes = bytes[Encoding.UTF8.Preamble.Length..];
+
+                            content = Encoding.UTF8.GetString(bytes);
+                        }
+                        catch (Exception) { }
+
+                        // Hand off to a Channel<T> for CPU work so the I/O loop stays busy
+                    }
+                    finally { ArrayPool<byte>.Shared.Return(buf); }
+
                     isReadyForRead = true;
                 }
                 catch (Exception ex)
