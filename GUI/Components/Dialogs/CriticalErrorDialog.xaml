@@ -9,8 +9,8 @@
         TextOptions.TextFormattingMode="Display"
         Title="Unexpected Error"
         WindowStartupLocation="CenterOwner"
-        Height="400"
-        Width="600"
+        Height="600"
+        Width="800"
         Background="{DynamicResource BackgroundMenu}">
     <Grid>
         <Grid.RowDefinitions>
@@ -46,40 +46,58 @@
             You can choose to either close the application, or proceed to use at your own risk.
         </TextBlock>
 
-        <TabControl Grid.Row="1"
-                    BorderThickness="0"
-                    Background="Transparent"
-                    Grid.ColumnSpan="3">
-            <TabItem Header="Report" >
-                <Grid>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <TextBox x:Name="textBoxReport"
-                                AcceptsReturn="True"
-                                 TextWrapping="Wrap"
-                                 TextChanged="textBoxReport_TextChanged"/>
-                    </ScrollViewer>
-                    <TextBlock x:Name="textBoxWatermark"
-                               Text="Describe what happened..."
-                               IsHitTestVisible="False"
-                               Margin="3,0,0,0"
-                               Foreground="{DynamicResource TextBlockBrush}" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Exception" >
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="5,0,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="17" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Error:"
+                           Foreground="{DynamicResource TextBrush}" />
+                <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto">
                     <TextBox x:Name="textBoxException" 
                              IsReadOnly="True"
                              TextWrapping="Wrap"/>
                 </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Stacktrace">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,10,0,30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="17" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Stack trace:"
+                           Foreground="{DynamicResource TextBrush}" />
+                <ScrollViewer Grid.Row="1"
+                          
+                          VerticalScrollBarVisibility="Auto">
                     <TextBox x:Name="textBoxStacktrace"
                              IsReadOnly="True"
                              TextWrapping="Wrap"/>
                 </ScrollViewer>
-            </TabItem>
-        </TabControl>
+            </Grid>
+
+            <ScrollViewer Grid.Row="2"
+                          VerticalScrollBarVisibility="Auto">
+                <TextBox x:Name="textBoxReport"
+                                AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 TextChanged="textBoxReport_TextChanged"/>
+            </ScrollViewer>
+            <TextBlock x:Name="textBoxWatermark"
+                       Grid.Row="2"
+                       Text="Describe what happened..."
+                       IsHitTestVisible="False"
+                       Margin="3,0,0,0"
+                       Foreground="{DynamicResource TextBlockBrush}" />
+
+        </Grid>
 
 
         <Button Content="Submit Report"

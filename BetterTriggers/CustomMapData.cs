@@ -7,6 +7,7 @@ using BetterTriggers.WorldEdit;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using War3Net.Build;
 using War3Net.Build.Widget;
@@ -87,21 +88,36 @@ namespace BetterTriggers
             ThresholdBeforeReloadingTimer.Stop();
         }
 
-        public static bool IsMapSaving(Project project, string fullMapPath = null)
+        public class IsMapSavingResult
         {
+            public string TempMapPath { get; set; }
+            public string BackupMapPath { get; set; }
+        }
+        public static bool IsMapSaving(out IsMapSavingResult result, Project project, string fullMapPath = null)
+        {
+            result = new IsMapSavingResult();
             if (string.IsNullOrEmpty(fullMapPath))
             {
                 fullMapPath = project.GetFullMapPath();
             }
 
+            bool isSaving = false;
             if (Directory.Exists(fullMapPath + "Temp"))
-                return true;
-            else if (Directory.Exists(fullMapPath + "Backup"))
-                return true;
-            else if (isThresholdTimerRunning)
-                return true;
-            else
-                return false;
+            {
+                isSaving = true;
+                result.TempMapPath = fullMapPath + "Temp";
+            }
+            if (Directory.Exists(fullMapPath + "Backup"))
+            {
+                isSaving = true;
+                result.BackupMapPath = fullMapPath + "Backup";
+            }
+            if (isThresholdTimerRunning)
+            {
+                isSaving = true;
+            }
+
+            return isSaving;
         }
 
 
@@ -113,8 +129,28 @@ namespace BetterTriggers
                 fullMapPath = project.GetFullMapPath();
             }
 
-            while (IsMapSaving(project, fullMapPath))
+            int loadAttempts = 0;
+            while (IsMapSaving(out var result, project, fullMapPath))
             {
+                if (isThresholdTimerRunning)
+                {
+                    loadAttempts = 0;
+                }
+
+                if (loadAttempts > 5)
+                {
+                    var errorMsg = new StringBuilder();
+                    errorMsg.Append($"Map is either being saved by another process or there are leftover temporary files in your map directory.{Environment.NewLine}");
+
+                    if(!string.IsNullOrEmpty(result.TempMapPath))
+                        errorMsg.Append($"{Environment.NewLine}Temp map path: {result.TempMapPath}");
+                    if(!string.IsNullOrEmpty(result.BackupMapPath))
+                        errorMsg.Append($"{Environment.NewLine}Backup map path: {result.BackupMapPath}");
+
+                    throw new Exception(errorMsg.ToString());
+                }
+
+                loadAttempts++;
                 Thread.Sleep(1000);
             }
             var mpqMap = Map.Open(fullMapPath);

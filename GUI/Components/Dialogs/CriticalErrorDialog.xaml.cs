@@ -34,6 +34,12 @@ namespace GUI.Components.Dialogs
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
+            var service = new LoggingService();
+            if (!string.IsNullOrEmpty(textBoxReport.Text))
+            {
+                var msg = new string(textBoxReport.Text);
+                service.SubmitError_Async(_exception, msg);
+            }
             this.Close();
         }
 

@@ -47,7 +47,7 @@ namespace GUI.Components.SaveMap
 
         private void WorkerVerify_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (CustomMapData.IsMapSaving(_project))
+            while (CustomMapData.IsMapSaving(out var result, _project))
             {
                 Thread.Sleep(1000);
             }
