@@ -18,6 +18,14 @@ namespace BetterTriggers.WorldEdit.GameDataReader
                         "War3xLocal.mpq",
                         "War3Patch.mpq" };
 
+        public void Dispose()
+        {
+            foreach (var archive in archives)
+            {
+                archive.Value.Dispose();
+            }
+        }
+
         public (bool, string) Load(string path)
         {
             string war3exe = Path.Combine(path, "Warcraft III.exe");

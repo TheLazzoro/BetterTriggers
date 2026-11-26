@@ -188,8 +188,10 @@ namespace BetterTriggers.TestMap
                         File.Copy(archivePath, tempFile);
                         using (var stream2 = new FileStream(tempFile, FileMode.Open))
                         {
-                            var archive = MpqArchive.Open(stream2, false);
-                            mpqFiles = archive.GetMpqFiles();
+                            using (var archive = MpqArchive.Open(stream2, false))
+                            {
+                                mpqFiles = archive.GetMpqFiles();
+                            }
                         }
                     }
                     File.Delete(archivePath);
